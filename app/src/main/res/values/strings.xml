@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- TEST -->
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- COMMON -->
+    <string name="app_name">Guhada</string>
+
+    <!-- -->
+
+</resources>
