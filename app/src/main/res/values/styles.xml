@@ -10,6 +10,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/background_default</item>
+        <item name="toolbarStyle">@style/DefaultToolBarStyle</item>
+        <item name="imageButtonStyle">@style/DefaultImageButtonStyle</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">
@@ -22,5 +24,13 @@
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="DefaultToolBarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="DefaultImageButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

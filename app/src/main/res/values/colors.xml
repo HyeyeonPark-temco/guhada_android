@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">@color/blue_purple</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="black_overlay">#66000000</color>
@@ -10,4 +10,9 @@
 
     <!-- BACKGROUND -->
     <color name="background_default">@color/common_white</color>
+
+
+    <color name="blue_purple">#5d2ed1</color>
+    <color name="pinkish_grey">#cccccc</color>
+    <color name="silver">#b7bec4</color>
 </resources>

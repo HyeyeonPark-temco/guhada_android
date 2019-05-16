@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.activity.SplashActivity;
 import io.temco.guhada.view.adapter.base.TestListAdapter;
@@ -51,6 +52,7 @@ public class TestListActivity extends AppCompatActivity {
                     break;
 
                 case 3:
+                    startActivity(LoginActivity.class);
                     break;
             }
         });
@@ -64,6 +66,8 @@ public class TestListActivity extends AppCompatActivity {
 
         list.add("SPLASH");
         list.add("MAIN");
+
+        list.add("LOGIN");
 
         list.add("");
         list.add("");

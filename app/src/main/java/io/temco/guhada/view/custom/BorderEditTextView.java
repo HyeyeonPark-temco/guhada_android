@@ -19,25 +19,22 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
 
     public BorderEditTextView(Context context) {
         super(context);
-
         initView(context, null);
     }
 
     public BorderEditTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
         initView(context, attrs);
     }
 
     public BorderEditTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         initView(context, attrs);
     }
 
     private void initView(Context context, @Nullable AttributeSet attributeSet) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mView = layoutInflater.inflate(R.layout.view_edittext, this);
+        mView = layoutInflater.inflate(R.layout.view_borderedittext, this);
         mEditText = mView.findViewById(R.id.editText);
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.BorderEditTextView);
         mEditText.setHint(typedArray.getString(R.styleable.BorderEditTextView_hint));

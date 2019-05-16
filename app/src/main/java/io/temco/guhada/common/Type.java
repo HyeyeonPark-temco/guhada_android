@@ -9,7 +9,8 @@ public class Type {
         MAIN,
         STORY,
         PROFILE,
-        MY_PAGE
+        MY_PAGE,
+        LOGIN
     }
 
     // Server

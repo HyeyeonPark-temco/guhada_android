@@ -50,6 +50,9 @@
             android:name=".view.activity.MainActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Login -->
+        <activity android:name=".view.activity.LoginActivity"/>
+
         <!-- //////////////////////////////// -->
         <!-- RECEIVER -->
         <!-- //////////////////////////////// -->

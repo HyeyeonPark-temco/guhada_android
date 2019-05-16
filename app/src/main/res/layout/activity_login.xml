@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearlayout_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include_login_header"
+            layout="@layout/header_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include_login_header">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="11dp">
+
+                <TextView
+                    android:id="@+id/textview_login_findid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:onClick="@{()->viewModel.onClickFindId()}"
+                    android:text="아이디찾기"
+                    android:textColor="@color/silver"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/view"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.612" />
+
+                <ImageView
+                    android:id="@+id/view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textview_login_findpwd"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/line" />
+
+                <TextView
+                    android:id="@+id/textview_login_findpwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->viewModel.onClickFindPwd()}"
+                    android:text="비밀번호찾기"
+                    android:textColor="@color/silver"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittextview_login_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint="이메일" />
+
+            <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittextview_login_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hint="비밀번호" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                tools:layout_editor_absoluteY="140dp">
+
+                <CheckBox
+                    android:id="@+id/checkbox_login_saveid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/all_checkbox"
+                    android:button="@null"
+                    android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedSaveId(checked)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.888" />
+
+                <TextView
+                    android:id="@+id/textview_login_saveid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="아이디 저장"
+                    android:textColor="@color/silver"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/checkbox_login_saveid"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_login_guestorder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->viewModel.onClickGuestOrder()}"
+                    android:text="비회원 주문조회"
+                    android:textColor="@color/silver"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/button_login_signin"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@{viewModel.id.length() > 0 &amp;&amp; viewModel.pwd.length() > 0 ? @color/colorPrimary : @color/silver }"
+                android:clickable="@{viewModel.id.length() > 0 &amp;&amp; viewModel.pwd.length() > 0 ? true : false }"
+                android:onClick="@{()->viewModel.onClickSignIn()}"
+                android:text="로그인"
+                android:textColor="@color/common_white" />
+
+            <Button
+                android:id="@+id/button_login_signup"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/all_silverborder"
+                android:onClick="@{()->viewModel.onClickSignUp()}"
+                android:text="회원가입"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="간편 로그인"
+                android:textColor="@android:color/black" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_27"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_login_naver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:onClick="@{()-> viewModel.onClickNaver()}"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/naver_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:text="네이버\n로그인"
+                        android:textColor="@color/silver"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_login_kakako"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:onClick="@{()-> viewModel.onClickKakao()}"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/kakao_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:text="카카오\n로그인"
+                        android:textColor="@color/silver"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_login_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:onClick="@{()-> viewModel.onClickFacebook()}"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/facebook_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:text="페이스북\n로그인"
+                        android:textColor="@color/silver"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_login_google"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()-> viewModel.onClickGoogle()}"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/google_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:text="구글\n로그인"
+                        android:textColor="@color/silver"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
