@@ -55,6 +55,17 @@ class ExamActivity extends Activity {
 final String TEST_MAIN = "main"
 ```
 
+4. XML [링크](https://jeroenmols.com/blog/2016/03/07/resourcenaming/)
+```
+activity_<WHERE>
+fragment_<WHERE>
+item_list_<WHERE>
+item_<WHERE>
+layout_<WHERE> // incclude
+header_<WHERE> // toolbar
+view_<WHERE>_<DESCRIPTION> // custom view
+```
+
 ### 주석
 모든 클래스, 함수, 변수, enum 등 주석을 추가하는 것을 원칙으로 한다.
 1. 클래스, 변수
