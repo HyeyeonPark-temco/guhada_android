@@ -30,6 +30,8 @@ android {
 }
 
 dependencies {
+    def libraryDependencies = rootProject.ext.libraryDependencies
+    def androidDependencies = rootProject.ext.androidDependencies
 
     ////////////////////////////////////////////////
     // ANDROID
@@ -38,6 +40,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha4'
     implementation 'com.google.android.material:material:1.1.0-alpha06'
+    implementation androidDependencies.supportDesign
+    implementation androidDependencies.supportConstraintLayout
+
 //    implementation 'androidx.appcompat:appcompat:1.0.2'
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 //    testImplementation 'junit:junit:4.12'
@@ -49,12 +54,12 @@ dependencies {
     ////////////////////////////////////////////////
 
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation libraryDependencies.glide
+    annotationProcessor libraryDependencies.glideCompiler
 //    implementation 'jp.wasabeef:glide-transformations:4.0.1'
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation libraryDependencies.retrofit
+    implementation libraryDependencies.retrofitConverter
     // Root Check
     implementation 'com.scottyab:rootbeer-lib:0.0.7'
     // Badge (국내/외 디바이스 대응)
