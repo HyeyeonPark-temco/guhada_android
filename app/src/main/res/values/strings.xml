@@ -11,5 +11,5 @@
     <string name="login_invalid">아이디 또는 비밀번호가 잘못 입력되었습니다.</string>
 
     <!-- API KEY -->
-    <string name="server_client_id">211014211291-55hkn576cpn6en94818n48r39u39ionb.apps.googleusercontent.com</string>
+    <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>
 </resources>

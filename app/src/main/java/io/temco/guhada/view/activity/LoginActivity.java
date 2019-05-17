@@ -12,9 +12,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.kakao.auth.Session;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.KakaoSessionCallback;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.viewmodel.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
@@ -23,6 +26,7 @@ import io.temco.guhada.view.activity.base.BindActivity;
 public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     private LoginViewModel mViewModel;
     private GoogleSignInClient mGoogleSignInClient;
+    private KakaoSessionCallback mKakaoSessionCallback;
     private int RC_SIGN_IN_GOOGLE = 10001;
 
     @Override
@@ -44,16 +48,42 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     protected void init() {
         // CommonUtil.showSnackBar(mBinding.linearlayoutLogin, "test", getResources().getColor(R.color.colorPrimary), 50);
 
-        // GOOGLE INIT
-        GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions);
+        initGoogleLogin();
+        initKakaoLogin();
 
         // INIT DATABINDING
-        mViewModel = new LoginViewModel(() -> startActivityForResult(new Intent(mGoogleSignInClient.getSignInIntent()), RC_SIGN_IN_GOOGLE));
+        mViewModel = new LoginViewModel(new OnLoginListener() {
+            @Override
+            public void onGoogleLogin() {
+                startActivityForResult(new Intent(mGoogleSignInClient.getSignInIntent()), RC_SIGN_IN_GOOGLE);
+            }
+
+            @Override
+            public void onKakaoLogin() {
+                mBinding.buttonLoginKakao.performClick();
+            }
+        });
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
         setIdAndPwdTextWatcher();
         mBinding.executePendingBindings();
+    }
+
+    private void initGoogleLogin() {
+        GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions);
+    }
+
+    private void initKakaoLogin() {
+        mKakaoSessionCallback = new KakaoSessionCallback();
+        Session.getCurrentSession().addCallback(mKakaoSessionCallback);
+        Session.getCurrentSession().checkAndImplicitOpen();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(mKakaoSessionCallback);
     }
 
     private void setIdAndPwdTextWatcher() {
@@ -89,19 +119,22 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
 
         if (requestCode == RC_SIGN_IN_GOOGLE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null) {
-                    // SUCCESS
-                    CommonUtil.debug(account.getEmail());
+                    CommonUtil.debug("[GOOGLE] " + account.getEmail());
                 }
             } catch (ApiException e) {
-                CommonUtil.debug(e.getMessage());
+                CommonUtil.debug("[GOOGLE] " + e.getStatusCode() + "-" + e.getMessage());
             }
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

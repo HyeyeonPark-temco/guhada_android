@@ -2,6 +2,8 @@ package io.temco.guhada.common;
 
 import android.app.Application;
 
+import com.kakao.auth.KakaoSDK;
+
 public class BaseApplication extends Application {
 
     private static BaseApplication mApplication;
@@ -13,6 +15,9 @@ public class BaseApplication extends Application {
 
         // Preference
         Preferences.init(getApplicationContext());
+
+        // KAKAO
+        KakaoSDK.init(new KakaoSDKAdapter());
     }
 
     public static BaseApplication getInstance() {

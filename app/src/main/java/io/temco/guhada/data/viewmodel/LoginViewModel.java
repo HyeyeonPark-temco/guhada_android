@@ -66,7 +66,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickKakao() {
-
+        listener.onKakaoLogin();
     }
 
     public void onClickFacebook() {
@@ -75,7 +75,6 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     public void onClickGoogle() {
         listener.onGoogleLogin();
-       // GoogleSignIn.getClient()
     }
 
     public void onCheckedSaveId(boolean checked) {

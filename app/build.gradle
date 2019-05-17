@@ -68,5 +68,8 @@ dependencies {
     // GOOGLE LOGIN
     implementation libraryDependencies.googlePlayServiceAuth
 
+    // KAKAO LOGIN
+    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+
     ////////////////////////////////////////////////
 }
