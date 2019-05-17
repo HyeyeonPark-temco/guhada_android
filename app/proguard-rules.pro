@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# NAVER LOGIN
+-keep public class com.nhn.android.naverlogin.** {
+       public protected *;
+}

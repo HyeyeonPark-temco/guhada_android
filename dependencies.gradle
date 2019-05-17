@@ -2,6 +2,8 @@ ext {
     // ANDROID
     supportDesignVersion = '28.0.0'
     supportConstraintLayoutVersion = '1.1.2'
+    supportCoreUtilsVersion = '25.3.1'
+    supportCustomTabsVersion = '25.3.1'
 
     // LIBRARY
     glideVersion = '4.9.0'
@@ -11,7 +13,9 @@ ext {
 
     androidDependencies = [
             supportDesign          : "com.android.support:design:${supportDesignVersion}",
-            supportConstraintLayout: "com.android.support.constraint:constraint-layout:${supportConstraintLayoutVersion}"
+            supportConstraintLayout: "com.android.support.constraint:constraint-layout:${supportConstraintLayoutVersion}",
+            supportCoreUtils       : "com.android.support:support-core-utils:${supportCoreUtilsVersion}",
+            supportCustomTabs      : "com.android.support:customtabs:${supportCustomTabsVersion}"
     ]
 
     libraryDependencies = [

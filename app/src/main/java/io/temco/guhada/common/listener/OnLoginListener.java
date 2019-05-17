@@ -7,4 +7,6 @@ public interface OnLoginListener {
     void onKakaoLogin();
 
     void onFacebookLogin();
+
+    void onNaverLogin();
 }

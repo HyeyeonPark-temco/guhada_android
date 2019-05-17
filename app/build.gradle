@@ -42,6 +42,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation androidDependencies.supportDesign
     implementation androidDependencies.supportConstraintLayout
+    implementation androidDependencies.supportCoreUtils
+    implementation androidDependencies.supportCustomTabs
 
 //    implementation 'androidx.appcompat:appcompat:1.0.2'
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -73,6 +75,10 @@ dependencies {
 
     // FACEBOOK LOGIN
     implementation libraryDependencies.facebookLogin
+
+    // NAVER
+    implementation files('libs/naveridlogin_android_sdk_4.2.5.aar')
+
 
     ////////////////////////////////////////////////
 }

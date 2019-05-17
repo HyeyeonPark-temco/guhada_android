@@ -1,8 +1,11 @@
 package io.temco.guhada.view.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -20,8 +23,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.kakao.auth.Session;
+import com.nhn.android.naverlogin.OAuthLogin;
+import com.nhn.android.naverlogin.OAuthLoginHandler;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Info;
 import io.temco.guhada.common.KakaoSessionCallback;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnLoginListener;
@@ -36,7 +42,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     private KakaoSessionCallback mKakaoSessionCallback;
     private CallbackManager mFacebookCallback;
     private ProfileTracker mFacebookTracker;
-    private int RC_SIGN_IN_GOOGLE = 10001;
+    private OAuthLogin mNaverLoginModule;
 
     @Override
     protected String getBaseTag() {
@@ -55,15 +61,17 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void init() {
+        // INIT SNS LOGIN
         initGoogleLogin();
         initKakaoLogin();
         initFacebookLogin();
+        initNaverLogin();
 
-        // INIT DATABINDING
+        // INIT BINDING
         mViewModel = new LoginViewModel(new OnLoginListener() {
             @Override
             public void onGoogleLogin() {
-                startActivityForResult(new Intent(mGoogleSignInClient.getSignInIntent()), RC_SIGN_IN_GOOGLE);
+                startActivityForResult(new Intent(mGoogleSignInClient.getSignInIntent()), Info.RC_SIGN_IN_GOOGLE);
             }
 
             @Override
@@ -73,8 +81,13 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void onFacebookLogin() {
-//                LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile"));
                 mBinding.buttonLoginFacebook.performClick();
+            }
+
+            @SuppressLint("HandlerLeak")
+            @Override
+            public void onNaverLogin() {
+                mBinding.buttonLoginNaver.performClick();
             }
         });
         mViewModel.toolBarTitle = getResources().getString(R.string.login_title);
@@ -93,6 +106,33 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mKakaoSessionCallback = new KakaoSessionCallback();
         Session.getCurrentSession().addCallback(mKakaoSessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
+    }
+
+    @SuppressLint("HandlerLeak")
+    private void initNaverLogin() {
+        mNaverLoginModule = OAuthLogin.getInstance();
+        mNaverLoginModule.init(this, getResources().getString(R.string.naver_oauth_client_id), getResources().getString(R.string.naver_oauth_client_secret),
+                getResources().getString(R.string.naver_oauth_client_name));
+        mBinding.buttonLoginNaver.setOAuthLoginHandler(new OAuthLoginHandler() {
+            @Override
+            public void run(boolean success) {
+                Context context = getApplicationContext();
+                if (success) {
+                    String accessToken = mNaverLoginModule.getAccessToken(context);
+                    String refreshToken = mNaverLoginModule.getRefreshToken(context);
+                    long expireAt = mNaverLoginModule.getExpiresAt(context);
+                    String tokenType = mNaverLoginModule.getTokenType(context);
+
+                    CommonUtil.debug("[NAVER] SUCCESS: AccessToken " + accessToken);
+                    mViewModel.getNaverUserProfile(accessToken);
+                } else {
+                    String errorCode = mNaverLoginModule.getLastErrorCode(context).getCode();
+                    String errorDesc = mNaverLoginModule.getLastErrorDesc(context);
+                    Toast.makeText(context, "errorCode:" + errorCode
+                            + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initFacebookLogin() {
@@ -121,15 +161,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 CommonUtil.debug("[FACEBOOK] ERROR: " + error.toString());
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Session.getCurrentSession().removeCallback(mKakaoSessionCallback);
-        if(mFacebookTracker.isTracking()){
-            mFacebookTracker.stopTracking();
-        }
     }
 
     private void setIdAndPwdTextWatcher() {
@@ -164,6 +195,15 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(mKakaoSessionCallback);
+        if (mFacebookTracker.isTracking()) {
+            mFacebookTracker.stopTracking();
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // FACEBOOK
         mFacebookCallback.onActivityResult(requestCode, resultCode, data);
@@ -174,7 +214,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         }
 
         // GOOGLE
-        if (requestCode == RC_SIGN_IN_GOOGLE) {
+        if (requestCode == Info.RC_SIGN_IN_GOOGLE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);

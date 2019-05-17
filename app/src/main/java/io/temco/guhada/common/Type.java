@@ -23,7 +23,9 @@ public class Type {
         USER("http://dev.user.guhada.com:8080/"),
         CLAIM("http://dev.claim.guhada.com:8081/"),
         ORDER("http://dev.order.guhada.com:8080/"),
-        PAYMENT("http://dev.payment.guhada.com:8081/");
+        PAYMENT("http://dev.payment.guhada.com:8081/"),
+
+        NAVER_PROFILE("https://openapi.naver.com/");
 
         private String url;
 
@@ -47,6 +49,8 @@ public class Type {
                     return ORDER.url;
                 case PAYMENT:
                     return PAYMENT.url;
+                case NAVER_PROFILE:
+                    return NAVER_PROFILE.url;
                 default:
                     return COMMON.url;
             }
