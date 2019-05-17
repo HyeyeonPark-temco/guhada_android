@@ -70,7 +70,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickFacebook() {
-
+        listener.onFacebookLogin();
     }
 
     public void onClickGoogle() {

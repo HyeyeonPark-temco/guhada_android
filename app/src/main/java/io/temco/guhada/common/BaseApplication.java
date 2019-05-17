@@ -2,6 +2,8 @@ package io.temco.guhada.common;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.kakao.auth.KakaoSDK;
 
 public class BaseApplication extends Application {
@@ -18,6 +20,10 @@ public class BaseApplication extends Application {
 
         // KAKAO
         KakaoSDK.init(new KakaoSDKAdapter());
+
+        // FACEBOOK
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
     public static BaseApplication getInstance() {

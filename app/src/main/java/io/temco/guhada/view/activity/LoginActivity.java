@@ -6,6 +6,13 @@ import android.text.TextWatcher;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,6 +34,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     private LoginViewModel mViewModel;
     private GoogleSignInClient mGoogleSignInClient;
     private KakaoSessionCallback mKakaoSessionCallback;
+    private CallbackManager mFacebookCallback;
+    private ProfileTracker mFacebookTracker;
     private int RC_SIGN_IN_GOOGLE = 10001;
 
     @Override
@@ -48,6 +57,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     protected void init() {
         initGoogleLogin();
         initKakaoLogin();
+        initFacebookLogin();
 
         // INIT DATABINDING
         mViewModel = new LoginViewModel(new OnLoginListener() {
@@ -59,6 +69,12 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             @Override
             public void onKakaoLogin() {
                 mBinding.buttonLoginKakao.performClick();
+            }
+
+            @Override
+            public void onFacebookLogin() {
+//                LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile"));
+                mBinding.buttonLoginFacebook.performClick();
             }
         });
         mViewModel.toolBarTitle = getResources().getString(R.string.login_title);
@@ -79,10 +95,41 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         Session.getCurrentSession().checkAndImplicitOpen();
     }
 
+    private void initFacebookLogin() {
+        mFacebookCallback = CallbackManager.Factory.create();
+        mFacebookTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                String message = oldProfile != null ? oldProfile.getName() : currentProfile.getName();
+                CommonUtil.debug("[FACEBOOK] TRACKOR: " + message);
+            }
+        };
+
+        LoginManager.getInstance().registerCallback(mFacebookCallback, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                CommonUtil.debug("[FACEBOOK] SUCCESS: " + loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                CommonUtil.debug("[FACEBOOK] CANCEL");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                CommonUtil.debug("[FACEBOOK] ERROR: " + error.toString());
+            }
+        });
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Session.getCurrentSession().removeCallback(mKakaoSessionCallback);
+        if(mFacebookTracker.isTracking()){
+            mFacebookTracker.stopTracking();
+        }
     }
 
     private void setIdAndPwdTextWatcher() {
@@ -118,10 +165,15 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // FACEBOOK
+        mFacebookCallback.onActivityResult(requestCode, resultCode, data);
+
+        // KAKAO
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
         }
 
+        // GOOGLE
         if (requestCode == RC_SIGN_IN_GOOGLE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {

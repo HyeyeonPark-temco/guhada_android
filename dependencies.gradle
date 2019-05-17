@@ -7,6 +7,7 @@ ext {
     glideVersion = '4.9.0'
     retrofitVersion = '2.5.0'
     googlePlayServiceVersion = '16.0.1'
+    facebookLoginVersion = '[5,6)'
 
     androidDependencies = [
             supportDesign          : "com.android.support:design:${supportDesignVersion}",
@@ -18,7 +19,8 @@ ext {
             glideCompiler        : "com.github.bumptech.glide:compiler:${glideVersion}",
             retrofit             : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitConverter    : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
-            googlePlayServiceAuth: "com.google.android.gms:play-services-auth:${googlePlayServiceVersion}"
+            googlePlayServiceAuth: "com.google.android.gms:play-services-auth:${googlePlayServiceVersion}",
+            facebookLogin        : "com.facebook.android:facebook-login:${facebookLoginVersion}"
 
     ]
 }

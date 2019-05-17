@@ -5,4 +5,6 @@ public interface OnLoginListener {
     void onGoogleLogin();
 
     void onKakaoLogin();
+
+    void onFacebookLogin();
 }

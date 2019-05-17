@@ -71,5 +71,8 @@ dependencies {
     // KAKAO LOGIN
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
 
+    // FACEBOOK LOGIN
+    implementation libraryDependencies.facebookLogin
+
     ////////////////////////////////////////////////
 }

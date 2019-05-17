@@ -241,10 +241,20 @@
                     android:onClick="@{()-> viewModel.onClickFacebook()}"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <FrameLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/facebook_icon" />
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/facebook_icon" />
+                        <com.facebook.login.widget.LoginButton
+                            android:id="@+id/button_login_facebook"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
+                    </FrameLayout>
+
 
                     <TextView
                         android:layout_width="wrap_content"
