@@ -65,5 +65,8 @@ dependencies {
     // Badge (국내/외 디바이스 대응)
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
 
+    // GOOGLE LOGIN
+    implementation libraryDependencies.googlePlayServiceAuth
+
     ////////////////////////////////////////////////
 }

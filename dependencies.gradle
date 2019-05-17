@@ -6,17 +6,19 @@ ext {
     // LIBRARY
     glideVersion = '4.9.0'
     retrofitVersion = '2.5.0'
+    googlePlayServiceVersion = '16.0.1'
 
     androidDependencies = [
-            supportDesign: "com.android.support:design:${supportDesignVersion}",
-            supportConstraintLayout : "com.android.support.constraint:constraint-layout:${supportConstraintLayoutVersion}"
+            supportDesign          : "com.android.support:design:${supportDesignVersion}",
+            supportConstraintLayout: "com.android.support.constraint:constraint-layout:${supportConstraintLayoutVersion}"
     ]
 
     libraryDependencies = [
-            glide            : "com.github.bumptech.glide:glide:${glideVersion}",
-            glideCompiler    : "com.github.bumptech.glide:compiler:${glideVersion}",
-            retrofit         : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
-            retrofitConverter: "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+            glide                : "com.github.bumptech.glide:glide:${glideVersion}",
+            glideCompiler        : "com.github.bumptech.glide:compiler:${glideVersion}",
+            retrofit             : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitConverter    : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            googlePlayServiceAuth: "com.google.android.gms:play-services-auth:${googlePlayServiceVersion}"
 
     ]
 }

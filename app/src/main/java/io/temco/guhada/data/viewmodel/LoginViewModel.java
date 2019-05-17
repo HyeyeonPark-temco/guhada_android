@@ -4,10 +4,16 @@ import androidx.databinding.Bindable;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.common.BaseObservableViewModel;
+import io.temco.guhada.common.listener.OnLoginListener;
 
 public class LoginViewModel extends BaseObservableViewModel {
     public String toolBarTitle = "로그인";
     private String id = "", pwd = "";
+    private OnLoginListener listener;
+
+    public LoginViewModel(OnLoginListener listener) {
+        this.listener = listener;
+}
 
     // GETTER & SETTER
     public void setId(String id) {
@@ -29,7 +35,6 @@ public class LoginViewModel extends BaseObservableViewModel {
         notifyPropertyChanged(BR.pwd);
         return pwd;
     }
-
 
     // CLICK LISTENER
     public void onClickGuestOrder() {
@@ -69,7 +74,8 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickGoogle() {
-
+        listener.onGoogleLogin();
+       // GoogleSignIn.getClient()
     }
 
     public void onCheckedSaveId(boolean checked) {
