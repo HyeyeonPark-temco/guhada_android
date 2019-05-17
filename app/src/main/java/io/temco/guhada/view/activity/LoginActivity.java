@@ -46,8 +46,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void init() {
-        // CommonUtil.showSnackBar(mBinding.linearlayoutLogin, "test", getResources().getColor(R.color.colorPrimary), 50);
-
         initGoogleLogin();
         initKakaoLogin();
 
@@ -63,6 +61,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 mBinding.buttonLoginKakao.performClick();
             }
         });
+        mViewModel.toolBarTitle = getResources().getString(R.string.login_title);
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
         setIdAndPwdTextWatcher();

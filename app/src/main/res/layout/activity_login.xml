@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
                     android:onClick="@{()->viewModel.onClickFindId()}"
-                    android:text="아이디찾기"
+                    android:text="@string/login_findid"
                     android:textColor="@color/silver"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/view"
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->viewModel.onClickFindPwd()}"
-                    android:text="비밀번호찾기"
+                    android:text="@string/login_findpwd"
                     android:textColor="@color/silver"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="아이디 저장"
+                    android:text="@string/login_button_saveid"
                     android:textColor="@color/silver"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/checkbox_login_saveid"
@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{()->viewModel.onClickGuestOrder()}"
-                    android:text="비회원 주문조회"
+                    android:text="@string/login_button_guestorder"
                     android:textColor="@color/silver"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +136,7 @@
                 android:background="@{viewModel.id.length() > 0 &amp;&amp; viewModel.pwd.length() > 0 ? @color/colorPrimary : @color/silver }"
                 android:clickable="@{viewModel.id.length() > 0 &amp;&amp; viewModel.pwd.length() > 0 ? true : false }"
                 android:onClick="@{()->viewModel.onClickSignIn()}"
-                android:text="로그인"
+                android:text="@string/login_button_signin"
                 android:textColor="@color/common_white" />
 
             <Button
@@ -146,7 +146,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/all_silverborder"
                 android:onClick="@{()->viewModel.onClickSignUp()}"
-                android:text="회원가입"
+                android:text="@string/login_button_signup"
                 android:textColor="@android:color/black" />
         </LinearLayout>
 
@@ -165,7 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="간편 로그인"
+                android:text="@string/login_simple"
                 android:textColor="@android:color/black" />
 
             <LinearLayout
@@ -193,7 +193,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="12dp"
-                        android:text="네이버\n로그인"
+                        android:gravity="center"
+                        android:text="@string/login_naver"
                         android:textColor="@color/silver"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
@@ -226,7 +227,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="12dp"
-                        android:text="카카오\n로그인"
+                        android:gravity="center"
+                        android:text="@string/login_kakao"
                         android:textColor="@color/silver"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
@@ -249,7 +251,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="12dp"
-                        android:text="페이스북\n로그인"
+                        android:gravity="center"
+                        android:text="@string/login_facebook"
                         android:textColor="@color/silver"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
@@ -271,9 +274,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="12dp"
-                        android:text="구글\n로그인"
+                        android:text="@string/login_google"
                         android:textColor="@color/silver"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_13"
+                        android:gravity="center" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

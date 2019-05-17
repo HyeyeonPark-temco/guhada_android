@@ -7,7 +7,7 @@ import io.temco.guhada.common.BaseObservableViewModel;
 import io.temco.guhada.common.listener.OnLoginListener;
 
 public class LoginViewModel extends BaseObservableViewModel {
-    public String toolBarTitle = "로그인";
+    public String toolBarTitle = "";
     private String id = "", pwd = "";
     private OnLoginListener listener;
 
