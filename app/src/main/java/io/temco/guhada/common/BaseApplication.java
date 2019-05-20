@@ -6,6 +6,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.kakao.auth.KakaoSDK;
 
+import io.temco.guhada.common.sns.kakao.KakaoSDKAdapter;
+
 public class BaseApplication extends Application {
 
     private static BaseApplication mApplication;

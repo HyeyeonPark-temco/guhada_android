@@ -1,4 +1,4 @@
-package io.temco.guhada.common;
+package io.temco.guhada.common.sns.kakao;
 
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
@@ -7,8 +7,10 @@ import com.kakao.auth.IPushConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 
+import io.temco.guhada.common.BaseApplication;
+
 public class KakaoSDKAdapter extends KakaoAdapter {
-    KakaoSDKAdapter() {
+    public KakaoSDKAdapter() {
         super();
     }
 

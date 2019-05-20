@@ -4,6 +4,10 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.NaverResponse;
+import io.temco.guhada.data.model.SnsUser;
+import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.model.User;
+import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.retrofit.manager.RetrofitManager;
 import io.temco.guhada.data.retrofit.service.LoginService;
 import retrofit2.Call;
@@ -37,4 +41,60 @@ public class LoginServer {
             }
         });
     }
+
+    public static void googleLogin(OnServerListener listener, SnsUser user) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class).googleLogin(user).enqueue(new Callback<BaseModel>() {
+            @Override
+            public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
+                if (response.isSuccessful()) {
+                    BaseModel result = response.body();
+                    listener.onResult(true, result);
+                } else {
+                    listener.onResult(false, response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
+
+    public static void signUp(OnServerListener listener, User user) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class).signUp(user).enqueue(new Callback<BaseModel<String>>() {
+            @Override
+            public void onResponse(Call<BaseModel<String>> call, Response<BaseModel<String>> response) {
+                if (response.isSuccessful()) {
+                    listener.onResult(true, response.body());
+                } else {
+                    listener.onResult(false, response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel<String>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
+
+    public static void signIn(OnServerListener listener, User user) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class).signIn(user).enqueue(new Callback<BaseModel<Token>>() {
+            @Override
+            public void onResponse(Call<BaseModel<Token>> call, Response<BaseModel<Token>> response) {
+                if (response.isSuccessful()) {
+                    listener.onResult(true, response.body());
+                } else {
+                    listener.onResult(false, response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel<Token>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
+
 }

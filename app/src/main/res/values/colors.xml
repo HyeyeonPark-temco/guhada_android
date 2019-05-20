@@ -15,4 +15,8 @@
     <color name="blue_purple">#5d2ed1</color>
     <color name="pinkish_grey">#cccccc</color>
     <color name="silver">#b7bec4</color>
+    <color name="white_two">#ededed</color>
+    <color name="warm_grey_two">#777777</color>
+    <color name="greyish_brown">#555555</color>
+
 </resources>

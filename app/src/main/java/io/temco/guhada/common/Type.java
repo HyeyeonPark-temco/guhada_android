@@ -10,7 +10,8 @@ public class Type {
         STORY,
         PROFILE,
         MY_PAGE,
-        LOGIN
+        LOGIN,
+        JOIN
     }
 
     // Server
@@ -53,6 +54,32 @@ public class Type {
                     return NAVER_PROFILE.url;
                 default:
                     return COMMON.url;
+            }
+        }
+    }
+
+
+    // RESULT CODE
+    public enum ResultCode {
+        ALREADY_SIGNED_UP(6006),
+        ALREADY_EXIST_EMAIL(6001),
+        INVALID_PASSWORD(6002);
+
+        private int code;
+
+        ResultCode(int code) {
+        }
+
+        public static int getResultCode(ResultCode code) {
+            switch (code) {
+                case ALREADY_SIGNED_UP:
+                    return ALREADY_SIGNED_UP.code;
+                case ALREADY_EXIST_EMAIL:
+                    return ALREADY_EXIST_EMAIL.code;
+                case INVALID_PASSWORD:
+                    return INVALID_PASSWORD.code;
+                default:
+                    return 0;
             }
         }
     }

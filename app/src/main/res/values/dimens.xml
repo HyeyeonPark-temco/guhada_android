@@ -27,4 +27,5 @@
     <!-- VIEW SIZE -->
     <dimen name="height_header">43dp</dimen>
     <dimen name="height_snackbar">42dp</dimen>
+    <dimen name="height_loginbutton">50dp</dimen>
 </resources>

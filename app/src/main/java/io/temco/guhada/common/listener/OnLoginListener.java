@@ -9,4 +9,8 @@ public interface OnLoginListener {
     void onFacebookLogin();
 
     void onNaverLogin();
+
+    void redirectJoinActivity();
+
+    void showMessage(String message);
 }

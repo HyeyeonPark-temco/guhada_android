@@ -23,6 +23,23 @@
     <string name="login_button_saveid">아이디 저장</string>
     <string name="login_button_guestorder">비회원 주문조회</string>
 
+    <!-- JOIN -->
+    <string name="join_agreeall">전체동의</string>
+    <string name="join_agreeessential">필수약관</string>
+    <string name="join_agreebuy">구매이용약관</string>
+    <string name="join_agreeprivacy">개인정보 수집 및 이용동의</string>
+    <string name="join_agreeoption">선택약관</string>
+    <string name="join_agreesell">판매이용약관</string>
+    <string name="join_agreeemail">이메일 수신</string>
+    <string name="join_agreesms">문자 수신</string>
+    <string name="join_button_signup">동의하고 가입하기</string>
+    <string name="join_show">보기</string>
+    <string name="join_title">회원가입</string>
+    <string name="join_hint_email">admin@guhada.co.kr</string>
+    <string name="join_hint_password">비밀번호</string>
+    <string name="join_hint_confirmpassword">비밀번호 확인</string>
+
+
     <!-- API KEY -->
     <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>
     <string name="facebook_app_id">670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
@@ -30,4 +47,5 @@
     <string name="naver_oauth_client_id">v9how9jp1jb4bjog309d</string> <!-- 회사 계정 API KEY로 변경 필요-->
     <string name="naver_oauth_client_secret">96JY1vCz8f</string> <!-- 회사 계정 API KEY로 변경 필요-->
     <string name="naver_oauth_client_name">네이버 아이디로 로그인</string>
+
 </resources>
