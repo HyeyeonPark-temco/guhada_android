@@ -13,6 +13,7 @@ import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.viewmodel.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -74,6 +75,16 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             @Override
             public void showMessage(String message) {
                 Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void showSnackBar(String message) {
+                CommonUtil.showSnackBar(mBinding.linearlayoutLogin, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
+            }
+
+            @Override
+            public void closeActivity() {
+                finish();
             }
         });
         mViewModel.toolBarTitle = getResources().getString(R.string.login_title);

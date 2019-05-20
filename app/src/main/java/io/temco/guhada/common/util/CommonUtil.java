@@ -1,6 +1,7 @@
 package io.temco.guhada.common.util;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -61,18 +62,21 @@ public class CommonUtil {
         }
     }
 
-    ////////////////////////////////////////////////
-
+    // SnackBar
     public static void showSnackBar(View parentView, String message, int bgColor, int marginTop) {
         Snackbar snackbar = Snackbar.make(parentView, message, Snackbar.LENGTH_INDEFINITE);
-        snackbar.setDuration(1500);
+        snackbar.setDuration(2500);
         snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
 
         View view = snackbar.getView();
         view.setBackgroundColor(bgColor);
 
         TextView snackBarTextView = view.findViewById(com.google.android.material.R.id.snackbar_text);
-        snackBarTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            snackBarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        }else {
+            snackBarTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
 
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view.getLayoutParams();
         layoutParams.gravity = Gravity.TOP;

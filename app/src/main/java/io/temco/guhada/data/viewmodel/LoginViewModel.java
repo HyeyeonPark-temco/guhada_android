@@ -5,6 +5,8 @@ import androidx.databinding.Bindable;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import io.temco.guhada.BR;
+import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.BaseObservableViewModel;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.listener.OnServerListener;
@@ -72,7 +74,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickBack() {
-
+        loginListener.closeActivity();
     }
 
     public void onClickSignIn() {
@@ -86,8 +88,7 @@ public class LoginViewModel extends BaseObservableViewModel {
                         return;
                     case 5004: // DATA NOT FOUND
                     case 6003: // WRONG PASSWORD
-                        loginListener.showMessage(model.message);
-                        return;
+                        loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_wrongaccount));
                 }
             } else {
                 loginListener.showMessage((String) o);
@@ -125,19 +126,5 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     public void onCheckedSaveId(boolean checked) {
 
-    }
-
-    public void getNaverUserProfile(String accessToken) {
-        OnServerListener listener = (success, o) -> {
-            if (success) {
-                naverUser = (NaverUser) o;
-                loginListener.showMessage(naverUser.getEmail());
-                CommonUtil.debug("[NAVER] SUCCESS: " + naverUser.getEmail());
-            } else {
-                CommonUtil.debug("[NAVER] FAILED: " + o.toString());
-            }
-        };
-
-        LoginServer.getNaverProfile(listener, accessToken);
     }
 }

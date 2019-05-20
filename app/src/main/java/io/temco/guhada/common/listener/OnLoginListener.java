@@ -13,4 +13,8 @@ public interface OnLoginListener {
     void redirectJoinActivity();
 
     void showMessage(String message);
+
+    void closeActivity();
+
+    void showSnackBar(String message);
 }
