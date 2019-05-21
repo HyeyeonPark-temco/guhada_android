@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.databinding.Bindable;
@@ -34,7 +33,26 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     // VERIFY NUMBER
     private int verifyNumberVisibility = View.GONE;
     private String verifyNumber = "";
+    private String timerMinute = "02";
+    private String timerSecond = "60";
 
+    @Bindable
+    public String getTimerMinute() {
+        return timerMinute;
+    }
+
+    public void setTimerMinute(String timerMinute) {
+        this.timerMinute = timerMinute;
+    }
+
+    @Bindable
+    public String getTimerSecond() {
+        return timerSecond;
+    }
+
+    public void setTimerSecond(String timerSecond) {
+        this.timerSecond = timerSecond;
+    }
 
     @Bindable
     public boolean isCheckedFindIdByInfo() {
@@ -185,7 +203,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     public void onClickRequestVerifyNumber() {
         verifyNumberVisibility = View.VISIBLE;
         notifyPropertyChanged(BR.verifyNumberVisibility);
-        Log.e("ㅇㅇㅇ", "ㅇㅇ");
+        findAccountListener.startTimer();
     }
 
     /**
@@ -218,4 +236,8 @@ public class FindAccountViewModel extends BaseObservableViewModel {
             }
         }, Objects.requireNonNull(mUser.get()).getName(), Objects.requireNonNull(mUser.get()).getPhoneNumber());
     }
+
+    /**
+     * 인증번호
+     */
 }

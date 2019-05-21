@@ -421,7 +421,7 @@
                             android:id="@+id/textview_verifyphone_minute"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="02"
+                            android:text="@{viewModel.timerMinute}"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_13" />
 
@@ -438,7 +438,7 @@
                             android:id="@+id/textview_verifyphone_second"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="59"
+                            android:text="@{viewModel.timerSecond}"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_13" />
                     </LinearLayout>

@@ -10,4 +10,6 @@ public interface OnFindAccountListener extends BaseActivityListener {
     void redirectSignInActivity();
 
     void copyToClipboard(String text);
+
+    void startTimer();
 }
