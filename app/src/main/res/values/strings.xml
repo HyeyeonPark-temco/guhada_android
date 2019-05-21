@@ -68,7 +68,9 @@
     <string name="verifyphone_hint_phonenumber">본인명의 휴대폰번호</string>
     <string name="verifyphone_termsall">이용동의 및 이용약관 모두 동의</string>
     <string name="verifyphone_resend">재전송</string>
-    <string name="verifyphone_button">인증완료</string>
+    <string name="verifyphone_button_finish">인증완료</string>
+    <string name="verifyphone_button_request">인증번호 요청</string>
+    <string name="verifyphone_description">인증비용은 구하다에서 부담합니다.</string>
     <string name="verifyphone_terms1">개인정보수집/이용동의</string>
     <string name="verifyphone_terms2">고유식별정보 처리동의</string>
     <string name="verifyphone_terms3">통신사 이용약관 동의</string>

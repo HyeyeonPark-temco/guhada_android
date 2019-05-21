@@ -5,10 +5,13 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 
+import androidx.databinding.ObservableField;
+
 import java.util.Objects;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
+import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.viewmodel.FindAccountViewModel;
 import io.temco.guhada.databinding.FragmentFindidBinding;
 import io.temco.guhada.view.adapter.SpinnerAdapter;
@@ -35,13 +38,14 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
     protected void init() {
         mBinding.setViewModel(viewModel);
 
-        // VERIFY PHONE
-        mBinding.includeFindidVerifyphone.setViewModel(viewModel);
-        mBinding.includeFindidResult.setViewModel(viewModel);
-
-        initNationalitySpinner();
-        initMobileSpinner();
+        // BY INFO
         setTextWatchers();
+
+        // BY VERIFYING PHONE
+        initVerifyPhoneLayout();
+
+        // RESULT
+        mBinding.includeFindidResult.setViewModel(viewModel);
 
         mBinding.executePendingBindings();
     }
@@ -59,9 +63,11 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    viewModel.setForeigner(true);
+                    Objects.requireNonNull(viewModel.mUser.get()).setNationality(1);
+                    //  viewModel.setForeigner(true);
                 } else {
-                    viewModel.setForeigner(false);
+                    Objects.requireNonNull(viewModel.mUser.get()).setNationality(2);
+                    // viewModel.setForeigner(false);
                 }
             }
 
@@ -83,13 +89,97 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // MOBILE
+                User user = viewModel.mUser.get();
+                Objects.requireNonNull(user).setMobileCarriers(position);
+                viewModel.mUser.set(user);
+                viewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private void initVerifyPhoneLayout() {
+        mBinding.includeFindidVerifyphone.setViewModel(viewModel);
+        mBinding.includeFindidVerifyphone.edittextVerifyphoneName.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                User user = viewModel.mUser.get();
+                Objects.requireNonNull(user).setName(s.toString());
+                viewModel.mUser.set(user);
+                viewModel.notifyPropertyChanged(BR.mUser);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mBinding.includeFindidVerifyphone.edittextVerifyphoneBirth.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                User user = viewModel.mUser.get();
+                Objects.requireNonNull(user).setBirth(s.toString());
+                viewModel.mUser.set(user);
+                viewModel.notifyPropertyChanged(BR.mUser);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mBinding.includeFindidVerifyphone.edittextVerifyphonePhone.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                User user = viewModel.mUser.get();
+                Objects.requireNonNull(user).setPhoneNumber(s.toString());
+                viewModel.mUser.set(user);
+                viewModel.notifyPropertyChanged(BR.mUser);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mBinding.includeFindidVerifyphone.edittextVerifyphoneNumber.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                viewModel.setVerifyNumber(s.toString());
+                viewModel.notifyPropertyChanged(BR.verifyNumber);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        initNationalitySpinner();
+        initMobileSpinner();
     }
 
     private void setTextWatchers() {
@@ -101,8 +191,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewModel.setName(s.toString());
-                viewModel.notifyPropertyChanged(BR.name);
+                User user = viewModel.mUser.get();
+                Objects.requireNonNull(user).setName(s.toString());
+                viewModel.setmUser(new ObservableField<>(user));
+                viewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -118,8 +210,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewModel.setPhoneNumber(s.toString());
-                viewModel.notifyPropertyChanged(BR.phoneNumber);
+                User user = viewModel.mUser.get();
+                Objects.requireNonNull(user).setPhoneNumber(s.toString());
+                viewModel.setmUser(new ObservableField<>(user));
+                viewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override

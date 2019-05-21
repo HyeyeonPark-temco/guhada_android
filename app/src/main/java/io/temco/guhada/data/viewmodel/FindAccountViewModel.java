@@ -1,15 +1,18 @@
 package io.temco.guhada.data.viewmodel;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.databinding.Bindable;
+import androidx.databinding.ObservableField;
+
+import java.util.Objects;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.BaseObservableViewModel;
 import io.temco.guhada.common.listener.OnFindAccountListener;
-import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
@@ -20,13 +23,18 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     private boolean checkedFindIdByInfo = false;
     private boolean checkedFindIdByVerifyingPhone = false;
     private int resultVisibility = View.GONE;
-    private String name = "", phoneNumber = "", email = "", joinAt = "";
+
+    public ObservableField<User> mUser = new ObservableField<User>(new User());
 
     // FIND ID BY VERIFYING PHONE
-    private boolean isForeigner = false;
-    private final int MALE = 1;
-    private final int FEMALE = 2;
-    private int gender = -1;
+    private boolean checkedAllTerms = false;
+    private int checkedTermsCount = 0;
+    private boolean[] checkedTerms = {false, false, false, false, false};
+
+    // VERIFY NUMBER
+    private int verifyNumberVisibility = View.GONE;
+    private String verifyNumber = "";
+
 
     @Bindable
     public boolean isCheckedFindIdByInfo() {
@@ -46,46 +54,6 @@ public class FindAccountViewModel extends BaseObservableViewModel {
         this.checkedFindIdByVerifyingPhone = checkedFindIdByVerifyingPhone;
     }
 
-    public void setForeigner(boolean foreigner) {
-        isForeigner = foreigner;
-    }
-
-    @Bindable
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    @Bindable
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Bindable
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    @Bindable
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Bindable
     public int getResultVisibility() {
         return resultVisibility;
@@ -95,17 +63,59 @@ public class FindAccountViewModel extends BaseObservableViewModel {
         this.resultVisibility = resultVisibility;
     }
 
-    @Bindable
-    public String getJoinAt() {
-        return "(" + joinAt + " 가입)";
-    }
-
-    public void setJoinAt(String joinAt) {
-        this.joinAt = joinAt;
-    }
 
     public void setFindAccountListener(OnFindAccountListener findAccountListener) {
         this.findAccountListener = findAccountListener;
+    }
+
+    @Bindable
+    public boolean isCheckedAllTerms() {
+        return checkedAllTerms;
+    }
+
+    public void setCheckedAllTerms(boolean checkedAllTerms) {
+        this.checkedAllTerms = checkedAllTerms;
+    }
+
+    @Bindable
+    public int getCheckedTermsCount() {
+        return checkedTermsCount;
+    }
+
+    public void setCheckedTermsCount(int checkedTermsCount) {
+        this.checkedTermsCount = checkedTermsCount;
+    }
+
+    @Bindable
+    public boolean[] getCheckedTerms() {
+        return checkedTerms;
+    }
+
+    public void setCheckedTerms(boolean[] checkedTerms) {
+        this.checkedTerms = checkedTerms;
+    }
+
+    @Bindable
+    public ObservableField<User> getMUser() {
+        return mUser;
+    }
+
+    public void setmUser(ObservableField<User> mUser) {
+        this.mUser = mUser;
+    }
+
+    @Bindable
+    public int getVerifyNumberVisibility() {
+        return verifyNumberVisibility;
+    }
+
+    @Bindable
+    public String getVerifyNumber() {
+        return verifyNumber;
+    }
+
+    public void setVerifyNumber(String verifyNumber) {
+        this.verifyNumber = verifyNumber;
     }
 
     // LISTENER
@@ -132,25 +142,50 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     }
 
     public void onClickGender(View view) {
-        gender = Integer.parseInt((String) view.getTag());
-        notifyPropertyChanged(BR.gender);
+        Objects.requireNonNull(mUser.get()).setGender(Integer.parseInt((String) view.getTag()));
+        notifyPropertyChanged(BR.mUser);
     }
 
-    public void onClickSignUp(){
+    public void onClickSignUp() {
         findAccountListener.redirectSignUpActivity();
     }
 
-    public void onClickSignIn(){
+    public void onClickSignIn() {
         findAccountListener.closeActivity();
-      //  findAccountListener.redirectSignInActivity();
+        //  findAccountListener.redirectSignInActivity();
     }
 
-    public void onClickSendId(){
+    public void onClickSendId() {
 
     }
 
-    public void onClickCopyId(){
-        findAccountListener.copyToClipboard(email);
+    public void onClickCopyId() {
+        findAccountListener.copyToClipboard(Objects.requireNonNull(mUser.get()).getEmail());
+    }
+
+    public void onCheckedTerms(View view, boolean checked) {
+        String tag = (String) view.getTag();
+        checkedTerms[Integer.parseInt(tag)] = checked;
+        notifyPropertyChanged(BR.checkedTerms);
+
+        checkedTermsCount = checked ? checkedTermsCount + 1 : checkedTermsCount - 1;
+        checkedAllTerms = checked && checkedTermsCount == 5;
+        notifyPropertyChanged(BR.checkedAllTerms);
+    }
+
+    public void onCheckedAllTerms(boolean checked) {
+        if (checkedAllTerms != checked) {
+            for (int i = 0; i < checkedTerms.length; i++) {
+                checkedTerms[i] = checked;
+            }
+            notifyPropertyChanged(BR.checkedTerms);
+        }
+    }
+
+    public void onClickRequestVerifyNumber() {
+        verifyNumberVisibility = View.VISIBLE;
+        notifyPropertyChanged(BR.verifyNumberVisibility);
+        Log.e("ㅇㅇㅇ", "ㅇㅇ");
     }
 
     /**
@@ -163,14 +198,15 @@ public class FindAccountViewModel extends BaseObservableViewModel {
                 switch (model.resultCode) {
                     case 200:
                         User user = (User) model.data;
-                        phoneNumber = user.getPhoneNumber();
-                        joinAt = user.getJoinAt();
-                        email = user.getEmail();
-                        notifyPropertyChanged(BR.phoneNumber);
-                        notifyPropertyChanged(BR.email);
-                        notifyPropertyChanged(BR.joinAt);
+
+                        Objects.requireNonNull(mUser.get()).setPhoneNumber(user.getPhoneNumber());
+                        Objects.requireNonNull(mUser.get()).setEmail(user.getEmail());
+                        Objects.requireNonNull(mUser.get()).setJoinAt(user.getJoinAt());
                         setResultVisibility(View.VISIBLE);
+
+                        notifyPropertyChanged(BR.mUser);
                         notifyPropertyChanged(BR.resultVisibility);
+
                         findAccountListener.hideKeyboard();
                         return;
                     case 5004: // DATA NOT FOUND
@@ -180,6 +216,6 @@ public class FindAccountViewModel extends BaseObservableViewModel {
             } else {
                 findAccountListener.showMessage((String) o);
             }
-        }, name, phoneNumber);
+        }, Objects.requireNonNull(mUser.get()).getName(), Objects.requireNonNull(mUser.get()).getPhoneNumber());
     }
 }

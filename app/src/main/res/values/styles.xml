@@ -67,6 +67,13 @@
         <item name="tabIndicatorHeight">0dp</item>
     </style>
 
+    <style name="HeaderTextStyle">
+        <item name="android:textSize">@dimen/textsize_header</item>
+        <item name="android:textColor">@color/black_two</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
     <style name="SpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="SpinnerDropDownItemStyle" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem"/>
 

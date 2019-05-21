@@ -39,21 +39,21 @@
                 android:layout_gravity="center">
 
                 <TextView
-                    android:id="@+id/textview_findaccount_email"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.email}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_14"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/textview_findaccount_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.mUser.email}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="@{viewModel.joinAt}"
+                    android:text="@{viewModel.mUser.joinAt}"
                     android:textColor="@color/warm_grey_three"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -122,7 +122,7 @@
                     android:id="@+id/textview_findaccount_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.phoneNumber}"
+                    android:text="@{viewModel.mUser.phoneNumber}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_13" />
             </LinearLayout>

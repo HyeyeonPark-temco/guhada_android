@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.FindAccountViewModel" />
@@ -29,6 +31,7 @@
             android:orientation="horizontal">
 
             <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittext_verifyphone_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -75,6 +78,7 @@
             android:orientation="horizontal">
 
             <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittext_verifyphone_birth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -93,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/findaccount_male"
-                    android:textColor="@{viewModel.gender == 1 ? @android:color/black : @color/warm_grey_three }" />
+                    android:textColor="@{viewModel.mUser.gender == 1 ? @android:color/black : @color/warm_grey_three }" />
             </FrameLayout>
 
             <FrameLayout
@@ -108,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/findaccount_female"
-                    android:textColor="@{viewModel.gender == 2 ? @android:color/black : @color/warm_grey_three }" />
+                    android:textColor="@{viewModel.mUser.gender == 2 ? @android:color/black : @color/warm_grey_three }" />
             </FrameLayout>
 
         </LinearLayout>
@@ -155,6 +159,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittext_verifyphone_phone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -179,7 +184,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/all_checkboxselector_big"
                     android:button="@null"
-                    android:checked="false" />
+                    android:checked="@{viewModel.checkedAllTerms}"
+                    android:onCheckedChanged="@{(view,checked) -> viewModel.onCheckedAllTerms(checked)}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -201,7 +207,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/all_checkboxselector"
                     android:button="@null"
-                    android:checked="false"
+                    android:checked="@{viewModel.checkedTerms[0]}"
+                    android:onCheckedChanged="@{(view,checked) -> viewModel.onCheckedTerms(view, checked)}"
+                    android:tag="0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -237,7 +245,9 @@
                     android:layout_marginStart="9dp"
                     android:background="@drawable/all_checkboxselector"
                     android:button="@null"
-                    android:checked="false"
+                    android:checked="@{viewModel.checkedTerms[1]}"
+                    android:onCheckedChanged="@{(view,checked) -> viewModel.onCheckedTerms(view, checked)}"
+                    android:tag="1"
                     app:layout_constraintStart_toEndOf="@+id/textView2"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -279,7 +289,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/all_checkboxselector"
                     android:button="@null"
-                    android:checked="false"
+                    android:checked="@{viewModel.checkedTerms[2]}"
+                    android:onCheckedChanged="@{(view,checked) -> viewModel.onCheckedTerms(view, checked)}"
+                    android:tag="2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -315,7 +327,9 @@
                     android:layout_marginStart="9dp"
                     android:background="@drawable/all_checkboxselector"
                     android:button="@null"
-                    android:checked="false"
+                    android:checked="@{viewModel.checkedTerms[3]}"
+                    android:onCheckedChanged="@{(view,checked) -> viewModel.onCheckedTerms(view, checked)}"
+                    android:tag="3"
                     app:layout_constraintStart_toEndOf="@+id/textView6"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -357,7 +371,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/all_checkboxselector"
                     android:button="@null"
-                    android:checked="false"
+                    android:checked="@{viewModel.checkedTerms[4]}"
+                    android:onCheckedChanged="@{(view,checked) -> viewModel.onCheckedTerms(view, checked)}"
+                    android:tag="4"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -376,6 +392,104 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_verifyphone_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="@{viewModel.verifyNumberVisibility, default=gone}">
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    android:id="@+id/edittext_verifyphone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:hint="인증번호 6자리 숫자 입력">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:visibility="@{viewModel.verifyNumberVisibility, default= gone}"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textview_verifyphone_minute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="02"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=":"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            android:id="@+id/textview_verifyphone_second"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="59"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+
+                </io.temco.guhada.view.custom.BorderEditTextView>
+
+                <Button
+                    android:id="@+id/button_verifyphone_resend"
+                    style="@style/InactivatedButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verifyphone_resend" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    style="@style/InactivatedButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="38dp"
+                    android:background="@{viewModel.checkedAllTerms &amp;&amp; !viewModel.mUser.name.isEmpty() &amp;&amp; viewModel.mUser.gender > 0 &amp;&amp; !viewModel.mUser.birth.isEmpty() &amp;&amp; !viewModel.mUser.phoneNumber.isEmpty() &amp;&amp; viewModel.mUser.mobileCarriers > 0 &amp;&amp; viewModel.mUser.nationality > 0 ? @color/colorPrimary : @color/silver}"
+                    android:clickable="@{viewModel.checkedAllTerms &amp;&amp; !viewModel.mUser.name.isEmpty() &amp;&amp; viewModel.mUser.gender > 0 &amp;&amp; !viewModel.mUser.birth.isEmpty() &amp;&amp; !viewModel.mUser.phoneNumber.isEmpty() &amp;&amp; viewModel.mUser.mobileCarriers > 0 &amp;&amp; viewModel.mUser.nationality > 0 }"
+                    android:onClick="@{()->viewModel.onClickRequestVerifyNumber()}"
+                    android:text="@string/verifyphone_button_request"
+                    android:visibility="@{viewModel.verifyNumberVisibility == View.VISIBLE ? View.GONE : View.VISIBLE, default=visible}" />
+
+                <Button
+                    style="@style/InactivatedButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="38dp"
+                    android:background="@{viewModel.verifyNumber.length() != 6 ? @color/silver : @color/colorPrimary}"
+                    android:onClick="@{()->viewModel.onClickRequestVerifyNumber()}"
+                    android:text="@string/verifyphone_button_finish"
+                    android:visibility="@{viewModel.verifyNumberVisibility, default=gone}" />
+            </FrameLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:visibility="@{viewModel.verifyNumberVisibility == View.GONE ? View.VISIBLE : View.GONE, default=visible}"
+                android:text="@string/verifyphone_description"
+                android:textColor="@color/silver"
+                android:textSize="@dimen/text_11" />
         </LinearLayout>
 
     </LinearLayout>

@@ -15,10 +15,15 @@ public class User extends Observable {
     private Boolean agreeEmailReception = false;
 
     // USER INFO
+    private String name = "";
     private String email = "";
     private String password = "";
     private String phoneNumber = "";
     private String joinAt = "";
+    private int gender = -1; // 1: MALE; 2: FEMALE;
+    private String birth ="";
+    private int mobileCarriers = -1; // 1: SKT; 2: KT; 3: LG
+    private int nationality = -1; // 1: INTERNAL; 2: FOREIGNER
 
     @Expose
     private String confirmPassword = "";
@@ -120,10 +125,50 @@ public class User extends Observable {
     }
 
     public String getJoinAt() {
-        return joinAt;
+        return "("+joinAt+" 가입)";
     }
 
     public void setJoinAt(String joinAt) {
         this.joinAt = joinAt;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public int getMobileCarriers() {
+        return mobileCarriers;
+    }
+
+    public void setMobileCarriers(int mobileCarriers) {
+        this.mobileCarriers = mobileCarriers;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(int nationality) {
+        this.nationality = nationality;
     }
 }
