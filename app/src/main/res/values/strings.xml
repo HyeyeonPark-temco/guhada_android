@@ -47,28 +47,33 @@
     <string name="findaccount_male">남자</string>
     <string name="findaccount_phonenumber">핸드폰번호</string>
 
-    <string name="findaccount_findid_infotitle">내 회원정보로 찾기</string>
-    <string name="findaccount_findid_infocontent">인증 받은 전화번호를 통해서 아이디를 찾을 수 있습니다.\n아래정보를 입력해주세요.</string>
-    <string name="findaccount_findid_infonamehint">이름</string>
-    <string name="findaccount_findid_infopwdhint">휴대폰 번호 (숫자만 입력)</string>
-    <string name="findaccount_findid_infobutton">아이디 찾기</string>
+    <string name="findid_info_title">내 회원정보로 찾기</string>
+    <string name="findid_info_content">인증 받은 전화번호를 통해서 아이디를 찾을 수 있습니다.\n아래정보를 입력해주세요.</string>
+    <string name="findid_info_hint_name">이름</string>
+    <string name="findid_info_hint_phonenumber">휴대폰 번호 (숫자만 입력)</string>
+    <string name="findid_info_button">아이디 찾기</string>
 
-    <string name="findaccount_findid_verifyphonetitle">휴대폰 본인인증으로 찾기</string>
-    <string name="findaccount_findid_verifyphoneterms">이용동의 및 이용약관 모두 동의</string>
-    <string name="findaccount_findid_verifyphoneresend">재전송</string>
-    <string name="findaccount_findid_verifyphonebutton">인증완료</string>
+    <string name="findid_result_title1">입력하신 정보와 일치하는 아이디입니다.</string>
+    <string name="findid_result_title2">아이디 휴대폰으로 발송하기</string>
+    <string name="findid_result_content">개인정보보호를 위해 아이디 뒷자리는 *로 표시됩니다.</string>
+    <string name="findid_result_button_sendid">아이디 발송하기</string>
+    <string name="findid_result_button_signup">새로운 계정 만들기</string>
+    <string name="findid_result_button_signin">로그인하러 가기</string>
+    <string name="findid_result_button_copyid">아이디 복사하기</string>
 
-    <string name="findaccount_findid_verifyphonebirth_hint">생년월일 (예: 19990101)</string>
-    <string name="findaccount_findid_verifyphonenumber_hint">본인명의 휴대폰번호</string>
-
-    <string name="findaccount_findid_resulttitle1">입력하신 정보와 일치하는 아이디입니다.</string>
-    <string name="findaccount_findid_resulttitle2">아이디 휴대폰으로 발송하기</string>
-
-    <string name="findaccount_findid_resultcontent_privacy">개인정보보호를 위해 아이디 뒷자리는 *로 표시됩니다.</string>
-
-    <string name="findaccount_findid_resultbutton_sendid">아이디 발송하기</string>
-    <string name="findaccount_findid_resultbutton_signup">새로운 계정 만들기</string>
-    <string name="findaccount_findid_resultbutton_signin">로그인하러 가기</string>
+    <string name="verifyphone_title">휴대폰 본인인증으로 찾기</string>
+    <string name="verifyphone_show">보기</string>
+    <string name="verifyphone_hint_name">이름</string>
+    <string name="verifyphone_hint_birth">생년월일 (예: 19990101)</string>
+    <string name="verifyphone_hint_phonenumber">본인명의 휴대폰번호</string>
+    <string name="verifyphone_termsall">이용동의 및 이용약관 모두 동의</string>
+    <string name="verifyphone_resend">재전송</string>
+    <string name="verifyphone_button">인증완료</string>
+    <string name="verifyphone_terms1">개인정보수집/이용동의</string>
+    <string name="verifyphone_terms2">고유식별정보 처리동의</string>
+    <string name="verifyphone_terms3">통신사 이용약관 동의</string>
+    <string name="verifyphone_terms4">서비스 이용약관</string>
+    <string name="verifyphone_terms5">본인인증 목적으로 상기 정보를 통신사에 제공함을 동의</string>
 
     <!-- API KEY -->
     <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>

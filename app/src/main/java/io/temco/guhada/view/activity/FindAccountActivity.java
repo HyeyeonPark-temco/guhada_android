@@ -1,5 +1,7 @@
 package io.temco.guhada.view.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -9,11 +11,12 @@ import io.temco.guhada.common.listener.OnFindAccountListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.viewmodel.FindAccountViewModel;
 import io.temco.guhada.databinding.ActivityFindaccountBinding;
-import io.temco.guhada.view.fragment.findaccount.FindIdFragment;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.FindAccountPagerAdapter;
+import io.temco.guhada.view.fragment.findaccount.FindIdFragment;
 
 public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding> {
+    private FindAccountViewModel mViewModel;
 
     @Override
     protected String getBaseTag() {
@@ -32,8 +35,15 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
     @Override
     protected void init() {
-        FindAccountViewModel viewModel = new FindAccountViewModel();
-        viewModel.setFindAccountListener(new OnFindAccountListener() {
+        initViewModel();
+        initFragmentPager();
+        mBinding.tablayoutFindaccount.setTabTextColors(getResources().getColor(R.color.common_black), getResources().getColor(R.color.colorPrimary));
+        mBinding.executePendingBindings();
+    }
+
+    private void initViewModel() {
+        mViewModel = new FindAccountViewModel();
+        mViewModel.setFindAccountListener(new OnFindAccountListener() {
             @Override
             public void showSnackBar(String message) {
                 CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
@@ -65,19 +75,23 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
             }
+
+            @Override
+            public void copyToClipboard(String text) {
+                ClipboardManager manager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("email", text);
+                manager.setPrimaryClip(clip);
+                Toast.makeText(FindAccountActivity.this, "아이디가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show();
+            }
         });
-        mBinding.setViewModel(viewModel);
-        mBinding.includeFindaccountHeader.setViewModel(viewModel);
+        mBinding.setViewModel(mViewModel);
+        mBinding.includeFindaccountHeader.setViewModel(mViewModel);
+    }
 
-        // PAGER
+    private void initFragmentPager() {
         FindAccountPagerAdapter adapter = new FindAccountPagerAdapter(getSupportFragmentManager());
-//        FindIdFragment findIdFragment = new FindIdFragment(viewModel);
-
-        adapter.addFragment(new FindIdFragment(viewModel));
-//        adapter.addFragment(new FindIdFragment(viewModel));
+        adapter.addFragment(new FindIdFragment(mViewModel));
         mBinding.viewpagerFindaccount.setAdapter(adapter);
-
-        mBinding.executePendingBindings();
     }
 
 }

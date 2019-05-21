@@ -8,4 +8,6 @@ public interface OnFindAccountListener extends BaseActivityListener {
     void redirectSignUpActivity();
 
     void redirectSignInActivity();
+
+    void copyToClipboard(String text);
 }

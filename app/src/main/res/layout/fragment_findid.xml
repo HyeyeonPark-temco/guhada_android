@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="@string/findaccount_findid_infotitle"
+                        android:text="@string/findid_info_title"
                         android:textColor="@color/black_two"
                         android:textSize="@dimen/text_15"
                         android:textStyle="bold"
@@ -86,7 +86,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
-                            android:text="@string/findaccount_findid_infocontent"
+                            android:text="@string/findid_info_content"
                             android:textColor="@color/warm_grey_three"
                             android:textSize="@dimen/text_13" />
                     </LinearLayout>
@@ -96,14 +96,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
-                        app:hint="@string/findaccount_findid_infonamehint" />
+                        app:hint="@string/findid_info_hint_name" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_findid_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        app:hint="@string/findaccount_findid_infopwdhint" />
+                        app:hint="@string/findid_info_hint_phonenumber" />
 
                     <Button
                         style="@style/InactivatedButtonStyle"
@@ -113,7 +113,7 @@
                         android:onClick="@{()->viewModel.onClickFindId()}"
                         android:layout_marginBottom="20dp"
                         android:background="@{viewModel.name.length() > 0 &amp;&amp; viewModel.phoneNumber.length() > 0 ? @color/colorPrimary : @color/silver}"
-                        android:text="@string/findaccount_findid_infobutton" />
+                        android:text="@string/findid_info_button" />
                 </LinearLayout>
 
                 <View
@@ -144,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="@string/findaccount_findid_verifyphonetitle"
+                        android:text="@string/verifyphone_title"
                         android:textColor="@color/black_two"
                         android:textSize="@dimen/text_15"
                         android:textStyle="bold"

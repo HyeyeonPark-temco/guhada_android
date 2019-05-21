@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.FindAccountViewModel" />
@@ -18,48 +20,70 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/findaccount_findid_resulttitle1"
+            android:text="@string/findid_result_title1"
             android:textColor="@color/black_two"
             android:textSize="15sp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:background="@color/light_grey"
+            android:orientation="vertical"
             android:paddingTop="32dp"
             android:paddingBottom="32dp">
 
-            <TextView
-                android:id="@+id/textview_findaccount_email"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.email}"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_14"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@{viewModel.joinAt}"
-                android:textColor="@color/warm_grey_three"
+                <TextView
+                    android:id="@+id/textview_findaccount_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.email}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="@{viewModel.joinAt}"
+                    android:textColor="@color/warm_grey_three"
+                    android:textSize="@dimen/text_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_findaccount_email" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="18dp"
+                android:background="@drawable/all_silverborder"
+                android:onClick="@{()->viewModel.onClickCopyId()}"
+                android:text="@string/findid_result_button_copyid"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/text_12"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_findaccount_email" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:visibility="@{viewModel.checkedFindIdByVerifyingPhone ? View.VISIBLE : View.GONE}" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/findaccount_findid_resultcontent_privacy"
+            android:text="@string/findid_result_content"
             android:textColor="@color/warm_grey_three"
             android:textSize="@dimen/text_12" />
 
@@ -67,13 +91,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="46dp"
-            android:text="@string/findaccount_findid_resulttitle2"
+            android:text="@string/findid_result_title2"
             android:textColor="@color/black_two"
             android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:background="@color/light_grey"
             android:orientation="vertical">
@@ -111,9 +135,9 @@
                 android:layout_gravity="center"
                 android:layout_margin="18dp"
                 android:background="@drawable/all_silverborder"
-                android:text="@string/findaccount_findid_resultbutton_sendid"
-                android:textColor="@android:color/black"
                 android:onClick="@{()->viewModel.onClickSendId()}"
+                android:text="@string/findid_result_button_sendid"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/text_12" />
 
 
@@ -125,8 +149,8 @@
             android:layout_height="50dp"
             android:layout_marginTop="36dp"
             android:background="@drawable/all_silverborder"
-            android:text="@string/findaccount_findid_resultbutton_signup"
             android:onClick="@{()->viewModel.onClickSignUp()}"
+            android:text="@string/findid_result_button_signup"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_14" />
 
@@ -135,10 +159,10 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:text="@string/findaccount_findid_resultbutton_signin"
+            android:layout_marginBottom="20dp"
             android:onClick="@{()->viewModel.onClickSignIn()}"
+            android:text="@string/findid_result_button_signin"
             android:textSize="@dimen/text_14" />
 
     </LinearLayout>
-
 </layout>

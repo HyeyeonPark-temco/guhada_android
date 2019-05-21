@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -32,7 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:hint="이름" />
+                app:hint="@string/verifyphone_hint_name" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="100dp"
@@ -78,7 +78,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:hint="@string/findaccount_findid_verifyphonebirth_hint"
+                app:hint="@string/verifyphone_hint_birth"
                 app:type="number" />
 
             <FrameLayout
@@ -158,7 +158,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:hint="@string/findaccount_findid_verifyphonenumber_hint"
+                app:hint="@string/verifyphone_hint_phonenumber"
                 app:type="number" />
         </LinearLayout>
 
@@ -185,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
-                    android:text="@string/findaccount_findid_verifyphoneterms"
+                    android:text="@string/verifyphone_termsall"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_15" />
             </LinearLayout>
@@ -211,7 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="개인정보수집/이용동의"
+                    android:text="@string/verifyphone_terms1"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -223,7 +223,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="보기"
+                    android:text="@string/verifyphone_show"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -246,7 +246,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="고유식별정보 처리동의"
+                    android:text="@string/verifyphone_terms2"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -258,7 +258,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="보기"
+                    android:text="@string/verifyphone_show"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -289,7 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="통신사 이용약관 동의"
+                    android:text="@string/verifyphone_terms3"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -301,7 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="보기"
+                    android:text="@string/verifyphone_show"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -324,7 +324,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="서비스 이용약관"
+                    android:text="@string/verifyphone_terms4"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -336,7 +336,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="보기"
+                    android:text="@string/verifyphone_show"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -367,7 +367,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="본인인증 목적으로 상기 정보를 통신사에 제공함을 동의"
+                    android:text="@string/verifyphone_terms5"
                     android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_11"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -18,41 +18,43 @@
             android:id="@+id/include_findaccount_header"
             layout="@layout/header_findaccount" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.tabs.TabLayout
+
+                android:id="@+id/tablayout_findaccount"
+                style="@style/TabLayoutStyle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/findaccount_findid" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/findaccount_findpwd" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="vertical">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tablayout_findaccount"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp">
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/findaccount_tabselector"
-                        android:text="@string/findaccount_findid" />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/findaccount_tabselector"
-                        android:text="@string/findaccount_findpwd" />
-                </com.google.android.material.tabs.TabLayout>
+            >
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewpager_findaccount"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </LinearLayout>
-        </ScrollView>
+            </ScrollView>
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

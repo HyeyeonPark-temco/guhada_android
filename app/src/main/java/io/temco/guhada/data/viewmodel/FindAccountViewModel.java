@@ -97,7 +97,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
 
     @Bindable
     public String getJoinAt() {
-        return joinAt;
+        return "(" + joinAt + " 가입)";
     }
 
     public void setJoinAt(String joinAt) {
@@ -147,6 +147,10 @@ public class FindAccountViewModel extends BaseObservableViewModel {
 
     public void onClickSendId(){
 
+    }
+
+    public void onClickCopyId(){
+        findAccountListener.copyToClipboard(email);
     }
 
     /**
