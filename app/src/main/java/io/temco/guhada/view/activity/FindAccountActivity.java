@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity;
 
+import android.content.Intent;
 import android.widget.Toast;
 
 import io.temco.guhada.R;
@@ -51,6 +52,18 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
             @Override
             public void hideKeyboard() {
                 CommonUtil.hideKeyboard(getApplicationContext(), mBinding.linearlayoutFiindaccountContainer);
+            }
+
+            @Override
+            public void redirectSignUpActivity() {
+                startActivity(new Intent(getApplicationContext(), JoinActivity.class));
+                finish();
+            }
+
+            @Override
+            public void redirectSignInActivity() {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         });
         mBinding.setViewModel(viewModel);

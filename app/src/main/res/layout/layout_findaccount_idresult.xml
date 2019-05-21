@@ -113,6 +113,7 @@
                 android:background="@drawable/all_silverborder"
                 android:text="@string/findaccount_findid_resultbutton_sendid"
                 android:textColor="@android:color/black"
+                android:onClick="@{()->viewModel.onClickSendId()}"
                 android:textSize="@dimen/text_12" />
 
 
@@ -125,6 +126,7 @@
             android:layout_marginTop="36dp"
             android:background="@drawable/all_silverborder"
             android:text="@string/findaccount_findid_resultbutton_signup"
+            android:onClick="@{()->viewModel.onClickSignUp()}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_14" />
 
@@ -134,6 +136,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:text="@string/findaccount_findid_resultbutton_signin"
+            android:onClick="@{()->viewModel.onClickSignIn()}"
             android:textSize="@dimen/text_14" />
 
     </LinearLayout>

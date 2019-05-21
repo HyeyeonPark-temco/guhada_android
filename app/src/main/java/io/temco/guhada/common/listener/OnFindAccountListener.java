@@ -4,4 +4,8 @@ public interface OnFindAccountListener extends BaseActivityListener {
     void showSnackBar(String message);
 
     void hideKeyboard();
+
+    void redirectSignUpActivity();
+
+    void redirectSignInActivity();
 }

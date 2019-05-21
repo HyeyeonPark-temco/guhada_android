@@ -136,6 +136,19 @@ public class FindAccountViewModel extends BaseObservableViewModel {
         notifyPropertyChanged(BR.gender);
     }
 
+    public void onClickSignUp(){
+        findAccountListener.redirectSignUpActivity();
+    }
+
+    public void onClickSignIn(){
+        findAccountListener.closeActivity();
+      //  findAccountListener.redirectSignInActivity();
+    }
+
+    public void onClickSendId(){
+
+    }
+
     /**
      * [아이디찾기] 회원정보
      */
