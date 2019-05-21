@@ -35,23 +35,25 @@
             app:layout_constraintTop_toBottomOf="@+id/include_login_header">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="11dp">
+                android:layout_gravity="right"
+                android:layout_marginBottom="11dp"
+                android:onClick="@{()->viewModel.onClickFindAccount()}">
 
                 <TextView
                     android:id="@+id/textview_login_findid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
-                    android:onClick="@{()->viewModel.onClickFindId()}"
+
                     android:text="@string/login_findid"
                     android:textColor="@color/silver"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/view"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.612" />
-
+                <!--android:onClick="@{()->viewModel.onClickFindId()}"-->
                 <ImageView
                     android:id="@+id/view"
                     android:layout_width="wrap_content"
@@ -66,28 +68,29 @@
                     android:id="@+id/textview_login_findpwd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{()->viewModel.onClickFindPwd()}"
+
                     android:text="@string/login_findpwd"
                     android:textColor="@color/silver"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <!--android:onClick="@{()->viewModel.onClickFindPwd()}"-->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <io.temco.guhada.view.custom.BorderEditTextView
                 android:id="@+id/edittextview_login_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:type="text"
-                app:hint="이메일" />
+                app:hint="이메일"
+                app:type="text" />
 
             <io.temco.guhada.view.custom.BorderEditTextView
                 android:id="@+id/edittextview_login_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:type="password"
-                app:hint="비밀번호" />
+                app:hint="비밀번호"
+                app:type="password" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -99,7 +102,7 @@
                     android:id="@+id/checkbox_login_saveid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/all_checkbox"
+                    android:background="@drawable/all_checkboxselector"
                     android:button="@null"
                     android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedSaveId(checked)}"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -11,12 +11,15 @@
     <!-- BACKGROUND -->
     <color name="background_default">@color/common_white</color>
 
-
     <color name="blue_purple">#5d2ed1</color>
     <color name="pinkish_grey">#cccccc</color>
     <color name="silver">#b7bec4</color>
+    <color name="light_grey">#f2f4f4</color>
+
     <color name="white_two">#ededed</color>
     <color name="warm_grey_two">#777777</color>
+    <color name="warm_grey_three">#a0a0a0</color>
     <color name="greyish_brown">#555555</color>
+    <color name="black_two">#333333</color>
 
 </resources>

@@ -1,6 +1,6 @@
 package io.temco.guhada.common.listener;
 
-public interface OnLoginListener {
+public interface OnLoginListener extends BaseActivityListener {
 
     void onGoogleLogin();
 
@@ -12,9 +12,7 @@ public interface OnLoginListener {
 
     void redirectJoinActivity();
 
-    void showMessage(String message);
-
-    void closeActivity();
-
     void showSnackBar(String message);
+
+    void redirectFindAccountActivity();
 }

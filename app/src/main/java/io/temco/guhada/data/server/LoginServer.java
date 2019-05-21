@@ -97,4 +97,17 @@ public class LoginServer {
         });
     }
 
+    public static void findUserId(OnServerListener listener, String name, String phoneNumber) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class).findUserId(name, phoneNumber).enqueue(new Callback<BaseModel<User>>() {
+            @Override
+            public void onResponse(Call<BaseModel<User>> call, Response<BaseModel<User>> response) {
+                listener.onResult(response.isSuccessful(), response.body());
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel<User>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
 }

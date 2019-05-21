@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.view.activity.FindAccountActivity;
 import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.activity.SplashActivity;
@@ -51,8 +52,12 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(MainActivity.class);
                     break;
 
-                case 3:
+                case 3: // Login
                     startActivity(LoginActivity.class);
+                    break;
+
+                case 4: // Find Account
+                    startActivity(FindAccountActivity.class);
                     break;
             }
         });
@@ -68,6 +73,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("MAIN");
 
         list.add("LOGIN");
+        list.add("FIND_ACCOUNT");
 
         list.add("");
         list.add("");

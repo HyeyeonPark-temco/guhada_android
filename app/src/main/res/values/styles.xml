@@ -34,10 +34,28 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="LoginButtonStyle" parent="Widget.AppCompat.Button">
+    <style name="ActivatedButtonStyle" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/common_white</item>
-        <item name="android:textSize">@dimen/text_13</item>
-        <item name="android:height">@dimen/height_loginbutton</item>
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:height">50dp</item>
     </style>
+
+    <style name="InactivatedButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@color/silver</item>
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:height">50dp</item>
+    </style>
+
+    <style name="InactivatedButtonBorderStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/all_silverborder</item>
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:height">50dp</item>
+    </style>
+
+    <style name="SpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem"/>
+    <style name="SpinnerDropDownItemStyle" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem"/>
+
 </resources>

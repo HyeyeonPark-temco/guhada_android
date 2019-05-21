@@ -17,6 +17,8 @@ public class User extends Observable {
     // USER INFO
     private String email = "";
     private String password = "";
+    private String phoneNumber = "";
+    private String joinAt = "";
 
     @Expose
     private String confirmPassword = "";
@@ -109,4 +111,19 @@ public class User extends Observable {
         this.confirmPassword = confirmPassword;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getJoinAt() {
+        return joinAt;
+    }
+
+    public void setJoinAt(String joinAt) {
+        this.joinAt = joinAt;
+    }
 }

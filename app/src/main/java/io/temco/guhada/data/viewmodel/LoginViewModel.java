@@ -127,4 +127,8 @@ public class LoginViewModel extends BaseObservableViewModel {
     public void onCheckedSaveId(boolean checked) {
 
     }
+
+    public void onClickFindAccount(){
+        loginListener.redirectFindAccountActivity();
+    }
 }

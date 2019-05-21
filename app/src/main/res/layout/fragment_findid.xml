@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="io.temco.guhada.R" />
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.FindAccountViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:visibility="@{viewModel.resultVisibility == View.GONE ? View.VISIBLE : View.GONE, default= visible}"
+                android:id="@+id/linearlayout_findid_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- FIND ID BY USER INFO -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/all_checkboxselector"
+                        android:button="@null"
+                        android:checked="@{viewModel.checkedFindIdByInfo}"
+                        android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedFindIdByInfo(checked)}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="@string/findaccount_findid_infotitle"
+                        android:textColor="@color/black_two"
+                        android:textSize="@dimen/text_15"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.checkedFindIdByInfo ? View.VISIBLE : View.GONE, default = gone}">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/all_checkboxselector"
+                            android:button="@null"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="@string/findaccount_findid_infocontent"
+                            android:textColor="@color/warm_grey_three"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+
+                    <io.temco.guhada.view.custom.BorderEditTextView
+                        android:id="@+id/edittext_findid_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        app:hint="@string/findaccount_findid_infonamehint" />
+
+                    <io.temco.guhada.view.custom.BorderEditTextView
+                        android:id="@+id/edittext_findid_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:hint="@string/findaccount_findid_infopwdhint" />
+
+                    <Button
+                        style="@style/InactivatedButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:onClick="@{()->viewModel.onClickFindId()}"
+                        android:layout_marginBottom="20dp"
+                        android:background="@{viewModel.name.length() > 0 &amp;&amp; viewModel.phoneNumber.length() > 0 ? @color/colorPrimary : @color/silver}"
+                        android:text="@string/findaccount_findid_infobutton" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_two" />
+
+                <!-- FIND ID BY VERIFY PHONE -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="14dp"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/all_checkboxselector"
+                        android:button="@null"
+                        android:checked="@{viewModel.checkedFindIdByVerifyingPhone}"
+                        android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedFindIdByVerifyingPhone(checked)}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="@string/findaccount_findid_verifyphonetitle"
+                        android:textColor="@color/black_two"
+                        android:textSize="@dimen/text_15"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteY="0dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.checkedFindIdByVerifyingPhone ? View.VISIBLE : View.GONE, default= gone}">
+
+                    <include
+                        android:id="@+id/include_findid_verifyphone"
+                        layout="@layout/layout_findaccount_verifyphone" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/include_findid_result"
+                layout="@layout/layout_findaccount_idresult"
+                android:visibility="@{viewModel.resultVisibility, default= gone}" />
+        </FrameLayout>
+
+    </ScrollView>
+</layout>

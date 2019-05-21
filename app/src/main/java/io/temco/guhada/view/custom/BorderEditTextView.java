@@ -52,6 +52,9 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
             case "text":
                 mEditText.setInputType(InputType.TYPE_CLASS_TEXT);
                 return;
+            case "number":
+                mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                return;
         }
         typedArray.recycle();
     }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:hint="SKT"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/warm_grey_three"
+        android:textSize="@dimen/text_14" />
+</layout>

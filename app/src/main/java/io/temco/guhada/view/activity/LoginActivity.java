@@ -73,6 +73,11 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
+            public void redirectFindAccountActivity() {
+                startActivity(new Intent(getApplicationContext(), FindAccountActivity.class));
+            }
+
+            @Override
             public void showMessage(String message) {
                 Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
             }

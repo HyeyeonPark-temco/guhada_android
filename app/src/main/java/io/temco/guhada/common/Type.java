@@ -11,7 +11,8 @@ public class Type {
         PROFILE,
         MY_PAGE,
         LOGIN,
-        JOIN
+        JOIN,
+        FIND_ACCOUNT
     }
 
     // Server

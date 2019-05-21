@@ -40,6 +40,36 @@
     <string name="join_hint_confirmpassword">비밀번호 확인</string>
     <string name="join_wrongaccount">아이디 또는 비밀번호가 잘못 입력되었습니다.</string>
 
+    <!-- FIND ACCOUNT -->
+    <string name="findaccount_findid">아이디 찾기</string>
+    <string name="findaccount_findpwd">비밀번호 찾기</string>
+    <string name="findaccount_female">여자</string>
+    <string name="findaccount_male">남자</string>
+    <string name="findaccount_phonenumber">핸드폰번호</string>
+
+    <string name="findaccount_findid_infotitle">내 회원정보로 찾기</string>
+    <string name="findaccount_findid_infocontent">인증 받은 전화번호를 통해서 아이디를 찾을 수 있습니다.\n아래정보를 입력해주세요.</string>
+    <string name="findaccount_findid_infonamehint">이름</string>
+    <string name="findaccount_findid_infopwdhint">휴대폰 번호 (숫자만 입력)</string>
+    <string name="findaccount_findid_infobutton">아이디 찾기</string>
+
+    <string name="findaccount_findid_verifyphonetitle">휴대폰 본인인증으로 찾기</string>
+    <string name="findaccount_findid_verifyphoneterms">이용동의 및 이용약관 모두 동의</string>
+    <string name="findaccount_findid_verifyphoneresend">재전송</string>
+    <string name="findaccount_findid_verifyphonebutton">인증완료</string>
+
+    <string name="findaccount_findid_verifyphonebirth_hint">생년월일 (예: 19990101)</string>
+    <string name="findaccount_findid_verifyphonenumber_hint">본인명의 휴대폰번호</string>
+
+    <string name="findaccount_findid_resulttitle1">입력하신 정보와 일치하는 아이디입니다.</string>
+    <string name="findaccount_findid_resulttitle2">아이디 휴대폰으로 발송하기</string>
+
+    <string name="findaccount_findid_resultcontent_privacy">개인정보보호를 위해 아이디 뒷자리는 *로 표시됩니다.</string>
+
+    <string name="findaccount_findid_resultbutton_sendid">아이디 발송하기</string>
+    <string name="findaccount_findid_resultbutton_signup">새로운 계정 만들기</string>
+    <string name="findaccount_findid_resultbutton_signin">로그인하러 가기</string>
+
     <!-- API KEY -->
     <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>
     <string name="facebook_app_id">670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
