@@ -1,4 +1,4 @@
-package io.temco.guhada.view.activity;
+package io.temco.guhada.view.activity.base;
 
 import android.annotation.SuppressLint;
 

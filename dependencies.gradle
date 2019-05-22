@@ -25,7 +25,6 @@ ext {
             retrofitConverter    : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
             googlePlayServiceAuth: "com.google.android.gms:play-services-auth:${googlePlayServiceVersion}",
             facebookLogin        : "com.facebook.android:facebook-login:${facebookLoginVersion}"
-
     ]
 }
 

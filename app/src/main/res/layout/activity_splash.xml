@@ -4,7 +4,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/common_blue_purple"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <!-- LOGO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/splash_logo" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/app_logo_sub_title"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- COPYRIGHT -->
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_weight="0"
+            android:text="@string/app_copyright"
+            android:textColor="@color/common_white"
+            android:textSize="@dimen/text_9" />
     </LinearLayout>
 </layout>

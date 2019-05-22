@@ -2,6 +2,15 @@
 <resources>
 
     <!-- TEXT SIZE-->
+    <dimen name="text_1">1dp</dimen>
+    <dimen name="text_2">2dp</dimen>
+    <dimen name="text_3">3dp</dimen>
+    <dimen name="text_4">4dp</dimen>
+    <dimen name="text_5">5dp</dimen>
+    <dimen name="text_6">6dp</dimen>
+    <dimen name="text_7">7dp</dimen>
+    <dimen name="text_8">8dp</dimen>
+    <dimen name="text_9">9dp</dimen>
     <dimen name="text_10">10dp</dimen>
     <dimen name="text_11">11dp</dimen>
     <dimen name="text_12">12dp</dimen>

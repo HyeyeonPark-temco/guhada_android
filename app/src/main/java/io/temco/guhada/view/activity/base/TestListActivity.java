@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.view.activity.CategorySubActivity;
 import io.temco.guhada.view.activity.FindAccountActivity;
 import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
@@ -29,7 +30,7 @@ public class TestListActivity extends AppCompatActivity {
     }
 
     private void initList() {
-        RecyclerView list = findViewById(R.id.test_list);
+        RecyclerView list = findViewById(R.id.list_contents);
         // Option
         list.setHasFixedSize(true);
         // Layout
@@ -48,17 +49,24 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(SplashActivity.class);
                     break;
 
-                case 2: // Main
-                    startActivity(MainActivity.class);
-                    break;
 
-                case 3: // Login
+                case 2: // Login
                     startActivity(LoginActivity.class);
                     break;
 
-                case 4: // Find Account
+                case 3: // Find Account
                     startActivity(FindAccountActivity.class);
                     break;
+
+
+                case 4: // Main
+                    startActivity(MainActivity.class);
+                    break;
+
+                case 5: // Category Sub
+                    startActivity(CategorySubActivity.class);
+                    break;
+
             }
         });
         list.setAdapter(adapter);
@@ -67,25 +75,22 @@ public class TestListActivity extends AppCompatActivity {
     private List<String> getScreenList() {
         List<String> list = new ArrayList<>();
 
-        list.add("CUSTOM_VIEW");
+        list.add("CUSTOM_VIEW"); // 0
+        list.add("SPLASH"); // 1
 
-        list.add("SPLASH");
-        list.add("MAIN");
+        list.add("LOGIN"); // 2
+        list.add("FIND_ACCOUNT"); // 3
 
-        list.add("LOGIN");
-        list.add("FIND_ACCOUNT");
+        list.add("MAIN"); // 4
+        list.add("CATEGORY_SUB"); // 5
+        list.add(""); // 6
+        list.add(""); // 7
 
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
-        list.add("");
+        list.add(""); // 8
+        list.add(""); // 9
+        list.add(""); // 10
+        list.add(""); // 11
+        list.add(""); // 12
 
         return list;
     }

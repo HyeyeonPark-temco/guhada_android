@@ -4,12 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+
+import io.temco.guhada.data.model.CategoryData;
+
 public class Preferences {
 
     // -------- LOCAL VALUE --------
     private static Context mApplicationContext;
     // Key
     private static final String KEY_AUTO_LOGIN = "auto_login";
+    private static final String KEY_CATEGORY_DATA = "category_data";
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -60,6 +68,16 @@ public class Preferences {
         }
         SharedPreferences.Editor editor = pref.edit();
         editor.putLong(key, value);
+        editor.apply();
+    }
+
+    private static void putJsonObject(String key, Object o) {
+        SharedPreferences pref = getPreferences();
+        if (pref == null) {
+            return;
+        }
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(key, new Gson().toJson(o));
         editor.apply();
     }
 
@@ -122,6 +140,16 @@ public class Preferences {
 
     public static boolean getAutoLogin() {
         return getBoolean(KEY_AUTO_LOGIN);
+    }
+
+    // Category
+    public static void setCategoryData(Object o) {
+        putJsonObject(KEY_CATEGORY_DATA, o);
+    }
+
+    public static List<CategoryData> getCategoryData() {
+        return new Gson().fromJson(getString(KEY_CATEGORY_DATA), new TypeToken<List<CategoryData>>() {
+        }.getType());
     }
 
     ////////////////////////////////////////////////

@@ -2,20 +2,14 @@ package io.temco.guhada.data.viewmodel;
 
 import androidx.databinding.Bindable;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
-import io.temco.guhada.common.BaseObservableViewModel;
+import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 import io.temco.guhada.common.listener.OnLoginListener;
-import io.temco.guhada.common.listener.OnServerListener;
-import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.NaverUser;
-import io.temco.guhada.data.model.SnsUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.User;
-import io.temco.guhada.data.model.UserProfile;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 

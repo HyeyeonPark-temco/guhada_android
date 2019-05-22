@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_default"
+        android:orientation="vertical">
+
+        <!-- HEADER -->
+        <include
+            android:id="@+id/layout_header"
+            layout="@layout/header_side_menu" />
+
+        <!-- CONTENTS -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
+
+                <!-- //////////////////////////////////////////////// -->
+
+                <!-- CATEGORY -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:overScrollMode="never" />
+
+                <!-- BRAND -->
+                <RelativeLayout
+                    android:id="@+id/layout_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:onClick="@{clickListener}"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp">
+
+                    <TextView
+                        style="@style/TextMediumSingleLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/category_brand"
+                        android:textColor="@drawable/selector_text_category"
+                        android:textSize="@dimen/text_16" />
+                </RelativeLayout>
+
+                <!-- //////////////////////////////////////////////// -->
+
+                <!-- BANNER -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="30dp"
+                    android:background="#005500" />
+
+                <!-- //////////////////////////////////////////////// -->
+
+                <!-- SUB MENU -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <include
+                            android:id="@+id/layout_sub_menu_sale"
+                            layout="@layout/item_side_sub_menu"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:clickListener="@{clickListener}"
+                            app:title="@{@string/side_menu_sub_sale}" />
+
+                        <include
+                            android:id="@+id/layout_sub_menu_new_product"
+                            layout="@layout/item_side_sub_menu"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:clickListener="@{clickListener}"
+                            app:title="@{@string/side_menu_sub_new_product}" />
+
+                        <include
+                            android:id="@+id/layout_sub_menu_power_deal"
+                            layout="@layout/item_side_sub_menu"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:clickListener="@{clickListener}"
+                            app:title="@{@string/side_menu_sub_power_deal}" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <include
+                            android:id="@+id/layout_sub_menu_time_deal"
+                            layout="@layout/item_side_sub_menu"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:clickListener="@{clickListener}"
+                            app:title="@{@string/side_menu_sub_time_deal}" />
+
+                        <include
+                            android:id="@+id/layout_sub_menu_limit_price"
+                            layout="@layout/item_side_sub_menu"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:clickListener="@{clickListener}"
+                            app:title="@{@string/side_menu_sub_limit_price}" />
+
+                        <include
+                            android:id="@+id/layout_sub_menu_community"
+                            layout="@layout/item_side_sub_menu"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:clickListener="@{clickListener}"
+                            app:title="@{@string/side_menu_sub_community}" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- //////////////////////////////////////////////// -->
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

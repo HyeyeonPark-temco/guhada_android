@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- TOP MENU -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- LEFT -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_side_menu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/btn_burgermenu"
+                    android:onClick="@{clickListener}" />
+
+                <RelativeLayout
+                    android:layout_width="110dp"
+                    android:layout_height="30dp">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="22dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/guhada_logo" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!-- RIGHT -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/image_search"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/search"
+                    android:onClick="@{clickListener}" />
+
+                <ImageView
+                    android:id="@+id/image_shop_cart"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/shoppin_bag"
+                    android:onClick="@{clickListener}" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- CATEGORY -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#55ffff">
+
+            <com.gigamole.navigationtabstrip.NavigationTabStrip
+                android:id="@+id/view_tab_strip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:nts_active_color="@color/common_blue_purple"
+                app:nts_color="@color/common_blue_purple"
+                app:nts_gravity="top"
+                app:nts_inactive_color="@color/common_black"
+                app:nts_size="@dimen/text_15"
+                app:nts_type="point" />
+        </RelativeLayout>
+
+        <!-- CATEGORY -->
+        <RelativeLayout
+            android:id="@+id/layout_sub_category"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#ffff55"
+            android:visibility="gone">
+
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

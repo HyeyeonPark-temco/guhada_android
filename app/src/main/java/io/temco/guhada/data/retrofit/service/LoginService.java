@@ -13,6 +13,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface LoginService {
+
     @POST("/signUpUser")
     Call<BaseModel<String>> signUp(@Body User user);
 
@@ -20,8 +21,9 @@ public interface LoginService {
     Call<BaseModel<Token>> signIn(@Body User user);
 
     @GET("/findUserId")
-    Call<BaseModel<User>> findUserId(@Query("name") String name, @Query("phoneNumber") String phoneNumber);
-
+    Call<BaseModel<User>> findUserId(
+            @Query("name") String name,
+            @Query("phoneNumber") String phoneNumber);
 
     // SNS LOGIN
     @POST("/facebookLogin")

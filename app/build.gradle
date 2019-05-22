@@ -7,8 +7,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionName "0.0.1"
     }
     buildTypes {
         debug {
@@ -66,16 +65,16 @@ dependencies {
     implementation 'com.scottyab:rootbeer-lib:0.0.7'
     // Badge (국내/외 디바이스 대응)
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
-
+    // Tab Strip
+    implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
+    // Expand Layout
+    implementation 'com.github.florent37:expansionpanel:1.2.2'
     // GOOGLE LOGIN
     implementation libraryDependencies.googlePlayServiceAuth
-
     // KAKAO LOGIN
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
-
     // FACEBOOK LOGIN
     implementation libraryDependencies.facebookLogin
-
     // NAVER
     implementation files('libs/naveridlogin_android_sdk_4.2.5.aar')
 

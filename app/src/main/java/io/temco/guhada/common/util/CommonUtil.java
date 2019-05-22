@@ -44,24 +44,6 @@ public class CommonUtil {
         return result;
     }
 
-    ////////////////////////////////////////////////
-    // KEYBOARD
-    ////////////////////////////////////////////////
-
-    public void showKeyboard(Context context, View view) {
-        if (context != null && view != null) {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, 0);
-        }
-    }
-
-    public static void hideKeyboard(Context context, View view) {
-        if (context != null && view != null) {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
     // SnackBar
     public static void showSnackBar(View parentView, String message, int bgColor, int marginTop) {
         Snackbar snackbar = Snackbar.make(parentView, message, Snackbar.LENGTH_INDEFINITE);
@@ -85,4 +67,24 @@ public class CommonUtil {
 
         snackbar.show();
     }
+
+    ////////////////////////////////////////////////
+    // KEYBOARD
+    ////////////////////////////////////////////////
+
+    public void showKeyboard(Context context, View view) {
+        if (context != null && view != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, 0);
+        }
+    }
+
+    public static void hideKeyboard(Context context, View view) {
+        if (context != null && view != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    ////////////////////////////////////////////////
 }

@@ -9,7 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import io.temco.guhada.BR;
-import io.temco.guhada.common.BaseObservableViewModel;
+import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;

@@ -15,68 +15,75 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginServer {
+
     private static final String NAVER_API_SUCCESS = "00";
 
     public static void getNaverProfile(OnServerListener listener, String accessToken) {
-        RetrofitManager.createService(Type.Server.NAVER_PROFILE, LoginService.class).getNaverProfile("Bearer " + accessToken).enqueue(new Callback<NaverResponse>() {
-            @Override
-            public void onResponse(Call<NaverResponse> call, Response<NaverResponse> response) {
-                if (response.isSuccessful()) {
-                    NaverResponse naverResponse = response.body();
-                    if (naverResponse != null && naverResponse.getResultCode() != null) {
-                        if (naverResponse.getResultCode().equals(NAVER_API_SUCCESS)) {
-                            listener.onResult(true, naverResponse.getUser());
+        RetrofitManager.createService(Type.Server.NAVER_PROFILE, LoginService.class)
+                .getNaverProfile("Bearer " + accessToken)
+                .enqueue(new Callback<NaverResponse>() {
+                    @Override
+                    public void onResponse(Call<NaverResponse> call, Response<NaverResponse> response) {
+                        if (response.isSuccessful()) {
+                            NaverResponse naverResponse = response.body();
+                            if (naverResponse != null && naverResponse.getResultCode() != null) {
+                                if (naverResponse.getResultCode().equals(NAVER_API_SUCCESS)) {
+                                    listener.onResult(true, naverResponse.getUser());
+                                }
+                            } else {
+                                listener.onResult(false, response.message());
+                            }
+                        } else {
+                            listener.onResult(false, response.message());
                         }
-                    } else {
-                        listener.onResult(false, response.message());
                     }
-                } else {
-                    listener.onResult(false, response.message());
-                }
-            }
 
-            @Override
-            public void onFailure(Call<NaverResponse> call, Throwable t) {
-                CommonUtil.debug("[NAVER] FAILED: " + t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<NaverResponse> call, Throwable t) {
+                        CommonUtil.debug("[NAVER] FAILED: " + t.getMessage());
+                    }
+                });
     }
 
     public static void googleLogin(OnServerListener listener, SnsUser user) {
-        RetrofitManager.createService(Type.Server.USER, LoginService.class).googleLogin(user).enqueue(new Callback<BaseModel>() {
-            @Override
-            public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
-                if (response.isSuccessful()) {
-                    BaseModel result = response.body();
-                    listener.onResult(true, result);
-                } else {
-                    listener.onResult(false, response.message());
-                }
-            }
+        RetrofitManager.createService(Type.Server.USER, LoginService.class)
+                .googleLogin(user)
+                .enqueue(new Callback<BaseModel>() {
+                    @Override
+                    public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
+                        if (response.isSuccessful()) {
+                            BaseModel result = response.body();
+                            listener.onResult(true, result);
+                        } else {
+                            listener.onResult(false, response.message());
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<BaseModel> call, Throwable t) {
-                listener.onResult(false, t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<BaseModel> call, Throwable t) {
+                        listener.onResult(false, t.getMessage());
+                    }
+                });
     }
 
     public static void signUp(OnServerListener listener, User user) {
-        RetrofitManager.createService(Type.Server.USER, LoginService.class).signUp(user).enqueue(new Callback<BaseModel<String>>() {
-            @Override
-            public void onResponse(Call<BaseModel<String>> call, Response<BaseModel<String>> response) {
-                if (response.isSuccessful()) {
-                    listener.onResult(true, response.body());
-                } else {
-                    listener.onResult(false, response.message());
-                }
-            }
+        RetrofitManager.createService(Type.Server.USER, LoginService.class)
+                .signUp(user)
+                .enqueue(new Callback<BaseModel<String>>() {
+                    @Override
+                    public void onResponse(Call<BaseModel<String>> call, Response<BaseModel<String>> response) {
+                        if (response.isSuccessful()) {
+                            listener.onResult(true, response.body());
+                        } else {
+                            listener.onResult(false, response.message());
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<BaseModel<String>> call, Throwable t) {
-                listener.onResult(false, t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<BaseModel<String>> call, Throwable t) {
+                        listener.onResult(false, t.getMessage());
+                    }
+                });
     }
 
     public static void signIn(OnServerListener listener, User user) {
@@ -98,16 +105,18 @@ public class LoginServer {
     }
 
     public static void findUserId(OnServerListener listener, String name, String phoneNumber) {
-        RetrofitManager.createService(Type.Server.USER, LoginService.class).findUserId(name, phoneNumber).enqueue(new Callback<BaseModel<User>>() {
-            @Override
-            public void onResponse(Call<BaseModel<User>> call, Response<BaseModel<User>> response) {
-                listener.onResult(response.isSuccessful(), response.body());
-            }
+        RetrofitManager.createService(Type.Server.USER, LoginService.class)
+                .findUserId(name, phoneNumber)
+                .enqueue(new Callback<BaseModel<User>>() {
+                    @Override
+                    public void onResponse(Call<BaseModel<User>> call, Response<BaseModel<User>> response) {
+                        listener.onResult(response.isSuccessful(), response.body());
+                    }
 
-            @Override
-            public void onFailure(Call<BaseModel<User>> call, Throwable t) {
-                listener.onResult(false, t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<BaseModel<User>> call, Throwable t) {
+                        listener.onResult(false, t.getMessage());
+                    }
+                });
     }
 }

@@ -4,8 +4,36 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <!-- API KEY -->
+    <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>
+    <string name="facebook_app_id">670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
+    <string name="fb_login_protocol_scheme">fb670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
+    <string name="naver_oauth_client_id">v9how9jp1jb4bjog309d</string> <!-- 회사 계정 API KEY로 변경 필요-->
+    <string name="naver_oauth_client_secret">96JY1vCz8f</string> <!-- 회사 계정 API KEY로 변경 필요-->
+    <string name="naver_oauth_client_name">네이버 아이디로 로그인</string>
+
     <!-- COMMON -->
     <string name="app_name">Guhada</string>
+    <string name="app_logo_sub_title">쇼핑의 즐거움을 구하다</string>
+    <string name="app_copyright">Ⓒ 2019 GUHADA</string>
+    <string name="common_category">카테고리</string>
+    <string name="common_brand">브랜드</string>
+    <string name="common_home">홈</string>
+    <string name="common_my_page">마이페이지</string>
+    <string name="common_community">커뮤니티</string>
+
+    <!-- SIDE MENU -->
+    <string name="side_menu_login_need">로그인 해주세요</string>
+    <string name="side_menu_sub_sale">세일</string>
+    <string name="side_menu_sub_new_product">신상품</string>
+    <string name="side_menu_sub_power_deal">파워딜</string>
+    <string name="side_menu_sub_time_deal">타임딜</string>
+    <string name="side_menu_sub_limit_price">한정특가</string>
+    <string name="side_menu_sub_community">커뮤니티</string>
+
+    <!-- CATEGORY -->
+    <string name="category_all">전체보기</string>
+    <string name="category_brand">브랜드</string>
 
     <!-- LOGIN -->
     <string name="login_title">로그인</string>
@@ -76,13 +104,4 @@
     <string name="verifyphone_terms3">통신사 이용약관 동의</string>
     <string name="verifyphone_terms4">서비스 이용약관</string>
     <string name="verifyphone_terms5">본인인증 목적으로 상기 정보를 통신사에 제공함을 동의</string>
-
-    <!-- API KEY -->
-    <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>
-    <string name="facebook_app_id">670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
-    <string name="fb_login_protocol_scheme">fb670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
-    <string name="naver_oauth_client_id">v9how9jp1jb4bjog309d</string> <!-- 회사 계정 API KEY로 변경 필요-->
-    <string name="naver_oauth_client_secret">96JY1vCz8f</string> <!-- 회사 계정 API KEY로 변경 필요-->
-    <string name="naver_oauth_client_name">네이버 아이디로 로그인</string>
-
 </resources>

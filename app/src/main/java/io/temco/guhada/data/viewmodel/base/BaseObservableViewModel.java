@@ -1,4 +1,4 @@
-package io.temco.guhada.common;
+package io.temco.guhada.data.viewmodel.base;
 
 import androidx.databinding.Observable;
 import androidx.databinding.PropertyChangeRegistry;

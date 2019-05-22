@@ -23,6 +23,48 @@
         <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
 
+    <!-- TEXTVIEW -->
+    <style name="TextRegular">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextBold">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextThin">
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+    <style name="TextMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextLight">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextBlack">
+        <item name="android:fontFamily">sans-serif-black</item>
+    </style>
+
+    <style name="TextRegularSingleLine" parent="TextRegular">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="TextMediumSingleLine" parent="TextMedium">
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="TextTabStyle" parent="TextMedium">
+        <item name="android:textSize">@dimen/text_10</item>
+        <item name="android:textColor">@drawable/selector_text_tab_main</item>
+    </style>
+
+    <!-- -->
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
     </style>
@@ -76,5 +118,4 @@
 
     <style name="SpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="SpinnerDropDownItemStyle" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem"/>
-
 </resources>
