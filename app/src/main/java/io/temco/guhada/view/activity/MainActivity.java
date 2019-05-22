@@ -1,22 +1,22 @@
 package io.temco.guhada.view.activity;
 
+import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
 import io.temco.guhada.R;
+import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.data.model.CategoryData;
-import io.temco.guhada.data.server.ProductServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -25,6 +25,7 @@ import io.temco.guhada.view.adapter.expand.SideMenuExpandFirstListAdapter;
 public class MainActivity extends BindActivity<ActivityMainBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
+    private final int REQUEST_CODE_CATEGORY = 11;
     private MainPagerAdapter mPagerAdapter;
     // -----------------------------
 
@@ -54,8 +55,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             initMainPager();
             initSideMenu();
         }
-
-        getCategoryData();
     }
 
     @Override
@@ -90,6 +89,26 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 //                break;
 
             ////////////////////////////////////////////////
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_CATEGORY:
+                    changeDrawerLayout(false, false);
+                    if (data != null) {
+                        Type.Category type = (Type.Category) data.getSerializableExtra(Info.INTENT_CATEGORY_TYPE);
+                        int[] hierarchies = data.getIntArrayExtra(Info.INTENT_CATEGORY_HIERARCHIES);
+
+                        CommonUtil.debug("" + Type.Category.get(type));
+                        CommonUtil.debug("" + hierarchies.length);
+                    }
+                    break;
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -205,39 +224,50 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         // Category
         mBinding.layoutSideMenu.listContents.setLayoutManager(new LinearLayoutManager(this));
         SideMenuExpandFirstListAdapter adapter = new SideMenuExpandFirstListAdapter(this);
+        adapter.setOnCategoryListener(mSideMenuCategoryListener);
+        adapter.setItems(Preferences.getCategories());
         mBinding.layoutSideMenu.listContents.setAdapter(adapter);
     }
 
     private void changeDrawerLayout(boolean isOpen) {
+        changeDrawerLayout(isOpen, true);
+    }
+
+    private void changeDrawerLayout(boolean isOpen, boolean animate) {
         if (isOpen &&
                 !mBinding.layoutDrawer.isDrawerOpen(mBinding.layoutSideMenu.getRoot())) {
-            mBinding.layoutDrawer.openDrawer(mBinding.layoutSideMenu.getRoot(), true);
+            mBinding.layoutDrawer.openDrawer(mBinding.layoutSideMenu.getRoot(), animate);
         } else {
-            mBinding.layoutDrawer.closeDrawer(mBinding.layoutSideMenu.getRoot(), true);
+            mBinding.layoutDrawer.closeDrawer(mBinding.layoutSideMenu.getRoot(), animate);
         }
     }
 
-    private void setSideMenuCategoryData(List<CategoryData> data) {
-        if (mBinding.layoutSideMenu.listContents.getAdapter() instanceof SideMenuExpandFirstListAdapter) {
-            SideMenuExpandFirstListAdapter adapter = (SideMenuExpandFirstListAdapter) mBinding.layoutSideMenu.listContents.getAdapter();
-            adapter.setItems(data);
+    private void startScreenByType(Type.Category type, int[] hierarchies) {
+        switch (type) {
+            case ALL:
+                changeDrawerLayout(false);
+                break;
+
+            default:
+                if (hierarchies != null && hierarchies.length >= 2) {
+                    CategorySubActivity.startActivityForResult(this, hierarchies[1], REQUEST_CODE_CATEGORY);
+                }
         }
     }
+
+    ////////////////////////////////////////////////
+    // LISTENER
+    ////////////////////////////////////////////////
+
+    private OnCategoryListener mSideMenuCategoryListener = this::startScreenByType;
+
+    private OnCategoryListener mTabCategoryListener = (type, hierarchies) -> {
+
+    };
 
     ////////////////////////////////////////////////
     // SERVER
     ////////////////////////////////////////////////
-
-    private void getCategoryData() {
-        ProductServer.getData((success, o) -> {
-            if (success) {
-                setSideMenuCategoryData((List<CategoryData>) o);
-                Preferences.setCategoryData(o);
-            } else {
-
-            }
-        });
-    }
 
     ////////////////////////////////////////////////
 }

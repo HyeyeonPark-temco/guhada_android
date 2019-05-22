@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter.expand;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,16 +12,18 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.CategoryData;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
 import io.temco.guhada.view.adapter.holder.CategorySubExpandAllListViewHolder;
 import io.temco.guhada.view.adapter.holder.CategorySubExpandSecondListViewHolder;
 
-public class CategorySubExpandSecondListAdapter extends RecyclerView.Adapter<BaseCategoryViewHolder> {
+public class CategorySubExpandSecondListAdapter extends RecyclerView.Adapter<BaseCategoryViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
     private List<CategoryData> mItems;
+    private OnCategoryListener mCategoryListener;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -62,7 +65,18 @@ public class CategorySubExpandSecondListAdapter extends RecyclerView.Adapter<Bas
 
     @Override
     public void onBindViewHolder(@NonNull BaseCategoryViewHolder holder, int position) {
-        holder.init(mContext, getItem(position));
+        holder.init(mContext, getItem(position), mCategoryListener);
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mCategoryListener != null
+                && v.getTag() != null && v.getTag() instanceof Integer) {
+            CategoryData data = getItem((int) v.getTag());
+            mCategoryListener.onEvent(data.type, data.hierarchies);
+        }
     }
 
     ////////////////////////////////////////////////
@@ -72,6 +86,10 @@ public class CategorySubExpandSecondListAdapter extends RecyclerView.Adapter<Bas
     public void setItems(List<CategoryData> items) {
         mItems = items;
         notifyDataSetChanged();
+    }
+
+    public void setOnCategoryListener(OnCategoryListener listener) {
+        mCategoryListener = listener;
     }
 
     ////////////////////////////////////////////////

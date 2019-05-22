@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.CategoryData;
 import io.temco.guhada.view.adapter.holder.CategorySubExpandFirstListViewHolder;
 
@@ -23,6 +24,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
     private ExpansionLayoutCollection mExpansionsCollection;
     private List<CategoryData> mItems;
     private Type.CategoryData mChildType;
+    private OnCategoryListener mCategoryListener;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -53,7 +55,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
     @Override
     public void onBindViewHolder(@NonNull CategorySubExpandFirstListViewHolder holder, int position) {
         mExpansionsCollection.add(holder.getBinding().layoutContents);
-        holder.init(mContext, getItem(position), mChildType);
+        holder.init(mContext, getItem(position), mCategoryListener, mChildType);
     }
 
     ////////////////////////////////////////////////
@@ -67,6 +69,10 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
 
     public void setChildType(Type.CategoryData type) {
         mChildType = type;
+    }
+
+    public void setOnCategoryListener(OnCategoryListener listener) {
+        mCategoryListener = listener;
     }
 
     ////////////////////////////////////////////////
