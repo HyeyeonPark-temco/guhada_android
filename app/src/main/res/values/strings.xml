@@ -43,7 +43,7 @@
     <string name="login_kakao">카카오\n로그인</string>
     <string name="login_facebook">페이스북\n로그인</string>
     <string name="login_findid">아이디 찾기</string>
-    <string name="login_findpwd">아이디 찾기</string>
+    <string name="login_findpwd">비밀번호 찾기</string>
     <string name="login_simple">간편로그인</string>
 
     <string name="login_button_signin">로그인</string>
@@ -104,4 +104,28 @@
     <string name="verifyphone_terms3">통신사 이용약관 동의</string>
     <string name="verifyphone_terms4">서비스 이용약관</string>
     <string name="verifyphone_terms5">본인인증 목적으로 상기 정보를 통신사에 제공함을 동의</string>
+
+    <string name="findpwd_phonenumber_title">휴대폰 번호로 재설정하기</string>
+    <string name="findpwd_email_title">이메일로 재설정하기</string>
+    <string name="findpwd_verifyphone_title">휴대폰 본인인증으로 재설정하기</string>
+    <string name="findpwd_hint_name">이름</string>
+    <string name="findpwd_hint_email">아이디 (이메일)</string>
+    <string name="findpwd_hint_verifynumber">인증번호 6자리 숫자 입력</string>
+    <string name="findpwd_button_resend">재전송</string>
+    <string name="findpwd_button_requestverify">인증번호 요청</string>
+
+    <string name="findpwd_hint_newpwd">새 비밀번호</string>
+    <string name="findpwd_hint_newpwdconfirm">새 비밀번호 확인</string>
+    <string name="findpwd_condition">8~15자의 영문 대/소문자, 숫자, 특수문자 중 2개 이상 조합</string>
+    <string name="findpwd_button_ok">확인</string>
+    <string name="findpwd_button_login">로그인하러 가기</string>
+    <string name="findpwd_button_finishverify">인증완료</string>
+
+    <string name="findpwd_message_wronginfo">일치하는 계정이 없습니다.</string>
+    <string name="findpwd_message_expiredverification">인증번호가 만료되었습니다.</string>
+    <string name="findpwd_message_invaludverification">인증번호가 일치하지 않습니다.</string>
+    <string name="findpwd_message_successchangepwd">비밀번호가 재설정 되었습니다.</string>
+    <string name="findpwd_message_notequalpwd">비밀번호가 동일하지 않습니다.</string>
+    <string name="findpwd_message_invalidformat">8–15자리의 영문 대/소문자, 숫자, 특수문자 중 2개 이상의 조합으로 입력해주세요.</string>
+    <string name="findpwd_message_invalidemailformat">아이디 형태가 올바르지 않습니다.</string>
 </resources>

@@ -168,7 +168,7 @@
 
             <include
                 android:id="@+id/include_findid_result"
-                layout="@layout/layout_findaccount_idresult"
+                layout="@layout/layout_findaccount_resultid"
                 android:visibility="@{viewModel.resultVisibility, default= gone}" />
         </FrameLayout>
 

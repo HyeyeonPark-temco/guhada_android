@@ -5,6 +5,8 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -12,12 +14,15 @@ import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnFindAccountListener;
+import io.temco.guhada.common.listener.OnFindPasswordListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.viewmodel.FindAccountViewModel;
+import io.temco.guhada.data.viewmodel.FindPasswordViewModel;
 import io.temco.guhada.databinding.ActivityFindaccountBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.FindAccountPagerAdapter;
 import io.temco.guhada.view.fragment.findaccount.FindIdFragment;
+import io.temco.guhada.view.fragment.findaccount.FindPasswordFragment;
 
 public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding> {
     private FindAccountViewModel mViewModel;
@@ -41,7 +46,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
     @Override
     protected void init() {
         initViewModel();
-        initFragmentPager();
+        initPagerAndTab();
         mBinding.tablayoutFindaccount.setTabTextColors(getResources().getColor(R.color.common_black), getResources().getColor(R.color.colorPrimary));
         mBinding.executePendingBindings();
     }
@@ -105,10 +110,36 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         mBinding.includeFindaccountHeader.setViewModel(mViewModel);
     }
 
-    private void initFragmentPager() {
+    private void initPagerAndTab() {
+        // PAGER
         FindAccountPagerAdapter adapter = new FindAccountPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FindIdFragment(mViewModel));
+        adapter.addFragment(new FindPasswordFragment(new FindPasswordViewModel()));
         mBinding.viewpagerFindaccount.setAdapter(adapter);
+
+        // TAB
+        mBinding.tablayoutFindaccount.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                mBinding.viewpagerFindaccount.setCurrentItem(tab.getPosition());
+                stopTimer();
+                mViewModel.resetTimer();
+//                mViewModel.setCheckedFindIdByInfo(false);
+//                mViewModel.setCheckedFindIdByVerifyingPhone(false);
+//                mViewModel.notifyPropertyChanged(BR.checkedFindIdByInfo);
+//                mViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     // Timer
@@ -153,7 +184,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
     }
 
     private void stopTimer() {
-        if(mTimerTask!= null){
+        if (mTimerTask != null) {
             mTimerTask.cancel();
         }
     }
