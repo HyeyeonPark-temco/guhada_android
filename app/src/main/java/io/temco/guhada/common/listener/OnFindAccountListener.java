@@ -1,6 +1,8 @@
 package io.temco.guhada.common.listener;
 
-public interface OnFindAccountListener extends BaseActivityListener {
+import io.temco.guhada.common.listener.base.OnBaseActivityListener;
+
+public interface OnFindAccountListener extends OnBaseActivityListener {
     void showSnackBar(String message);
 
     void hideKeyboard();

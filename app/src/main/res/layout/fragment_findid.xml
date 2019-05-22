@@ -45,7 +45,7 @@
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/all_checkboxselector"
+                        android:background="@drawable/selector_checkbox_all"
                         android:button="@null"
                         android:checked="@{viewModel.checkedFindIdByInfo}"
                         android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedFindIdByInfo(checked)}"
@@ -79,7 +79,7 @@
                         <CheckBox
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/all_checkboxselector"
+                            android:background="@drawable/selector_checkbox_all"
                             android:button="@null"
                             android:visibility="invisible" />
 
@@ -134,7 +134,7 @@
                     <CheckBox
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/all_checkboxselector"
+                        android:background="@drawable/selector_checkbox_all"
                         android:button="@null"
                         android:checked="@{viewModel.checkedFindIdByVerifyingPhone}"
                         android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedFindIdByVerifyingPhone(checked)}"

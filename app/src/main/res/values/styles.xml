@@ -92,7 +92,7 @@
     </style>
 
     <style name="InactivatedButtonBorderStyle" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:background">@drawable/all_silverborder</item>
+        <item name="android:background">@drawable/border_all_silver</item>
         <item name="android:textColor">@color/common_white</item>
         <item name="android:textSize">@dimen/text_14</item>
         <item name="android:height">50dp</item>
@@ -104,7 +104,7 @@
     </style>
 
     <style name="TabLayoutStyle" parent="android:Widget">
-        <item name="tabBackground">@drawable/all_tabselector</item>
+        <item name="tabBackground">@drawable/selector_tab_all</item>
         <item name="tabIndicatorColor">@android:color/transparent</item>
         <item name="tabIndicatorHeight">0dp</item>
     </style>

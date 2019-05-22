@@ -1,6 +1,8 @@
 package io.temco.guhada.common.listener;
 
-public interface OnLoginListener extends BaseActivityListener {
+import io.temco.guhada.common.listener.base.OnBaseActivityListener;
+
+public interface OnLoginListener extends OnBaseActivityListener {
 
     void onGoogleLogin();
 

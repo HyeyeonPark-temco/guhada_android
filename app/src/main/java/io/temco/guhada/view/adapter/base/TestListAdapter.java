@@ -12,7 +12,6 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnTestItemListener;
-import io.temco.guhada.view.adapter.holder.TestListViewHolder;
 
 public class TestListAdapter extends RecyclerView.Adapter<TestListViewHolder> implements View.OnClickListener {
 

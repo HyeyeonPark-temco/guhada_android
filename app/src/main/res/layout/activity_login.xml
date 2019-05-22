@@ -102,7 +102,7 @@
                     android:id="@+id/checkbox_login_saveid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/all_checkboxselector"
+                    android:background="@drawable/selector_checkbox_all"
                     android:button="@null"
                     android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedSaveId(checked)}"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -149,7 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/all_silverborder"
+                android:background="@drawable/border_all_silver"
                 android:onClick="@{()->viewModel.onClickSignUp()}"
                 android:text="@string/login_button_signup"
                 android:textColor="@android:color/black" />
