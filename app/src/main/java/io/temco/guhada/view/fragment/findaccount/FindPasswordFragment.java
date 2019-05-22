@@ -41,10 +41,6 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
     @Override
     protected void init() {
         mViewModel.setListener(new OnFindPasswordListener() {
-            @Override
-            public void hideKeyboard() {
-                CommonUtil.hideKeyboard(getContext(), mBinding.linearLayout2);
-            }
 
             @Override
             public void showMessage(String message) {
@@ -56,6 +52,11 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
+            }
+
+            @Override
+            public void hideKeyboard() {
+                CommonUtil.hideKeyboard(getContext(), mBinding.linearLayout2);
             }
 
             @Override

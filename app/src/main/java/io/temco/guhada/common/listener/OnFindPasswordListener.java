@@ -1,6 +1,6 @@
 package io.temco.guhada.common.listener;
 
-public interface OnFindPasswordListener extends BaseActivityListener {
+public interface OnFindPasswordListener {
     void showSnackBar(String message);
 
     void showResultView();
@@ -9,4 +9,8 @@ public interface OnFindPasswordListener extends BaseActivityListener {
     void hideKeyboard();
 
     void startTimer(String minute, String second);
+
+    void showMessage(String string);
+
+    void closeActivity();
 }
