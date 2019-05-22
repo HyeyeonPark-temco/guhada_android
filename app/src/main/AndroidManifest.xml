@@ -64,7 +64,8 @@
 
         <activity
             android:name=".view.activity.FindAccountActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- Kakao -->
         <activity

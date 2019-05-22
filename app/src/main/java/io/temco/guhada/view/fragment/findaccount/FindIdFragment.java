@@ -18,10 +18,10 @@ import io.temco.guhada.view.adapter.SpinnerAdapter;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
 public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
-    private FindAccountViewModel viewModel;
+    private FindAccountViewModel mVewModel;
 
     public FindIdFragment(FindAccountViewModel viewModel) {
-        this.viewModel = viewModel;
+        this.mVewModel = viewModel;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
     @Override
     protected void init() {
-        mBinding.setViewModel(viewModel);
+        mBinding.setViewModel(mVewModel);
 
         // BY INFO
         setTextWatchers();
@@ -45,7 +45,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         initVerifyPhoneLayout();
 
         // RESULT
-        mBinding.includeFindidResult.setViewModel(viewModel);
+        mBinding.includeFindidResult.setViewModel(mVewModel);
 
         mBinding.executePendingBindings();
     }
@@ -63,11 +63,9 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    Objects.requireNonNull(viewModel.mUser.get()).setNationality(1);
-                    //  viewModel.setForeigner(true);
+                    Objects.requireNonNull(mVewModel.mUser.get()).setNationality(1);
                 } else {
-                    Objects.requireNonNull(viewModel.mUser.get()).setNationality(2);
-                    // viewModel.setForeigner(false);
+                    Objects.requireNonNull(mVewModel.mUser.get()).setNationality(2);
                 }
             }
 
@@ -89,10 +87,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                User user = viewModel.mUser.get();
+                User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setMobileCarriers(position);
-                viewModel.mUser.set(user);
-                viewModel.notifyPropertyChanged(BR.mUser);
+                mVewModel.mUser.set(user);
+                mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -102,7 +100,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
     }
 
     private void initVerifyPhoneLayout() {
-        mBinding.includeFindidVerifyphone.setViewModel(viewModel);
+        mBinding.includeFindidVerifyphone.setViewModel(mVewModel);
         mBinding.includeFindidVerifyphone.edittextVerifyphoneName.setTextWatcher(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -111,10 +109,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = viewModel.mUser.get();
+                User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setName(s.toString());
-                viewModel.mUser.set(user);
-                viewModel.notifyPropertyChanged(BR.mUser);
+                mVewModel.mUser.set(user);
+                mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -130,10 +128,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = viewModel.mUser.get();
+                User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setBirth(s.toString());
-                viewModel.mUser.set(user);
-                viewModel.notifyPropertyChanged(BR.mUser);
+                mVewModel.mUser.set(user);
+                mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -149,10 +147,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = viewModel.mUser.get();
+                User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setPhoneNumber(s.toString());
-                viewModel.mUser.set(user);
-                viewModel.notifyPropertyChanged(BR.mUser);
+                mVewModel.mUser.set(user);
+                mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -168,8 +166,8 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                viewModel.setVerifyNumber(s.toString());
-                viewModel.notifyPropertyChanged(BR.verifyNumber);
+                mVewModel.setVerifyNumber(s.toString());
+                mVewModel.notifyPropertyChanged(BR.verifyNumber);
             }
 
             @Override
@@ -191,10 +189,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = viewModel.mUser.get();
+                User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setName(s.toString());
-                viewModel.setmUser(new ObservableField<>(user));
-                viewModel.notifyPropertyChanged(BR.mUser);
+                mVewModel.setmUser(new ObservableField<>(user));
+                mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -210,10 +208,10 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = viewModel.mUser.get();
+                User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setPhoneNumber(s.toString());
-                viewModel.setmUser(new ObservableField<>(user));
-                viewModel.notifyPropertyChanged(BR.mUser);
+                mVewModel.setmUser(new ObservableField<>(user));
+                mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override

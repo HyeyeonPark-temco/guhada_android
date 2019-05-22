@@ -237,6 +237,11 @@ public class FindAccountViewModel extends BaseObservableViewModel {
         }, Objects.requireNonNull(mUser.get()).getName(), Objects.requireNonNull(mUser.get()).getPhoneNumber());
     }
 
+    public void resetTimer() {
+        timerMinute = "02";
+        timerSecond = "60";
+    }
+
     /**
      * 인증번호
      */

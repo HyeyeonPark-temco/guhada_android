@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,6 +16,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.temco.guhada.BuildConfig;
 import io.temco.guhada.common.Info;
@@ -112,7 +115,7 @@ public class CommonUtil {
                 } else {
                     int minute = Integer.parseInt(timerMinute);
                     if (minute > 0) {
-                        timerMinute  = "0" + (minute - 1);
+                        timerMinute = "0" + (minute - 1);
                         timerSecond = "59";
                         listener.changeMinute(timerMinute);
                         listener.changeSecond(timerSecond);
@@ -149,5 +152,22 @@ public class CommonUtil {
         if (mTimerTask != null) {
             mTimerTask.cancel();
         }
+    }
+
+    public static boolean validatePassword(String password) {
+        int length = password.length();
+        if (length >= 8 && length <= 15) {
+            final String PASSWORD_PATTERN = "^(?=.*[a-zA-Z0-9])(?=.*[a-zA-Z!@#$%^&*])(?=.*[0-9!@#$%^&*]).{8,15}$";
+            Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+            Matcher matcher = pattern.matcher(password);
+
+            return matcher.matches();
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean validateEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }
