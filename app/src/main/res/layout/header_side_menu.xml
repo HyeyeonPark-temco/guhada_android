@@ -8,77 +8,82 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <!-- LEFT -->
-            <LinearLayout
-                android:id="@+id/layout_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:onClick="@{clickListener}">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
-                <TextView
-                    style="@style/TextRegular"
+                <!-- LEFT -->
+                <LinearLayout
+                    android:id="@+id/layout_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/side_menu_login_need"
-                    android:textColor="@color/text_2"
-                    android:textSize="@dimen/text_15" />
+                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
+                    android:onClick="@{clickListener}">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:background="@drawable/btn_arrow" />
-            </LinearLayout>
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/side_menu_login_need"
+                        android:textColor="@color/text_2"
+                        android:textSize="@dimen/text_15" />
 
-            <!-- RIGHT -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/btn_arrow" />
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/image_home"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/btn_home"
-                    android:onClick="@{clickListener}" />
+                <!-- RIGHT -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
 
-                <ImageView
-                    android:id="@+id/image_setting"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/btn_setting"
-                    android:onClick="@{clickListener}" />
+                    <ImageView
+                        android:id="@+id/image_home"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/btn_home"
+                        android:onClick="@{clickListener}" />
 
-                <ImageView
-                    android:id="@+id/image_close"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/btn_close"
-                    android:onClick="@{clickListener}" />
-            </LinearLayout>
-        </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/image_setting"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/btn_setting"
+                        android:onClick="@{clickListener}" />
 
-        <!-- LINE -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line_2" />
-    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/image_close"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/btn_close"
+                        android:onClick="@{clickListener}" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- LINE -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_2" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 </layout>

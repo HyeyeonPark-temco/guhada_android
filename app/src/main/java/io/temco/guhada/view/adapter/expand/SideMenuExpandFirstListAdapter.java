@@ -12,6 +12,7 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.CategoryData;
 import io.temco.guhada.view.adapter.holder.SideMenuExpandFirstListViewHolder;
 
@@ -21,6 +22,7 @@ public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMen
     private Context mContext;
     private ExpansionLayoutCollection mExpansionsCollection;
     private List<CategoryData> mItems;
+    private OnCategoryListener mCategoryListener;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -51,7 +53,7 @@ public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMen
     @Override
     public void onBindViewHolder(@NonNull SideMenuExpandFirstListViewHolder holder, int position) {
         mExpansionsCollection.add(holder.getBinding().layoutContents);
-        holder.init(mContext, getItem(position));
+        holder.init(mContext, getItem(position), mCategoryListener);
     }
 
     ////////////////////////////////////////////////
@@ -61,6 +63,10 @@ public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMen
     public void setItems(List<CategoryData> items) {
         mItems = items;
         notifyDataSetChanged();
+    }
+
+    public void setOnCategoryListener(OnCategoryListener listener) {
+        mCategoryListener = listener;
     }
 
     ////////////////////////////////////////////////

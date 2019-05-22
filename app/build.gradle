@@ -65,8 +65,6 @@ dependencies {
     implementation 'com.scottyab:rootbeer-lib:0.0.7'
     // Badge (국내/외 디바이스 대응)
     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
-    // Tab Strip
-    implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
     // Expand Layout
     implementation 'com.github.florent37:expansionpanel:1.2.2'
     // GOOGLE LOGIN

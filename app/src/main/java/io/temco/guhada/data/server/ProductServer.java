@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
+import io.temco.guhada.data.model.BrandData;
 import io.temco.guhada.data.model.CategoryData;
 import io.temco.guhada.data.model.base.BaseListModel;
 import io.temco.guhada.data.retrofit.manager.RetrofitManager;
@@ -14,7 +15,7 @@ import retrofit2.Response;
 
 public class ProductServer {
 
-    public static void getData(OnServerListener listener) {
+    public static void getCategories(OnServerListener listener) {
         if (listener != null) {
             RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class)
                     .getCategories()
@@ -44,4 +45,33 @@ public class ProductServer {
         }
     }
 
+    public static void getAllBrands(OnServerListener listener) {
+        if (listener != null) {
+            RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class)
+                    .getAllBrands()
+                    .enqueue(new Callback<BaseListModel<BrandData>>() {
+                        @Override
+                        public void onResponse(Call<BaseListModel<BrandData>> call, Response<BaseListModel<BrandData>> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body().resultCode == 200) {
+                                    listener.onResult(true, response.body().data);
+                                } else {
+                                    listener.onResult(false, response.body().message);
+                                }
+                            } else {
+                                try {
+                                    listener.onResult(false, response.errorBody().string());
+                                } catch (IOException e) {
+                                    // e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<BaseListModel<BrandData>> call, Throwable t) {
+                            listener.onResult(false, t.getMessage());
+                        }
+                    });
+        }
+    }
 }

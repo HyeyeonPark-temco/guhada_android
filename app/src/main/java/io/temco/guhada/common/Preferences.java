@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+import io.temco.guhada.data.model.BrandData;
 import io.temco.guhada.data.model.CategoryData;
 
 public class Preferences {
@@ -18,6 +19,7 @@ public class Preferences {
     // Key
     private static final String KEY_AUTO_LOGIN = "auto_login";
     private static final String KEY_CATEGORY_DATA = "category_data";
+    private static final String KEY_BRAND_DATA = "brand_data";
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -143,12 +145,22 @@ public class Preferences {
     }
 
     // Category
-    public static void setCategoryData(Object o) {
-        putJsonObject(KEY_CATEGORY_DATA, o);
+    public static void setCategories(List<CategoryData> data) {
+        putJsonObject(KEY_CATEGORY_DATA, data);
     }
 
-    public static List<CategoryData> getCategoryData() {
+    public static List<CategoryData> getCategories() {
         return new Gson().fromJson(getString(KEY_CATEGORY_DATA), new TypeToken<List<CategoryData>>() {
+        }.getType());
+    }
+
+    // Brand
+    public static void setBrands(List<BrandData> data) {
+        putJsonObject(KEY_BRAND_DATA, data);
+    }
+
+    public static List<BrandData> getBrands() {
+        return new Gson().fromJson(getString(KEY_BRAND_DATA), new TypeToken<List<BrandData>>() {
         }.getType());
     }
 

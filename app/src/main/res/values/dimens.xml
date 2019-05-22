@@ -36,5 +36,4 @@
     <!-- VIEW SIZE -->
     <dimen name="height_header">50dp</dimen>
     <dimen name="height_snackbar">50dp</dimen>
-    <dimen name="textsize_header">16sp</dimen>
 </resources>
