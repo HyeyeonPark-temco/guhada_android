@@ -69,7 +69,7 @@ public class MainHomeFragment extends BaseFragment<FragmentMainHomeBinding> impl
         mBinding.layoutHeader.setClickListener(this);
 
         // Tab
-        mBinding.layoutHeader.viewTabStrip.setTitles("홈", "여성", "남성", "키즈", "신상품");
+        // mBinding.layoutHeader.viewTabStrip.setTitles("홈", "여성", "남성", "키즈", "신상품");
     }
 
     ////////////////////////////////////////////////

@@ -110,7 +110,7 @@
     </style>
 
     <style name="HeaderTextStyle">
-        <item name="android:textSize">@dimen/textsize_header</item>
+        <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/black_two</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
