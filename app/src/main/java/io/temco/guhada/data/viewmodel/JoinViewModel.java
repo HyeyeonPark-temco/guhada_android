@@ -1,7 +1,5 @@
 package io.temco.guhada.data.viewmodel;
 
-import android.text.TextUtils;
-
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableBoolean;
 
@@ -9,11 +7,15 @@ import java.util.Observable;
 import java.util.Observer;
 
 import io.temco.guhada.BR;
-import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
+import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnJoinListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 public class JoinViewModel extends BaseObservableViewModel implements Observer {
     private String toolBarTitle = "";
@@ -83,34 +85,36 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
     }
 
     public void onClickSignUp() {
-        if (!isValidEmail(user.getEmail())) {
-            listener.showMessage("이메일 형식이 올바르지 않습니다.");
+        if (!CommonUtil.validateEmail(user.getEmail())) {
+            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_wrongidformat));
+        } else if (user.getPassword().length() < 8 || user.getPassword().length() > 15) {
+            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_wrondpwdlength));
+        } else if (!CommonUtil.validatePassword(user.getPassword())) {
+            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_wrongpwdformat));
         } else if (!user.getConfirmPassword().equals(user.getPassword())) {
-            listener.showMessage("비밀번호가 일치하지 않습니다.");
-        } else if (!essentialChecked.get()) {
-            listener.showMessage("필수약관 동의가 필요합니다.");
+            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_notequalpwd));
         } else {
             LoginServer.signUp((success, o) -> {
                 if (success) {
                     BaseModel model = ((BaseModel) o);
                     switch (model.resultCode) {
                         case 200:
+                            listener.showMessage("");
                             listener.showMessage((String) model.data);
                             listener.closeActivity();
                             return;
-                        case 6001:
-                        case 6002:
-                            listener.showMessage(model.message);
+                        case 6001: // ALREADY EXIST EMAIL
+                            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_existemail));
+                            break;
+                        case 6002: // INVALID PASSWORD
+                            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_wrongpwdformat));
+                            break;
                     }
                 } else {
-                    listener.showMessage((String) o);
+                    listener.showSnackBar((String) o);
                 }
             }, user);
         }
-    }
-
-    private boolean isValidEmail(CharSequence target) {
-        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
     // TERMS CHECK LISTENER

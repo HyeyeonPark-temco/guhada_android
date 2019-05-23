@@ -56,6 +56,8 @@
     <string name="login_message_wrongpwdformat">비밀번호는 영문과 숫자 그리고 특수문자로만 구성이 가능합니다.</string>
     <string name="login_message_wrondpwdlength">비밀번호는 8자에서 15자 사이에서만 생성할 수 있습니다.</string>
     <string name="login_message_invalidinfo">아이디 또는 비밀번호가 일치하지 않습니다.</string>
+    <string name="login_message_notequalpwd">비밀번호가 일치하지 않습니다.</string>
+    <string name="login_message_existemail">해당 아이디(이메일)가 이미 존재합니다.</string>
 
     <!-- JOIN -->
     <string name="join_agreeall">전체동의</string>
@@ -73,6 +75,13 @@
     <string name="join_hint_password">비밀번호</string>
     <string name="join_hint_confirmpassword">비밀번호 확인</string>
     <string name="join_wrongaccount">아이디 또는 비밀번호가 잘못 입력되었습니다.</string>
+
+    <string name="join_message_wrongidformat">아이디 형태가 올바르지 않습니다.</string>
+    <string name="join_message_wrongpwdformat">비밀번호는 영문과 숫자 그리고 특수문자로만 구성이 가능합니다.</string>
+    <string name="join_message_wrondpwdlength">비밀번호는 8자에서 15자 사이에서만 생성할 수 있습니다.</string>
+    <string name="join_message_invalidinfo">아이디 또는 비밀번호가 일치하지 않습니다.</string>
+    <string name="join_message_notequalpwd">비밀번호가 일치하지 않습니다.</string>
+    <string name="join_message_existemail">해당 아이디(이메일)가 이미 존재합니다.</string>
 
     <!-- FIND ACCOUNT -->
     <string name="findaccount_findid">아이디 찾기</string>

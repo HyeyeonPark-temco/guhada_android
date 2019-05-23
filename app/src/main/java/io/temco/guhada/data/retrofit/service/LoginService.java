@@ -16,7 +16,7 @@ import retrofit2.http.Query;
 public interface LoginService {
 
     @POST("/signUpUser")
-    Call<BaseModel<String>> signUp(@Body User user);
+    Call<BaseModel<Object>> signUp(@Body User user);
 
     @POST("/loginUser")
     Call<BaseModel<Token>> signIn(@Body User user);
