@@ -22,6 +22,8 @@
     <string name="common_my_page">마이페이지</string>
     <string name="common_community">커뮤니티</string>
 
+    <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
+
     <!-- SIDE MENU -->
     <string name="side_menu_login_need">로그인 해주세요</string>
     <string name="side_menu_sub_sale">세일</string>
@@ -37,7 +39,6 @@
 
     <!-- LOGIN -->
     <string name="login_title">로그인</string>
-    <string name="login_invalid">아이디 또는 비밀번호가 잘못 입력되었습니다.</string>
     <string name="login_naver">네이버\n로그인</string>
     <string name="login_google">구글\n로그인</string>
     <string name="login_kakao">카카오\n로그인</string>
@@ -50,6 +51,11 @@
     <string name="login_button_signup">회원가입</string>
     <string name="login_button_saveid">아이디 저장</string>
     <string name="login_button_guestorder">비회원 주문조회</string>
+
+    <string name="login_message_wrongidformat">아이디 형태가 올바르지 않습니다.</string>
+    <string name="login_message_wrongpwdformat">비밀번호는 영문과 숫자 그리고 특수문자로만 구성이 가능합니다.</string>
+    <string name="login_message_wrondpwdlength">비밀번호는 8자에서 15자 사이에서만 생성할 수 있습니다.</string>
+    <string name="login_message_invalidinfo">아이디 또는 비밀번호가 일치하지 않습니다.</string>
 
     <!-- JOIN -->
     <string name="join_agreeall">전체동의</string>

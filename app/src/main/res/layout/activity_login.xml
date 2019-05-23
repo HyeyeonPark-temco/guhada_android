@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hint="이메일"
-                app:type="text" />
+                app:type="email" />
 
             <io.temco.guhada.view.custom.BorderEditTextView
                 android:id="@+id/edittextview_login_pwd"
