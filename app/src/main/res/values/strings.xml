@@ -89,6 +89,8 @@
     <string name="findid_result_button_signin">로그인하러 가기</string>
     <string name="findid_result_button_copyid">아이디 복사하기</string>
 
+    <string name="findid_message_wronginfo">해당 정보와 일치하는 아이디가 없습니다.</string>
+
     <string name="verifyphone_title">휴대폰 본인인증으로 찾기</string>
     <string name="verifyphone_show">보기</string>
     <string name="verifyphone_hint_name">이름</string>
