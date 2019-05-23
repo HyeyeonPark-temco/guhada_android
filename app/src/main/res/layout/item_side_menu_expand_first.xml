@@ -15,9 +15,10 @@
         android:orientation="vertical">
 
         <com.github.florent37.expansionpanel.ExpansionHeader
+            android:id="@+id/layout_expand_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expansion_layout="@id/layout_contents"
+            app:expansion_layout="@id/layout_expand_contents"
             app:expansion_toggleOnClick="true">
 
             <RelativeLayout
@@ -40,7 +41,7 @@
         </com.github.florent37.expansionpanel.ExpansionHeader>
 
         <com.github.florent37.expansionpanel.ExpansionLayout
-            android:id="@+id/layout_contents"
+            android:id="@+id/layout_expand_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:expansion_expanded="false">

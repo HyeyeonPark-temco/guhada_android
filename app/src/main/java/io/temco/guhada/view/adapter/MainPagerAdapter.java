@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
@@ -87,6 +86,10 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         removeProductFragment();
     }
 
+    public void setProductData() {
+
+    }
+
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
@@ -94,11 +97,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private void addProductFragment() {
         if (mProductFragment == null) {
             mProductFragment = new ProductFragment();
-            mProductFragment.setOnDrawerLayoutListener(new OnDrawerLayoutListener() {
-                @Override
-                public void onDrawerEvnet(boolean isOpen) {
-                    removeProduct();
-                }
+            mProductFragment.setOnDrawerLayoutListener(isOpen -> {
+                removeProduct();
             });
         }
         mFragmentManager.beginTransaction().add(R.id.layout_container, mProductFragment).commitAllowingStateLoss();
