@@ -98,7 +98,6 @@ public class CommonUtil {
 
     ////////////////////////////////////////////////
 
-
     private static void initTimer(OnTimerListener listener) {
         mTimerTask = new TimerTask() {
             @Override
@@ -169,5 +168,10 @@ public class CommonUtil {
 
     public static boolean validateEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static boolean validateNumber(String text) {
+        String NUMBER_REGEX = "^[0-9]*$";
+        return text.trim().matches(NUMBER_REGEX);
     }
 }

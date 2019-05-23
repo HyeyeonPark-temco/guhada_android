@@ -228,7 +228,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
                         findAccountListener.hideKeyboard();
                         return;
                     case 5004: // DATA NOT FOUND
-                        String message = BaseApplication.getInstance().getResources().getString(R.string.join_wrongaccount);
+                        String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
                         findAccountListener.showSnackBar(message);
                 }
             } else {

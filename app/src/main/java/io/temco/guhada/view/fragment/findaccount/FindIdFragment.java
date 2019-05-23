@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.viewmodel.FindAccountViewModel;
 import io.temco.guhada.databinding.FragmentFindidBinding;
@@ -109,10 +110,12 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = mVewModel.mUser.get();
-                Objects.requireNonNull(user).setName(s.toString());
-                mVewModel.mUser.set(user);
-                mVewModel.notifyPropertyChanged(BR.mUser);
+                if (CommonUtil.validateNumber(s.toString())) {
+                    User user = mVewModel.mUser.get();
+                    Objects.requireNonNull(user).setName(s.toString());
+                    mVewModel.mUser.set(user);
+                    mVewModel.notifyPropertyChanged(BR.mUser);
+                }
             }
 
             @Override
