@@ -18,6 +18,7 @@ import io.temco.guhada.view.activity.JoinActivity;
 import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.activity.SplashActivity;
+import io.temco.guhada.view.activity.TermsActivity;
 import io.temco.guhada.view.adapter.base.TestListAdapter;
 
 public class TestListActivity extends AppCompatActivity {
@@ -69,6 +70,10 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(CategorySubActivity.class);
                     break;
 
+                case 7 : // Terms
+                    startActivity(TermsActivity.class);
+                    break;
+
             }
         });
         list.setAdapter(adapter);
@@ -87,7 +92,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("MAIN"); // 5
         list.add("CATEGORY_SUB"); // 6
 
-        list.add(""); // 7
+        list.add("TERMS"); // 7
         list.add(""); // 8
 
         list.add(""); // 9

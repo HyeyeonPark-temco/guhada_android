@@ -13,7 +13,8 @@ public class Type {
         CATEGORY,
         LOGIN,
         JOIN,
-        FIND_ACCOUNT
+        FIND_ACCOUNT,
+        TERMS
     }
 
     // Main
