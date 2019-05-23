@@ -74,31 +74,23 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     public void onClickSignIn() {
         if (CommonUtil.validateEmail(id)) {
-            if (pwd.length() >= 8 && pwd.length() <= 15) {
-                if (CommonUtil.validatePassword(pwd)) {
-                    LoginServer.signIn((success, o) -> {
-                        if (success) {
-                            BaseModel model = ((BaseModel) o);
-                            switch (model.resultCode) {
-                                case 200:
-                                    Token token = (Token) model.data;
-                                    loginListener.showMessage(token.getAccessToken());
-                                    return;
-                                case 5004: // DATA NOT FOUND
-                                case 6003: // WRONG PASSWORD
-                                    loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_invalidinfo));
-                            }
-                        } else {
-                            loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.common_message_servererror));
-                            CommonUtil.debug((String) o);
-                        }
-                    }, new User(id, pwd));
+            LoginServer.signIn((success, o) -> {
+                if (success) {
+                    BaseModel model = ((BaseModel) o);
+                    switch (model.resultCode) {
+                        case 200:
+                            Token token = (Token) model.data;
+                            loginListener.showMessage(token.getAccessToken());
+                            return;
+                        case 5004: // DATA NOT FOUND
+                        case 6003: // WRONG PASSWORD
+                            loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_invalidinfo));
+                    }
                 } else {
-                    loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_wrongpwdformat));
+                    loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.common_message_servererror));
+                    CommonUtil.debug((String) o);
                 }
-            } else {
-                loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_wrondpwdlength));
-            }
+            }, new User(id, pwd));
         } else {
             loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_wrongidformat));
         }

@@ -1,12 +1,17 @@
 package io.temco.guhada.view.activity;
 
+import android.content.res.Resources;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.service.Common;
+
 import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnJoinListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.viewmodel.JoinViewModel;
 import io.temco.guhada.databinding.ActivityJoinBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -40,6 +45,12 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
             @Override
             public void closeActivity() {
                 finish();
+            }
+
+            @Override
+            public void showSnackBar(String message) {
+                Resources resources = BaseApplication.getInstance().getResources();
+                CommonUtil.showSnackBar(mBinding.linearlayoutJoinForm, message, resources.getColor(R.color.colorPrimary), (int) resources.getDimension(R.dimen.height_header));
             }
         });
         mViewModel.setToolBarTitle(getResources().getString(R.string.join_title));

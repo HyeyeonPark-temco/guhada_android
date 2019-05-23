@@ -45,8 +45,7 @@
                     android:text="@string/findaccount_findpwd" />
             </com.google.android.material.tabs.TabLayout>
 
-
-            <androidx.viewpager2.widget.ViewPager2
+            <io.temco.guhada.view.custom.pager.SwipeViewPager
                 android:id="@+id/viewpager_findaccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

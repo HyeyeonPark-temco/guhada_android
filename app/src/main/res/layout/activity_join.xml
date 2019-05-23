@@ -25,14 +25,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none">
+        <!--<ScrollView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:scrollbars="none">-->
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -413,6 +413,6 @@
                     android:onClick="@{()->viewModel.onClickSignUp()}"
                     android:text="@string/join_button_signup" />
             </LinearLayout>
-        </ScrollView>
+        <!--</ScrollView>-->
     </LinearLayout>
 </layout>

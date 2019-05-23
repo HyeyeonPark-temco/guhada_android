@@ -3,16 +3,16 @@ package io.temco.guhada.view.adapter;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FindAccountPagerAdapter extends FragmentStateAdapter {
+public class FindAccountPagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragments = new ArrayList<>();
 
-    public FindAccountPagerAdapter(@NonNull FragmentManager fragmentManager) {
-        super(fragmentManager);
+    public FindAccountPagerAdapter(@NonNull FragmentManager fm) {
+        super(fm);
     }
 
     @NonNull
@@ -22,12 +22,11 @@ public class FindAccountPagerAdapter extends FragmentStateAdapter {
     }
 
     @Override
-    public int getItemCount() {
+    public int getCount() {
         return fragments.size();
     }
 
     public void addFragment(Fragment fragment) {
         this.fragments.add(fragment);
     }
-
 }
