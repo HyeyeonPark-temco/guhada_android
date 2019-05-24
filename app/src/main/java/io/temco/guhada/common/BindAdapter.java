@@ -35,37 +35,4 @@ public class BindAdapter {
         view.setVisibility(value ? View.VISIBLE : View.GONE);
     }
 
-    // NOT COMMIT
-    @BindingAdapter("txtAttrChanged")
-    public static void setListener(BorderEditTextView editTextView, InverseBindingListener listener) {
-        if (listener != null) {
-            editTextView.setTextWatcher(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    listener.onChange();
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-                }
-            });
-        }
-
-    }
-
-    @InverseBindingAdapter(attribute = "app:txt")
-    public static String getTxt(BorderEditTextView view) {
-        return view.getText();
-    }
-
-    @BindingAdapter("app:txt")
-    public static void setTxt(BorderEditTextView editTextView, String value) {
-        editTextView.setText(value);
-    }
 }

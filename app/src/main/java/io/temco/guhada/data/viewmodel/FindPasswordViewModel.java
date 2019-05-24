@@ -141,6 +141,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
 
     public void onCheckedFindPwdByEmail(boolean checked) {
         if (checkedFindPwdByEmail != checked) {
+            resetTimer();
             checkedFindPwdByEmail = checked;
             checkedFindPwdByPhone = false;
             checkedFindIdByVerifyingPhone = false;
@@ -155,6 +156,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
 
     public void onCheckedFindIdByPhone(boolean checked) {
         if (checkedFindPwdByPhone != checked) {
+            resetTimer();
             checkedFindPwdByPhone = checked;
             checkedFindIdByVerifyingPhone = false;
             checkedFindPwdByEmail = false;
@@ -169,6 +171,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
 
     public void onCheckedFindIdByVerifyingPhone(boolean checked) {
         if (checkedFindIdByVerifyingPhone != checked) {
+            resetTimer();
             checkedFindIdByVerifyingPhone = checked;
             checkedFindPwdByEmail = false;
             checkedFindPwdByPhone = false;
@@ -320,6 +323,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
     }
 
     private void resetTimer() {
+        CommonUtil.stopTimer();
         timerMinute = "02";
         timerSecond = "60";
     }
@@ -331,7 +335,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         } else {
             resetTimer();
 
-            if(!verifyNumber.isEmpty()){
+            if (!verifyNumber.isEmpty()) {
                 listener.setVerifyNumberViewEmpty();
             }
 
