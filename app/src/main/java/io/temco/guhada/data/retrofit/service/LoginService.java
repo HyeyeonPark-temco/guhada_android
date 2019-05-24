@@ -27,6 +27,9 @@ public interface LoginService {
             @Query("phoneNumber") String phoneNumber);
 
     // VERIFY
+    @GET("/phoneCertification")
+    Call<BaseModel<String>> getVerifyToken();
+
     @POST("/verify/sendEmail")
     Call<BaseModel<Object>> verifyEmail(@Body User user);
 
