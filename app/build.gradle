@@ -75,6 +75,10 @@ dependencies {
     implementation libraryDependencies.facebookLogin
     // NAVER
     implementation files('libs/naveridlogin_android_sdk_4.2.5.aar')
+    // JSOUP
+    implementation libraryDependencies.jsoup
+
+    implementation libraryDependencies.stringUtils
 
 
     ////////////////////////////////////////////////
