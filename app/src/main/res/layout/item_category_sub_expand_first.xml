@@ -11,6 +11,10 @@
         <variable
             name="count"
             type="String" />
+
+        <variable
+            name="expand"
+            type="java.lang.Boolean" />
     </data>
 
     <LinearLayout
@@ -19,13 +23,14 @@
         android:orientation="vertical">
 
         <com.github.florent37.expansionpanel.ExpansionHeader
-            android:id="@+id/sampleHeader"
+            android:id="@+id/layout_expand_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:expansion_layout="@id/layout_contents"
+            app:expansion_layout="@id/layout_expand_contents"
             app:expansion_toggleOnClick="true">
 
             <LinearLayout
+                android:id="@+id/layout_header"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center_vertical"
@@ -57,18 +62,19 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/image_indicator"
                     android:layout_width="19dp"
                     android:layout_height="19dp"
                     android:layout_weight="0"
-                    android:background="@drawable/selector_image_expand" />
+                    android:background="@drawable/selector_expand"
+                    android:visibility="@{expand}" />
             </LinearLayout>
         </com.github.florent37.expansionpanel.ExpansionHeader>
 
         <com.github.florent37.expansionpanel.ExpansionLayout
-            android:id="@+id/layout_contents"
+            android:id="@+id/layout_expand_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="@{expand}"
             app:expansion_expanded="false">
 
             <LinearLayout

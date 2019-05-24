@@ -104,6 +104,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
                         CommonUtil.debug("" + Type.Category.get(type));
                         CommonUtil.debug("" + hierarchies.length);
+                        mPagerAdapter.addProduct();
                     }
                     break;
             }
@@ -142,6 +143,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.layoutContents.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                mPagerAdapter.removeProduct();
                 switch (tab.getPosition()) {
                     case 0: // Category
                         break;
@@ -173,6 +175,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                mPagerAdapter.removeProduct();
             }
         });
     }
@@ -246,6 +249,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         switch (type) {
             case ALL:
                 changeDrawerLayout(false);
+                mPagerAdapter.addProduct();
                 break;
 
             default:

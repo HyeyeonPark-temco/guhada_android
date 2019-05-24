@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter.expand;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,7 +18,7 @@ import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.CategoryData;
 import io.temco.guhada.view.adapter.holder.CategorySubExpandFirstListViewHolder;
 
-public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<CategorySubExpandFirstListViewHolder> {
+public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<CategorySubExpandFirstListViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
@@ -54,8 +55,23 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
 
     @Override
     public void onBindViewHolder(@NonNull CategorySubExpandFirstListViewHolder holder, int position) {
-        mExpansionsCollection.add(holder.getBinding().layoutContents);
-        holder.init(mContext, getItem(position), mCategoryListener, mChildType);
+        CategoryData data = getItem(position);
+        if (data.children == null) {
+            holder.getBinding().layoutHeader.setTag(position);
+            holder.getBinding().layoutHeader.setOnClickListener(this);
+        } else {
+            mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
+        }
+        holder.init(mContext, data, mCategoryListener, mChildType);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mCategoryListener != null
+                && v.getTag() != null && v.getTag() instanceof Integer) {
+            CategoryData data = getItem((int) v.getTag());
+            mCategoryListener.onEvent(data.type, data.hierarchies);
+        }
     }
 
     ////////////////////////////////////////////////

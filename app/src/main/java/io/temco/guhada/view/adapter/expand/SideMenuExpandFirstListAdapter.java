@@ -52,7 +52,7 @@ public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMen
 
     @Override
     public void onBindViewHolder(@NonNull SideMenuExpandFirstListViewHolder holder, int position) {
-        mExpansionsCollection.add(holder.getBinding().layoutContents);
+        mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         holder.init(mContext, getItem(position), mCategoryListener);
     }
 

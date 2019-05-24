@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.github.florent37.expansionpanel.ExpansionLayout;
+
 import java.util.ArrayList;
 
 import io.temco.guhada.R;
@@ -53,20 +55,23 @@ public class CategorySubExpandFirstListViewHolder extends BaseCategoryViewHolder
             if (!TextUtils.isEmpty(data.name)) {
                 mBinding.setTitle(data.name);
             }
-            // Add All
-            if (data.children != null && data.children.size() > 0) {
+            // Child
+            if (data.children == null) {
+                mBinding.setExpand(false);
+                mBinding.layoutExpandHeader.setToggleOnClick(false);
+            } else {
+                mBinding.setExpand(true);
+                mBinding.layoutExpandHeader.setToggleOnClick(true);
+                // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
                     data.children.add(0, createAllCategoryData(context, data.hierarchies));
                 }
-            } else {
-                data.children = new ArrayList<>();
-                data.children.add(0, createAllCategoryData(context, data.hierarchies));
+                // Adapter
+                CategorySubExpandSecondListAdapter adapter = new CategorySubExpandSecondListAdapter(context);
+                adapter.setOnCategoryListener(listener);
+                adapter.setItems(data.children);
+                mBinding.listContents.setAdapter(adapter);
             }
-            // Adapter
-            CategorySubExpandSecondListAdapter adapter = new CategorySubExpandSecondListAdapter(context);
-            adapter.setOnCategoryListener(listener);
-            adapter.setItems(data.children);
-            mBinding.listContents.setAdapter(adapter);
         }
     }
 

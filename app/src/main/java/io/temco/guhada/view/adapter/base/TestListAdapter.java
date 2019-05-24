@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.listener.OnTestItemListener;
+import io.temco.guhada.common.listener.base.OnTestItemListener;
 
 public class TestListAdapter extends RecyclerView.Adapter<TestListViewHolder> implements View.OnClickListener {
 
