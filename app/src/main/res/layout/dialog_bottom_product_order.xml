@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- HEADER -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_dialog_header">
+
+            <ImageView
+                android:id="@+id/image_close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/btn_close"
+                android:onClick="@{clickListener}" />
+        </RelativeLayout>
+
+        <!-- CONTENTS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_default"
+            android:orientation="vertical">
+
+            <!-- TITLE -->
+            <TextView
+                style="@style/TextBold"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/product_order_title"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_18" />
+
+            <!-- LINE -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_3" />
+
+            <!-- ORDER -->
+            <TextView
+                android:id="@+id/text_new_product"
+                style="@style/TextMedium"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:onClick="@{clickListener}"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/product_order_new_product"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/text_marks"
+                style="@style/TextMedium"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:onClick="@{clickListener}"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/product_order_marks"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/text_low_price"
+                style="@style/TextMedium"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:onClick="@{clickListener}"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/product_order_low_price"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_16" />
+
+            <TextView
+                android:id="@+id/text_high_price"
+                style="@style/TextMedium"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_header"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:onClick="@{clickListener}"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/product_order_high_price"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_16" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

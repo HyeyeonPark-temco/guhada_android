@@ -10,11 +10,11 @@
         <!-- HEADER -->
         <include
             android:id="@+id/layout_header"
-            layout="@layout/header_product" />
+            layout="@layout/header_product_list" />
 
-        <!-- CONTAINER -->
-        <io.temco.guhada.view.custom.pager.SwipeViewPager
-            android:id="@+id/layout_pager"
+        <!-- LIST -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/layout_contents"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

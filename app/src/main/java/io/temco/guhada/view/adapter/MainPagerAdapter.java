@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
-import io.temco.guhada.view.fragment.ProductFragment;
+import io.temco.guhada.view.fragment.product.ProductFragment;
 import io.temco.guhada.view.fragment.main.MainCommunityFragment;
 import io.temco.guhada.view.fragment.main.MainHomeFragment;
 import io.temco.guhada.view.fragment.main.MainMyPageFragment;
@@ -105,6 +105,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         // Exist
         if (existProductFragment()) {
             // Add Page
+            mProductFragment.addList();
         } else {
             mFragmentManager
                     .beginTransaction()
