@@ -5,13 +5,14 @@ import androidx.databinding.Bindable;
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
-import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 import io.temco.guhada.common.listener.OnLoginListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 public class LoginViewModel extends BaseObservableViewModel {
     public String toolBarTitle = "";
@@ -72,22 +73,27 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickSignIn() {
-        LoginServer.signIn((success, o) -> {
-            if (success) {
-                BaseModel model = ((BaseModel) o);
-                switch (model.resultCode) {
-                    case 200:
-                        Token token = (Token) model.data;
-                        loginListener.showMessage(token.getAccessToken());
-                        return;
-                    case 5004: // DATA NOT FOUND
-                    case 6003: // WRONG PASSWORD
-                        loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_wrongaccount));
+        if (CommonUtil.validateEmail(id)) {
+            LoginServer.signIn((success, o) -> {
+                if (success) {
+                    BaseModel model = ((BaseModel) o);
+                    switch (model.resultCode) {
+                        case 200:
+                            Token token = (Token) model.data;
+                            loginListener.showMessage(token.getAccessToken());
+                            return;
+                        case 5004: // DATA NOT FOUND
+                        case 6003: // WRONG PASSWORD
+                            loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_invalidinfo));
+                    }
+                } else {
+                    loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.common_message_servererror));
+                    CommonUtil.debug((String) o);
                 }
-            } else {
-                loginListener.showMessage((String) o);
-            }
-        }, new User(id, pwd));
+            }, new User(id, pwd));
+        } else {
+            loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_wrongidformat));
+        }
     }
 
     public void onClickSignUp() {
@@ -122,7 +128,7 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     }
 
-    public void onClickFindAccount(){
+    public void onClickFindAccount() {
         loginListener.redirectFindAccountActivity();
     }
 }

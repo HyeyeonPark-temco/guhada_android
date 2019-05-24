@@ -38,8 +38,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -104,6 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        app:type="number"
                         app:hint="@string/findid_info_hint_phonenumber" />
 
                     <Button
@@ -127,8 +128,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -168,7 +169,7 @@
 
             <include
                 android:id="@+id/include_findid_result"
-                layout="@layout/layout_findaccount_idresult"
+                layout="@layout/layout_findaccount_resultid"
                 android:visibility="@{viewModel.resultVisibility, default= gone}" />
         </FrameLayout>
 

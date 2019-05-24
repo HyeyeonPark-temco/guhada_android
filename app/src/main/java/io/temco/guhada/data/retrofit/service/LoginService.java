@@ -4,6 +4,7 @@ import io.temco.guhada.data.model.NaverResponse;
 import io.temco.guhada.data.model.SnsUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.User;
+import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,7 +16,7 @@ import retrofit2.http.Query;
 public interface LoginService {
 
     @POST("/signUpUser")
-    Call<BaseModel<String>> signUp(@Body User user);
+    Call<BaseModel<Object>> signUp(@Body User user);
 
     @POST("/loginUser")
     Call<BaseModel<Token>> signIn(@Body User user);
@@ -24,6 +25,16 @@ public interface LoginService {
     Call<BaseModel<User>> findUserId(
             @Query("name") String name,
             @Query("phoneNumber") String phoneNumber);
+
+    // VERIFY
+    @POST("/verify/sendEmail")
+    Call<BaseModel<Object>> verifyEmail(@Body User user);
+
+    @POST("/verify")
+    Call<BaseModel<Object>> verifyNumber(@Body Verification verification);
+
+    @POST("/changePassword")
+    Call<BaseModel<Object>> changePassword(@Body Verification verification);
 
     // SNS LOGIN
     @POST("/facebookLogin")

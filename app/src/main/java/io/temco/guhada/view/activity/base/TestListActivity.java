@@ -14,6 +14,7 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.view.activity.CategorySubActivity;
 import io.temco.guhada.view.activity.FindAccountActivity;
+import io.temco.guhada.view.activity.JoinActivity;
 import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.activity.SplashActivity;
@@ -49,21 +50,23 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(SplashActivity.class);
                     break;
 
-
                 case 2: // Login
                     startActivity(LoginActivity.class);
                     break;
 
-                case 3: // Find Account
+                case 3: // Join
+                    startActivity(JoinActivity.class);
+                    break;
+                case 4: // Find Account
                     startActivity(FindAccountActivity.class);
                     break;
 
-
-                case 4: // Main
+                case 5: // Main
                     startActivity(MainActivity.class);
                     break;
 
-                case 5:
+                case 6: // Category Sub
+                    startActivity(CategorySubActivity.class);
                     break;
 
             }
@@ -78,14 +81,15 @@ public class TestListActivity extends AppCompatActivity {
         list.add("SPLASH"); // 1
 
         list.add("LOGIN"); // 2
-        list.add("FIND_ACCOUNT"); // 3
+        list.add("JOIN"); //3
+        list.add("FIND_ACCOUNT"); // 4
 
-        list.add("MAIN"); // 4
-        list.add(""); // 5
-        list.add(""); // 6
+        list.add("MAIN"); // 5
+        list.add("CATEGORY_SUB"); // 6
+
         list.add(""); // 7
-
         list.add(""); // 8
+
         list.add(""); // 9
         list.add(""); // 10
         list.add(""); // 11

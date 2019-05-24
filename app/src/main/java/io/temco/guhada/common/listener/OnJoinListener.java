@@ -4,4 +4,5 @@ import io.temco.guhada.common.listener.base.OnBaseActivityListener;
 
 public interface OnJoinListener extends OnBaseActivityListener {
 
+    void showSnackBar(String string);
 }
