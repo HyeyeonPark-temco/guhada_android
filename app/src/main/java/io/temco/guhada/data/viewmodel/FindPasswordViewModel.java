@@ -4,6 +4,9 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
@@ -17,7 +20,7 @@ import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
-public class FindPasswordViewModel extends BaseObservableViewModel {
+public class FindPasswordViewModel extends BaseObservableViewModel implements Observer {
     private OnFindPasswordListener listener;
     private boolean checkedFindPwdByEmail = false;
     private boolean checkedFindIdByVerifyingPhone = false;
@@ -33,10 +36,12 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
     private String timerSecond = "60";
 
     public FindPasswordViewModel() {
+        this.user.addObserver(this);
     }
 
     public FindPasswordViewModel(OnFindPasswordListener listener) {
         this.listener = listener;
+        this.user.addObserver(this);
     }
 
     @Bindable
@@ -46,6 +51,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+        notifyPropertyChanged(BR.newPassword);
     }
 
     @Bindable
@@ -55,8 +61,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
 
     public void setNewPasswordConfirm(String newPasswordConfirm) {
         this.newPasswordConfirm = newPasswordConfirm;
+        notifyPropertyChanged(BR.newPasswordConfirm);
     }
-
 
     @Bindable
     public int getResultVisibility() {
@@ -73,7 +79,12 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
     }
 
     public void setVerifyNumber(String verifyNumber) {
-        this.verifyNumber = verifyNumber;
+        if(verifyNumber.length() < 7){
+            // 6자리 초과 시 입력되지 않음
+            // 숫자가 아니면 입력되지 않음
+            this.verifyNumber = verifyNumber;
+            notifyPropertyChanged(BR.verifyNumber);
+        }
     }
 
     @Bindable
@@ -260,8 +271,6 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         }
         if (checkedFindPwdByPhone) {
             // 휴대폰 번호로 비밀번호 재설정
-
-
         }
 
         LoginServer.verifyNumber((success, o) -> {
@@ -365,4 +374,15 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         }
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String) {
+            switch ((String) arg) {
+                case "name":
+                case "email":
+                    notifyPropertyChanged(BR.user);
+                    break;
+            }
+        }
+    }
 }

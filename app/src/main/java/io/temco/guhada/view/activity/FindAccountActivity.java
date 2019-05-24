@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.databinding.ObservableField;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -119,10 +118,10 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         mAdapter.addFragment(new FindPasswordFragment(new FindPasswordViewModel(new OnFindPasswordListener() {
             @Override
             public void setVerifyNumberViewEmpty() {
-                if(mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_ID){
-                  //  FindAccountViewModel viewModel = ((FindAccountViewModel) mAdapter.getItem(POSITION_FIND_ID)).getmViewModel();
+                if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_ID) {
+                    //  FindAccountViewModel viewModel = ((FindAccountViewModel) mAdapter.getItem(POSITION_FIND_ID)).getmViewModel();
 
-                }else {
+                } else {
                     FindPasswordFragment fragment = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD));
                     fragment.clearVerifyNumber();
                 }
@@ -235,11 +234,10 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                             switch (model.resultCode) {
                                 case Flag.ResultCode.SUCCESS:
                                     User user = (User) model.data;
-                                    mViewModel.setmUser(new ObservableField<>(user));
                                     mViewModel.setResultVisibility(View.VISIBLE);
-
+                                    mViewModel.setUser(user);
                                     mViewModel.notifyPropertyChanged(BR.resultVisibility);
-                                    mViewModel.notifyPropertyChanged(BR.mUser);
+                                    mViewModel.notifyPropertyChanged(BR.user);
                                     break;
                                 case Flag.ResultCode.DATA_NOT_FOUND:
                                     String message = getResources().getString(R.string.findid_message_wronginfo);
