@@ -2,6 +2,7 @@ package io.temco.guhada.common;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
@@ -29,6 +30,10 @@ public class BindAdapter {
         view.setImageResource(value);
     }
 
+    @BindingAdapter("android:visibility")
+    public static void setVisibility(View view, Boolean value) {
+        view.setVisibility(value ? View.VISIBLE : View.GONE);
+    }
 
     // NOT COMMIT
     @BindingAdapter("txtAttrChanged")
@@ -63,5 +68,4 @@ public class BindAdapter {
     public static void setTxt(BorderEditTextView editTextView, String value) {
         editTextView.setText(value);
     }
-
 }

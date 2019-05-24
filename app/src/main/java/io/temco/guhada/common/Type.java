@@ -131,6 +131,14 @@ public class Type {
         }
     }
 
+    public enum Grid {
+
+        ONE,
+        TWO,
+        THREE
+    }
+
+
     // Category
     public enum Category {
 
