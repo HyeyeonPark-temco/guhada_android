@@ -2,13 +2,9 @@ package io.temco.guhada.view.fragment.findaccount;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.Toast;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
-import io.temco.guhada.common.BaseApplication;
-import io.temco.guhada.common.listener.OnFindPasswordListener;
-import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.viewmodel.FindPasswordViewModel;
@@ -18,8 +14,19 @@ import io.temco.guhada.view.fragment.base.BaseFragment;
 public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBinding> {
     private FindPasswordViewModel mViewModel;
 
-    public FindPasswordFragment(FindPasswordViewModel viewModel) {
-        this.mViewModel = viewModel;
+    public FindPasswordFragment() {
+    }
+
+    public FindPasswordFragment(FindPasswordViewModel mViewModel) {
+        this.mViewModel = mViewModel;
+    }
+
+    public FindPasswordViewModel getmViewModel() {
+        return mViewModel;
+    }
+
+    public void setmViewModel(FindPasswordViewModel mViewModel) {
+        this.mViewModel = mViewModel;
     }
 
     @Override
@@ -40,58 +47,6 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
 
     @Override
     protected void init() {
-        mViewModel.setListener(new OnFindPasswordListener() {
-
-            @Override
-            public void showMessage(String message) {
-                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void closeActivity() {
-                if (getActivity() != null) {
-                    getActivity().finish();
-                }
-            }
-
-            @Override
-            public void hideKeyboard() {
-                CommonUtil.hideKeyboard(getContext(), mBinding.linearLayout2);
-            }
-
-            @Override
-            public void showSnackBar(String message) {
-                CommonUtil.showSnackBar(mBinding.linearLayout2, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
-            }
-
-            @Override
-            public void showResultView() {
-
-            }
-
-            @Override
-            public void startTimer(String minute, String second) {
-                mViewModel.setTimerMinute(minute);
-                mViewModel.setTimerSecond(second);
-                CommonUtil.startVerifyNumberTimer(mViewModel.getTimerSecond(), mViewModel.getTimerMinute(), new OnTimerListener() {
-                    @Override
-                    public void changeSecond(String second) {
-                        mViewModel.setTimerSecond(second);
-                    }
-
-                    @Override
-                    public void changeMinute(String minute) {
-                        mViewModel.setTimerMinute(minute);
-                    }
-
-                    @Override
-                    public void notifyMinuteAndSecond() {
-                        mViewModel.notifyPropertyChanged(BR.timerSecond);
-                        mViewModel.notifyPropertyChanged(BR.timerMinute);
-                    }
-                });
-            }
-        });
         mBinding.setViewModel(mViewModel);
         mBinding.constraintlayoutFindpwdResult.bringToFront();
         setTextWatchers();
@@ -197,6 +152,4 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
             }
         });
     }
-
-
 }
