@@ -104,8 +104,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        app:type="number"
-                        app:hint="@string/findid_info_hint_phonenumber" />
+                        app:hint="@string/findid_info_hint_phonenumber"
+                        app:type="number" />
 
                     <Button
                         style="@style/InactivatedButtonStyle"
@@ -157,8 +157,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{viewModel.checkedFindIdByVerifyingPhone ? View.VISIBLE : View.GONE, default= gone}">
-
+                    android:visibility="gone">
+                    <!--android:visibility="@{viewModel.checkedFindIdByVerifyingPhone ? View.VISIBLE : View.GONE, default= gone}"-->
                     <include
                         android:id="@+id/include_findid_verifyphone"
                         layout="@layout/layout_findaccount_verifyphone" />

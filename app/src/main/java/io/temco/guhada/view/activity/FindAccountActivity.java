@@ -27,12 +27,14 @@ import io.temco.guhada.view.adapter.FindAccountPagerAdapter;
 import io.temco.guhada.view.fragment.findaccount.FindIdFragment;
 import io.temco.guhada.view.fragment.findaccount.FindPasswordFragment;
 
+import static io.temco.guhada.common.Flag.REQUEST_CODE_VERIFY_PHONE;
+
 public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding> {
     private FindAccountViewModel mViewModel;
     private TimerTask mTimerTask;
     private FindAccountPagerAdapter mAdapter;
-    private int REQUEST_CODE_VERIFY_PHONE = 10001;
-    private int PAGER_INDEX_FIND_PWD = 1;
+    private int POSITION_FIND_ID = 0;
+    private int POSITION_FIND_PWD = 1;
 
     @Override
     protected String getBaseTag() {
@@ -57,7 +59,6 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         mBinding.executePendingBindings();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -67,6 +68,11 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
     private void initViewModel() {
         mViewModel = new FindAccountViewModel();
         mViewModel.setFindAccountListener(new OnFindAccountListener() {
+            @Override
+            public void redirectVerifyPhoneActivity() {
+                startActivityForResult(new Intent(getApplicationContext(), VerifyPhoneActivity.class), REQUEST_CODE_VERIFY_PHONE);
+            }
+
             @Override
             public void showSnackBar(String message) {
                 CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
@@ -120,7 +126,6 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         // PAGER
         mAdapter = new FindAccountPagerAdapter(getSupportFragmentManager());
         mAdapter.addFragment(new FindIdFragment(mViewModel));
-
         mAdapter.addFragment(new FindPasswordFragment(new FindPasswordViewModel(new OnFindPasswordListener() {
             @Override
             public void redirectVerifyPhoneActivity() {
@@ -149,7 +154,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
             @Override
             public void startTimer(String minute, String second) {
-                FindPasswordViewModel viewModel = ((FindPasswordFragment) mAdapter.getItem(PAGER_INDEX_FIND_PWD)).getmViewModel();
+                FindPasswordViewModel viewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
                 viewModel.setTimerMinute(minute);
                 viewModel.setTimerSecond(second);
                 CommonUtil.startVerifyNumberTimer(viewModel.getTimerSecond(), viewModel.getTimerMinute(), new OnTimerListener() {
@@ -209,9 +214,15 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                 Toast.makeText(getApplicationContext(), "인증 완료", Toast.LENGTH_SHORT).show();
             }
 
-            FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(PAGER_INDEX_FIND_PWD)).getmViewModel();
-            passwordViewModel.setCheckedFindIdByVerifyingPhone(false);
-            passwordViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            if(mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD){
+                FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                passwordViewModel.setCheckedFindIdByVerifyingPhone(false);
+                passwordViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            }else {
+                FindAccountViewModel findAccountViewModel = ((FindIdFragment) mAdapter.getItem(POSITION_FIND_ID)).getmVewModel();
+                findAccountViewModel.setCheckedFindIdByVerifyingPhone(false);
+                findAccountViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            }
         }
 
     }

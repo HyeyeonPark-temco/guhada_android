@@ -10,11 +10,11 @@ import java.util.Objects;
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
-import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 import io.temco.guhada.common.listener.OnFindAccountListener;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 public class FindAccountViewModel extends BaseObservableViewModel {
     public String toolBarTitle = "아이디/비밀번호 찾기";
@@ -151,10 +151,14 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     }
 
     public void onCheckedFindIdByVerifyingPhone(boolean checked) {
-        if (checked && checkedFindIdByInfo) {
-            checkedFindIdByInfo = false;
-            notifyPropertyChanged(BR.checkedFindIdByInfo);
+        if (checked) {
+            if (checkedFindIdByInfo) {
+                checkedFindIdByInfo = false;
+                notifyPropertyChanged(BR.checkedFindIdByInfo);
+            }
+            findAccountListener.redirectVerifyPhoneActivity();
         }
+
         checkedFindIdByVerifyingPhone = checked;
         notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
     }
