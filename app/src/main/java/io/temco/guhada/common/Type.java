@@ -2,6 +2,7 @@ package io.temco.guhada.common;
 
 public class Type {
 
+    ////////////////////////////////////////////////
     // View
     public enum View {
         TEST,
@@ -25,6 +26,7 @@ public class Type {
         MY_PAGE
     }
 
+    ////////////////////////////////////////////////
     // Server
     public enum Server {
 
@@ -95,6 +97,7 @@ public class Type {
         }
     }
 
+    ////////////////////////////////////////////////
     // List
     public enum List {
 
@@ -137,7 +140,7 @@ public class Type {
         THREE
     }
 
-
+    ////////////////////////////////////////////////
     // Category
     public enum Category {
 
@@ -216,4 +219,16 @@ public class Type {
             }
         }
     }
+
+    ////////////////////////////////////////////////
+    // Product Order
+    public enum ProductOrder {
+
+        NEW_PRODUCT, // 신상품순
+        MARKS, // 평점순
+        LOW_PRICE, // 낮은가격순
+        HIGH_PRICE // 높은가격순
+    }
+
+    ////////////////////////////////////////////////
 }

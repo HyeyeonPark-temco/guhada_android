@@ -122,10 +122,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     ////////////////////////////////////////////////
 
     private void setFullWideDrawerLayout() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mBinding.layoutSideMenu.getRoot().getLayoutParams();
-        params.width = metrics.widthPixels;
+        params.width = getResources().getDisplayMetrics().widthPixels;
         mBinding.layoutSideMenu.getRoot().setLayoutParams(params);
     }
 

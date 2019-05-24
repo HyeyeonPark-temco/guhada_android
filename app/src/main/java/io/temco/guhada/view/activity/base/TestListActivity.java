@@ -65,8 +65,7 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(MainActivity.class);
                     break;
 
-                case 6: // Category Sub
-                    startActivity(CategorySubActivity.class);
+                case 6:
                     break;
 
             }
@@ -85,7 +84,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("FIND_ACCOUNT"); // 4
 
         list.add("MAIN"); // 5
-        list.add("CATEGORY_SUB"); // 6
+        list.add(""); // 6
 
         list.add(""); // 7
         list.add(""); // 8

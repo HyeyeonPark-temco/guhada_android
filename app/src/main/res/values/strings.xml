@@ -46,7 +46,6 @@
 
     <string name="product_search_detail_title">상세검색</string>
 
-
     <!-- LOGIN -->
     <string name="login_title">로그인</string>
     <string name="login_naver">네이버\n로그인</string>

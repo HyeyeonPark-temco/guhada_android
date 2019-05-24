@@ -1,4 +1,4 @@
-package io.temco.guhada.view.fragment;
+package io.temco.guhada.view.fragment.product;
 
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -11,15 +11,16 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.databinding.FragmentProductBinding;
+import io.temco.guhada.databinding.FragmentProductListBinding;
+import io.temco.guhada.view.custom.dialog.ProductOrderBottomDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
-public class ProductFragment extends BaseFragment<FragmentProductBinding> implements View.OnClickListener {
+public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private OnDrawerLayoutListener mDrawerListener;
     private OnBackPressListener mBackListener;
-
+    private ProductOrderBottomDialog mOrderBottomDialog;
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
     // -----------------------------
 
@@ -29,39 +30,28 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
 
     @Override
     protected String getBaseTag() {
-        return ProductFragment.class.getSimpleName();
+        return ProductListFragment.class.getSimpleName();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_product;
+        return R.layout.fragment_product_list;
     }
 
     @Override
     protected void init() {
+        //
         mBinding.layoutHeader.setClickListener(this);
 
+        //
         setTabLayout();
         changeListType(mCurrentGridType);
+        changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            // Top Menu
-            case R.id.image_prev:
-                if (mBackListener != null) mBackListener.onPress();
-                break;
-
-            case R.id.image_side_menu:
-                if (mDrawerListener != null) mDrawerListener.onDrawerEvnet(true);
-                break;
-
-            case R.id.image_search:
-            case R.id.image_shop_cart:
-                if (mDrawerListener != null) mDrawerListener.onDrawerEvnet(false);
-                break;
-
             // List Type
             case R.id.image_list_type_1:
                 checkCurrentListType(Type.Grid.ONE);
@@ -73,6 +63,15 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
 
             case R.id.image_list_type_3:
                 checkCurrentListType(Type.Grid.THREE);
+                break;
+
+            // Option
+            case R.id.layout_order:
+                showOrderBottomDialog();
+                break;
+
+            case R.id.layout_search_detail:
+                showOrderBottomDialog();
                 break;
         }
     }
@@ -149,6 +148,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         });
     }
 
+    // List Type
     private void checkCurrentListType(Type.Grid type) {
         if (mCurrentGridType != type) {
             changeListType(type);
@@ -175,6 +175,45 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(true);
                 break;
+        }
+    }
+
+    // Order
+    private void changeProductOrder(Type.ProductOrder type) {
+        dismissOrderBottomDialog();
+        switch (type) {
+            case NEW_PRODUCT:
+                mBinding.layoutHeader.setOrder(getString(R.string.product_order_new_product));
+                break;
+
+            case MARKS:
+                mBinding.layoutHeader.setOrder(getString(R.string.product_order_marks));
+                break;
+
+            case LOW_PRICE:
+                mBinding.layoutHeader.setOrder(getString(R.string.product_order_low_price));
+                break;
+
+            case HIGH_PRICE:
+                mBinding.layoutHeader.setOrder(getString(R.string.product_order_high_price));
+                break;
+        }
+    }
+
+    // Dialog
+    private void showOrderBottomDialog() {
+        if (getFragmentManager() != null) {
+            if (mOrderBottomDialog == null) {
+                mOrderBottomDialog = new ProductOrderBottomDialog();
+                mOrderBottomDialog.setOnProductOrderListener(this::changeProductOrder);
+            }
+            mOrderBottomDialog.show(getFragmentManager(), getBaseTag());
+        }
+    }
+
+    private void dismissOrderBottomDialog() {
+        if (mOrderBottomDialog != null) {
+            mOrderBottomDialog.dismiss();
         }
     }
 

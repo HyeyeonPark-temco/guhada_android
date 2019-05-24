@@ -1,4 +1,4 @@
-package io.temco.guhada.view.fragment;
+package io.temco.guhada.view.fragment.product;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnBackPressListener;
