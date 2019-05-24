@@ -54,7 +54,7 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
     }
 
     private void setTextWatchers() {
-        // EMAIL - FIND ACCOUNT
+        // BY EMAIL
         mBinding.edittextFindpwdEmailname.setTextWatcher(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -116,7 +116,83 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
             }
         });
 
-        // EMAIL - CHANGE PASSWORD
+        // BY PHONE NUMBER
+        mBinding.edittextFindpwdPhonename.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                User user = mViewModel.getUser();
+                user.setName(s.toString());
+                mViewModel.setUser(user);
+                mViewModel.notifyPropertyChanged(BR.user);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mBinding.edittextFindpwdPhoneid.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                User user = mViewModel.getUser();
+                user.setEmail(s.toString());
+                mViewModel.setUser(user);
+                mViewModel.notifyPropertyChanged(BR.user);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mBinding.edittextFindpwdPhonenumber.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                User user = mViewModel.getUser();
+                user.setPhoneNumber(s.toString());
+                mViewModel.setUser(user);
+                mViewModel.notifyPropertyChanged(BR.user);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mBinding.edittextFindpwdPhoneverify.setTextWatcher(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mViewModel.setVerifyNumber(s.toString());
+                mViewModel.notifyPropertyChanged(BR.verifyNumber);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        // EMAIL - RESULT
         mBinding.edittextFindpwdNewpwd.setTextWatcher(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -151,5 +227,9 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
 
             }
         });
+    }
+
+    public void clearVerifyNumber(){
+        mBinding.edittextFindpwdPhoneverify.setText("");
     }
 }

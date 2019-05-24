@@ -4,19 +4,16 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindPasswordListener;
-import io.temco.guhada.common.listener.OnServerListener;
+import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.retrofit.service.LoginService;
 import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
@@ -24,13 +21,14 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
     private OnFindPasswordListener listener;
     private boolean checkedFindPwdByEmail = false;
     private boolean checkedFindIdByVerifyingPhone = false;
+    private boolean checkedFindPwdByPhone = false;
     private User user = new User();
     private String verifyNumber = "", verifiedEmail = "", newPassword = "", newPasswordConfirm = "";
 
     // VERIFY
     private int verifyEmailVisibility = View.GONE;
     private int resultVisibility = View.GONE;
-    private int verifyNumberVisibility = View.GONE;
+    private int verifyPhoneVisibility = View.GONE;
     private String timerMinute = "02";
     private String timerSecond = "60";
 
@@ -59,13 +57,6 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         this.newPasswordConfirm = newPasswordConfirm;
     }
 
-    public int getVerifyNumberVisibility() {
-        return verifyNumberVisibility;
-    }
-
-    public void setVerifyNumberVisibility(int verifyNumberVisibility) {
-        this.verifyNumberVisibility = verifyNumberVisibility;
-    }
 
     @Bindable
     public int getResultVisibility() {
@@ -92,6 +83,15 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
 
     public void setVerifiedEmail(String verifiedEmail) {
         this.verifiedEmail = verifiedEmail;
+    }
+
+    @Bindable
+    public int getVerifyPhoneVisibility() {
+        return verifyPhoneVisibility;
+    }
+
+    public void setVerifyPhoneVisibility(int verifyPhoneVisibility) {
+        this.verifyPhoneVisibility = verifyPhoneVisibility;
     }
 
     @Bindable
@@ -122,6 +122,15 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
     }
 
     @Bindable
+    public boolean isCheckedFindPwdByPhone() {
+        return checkedFindPwdByPhone;
+    }
+
+    public void setCheckedFindPwdByPhone(boolean checkedFindPwdByPhone) {
+        this.checkedFindPwdByPhone = checkedFindPwdByPhone;
+    }
+
+    @Bindable
     public boolean isCheckedFindIdByVerifyingPhone() {
         return checkedFindIdByVerifyingPhone;
     }
@@ -131,19 +140,48 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
     }
 
     public void onCheckedFindPwdByEmail(boolean checked) {
-        checkedFindPwdByEmail = checked;
-        notifyPropertyChanged(BR.checkedFindPwdByEmail);
+        if (checkedFindPwdByEmail != checked) {
+            checkedFindPwdByEmail = checked;
+            checkedFindPwdByPhone = false;
+            checkedFindIdByVerifyingPhone = false;
+//            user = new User();
+
+            notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            notifyPropertyChanged(BR.checkedFindPwdByEmail);
+            notifyPropertyChanged(BR.checkedFindPwdByPhone);
+//            notifyPropertyChanged(BR.user);
+        }
     }
 
-    public void onCheckedFindIdByVerifyingPhone(boolean checked){
-        checkedFindIdByVerifyingPhone = checked;
-        checkedFindPwdByEmail = false;
+    public void onCheckedFindIdByPhone(boolean checked) {
+        if (checkedFindPwdByPhone != checked) {
+            checkedFindPwdByPhone = checked;
+            checkedFindIdByVerifyingPhone = false;
+            checkedFindPwdByEmail = false;
+//            user = new User();
 
-        notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
-        notifyPropertyChanged(BR.checkedFindPwdByEmail);
+            notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            notifyPropertyChanged(BR.checkedFindPwdByEmail);
+            notifyPropertyChanged(BR.checkedFindPwdByPhone);
+//            notifyPropertyChanged(BR.user);
+        }
+    }
 
-        if(checked){
-            listener.redirectVerifyPhoneActivity();
+    public void onCheckedFindIdByVerifyingPhone(boolean checked) {
+        if (checkedFindIdByVerifyingPhone != checked) {
+            checkedFindIdByVerifyingPhone = checked;
+            checkedFindPwdByEmail = false;
+            checkedFindPwdByPhone = false;
+//            user = new User();
+
+            notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            notifyPropertyChanged(BR.checkedFindPwdByEmail);
+            notifyPropertyChanged(BR.checkedFindPwdByPhone);
+//            notifyPropertyChanged(BR.user);
+
+            if (checked) {
+                listener.redirectVerifyPhoneActivity();
+            }
         }
     }
 
@@ -173,7 +211,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         this.listener = listener;
     }
 
-    public void onClickRedirectLogin(){
+    public void onClickRedirectLogin() {
         listener.closeActivity();
     }
 
@@ -213,23 +251,31 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         Verification verification = new Verification();
         verification.setVerificationNumber(verifyNumber);
         verification.setVerificationTarget(user.getEmail());
-        verification.setVerificationTargetType("EMAIL");
+
+        if (checkedFindPwdByEmail) {
+            verification.setVerificationTargetType("EMAIL");
+        }
+        if (checkedFindPwdByPhone) {
+            // 휴대폰 번호로 비밀번호 재설정
+
+
+        }
 
         LoginServer.verifyNumber((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
-                    case 200:
+                    case Flag.ResultCode.SUCCESS:
                         resultVisibility = View.VISIBLE;
                         verifiedEmail = user.getEmail();
                         notifyPropertyChanged(BR.resultVisibility);
                         notifyPropertyChanged(BR.verifiedEmail);
                         listener.hideKeyboard();
                         break;
-                    case 6004:
+                    case Flag.ResultCode.EXPIRED_VERIFICATION_NUMBER:
                         listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
                         break;
-                    case 6007:
+                    case Flag.ResultCode.INVALID_VERIFICATION_NUMBER:
                         listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invaludverification));
                         break;
                 }
@@ -251,15 +297,15 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
                     if (success) {
                         BaseModel model = (BaseModel) o;
                         switch (model.resultCode) {
-                            case 200:
+                            case Flag.ResultCode.SUCCESS:
                                 listener.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
                                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
                                 listener.closeActivity();
                                 break;
-                            case 5004:
+                            case Flag.ResultCode.DATA_NOT_FOUND:
                                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
                                 break;
-                            case 6004:
+                            case Flag.ResultCode.INVALID_VERIFICATION_NUMBER:
                                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
                                 break;
                         }
@@ -273,5 +319,46 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         }
     }
 
+    private void resetTimer() {
+        timerMinute = "02";
+        timerSecond = "60";
+    }
+
+    // 미완
+    public void onClickSendPhone() {
+        if (!CommonUtil.validateEmail(user.getEmail())) {
+            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
+        } else {
+            resetTimer();
+
+            if(!verifyNumber.isEmpty()){
+                listener.setVerifyNumberViewEmpty();
+            }
+
+            verifyPhoneVisibility = View.VISIBLE;
+            notifyPropertyChanged(BR.verifyPhoneVisibility);
+
+
+            CommonUtil.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
+                @Override
+                public void changeSecond(String second) {
+                    timerSecond = second;
+                }
+
+                @Override
+                public void changeMinute(String minute) {
+                    timerMinute = minute;
+                }
+
+                @Override
+                public void notifyMinuteAndSecond() {
+                    notifyPropertyChanged(BR.timerMinute);
+                    notifyPropertyChanged(BR.timerSecond);
+                }
+            });
+
+            listener.showMessage("[클릭] 휴대폰 번호로 비밀번호 재설정 - 인증번호 요청");
+        }
+    }
 
 }

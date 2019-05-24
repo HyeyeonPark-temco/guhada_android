@@ -50,7 +50,7 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
             @Override
             public void showSnackBar(String message) {
                 Resources resources = BaseApplication.getInstance().getResources();
-                CommonUtil.showSnackBar(mBinding.linearlayoutJoinForm, message, resources.getColor(R.color.colorPrimary), (int) resources.getDimension(R.dimen.height_header));
+                CommonUtil.showSnackBar(mBinding.linearlayoutJoinForm, message);
             }
         });
         mViewModel.setToolBarTitle(getResources().getString(R.string.join_title));

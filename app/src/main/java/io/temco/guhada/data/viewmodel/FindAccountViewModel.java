@@ -10,6 +10,7 @@ import java.util.Objects;
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindAccountListener;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
@@ -207,7 +208,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     public void onClickRequestVerifyNumber() {
         verifyNumberVisibility = View.VISIBLE;
         notifyPropertyChanged(BR.verifyNumberVisibility);
-        findAccountListener.startTimer();
+//        findAccountListener.startTimer();
     }
 
     /**
@@ -218,7 +219,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
             if (success) {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
-                    case 200:
+                    case Flag.ResultCode.SUCCESS:
                         User user = (User) model.data;
 
                         Objects.requireNonNull(mUser.get()).setPhoneNumber(user.getPhoneNumber());
@@ -231,7 +232,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
 
                         findAccountListener.hideKeyboard();
                         return;
-                    case 5004: // DATA NOT FOUND
+                    case Flag.ResultCode.DATA_NOT_FOUND:
                         String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
                         findAccountListener.showSnackBar(message);
                 }
@@ -241,12 +242,4 @@ public class FindAccountViewModel extends BaseObservableViewModel {
         }, Objects.requireNonNull(mUser.get()).getName(), Objects.requireNonNull(mUser.get()).getPhoneNumber());
     }
 
-    public void resetTimer() {
-        timerMinute = "02";
-        timerSecond = "60";
-    }
-
-    /**
-     * 인증번호
-     */
 }

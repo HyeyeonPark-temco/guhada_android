@@ -28,6 +28,7 @@ import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
@@ -167,7 +168,7 @@ public class SnsLoginModule {
                     LoginServer.googleLogin((success, o) -> {
                         if (success) {
                             BaseModel result = (BaseModel) o;
-                            if (result.resultCode == Type.ResultCode.getResultCode(Type.ResultCode.ALREADY_SIGNED_UP)) {
+                            if (result.resultCode == Flag.ResultCode.ALREADY_SIGNED_UP) {
                                 // 가입된 계정 존재 --> 로그인
 
                             } else {

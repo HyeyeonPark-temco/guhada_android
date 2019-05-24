@@ -96,6 +96,9 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
                                 /**
                                  *  <휴대폰번호> 는 업체에 따로 신청해야해서 추후에 필드값 넘어올 예정 (05.24)
                                  */
+                                if(phoneNumber.isEmpty()){
+                                    phoneNumber = "01076652371";
+                                }
 
                                 Log.e("본인인증 완료", "name: " + name + "; birth: " + birth + "; phoneNumber: " + phoneNumber);
                                 Intent intent = getIntent();

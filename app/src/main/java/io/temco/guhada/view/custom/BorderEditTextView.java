@@ -39,9 +39,11 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
         mView = layoutInflater.inflate(R.layout.view_borderedittext, this);
         mEditText = mView.findViewById(R.id.editText);
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.BorderEditTextView);
+        String text = typedArray.getString(R.styleable.BorderEditTextView_txt);
         String inputType = typedArray.getString(R.styleable.BorderEditTextView_type);
         inputType = inputType != null ? inputType : "text";
 
+        mEditText.setText(text);
         mEditText.setHint(typedArray.getString(R.styleable.BorderEditTextView_hint));
         mEditText.setOnFocusChangeListener(this);
 

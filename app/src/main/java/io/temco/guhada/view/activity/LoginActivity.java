@@ -84,7 +84,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void showSnackBar(String message) {
-                CommonUtil.showSnackBar(mBinding.linearlayoutLogin, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
+                CommonUtil.showSnackBar(mBinding.linearlayoutLogin, message);
             }
 
             @Override

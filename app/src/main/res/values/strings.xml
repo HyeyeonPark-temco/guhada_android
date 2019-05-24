@@ -54,7 +54,7 @@
     <string name="login_kakao">카카오\n로그인</string>
     <string name="login_facebook">페이스북\n로그인</string>
     <string name="login_findid">아이디 찾기</string>
-    <string name="login_findpwd">비밀번호 찾기</string>
+    <string name="login_findpwd">비밀번호 재설정</string>
     <string name="login_simple">간편로그인</string>
 
     <string name="login_button_signin">로그인</string>
@@ -137,6 +137,7 @@
     <string name="findpwd_verifyphone_title">휴대폰 본인인증으로 재설정하기</string>
     <string name="findpwd_hint_name">이름</string>
     <string name="findpwd_hint_email">아이디 (이메일)</string>
+    <string name="findpwd_hint_phone">휴대폰 번호 (숫자만 입력)</string>
     <string name="findpwd_hint_verifynumber">인증번호 6자리 숫자 입력</string>
     <string name="findpwd_button_resend">재전송</string>
     <string name="findpwd_button_requestverify">인증번호 요청</string>
