@@ -97,13 +97,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
-                        app:hint="@string/findid_info_hint_name" />
+                        app:hint="@string/findid_info_hint_name"
+                        app:txt="@={viewModel.user.name}" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_findid_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        app:txt="@={viewModel.user.phoneNumber}"
                         app:hint="@string/findid_info_hint_phonenumber"
                         app:type="number" />
 
@@ -113,8 +115,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="20dp"
-                        android:background="@{!viewModel.mUser.name.isEmpty() &amp;&amp; !viewModel.mUser.phoneNumber.isEmpty() ? @color/colorPrimary : @color/silver}"
-                        android:clickable="@{!viewModel.mUser.name.isEmpty() &amp;&amp; !viewModel.mUser.phoneNumber.isEmpty() ? true :false}"
+                        android:background="@{!viewModel.user.name.isEmpty() &amp;&amp; !viewModel.user.phoneNumber.isEmpty() ? @color/colorPrimary : @color/silver}"
+                        android:clickable="@{!viewModel.user.name.isEmpty() &amp;&amp; !viewModel.user.phoneNumber.isEmpty() ? true :false}"
                         android:onClick="@{()->viewModel.onClickFindId()}"
                         android:text="@string/findid_info_button" />
                 </LinearLayout>

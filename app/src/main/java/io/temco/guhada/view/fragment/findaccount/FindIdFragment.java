@@ -48,7 +48,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         mBinding.setViewModel(mVewModel);
 
         // BY INFO
-        setTextWatchers();
+        // setTextWatchers();
 
         // BY VERIFYING PHONE
         initVerifyPhoneLayout();
@@ -99,7 +99,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
                 User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setMobileCarriers(position);
                 mVewModel.mUser.set(user);
-                mVewModel.notifyPropertyChanged(BR.mUser);
+              //  mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -122,7 +122,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
                     User user = mVewModel.mUser.get();
                     Objects.requireNonNull(user).setName(s.toString());
                     mVewModel.mUser.set(user);
-                    mVewModel.notifyPropertyChanged(BR.mUser);
+                  //  mVewModel.notifyPropertyChanged(BR.mUser);
                 }
             }
 
@@ -142,7 +142,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
                 User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setBirth(s.toString());
                 mVewModel.mUser.set(user);
-                mVewModel.notifyPropertyChanged(BR.mUser);
+              //  mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -161,7 +161,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
                 User user = mVewModel.mUser.get();
                 Objects.requireNonNull(user).setPhoneNumber(s.toString());
                 mVewModel.mUser.set(user);
-                mVewModel.notifyPropertyChanged(BR.mUser);
+              //  mVewModel.notifyPropertyChanged(BR.mUser);
             }
 
             @Override
@@ -191,45 +191,45 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         initMobileSpinner();
     }
 
-    private void setTextWatchers() {
-        mBinding.edittextFindidName.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = mVewModel.mUser.get();
-                Objects.requireNonNull(user).setName(s.toString());
-                mVewModel.setmUser(new ObservableField<>(user));
-                mVewModel.notifyPropertyChanged(BR.mUser);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        mBinding.edittextFindidPhone.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = mVewModel.mUser.get();
-                Objects.requireNonNull(user).setPhoneNumber(s.toString());
-                mVewModel.setmUser(new ObservableField<>(user));
-                mVewModel.notifyPropertyChanged(BR.mUser);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
+//    private void setTextWatchers() {
+//        mBinding.edittextFindidName.setTextWatcher(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                User user = mVewModel.mUser.get();
+//                Objects.requireNonNull(user).setName(s.toString());
+//                mVewModel.setmUser(new ObservableField<>(user));
+//                mVewModel.notifyPropertyChanged(BR.mUser);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//        mBinding.edittextFindidPhone.setTextWatcher(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                User user = mVewModel.mUser.get();
+//                Objects.requireNonNull(user).setPhoneNumber(s.toString());
+//                mVewModel.setmUser(new ObservableField<>(user));
+//                mVewModel.notifyPropertyChanged(BR.mUser);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//    }
 
 }

@@ -9,7 +9,6 @@ import java.util.Observer;
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
-import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.User;
@@ -99,8 +98,8 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
                     BaseModel model = ((BaseModel) o);
                     switch (model.resultCode) {
                         case 200:
-                            listener.showMessage("");
-                            listener.showMessage((String) model.data);
+                            listener.showMessage(user.getEmail() + " 가입 완료");
+                            // listener.showMessage((String) model.data);
                             listener.closeActivity();
                             return;
                         case 6001: // ALREADY EXIST EMAIL
@@ -193,19 +192,6 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
 
     public void onCheckSmsReception(boolean checked) {
         user.setAgreeSmsReception(checked);
-    }
-
-    // INSTEAD OF TWO WAY BINDING
-    public void setEmail(String email) {
-        user.setEmail(email);
-    }
-
-    public void setPassword(String password) {
-        user.setPassword(password);
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        user.setConfirmPassword(confirmPassword);
     }
 
     @Override
