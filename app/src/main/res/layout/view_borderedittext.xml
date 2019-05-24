@@ -2,8 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="view"
+            type="io.temco.guhada.view.custom.BorderEditTextView" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintlayout_join_password"
+        android:id="@+id/constraintlayout_borderedittext_contaiiner"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/pinkish_grey"

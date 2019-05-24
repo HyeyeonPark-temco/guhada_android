@@ -108,7 +108,7 @@ public class CommonUtil {
     }
 
     ////////////////////////////////////////////////
-
+    // TIMER
     private static void initTimer(OnTimerListener listener) {
         mTimerTask = new TimerTask() {
             @Override
@@ -164,6 +164,7 @@ public class CommonUtil {
         }
     }
 
+    // VALIDATION
     public static boolean validatePassword(String password) {
         int length = password.length();
         if (length >= 8 && length <= 15) {

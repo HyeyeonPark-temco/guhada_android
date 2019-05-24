@@ -95,7 +95,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mViewModel.toolBarTitle = getResources().getString(R.string.login_title);
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
-        setIdAndPwdTextWatcher();
+   //     setIdAndPwdTextWatcher();
         mBinding.executePendingBindings();
     }
 
