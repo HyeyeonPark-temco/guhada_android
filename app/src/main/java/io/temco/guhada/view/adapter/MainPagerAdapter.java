@@ -16,6 +16,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     // -------- LOCAL VALUE --------
     private final String TAG = MainPagerAdapter.class.getSimpleName();
+    private final String TAG_PRODUCT = "product";
     private FragmentManager mFragmentManager;
     private OnDrawerLayoutListener mDrawerListener;
     private MainHomeFragment mHomeFragment;
@@ -97,17 +98,32 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private void addProductFragment() {
         if (mProductFragment == null) {
             mProductFragment = new ProductFragment();
-            mProductFragment.setOnDrawerLayoutListener(isOpen -> {
-                removeProduct();
-            });
+            mProductFragment.setOnDrawerLayoutListener(mDrawerListener);
+            mProductFragment.setOnBackPressListener(this::removeProductFragment);
         }
-        mFragmentManager.beginTransaction().add(R.id.layout_container, mProductFragment).commitAllowingStateLoss();
+
+        // Exist
+        if (existProductFragment()) {
+            // Add Page
+        } else {
+            mFragmentManager
+                    .beginTransaction()
+                    .add(R.id.layout_container, mProductFragment, TAG_PRODUCT)
+                    .commitAllowingStateLoss();
+        }
     }
 
     private void removeProductFragment() {
         if (mProductFragment != null) {
-            mFragmentManager.beginTransaction().remove(mProductFragment).commitAllowingStateLoss();
+            mFragmentManager
+                    .beginTransaction()
+                    .remove(mProductFragment)
+                    .commitAllowingStateLoss();
         }
+    }
+
+    private boolean existProductFragment() {
+        return mProductFragment != null && mProductFragment == mFragmentManager.findFragmentByTag(TAG_PRODUCT);
     }
 
     ////////////////////////////////////////////////

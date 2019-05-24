@@ -65,7 +65,7 @@
                     android:layout_width="19dp"
                     android:layout_height="19dp"
                     android:layout_weight="0"
-                    android:background="@drawable/selector_image_expand"
+                    android:background="@drawable/selector_expand"
                     android:visibility="@{expand}" />
             </LinearLayout>
         </com.github.florent37.expansionpanel.ExpansionHeader>

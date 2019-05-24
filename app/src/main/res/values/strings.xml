@@ -35,6 +35,16 @@
     <string name="category_all">전체보기</string>
     <string name="category_brand">브랜드</string>
 
+    <!-- PRODUCT -->
+    <string name="product_order_title">상품정렬</string>
+    <string name="product_order_new_product">신상품순</string>
+    <string name="product_order_marks">평점순</string>
+    <string name="product_order_low_price">낮은가격순</string>
+    <string name="product_order_high_price">높은가격순</string>
+
+    <string name="product_search_detail_title">상세검색</string>
+
+
     <!-- LOGIN -->
     <string name="login_title">로그인</string>
     <string name="login_invalid">아이디 또는 비밀번호가 잘못 입력되었습니다.</string>
