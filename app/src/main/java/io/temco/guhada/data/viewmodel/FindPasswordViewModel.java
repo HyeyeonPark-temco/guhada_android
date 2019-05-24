@@ -23,6 +23,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 public class FindPasswordViewModel extends BaseObservableViewModel {
     private OnFindPasswordListener listener;
     private boolean checkedFindPwdByEmail = false;
+    private boolean checkedFindIdByVerifyingPhone = false;
     private User user = new User();
     private String verifyNumber = "", verifiedEmail = "", newPassword = "", newPasswordConfirm = "";
 
@@ -32,6 +33,13 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
     private int verifyNumberVisibility = View.GONE;
     private String timerMinute = "02";
     private String timerSecond = "60";
+
+    public FindPasswordViewModel() {
+    }
+
+    public FindPasswordViewModel(OnFindPasswordListener listener) {
+        this.listener = listener;
+    }
 
     @Bindable
     public String getNewPassword() {
@@ -113,9 +121,30 @@ public class FindPasswordViewModel extends BaseObservableViewModel {
         this.checkedFindPwdByEmail = checkedFindPwdByEmail;
     }
 
+    @Bindable
+    public boolean isCheckedFindIdByVerifyingPhone() {
+        return checkedFindIdByVerifyingPhone;
+    }
+
+    public void setCheckedFindIdByVerifyingPhone(boolean checkedFindIdByVerifyingPhone) {
+        this.checkedFindIdByVerifyingPhone = checkedFindIdByVerifyingPhone;
+    }
+
     public void onCheckedFindPwdByEmail(boolean checked) {
         checkedFindPwdByEmail = checked;
         notifyPropertyChanged(BR.checkedFindPwdByEmail);
+    }
+
+    public void onCheckedFindIdByVerifyingPhone(boolean checked){
+        checkedFindIdByVerifyingPhone = checked;
+        checkedFindPwdByEmail = false;
+
+        notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+        notifyPropertyChanged(BR.checkedFindPwdByEmail);
+
+        if(checked){
+            listener.redirectVerifyPhoneActivity();
+        }
     }
 
     @Bindable

@@ -25,6 +25,14 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         this.mVewModel = viewModel;
     }
 
+    public FindAccountViewModel getmVewModel() {
+        return mVewModel;
+    }
+
+    public void setmVewModel(FindAccountViewModel mVewModel) {
+        this.mVewModel = mVewModel;
+    }
+
     @Override
     protected String getBaseTag() {
         return FindIdFragment.class.getSimpleName();

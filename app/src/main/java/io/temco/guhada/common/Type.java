@@ -14,7 +14,8 @@ public class Type {
         LOGIN,
         JOIN,
         FIND_ACCOUNT,
-        TERMS
+        TERMS,
+        VERIFY_PHONE // 임시
     }
 
     // Main
@@ -38,7 +39,10 @@ public class Type {
         ORDER("http://dev.order.guhada.com:8080/"),
         PAYMENT("http://dev.payment.guhada.com:8081/"),
 
-        NAVER_PROFILE("https://openapi.naver.com/");
+        NAVER_PROFILE("https://openapi.naver.com/"),
+
+        // 핸드폰 인증
+        LOCAL("http://13.209.10.68/");
 
         private String url;
 
@@ -64,6 +68,8 @@ public class Type {
                     return PAYMENT.url;
                 case NAVER_PROFILE:
                     return NAVER_PROFILE.url;
+                case LOCAL :
+                    return LOCAL.url;
                 default:
                     return COMMON.url;
             }
@@ -72,7 +78,6 @@ public class Type {
 
     // RESULT CODE
     public enum ResultCode {
-
         ALREADY_SIGNED_UP(6006),
         ALREADY_EXIST_EMAIL(6001),
         INVALID_PASSWORD(6002);
@@ -95,6 +100,7 @@ public class Type {
             }
         }
     }
+
 
     // List
     public enum List {

@@ -3,9 +3,6 @@ package io.temco.guhada.common.listener;
 public interface OnFindPasswordListener {
     void showSnackBar(String message);
 
-    void showResultView();
-
-
     void hideKeyboard();
 
     void startTimer(String minute, String second);
@@ -13,4 +10,6 @@ public interface OnFindPasswordListener {
     void showMessage(String string);
 
     void closeActivity();
+
+    void redirectVerifyPhoneActivity();
 }

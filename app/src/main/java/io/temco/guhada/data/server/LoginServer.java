@@ -163,5 +163,17 @@ public class LoginServer {
         });
     }
 
+    public static void getVerifyPhoneToken(OnServerListener listener) {
+        RetrofitManager.createService(Type.Server.LOCAL, LoginService.class).getVerifyToken().enqueue(new Callback<BaseModel<String>>() {
+            @Override
+            public void onResponse(Call<BaseModel<String>> call, Response<BaseModel<String>> response) {
+                listener.onResult(response.isSuccessful(), response.body());
+            }
 
+            @Override
+            public void onFailure(Call<BaseModel<String>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
 }

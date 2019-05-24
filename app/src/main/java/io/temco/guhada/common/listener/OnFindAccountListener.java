@@ -14,4 +14,6 @@ public interface OnFindAccountListener extends OnBaseActivityListener {
     void copyToClipboard(String text);
 
     void startTimer();
+
+    void redirectVerifyPhoneActivity();
 }

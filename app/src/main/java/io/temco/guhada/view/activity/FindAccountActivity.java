@@ -5,6 +5,8 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Timer;
@@ -15,6 +17,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnFindAccountListener;
 import io.temco.guhada.common.listener.OnFindPasswordListener;
+import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.viewmodel.FindAccountViewModel;
 import io.temco.guhada.data.viewmodel.FindPasswordViewModel;
@@ -24,9 +27,14 @@ import io.temco.guhada.view.adapter.FindAccountPagerAdapter;
 import io.temco.guhada.view.fragment.findaccount.FindIdFragment;
 import io.temco.guhada.view.fragment.findaccount.FindPasswordFragment;
 
+import static io.temco.guhada.common.Flag.REQUEST_CODE_VERIFY_PHONE;
+
 public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding> {
     private FindAccountViewModel mViewModel;
     private TimerTask mTimerTask;
+    private FindAccountPagerAdapter mAdapter;
+    private int POSITION_FIND_ID = 0;
+    private int POSITION_FIND_PWD = 1;
 
     @Override
     protected String getBaseTag() {
@@ -51,7 +59,6 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         mBinding.executePendingBindings();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -61,6 +68,11 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
     private void initViewModel() {
         mViewModel = new FindAccountViewModel();
         mViewModel.setFindAccountListener(new OnFindAccountListener() {
+            @Override
+            public void redirectVerifyPhoneActivity() {
+                startActivityForResult(new Intent(getApplicationContext(), VerifyPhoneActivity.class), REQUEST_CODE_VERIFY_PHONE);
+            }
+
             @Override
             public void showSnackBar(String message) {
                 CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
@@ -112,10 +124,60 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
     private void initPagerAndTab() {
         // PAGER
-        FindAccountPagerAdapter adapter = new FindAccountPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FindIdFragment(mViewModel));
-        adapter.addFragment(new FindPasswordFragment(new FindPasswordViewModel()));
-        mBinding.viewpagerFindaccount.setAdapter(adapter);
+        mAdapter = new FindAccountPagerAdapter(getSupportFragmentManager());
+        mAdapter.addFragment(new FindIdFragment(mViewModel));
+        mAdapter.addFragment(new FindPasswordFragment(new FindPasswordViewModel(new OnFindPasswordListener() {
+            @Override
+            public void redirectVerifyPhoneActivity() {
+                startActivityForResult(new Intent(getApplicationContext(), VerifyPhoneActivity.class), REQUEST_CODE_VERIFY_PHONE);
+            }
+
+            @Override
+            public void showMessage(String message) {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void closeActivity() {
+                finish();
+            }
+
+            @Override
+            public void hideKeyboard() {
+                CommonUtil.hideKeyboard(getApplicationContext(), mBinding.linearlayoutFiindaccountContainer);
+            }
+
+            @Override
+            public void showSnackBar(String message) {
+                CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
+            }
+
+            @Override
+            public void startTimer(String minute, String second) {
+                FindPasswordViewModel viewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                viewModel.setTimerMinute(minute);
+                viewModel.setTimerSecond(second);
+                CommonUtil.startVerifyNumberTimer(viewModel.getTimerSecond(), viewModel.getTimerMinute(), new OnTimerListener() {
+                    @Override
+                    public void changeSecond(String second) {
+                        viewModel.setTimerSecond(second);
+                    }
+
+                    @Override
+                    public void changeMinute(String minute) {
+                        viewModel.setTimerMinute(minute);
+                    }
+
+                    @Override
+                    public void notifyMinuteAndSecond() {
+                        viewModel.notifyPropertyChanged(BR.timerSecond);
+                        viewModel.notifyPropertyChanged(BR.timerMinute);
+                    }
+                });
+            }
+        })));
+
+        mBinding.viewpagerFindaccount.setAdapter(mAdapter);
 
         // TAB
         mBinding.tablayoutFindaccount.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -142,7 +204,30 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         });
     }
 
-    // Timer
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_VERIFY_PHONE) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "인증 완료", Toast.LENGTH_SHORT).show();
+            }
+
+            if(mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD){
+                FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                passwordViewModel.setCheckedFindIdByVerifyingPhone(false);
+                passwordViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            }else {
+                FindAccountViewModel findAccountViewModel = ((FindIdFragment) mAdapter.getItem(POSITION_FIND_ID)).getmVewModel();
+                findAccountViewModel.setCheckedFindIdByVerifyingPhone(false);
+                findAccountViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            }
+        }
+
+    }
+
+    // Timer (CommonUtil.Timer 로 변경 예정)
     public void initTimer() {
         mTimerTask = new TimerTask() {
             @Override

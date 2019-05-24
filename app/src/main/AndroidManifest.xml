@@ -71,6 +71,11 @@
             android:name=".view.activity.TermsActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Verity Phone -->
+        <activity
+            android:name=".view.activity.VerifyPhoneActivity"
+            android:screenOrientation="portrait" />
+
         <!-- Kakao -->
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"
