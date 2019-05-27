@@ -8,6 +8,7 @@ public class SnsUser {
 
     private String email;
     private String snsId;
+    private String type;
 
     public SnsUser() {
     }
@@ -36,4 +37,11 @@ public class SnsUser {
         this.snsId = snsId;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

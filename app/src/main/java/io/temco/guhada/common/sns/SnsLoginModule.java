@@ -32,13 +32,16 @@ import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
+import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.SnsUser;
+import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.UserProfile;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.view.activity.VerifyPhoneActivity;
 
 public class SnsLoginModule {
     private static OAuthLogin mNaverLoginModule;
@@ -49,7 +52,7 @@ public class SnsLoginModule {
 
     // NAVER
     @SuppressLint("HandlerLeak")
-    public static void initNaverLogin(OAuthLoginButton button) {
+    public static void initNaverLogin(OAuthLoginButton button, OnSnsLoginListener loginListener) {
         Resources resources = BaseApplication.getInstance().getResources();
         mNaverLoginModule = OAuthLogin.getInstance();
         mNaverLoginModule.init(BaseApplication.getInstance(), resources.getString(R.string.naver_oauth_client_id), resources.getString(R.string.naver_oauth_client_secret),
@@ -71,9 +74,39 @@ public class SnsLoginModule {
                     OnServerListener listener = (successGetProfile, o) -> {
                         if (successGetProfile) {
                             NaverUser naverUser = (NaverUser) o;
-                            Toast.makeText(context, naverUser.getEmail(), Toast.LENGTH_SHORT).show();
+                            SnsUser user = new SnsUser();
+                            user.setEmail(naverUser.getEmail());
+                            user.setSnsId(naverUser.getId());
+                            user.setType("NAVER");
+                            UserProfile profile = new UserProfile();
+                            profile.setSnsId(user.getSnsId());
+                            profile.setEmail(user.getEmail());
+                            profile.setName(naverUser.getName());
+                            profile.setImageUrl(naverUser.getProfileImage());
+                            user.setUserProfile(profile);
 
-                            CommonUtil.debug("[NAVER] PROFILE-SUCCESS: " + naverUser.getEmail());
+                            LoginServer.naverLogin(user, (success1, o1) -> {
+                                if (success1) {
+                                    BaseModel model = (BaseModel) o1;
+                                    switch (model.resultCode) {
+                                        case Flag.ResultCode.SUCCESS:
+                                            // 로그인 성공
+                                            loginListener.redirectMainActivity((Token) model.data);
+                                            break;
+                                        case Flag.ResultCode.ALREADY_SIGNED_UP:
+                                            // 회원가입 진행
+                                            loginListener.redirectTermsActivity();
+                                            break;
+                                    }
+                                } else {
+                                    String message = (String) o1;
+                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+//                            // 네이버 프로필 호출 확인용
+//                            Toast.makeText(context, naverUser.getEmail(), Toast.LENGTH_SHORT).show();
+//                            CommonUtil.debug("[NAVER] PROFILE-SUCCESS: " + naverUser.getEmail());
                         } else {
                             CommonUtil.debug("[NAVER] PROFILE-FAILED: " + o.toString());
                         }
@@ -123,13 +156,13 @@ public class SnsLoginModule {
         });
     }
 
-    public static void stopFacebookTracking(){
+    public static void stopFacebookTracking() {
         if (mFacebookTracker.isTracking()) {
             mFacebookTracker.stopTracking();
         }
     }
 
-    public static void handlerActivityResultForFacebook(int requestCode, int resultCode, @Nullable Intent data){
+    public static void handlerActivityResultForFacebook(int requestCode, int resultCode, @Nullable Intent data) {
         mFacebookCallback.onActivityResult(requestCode, resultCode, data);
     }
 

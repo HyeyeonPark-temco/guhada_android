@@ -8,10 +8,13 @@ import androidx.annotation.Nullable;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnLoginListener;
+import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.viewmodel.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -40,7 +43,20 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         SnsLoginModule.initFacebookLogin();
         SnsLoginModule.initGoogleLogin();
         SnsLoginModule.initKakaoLogin();
-        SnsLoginModule.initNaverLogin(mBinding.buttonLoginNaver);
+        SnsLoginModule.initNaverLogin(mBinding.buttonLoginNaver, new OnSnsLoginListener() {
+            @Override
+            public void redirectTermsActivity() {
+                startActivity(new Intent(LoginActivity.this, TermsActivity.class));
+            }
+
+            @Override
+            public void redirectMainActivity(Token data) {
+                Preferences.setToken(data);
+
+                Token token = Preferences.getToken();
+                Toast.makeText(LoginActivity.this, "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // INIT BINDING
         mViewModel = new LoginViewModel(new OnLoginListener() {

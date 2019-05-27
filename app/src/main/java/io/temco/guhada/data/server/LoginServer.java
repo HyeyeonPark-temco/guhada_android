@@ -49,9 +49,9 @@ public class LoginServer {
     public static void googleLogin(OnServerListener listener, SnsUser user) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class)
                 .googleLogin(user)
-                .enqueue(new Callback<BaseModel>() {
+                .enqueue(new Callback<BaseModel<Token>>() {
                     @Override
-                    public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
+                    public void onResponse(Call<BaseModel<Token>> call, Response<BaseModel<Token>> response) {
                         if (response.isSuccessful()) {
                             BaseModel result = response.body();
                             listener.onResult(true, result);
@@ -61,7 +61,7 @@ public class LoginServer {
                     }
 
                     @Override
-                    public void onFailure(Call<BaseModel> call, Throwable t) {
+                    public void onFailure(Call<BaseModel<Token>> call, Throwable t) {
                         listener.onResult(false, t.getMessage());
                     }
                 });
@@ -175,5 +175,68 @@ public class LoginServer {
                 listener.onResult(false, t.getMessage());
             }
         });
+    }
+
+    public static void naverLogin(SnsUser user, OnServerListener listener) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class)
+                .naverLogin(user)
+                .enqueue(new Callback<BaseModel<Token>>() {
+                    @Override
+                    public void onResponse(Call<BaseModel<Token>> call, Response<BaseModel<Token>> response) {
+                        if (response.isSuccessful()) {
+                            BaseModel result = response.body();
+                            listener.onResult(true, result);
+                        } else {
+                            listener.onResult(false, response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseModel<Token>> call, Throwable t) {
+                        listener.onResult(false, t.getMessage());
+                    }
+                });
+    }
+
+    public static void kakaoLogin(SnsUser user, OnServerListener listener) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class)
+                .kakaoLogin(user)
+                .enqueue(new Callback<BaseModel<Token>>() {
+                    @Override
+                    public void onResponse(Call<BaseModel<Token>> call, Response<BaseModel<Token>> response) {
+                        if (response.isSuccessful()) {
+                            BaseModel result = response.body();
+                            listener.onResult(true, result);
+                        } else {
+                            listener.onResult(false, response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseModel<Token>> call, Throwable t) {
+                        listener.onResult(false, t.getMessage());
+                    }
+                });
+    }
+
+    public static void facebookLogin(SnsUser user, OnServerListener listener) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class)
+                .facebookLogin(user)
+                .enqueue(new Callback<BaseModel<Token>>() {
+                    @Override
+                    public void onResponse(Call<BaseModel<Token>> call, Response<BaseModel<Token>> response) {
+                        if (response.isSuccessful()) {
+                            BaseModel result = response.body();
+                            listener.onResult(true, result);
+                        } else {
+                            listener.onResult(false, response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseModel<Token>> call, Throwable t) {
+                        listener.onResult(false, t.getMessage());
+                    }
+                });
     }
 }

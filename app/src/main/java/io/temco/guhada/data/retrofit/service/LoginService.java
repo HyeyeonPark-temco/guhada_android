@@ -41,16 +41,16 @@ public interface LoginService {
 
     // SNS LOGIN
     @POST("/facebookLogin")
-    Call<BaseModel> facebookLogin(@Body SnsUser user);
+    Call<BaseModel<Token>> facebookLogin(@Body SnsUser user);
 
     @POST("/googleLogin")
-    Call<BaseModel> googleLogin(@Body SnsUser user);
+    Call<BaseModel<Token>> googleLogin(@Body SnsUser user);
 
     @POST("/kakaoLogin")
-    Call<BaseModel> kakaoLogin(@Body SnsUser user);
+    Call<BaseModel<Token>> kakaoLogin(@Body SnsUser user);
 
     @POST("/naverLogin")
-    Call<BaseModel> naverLogin(@Body SnsUser user);
+    Call<BaseModel<Token>> naverLogin(@Body SnsUser user);
 
     // NAVER
     @GET("v1/nid//me")

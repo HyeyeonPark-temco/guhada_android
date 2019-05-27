@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.data.model.Token;
 
 public class Preferences {
 
@@ -20,6 +21,9 @@ public class Preferences {
     private static final String KEY_AUTO_LOGIN = "auto_login";
     private static final String KEY_CATEGORY_DATA = "category_data";
     private static final String KEY_BRAND_DATA = "brand_data";
+
+    private static final String USER_TOKEN = "token";
+
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -164,5 +168,17 @@ public class Preferences {
         }.getType());
     }
 
+    // Token
+    public static void setToken(Token data) {
+        putJsonObject(USER_TOKEN, data);
+    }
+
+    public static Token getToken() {
+        return new Gson().fromJson(getString(USER_TOKEN), new TypeToken<Token>() {
+        }.getType());
+    }
+
     ////////////////////////////////////////////////
+
+
 }
