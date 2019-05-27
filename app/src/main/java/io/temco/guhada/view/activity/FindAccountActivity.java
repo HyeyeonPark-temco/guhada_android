@@ -215,13 +215,15 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
             }
 
             if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
-                FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
-                passwordViewModel.setCheckedFindIdByVerifyingPhone(false);
-                passwordViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+                // RESET CHECK BOX
+//                FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+//                passwordViewModel.setCheckedFindIdByVerifyingPhone(false);
+//                passwordViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
             } else {
-                FindAccountViewModel findAccountViewModel = ((FindIdFragment) mAdapter.getItem(POSITION_FIND_ID)).getmVewModel();
-                findAccountViewModel.setCheckedFindIdByVerifyingPhone(false);
-                findAccountViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+                // RESET CHECK BOX
+//                FindAccountViewModel findAccountViewModel = ((FindIdFragment) mAdapter.getItem(POSITION_FIND_ID)).getmVewModel();
+//                findAccountViewModel.setCheckedFindIdByVerifyingPhone(false);
+//                findAccountViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
 
                 // RESULT
                 if (data != null) {

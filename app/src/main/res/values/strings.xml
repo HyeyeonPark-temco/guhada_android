@@ -130,6 +130,15 @@
     <string name="verifyphone_terms3">통신사 이용약관 동의</string>
     <string name="verifyphone_terms4">서비스 이용약관</string>
     <string name="verifyphone_terms5">본인인증 목적으로 상기 정보를 통신사에 제공함을 동의</string>
+    <string name="verifyphone_content">본인 명의의 휴대폰으로\n아이디 전체를 확인하실 수 있습니다.</string>
+    <string name="verifyphone_button">본인 휴대폰 인증하여 아이디 찾기</string>
+
+    <string name="verifyphone_description1">본인명의의 휴대폰으로 본인여부를 확인합니다.</string>
+    <string name="verifyphone_description2">본인인증 서비스는 NICE신용평가정보에서 제공합니다.</string>
+    <string name="verifyphone_description3">인증수단의 명의가 다를 경우 고객센터로 문의하시기 바랍니다..</string>
+    <string name="verifyphone_description4">본인인증 시 입력한 정보는 본인확인 용도 외에는 사용되거나, 보관되지 않습니다.</string>
+    <string name="verifyphone_description5">본인인증비용은 구하다에서 부담합니다.</string>
+
 
     <string name="findpwd_phonenumber_title">휴대폰 번호로 재설정하기</string>
     <string name="findpwd_email_title">이메일로 재설정하기</string>

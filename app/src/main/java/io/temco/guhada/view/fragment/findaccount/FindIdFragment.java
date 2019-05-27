@@ -51,7 +51,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         // setTextWatchers();
 
         // BY VERIFYING PHONE
-        initVerifyPhoneLayout();
+        // initVerifyPhoneLayout();
 
         // RESULT
         mBinding.includeFindidResult.setViewModel(mVewModel);
@@ -59,140 +59,78 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         mBinding.executePendingBindings();
     }
 
-    private void initNationalitySpinner() {
-        String[] array = {"", "내국인", "외국인"};
-        SpinnerAdapter adapter = new SpinnerAdapter(Objects.requireNonNull(getContext()), R.layout.item_findaccount_nationalityspinner, array);
-        adapter.setDropDownViewResource(R.layout.item_findaccount_spinnerdropdown);
-
-        mBinding.includeFindidVerifyphone.setOnClickNationalitySpinner(v -> {
-            mBinding.includeFindidVerifyphone.spinnerVerifyphoneForeigner.performClick();
-        });
-        mBinding.includeFindidVerifyphone.spinnerVerifyphoneForeigner.setAdapter(adapter);
-        mBinding.includeFindidVerifyphone.spinnerVerifyphoneForeigner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    Objects.requireNonNull(mVewModel.mUser.get()).setNationality(1);
-                } else {
-                    Objects.requireNonNull(mVewModel.mUser.get()).setNationality(2);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    private void initMobileSpinner() {
-        String[] array = {"", "SKT", "KT", "LG"};
-        SpinnerAdapter adapter = new SpinnerAdapter(Objects.requireNonNull(getContext()), R.layout.item_findaccount_mobilespinner, array);
-        adapter.setDropDownViewResource(R.layout.item_findaccount_spinnerdropdown);
-
-        mBinding.includeFindidVerifyphone.setOnClickMobileSpinner(v -> {
-            mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.performClick();
-        });
-        mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.setAdapter(adapter);
-        mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                User user = mVewModel.mUser.get();
-                Objects.requireNonNull(user).setMobileCarriers(position);
-                mVewModel.mUser.set(user);
-              //  mVewModel.notifyPropertyChanged(BR.mUser);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    private void initVerifyPhoneLayout() {
-        mBinding.includeFindidVerifyphone.setViewModel(mVewModel);
-        mBinding.includeFindidVerifyphone.edittextVerifyphoneName.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (CommonUtil.validateNumber(s.toString())) {
-                    User user = mVewModel.mUser.get();
-                    Objects.requireNonNull(user).setName(s.toString());
-                    mVewModel.mUser.set(user);
-                  //  mVewModel.notifyPropertyChanged(BR.mUser);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        mBinding.includeFindidVerifyphone.edittextVerifyphoneBirth.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = mVewModel.mUser.get();
-                Objects.requireNonNull(user).setBirth(s.toString());
-                mVewModel.mUser.set(user);
-              //  mVewModel.notifyPropertyChanged(BR.mUser);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        mBinding.includeFindidVerifyphone.edittextVerifyphonePhone.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                User user = mVewModel.mUser.get();
-                Objects.requireNonNull(user).setPhoneNumber(s.toString());
-                mVewModel.mUser.set(user);
-              //  mVewModel.notifyPropertyChanged(BR.mUser);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        mBinding.includeFindidVerifyphone.edittextVerifyphoneNumber.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mVewModel.setVerifyNumber(s.toString());
-                mVewModel.notifyPropertyChanged(BR.verifyNumber);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        initNationalitySpinner();
-        initMobileSpinner();
-    }
-
-//    private void setTextWatchers() {
-//        mBinding.edittextFindidName.setTextWatcher(new TextWatcher() {
+//    private void initNationalitySpinner() {
+//        String[] array = {"", "내국인", "외국인"};
+//        SpinnerAdapter adapter = new SpinnerAdapter(Objects.requireNonNull(getContext()), R.layout.item_findaccount_nationalityspinner, array);
+//        adapter.setDropDownViewResource(R.layout.item_findaccount_spinnerdropdown);
+//
+//        mBinding.includeFindidVerifyphone.setOnClickNationalitySpinner(v -> {
+//            mBinding.includeFindidVerifyphone.spinnerVerifyphoneForeigner.performClick();
+//        });
+//        mBinding.includeFindidVerifyphone.spinnerVerifyphoneForeigner.setAdapter(adapter);
+//        mBinding.includeFindidVerifyphone.spinnerVerifyphoneForeigner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (position == 0) {
+//                    Objects.requireNonNull(mVewModel.mUser.get()).setNationality(1);
+//                } else {
+//                    Objects.requireNonNull(mVewModel.mUser.get()).setNationality(2);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//    }
+//    private void initMobileSpinner() {
+//        String[] array = {"", "SKT", "KT", "LG"};
+//        SpinnerAdapter adapter = new SpinnerAdapter(Objects.requireNonNull(getContext()), R.layout.item_findaccount_mobilespinner, array);
+//        adapter.setDropDownViewResource(R.layout.item_findaccount_spinnerdropdown);
+//
+//        mBinding.includeFindidVerifyphone.setOnClickMobileSpinner(v -> {
+//            mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.performClick();
+//        });
+//        mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.setAdapter(adapter);
+//        mBinding.includeFindidVerifyphone.spinnerVerifyphoneMobile.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                User user = mVewModel.mUser.get();
+//                Objects.requireNonNull(user).setMobileCarriers(position);
+//                mVewModel.mUser.set(user);
+//              //  mVewModel.notifyPropertyChanged(BR.mUser);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//    }
+//
+//    private void initVerifyPhoneLayout() {
+//        mBinding.includeFindidVerifyphone.setViewModel(mVewModel);
+//        mBinding.includeFindidVerifyphone.edittextVerifyphoneName.setTextWatcher(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (CommonUtil.validateNumber(s.toString())) {
+//                    User user = mVewModel.mUser.get();
+//                    Objects.requireNonNull(user).setName(s.toString());
+//                    mVewModel.mUser.set(user);
+//                  //  mVewModel.notifyPropertyChanged(BR.mUser);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//        mBinding.includeFindidVerifyphone.edittextVerifyphoneBirth.setTextWatcher(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 //
@@ -201,9 +139,9 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 //            @Override
 //            public void onTextChanged(CharSequence s, int start, int before, int count) {
 //                User user = mVewModel.mUser.get();
-//                Objects.requireNonNull(user).setName(s.toString());
-//                mVewModel.setmUser(new ObservableField<>(user));
-//                mVewModel.notifyPropertyChanged(BR.mUser);
+//                Objects.requireNonNull(user).setBirth(s.toString());
+//                mVewModel.mUser.set(user);
+//              //  mVewModel.notifyPropertyChanged(BR.mUser);
 //            }
 //
 //            @Override
@@ -211,7 +149,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 //
 //            }
 //        });
-//        mBinding.edittextFindidPhone.setTextWatcher(new TextWatcher() {
+//        mBinding.includeFindidVerifyphone.edittextVerifyphonePhone.setTextWatcher(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 //
@@ -221,8 +159,8 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 //            public void onTextChanged(CharSequence s, int start, int before, int count) {
 //                User user = mVewModel.mUser.get();
 //                Objects.requireNonNull(user).setPhoneNumber(s.toString());
-//                mVewModel.setmUser(new ObservableField<>(user));
-//                mVewModel.notifyPropertyChanged(BR.mUser);
+//                mVewModel.mUser.set(user);
+//              //  mVewModel.notifyPropertyChanged(BR.mUser);
 //            }
 //
 //            @Override
@@ -230,6 +168,25 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
 //
 //            }
 //        });
+//        mBinding.includeFindidVerifyphone.edittextVerifyphoneNumber.setTextWatcher(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                mVewModel.setVerifyNumber(s.toString());
+//                mVewModel.notifyPropertyChanged(BR.verifyNumber);
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//
+//        initNationalitySpinner();
+//        initMobileSpinner();
 //    }
-
 }

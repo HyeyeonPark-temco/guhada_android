@@ -139,7 +139,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/selector_checkbox_all"
                         android:button="@null"
-                        android:checked="@{viewModel.checkedFindIdByVerifyingPhone}"
+                        android:checked="@{viewModel.checkedFindIdByVerifyingPhone, default = false}"
                         android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedFindIdByVerifyingPhone(checked)}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -159,13 +159,136 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone">
-                    <!--android:visibility="@{viewModel.checkedFindIdByVerifyingPhone ? View.VISIBLE : View.GONE, default= gone}"-->
-                    <include
-                        android:id="@+id/include_findid_verifyphone"
-                        layout="@layout/layout_findaccount_verifyphone" />
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.checkedFindIdByVerifyingPhone ? View.VISIBLE : View.GONE, default= gone}">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        style="@style/TextBold"
+                        android:text="@string/verifyphone_content"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/text_15" />
+
+                    <Button
+                        style="@style/ActivatedButtonStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:onClick="@{()->viewModel.onClickVerifyPhone()}"
+                        android:text="@string/verifyphone_button" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/oval_all_grey" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/verifyphone_description1"
+                            android:textColor="@color/warm_grey_three" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/oval_all_grey" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verifyphone_description2"
+                            android:textColor="@color/warm_grey_three" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/oval_all_grey" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verifyphone_description3"
+                            android:textColor="@color/warm_grey_three" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/oval_all_grey" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verifyphone_description4"
+                            android:textColor="@color/warm_grey_three" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="5dp"
+                            android:layout_height="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/oval_all_grey" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/verifyphone_description5"
+                            android:textColor="@color/warm_grey_three" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
+
 
             </LinearLayout>
 

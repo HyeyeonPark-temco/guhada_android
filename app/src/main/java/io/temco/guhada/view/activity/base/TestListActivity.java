@@ -68,14 +68,16 @@ public class TestListActivity extends AppCompatActivity {
                     break;
 
                 case 6:
-                    break;
-
-                case 7 : // Terms
+                    // Terms
                     startActivity(TermsActivity.class);
                     break;
 
-                case 8: // Verify Phone
+                case 7 :
+                    // Verify Phone
                     startActivity(VerifyPhoneActivity.class);
+                    break;
+
+                case 8:
                     break;
 
             }
@@ -94,11 +96,10 @@ public class TestListActivity extends AppCompatActivity {
         list.add("FIND_ACCOUNT"); // 4
 
         list.add("MAIN"); // 5
-        list.add(""); // 6
+        list.add("TERMS"); // 6
+        list.add("VERIFY_PHONE"); // 7
 
-        list.add("TERMS"); // 7
-        list.add("VERIFY_PHONE"); // 8
-
+        list.add(""); // 8
         list.add(""); // 9
         list.add(""); // 10
         list.add(""); // 11

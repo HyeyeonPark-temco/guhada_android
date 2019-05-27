@@ -78,36 +78,7 @@ public class Type {
         }
     }
 
-<<<<<<< HEAD
-=======
-    // RESULT CODE
-    public enum ResultCode {
-
-        ALREADY_SIGNED_UP(6006),
-        ALREADY_EXIST_EMAIL(6001),
-        INVALID_PASSWORD(6002);
-
-        private int code;
-
-        ResultCode(int code) {
-        }
-
-        public static int getResultCode(ResultCode code) {
-            switch (code) {
-                case ALREADY_SIGNED_UP:
-                    return ALREADY_SIGNED_UP.code;
-                case ALREADY_EXIST_EMAIL:
-                    return ALREADY_EXIST_EMAIL.code;
-                case INVALID_PASSWORD:
-                    return INVALID_PASSWORD.code;
-                default:
-                    return 0;
-            }
-        }
-    }
-
     ////////////////////////////////////////////////
->>>>>>> feature/sublayout
     // List
     public enum List {
 

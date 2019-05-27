@@ -79,7 +79,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     }
 
     public void setVerifyNumber(String verifyNumber) {
-        if(verifyNumber.length() < 7){
+        if (verifyNumber.length() < 7) {
             // 6자리 초과 시 입력되지 않음
             // 숫자가 아니면 입력되지 않음
             this.verifyNumber = verifyNumber;
@@ -186,17 +186,15 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             checkedFindIdByVerifyingPhone = checked;
             checkedFindPwdByEmail = false;
             checkedFindPwdByPhone = false;
-//            user = new User();
 
             notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
             notifyPropertyChanged(BR.checkedFindPwdByEmail);
             notifyPropertyChanged(BR.checkedFindPwdByPhone);
-//            notifyPropertyChanged(BR.user);
-
-            if (checked) {
-                listener.redirectVerifyPhoneActivity();
-            }
         }
+    }
+
+    public void onClickVerifyPhone() {
+        listener.redirectVerifyPhoneActivity();
     }
 
     @Bindable

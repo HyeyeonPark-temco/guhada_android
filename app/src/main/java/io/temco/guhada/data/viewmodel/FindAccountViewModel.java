@@ -159,16 +159,17 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     }
 
     public void onCheckedFindIdByVerifyingPhone(boolean checked) {
-        if (checked) {
-            if (checkedFindIdByInfo) {
-                checkedFindIdByInfo = false;
-                notifyPropertyChanged(BR.checkedFindIdByInfo);
-            }
-            findAccountListener.redirectVerifyPhoneActivity();
+        if (checked && checkedFindIdByInfo) {
+            checkedFindIdByInfo = false;
+            notifyPropertyChanged(BR.checkedFindIdByInfo);
         }
 
         checkedFindIdByVerifyingPhone = checked;
         notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+    }
+
+    public void onClickVerifyPhone() {
+        findAccountListener.redirectVerifyPhoneActivity();
     }
 
     public void onClickGender(View view) {
