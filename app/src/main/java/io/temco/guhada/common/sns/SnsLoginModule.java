@@ -30,6 +30,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
@@ -72,35 +73,21 @@ public class SnsLoginModule {
                     OnServerListener listener = (successGetProfile, o) -> {
                         if (successGetProfile) {
                             NaverUser naverUser = (NaverUser) o;
-                            SnsUser user = new SnsUser();
-                            user.setEmail(naverUser.getEmail());
-                            user.setSnsId(naverUser.getId());
-                            user.setType("NAVER");
-                            UserProfile profile = new UserProfile();
-                            profile.setSnsId(user.getSnsId());
-                            profile.setEmail(user.getEmail());
-                            profile.setName(naverUser.getName());
-                            profile.setImageUrl(naverUser.getProfileImage());
-                            user.setUserProfile(profile);
-
-                            LoginServer.naverLogin(user, (success1, o1) -> {
-                                if (success1) {
-                                    BaseModel model = (BaseModel) o1;
+                            // 이메일 중복 체크
+                            LoginServer.checkEmail((success12, obj) -> {
+                                if (success12) {
+                                    BaseModel model = (BaseModel) obj;
                                     if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                                        loginListener.redirectMainActivity((Token) model.data);
+                                        // (중복X) 가입되지 않은 이메일 - 약관 동의 Activity 호출
+                                        loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser);
                                     } else {
-                                        Toast.makeText(context, "회원가입 진행", Toast.LENGTH_SHORT).show();
-//                                          loginListener.redirectTermsActivity();
+                                        // (중복O) 가입된 이메일 - /naverLogin 호출
+                                        naverLogin(naverUser);
                                     }
                                 } else {
-                                    String message = (String) o1;
-                                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, (String) obj, Toast.LENGTH_SHORT).show();
                                 }
-                            });
-
-//                            // 네이버 프로필 호출 확인용
-//                            Toast.makeText(context, naverUser.getEmail(), Toast.LENGTH_SHORT).show();
-//                            CommonUtil.debug("[NAVER] PROFILE-SUCCESS: " + naverUser.getEmail());
+                            }, naverUser.getEmail());
                         } else {
                             CommonUtil.debug("[NAVER] PROFILE-FAILED: " + o.toString());
                         }
@@ -233,35 +220,46 @@ public class SnsLoginModule {
     }
 
     public static void kakaoJoin(com.kakao.usermgmt.response.model.UserProfile result) {
-        SnsUser user = new SnsUser();
-        user.setType("KAKAO");
-        user.setSnsId(String.valueOf(result.getId()));
-        user.setEmail(result.getEmail());
-
-        io.temco.guhada.data.model.UserProfile profile = new io.temco.guhada.data.model.UserProfile();
-        profile.setImageUrl(result.getProfileImagePath());
-        profile.setEmail(user.getEmail());
-        profile.setSnsId(user.getSnsId());
-        profile.setName(result.getNickname());
-
-        user.setUserProfile(profile);
-
-        LoginServer.kakaoLogin(user, (success, o) -> {
-            if (success) {
-                BaseModel model = (BaseModel) o;
-                switch (model.resultCode) {
-                    case Flag.ResultCode.SUCCESS:
-                        Token token = (Token) model.data;
-                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case Flag.ResultCode.ALREADY_SIGNED_UP:
-                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), ((BaseModel) o).message, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            } else {
-                Toast.makeText(BaseApplication.getInstance().getApplicationContext(), (String) o, Toast.LENGTH_SHORT).show();
-            }
-        });
+        SnsUser user = createSnsUser(result.getEmail(), String.valueOf(result.getId()), "KAKAO", result.getNickname(), result.getProfileImagePath());
+        LoginServer.kakaoLogin(user, getSnsLoginListener());
     }
 
+    public static void naverLogin(NaverUser naverUser) {
+        SnsUser user = createSnsUser(naverUser.getEmail(), naverUser.getId(), "NAVER", naverUser.getName(), naverUser.getProfileImage());
+        LoginServer.naverLogin(user, getSnsLoginListener());
+    }
+
+    private static SnsUser createSnsUser(String email, String snsId, String snsType, String name, String profileUrl) {
+        SnsUser user = new SnsUser();
+        user.setEmail(email);
+        user.setSnsId(snsId);
+        user.setType(snsType);
+
+        UserProfile profile = new UserProfile();
+        profile.setSnsId(snsId);
+        profile.setEmail(email);
+        profile.setName(name);
+        profile.setImageUrl(profileUrl);
+        user.setUserProfile(profile);
+
+        return user;
+    }
+
+    private static OnServerListener getSnsLoginListener() {
+        return (success, o) -> {
+            if (success) {
+                BaseModel model = (BaseModel) o;
+                if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                    Token token = (Token) model.data;
+                    Preferences.setToken(token);
+                    Toast.makeText(BaseApplication.getInstance().getApplicationContext(), "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(BaseApplication.getInstance(), model.message, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                String message = (String) o;
+                Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
 }

@@ -17,6 +17,7 @@ import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.viewmodel.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
@@ -137,6 +138,17 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         SnsLoginModule.handlerActivityResultForFacebook(requestCode, resultCode, data);
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
         SnsLoginModule.handleActivityResultForGoogle(requestCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Flag.RequestCode.KAKAO_LOGIN:
+                    SnsLoginModule.kakaoJoin((UserProfile) mViewModel.getSnsUser());
+                    break;
+                case Flag.RequestCode.NAVER_LOGIN:
+                    SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser());
+                    break;
+            }
+        }
 
         if (requestCode == Flag.RequestCode.KAKAO_LOGIN) {
             if (resultCode == RESULT_OK) {
