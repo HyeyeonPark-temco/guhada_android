@@ -5,7 +5,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import io.temco.guhada.data.model.ProductList;
+import com.bumptech.glide.RequestManager;
+
+import io.temco.guhada.data.model.Deal;
 import io.temco.guhada.databinding.ItemProductListTwoBinding;
 import io.temco.guhada.view.adapter.base.BaseProductListViewHolder;
 
@@ -24,7 +26,7 @@ public class ProductListTwoViewHolder extends BaseProductListViewHolder<ItemProd
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, ProductList data) {
+    public void init(Context context, RequestManager manager, Deal data) {
 
     }
 

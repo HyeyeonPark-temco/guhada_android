@@ -1,5 +1,8 @@
 package io.temco.guhada.view.activity;
 
+import android.content.Context;
+import android.content.Intent;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
@@ -41,6 +44,12 @@ public class ProductDetailActivity extends BindActivity<ActivityProductDetailBin
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
+
+    public static void startActivity(Context context, int id) {
+        Intent i = new Intent(context, ProductDetailActivity.class);
+        i.putExtra(Info.INTENT_DEAL_ID, id);
+        context.startActivity(i);
+    }
 
     ////////////////////////////////////////////////
     // PRIVATE

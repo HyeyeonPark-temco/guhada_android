@@ -8,18 +8,36 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-        <!-- THUMBNAIL -->
-        <ImageView
-            android:id="@+id/image_thumb"
+        <RelativeLayout
             android:layout_width="130dp"
-            android:layout_height="164dp"
-            android:scaleType="centerCrop" />
+            android:layout_height="164dp">
+
+            <!-- THUMBNAIL -->
+            <ImageView
+                android:id="@+id/image_thumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/common_black"
+                android:scaleType="centerCrop" />
+
+            <!-- COLOR -->
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:columnOrderPreserved="true"
+                android:orientation="vertical"
+                android:rowCount="5" />
+        </RelativeLayout>
 
         <!-- INFO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp">
+            android:layout_marginLeft="20dp"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
             <!-- BRAND -->
             <LinearLayout
@@ -43,17 +61,41 @@
                 android:id="@+id/text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="3dp" />
 
             <!-- SIZE -->
+            <TextView
+                android:id="@+id/text_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp" />
 
             <!-- PRICE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="bottom"
+                android:orientation="horizontal">
 
-            <!-- -->
+                <TextView
+                    android:id="@+id/text_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
+                <TextView
+                    android:id="@+id/text_price_sale_per"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp" />
+            </LinearLayout>
 
-
-
+            <!-- SHIP -->
+            <TextView
+                android:id="@+id/text_ship_free"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp" />
         </LinearLayout>
     </LinearLayout>
 </layout>

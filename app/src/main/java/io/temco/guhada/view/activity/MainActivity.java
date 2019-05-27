@@ -75,7 +75,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 break;
 
             case R.id.image_close:
-                changeDrawerLayout(false);
+                changeDrawerLayout(false, false);
                 break;
 
             case R.id.layout_brand:
@@ -245,7 +245,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private void startScreenByType(Type.Category type, int[] hierarchies) {
         switch (type) {
             case ALL:
-                changeDrawerLayout(false);
+                changeDrawerLayout(false, false);
                 mPagerAdapter.addProduct();
                 break;
 

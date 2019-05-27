@@ -6,7 +6,9 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
-import io.temco.guhada.data.model.ProductList;
+import com.bumptech.glide.RequestManager;
+
+import io.temco.guhada.data.model.Deal;
 
 public abstract class BaseProductListViewHolder<B extends ViewDataBinding> extends BaseViewHolder<B> {
 
@@ -22,8 +24,7 @@ public abstract class BaseProductListViewHolder<B extends ViewDataBinding> exten
     // ABSTRACT
     ////////////////////////////////////////////////
 
-    public abstract void init(Context context, ProductList data);
+    public abstract void init(Context context, RequestManager manager, Deal data);
 
     ////////////////////////////////////////////////
-
 }
