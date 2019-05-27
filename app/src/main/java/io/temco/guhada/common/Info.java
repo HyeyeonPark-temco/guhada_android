@@ -14,8 +14,6 @@ public class Info {
     // RESULT CODE
     ////////////////////////////////////////////////
 
-    public static final int RC_SIGN_IN_GOOGLE = 10001;
-    public static final int RC_RESULT_OK = 6006;
 
     ////////////////////////////////////////////////
     // INTENT

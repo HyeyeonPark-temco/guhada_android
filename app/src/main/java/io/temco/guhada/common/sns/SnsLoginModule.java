@@ -29,7 +29,6 @@ import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
-import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
@@ -157,45 +156,26 @@ public class SnsLoginModule {
         return mGoogleSignInClient.getSignInIntent();
     }
 
-    public static void handleActivityResultForGoogle(int requestCode, @Nullable Intent data) {
-        if (requestCode == Info.RC_SIGN_IN_GOOGLE) {
+    public static void handleActivityResultForGoogle(int requestCode, @Nullable Intent data, OnSnsLoginListener loginListener) {
+        if (requestCode == Flag.RequestCode.RC_GOOGLE_LOGIN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null) {
-                    // CONVERT GOOGLE ACCOUNT MODEL TO SNS USER MODEL
-                    SnsUser snsUser = new SnsUser();
-                    snsUser.setEmail(account.getEmail());
-                    snsUser.setSnsId(account.getId());
-
-                    UserProfile profile = new UserProfile();
-                    profile.setEmail(account.getEmail());
-                    profile.setFamilyName(account.getFamilyName());
-                    profile.setGivenName(account.getGivenName());
-                    profile.setSnsId(account.getId());
-                    profile.setGivenName(account.getDisplayName());
-                    profile.setImageUrl(account.getPhotoUrl() != null ? account.getPhotoUrl().toString() : "");
-
-                    snsUser.setUserProfile(profile);
-
-                    // CALL GOOGLE LOGIN API
-                    LoginServer.googleLogin((success, o) -> {
+                    LoginServer.checkEmail((success, o) -> {
                         if (success) {
-                            BaseModel result = (BaseModel) o;
-                            if (result.resultCode == Flag.ResultCode.ALREADY_SIGNED_UP) {
-                                // 가입된 계정 존재 --> 로그인
-
+                            BaseModel model = (BaseModel) o;
+                            if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                                // (중복X) 가입되지 않은 이메일 - 약관 동의 Activity 호출
+                                loginListener.redirectTermsActivity(requestCode, account);
                             } else {
-                                // 회원가입
+                                // (중복O) 가입된 이메일 - /googleLogin 호출
+                                googleLogin(account);
                             }
-
-                            Toast.makeText(BaseApplication.getInstance(), account.getEmail() + " 로그인", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(BaseApplication.getInstance(), o.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BaseApplication.getInstance(), (String) o, Toast.LENGTH_SHORT).show();
                         }
-                    }, snsUser);
-
-                    CommonUtil.debug("[GOOGLE] " + account.getEmail());
+                    }, account.getEmail());
                 }
             } catch (ApiException e) {
                 CommonUtil.debug("[GOOGLE] " + e.getStatusCode() + "-" + e.getMessage());
@@ -227,6 +207,13 @@ public class SnsLoginModule {
     public static void naverLogin(NaverUser naverUser) {
         SnsUser user = createSnsUser(naverUser.getEmail(), naverUser.getId(), "NAVER", naverUser.getName(), naverUser.getProfileImage());
         LoginServer.naverLogin(user, getSnsLoginListener());
+    }
+
+    public static void googleLogin(GoogleSignInAccount account) {
+        if(account != null){
+            SnsUser user = createSnsUser(account.getEmail(), account.getId(), "GOOGLE", account.getDisplayName(), account.getPhotoUrl() != null ? account.getPhotoUrl().getPath() : "");
+            LoginServer.googleLogin(getSnsLoginListener(), user);
+        }
     }
 
     private static SnsUser createSnsUser(String email, String snsId, String snsType, String name, String profileUrl) {
@@ -262,4 +249,5 @@ public class SnsLoginModule {
             }
         };
     }
+
 }

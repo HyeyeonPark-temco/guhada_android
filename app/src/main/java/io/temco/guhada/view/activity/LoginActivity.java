@@ -6,11 +6,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.kakao.usermgmt.response.model.UserProfile;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
-import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnLoginListener;
@@ -76,7 +76,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mViewModel = new LoginViewModel(new OnLoginListener() {
             @Override
             public void onGoogleLogin() {
-                startActivityForResult(new Intent(SnsLoginModule.getGoogleClientInstance()), Info.RC_SIGN_IN_GOOGLE);
+                startActivityForResult(new Intent(SnsLoginModule.getGoogleClientInstance()), Flag.RequestCode.RC_GOOGLE_LOGIN);
             }
 
             @Override
@@ -137,7 +137,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         SnsLoginModule.handlerActivityResultForFacebook(requestCode, resultCode, data);
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
-        SnsLoginModule.handleActivityResultForGoogle(requestCode, data);
+        SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener);
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -147,15 +147,11 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 case Flag.RequestCode.NAVER_LOGIN:
                     SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser());
                     break;
+                case Flag.RequestCode.GOOGLE_LOGIN:
+                    SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser());
+                    break;
             }
         }
-
-        if (requestCode == Flag.RequestCode.KAKAO_LOGIN) {
-            if (resultCode == RESULT_OK) {
-                SnsLoginModule.kakaoJoin((UserProfile) mViewModel.getSnsUser());
-            }
-        }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 }
