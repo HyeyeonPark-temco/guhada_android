@@ -4,7 +4,9 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -12,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.decoration.EqualSpacingItemDecoration;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -218,6 +221,25 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (mGridManager == null)
             mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
         mBinding.listContents.setLayoutManager(mGridManager);
+        mBinding.listContents.addItemDecoration(new EqualSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.padding_product_list)));
+        mBinding.listContents.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                // super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    // Top
+                } else if (!recyclerView.canScrollVertically(1)) {
+                    // Bottom
+                } else {
+                    // Idle
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         mBinding.listContents.setAdapter(mListAdapter);
     }
 

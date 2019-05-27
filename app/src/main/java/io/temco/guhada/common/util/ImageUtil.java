@@ -48,9 +48,9 @@ public class ImageUtil {
     public static void setOvalView(Context context, View... views) {
         if (views != null && views.length > 0) {
 
-            OvalShape ss = new OvalShape();
-            Outline line = new Outline();
-            ss.getOutline(line);
+//            OvalShape ss = new OvalShape();
+//            Outline line = new Outline();
+//            ss.getOutline(line);
 
             ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
             for (View v : views) {
