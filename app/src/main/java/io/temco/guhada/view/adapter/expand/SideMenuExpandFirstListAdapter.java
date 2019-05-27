@@ -13,7 +13,7 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.adapter.holder.SideMenuExpandFirstListViewHolder;
 
 public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMenuExpandFirstListViewHolder> {
@@ -21,7 +21,7 @@ public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMen
     // -------- LOCAL VALUE --------
     private Context mContext;
     private ExpansionLayoutCollection mExpansionsCollection;
-    private List<CategoryData> mItems;
+    private List<Category> mItems;
     private OnCategoryListener mCategoryListener;
     // -----------------------------
 
@@ -60,7 +60,7 @@ public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMen
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setItems(List<CategoryData> items) {
+    public void setItems(List<Category> items) {
         mItems = items;
         notifyDataSetChanged();
     }
@@ -73,7 +73,7 @@ public class SideMenuExpandFirstListAdapter extends RecyclerView.Adapter<SideMen
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private CategoryData getItem(int position) {
+    private Category getItem(int position) {
         return mItems == null ? null : mItems.get(position);
     }
 

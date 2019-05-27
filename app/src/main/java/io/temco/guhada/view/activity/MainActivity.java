@@ -1,7 +1,6 @@
 package io.temco.guhada.view.activity;
 
 import android.content.Intent;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 

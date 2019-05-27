@@ -70,7 +70,7 @@ public class Type {
                     return PAYMENT.url;
                 case NAVER_PROFILE:
                     return NAVER_PROFILE.url;
-                case LOCAL :
+                case LOCAL:
                     return LOCAL.url;
                 default:
                     return COMMON.url;
@@ -78,8 +78,6 @@ public class Type {
         }
     }
 
-<<<<<<< HEAD
-=======
     // RESULT CODE
     public enum ResultCode {
 
@@ -107,7 +105,6 @@ public class Type {
     }
 
     ////////////////////////////////////////////////
->>>>>>> feature/sublayout
     // List
     public enum List {
 
@@ -145,9 +142,28 @@ public class Type {
 
     public enum Grid {
 
-        ONE,
-        TWO,
-        THREE
+        ONE(1),
+        TWO(2),
+        THREE(3);
+
+        private int type;
+
+        Grid(int type) {
+            this.type = type;
+        }
+
+        public static int get(Grid type) {
+            switch (type) {
+                case ONE:
+                    return ONE.type;
+                case TWO:
+                    return TWO.type;
+                case THREE:
+                    return THREE.type;
+                default:
+                    return 0;
+            }
+        }
     }
 
     ////////////////////////////////////////////////
@@ -234,10 +250,29 @@ public class Type {
     // Product Order
     public enum ProductOrder {
 
-        NEW_PRODUCT, // 신상품순
-        MARKS, // 평점순
-        LOW_PRICE, // 낮은가격순
-        HIGH_PRICE // 높은가격순
+        NEW_PRODUCT("DATE"), // 신상품순
+        MARKS(""), // 평점순
+        LOW_PRICE("PRICE_ASC"), // 낮은가격순
+        HIGH_PRICE("PRICE_DESC"); // 높은가격순
+
+        private String type;
+
+        ProductOrder(String type) {
+            this.type = type;
+        }
+
+        public static String get(ProductOrder type) {
+            switch (type) {
+                case MARKS:
+                    return MARKS.type;
+                case LOW_PRICE:
+                    return LOW_PRICE.type;
+                case HIGH_PRICE:
+                    return HIGH_PRICE.type;
+                default:
+                    return NEW_PRODUCT.type;
+            }
+        }
     }
 
     ////////////////////////////////////////////////

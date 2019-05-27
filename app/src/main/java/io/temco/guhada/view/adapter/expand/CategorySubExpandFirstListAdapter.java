@@ -15,7 +15,7 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.adapter.holder.CategorySubExpandFirstListViewHolder;
 
 public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<CategorySubExpandFirstListViewHolder> implements View.OnClickListener {
@@ -23,7 +23,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
     // -------- LOCAL VALUE --------
     private Context mContext;
     private ExpansionLayoutCollection mExpansionsCollection;
-    private List<CategoryData> mItems;
+    private List<Category> mItems;
     private Type.CategoryData mChildType;
     private OnCategoryListener mCategoryListener;
     // -----------------------------
@@ -55,7 +55,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
 
     @Override
     public void onBindViewHolder(@NonNull CategorySubExpandFirstListViewHolder holder, int position) {
-        CategoryData data = getItem(position);
+        Category data = getItem(position);
         if (data.children == null) {
             holder.getBinding().layoutHeader.setTag(position);
             holder.getBinding().layoutHeader.setOnClickListener(this);
@@ -69,7 +69,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
     public void onClick(View v) {
         if (mCategoryListener != null
                 && v.getTag() != null && v.getTag() instanceof Integer) {
-            CategoryData data = getItem((int) v.getTag());
+            Category data = getItem((int) v.getTag());
             mCategoryListener.onEvent(data.type, data.hierarchies);
         }
     }
@@ -78,7 +78,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setItems(List<CategoryData> items) {
+    public void setItems(List<Category> items) {
         mItems = items;
         notifyDataSetChanged();
     }
@@ -95,7 +95,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private CategoryData getItem(int position) {
+    private Category getItem(int position) {
         return mItems == null ? null : mItems.get(position);
     }
 

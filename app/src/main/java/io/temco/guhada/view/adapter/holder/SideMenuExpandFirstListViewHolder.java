@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemSideMenuExpandFirstBinding;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
 import io.temco.guhada.view.adapter.expand.SideMenuExpandSecondListAdapter;
@@ -32,7 +32,7 @@ public class SideMenuExpandFirstListViewHolder extends BaseCategoryViewHolder<It
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, CategoryData data, OnCategoryListener listener) {
+    public void init(Context context, Category data, OnCategoryListener listener) {
         // Data
         if (data != null) {
             // Title
@@ -57,8 +57,8 @@ public class SideMenuExpandFirstListViewHolder extends BaseCategoryViewHolder<It
         }
     }
 
-    private CategoryData createAllCategoryData(Context context, int[] hierarchies) {
-        CategoryData all = new CategoryData();
+    private Category createAllCategoryData(Context context, int[] hierarchies) {
+        Category all = new Category();
         all.type = Type.Category.ALL;
         all.name = context.getString(R.string.category_all);
         all.hierarchies = hierarchies;

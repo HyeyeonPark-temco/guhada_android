@@ -8,14 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.github.florent37.expansionpanel.ExpansionLayout;
-
-import java.util.ArrayList;
-
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemCategorySubExpandFirstBinding;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
 import io.temco.guhada.view.adapter.expand.CategorySubExpandSecondListAdapter;
@@ -34,7 +30,7 @@ public class CategorySubExpandFirstListViewHolder extends BaseCategoryViewHolder
     // OVERRIDE
     ////////////////////////////////////////////////
 
-    public void init(Context context, CategoryData data, OnCategoryListener listener, Type.CategoryData type) {
+    public void init(Context context, Category data, OnCategoryListener listener, Type.CategoryData type) {
         switch (type) {
             case KIDS:
                 mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
@@ -48,7 +44,7 @@ public class CategorySubExpandFirstListViewHolder extends BaseCategoryViewHolder
     }
 
     @Override
-    public void init(Context context, CategoryData data, OnCategoryListener listener) {
+    public void init(Context context, Category data, OnCategoryListener listener) {
         // Data
         if (data != null) {
             // Title
@@ -75,8 +71,8 @@ public class CategorySubExpandFirstListViewHolder extends BaseCategoryViewHolder
         }
     }
 
-    private CategoryData createAllCategoryData(Context context, int[] hierarchies) {
-        CategoryData all = new CategoryData();
+    private Category createAllCategoryData(Context context, int[] hierarchies) {
+        Category all = new Category();
         all.type = Type.Category.ALL;
         all.name = context.getString(R.string.category_all);
         all.hierarchies = hierarchies;

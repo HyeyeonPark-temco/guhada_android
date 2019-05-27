@@ -14,7 +14,7 @@ import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ActivityCategorySubBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.expand.CategorySubExpandFirstListAdapter;
@@ -22,7 +22,7 @@ import io.temco.guhada.view.adapter.expand.CategorySubExpandFirstListAdapter;
 public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private CategoryData mCategoryData;
+    private Category mCategoryData;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -90,11 +90,11 @@ public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding
     ////////////////////////////////////////////////
 
     private void getSearchSecondCategoryData(int id) {
-        List<CategoryData> data = Preferences.getCategories();
+        List<Category> data = Preferences.getCategories();
         if (data != null) {
-            for (CategoryData sub : data) {
+            for (Category sub : data) {
                 if (sub.children != null) {
-                    for (CategoryData s : sub.children) {
+                    for (Category s : sub.children) {
                         if (s.id == id) {
                             mCategoryData = s;
                             initList();

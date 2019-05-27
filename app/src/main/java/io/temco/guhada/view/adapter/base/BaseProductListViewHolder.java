@@ -6,16 +6,15 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
-import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.Category;
+import io.temco.guhada.data.model.ProductList;
 
-public abstract class BaseCategoryViewHolder<B extends ViewDataBinding> extends BaseViewHolder<B> {
+public abstract class BaseProductListViewHolder<B extends ViewDataBinding> extends BaseViewHolder<B> {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public BaseCategoryViewHolder(@NonNull View itemView) {
+    public BaseProductListViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
@@ -23,7 +22,7 @@ public abstract class BaseCategoryViewHolder<B extends ViewDataBinding> extends 
     // ABSTRACT
     ////////////////////////////////////////////////
 
-    public abstract void init(Context context, Category data, OnCategoryListener listener);
+    public abstract void init(Context context, ProductList data);
 
     ////////////////////////////////////////////////
 
