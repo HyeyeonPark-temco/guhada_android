@@ -11,6 +11,8 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface LoginService {
@@ -55,5 +57,8 @@ public interface LoginService {
     // NAVER
     @GET("v1/nid//me")
     Call<NaverResponse> getNaverProfile(@Header("Authorization") String auth);
+
+    @GET("/isEmailExist/{email}")
+    Call<BaseModel<Object>> checkEmail(@Path("email") String email);
 
 }

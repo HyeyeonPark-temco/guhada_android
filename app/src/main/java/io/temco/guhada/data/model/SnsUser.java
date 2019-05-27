@@ -2,11 +2,10 @@ package io.temco.guhada.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SnsUser {
+public class SnsUser extends User{
     @SerializedName("profileJson")
     private UserProfile userProfile;
 
-    private String email;
     private String snsId;
     private String type;
 
@@ -21,13 +20,6 @@ public class SnsUser {
         this.userProfile = userProfile;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getSnsId() {
         return snsId;

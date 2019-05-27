@@ -105,6 +105,20 @@ public class LoginServer {
         });
     }
 
+    public static void checkEmail(OnServerListener listener, String email) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class).checkEmail(email).enqueue(new Callback<BaseModel<Object>>() {
+            @Override
+            public void onResponse(Call<BaseModel<Object>> call, Response<BaseModel<Object>> response) {
+                listener.onResult(response.isSuccessful(), response.body());
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel<Object>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
+
     public static void findUserId(OnServerListener listener, String name, String phoneNumber) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class)
                 .findUserId(name, phoneNumber)

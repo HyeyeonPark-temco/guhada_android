@@ -1,31 +1,47 @@
 package io.temco.guhada.data.viewmodel;
 
+import android.widget.Toast;
+
 import androidx.databinding.Bindable;
+
+import com.kakao.usermgmt.response.model.UserProfile;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.data.model.NaverUser;
+import io.temco.guhada.data.model.SnsUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
+import static android.app.Activity.RESULT_CANCELED;
+
 public class LoginViewModel extends BaseObservableViewModel {
     public String toolBarTitle = "";
     private String id = "", pwd = "";
     private boolean buttonAvailable = false;
     private OnLoginListener loginListener;
-    private NaverUser naverUser;
+    private Object snsUser;
 
     public LoginViewModel(OnLoginListener listener) {
         this.loginListener = listener;
     }
 
     // GETTER & SETTER
+
+    public Object getSnsUser() {
+        return snsUser;
+    }
+
+    public void setSnsUser(Object snsUser) {
+        this.snsUser = snsUser;
+    }
+
     public void setId(String id) {
         this.id = id;
 
@@ -69,7 +85,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickBack() {
-        loginListener.closeActivity();
+        loginListener.closeActivity(RESULT_CANCELED);
     }
 
     public void onClickSignIn() {
@@ -130,5 +146,35 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     public void onClickFindAccount() {
         loginListener.redirectFindAccountActivity();
+    }
+
+    public void kakaoLogin() {
+        UserProfile kakaoUser = (UserProfile) snsUser;
+        SnsUser user = new SnsUser();
+        io.temco.guhada.data.model.UserProfile profile = new io.temco.guhada.data.model.UserProfile();
+        profile.setName(kakaoUser.getNickname());
+        profile.setEmail(kakaoUser.getEmail());
+        profile.setImageUrl(kakaoUser.getProfileImagePath());
+        user.setEmail(kakaoUser.getEmail());
+        user.setType("KAKAO");
+        user.setSnsId(String.valueOf(kakaoUser.getId()));
+        user.setUserProfile(profile);
+
+        LoginServer.kakaoLogin(user, (success, o) -> {
+            if (success) {
+                BaseModel model = (BaseModel)o;
+                switch (model.resultCode){
+                    case Flag.ResultCode.SUCCESS:
+                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), "카카오톡 회원가입 완료", Toast.LENGTH_SHORT).show();
+                        break;
+                    case Flag.ResultCode.ALREADY_SIGNED_UP:
+                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), "이미 가입된 계정입니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            } else {
+                Toast.makeText(BaseApplication.getInstance().getApplicationContext(), (String) o, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

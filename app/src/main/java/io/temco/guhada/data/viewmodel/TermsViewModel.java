@@ -13,6 +13,8 @@ import io.temco.guhada.common.listener.OnTermsListener;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
+import static android.app.Activity.RESULT_OK;
+
 public class TermsViewModel extends BaseObservableViewModel implements Observer {
     private OnTermsListener listener;
     private String toolBarTitle = BaseApplication.getInstance().getResources().getString(R.string.terms_title);
@@ -136,11 +138,11 @@ public class TermsViewModel extends BaseObservableViewModel implements Observer 
 
     // CLICK LISTENER
     public void onClickSignUp() {
-       listener.showMessage("동의하고 진행하기");
+     listener.closeActivity(RESULT_OK);
     }
 
     public void onClickBack() {
-        listener.closeActivity();
+        listener.closeActivity(RESULT_OK);
     }
 
     @Override

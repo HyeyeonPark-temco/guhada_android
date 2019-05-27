@@ -30,7 +30,6 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
-import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
@@ -41,7 +40,6 @@ import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.UserProfile;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
-import io.temco.guhada.view.activity.VerifyPhoneActivity;
 
 public class SnsLoginModule {
     private static OAuthLogin mNaverLoginModule;
@@ -88,15 +86,11 @@ public class SnsLoginModule {
                             LoginServer.naverLogin(user, (success1, o1) -> {
                                 if (success1) {
                                     BaseModel model = (BaseModel) o1;
-                                    switch (model.resultCode) {
-                                        case Flag.ResultCode.SUCCESS:
-                                            // 로그인 성공
-                                            loginListener.redirectMainActivity((Token) model.data);
-                                            break;
-                                        case Flag.ResultCode.ALREADY_SIGNED_UP:
-                                            // 회원가입 진행
-                                            loginListener.redirectTermsActivity();
-                                            break;
+                                    if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                                        loginListener.redirectMainActivity((Token) model.data);
+                                    } else {
+                                        Toast.makeText(context, "회원가입 진행", Toast.LENGTH_SHORT).show();
+//                                          loginListener.redirectTermsActivity();
                                     }
                                 } else {
                                     String message = (String) o1;
@@ -223,8 +217,8 @@ public class SnsLoginModule {
     }
 
     // KAKAO
-    public static void initKakaoLogin() {
-        mKakaoSessionCallback = new KakaoSessionCallback();
+    public static void initKakaoLogin(OnSnsLoginListener loginListener) {
+        mKakaoSessionCallback = new KakaoSessionCallback(loginListener);
         Session.getCurrentSession().addCallback(mKakaoSessionCallback);
     }
 
@@ -236,6 +230,38 @@ public class SnsLoginModule {
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
         }
+    }
+
+    public static void kakaoJoin(com.kakao.usermgmt.response.model.UserProfile result) {
+        SnsUser user = new SnsUser();
+        user.setType("KAKAO");
+        user.setSnsId(String.valueOf(result.getId()));
+        user.setEmail(result.getEmail());
+
+        io.temco.guhada.data.model.UserProfile profile = new io.temco.guhada.data.model.UserProfile();
+        profile.setImageUrl(result.getProfileImagePath());
+        profile.setEmail(user.getEmail());
+        profile.setSnsId(user.getSnsId());
+        profile.setName(result.getNickname());
+
+        user.setUserProfile(profile);
+
+        LoginServer.kakaoLogin(user, (success, o) -> {
+            if (success) {
+                BaseModel model = (BaseModel) o;
+                switch (model.resultCode) {
+                    case Flag.ResultCode.SUCCESS:
+                        Token token = (Token) model.data;
+                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case Flag.ResultCode.ALREADY_SIGNED_UP:
+                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), ((BaseModel) o).message, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            } else {
+                Toast.makeText(BaseApplication.getInstance().getApplicationContext(), (String) o, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -10,9 +10,21 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
+import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.SnsUser;
+import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.server.LoginServer;
 
 public class KakaoSessionCallback implements ISessionCallback {
+    private OnSnsLoginListener mListener;
+
+    public KakaoSessionCallback(OnSnsLoginListener mListener) {
+        this.mListener = mListener;
+    }
+
     @Override
     public void onSessionOpened() {
         UserManagement.getInstance().requestMe(new MeResponseCallback() {
@@ -28,8 +40,25 @@ public class KakaoSessionCallback implements ISessionCallback {
 
             @Override
             public void onSuccess(UserProfile result) {
-                Toast.makeText(BaseApplication.getInstance().getApplicationContext(), result.getEmail(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(BaseApplication.getInstance().getApplicationContext(), result.getEmail(), Toast.LENGTH_SHORT).show();
                 CommonUtil.debug("[KAKAO] " + result.getEmail());
+
+                LoginServer.checkEmail((success, o) -> {
+                    if (success) {
+                        BaseModel model = (BaseModel) o;
+                        if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                            mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result);
+                        } else {
+                            // 로그인
+                            mListener.kakaoLogin(result);
+                        }
+                    } else {
+                        String mesage = (String) o;
+                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), mesage, Toast.LENGTH_SHORT).show();
+                    }
+                }, result.getEmail());
+
+
             }
         });
     }
@@ -38,4 +67,6 @@ public class KakaoSessionCallback implements ISessionCallback {
     public void onSessionOpenFailed(KakaoException exception) {
         CommonUtil.debug(exception.getMessage());
     }
+
+
 }

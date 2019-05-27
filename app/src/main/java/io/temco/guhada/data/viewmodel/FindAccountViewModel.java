@@ -19,6 +19,9 @@ import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 public class FindAccountViewModel extends BaseObservableViewModel implements Observer {
     public String toolBarTitle = "아이디/비밀번호 찾기";
     private OnFindAccountListener findAccountListener;
@@ -146,7 +149,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
 
     // LISTENER
     public void onClickBack() {
-        findAccountListener.closeActivity();
+        findAccountListener.closeActivity(RESULT_CANCELED);
     }
 
     public void onCheckedFindIdByInfo(boolean checked) {
@@ -182,7 +185,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     }
 
     public void onClickSignIn() {
-        findAccountListener.closeActivity();
+        findAccountListener.closeActivity(RESULT_OK);
         findAccountListener.redirectSignInActivity();
     }
 

@@ -3,6 +3,8 @@ package io.temco.guhada.common;
 public class Flag {
     public static class RequestCode {
         public static final int VERIFY_PHONE = 10001;
+        public static final int KAKAO_LOGIN = 10002;
+        public static final int NAVER_LOGIN = 10003;
     }
 
     public static class ResultCode {
