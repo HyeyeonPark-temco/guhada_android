@@ -210,6 +210,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
+
+    private EqualSpacingItemDecoration mDecoration;
+
     // List
     private void initProductList() {
         // Adapter
@@ -220,8 +223,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // List
         if (mGridManager == null)
             mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
+        if (mDecoration == null)
+            mDecoration = new EqualSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
         mBinding.listContents.setLayoutManager(mGridManager);
-        mBinding.listContents.addItemDecoration(new EqualSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.padding_product_list)));
+        mBinding.listContents.addItemDecoration(mDecoration);
         mBinding.listContents.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -256,18 +261,21 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mBinding.layoutHeader.imageListType1.setSelected(true);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_1));
                 break;
 
             case TWO:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(true);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
                 break;
 
             case THREE:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(true);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_3));
                 break;
         }
         if (mGridManager != null && mListAdapter != null) {

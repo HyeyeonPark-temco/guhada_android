@@ -1,12 +1,7 @@
 package io.temco.guhada.view.adapter.holder;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -60,7 +55,7 @@ public class ProductListOneViewHolder extends BaseProductListViewHolder<ItemProd
                 for (Deal.Option o : data.options) {
                     switch (Type.ProductOption.getType(o.type)) {
                         case COLOR:
-                            addColor(context, 5, o.attributes); // 5 Units
+                            addColor(context, mBinding.layoutColor, 5, o.attributes); // 5 Units
                             break;
 
                         case TEXT:
@@ -81,55 +76,6 @@ public class ProductListOneViewHolder extends BaseProductListViewHolder<ItemProd
             // Ship
             // mBinding.textShipFree.setVisibility(View.VISIBLE);
         }
-    }
-
-    private void addColor(Context context, int unit, String[] colors) {
-        if (colors != null && colors.length > 0) {
-            int point = colors.length / unit;
-            int re = colors.length % unit;
-
-            String[] s;
-            if (point > 0) {
-                for (int i = 0; i < point; i++) {
-                    s = new String[unit];
-                    System.arraycopy(colors, unit * i, s, 0, s.length);
-                    mBinding.layoutColor.addView(createColorLayout(context, s));
-                }
-            }
-            if (re > 0) {
-                s = new String[re];
-                System.arraycopy(colors, unit * point, s, 0, s.length);
-                mBinding.layoutColor.addView(createColorLayout(context, s));
-            }
-        }
-    }
-
-    private LinearLayout createColorLayout(Context context, String[] colors) {
-        if (colors != null && colors.length > 0) {
-            LinearLayout layout = new LinearLayout(context);
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            for (String c : colors) {
-                layout.addView(createColorView(context, c));
-            }
-            return layout;
-        }
-        return null;
-    }
-
-    private View createColorView(Context context, String color) {
-        View v = LayoutInflater.from(context).inflate(R.layout.layout_color_dot, null);
-        ImageUtil.setOvalView(context, v.findViewById(R.id.layout_color));
-        v.findViewById(R.id.image_color).setBackgroundColor(Color.parseColor(color));
-        return v;
-    }
-
-    private void addText(Context context, String[] texts) {
-        // Not..
-//        if (texts != null && texts.length > 0) {
-//            for (String t : texts) {
-//            }
-//        }
     }
 
     ////////////////////////////////////////////////

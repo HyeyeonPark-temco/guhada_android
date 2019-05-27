@@ -27,7 +27,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListView
     private Context mContext;
     private RequestManager mRequestManager;
     private OnProductListListener mProductListener;
-    private int mSpanCount = 1;
+    private Type.Grid mGridType = Type.Grid.TWO;
     private List<Deal> mItems;
     // -----------------------------
 
@@ -51,7 +51,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListView
 
     @Override
     public int getItemViewType(int position) {
-        return mSpanCount;
+        return Type.Grid.get(mGridType);
     }
 
     @NonNull
@@ -90,7 +90,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListView
     ////////////////////////////////////////////////
 
     public void setSpanCount(Type.Grid type) {
-        mSpanCount = Type.Grid.get(type);
+        mGridType = type;
         notifyItemRangeChanged(0, getItemCount());
     }
 

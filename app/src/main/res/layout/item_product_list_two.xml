@@ -3,8 +3,130 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="206dp">
+
+            <!-- THUMBNAIL -->
+            <ImageView
+                android:id="@+id/image_thumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <!-- SHIP -->
+            <TextView
+                android:id="@+id/text_ship_free"
+                style="@style/TextMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="9dp"
+                android:background="@color/common_blue_purple"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="@string/product_ship_free_split"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_10" />
+
+            <!-- COLOR -->
+            <LinearLayout
+                android:id="@+id/layout_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="7dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="bottom"
+                android:orientation="horizontal" />
+        </RelativeLayout>
+
+        <!-- INFO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="40dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- BRAND -->
+                <TextView
+                    android:id="@+id/text_brand"
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_14" />
+
+                <!-- SEASON -->
+                <TextView
+                    android:id="@+id/text_season"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="0"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_11" />
+            </LinearLayout>
+
+            <!-- TITLE -->
+            <TextView
+                android:id="@+id/text_title"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_12" />
+
+            <!-- SIZE -->
+            <TextView
+                android:id="@+id/text_size"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_9" />
+
+            <!-- PRICE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_price"
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_16" />
+
+                <TextView
+                    android:id="@+id/text_price_sale_per"
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:textColor="@color/common_blue_purple"
+                    android:textSize="@dimen/text_15" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>
