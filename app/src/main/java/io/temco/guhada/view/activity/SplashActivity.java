@@ -5,8 +5,8 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.data.model.BrandData;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.server.ProductServer;
 import io.temco.guhada.databinding.ActivitySplashBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -52,7 +52,7 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
     private void getCategories() {
         ProductServer.getCategories((success, o) -> {
             if (success) {
-                Preferences.setCategories((List<CategoryData>) o);
+                Preferences.setCategories((List<Category>) o);
             }
         });
     }
@@ -60,7 +60,7 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
     private void getAllBrands() {
         ProductServer.getAllBrands((success, o) -> {
             if (success) {
-                Preferences.setBrands((List<BrandData>) o);
+                Preferences.setBrands((List<Brand>) o);
             }
         });
     }

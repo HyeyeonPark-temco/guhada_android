@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.temco.guhada.common.Type;
 
-public class CategoryData {
+public class Category {
 
     public Type.Category type = Type.Category.NORMAL;
 
@@ -15,6 +15,9 @@ public class CategoryData {
 
     @SerializedName("name")
     public String name;
+
+    @SerializedName("title")
+    public String title;
 
     @SerializedName("key")
     public String key;
@@ -35,5 +38,5 @@ public class CategoryData {
     public boolean isUnisex;
 
     @SerializedName("children")
-    public List<CategoryData> children;
+    public List<Category> children;
 }

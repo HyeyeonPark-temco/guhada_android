@@ -9,8 +9,8 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
-import io.temco.guhada.data.model.BrandData;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.Category;
 
 public class Preferences {
 
@@ -145,22 +145,22 @@ public class Preferences {
     }
 
     // Category
-    public static void setCategories(List<CategoryData> data) {
+    public static void setCategories(List<Category> data) {
         putJsonObject(KEY_CATEGORY_DATA, data);
     }
 
-    public static List<CategoryData> getCategories() {
-        return new Gson().fromJson(getString(KEY_CATEGORY_DATA), new TypeToken<List<CategoryData>>() {
+    public static List<Category> getCategories() {
+        return new Gson().fromJson(getString(KEY_CATEGORY_DATA), new TypeToken<List<Category>>() {
         }.getType());
     }
 
     // Brand
-    public static void setBrands(List<BrandData> data) {
+    public static void setBrands(List<Brand> data) {
         putJsonObject(KEY_BRAND_DATA, data);
     }
 
-    public static List<BrandData> getBrands() {
-        return new Gson().fromJson(getString(KEY_BRAND_DATA), new TypeToken<List<BrandData>>() {
+    public static List<Brand> getBrands() {
+        return new Gson().fromJson(getString(KEY_BRAND_DATA), new TypeToken<List<Brand>>() {
         }.getType());
     }
 

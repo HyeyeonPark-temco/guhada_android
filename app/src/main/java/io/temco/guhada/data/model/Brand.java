@@ -2,7 +2,7 @@ package io.temco.guhada.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class BrandData {
+public class Brand {
 
     @SerializedName("id")
     public int id;
