@@ -4,7 +4,9 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -12,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.decoration.EqualSpacingItemDecoration;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -207,6 +210,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
+
+    private EqualSpacingItemDecoration mDecoration;
+
     // List
     private void initProductList() {
         // Adapter
@@ -217,7 +223,28 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // List
         if (mGridManager == null)
             mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
+        if (mDecoration == null)
+            mDecoration = new EqualSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
         mBinding.listContents.setLayoutManager(mGridManager);
+        mBinding.listContents.addItemDecoration(mDecoration);
+        mBinding.listContents.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                // super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    // Top
+                } else if (!recyclerView.canScrollVertically(1)) {
+                    // Bottom
+                } else {
+                    // Idle
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         mBinding.listContents.setAdapter(mListAdapter);
     }
 
@@ -234,18 +261,21 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mBinding.layoutHeader.imageListType1.setSelected(true);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_1));
                 break;
 
             case TWO:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(true);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
                 break;
 
             case THREE:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(true);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_3));
                 break;
         }
         if (mGridManager != null && mListAdapter != null) {

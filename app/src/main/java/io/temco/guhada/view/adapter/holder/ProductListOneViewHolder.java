@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.RequestManager;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.ImageUtil;
+import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.data.model.Deal;
 import io.temco.guhada.databinding.ItemProductListOneBinding;
 import io.temco.guhada.view.adapter.base.BaseProductListViewHolder;
@@ -45,14 +47,30 @@ public class ProductListOneViewHolder extends BaseProductListViewHolder<ItemProd
             // Size
             // Empty...
 
-            // Color
+            // Option
+            if (mBinding.layoutColor.getChildCount() > 0) {
+                mBinding.layoutColor.removeAllViews();
+            }
+            if (data.options != null && data.options.size() > 0) {
+                for (Deal.Option o : data.options) {
+                    switch (Type.ProductOption.getType(o.type)) {
+                        case COLOR:
+                            addColor(context, mBinding.layoutColor, 5, o.attributes); // 5 Units
+                            break;
+
+                        case TEXT:
+                            addText(context, o.attributes);
+                            break;
+                    }
+                }
+            }
 
             // Price
             if (data.setDiscount) {
-                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), data.discountPrice.intValue()));
+                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.intValue())));
                 mBinding.textPriceSalePer.setText(String.format(context.getString(R.string.product_price_sale_per), data.discountRate));
             } else {
-                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), data.sellPrice.intValue()));
+                mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.intValue())));
             }
 
             // Ship
