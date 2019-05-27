@@ -53,6 +53,11 @@
             android:name=".view.activity.CategorySubActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Product -->
+        <activity
+            android:name=".view.activity.ProductDetailActivity"
+            android:screenOrientation="portrait" />
+
         <!-- Login -->
         <activity
             android:name=".view.activity.LoginActivity"

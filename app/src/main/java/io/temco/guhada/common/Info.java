@@ -21,9 +21,10 @@ public class Info {
     // INTENT
     ////////////////////////////////////////////////
 
-    public static final String INTENT_CATEGORY_ID = "id";
-    public static final String INTENT_CATEGORY_TYPE = "type";
-    public static final String INTENT_CATEGORY_HIERARCHIES = "hierarchies";
+    public static final String INTENT_CATEGORY_ID = "categoryId";
+    public static final String INTENT_CATEGORY_TYPE = "categoryType";
+    public static final String INTENT_CATEGORY_HIERARCHIES = "categoryHierarchies";
+    public static final String INTENT_DEAL_ID = "dealId";
 
     ////////////////////////////////////////////////
 }

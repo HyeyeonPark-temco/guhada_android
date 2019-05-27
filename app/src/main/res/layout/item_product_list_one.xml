@@ -4,10 +4,56 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
+        <!-- THUMBNAIL -->
+        <ImageView
+            android:id="@+id/image_thumb"
+            android:layout_width="130dp"
+            android:layout_height="164dp"
+            android:scaleType="centerCrop" />
 
+        <!-- INFO -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <!-- BRAND -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/text_season"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- TITLE -->
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" />
+
+            <!-- SIZE -->
+
+            <!-- PRICE -->
+
+            <!-- -->
+
+
+
+
+        </LinearLayout>
     </LinearLayout>
 </layout>
