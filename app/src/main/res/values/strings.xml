@@ -45,6 +45,10 @@
     <string name="product_order_high_price">높은가격순</string>
 
     <string name="product_search_detail_title">상세검색</string>
+    <string name="product_price">%s원</string>
+    <string name="product_price_sale_per">%d%%</string>
+    <string name="product_ship_free">무료배송</string>
+    <string name="product_ship_free_split">무료\n배송</string>
 
     <!-- LOGIN -->
     <string name="login_title">로그인</string>

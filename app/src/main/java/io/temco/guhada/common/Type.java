@@ -139,6 +139,16 @@ public class Type {
                     return 0;
             }
         }
+
+        public static Grid getType(int type) {
+            if (type == TWO.type) {
+                return TWO;
+            } else if (type == THREE.type) {
+                return THREE;
+            } else {
+                return ONE;
+            }
+        }
     }
 
     ////////////////////////////////////////////////
@@ -222,7 +232,7 @@ public class Type {
     }
 
     ////////////////////////////////////////////////
-    // Product Order
+    // Product
     public enum ProductOrder {
 
         NEW_PRODUCT("DATE"), // 신상품순
@@ -246,6 +256,35 @@ public class Type {
                     return HIGH_PRICE.type;
                 default:
                     return NEW_PRODUCT.type;
+            }
+        }
+    }
+
+    public enum ProductOption {
+
+        COLOR("rgb"),
+        TEXT("text");
+
+        private String type;
+
+        ProductOption(String type) {
+            this.type = type;
+        }
+
+        public static String get(ProductOption type) {
+            switch (type) {
+                case COLOR:
+                    return COLOR.type;
+                default:
+                    return TEXT.type;
+            }
+        }
+
+        public static ProductOption getType(String type) {
+            if (type.equals(COLOR.type)) {
+                return COLOR;
+            } else {
+                return TEXT;
             }
         }
     }

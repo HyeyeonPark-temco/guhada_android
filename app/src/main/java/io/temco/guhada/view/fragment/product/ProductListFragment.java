@@ -4,21 +4,24 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.decoration.EqualSpacingItemDecoration;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
-import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
+import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.adapter.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.ProductOrderBottomDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
@@ -26,6 +29,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment;
 public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
+    private RequestManager mRequestManager;
     private OnDrawerLayoutListener mDrawerListener;
     private OnBackPressListener mBackListener;
     private ProductListAdapter mListAdapter;
@@ -52,6 +56,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     @Override
     protected void init() {
+        // Glide
+        mRequestManager = Glide.with(this);
+
         // Header
         mBinding.layoutHeader.setClickListener(this);
         setTabLayout();
@@ -59,7 +66,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
 
         // List
-        initList();
+        initProductList();
 
         // Data
         getProductListByCategory(1);
@@ -203,17 +210,41 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
-    // List
-    private void initList() {
-        // Adapter
-        if (mListAdapter == null) mListAdapter = new ProductListAdapter(getContext());
 
-        //
+    private EqualSpacingItemDecoration mDecoration;
+
+    // List
+    private void initProductList() {
+        // Adapter
+        if (mListAdapter == null)
+            mListAdapter = new ProductListAdapter(getContext(), mRequestManager);
+        mListAdapter.setOnProductListListener(id -> ProductDetailActivity.startActivity(getContext(), id));
+
+        // List
         if (mGridManager == null)
             mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
+        if (mDecoration == null)
+            mDecoration = new EqualSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
         mBinding.listContents.setLayoutManager(mGridManager);
-//        adapter.setOnCategoryListener(mSideMenuCategoryListener);
-//        adapter.setItems(Preferences.getCategories());
+        mBinding.listContents.addItemDecoration(mDecoration);
+        mBinding.listContents.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                // super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    // Top
+                } else if (!recyclerView.canScrollVertically(1)) {
+                    // Bottom
+                } else {
+                    // Idle
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
         mBinding.listContents.setAdapter(mListAdapter);
     }
 
@@ -230,23 +261,26 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mBinding.layoutHeader.imageListType1.setSelected(true);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_1));
                 break;
 
             case TWO:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(true);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
                 break;
 
             case THREE:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(true);
+                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_3));
                 break;
         }
         if (mGridManager != null && mListAdapter != null) {
             mGridManager.setSpanCount(Type.Grid.get(type));
-            mListAdapter.notifyItemRangeChanged(0, mListAdapter.getItemCount());
+            mListAdapter.setSpanCount(type);
         }
     }
 
@@ -256,8 +290,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void getProductListByCategory(int id) {
         SearchServer.getProductListByCategory(mCurrentOrderType, id, mPageNumber, (success, o) -> {
-            if (success) {
-                ProductList data = (ProductList) o;
+            if (success && mListAdapter != null) {
+                mListAdapter.setItems(((ProductList) o).deals);
             } else {
 
             }

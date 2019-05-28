@@ -26,5 +26,4 @@ public abstract class BaseCategoryViewHolder<B extends ViewDataBinding> extends 
     public abstract void init(Context context, Category data, OnCategoryListener listener);
 
     ////////////////////////////////////////////////
-
 }
