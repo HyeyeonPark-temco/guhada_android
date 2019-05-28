@@ -36,8 +36,14 @@ public class TermsActivity extends BindActivity<ActivityTermsBinding> {
             }
 
             @Override
-            public void closeActivity() {
+            public void closeActivity(int resultCode) {
+                setResult(resultCode);
                 finish();
+            }
+
+            @Override
+            public void redirectJoinActivity() {
+                // startActivity(new Intent(TermsActivity.this, JoinActivity.class));
             }
         });
         mBinding.setViewModel(mViewModel);

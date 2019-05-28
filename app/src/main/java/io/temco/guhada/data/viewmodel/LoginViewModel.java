@@ -5,27 +5,48 @@ import androidx.databinding.Bindable;
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
+import static android.app.Activity.RESULT_CANCELED;
+
 public class LoginViewModel extends BaseObservableViewModel {
     public String toolBarTitle = "";
-    private String id = "", pwd = "";
+    private String id = Preferences.getSavedId(), pwd = "";
     private boolean buttonAvailable = false;
+    private boolean isIdSaved = Preferences.isIdSaved();
     private OnLoginListener loginListener;
-    private NaverUser naverUser;
+    private Object snsUser;
 
     public LoginViewModel(OnLoginListener listener) {
         this.loginListener = listener;
     }
 
     // GETTER & SETTER
+
+    public boolean isIdSaved() {
+        return isIdSaved;
+    }
+
+    public void setIdSaved(boolean idSaved) {
+        isIdSaved = idSaved;
+    }
+
+    public Object getSnsUser() {
+        return snsUser;
+    }
+
+    public void setSnsUser(Object snsUser) {
+        this.snsUser = snsUser;
+    }
+
     public void setId(String id) {
         this.id = id;
 
@@ -69,7 +90,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickBack() {
-        loginListener.closeActivity();
+        loginListener.closeActivity(RESULT_CANCELED);
     }
 
     public void onClickSignIn() {
@@ -78,12 +99,21 @@ public class LoginViewModel extends BaseObservableViewModel {
                 if (success) {
                     BaseModel model = ((BaseModel) o);
                     switch (model.resultCode) {
-                        case 200:
+                        case Flag.ResultCode.SUCCESS:
                             Token token = (Token) model.data;
+
+                            // save id
+                            if (isIdSaved) {
+                                String savedId = Preferences.getSavedId();
+                                if (!savedId.equals(id)) {
+                                    Preferences.setSavedId(id);
+                                }
+                            }
+
                             loginListener.showMessage(token.getAccessToken());
                             return;
-                        case 5004: // DATA NOT FOUND
-                        case 6003: // WRONG PASSWORD
+                        case Flag.ResultCode.USER_NOT_FOUND:
+                        case Flag.ResultCode.SIGNIN_INVALID_PASSWORD:
                             loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_invalidinfo));
                     }
                 } else {
@@ -125,7 +155,11 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onCheckedSaveId(boolean checked) {
-
+        isIdSaved = checked;
+        Preferences.setIsIdSaved(checked);
+        if(!checked){
+            Preferences.setSavedId("");
+        }
     }
 
     public void onClickFindAccount() {

@@ -77,7 +77,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
             }
 
             @Override
-            public void closeActivity() {
+            public void closeActivity(int resultCode) {
                 finish();
             }
 

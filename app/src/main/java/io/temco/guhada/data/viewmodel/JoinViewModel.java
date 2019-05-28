@@ -16,6 +16,8 @@ import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
+import static android.app.Activity.RESULT_OK;
+
 public class JoinViewModel extends BaseObservableViewModel implements Observer {
     private String toolBarTitle = "";
     private User user = new User();
@@ -80,7 +82,7 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
 
     // CLICK LISTENER
     public void onClickBack() {
-        listener.closeActivity();
+        listener.closeActivity(RESULT_OK);
     }
 
     public void onClickSignUp() {
@@ -100,7 +102,7 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
                         case 200:
                             listener.showMessage(user.getEmail() + " 가입 완료");
                             // listener.showMessage((String) model.data);
-                            listener.closeActivity();
+                            listener.closeActivity(RESULT_OK);
                             return;
                         case 6001: // ALREADY EXIST EMAIL
                             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_existemail));

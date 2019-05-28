@@ -6,18 +6,30 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.kakao.usermgmt.response.model.UserProfile;
+
+import java.util.Arrays;
+
 import io.temco.guhada.R;
-import io.temco.guhada.common.Info;
+import io.temco.guhada.common.Flag;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnLoginListener;
+import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.NaverUser;
+import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.viewmodel.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 
 public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     private LoginViewModel mViewModel;
+    private OnSnsLoginListener mLoginListener;
 
     @Override
     protected String getBaseTag() {
@@ -36,17 +48,43 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void init() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        LoginManager.getInstance().logOut();
+
+
         // INIT SNS LOGIN
+        mLoginListener = new OnSnsLoginListener() {
+            @Override
+            public void kakaoLogin(UserProfile result) {
+                SnsLoginModule.kakaoJoin(result);
+            }
+
+            @Override
+            public void redirectTermsActivity(int type, Object data) {
+                mViewModel.setSnsUser(data);
+                Intent intent = new Intent(LoginActivity.this, TermsActivity.class);
+                startActivityForResult(intent, type);
+            }
+
+            @Override
+            public void redirectMainActivity(Token data) {
+                Preferences.setToken(data);
+
+                Token token = Preferences.getToken();
+                Toast.makeText(LoginActivity.this, "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
         SnsLoginModule.initFacebookLogin();
         SnsLoginModule.initGoogleLogin();
-        SnsLoginModule.initKakaoLogin();
-        SnsLoginModule.initNaverLogin(mBinding.buttonLoginNaver);
+        SnsLoginModule.initKakaoLogin(mLoginListener);
+        SnsLoginModule.initNaverLogin(mBinding.buttonLoginNaver, mLoginListener);
 
         // INIT BINDING
         mViewModel = new LoginViewModel(new OnLoginListener() {
             @Override
             public void onGoogleLogin() {
-                startActivityForResult(new Intent(SnsLoginModule.getGoogleClientInstance()), Info.RC_SIGN_IN_GOOGLE);
+                startActivityForResult(new Intent(SnsLoginModule.getGoogleClientInstance()), Flag.RequestCode.RC_GOOGLE_LOGIN);
             }
 
             @Override
@@ -56,6 +94,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void onFacebookLogin() {
+                mBinding.buttonLoginFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
                 mBinding.buttonLoginFacebook.performClick();
             }
 
@@ -86,7 +125,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
-            public void closeActivity() {
+            public void closeActivity(int resultCode) {
                 finish();
             }
         });
@@ -100,15 +139,31 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     protected void onDestroy() {
         super.onDestroy();
         SnsLoginModule.removeKakaoCallback();
-        SnsLoginModule.stopFacebookTracking();
+//        SnsLoginModule.stopFacebookTracking();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         SnsLoginModule.handlerActivityResultForFacebook(requestCode, resultCode, data);
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
-        SnsLoginModule.handleActivityResultForGoogle(requestCode, data);
+        SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener);
 
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case Flag.RequestCode.KAKAO_LOGIN:
+                    SnsLoginModule.kakaoJoin((UserProfile) mViewModel.getSnsUser());
+                    break;
+                case Flag.RequestCode.NAVER_LOGIN:
+                    SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser());
+                    break;
+                case Flag.RequestCode.GOOGLE_LOGIN:
+                    SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser());
+                    break;
+                case Flag.RequestCode.FACEBOOK_LOGIN:
+
+                    break;
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

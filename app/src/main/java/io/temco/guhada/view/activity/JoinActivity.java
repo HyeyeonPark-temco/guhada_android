@@ -37,7 +37,7 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
             }
 
             @Override
-            public void closeActivity() {
+            public void closeActivity(int resultCode) {
                 finish();
             }
 

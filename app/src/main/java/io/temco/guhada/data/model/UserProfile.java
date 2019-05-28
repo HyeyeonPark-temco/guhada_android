@@ -3,6 +3,7 @@ package io.temco.guhada.data.model;
 public class UserProfile {
     private String snsId;
     private String email;
+    private String name;
     private String familyName;
     private String givenName;
     private String imageUrl;
@@ -48,5 +49,13 @@ public class UserProfile {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
