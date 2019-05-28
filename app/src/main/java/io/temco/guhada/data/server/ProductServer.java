@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
-import io.temco.guhada.data.model.BrandData;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.base.BaseListModel;
 import io.temco.guhada.data.retrofit.manager.RetrofitManager;
 import io.temco.guhada.data.retrofit.service.ProductService;
@@ -19,9 +19,9 @@ public class ProductServer {
         if (listener != null) {
             RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class)
                     .getCategories()
-                    .enqueue(new Callback<BaseListModel<CategoryData>>() {
+                    .enqueue(new Callback<BaseListModel<Category>>() {
                         @Override
-                        public void onResponse(Call<BaseListModel<CategoryData>> call, Response<BaseListModel<CategoryData>> response) {
+                        public void onResponse(Call<BaseListModel<Category>> call, Response<BaseListModel<Category>> response) {
                             if (response.isSuccessful()) {
                                 if (response.body().resultCode == 200) {
                                     listener.onResult(true, response.body().data);
@@ -38,7 +38,7 @@ public class ProductServer {
                         }
 
                         @Override
-                        public void onFailure(Call<BaseListModel<CategoryData>> call, Throwable t) {
+                        public void onFailure(Call<BaseListModel<Category>> call, Throwable t) {
                             listener.onResult(false, t.getMessage());
                         }
                     });
@@ -49,9 +49,9 @@ public class ProductServer {
         if (listener != null) {
             RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class)
                     .getAllBrands()
-                    .enqueue(new Callback<BaseListModel<BrandData>>() {
+                    .enqueue(new Callback<BaseListModel<Brand>>() {
                         @Override
-                        public void onResponse(Call<BaseListModel<BrandData>> call, Response<BaseListModel<BrandData>> response) {
+                        public void onResponse(Call<BaseListModel<Brand>> call, Response<BaseListModel<Brand>> response) {
                             if (response.isSuccessful()) {
                                 if (response.body().resultCode == 200) {
                                     listener.onResult(true, response.body().data);
@@ -68,7 +68,7 @@ public class ProductServer {
                         }
 
                         @Override
-                        public void onFailure(Call<BaseListModel<BrandData>> call, Throwable t) {
+                        public void onFailure(Call<BaseListModel<Brand>> call, Throwable t) {
                             listener.onResult(false, t.getMessage());
                         }
                     });

@@ -35,5 +35,11 @@
 
     <!-- VIEW SIZE -->
     <dimen name="height_header">50dp</dimen>
+    <dimen name="height_dialog_header">60dp</dimen>
     <dimen name="height_snackbar">50dp</dimen>
+
+    <!-- PADDING -->
+    <dimen name="padding_product_list_1">20dp</dimen>
+    <dimen name="padding_product_list_2">10dp</dimen>
+    <dimen name="padding_product_list_3">10dp</dimen>
 </resources>

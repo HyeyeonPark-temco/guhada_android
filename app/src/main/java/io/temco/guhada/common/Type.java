@@ -2,6 +2,7 @@ package io.temco.guhada.common;
 
 public class Type {
 
+    ////////////////////////////////////////////////
     // View
     public enum View {
         TEST,
@@ -11,6 +12,7 @@ public class Type {
         PROFILE,
         MY_PAGE,
         CATEGORY,
+        PRODUCT_DETAIL,
         LOGIN,
         JOIN,
         FIND_ACCOUNT,
@@ -27,6 +29,7 @@ public class Type {
         MY_PAGE
     }
 
+    ////////////////////////////////////////////////
     // Server
     public enum Server {
 
@@ -68,7 +71,7 @@ public class Type {
                     return PAYMENT.url;
                 case NAVER_PROFILE:
                     return NAVER_PROFILE.url;
-                case LOCAL :
+                case LOCAL:
                     return LOCAL.url;
                 default:
                     return COMMON.url;
@@ -76,32 +79,7 @@ public class Type {
         }
     }
 
-    // RESULT CODE
-    public enum ResultCode {
-        ALREADY_SIGNED_UP(6006),
-        ALREADY_EXIST_EMAIL(6001),
-        INVALID_PASSWORD(6002);
-
-        private int code;
-
-        ResultCode(int code) {
-        }
-
-        public static int getResultCode(ResultCode code) {
-            switch (code) {
-                case ALREADY_SIGNED_UP:
-                    return ALREADY_SIGNED_UP.code;
-                case ALREADY_EXIST_EMAIL:
-                    return ALREADY_EXIST_EMAIL.code;
-                case INVALID_PASSWORD:
-                    return INVALID_PASSWORD.code;
-                default:
-                    return 0;
-            }
-        }
-    }
-
-
+    ////////////////////////////////////////////////
     // List
     public enum List {
 
@@ -139,12 +117,41 @@ public class Type {
 
     public enum Grid {
 
-        ONE,
-        TWO,
-        THREE
+        ONE(1),
+        TWO(2),
+        THREE(3);
+
+        private int type;
+
+        Grid(int type) {
+            this.type = type;
+        }
+
+        public static int get(Grid type) {
+            switch (type) {
+                case ONE:
+                    return ONE.type;
+                case TWO:
+                    return TWO.type;
+                case THREE:
+                    return THREE.type;
+                default:
+                    return 0;
+            }
+        }
+
+        public static Grid getType(int type) {
+            if (type == TWO.type) {
+                return TWO;
+            } else if (type == THREE.type) {
+                return THREE;
+            } else {
+                return ONE;
+            }
+        }
     }
 
-
+    ////////////////////////////////////////////////
     // Category
     public enum Category {
 
@@ -223,4 +230,64 @@ public class Type {
             }
         }
     }
+
+    ////////////////////////////////////////////////
+    // Product
+    public enum ProductOrder {
+
+        NEW_PRODUCT("DATE"), // 신상품순
+        MARKS(""), // 평점순
+        LOW_PRICE("PRICE_ASC"), // 낮은가격순
+        HIGH_PRICE("PRICE_DESC"); // 높은가격순
+
+        private String type;
+
+        ProductOrder(String type) {
+            this.type = type;
+        }
+
+        public static String get(ProductOrder type) {
+            switch (type) {
+                case MARKS:
+                    return MARKS.type;
+                case LOW_PRICE:
+                    return LOW_PRICE.type;
+                case HIGH_PRICE:
+                    return HIGH_PRICE.type;
+                default:
+                    return NEW_PRODUCT.type;
+            }
+        }
+    }
+
+    public enum ProductOption {
+
+        COLOR("rgb"),
+        TEXT("text");
+
+        private String type;
+
+        ProductOption(String type) {
+            this.type = type;
+        }
+
+        public static String get(ProductOption type) {
+            switch (type) {
+                case COLOR:
+                    return COLOR.type;
+                default:
+                    return TEXT.type;
+            }
+        }
+
+        public static ProductOption getType(String type) {
+            if (type.equals(COLOR.type)) {
+                return COLOR;
+            } else {
+                return TEXT;
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////
 }

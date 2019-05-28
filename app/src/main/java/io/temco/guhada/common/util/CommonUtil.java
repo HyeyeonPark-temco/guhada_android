@@ -1,6 +1,7 @@
 package io.temco.guhada.common.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.temco.guhada.BuildConfig;
+import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.listener.OnTimerListener;
 
@@ -54,14 +57,22 @@ public class CommonUtil {
         return result;
     }
 
-    // SnackBar
-    public static void showSnackBar(View parentView, String message, int bgColor, int marginTop) {
+    /**
+     * Show snack bar
+     *
+     * Fix background-color and margin-top of the snack bar
+     * @param parentView
+     * @param message
+     * @author Hyeyeon Park
+     */
+    public static void showSnackBar(View parentView, String message) {
         Snackbar snackbar = Snackbar.make(parentView, message, Snackbar.LENGTH_INDEFINITE);
         snackbar.setDuration(2500);
         snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
 
+        Resources resources = BaseApplication.getInstance().getResources();
         View view = snackbar.getView();
-        view.setBackgroundColor(bgColor);
+        view.setBackgroundColor(resources.getColor(R.color.colorPrimary));
 
         TextView snackBarTextView = view.findViewById(com.google.android.material.R.id.snackbar_text);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -72,7 +83,7 @@ public class CommonUtil {
 
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view.getLayoutParams();
         layoutParams.gravity = Gravity.TOP;
-        layoutParams.setMargins(0, marginTop, 0, 0);
+        layoutParams.setMargins(0, (int)resources.getDimension(R.dimen.height_header), 0, 0);
         view.setLayoutParams(layoutParams);
 
         snackbar.show();
@@ -97,7 +108,7 @@ public class CommonUtil {
     }
 
     ////////////////////////////////////////////////
-
+    // TIMER
     private static void initTimer(OnTimerListener listener) {
         mTimerTask = new TimerTask() {
             @Override
@@ -153,6 +164,7 @@ public class CommonUtil {
         }
     }
 
+    // VALIDATION
     public static boolean validatePassword(String password) {
         int length = password.length();
         if (length >= 8 && length <= 15) {

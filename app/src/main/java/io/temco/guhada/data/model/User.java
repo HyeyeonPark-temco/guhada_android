@@ -96,7 +96,8 @@ public class User extends Observable {
 
     public void setEmail(String email) {
         this.email = email;
-
+        setChanged();
+        notifyObservers("email");
     }
 
     public String getPassword() {
@@ -122,6 +123,8 @@ public class User extends Observable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        setChanged();
+        notifyObservers("phoneNumber");
     }
 
     public String getJoinAt() {
@@ -162,6 +165,8 @@ public class User extends Observable {
 
     public void setName(String name) {
         this.name = name;
+        setChanged();
+        notifyObservers("name");
     }
 
     public int getNationality() {

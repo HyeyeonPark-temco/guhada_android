@@ -53,6 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint="admin@guhada.co.kr"
+                        app:txt="@={viewModel.user.email}"
                         app:type="text" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
@@ -62,6 +63,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         app:hint="비밀번호"
+                        app:txt="@={viewModel.user.password}"
                         app:type="password" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
@@ -69,6 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint="비밀번호 확인"
+                        app:txt="@={viewModel.user.confirmPassword}"
                         app:type="password" />
                 </LinearLayout>
 

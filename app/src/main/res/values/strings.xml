@@ -45,7 +45,10 @@
     <string name="product_order_high_price">높은가격순</string>
 
     <string name="product_search_detail_title">상세검색</string>
-
+    <string name="product_price">%s원</string>
+    <string name="product_price_sale_per">%d%%</string>
+    <string name="product_ship_free">무료배송</string>
+    <string name="product_ship_free_split">무료\n배송</string>
 
     <!-- LOGIN -->
     <string name="login_title">로그인</string>
@@ -54,7 +57,7 @@
     <string name="login_kakao">카카오\n로그인</string>
     <string name="login_facebook">페이스북\n로그인</string>
     <string name="login_findid">아이디 찾기</string>
-    <string name="login_findpwd">비밀번호 찾기</string>
+    <string name="login_findpwd">비밀번호 재설정</string>
     <string name="login_simple">간편로그인</string>
 
     <string name="login_button_signin">로그인</string>
@@ -131,12 +134,22 @@
     <string name="verifyphone_terms3">통신사 이용약관 동의</string>
     <string name="verifyphone_terms4">서비스 이용약관</string>
     <string name="verifyphone_terms5">본인인증 목적으로 상기 정보를 통신사에 제공함을 동의</string>
+    <string name="verifyphone_content">본인 명의의 휴대폰으로\n아이디 전체를 확인하실 수 있습니다.</string>
+    <string name="verifyphone_button">본인 휴대폰 인증하여 아이디 찾기</string>
+
+    <string name="verifyphone_description1">본인명의의 휴대폰으로 본인여부를 확인합니다.</string>
+    <string name="verifyphone_description2">본인인증 서비스는 NICE신용평가정보에서 제공합니다.</string>
+    <string name="verifyphone_description3">인증수단의 명의가 다를 경우 고객센터로 문의하시기 바랍니다..</string>
+    <string name="verifyphone_description4">본인인증 시 입력한 정보는 본인확인 용도 외에는 사용되거나, 보관되지 않습니다.</string>
+    <string name="verifyphone_description5">본인인증비용은 구하다에서 부담합니다.</string>
+
 
     <string name="findpwd_phonenumber_title">휴대폰 번호로 재설정하기</string>
     <string name="findpwd_email_title">이메일로 재설정하기</string>
     <string name="findpwd_verifyphone_title">휴대폰 본인인증으로 재설정하기</string>
     <string name="findpwd_hint_name">이름</string>
     <string name="findpwd_hint_email">아이디 (이메일)</string>
+    <string name="findpwd_hint_phone">휴대폰 번호 (숫자만 입력)</string>
     <string name="findpwd_hint_verifynumber">인증번호 6자리 숫자 입력</string>
     <string name="findpwd_button_resend">재전송</string>
     <string name="findpwd_button_requestverify">인증번호 요청</string>

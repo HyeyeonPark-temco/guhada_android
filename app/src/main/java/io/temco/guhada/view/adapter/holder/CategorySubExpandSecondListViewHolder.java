@@ -7,7 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemCategorySubExpandSecondBinding;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
 
@@ -26,7 +26,7 @@ public class CategorySubExpandSecondListViewHolder extends BaseCategoryViewHolde
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, CategoryData data, OnCategoryListener listener) {
+    public void init(Context context, Category data, OnCategoryListener listener) {
         // Data
         if (data != null) {
             // Title

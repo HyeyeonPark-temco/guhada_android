@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.data.model.CategoryData;
+import io.temco.guhada.data.model.Category;
 
 public abstract class BaseCategoryViewHolder<B extends ViewDataBinding> extends BaseViewHolder<B> {
 
@@ -23,8 +23,7 @@ public abstract class BaseCategoryViewHolder<B extends ViewDataBinding> extends 
     // ABSTRACT
     ////////////////////////////////////////////////
 
-    public abstract void init(Context context, CategoryData data, OnCategoryListener listener);
+    public abstract void init(Context context, Category data, OnCategoryListener listener);
 
     ////////////////////////////////////////////////
-
 }

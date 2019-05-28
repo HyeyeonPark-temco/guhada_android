@@ -1,9 +1,21 @@
 package io.temco.guhada.common;
 
 public class Flag {
-    // REQUEST CODE
-    public static final int REQUEST_CODE_VERIFY_PHONE = 10001;
+    public static class RequestCode {
+        public static final int VERIFY_PHONE = 10001;
+    }
 
-    // RESULT CODE
+    public static class ResultCode {
+        public static final int SUCCESS = 200;
 
+        public static final int DATA_NOT_FOUND = 5004;
+
+
+        public static final int ALREADY_EXIST_EMAIL = 6001;
+        public static final int SIGNUP_INVALID_PASSWORD = 6002;
+        public static final int SIGNIN_INVALID_PASSWORD = 6003;
+        public static final int EXPIRED_VERIFICATION_NUMBER = 6004;
+        public static final int ALREADY_SIGNED_UP = 6006;
+        public static final int INVALID_VERIFICATION_NUMBER = 6007;
+    }
 }

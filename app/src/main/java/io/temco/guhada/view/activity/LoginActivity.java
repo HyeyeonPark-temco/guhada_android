@@ -2,8 +2,6 @@ package io.temco.guhada.view.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -84,7 +82,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void showSnackBar(String message) {
-                CommonUtil.showSnackBar(mBinding.linearlayoutLogin, message, getResources().getColor(R.color.colorPrimary), (int) getResources().getDimension(R.dimen.height_header));
+                CommonUtil.showSnackBar(mBinding.linearlayoutLogin, message);
             }
 
             @Override
@@ -95,39 +93,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mViewModel.toolBarTitle = getResources().getString(R.string.login_title);
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
-        setIdAndPwdTextWatcher();
         mBinding.executePendingBindings();
-    }
-
-    private void setIdAndPwdTextWatcher() {
-        mBinding.edittextviewLoginId.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mViewModel.setId(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        mBinding.edittextviewLoginPwd.setTextWatcher(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mViewModel.setPwd(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
     @Override

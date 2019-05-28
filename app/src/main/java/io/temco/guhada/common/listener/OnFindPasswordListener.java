@@ -12,4 +12,6 @@ public interface OnFindPasswordListener {
     void closeActivity();
 
     void redirectVerifyPhoneActivity();
+
+    void setVerifyNumberViewEmpty();
 }

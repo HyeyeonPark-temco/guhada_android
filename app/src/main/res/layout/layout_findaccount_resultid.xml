@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.FindAccountViewModel" />
@@ -42,7 +40,7 @@
                 android:id="@+id/textview_findaccount_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.mUser.email}"
+                android:text="@{viewModel.user.email}"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_14"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="@{viewModel.mUser.joinAt}"
+                    android:text="@{viewModel.user.joinAt}"
                     android:textColor="@color/warm_grey_three"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -122,7 +120,7 @@
                     android:id="@+id/textview_findaccount_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.mUser.phoneNumber}"
+                    android:text="@{viewModel.user.phoneNumber}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_13" />
             </LinearLayout>

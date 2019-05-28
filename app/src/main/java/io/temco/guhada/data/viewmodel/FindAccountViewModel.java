@@ -6,24 +6,29 @@ import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
 
 import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindAccountListener;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
-public class FindAccountViewModel extends BaseObservableViewModel {
+public class FindAccountViewModel extends BaseObservableViewModel implements Observer {
     public String toolBarTitle = "아이디/비밀번호 찾기";
     private OnFindAccountListener findAccountListener;
     private boolean checkedFindIdByInfo = false;
     private boolean checkedFindIdByVerifyingPhone = false;
     private int resultVisibility = View.GONE;
 
-    public ObservableField<User> mUser = new ObservableField<User>(new User());
+    public User user = new User();
+
+    public ObservableField<User> mUser = new ObservableField<User>(new User()); // 삭ㅈㅔ 예정
 
     // FIND ID BY VERIFYING PHONE
     private boolean checkedAllTerms = false;
@@ -35,6 +40,10 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     private String verifyNumber = "";
     private String timerMinute = "02";
     private String timerSecond = "60";
+
+    public FindAccountViewModel() {
+        this.user.addObserver(this);
+    }
 
     @Bindable
     public String getTimerMinute() {
@@ -81,7 +90,6 @@ public class FindAccountViewModel extends BaseObservableViewModel {
         this.resultVisibility = resultVisibility;
     }
 
-
     public void setFindAccountListener(OnFindAccountListener findAccountListener) {
         this.findAccountListener = findAccountListener;
     }
@@ -114,12 +122,12 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     }
 
     @Bindable
-    public ObservableField<User> getMUser() {
-        return mUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setmUser(ObservableField<User> mUser) {
-        this.mUser = mUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Bindable
@@ -151,21 +159,22 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     }
 
     public void onCheckedFindIdByVerifyingPhone(boolean checked) {
-        if (checked) {
-            if (checkedFindIdByInfo) {
-                checkedFindIdByInfo = false;
-                notifyPropertyChanged(BR.checkedFindIdByInfo);
-            }
-            findAccountListener.redirectVerifyPhoneActivity();
+        if (checked && checkedFindIdByInfo) {
+            checkedFindIdByInfo = false;
+            notifyPropertyChanged(BR.checkedFindIdByInfo);
         }
 
         checkedFindIdByVerifyingPhone = checked;
         notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
     }
 
+    public void onClickVerifyPhone() {
+        findAccountListener.redirectVerifyPhoneActivity();
+    }
+
     public void onClickGender(View view) {
-        Objects.requireNonNull(mUser.get()).setGender(Integer.parseInt((String) view.getTag()));
-        notifyPropertyChanged(BR.mUser);
+        Objects.requireNonNull(user).setGender(Integer.parseInt((String) view.getTag()));
+        // notifyPropertyChanged(BR.mUser);
     }
 
     public void onClickSignUp() {
@@ -174,7 +183,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
 
     public void onClickSignIn() {
         findAccountListener.closeActivity();
-        //  findAccountListener.redirectSignInActivity();
+        findAccountListener.redirectSignInActivity();
     }
 
     public void onClickSendId() {
@@ -182,7 +191,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     }
 
     public void onClickCopyId() {
-        findAccountListener.copyToClipboard(Objects.requireNonNull(mUser.get()).getEmail());
+        findAccountListener.copyToClipboard(Objects.requireNonNull(user).getEmail());
     }
 
     public void onCheckedTerms(View view, boolean checked) {
@@ -207,7 +216,7 @@ public class FindAccountViewModel extends BaseObservableViewModel {
     public void onClickRequestVerifyNumber() {
         verifyNumberVisibility = View.VISIBLE;
         notifyPropertyChanged(BR.verifyNumberVisibility);
-        findAccountListener.startTimer();
+//        findAccountListener.startTimer();
     }
 
     /**
@@ -218,35 +227,40 @@ public class FindAccountViewModel extends BaseObservableViewModel {
             if (success) {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
-                    case 200:
+                    case Flag.ResultCode.SUCCESS:
                         User user = (User) model.data;
 
-                        Objects.requireNonNull(mUser.get()).setPhoneNumber(user.getPhoneNumber());
-                        Objects.requireNonNull(mUser.get()).setEmail(user.getEmail());
-                        Objects.requireNonNull(mUser.get()).setJoinAt(user.getJoinAt());
+                        this.user = user;
+                        Objects.requireNonNull(this.user).setPhoneNumber(user.getPhoneNumber());
+                        Objects.requireNonNull(this.user).setEmail(user.getEmail());
+                        Objects.requireNonNull(this.user).setJoinAt(user.getJoinAt());
                         setResultVisibility(View.VISIBLE);
 
-                        notifyPropertyChanged(BR.mUser);
+                        notifyPropertyChanged(BR.user);
                         notifyPropertyChanged(BR.resultVisibility);
 
                         findAccountListener.hideKeyboard();
                         return;
-                    case 5004: // DATA NOT FOUND
+                    case Flag.ResultCode.DATA_NOT_FOUND:
                         String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
                         findAccountListener.showSnackBar(message);
                 }
             } else {
                 findAccountListener.showMessage((String) o);
             }
-        }, Objects.requireNonNull(mUser.get()).getName(), Objects.requireNonNull(mUser.get()).getPhoneNumber());
+        }, Objects.requireNonNull(this.user).getName(), Objects.requireNonNull(this.user).getPhoneNumber());
     }
 
-    public void resetTimer() {
-        timerMinute = "02";
-        timerSecond = "60";
-    }
 
-    /**
-     * 인증번호
-     */
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof String) {
+            switch ((String) arg) {
+                case "name":
+                case "phoneNumber":
+                    notifyPropertyChanged(BR.user);
+                    break;
+            }
+        }
+    }
 }

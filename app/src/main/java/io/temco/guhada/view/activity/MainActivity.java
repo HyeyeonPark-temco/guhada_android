@@ -1,7 +1,6 @@
 package io.temco.guhada.view.activity;
 
 import android.content.Intent;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.TextView;
 
@@ -76,7 +75,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 break;
 
             case R.id.image_close:
-                changeDrawerLayout(false);
+                changeDrawerLayout(false, false);
                 break;
 
             case R.id.layout_brand:
@@ -122,10 +121,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     ////////////////////////////////////////////////
 
     private void setFullWideDrawerLayout() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mBinding.layoutSideMenu.getRoot().getLayoutParams();
-        params.width = metrics.widthPixels;
+        params.width = getResources().getDisplayMetrics().widthPixels;
         mBinding.layoutSideMenu.getRoot().setLayoutParams(params);
     }
 
@@ -248,7 +245,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private void startScreenByType(Type.Category type, int[] hierarchies) {
         switch (type) {
             case ALL:
-                changeDrawerLayout(false);
+                changeDrawerLayout(false, false);
                 mPagerAdapter.addProduct();
                 break;
 
