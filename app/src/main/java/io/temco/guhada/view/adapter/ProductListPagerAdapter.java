@@ -52,6 +52,7 @@ public class ProductListPagerAdapter extends FragmentPagerAdapter {
 
     public boolean removeFragment() {
         if (getCount() > 1) {
+            mFragmentList.get(getCount() - 1).reset();
             mFragmentList.remove(getCount() - 1);
             notifyDataSetChanged();
             return true;

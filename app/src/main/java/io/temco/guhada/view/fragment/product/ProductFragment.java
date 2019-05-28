@@ -34,7 +34,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
 
     @Override
     protected void init() {
-        //
+        // Header
         mBinding.layoutHeader.setClickListener(this);
 
         initListPager();
@@ -101,6 +101,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
             if (mListPagerAdapter != null && mListPagerAdapter.getCount() > 1) {
                 mListPagerAdapter.removeFragment();
                 mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount() - 1, true);
+                mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount() - 1);
             } else {
                 mListPagerAdapter = null;
                 mBackListener.onPress();
