@@ -10,4 +10,9 @@
         <attr name="hint" format="reference|string" />
         <attr name="txt" format="reference|string" />
     </declare-styleable>
+
+    <declare-styleable name="HeightRelativeLayout">
+        <attr name="width" format="dimension" />
+        <attr name="height" format="dimension"/>
+    </declare-styleable>
 </resources>
