@@ -5,6 +5,7 @@ import androidx.databinding.Bindable;
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Token;
@@ -88,12 +89,12 @@ public class LoginViewModel extends BaseObservableViewModel {
                 if (success) {
                     BaseModel model = ((BaseModel) o);
                     switch (model.resultCode) {
-                        case 200:
+                        case Flag.ResultCode.SUCCESS:
                             Token token = (Token) model.data;
                             loginListener.showMessage(token.getAccessToken());
                             return;
-                        case 5004: // DATA NOT FOUND
-                        case 6003: // WRONG PASSWORD
+                        case Flag.ResultCode.USER_NOT_FOUND:
+                        case Flag.ResultCode.SIGNIN_INVALID_PASSWORD:
                             loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_invalidinfo));
                     }
                 } else {

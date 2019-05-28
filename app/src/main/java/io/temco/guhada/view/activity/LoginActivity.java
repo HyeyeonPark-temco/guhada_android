@@ -6,8 +6,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.kakao.usermgmt.response.model.UserProfile;
+
+import java.util.Arrays;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
@@ -44,6 +48,10 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void init() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        LoginManager.getInstance().logOut();
+
+
         // INIT SNS LOGIN
         mLoginListener = new OnSnsLoginListener() {
             @Override
@@ -86,6 +94,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void onFacebookLogin() {
+                mBinding.buttonLoginFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
                 mBinding.buttonLoginFacebook.performClick();
             }
 
@@ -130,7 +139,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     protected void onDestroy() {
         super.onDestroy();
         SnsLoginModule.removeKakaoCallback();
-        SnsLoginModule.stopFacebookTracking();
+//        SnsLoginModule.stopFacebookTracking();
     }
 
     @Override
@@ -149,6 +158,9 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     break;
                 case Flag.RequestCode.GOOGLE_LOGIN:
                     SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser());
+                    break;
+                case Flag.RequestCode.FACEBOOK_LOGIN:
+
                     break;
             }
         }

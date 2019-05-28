@@ -233,7 +233,7 @@ public class LoginServer {
                 });
     }
 
-    public static void facebookLogin(SnsUser user, OnServerListener listener) {
+    public static void facebookLogin(OnServerListener listener,SnsUser user) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class)
                 .facebookLogin(user)
                 .enqueue(new Callback<BaseModel<Token>>() {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -11,6 +12,8 @@ import androidx.annotation.Nullable;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
@@ -25,6 +28,11 @@ import com.kakao.auth.Session;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
@@ -109,19 +117,18 @@ public class SnsLoginModule {
     // FACEBOOK
     public static void initFacebookLogin() {
         mFacebookCallback = CallbackManager.Factory.create();
-        mFacebookTracker = new ProfileTracker() {
-            @Override
-            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                String message = oldProfile != null ? oldProfile.getName() : currentProfile.getName();
-                Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT).show();
-                CommonUtil.debug("[FACEBOOK] TRACKOR: " + message);
-            }
-        };
-
         LoginManager.getInstance().registerCallback(mFacebookCallback, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                CommonUtil.debug("[FACEBOOK] SUCCESS: " + loginResult.getAccessToken());
+                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+                    facebookLogin(object);
+                });
+
+                Bundle bundle = new Bundle();
+                bundle.putString("fields", "id,name,email");
+                graphRequest.setParameters(bundle);
+                graphRequest.executeAsync();
+
             }
 
             @Override
@@ -134,6 +141,17 @@ public class SnsLoginModule {
                 CommonUtil.debug("[FACEBOOK] ERROR: " + error.toString());
             }
         });
+    }
+
+    private void initFacebookTracker(){
+        mFacebookTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                String message = oldProfile != null ? oldProfile.getName() : currentProfile.getName();
+                Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT).show();
+                CommonUtil.debug("[FACEBOOK] TRACKOR: " + message);
+            }
+        };
     }
 
     public static void stopFacebookTracking() {
@@ -210,9 +228,22 @@ public class SnsLoginModule {
     }
 
     public static void googleLogin(GoogleSignInAccount account) {
-        if(account != null){
+        if (account != null) {
             SnsUser user = createSnsUser(account.getEmail(), account.getId(), "GOOGLE", account.getDisplayName(), account.getPhotoUrl() != null ? account.getPhotoUrl().getPath() : "");
             LoginServer.googleLogin(getSnsLoginListener(), user);
+        }
+    }
+
+    public static void facebookLogin(JSONObject object) {
+        try {
+            String email = object.getString("email");
+            String name = object.getString("name");
+            String picture = object.getString("picture");
+            String snsId = object.getString("id");
+            SnsUser user = createSnsUser(email, snsId, "FACEBOOK", name, picture);
+            LoginServer.facebookLogin(getSnsLoginListener(), user);
+        } catch (JSONException e) {
+            CommonUtil.debug("[FACEBOOK] EXCEPTION: " + e.getMessage());
         }
     }
 
