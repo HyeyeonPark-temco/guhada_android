@@ -13,11 +13,57 @@
             layout="@layout/header_product_list" />
 
         <!-- LIST -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_contents"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:padding="5dp" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_contents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:padding="5dp" />
+
+            <!-- FLOATING -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="9dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/button_floating_item"
+                    layout="@layout/layout_floating_button_badge"
+                    android:layout_width="@dimen/button_floating"
+                    android:layout_height="@dimen/button_floating"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/button_floating_top"
+                    layout="@layout/layout_floating_button_top"
+                    android:layout_width="@dimen/button_floating"
+                    android:layout_height="@dimen/button_floating"
+                    android:layout_marginTop="7dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/button_floating_top"-->
+            <!--android:layout_width="41dp"-->
+            <!--android:layout_height="41dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginRight="9dp"-->
+            <!--android:layout_marginBottom="15dp"-->
+            <!--android:backgroundTint="@color/common_white"-->
+            <!--android:visibility="gone"-->
+            <!--app:backgroundTint="#cccccc"-->
+            <!--app:borderWidth="1dp"-->
+            <!--app:src="@layout/layout_floating_button_top" />-->
+        </RelativeLayout>
     </LinearLayout>
 </layout>

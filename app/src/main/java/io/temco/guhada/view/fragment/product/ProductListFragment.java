@@ -2,9 +2,13 @@ package io.temco.guhada.view.fragment.product;
 
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorListener;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +18,6 @@ import com.google.android.material.tabs.TabLayout;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.decoration.EqualSpacingItemDecoration;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -29,12 +32,15 @@ import io.temco.guhada.view.fragment.base.BaseFragment;
 public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
+    private final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator(); // Button Animation
     private RequestManager mRequestManager;
     private OnDrawerLayoutListener mDrawerListener;
     private OnBackPressListener mBackListener;
+
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
     private ProductOrderBottomDialog mOrderBottomDialog;
+
     private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
     private int mPageNumber = 1;
@@ -63,7 +69,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         mBinding.layoutHeader.setClickListener(this);
         setTabLayout();
         changeListType(mCurrentGridType);
-        changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
+        changeProductOrder(mCurrentOrderType);
 
         // List
         initProductList();
@@ -102,6 +108,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
+
+    public void reset() {
+        CommonUtil.debug("reset");
+        checkCurrentListType(Type.Grid.TWO);
+        changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
+        getProductListByCategory(1);
+    }
 
     public void setOnDrawerLayoutListener(OnDrawerLayoutListener listener) {
         mDrawerListener = listener;
@@ -227,10 +240,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 // super.onScrollStateChanged(recyclerView, newState);
                 if (!recyclerView.canScrollVertically(-1)) {
                     // Top
+                    changeTopFloatingButton(false);
+                    changeItemFloatingButton(false);
                 } else if (!recyclerView.canScrollVertically(1)) {
                     // Bottom
                 } else {
                     // Idle
+                    changeTopFloatingButton(true);
+                    changeItemFloatingButton(true);
                 }
             }
 
@@ -273,6 +290,72 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             mGridManager.setSpanCount(Type.Grid.get(type));
             mListAdapter.setSpanCount(type);
         }
+    }
+
+    // Floating Button
+    private void changeItemFloatingButton(boolean isShow) {
+        changeItemFloatingButton(isShow, false);
+    }
+
+    private void changeTopFloatingButton(boolean isShow) {
+        changeTopFloatingButton(isShow, false);
+    }
+
+    private void changeItemFloatingButton(boolean isShow, boolean animate) {
+        changeScaleView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+    }
+
+    private void changeTopFloatingButton(boolean isShow, boolean animate) {
+        changeScaleView(mBinding.buttonFloatingTop.getRoot(), isShow, animate);
+    }
+
+    private void changeScaleView(View v, boolean isShow, boolean animate) {
+        if (isShow) {
+            if (v.getVisibility() != View.VISIBLE) {
+                v.setOnClickListener(view -> mBinding.listContents.smoothScrollToPosition(0));
+                v.setVisibility(View.VISIBLE);
+                if (animate) {
+                    showScaleAnimation(v);
+                }
+            }
+        } else {
+            if (v.getVisibility() == View.VISIBLE) {
+                v.setOnClickListener(null);
+                if (animate) {
+                    hideScaleAnimation(v);
+                } else {
+                    v.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    private void showScaleAnimation(View v) {
+        ViewCompat.animate(v)
+                .scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
+                .setInterpolator(INTERPOLATOR)
+                .withLayer()
+                .setListener(null)
+                .start();
+    }
+
+    private void hideScaleAnimation(View v) {
+        ViewCompat.animate(v)
+                .scaleX(0.0F).scaleY(0.0F).alpha(0.0F)
+                .setInterpolator(INTERPOLATOR)
+                .withLayer()
+                .setListener(new ViewPropertyAnimatorListener() {
+                    public void onAnimationStart(View view) {
+                    }
+
+                    public void onAnimationCancel(View view) {
+                    }
+
+                    public void onAnimationEnd(View view) {
+                        view.setVisibility(View.GONE);
+                    }
+                })
+                .start();
     }
 
     ////////////////////////////////////////////////
