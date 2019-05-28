@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.LoginViewModel" />
@@ -80,8 +81,8 @@
                 android:id="@+id/edittextview_login_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:txt="@={viewModel.id}"
                 app:hint="이메일"
+                app:txt="@={viewModel.id}"
                 app:type="email" />
 
             <io.temco.guhada.view.custom.BorderEditTextView
@@ -105,6 +106,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/selector_checkbox_all"
                     android:button="@null"
+                    android:checked="@{viewModel.isIdSaved}"
                     android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedSaveId(checked)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -6,6 +6,7 @@ import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Token;
@@ -18,8 +19,9 @@ import static android.app.Activity.RESULT_CANCELED;
 
 public class LoginViewModel extends BaseObservableViewModel {
     public String toolBarTitle = "";
-    private String id = "", pwd = "";
+    private String id = Preferences.getSavedId(), pwd = "";
     private boolean buttonAvailable = false;
+    private boolean isIdSaved = Preferences.isIdSaved();
     private OnLoginListener loginListener;
     private Object snsUser;
 
@@ -28,6 +30,14 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     // GETTER & SETTER
+
+    public boolean isIdSaved() {
+        return isIdSaved;
+    }
+
+    public void setIdSaved(boolean idSaved) {
+        isIdSaved = idSaved;
+    }
 
     public Object getSnsUser() {
         return snsUser;
@@ -91,6 +101,15 @@ public class LoginViewModel extends BaseObservableViewModel {
                     switch (model.resultCode) {
                         case Flag.ResultCode.SUCCESS:
                             Token token = (Token) model.data;
+
+                            // save id
+                            if (isIdSaved) {
+                                String savedId = Preferences.getSavedId();
+                                if (!savedId.equals(id)) {
+                                    Preferences.setSavedId(id);
+                                }
+                            }
+
                             loginListener.showMessage(token.getAccessToken());
                             return;
                         case Flag.ResultCode.USER_NOT_FOUND:
@@ -136,11 +155,14 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onCheckedSaveId(boolean checked) {
-
+        isIdSaved = checked;
+        Preferences.setIsIdSaved(checked);
+        if(!checked){
+            Preferences.setSavedId("");
+        }
     }
 
     public void onClickFindAccount() {
         loginListener.redirectFindAccountActivity();
     }
-
 }
