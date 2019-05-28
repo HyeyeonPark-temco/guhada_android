@@ -18,6 +18,7 @@ import io.temco.guhada.common.listener.OnFindAccountListener;
 import io.temco.guhada.common.listener.OnFindPasswordListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
@@ -157,7 +158,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                 FindPasswordViewModel viewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
                 viewModel.setTimerMinute(minute);
                 viewModel.setTimerSecond(second);
-                CommonUtil.startVerifyNumberTimer(viewModel.getTimerSecond(), viewModel.getTimerMinute(), new OnTimerListener() {
+                CountTimer.startVerifyNumberTimer(viewModel.getTimerSecond(), viewModel.getTimerMinute(), new OnTimerListener() {
                     @Override
                     public void changeSecond(String second) {
                         viewModel.setTimerSecond(second);
