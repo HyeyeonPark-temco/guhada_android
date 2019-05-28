@@ -301,10 +301,6 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             if (CommonUtil.validatePassword(newPassword)) {
                 Verification verification = new Verification();
 
-                // 파라미터 이름, 핸드폰 번호 추가
-                verification.setName(user.getName());
-                verification.setPhoneNumber(user.getPhoneNumber());
-
                 verification.setEmail(user.getEmail());
                 verification.setNewPassword(newPassword);
                 verification.setVerificationNumber(verifyNumber);
@@ -341,40 +337,53 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         timerSecond = "60";
     }
 
-    // 미완
+    /**
+     * 휴대폰으로 비밀번호 재설정
+     * 인증 번호 요청
+     */
     public void onClickSendPhone() {
         if (!CommonUtil.validateEmail(user.getEmail())) {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
         } else {
-            resetTimer();
+            LoginServer.verifyPhone((success, o) -> {
+                if (success) {
+                    BaseModel model = (BaseModel) o;
+                    if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                        resetTimer();
 
-            if (!verifyNumber.isEmpty()) {
-                listener.setVerifyNumberViewEmpty();
-            }
+                        if (!verifyNumber.isEmpty()) {
+                            listener.setVerifyNumberViewEmpty();
+                        }
 
-            verifyPhoneVisibility = View.VISIBLE;
-            notifyPropertyChanged(BR.verifyPhoneVisibility);
+                        verifyPhoneVisibility = View.VISIBLE;
+                        notifyPropertyChanged(BR.verifyPhoneVisibility);
 
+                        CommonUtil.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
+                            @Override
+                            public void changeSecond(String second) {
+                                timerSecond = second;
+                            }
 
-            CommonUtil.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
-                @Override
-                public void changeSecond(String second) {
-                    timerSecond = second;
+                            @Override
+                            public void changeMinute(String minute) {
+                                timerMinute = minute;
+                            }
+
+                            @Override
+                            public void notifyMinuteAndSecond() {
+                                notifyPropertyChanged(BR.timerMinute);
+                                notifyPropertyChanged(BR.timerSecond);
+                            }
+                        });
+
+                    } else {
+                        listener.showSnackBar(model.message);
+                    }
+                } else {
+                    String message = o != null ? (String) o : "잠시 후 다시 시도해주세요.";
+                    listener.showSnackBar(message);
                 }
-
-                @Override
-                public void changeMinute(String minute) {
-                    timerMinute = minute;
-                }
-
-                @Override
-                public void notifyMinuteAndSecond() {
-                    notifyPropertyChanged(BR.timerMinute);
-                    notifyPropertyChanged(BR.timerSecond);
-                }
-            });
-
-            listener.showMessage("[클릭] 휴대폰 번호로 비밀번호 재설정 - 인증번호 요청");
+            }, user);
         }
     }
 
@@ -385,6 +394,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                 case "name":
                 case "email":
                 case "phoneNumber":
+                case "mobile":
                     notifyPropertyChanged(BR.user);
                     break;
             }

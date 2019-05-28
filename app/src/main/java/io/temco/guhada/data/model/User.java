@@ -18,6 +18,7 @@ public class User extends Observable {
     private String name = "";
     private String email = "";
     private String password = "";
+    private String mobile = "";
     private String phoneNumber = "";
     private String joinAt = "";
     private int gender = -1; // 1: MALE; 2: FEMALE;
@@ -175,5 +176,15 @@ public class User extends Observable {
 
     public void setNationality(int nationality) {
         this.nationality = nationality;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+        setChanged();
+        notifyObservers("mobile");
     }
 }

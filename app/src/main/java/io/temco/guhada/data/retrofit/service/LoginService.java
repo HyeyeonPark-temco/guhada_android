@@ -41,6 +41,9 @@ public interface LoginService {
     @POST("/changePassword")
     Call<BaseModel<Object>> changePassword(@Body Verification verification);
 
+    @POST("/verify/sendMobile")
+    Call<BaseModel<Object>> verifyPhone(@Body User user);
+
     // SNS LOGIN
     @POST("/facebookLogin")
     Call<BaseModel<Token>> facebookLogin(@Body SnsUser user);

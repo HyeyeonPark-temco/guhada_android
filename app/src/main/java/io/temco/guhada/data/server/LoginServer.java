@@ -149,6 +149,21 @@ public class LoginServer {
         });
     }
 
+    public static void verifyPhone(OnServerListener listener, User user) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class).verifyPhone(user).enqueue(new Callback<BaseModel<Object>>() {
+            @Override
+            public void onResponse(Call<BaseModel<Object>> call, Response<BaseModel<Object>> response) {
+                listener.onResult(response.isSuccessful(), response.body());
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel<Object>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
+
+
     public static void verifyNumber(OnServerListener listener, Verification verification) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class).verifyNumber(verification).enqueue(new Callback<BaseModel<Object>>() {
             @Override
