@@ -2,8 +2,7 @@ package io.temco.guhada.data.model;
 
 public class Verification {
     // USING CHANGE PASSWORD
-    private String email = "";
-    private String newPassword = "";
+    private String name = "", phoneNumber = "", email = "", newPassword = "";
 
     // USING VERIFYING EMAIL
     private String verificationNumber = "";
@@ -48,5 +47,21 @@ public class Verification {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

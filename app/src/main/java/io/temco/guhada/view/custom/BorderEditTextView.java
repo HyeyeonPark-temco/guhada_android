@@ -3,6 +3,7 @@ package io.temco.guhada.view.custom;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
@@ -50,12 +51,18 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
         binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_borderedittext, this, true, new androidx.databinding.DataBindingComponent() {
 
         });
-        binding.setView(this);
 
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.BorderEditTextView);
         String text = typedArray.getString(R.styleable.BorderEditTextView_txt);
         String inputType = typedArray.getString(R.styleable.BorderEditTextView_type);
+        int max = typedArray.getInteger(R.styleable.BorderEditTextView_max, 0);
         inputType = inputType != null ? inputType : "text";
+
+        if(max > 0){
+            InputFilter[] inputFilters = new InputFilter[1];
+            inputFilters[0] = new InputFilter.LengthFilter(max);
+            binding.editText.setFilters(inputFilters);
+        }
 
         binding.editText.setText(text);
         binding.editText.setHint(typedArray.getString(R.styleable.BorderEditTextView_hint));

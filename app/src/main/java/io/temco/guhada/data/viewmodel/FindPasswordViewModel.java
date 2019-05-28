@@ -78,13 +78,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         return verifyNumber;
     }
 
-    public void setVerifyNumber(String verifyNumber) {
-        if (verifyNumber.length() < 7) {
-            // 6자리 초과 시 입력되지 않음
-            // 숫자가 아니면 입력되지 않음
-            this.verifyNumber = verifyNumber;
-            notifyPropertyChanged(BR.verifyNumber);
-        }
+    public void setVerifyNumber(String number) {
+        this.verifyNumber = number;
+        notifyPropertyChanged(BR.verifyNumber);
     }
 
     @Bindable
@@ -171,12 +167,10 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             checkedFindPwdByPhone = checked;
             checkedFindIdByVerifyingPhone = false;
             checkedFindPwdByEmail = false;
-//            user = new User();
 
             notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
             notifyPropertyChanged(BR.checkedFindPwdByEmail);
             notifyPropertyChanged(BR.checkedFindPwdByPhone);
-//            notifyPropertyChanged(BR.user);
         }
     }
 
@@ -227,6 +221,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         listener.closeActivity();
     }
 
+    /**
+     * 이메일로 인증번호 발송
+     */
     public void onClickSendEmail() {
         if (CommonUtil.validateEmail(user.getEmail())) {
             LoginServer.verifyEmail((success, o) -> {
@@ -259,6 +256,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         }
     }
 
+    /**
+     * 인증번호 검증
+     */
     public void onClickVerifyNumber() {
         Verification verification = new Verification();
         verification.setVerificationNumber(verifyNumber);
@@ -300,9 +300,15 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         if (newPassword.equals(newPasswordConfirm)) {
             if (CommonUtil.validatePassword(newPassword)) {
                 Verification verification = new Verification();
+
+                // 파라미터 이름, 핸드폰 번호 추가
+                verification.setName(user.getName());
+                verification.setPhoneNumber(user.getPhoneNumber());
+
                 verification.setEmail(user.getEmail());
                 verification.setNewPassword(newPassword);
                 verification.setVerificationNumber(verifyNumber);
+
                 LoginServer.changePassword((success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
@@ -378,6 +384,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             switch ((String) arg) {
                 case "name":
                 case "email":
+                case "phoneNumber":
                     notifyPropertyChanged(BR.user);
                     break;
             }
