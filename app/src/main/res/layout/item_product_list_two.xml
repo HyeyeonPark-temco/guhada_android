@@ -25,8 +25,8 @@
             <TextView
                 android:id="@+id/text_ship_free"
                 style="@style/TextMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="9dp"
                 android:background="@color/common_blue_purple"

@@ -94,7 +94,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("FIND_ACCOUNT"); // 4
 
         list.add("MAIN"); // 5
-        list.add(""); // 6
+        list.add("[]"); // 6
 
         list.add("TERMS"); // 7
         list.add("VERIFY_PHONE"); // 8

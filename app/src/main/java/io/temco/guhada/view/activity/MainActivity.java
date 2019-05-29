@@ -100,10 +100,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     if (data != null) {
                         Type.Category type = (Type.Category) data.getSerializableExtra(Info.INTENT_CATEGORY_TYPE);
                         int[] hierarchies = data.getIntArrayExtra(Info.INTENT_CATEGORY_HIERARCHIES);
-
-                        CommonUtil.debug("" + Type.Category.get(type));
-                        CommonUtil.debug("" + hierarchies.length);
-                        mPagerAdapter.addProduct();
+                        mPagerAdapter.addProduct(type, hierarchies);
                     }
                     break;
             }
@@ -246,7 +243,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         switch (type) {
             case ALL:
                 changeDrawerLayout(false, false);
-                mPagerAdapter.addProduct();
+                mPagerAdapter.addProduct(type, hierarchies);
                 break;
 
             default:
