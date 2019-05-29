@@ -17,6 +17,7 @@ import io.temco.guhada.view.activity.FindAccountActivity;
 import io.temco.guhada.view.activity.JoinActivity;
 import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
+import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.activity.SplashActivity;
 import io.temco.guhada.view.activity.TermsActivity;
 import io.temco.guhada.view.activity.VerifyPhoneActivity;
@@ -67,17 +68,16 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(MainActivity.class);
                     break;
 
-                case 6:
-                    // Terms
+                case 6: // Terms
                     startActivity(TermsActivity.class);
                     break;
 
-                case 7 :
-                    // Verify Phone
+                case 7 : // Verify Phone
                     startActivity(VerifyPhoneActivity.class);
                     break;
 
-                case 8:
+                case 8: // Product Detail
+                    startActivity(ProductDetailActivity.class);
                     break;
 
             }
@@ -99,7 +99,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("TERMS"); // 6
         list.add("VERIFY_PHONE"); // 7
 
-        list.add(""); // 8
+        list.add("PRODUCT_DETAIL"); // 8
         list.add(""); // 9
         list.add(""); // 10
         list.add(""); // 11

@@ -25,15 +25,30 @@
     <color name="text_4">#d9dde0</color>
     <color name="text_5">#777777</color>
 
-    <!-- -->
+    <!-- COLOR -->
     <color name="blue_purple">#5d2ed1</color>
     <color name="pinkish_grey">#cccccc</color>
     <color name="silver">#b7bec4</color>
     <color name="light_grey">#f2f4f4</color>
+    <color name="pale_grey">#f9f9fa</color>
+    <color name="black_two">#333333</color>
 
-    <color name="white_two">#ededed</color>
+    <color name="warm_grey">#898989</color>
     <color name="warm_grey_two">#777777</color>
     <color name="warm_grey_three">#a0a0a0</color>
+    <color name="warm_grey_four">#707070</color>
+    <color name="warm_grey_five">#9a9a9a</color>
+    <color name="warm_grey_six">#999999</color>
+
+    <color name="black_three">#212121</color>
+    <color name="brick">#ce2525</color>
+    <color name="black_four">#111111</color>
+
     <color name="greyish_brown">#555555</color>
-    <color name="black_two">#333333</color>
+    <color name="greyish_brown_two">#444444</color>
+
+    <color name="white_two">#ededed</color>
+    <color name="white_three">#dddddd</color>
+    <color name="white_four">#eeeeee</color>
+
 </resources>

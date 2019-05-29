@@ -6,7 +6,9 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.data.model.Product;
 import io.temco.guhada.data.model.base.BaseListModel;
+import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.retrofit.manager.RetrofitManager;
 import io.temco.guhada.data.retrofit.service.ProductService;
 import retrofit2.Call;
@@ -73,5 +75,26 @@ public class ProductServer {
                         }
                     });
         }
+    }
+
+    /**
+     * 상품 상세 조회
+     *
+     * @param listener OnServerListener
+     * @param id       dealId
+     */
+    public static void getProductDetail(OnServerListener listener, int id) {
+        RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class).getProductDetail(id).enqueue(new Callback<BaseModel<Product>>() {
+            @Override
+            public void onResponse(Call<BaseModel<Product>> call, Response<BaseModel<Product>> response) {
+                listener.onResult(response.isSuccessful(), response.body());
+            }
+
+
+            @Override
+            public void onFailure(Call<BaseModel<Product>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
     }
 }

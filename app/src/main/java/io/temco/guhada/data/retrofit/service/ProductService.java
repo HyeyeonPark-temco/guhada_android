@@ -2,9 +2,12 @@ package io.temco.guhada.data.retrofit.service;
 
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.data.model.Product;
 import io.temco.guhada.data.model.base.BaseListModel;
+import io.temco.guhada.data.model.base.BaseModel;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface ProductService {
 
@@ -15,4 +18,7 @@ public interface ProductService {
     // http://dev.product.guhada.com/brands/simple
     @GET("brands/simple")
     Call<BaseListModel<Brand>> getAllBrands();
+
+    @GET("/deals/{id}")
+    Call<BaseModel<Product>> getProductDetail(@Path("id") int id);
 }

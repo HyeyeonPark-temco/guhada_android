@@ -1,22 +1,17 @@
 package io.temco.guhada.common;
 
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
+import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
-import androidx.databinding.InverseBindingAdapter;
-import androidx.databinding.InverseBindingListener;
-import androidx.databinding.InverseBindingMethod;
-import androidx.databinding.InverseBindingMethods;
-import androidx.databinding.ObservableField;
 
 import com.bumptech.glide.Glide;
 
 import io.temco.guhada.common.util.ImageUtil;
-import io.temco.guhada.view.custom.BorderEditTextView;
 
 public class BindAdapter {
 
@@ -35,4 +30,12 @@ public class BindAdapter {
         view.setVisibility(value ? View.VISIBLE : View.GONE);
     }
 
+    @BindingAdapter("textBold")
+    public static void isBold(TextView textView, boolean isBold){
+        if (isBold){
+            textView.setTypeface(null, Typeface.BOLD);
+        }else {
+            textView.setTypeface(null, Typeface.NORMAL);
+        }
+    }
 }

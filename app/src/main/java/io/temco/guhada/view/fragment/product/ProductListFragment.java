@@ -261,21 +261,24 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mBinding.layoutHeader.imageListType1.setSelected(true);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
-                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_1));
+                if (mDecoration != null)
+                    mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_1));
                 break;
 
             case TWO:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(true);
                 mBinding.layoutHeader.imageListType3.setSelected(false);
-                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
+                if (mDecoration != null)
+                    mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
                 break;
 
             case THREE:
                 mBinding.layoutHeader.imageListType1.setSelected(false);
                 mBinding.layoutHeader.imageListType2.setSelected(false);
                 mBinding.layoutHeader.imageListType3.setSelected(true);
-                if (mDecoration != null) mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_3));
+                if (mDecoration != null)
+                    mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_3));
                 break;
         }
         if (mGridManager != null && mListAdapter != null) {

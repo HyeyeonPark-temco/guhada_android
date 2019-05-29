@@ -130,6 +130,23 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
     </style>
+    
+    <style name="ProductDetailContentTextStyle">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:fontFamily">@style/TextMedium</item>
+    </style>
+
+    <style name="ProductDetailTitleTextStyle">
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/greyish_brown_two</item>
+        <item name="android:fontFamily">@style/TextBold</item>
+    </style>
+
+    <style name="ReviewRatingStyle" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/selector_ratingbar</item>
+        <item name="android:maxHeight">15dp</item>
+    </style>
 
     <style name="SpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem" />
 

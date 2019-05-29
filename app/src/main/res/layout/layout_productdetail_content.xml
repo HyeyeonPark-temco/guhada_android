@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ProductDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_productdetail_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/white_four" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_productdetail_content_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="50dp"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/white_four" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/common_white"
+                    android:onClick="@{(view)->viewModel.onClickTab(view)}"
+                    android:tag="0"
+                    android:text="@string/productdetail_button_detail"
+                    android:textColor="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"
+                    android:textSize="@dimen/text_15"
+                    app:textBold="@{viewModel.selectedTab == 0}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/common_white"
+                    android:onClick="@{(view)->viewModel.onClickTab(view)}"
+                    android:tag="1"
+                    android:text="@string/productdetail_button_qna"
+                    android:textColor="@{viewModel.selectedTab == 1 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"
+                    android:textSize="@dimen/text_15"
+                    app:textBold="@{viewModel.selectedTab == 1}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@{viewModel.selectedTab == 1 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/common_white"
+                    android:onClick="@{(view)->viewModel.onClickTab(view)}"
+                    android:tag="2"
+                    android:text="@string/productdetail_button_store"
+                    android:textColor="@{viewModel.selectedTab == 2 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"
+                    android:textSize="@dimen/text_15"
+                    app:textBold="@{viewModel.selectedTab == 2}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@{viewModel.selectedTab == 2 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="50dp"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/white_four" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/webview_productdetail_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/ProductDetailTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/productdetail_tag"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_productdetail_tag"
+                android:layout_width="match_parent"
+                app:productTags= "@{viewModel.tags}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -3,6 +3,8 @@
     <!-- TEST -->
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_content_singleline">DUMMY CONTENT</string>
+    <string name="dummy_content_number">105000</string>
 
     <!-- API KEY -->
     <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>
@@ -177,4 +179,42 @@
                                         (단, 결제/교환/환불 등 관련된 내용은 거래안전을 위하여 수신동의 여부와 관계없이 발송됩니다.\n
                                         ※ 선택 항목에 동의하지 않으셔도 구하다 서비스 이용이 가능합니다.\n
                                         가입은 14세 이상만 가능합니다.</string>
+
+    <!-- PRODUCT DETAIL -->
+
+    <string name="productdetail_option">옵션선택</string>
+    <string name="productdetail_sizeinfo">사이즈정보</string>
+
+    <string name="productdetail_advantageinfo">헤택정보</string>
+    <string name="productdetail_totalprice">총 상품금액</string>
+    <string name="productdetail_tag">태그</string>
+    <string name="productdetail_report">신고</string>
+
+    <string name="productdetail_info">상품 정보</string>
+    <string name="productdetail_info_status">상품상태</string>
+    <string name="productdetail_info_number">상품번호</string>
+    <string name="productdetail_info_origin">원산지</string>
+    <string name="productdetail_info_status_new">새 상품</string>
+    <string name="productdetail_info_status_used">중고 상품</string>
+
+    <string name="productdetail_shipinfo">배송정보</string>
+    <string name="productdetail_shipfree">무료배송</string>
+
+    <string name="productdetail_review">상품리뷰</string>
+    <string name="productdetail_totalreview">총 리뷰 평점</string>
+    <string name="productdetail_review_good">만족</string>
+    <string name="productdetail_review_normal">보통</string>
+    <string name="productdetail_review_bad">불만족</string>
+
+    <string name="productdetail_button_bag">장바구니</string>
+    <string name="productdetail_button_buy">바로구매</string>
+    <string name="productdetail_button_detail">상세정보</string>
+    <string name="productdetail_button_qna">상품문의</string>
+    <string name="productdetail_button_follow">팔로우</string>
+    <string name="productdetail_button_store">셀러스토어</string>
+
+    <string name="productdetail_unit_person">명</string>
+    <string name="productdetail_unit_review">건</string>
+    <string name="productdetail_unit_price">원</string>
+    <string name="productdetail_unit_prercent">%</string>
 </resources>
