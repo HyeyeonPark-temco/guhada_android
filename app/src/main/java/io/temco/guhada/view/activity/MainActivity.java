@@ -79,7 +79,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 break;
 
             case R.id.layout_brand:
-                CommonUtil.debug(getBaseTag(), "layout_brand");
+                changeDrawerLayout(false, false);
+                BrandSubActivity.startActivity(this);
                 break;
 
             // Sub Menu

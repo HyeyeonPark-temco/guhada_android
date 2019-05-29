@@ -73,12 +73,6 @@ public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public static void startActivity(Context context, int id) {
-        Intent i = new Intent(context, CategorySubActivity.class);
-        i.putExtra(Info.INTENT_CATEGORY_ID, id);
-        context.startActivity(i);
-    }
-
     public static void startActivityForResult(Activity activity, int id, int requestCode) {
         Intent i = new Intent(activity, CategorySubActivity.class);
         i.putExtra(Info.INTENT_CATEGORY_ID, id);

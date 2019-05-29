@@ -12,6 +12,7 @@ public class Type {
         PROFILE,
         MY_PAGE,
         CATEGORY,
+        BRAND,
         PRODUCT_DETAIL,
         LOGIN,
         JOIN,
