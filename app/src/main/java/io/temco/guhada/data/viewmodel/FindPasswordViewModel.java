@@ -14,6 +14,7 @@ import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindPasswordListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
@@ -21,6 +22,7 @@ import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 public class FindPasswordViewModel extends BaseObservableViewModel implements Observer {
+
     private OnFindPasswordListener listener;
     private boolean checkedFindPwdByEmail = false;
     private boolean checkedFindIdByVerifyingPhone = false;
@@ -79,7 +81,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     }
 
     public void setVerifyNumber(String verifyNumber) {
-        if(verifyNumber.length() < 7){
+        if (verifyNumber.length() < 7) {
             // 6자리 초과 시 입력되지 않음
             // 숫자가 아니면 입력되지 않음
             this.verifyNumber = verifyNumber;
@@ -332,7 +334,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     }
 
     private void resetTimer() {
-        CommonUtil.stopTimer();
+        CountTimer.stopTimer();
         timerMinute = "02";
         timerSecond = "60";
     }
@@ -352,7 +354,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             notifyPropertyChanged(BR.verifyPhoneVisibility);
 
 
-            CommonUtil.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
+            CountTimer.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
                 @Override
                 public void changeSecond(String second) {
                     timerSecond = second;

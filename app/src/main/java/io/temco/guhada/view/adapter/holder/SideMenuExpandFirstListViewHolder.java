@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemSideMenuExpandFirstBinding;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
@@ -42,11 +43,11 @@ public class SideMenuExpandFirstListViewHolder extends BaseCategoryViewHolder<It
             // Add All
             if (data.children != null && data.children.size() > 0) {
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, createAllCategoryData(context, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context, data.id, data.hierarchies));
                 }
             } else {
                 data.children = new ArrayList<>();
-                data.children.add(0, createAllCategoryData(context, data.hierarchies));
+                data.children.add(0, CommonUtil.createAllCategoryData(context, data.id, data.hierarchies));
             }
             // Adapter
             mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
@@ -55,14 +56,6 @@ public class SideMenuExpandFirstListViewHolder extends BaseCategoryViewHolder<It
             adapter.setItems(data.children);
             mBinding.listContents.setAdapter(adapter);
         }
-    }
-
-    private Category createAllCategoryData(Context context, int[] hierarchies) {
-        Category all = new Category();
-        all.type = Type.Category.ALL;
-        all.name = context.getString(R.string.category_all);
-        all.hierarchies = hierarchies;
-        return all;
     }
 
     ////////////////////////////////////////////////

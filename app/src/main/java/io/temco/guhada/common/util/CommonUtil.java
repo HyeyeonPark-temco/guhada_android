@@ -15,8 +15,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,12 +23,15 @@ import io.temco.guhada.BuildConfig;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Info;
-import io.temco.guhada.common.listener.OnTimerListener;
+import io.temco.guhada.common.Preferences;
+import io.temco.guhada.common.Type;
+import io.temco.guhada.data.model.Category;
 
 public class CommonUtil {
-    private static TimerTask mTimerTask;
-    private static String timerSecond;
-    private static String timerMinute;
+
+    // -------- LOCAL VALUE --------
+    private static Category mCurrentCategory;
+    // -----------------------------
 
     ////////////////////////////////////////////////
     // COMMON
@@ -59,8 +61,9 @@ public class CommonUtil {
 
     /**
      * Show snack bar
-     *
+     * <p>
      * Fix background-color and margin-top of the snack bar
+     *
      * @param parentView
      * @param message
      * @author Hyeyeon Park
@@ -83,7 +86,7 @@ public class CommonUtil {
 
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view.getLayoutParams();
         layoutParams.gravity = Gravity.TOP;
-        layoutParams.setMargins(0, (int)resources.getDimension(R.dimen.height_header), 0, 0);
+        layoutParams.setMargins(0, (int) resources.getDimension(R.dimen.height_header), 0, 0);
         view.setLayoutParams(layoutParams);
 
         snackbar.show();
@@ -108,63 +111,9 @@ public class CommonUtil {
     }
 
     ////////////////////////////////////////////////
-    // TIMER
-    private static void initTimer(OnTimerListener listener) {
-        mTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                int second = Integer.parseInt(timerSecond);
-                if (second > 0) {
-                    if (second < 10) {
-                        timerSecond = "0" + (second - 1);
-                    } else {
-                        timerSecond = String.valueOf(second - 1);
-                    }
-
-                    listener.changeSecond(timerSecond);
-                } else {
-                    int minute = Integer.parseInt(timerMinute);
-                    if (minute > 0) {
-                        timerMinute = "0" + (minute - 1);
-                        timerSecond = "59";
-                        listener.changeMinute(timerMinute);
-                        listener.changeSecond(timerSecond);
-                    } else {
-                        timerMinute = "00";
-                        timerSecond = "00";
-
-                        listener.changeMinute(timerMinute);
-                        listener.changeSecond(timerSecond);
-                        mTimerTask.cancel();
-                    }
-                }
-
-                listener.notifyMinuteAndSecond();
-            }
-        };
-    }
-
-    public static void startVerifyNumberTimer(String initialSecond, String initialMinute, OnTimerListener listener) {
-        if (mTimerTask != null) {
-            mTimerTask.cancel();
-        }
-
-        timerSecond = initialSecond;
-        timerMinute = initialMinute;
-        initTimer(listener);
-
-        // 1초마다 반복
-        Timer timer = new Timer();
-        timer.schedule(mTimerTask, 0, 1000);
-    }
-
-    public static void stopTimer() {
-        if (mTimerTask != null) {
-            mTimerTask.cancel();
-        }
-    }
-
     // VALIDATION
+    ////////////////////////////////////////////////
+
     public static boolean validatePassword(String password) {
         int length = password.length();
         if (length >= 8 && length <= 15) {
@@ -186,4 +135,38 @@ public class CommonUtil {
         String NUMBER_REGEX = "^[0-9]*$";
         return text.trim().matches(NUMBER_REGEX);
     }
+
+    ////////////////////////////////////////////////
+    // CATEGORY
+    public static Category getCategory(int[] hierarchies) {
+        List<Category> data = Preferences.getCategories();
+        if (data == null) return null;
+        mCurrentCategory = null;
+        getCategory(hierarchies[hierarchies.length - 1], data);
+        return mCurrentCategory;
+    }
+
+    private static void getCategory(int id, List<Category> categories) {
+        if (categories != null && categories.size() > 0) {
+            for (Category c : categories) {
+                if (c.id == id) {
+                    mCurrentCategory = c;
+                    break;
+                } else {
+                    getCategory(id, c.children);
+                }
+            }
+        }
+    }
+
+    public static Category createAllCategoryData(Context context, int id, int[] hierarchies) {
+        Category all = new Category();
+        all.type = Type.Category.ALL;
+        all.id = id;
+        all.name = context.getString(R.string.category_all);
+        all.hierarchies = hierarchies;
+        return all;
+    }
+
+    ////////////////////////////////////////////////
 }
