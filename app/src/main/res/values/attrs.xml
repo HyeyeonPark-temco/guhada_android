@@ -11,4 +11,9 @@
         <attr name="txt" format="reference|string" />
         <attr name="max" format="reference|integer" />
     </declare-styleable>
+
+    <declare-styleable name="HeightRelativeLayout">
+        <attr name="width" format="dimension" />
+        <attr name="height" format="dimension"/>
+    </declare-styleable>
 </resources>

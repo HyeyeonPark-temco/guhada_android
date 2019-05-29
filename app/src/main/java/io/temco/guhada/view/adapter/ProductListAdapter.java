@@ -95,8 +95,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListView
     }
 
     public void setItems(List<Deal> items) {
-        mItems = items;
+        if (getItemCount() > 0) {
+            mItems.addAll(getItemCount(), items);
+        } else {
+            mItems = items;
+        }
         notifyDataSetChanged();
+    }
+
+    public void reset(boolean notify) {
+        mItems = null;
+        if (notify) notifyDataSetChanged();
     }
 
     public void setOnProductListListener(OnProductListListener listener) {

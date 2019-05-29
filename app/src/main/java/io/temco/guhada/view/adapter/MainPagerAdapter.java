@@ -6,7 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
+import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.fragment.product.ProductFragment;
 import io.temco.guhada.view.fragment.main.MainCommunityFragment;
 import io.temco.guhada.view.fragment.main.MainHomeFragment;
@@ -79,8 +82,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         mDrawerListener = listener;
     }
 
-    public void addProduct() {
-        addProductFragment();
+    public void addProduct(Type.Category type, int[] hierarchies) {
+        Category c = CommonUtil.getCategory(hierarchies);
+        if (c != null) {
+            addProductFragment(c);
+        }
     }
 
     public void removeProduct() {
@@ -95,23 +101,20 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void addProductFragment() {
+    private void addProductFragment(Category c) {
         if (mProductFragment == null) {
             mProductFragment = new ProductFragment();
             mProductFragment.setOnDrawerLayoutListener(mDrawerListener);
             mProductFragment.setOnBackPressListener(this::removeProductFragment);
         }
-
         // Exist
-        if (existProductFragment()) {
-            // Add Page
-            mProductFragment.addList();
-        } else {
+        if (!existProductFragment()) {
             mFragmentManager
                     .beginTransaction()
                     .add(R.id.layout_container, mProductFragment, TAG_PRODUCT)
                     .commitAllowingStateLoss();
         }
+        mProductFragment.setCategory(c);
     }
 
     private void removeProductFragment() {

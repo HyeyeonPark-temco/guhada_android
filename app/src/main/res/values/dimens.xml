@@ -40,8 +40,6 @@
     <dimen name="hegiht_productdetail_button">60dp</dimen>
     <dimen name="height_invisible">0dp</dimen>
 
-    <!-- PADDING -->
-    <dimen name="padding_product_list_1">20dp</dimen>
-    <dimen name="padding_product_list_2">10dp</dimen>
-    <dimen name="padding_product_list_3">10dp</dimen>
+    <!-- BUTTON -->
+    <dimen name="button_floating">41dp</dimen>
 </resources>

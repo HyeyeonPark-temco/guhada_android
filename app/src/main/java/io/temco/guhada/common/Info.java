@@ -8,7 +8,8 @@ public class Info {
 
     public static final String APP_TAG = "guhada";
 
-    public static final int LIST_PAGE_UNIT = 20;
+    public static final int LIST_PAGE_UNIT = 30;
+    public static final int LIST_PAGE_THRESHOLD = 10;
 
     ////////////////////////////////////////////////
     // RESULT CODE

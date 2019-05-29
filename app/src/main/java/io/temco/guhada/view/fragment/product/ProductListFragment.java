@@ -2,9 +2,13 @@ package io.temco.guhada.view.fragment.product;
 
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewPropertyAnimatorListener;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,11 +17,12 @@ import com.bumptech.glide.RequestManager;
 import com.google.android.material.tabs.TabLayout;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.decoration.EqualSpacingItemDecoration;
-import io.temco.guhada.common.listener.OnBackPressListener;
-import io.temco.guhada.common.listener.OnDrawerLayoutListener;
+import io.temco.guhada.common.listener.OnAddCategoryListener;
+import io.temco.guhada.common.listener.OnUpdateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
@@ -26,19 +31,34 @@ import io.temco.guhada.view.adapter.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.ProductOrderBottomDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
-public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements View.OnClickListener {
+public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements OnUpdateFragmentListener, View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private RequestManager mRequestManager;
-    private OnDrawerLayoutListener mDrawerListener;
-    private OnBackPressListener mBackListener;
+    private final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator(); // Button Animation
+    private OnAddCategoryListener mCategoryListener;
+    private RequestManager mRequestManager; // Glide
+    private ProductOrderBottomDialog mOrderBottomDialog;
+    // List
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
-    private ProductOrderBottomDialog mOrderBottomDialog;
+    // Value
+    private Category mCategoryData;
     private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
+    // private boolean mIsUpdate = false;
+    private int mPosition;
+    private boolean mIsLoading = false; // Load More
+    private int mId;
     private int mPageNumber = 1;
     // -----------------------------
+
+    public void setPosition(int position) {
+        mPosition = position;
+    }
+
+    public int getPosition() {
+        return mPosition;
+    }
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -61,15 +81,28 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
         // Header
         mBinding.layoutHeader.setClickListener(this);
-        setTabLayout();
         changeListType(mCurrentGridType);
-        changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
+        changeProductOrder(mCurrentOrderType);
+        setTabLayout();
 
         // List
         initProductList();
 
         // Data
-        getProductListByCategory(1);
+        getProductListByCategory(true);
+    }
+
+    @Override
+    public void onUpdate(Category data) {
+        if (mCategoryData != null && mCategoryData.id != data.id) {
+            mCategoryData = data;
+            mId = data.id;
+            checkCurrentListType(Type.Grid.TWO);
+            changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
+            initProductList();
+            setTabLayout();
+            getProductListByCategory(true);
+        }
     }
 
     @Override
@@ -103,12 +136,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setOnDrawerLayoutListener(OnDrawerLayoutListener listener) {
-        mDrawerListener = listener;
+    public void setCategoryData(Category data) {
+        mCategoryData = data;
+        mId = data.id;
     }
 
-    public void setOnBackPressListener(OnBackPressListener listener) {
-        mBackListener = listener;
+    public void setOnAddCategoryListener(OnAddCategoryListener listener) {
+        mCategoryListener = listener;
     }
 
     ////////////////////////////////////////////////
@@ -116,31 +150,63 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     ////////////////////////////////////////////////
 
     private void setTabLayout() {
-        addCustomTabs(1);
+        if (mBinding != null
+                && mCategoryData != null && mCategoryData.children != null) {
+            // Remove
+            if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
+                mBinding.layoutHeader.layoutTab.removeAllTabs();
+            }
+            // Add All
+            Category all = CommonUtil.createAllCategoryData(getContext(), mCategoryData.id, mCategoryData.hierarchies);
+            addCategoryTab(all, true);
+            // Add Category
+            for (Category c : mCategoryData.children) {
+                addCategoryTab(c, false);
+            }
+            // Select Event
+            mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    if (tab.getTag() != null && tab.getTag() instanceof Category) {
+                        loadCategory((Category) tab.getTag());
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    if (tab.getTag() != null && tab.getTag() instanceof Category) {
+                        loadCategory((Category) tab.getTag());
+                    }
+                }
+            });
+
+            // Scroll // Not Used
+            // setTabLayoutScrollEvent();
+        }
     }
 
-    private void addCustomTabs(int current) {
-        // Add Custom Tab
-        for (int i = 1; i <= 5; i++) {
-            View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
-
-            // Test
-            if (i % 2 == 0) {
-                ((TextView) v.findViewById(R.id.text_title)).setText("titield" + i);
-            } else {
-                ((TextView) v.findViewById(R.id.text_title)).setText("titielasdfasdfasdd" + i);
+    private void loadCategory(Category data) {
+        if (data.children != null && data.children.size() > 0) {
+            if (mCategoryListener != null) {
+                mCategoryListener.onAdd(data);
             }
-
-            // Tab
-            TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
-            mBinding.layoutHeader.layoutTab.addTab(tab);
-            if (i == current) {
-                tab.select();
-            }
+        } else {
+            mId = data.id;
+            getProductListByCategory(true);
         }
-        // Scroll
-        // Not Used
-        // setTabLayoutScrollEvent();
+    }
+
+    private void addCategoryTab(Category data, boolean isSelect) {
+        View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
+        ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
+        TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
+        tab.setTag(data); // Tag
+        mBinding.layoutHeader.layoutTab.addTab(tab);
+        if (isSelect) tab.select();
     }
 
     private void setTabLayoutScrollEvent() {
@@ -154,8 +220,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     public void onScrollChanged() {
                         if (mBinding.layoutHeader.layoutTab.getScrollX() != 0) {
                             int x = mBinding.layoutHeader.layoutTab.getScrollX();
-                            CommonUtil.debug("currentScroll == " + currentScroll);
-                            CommonUtil.debug("x == " + x);
                             if (currentScroll < x) {
                                 mBinding.layoutHeader.layoutTabLeftDirection.setVisibility(View.VISIBLE);
                                 mBinding.layoutHeader.layoutTabRightDirection.setVisibility(View.GONE);
@@ -172,25 +236,32 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     // Order
+    private void changeProductOrderWithLoadList(Type.ProductOrder type) {
+        changeProductOrder(type);
+        getProductListByCategory(true);
+    }
+
     private void changeProductOrder(Type.ProductOrder type) {
         dismissOrderBottomDialog();
         mCurrentOrderType = type;
-        switch (type) {
-            case NEW_PRODUCT:
-                mBinding.layoutHeader.setOrder(getString(R.string.product_order_new_product));
-                break;
+        if (mBinding != null) {
+            switch (type) {
+                case NEW_PRODUCT:
+                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_new_product));
+                    break;
 
-            case MARKS:
-                mBinding.layoutHeader.setOrder(getString(R.string.product_order_marks));
-                break;
+                case MARKS:
+                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_marks));
+                    break;
 
-            case LOW_PRICE:
-                mBinding.layoutHeader.setOrder(getString(R.string.product_order_low_price));
-                break;
+                case LOW_PRICE:
+                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_low_price));
+                    break;
 
-            case HIGH_PRICE:
-                mBinding.layoutHeader.setOrder(getString(R.string.product_order_high_price));
-                break;
+                case HIGH_PRICE:
+                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_high_price));
+                    break;
+            }
         }
     }
 
@@ -198,7 +269,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (getFragmentManager() != null) {
             if (mOrderBottomDialog == null) {
                 mOrderBottomDialog = new ProductOrderBottomDialog();
-                mOrderBottomDialog.setOnProductOrderListener(this::changeProductOrder);
+                mOrderBottomDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
             }
             mOrderBottomDialog.show(getFragmentManager(), getBaseTag());
         }
@@ -210,39 +281,40 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
-
-    private EqualSpacingItemDecoration mDecoration;
-
     // List
     private void initProductList() {
         // Adapter
-        if (mListAdapter == null)
-            mListAdapter = new ProductListAdapter(getContext(), mRequestManager);
+        // if (mListAdapter == null)
+        mListAdapter = new ProductListAdapter(getContext(), mRequestManager);
         mListAdapter.setOnProductListListener(id -> ProductDetailActivity.startActivity(getContext(), id));
 
         // List
-        if (mGridManager == null)
-            mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
-        if (mDecoration == null)
-            mDecoration = new EqualSpacingItemDecoration(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
+        // if (mGridManager == null)
+        mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
         mBinding.listContents.setLayoutManager(mGridManager);
-        mBinding.listContents.addItemDecoration(mDecoration);
         mBinding.listContents.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 // super.onScrollStateChanged(recyclerView, newState);
                 if (!recyclerView.canScrollVertically(-1)) {
                     // Top
+                    changeTopFloatingButton(false);
+                    changeItemFloatingButton(false);
                 } else if (!recyclerView.canScrollVertically(1)) {
                     // Bottom
                 } else {
                     // Idle
+                    changeTopFloatingButton(true);
+                    changeItemFloatingButton(true);
                 }
             }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+                // super.onScrolled(recyclerView, dx, dy);
+                if (mListAdapter.getItemCount() - mGridManager.findLastVisibleItemPosition() <= Info.LIST_PAGE_THRESHOLD) {
+                    getProductListByCategory(false);
+                }
             }
         });
         mBinding.listContents.setAdapter(mListAdapter);
@@ -256,30 +328,27 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void changeListType(Type.Grid type) {
         mCurrentGridType = type;
-        switch (type) {
-            case ONE:
-                mBinding.layoutHeader.imageListType1.setSelected(true);
-                mBinding.layoutHeader.imageListType2.setSelected(false);
-                mBinding.layoutHeader.imageListType3.setSelected(false);
-                if (mDecoration != null)
-                    mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_1));
-                break;
 
-            case TWO:
-                mBinding.layoutHeader.imageListType1.setSelected(false);
-                mBinding.layoutHeader.imageListType2.setSelected(true);
-                mBinding.layoutHeader.imageListType3.setSelected(false);
-                if (mDecoration != null)
-                    mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_2));
-                break;
+        if (mBinding != null) {
+            switch (type) {
+                case ONE:
+                    mBinding.layoutHeader.imageListType1.setSelected(true);
+                    mBinding.layoutHeader.imageListType2.setSelected(false);
+                    mBinding.layoutHeader.imageListType3.setSelected(false);
+                    break;
 
-            case THREE:
-                mBinding.layoutHeader.imageListType1.setSelected(false);
-                mBinding.layoutHeader.imageListType2.setSelected(false);
-                mBinding.layoutHeader.imageListType3.setSelected(true);
-                if (mDecoration != null)
-                    mDecoration.setSpacing(getResources().getDimensionPixelSize(R.dimen.padding_product_list_3));
-                break;
+                case TWO:
+                    mBinding.layoutHeader.imageListType1.setSelected(false);
+                    mBinding.layoutHeader.imageListType2.setSelected(true);
+                    mBinding.layoutHeader.imageListType3.setSelected(false);
+                    break;
+
+                case THREE:
+                    mBinding.layoutHeader.imageListType1.setSelected(false);
+                    mBinding.layoutHeader.imageListType2.setSelected(false);
+                    mBinding.layoutHeader.imageListType3.setSelected(true);
+                    break;
+            }
         }
         if (mGridManager != null && mListAdapter != null) {
             mGridManager.setSpanCount(Type.Grid.get(type));
@@ -287,17 +356,104 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
+    // Floating Button
+    private void changeItemFloatingButton(boolean isShow) {
+        changeItemFloatingButton(isShow, false);
+    }
+
+    private void changeTopFloatingButton(boolean isShow) {
+        changeTopFloatingButton(isShow, false);
+    }
+
+    private void changeItemFloatingButton(boolean isShow, boolean animate) {
+        changeScaleView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+    }
+
+    private void changeTopFloatingButton(boolean isShow, boolean animate) {
+        changeScaleView(mBinding.buttonFloatingTop.getRoot(), isShow, animate);
+    }
+
+    private void changeScaleView(View v, boolean isShow, boolean animate) {
+        if (isShow) {
+            if (v.getVisibility() != View.VISIBLE) {
+                v.setOnClickListener(view -> scrollToTop(true));
+                v.setVisibility(View.VISIBLE);
+                if (animate) {
+                    showScaleAnimation(v);
+                }
+            }
+        } else {
+            if (v.getVisibility() == View.VISIBLE) {
+                v.setOnClickListener(null);
+                if (animate) {
+                    hideScaleAnimation(v);
+                } else {
+                    v.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    private void showScaleAnimation(View v) {
+        ViewCompat.animate(v)
+                .scaleX(1.0F).scaleY(1.0F).alpha(1.0F)
+                .setInterpolator(INTERPOLATOR)
+                .withLayer()
+                .setListener(null)
+                .start();
+    }
+
+    private void hideScaleAnimation(View v) {
+        ViewCompat.animate(v)
+                .scaleX(0.0F).scaleY(0.0F).alpha(0.0F)
+                .setInterpolator(INTERPOLATOR)
+                .withLayer()
+                .setListener(new ViewPropertyAnimatorListener() {
+                    public void onAnimationStart(View view) {
+                    }
+
+                    public void onAnimationCancel(View view) {
+                    }
+
+                    public void onAnimationEnd(View view) {
+                        view.setVisibility(View.GONE);
+                    }
+                })
+                .start();
+    }
+
+    private void scrollToTop(boolean isSmooth) {
+        if (isSmooth) {
+            mBinding.listContents.smoothScrollToPosition(0);
+        } else {
+            mBinding.listContents.scrollToPosition(0);
+        }
+    }
+
     ////////////////////////////////////////////////
     // SERVER
     ////////////////////////////////////////////////
 
-    private void getProductListByCategory(int id) {
-        SearchServer.getProductListByCategory(mCurrentOrderType, id, mPageNumber, (success, o) -> {
-            if (success && mListAdapter != null) {
-                mListAdapter.setItems(((ProductList) o).deals);
-            } else {
-
+    private void getProductListByCategory(boolean reset) {
+        if (mIsLoading) return;
+        mIsLoading = true;
+        if (reset) {
+            mPageNumber = 1;
+            if (mListAdapter != null) mListAdapter.reset(false);
+            scrollToTop(false);
+            changeTopFloatingButton(false);
+            changeItemFloatingButton(false);
+        }
+        SearchServer.getProductListByCategory(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
+            if (mListAdapter != null) {
+                if (success) {
+                    mPageNumber++;
+                    mListAdapter.setItems(((ProductList) o).deals);
+                } else {
+                    mListAdapter.reset(true);
+                }
             }
+            mIsLoading = false;
         });
     }
 
