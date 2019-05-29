@@ -64,4 +64,6 @@ public interface LoginService {
     @GET("/isEmailExist/{email}")
     Call<BaseModel<Object>> checkEmail(@Path("email") String email);
 
+    @GET("/isMobileExist/{mobile}")
+    Call<BaseModel<Object>> checkPhone(@Path("mobile") String mobile);
 }

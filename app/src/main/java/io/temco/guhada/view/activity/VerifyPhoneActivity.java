@@ -2,7 +2,7 @@ package io.temco.guhada.view.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.util.Log;
+import android.net.Uri;
 import android.view.View;
 import android.webkit.ClientCertRequest;
 import android.webkit.CookieManager;
@@ -12,11 +12,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import org.apache.commons.text.StringEscapeUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
@@ -72,43 +70,52 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if (request.getUrl().toString().equals("https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb?m=checkplusSerivce_resultSend")) {
-                    mBinding.webviewVerifyphone.setVisibility(View.GONE);
+                Uri uri = Uri.parse(request.getUrl().toString());
+                Set<String> params = uri.getQueryParameterNames();
+                Map<String, String> map = new HashMap<>();
+                for (String key : params) {
+                    String value = uri.getQueryParameter(key);
+                    if (value != null) {
+                        map.put(key, value);
+                    }
                 }
-                return super.shouldOverrideUrlLoading(view, request);
+
+                /**
+                 *  <휴대폰번호> 는 업체에 따로 신청해야해서 추후에 필드값 넘어올 예정 (05.24)
+                 */
+                if (map.get("sName") != null) {
+                    mBinding.webviewVerifyphone.setVisibility(View.GONE);
+
+                    String name = map.get("sName");
+                    String phoneNumber = map.get("sMobileNo");
+                    String authType = map.get("sAuthType");
+                    String gender = map.get("sGender");
+                    String nationalInfo = map.get("sNationalInfo");
+
+                    String mobileCo = map.get("sMobileCo");
+                    String requestNumber = map.get("sRequestNumber");
+                    String responseNumber = map.get("sResponseNumber");
+
+                    // TEMP
+                    if (phoneNumber == null || phoneNumber.isEmpty()) {
+                        phoneNumber = "01076652371";
+                    }
+
+                    Intent intent = getIntent();
+                    intent.putExtra("name", name);
+                    intent.putExtra("phoneNumber", phoneNumber);
+                    setResult(RESULT_OK, intent);
+                    finish();
+
+                    return false;
+                } else {
+                    return super.shouldOverrideUrlLoading(view, request);
+                }
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-
-                if (url.equals("http://13.209.10.68/phoneCertification/success")) {
-                    mBinding.webviewVerifyphone.evaluateJavascript("(function(){return window.document.body.outerHTML})();",
-                            html -> {
-                                String s = StringEscapeUtils.unescapeJava(html);
-                                Document document = Jsoup.parse(s);
-                                Element table = document.select("table").first();
-                                Elements trs = table.select("tr");
-                                String name = trs.get(4).select("td").get(1).text();
-                                String birth = trs.get(7).select("td").get(1).text();
-                                String phoneNumber = trs.get(10).select("td").get(1).text();
-
-                                /**
-                                 *  <휴대폰번호> 는 업체에 따로 신청해야해서 추후에 필드값 넘어올 예정 (05.24)
-                                 */
-                                if(phoneNumber.isEmpty()){
-                                    phoneNumber = "01076652371";
-                                }
-
-                                Log.e("본인인증 완료", "name: " + name + "; birth: " + birth + "; phoneNumber: " + phoneNumber);
-                                Intent intent = getIntent();
-                                intent.putExtra("name", name);
-                                intent.putExtra("phoneNumber", phoneNumber);
-                                setResult(RESULT_OK, intent);
-                                finish();
-                            }
-                    );
-                }
             }
         };
 

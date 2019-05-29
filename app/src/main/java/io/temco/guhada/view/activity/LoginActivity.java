@@ -146,7 +146,10 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         SnsLoginModule.handlerActivityResultForFacebook(requestCode, resultCode, data);
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
-        SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener);
+
+        if(mViewModel.getSnsUser() == null){
+            SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener);
+        }
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -156,7 +159,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 case Flag.RequestCode.NAVER_LOGIN:
                     SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser());
                     break;
-                case Flag.RequestCode.GOOGLE_LOGIN:
+                case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser());
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:

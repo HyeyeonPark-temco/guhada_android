@@ -214,46 +214,56 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                 Toast.makeText(getApplicationContext(), "인증 완료", Toast.LENGTH_SHORT).show();
             }
 
-            if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
-                // RESET CHECK BOX
+//            if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
+            // RESET CHECK BOX
 //                FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
 //                passwordViewModel.setCheckedFindIdByVerifyingPhone(false);
 //                passwordViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
-            } else {
-                // RESET CHECK BOX
+
+//            } else {
+            // RESET CHECK BOX
 //                FindAccountViewModel findAccountViewModel = ((FindIdFragment) mAdapter.getItem(POSITION_FIND_ID)).getmVewModel();
 //                findAccountViewModel.setCheckedFindIdByVerifyingPhone(false);
 //                findAccountViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
 
-                // RESULT
-                if (data != null) {
-                    String name = data.getStringExtra("name");
-                    String phoneNumber = data.getStringExtra("phoneNumber");
+            // RESULT
+            if (data != null) {
+                String name = data.getStringExtra("name");
+                String phoneNumber = data.getStringExtra("phoneNumber");
 
-                    LoginServer.findUserId((success, o) -> {
-                        if (success) {
-                            BaseModel model = (BaseModel) o;
-                            switch (model.resultCode) {
-                                case Flag.ResultCode.SUCCESS:
-                                    User user = (User) model.data;
+                LoginServer.findUserId((success, o) -> {
+                    if (success) {
+                        BaseModel model = (BaseModel) o;
+                        switch (model.resultCode) {
+                            case Flag.ResultCode.SUCCESS:
+                                User user = (User) model.data;
+
+                                if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
+                                    FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                                    passwordViewModel.setResultVisibility(View.VISIBLE);
+                                    passwordViewModel.setUser(user);
+                                    passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
+                                    passwordViewModel.notifyPropertyChanged(BR.user);
+                                } else {
                                     mViewModel.setResultVisibility(View.VISIBLE);
                                     mViewModel.setUser(user);
                                     mViewModel.notifyPropertyChanged(BR.resultVisibility);
                                     mViewModel.notifyPropertyChanged(BR.user);
-                                    break;
-                                case Flag.ResultCode.DATA_NOT_FOUND:
-                                    String message = getResources().getString(R.string.findid_message_wronginfo);
-                                    CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
-                                    break;
-                            }
-                        } else {
-                            String message = (String) o;
-                            CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
+                                }
+                                break;
+                            case Flag.ResultCode.DATA_NOT_FOUND:
+                                String message = getResources().getString(R.string.findid_message_wronginfo);
+                                CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
+                                break;
                         }
-                    }, name, phoneNumber);
-                }
-
+                    } else {
+                        String message = (String) o;
+                        CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
+                    }
+                }, name, phoneNumber);
             }
+
         }
+//        }
     }
 }

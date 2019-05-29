@@ -248,7 +248,7 @@ public class LoginServer {
                 });
     }
 
-    public static void facebookLogin(OnServerListener listener,SnsUser user) {
+    public static void facebookLogin(OnServerListener listener, SnsUser user) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class)
                 .facebookLogin(user)
                 .enqueue(new Callback<BaseModel<Token>>() {
@@ -267,5 +267,19 @@ public class LoginServer {
                         listener.onResult(false, t.getMessage());
                     }
                 });
+    }
+
+    public static void checkPhone(OnServerListener listener, String phone) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class).checkPhone(phone).enqueue(new Callback<BaseModel<Object>>() {
+            @Override
+            public void onResponse(Call<BaseModel<Object>> call, Response<BaseModel<Object>> response) {
+                listener.onResult(response.isSuccessful(), response.body());
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel<Object>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
     }
 }
