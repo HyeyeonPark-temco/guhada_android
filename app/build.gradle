@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -78,8 +81,20 @@ dependencies {
     // JSOUP
     implementation libraryDependencies.jsoup
 
+    // KOTLIM
     implementation libraryDependencies.stringUtils
+    implementation androidDependencies.coreKtx
+    implementation libraryDependencies.kotlinJdk7
+    kapt androidDependencies.dataBindingCompiler
 
+    // LOGGING INTERCEPTOR
+    implementation libraryDependencies.loggingInterceptor
 
     ////////////////////////////////////////////////
+}
+kapt {
+    generateStubs = true
+}
+repositories {
+    mavenCentral()
 }
