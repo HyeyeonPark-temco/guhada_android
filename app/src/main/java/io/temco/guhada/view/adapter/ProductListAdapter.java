@@ -103,9 +103,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListView
         notifyDataSetChanged();
     }
 
-    public void reset(boolean notify) {
+    public void reset() {
         mItems = null;
-        if (notify) notifyDataSetChanged();
     }
 
     public void setOnProductListListener(OnProductListListener listener) {
