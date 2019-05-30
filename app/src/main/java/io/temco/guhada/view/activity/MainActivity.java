@@ -25,6 +25,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
     // -------- LOCAL VALUE --------
     private final int REQUEST_CODE_CATEGORY = 11;
+    private final int REQUEST_CODE_BRAND = 12;
+
     private MainPagerAdapter mPagerAdapter;
     // -----------------------------
 
@@ -79,8 +81,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 break;
 
             case R.id.layout_brand:
-                changeDrawerLayout(false, false);
-                BrandSubActivity.startActivity(this);
+                BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND);
                 break;
 
             // Sub Menu
@@ -102,6 +103,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                         Type.Category type = (Type.Category) data.getSerializableExtra(Info.INTENT_CATEGORY_TYPE);
                         int[] hierarchies = data.getIntArrayExtra(Info.INTENT_CATEGORY_HIERARCHIES);
                         mPagerAdapter.addProduct(type, hierarchies);
+                    }
+                    break;
+
+                case REQUEST_CODE_BRAND:
+                    changeDrawerLayout(false, false);
+                    if (data != null) {
+                        int id = data.getIntExtra(Info.INTENT_BRAND_ID, 0);
+                        CommonUtil.debug("brand = " + id);
                     }
                     break;
             }

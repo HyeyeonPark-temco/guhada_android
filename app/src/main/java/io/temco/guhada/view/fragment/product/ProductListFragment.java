@@ -28,7 +28,7 @@ import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.adapter.ProductListAdapter;
-import io.temco.guhada.view.custom.dialog.ProductOrderBottomDialog;
+import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
 public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements OnStateFragmentListener, View.OnClickListener {
@@ -37,7 +37,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator(); // Button Animation
     private OnAddCategoryListener mCategoryListener;
     private RequestManager mRequestManager; // Glide
-    private ProductOrderBottomDialog mOrderBottomDialog;
+    private ProductOrderDialog mOrderBottomDialog;
     // List
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
@@ -193,6 +193,15 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
+    private void addCategoryTab(Category data, boolean isSelect) {
+        View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
+        ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
+        TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
+        tab.setTag(data); // Tag
+        mBinding.layoutHeader.layoutTab.addTab(tab);
+        if (isSelect) tab.select();
+    }
+
     private void loadCategory(Category data, boolean isReselected) {
         if (data.children != null && data.children.size() > 0) {
             if (mCategoryListener != null) {
@@ -204,15 +213,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 getProductListByCategory(true);
             }
         }
-    }
-
-    private void addCategoryTab(Category data, boolean isSelect) {
-        View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
-        ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
-        TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
-        tab.setTag(data); // Tag
-        mBinding.layoutHeader.layoutTab.addTab(tab);
-        if (isSelect) tab.select();
     }
 
     private void setTabLayoutScrollEvent() {
@@ -274,7 +274,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void showOrderBottomDialog() {
         if (getFragmentManager() != null) {
             if (mOrderBottomDialog == null) {
-                mOrderBottomDialog = new ProductOrderBottomDialog();
+                mOrderBottomDialog = new ProductOrderDialog();
                 mOrderBottomDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
             }
             mOrderBottomDialog.show(getFragmentManager(), getBaseTag());

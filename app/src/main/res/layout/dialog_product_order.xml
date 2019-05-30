@@ -41,7 +41,7 @@
             <TextView
                 style="@style/TextBold"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_header"
+                android:layout_height="@dimen/height_dialog_header"
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
@@ -67,7 +67,7 @@
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:text="@string/product_order_new_product"
-                android:textColor="@color/text_3"
+                android:textColor="@drawable/selector_text_category"
                 android:textSize="@dimen/text_16" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:text="@string/product_order_marks"
-                android:textColor="@color/text_3"
+                android:textColor="@drawable/selector_text_category"
                 android:textSize="@dimen/text_16" />
 
             <TextView
@@ -95,7 +95,7 @@
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:text="@string/product_order_low_price"
-                android:textColor="@color/text_3"
+                android:textColor="@drawable/selector_text_category"
                 android:textSize="@dimen/text_16" />
 
             <TextView
@@ -109,7 +109,7 @@
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:text="@string/product_order_high_price"
-                android:textColor="@color/text_3"
+                android:textColor="@drawable/selector_text_category"
                 android:textSize="@dimen/text_16" />
         </LinearLayout>
     </LinearLayout>

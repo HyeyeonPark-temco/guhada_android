@@ -53,6 +53,7 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(SplashActivity.class);
                     break;
 
+
                 case 2: // Login
                     startActivity(LoginActivity.class);
                     break;
@@ -64,22 +65,22 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(FindAccountActivity.class);
                     break;
 
-                case 5: // Main
-                    startActivity(MainActivity.class);
-                    break;
-
-                case 6: // Terms
+                case 5: // Terms
                     startActivity(TermsActivity.class);
                     break;
 
-                case 7 : // Verify Phone
+                case 6: // Verify Phone
                     startActivity(VerifyPhoneActivity.class);
+                    break;
+
+
+                case 7: // Main
+                    startActivity(MainActivity.class);
                     break;
 
                 case 8: // Product Detail
                     startActivity(ProductDetailActivity.class);
                     break;
-
             }
         });
         list.setAdapter(adapter);
@@ -94,14 +95,12 @@ public class TestListActivity extends AppCompatActivity {
         list.add("LOGIN"); // 2
         list.add("JOIN"); //3
         list.add("FIND_ACCOUNT"); // 4
+        list.add("TERMS"); // 5
+        list.add("VERIFY_PHONE"); // 6
 
-        list.add("MAIN"); // 5
-
-        list.add("[]"); // 6
-
-        list.add("TERMS"); // 7
-        list.add("VERIFY_PHONE"); // 8
+        list.add("MAIN"); // 7
         list.add("PRODUCT_DETAIL"); // 8
+
         list.add(""); // 9
         list.add(""); // 10
         list.add(""); // 11

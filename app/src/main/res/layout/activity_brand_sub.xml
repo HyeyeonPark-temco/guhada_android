@@ -22,34 +22,39 @@
         <!-- SEARCH -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="70dp"
+            android:background="@android:color/darker_gray">
 
 
         </LinearLayout>
 
         <!-- CONTENTS -->
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:scrollbars="none">
+            android:layout_marginTop="5dp"
+            android:background="@color/common_black"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_contents"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:overScrollMode="never"
+                app:fastScrollEnabled="true" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list_contents"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never" />
+            <!-- FAST SCROLL -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="@color/common_blue_purple"
+                android:paddingLeft="10dp"
+                android:paddingTop="12dp"
+                android:paddingRight="12dp">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp" />
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
     </LinearLayout>
 </layout>

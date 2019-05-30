@@ -138,6 +138,8 @@ public class CommonUtil {
 
     ////////////////////////////////////////////////
     // CATEGORY
+    ////////////////////////////////////////////////
+
     public static Category getCategory(int[] hierarchies) {
         List<Category> data = Preferences.getCategories();
         if (data == null) return null;

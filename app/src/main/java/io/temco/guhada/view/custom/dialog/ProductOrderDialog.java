@@ -5,10 +5,10 @@ import android.view.View;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnProductOrderListener;
-import io.temco.guhada.databinding.DialogBottomProductOrderBinding;
+import io.temco.guhada.databinding.DialogProductOrderBinding;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
-public class ProductOrderBottomDialog extends BaseDialog<DialogBottomProductOrderBinding> implements View.OnClickListener {
+public class ProductOrderDialog extends BaseDialog<DialogProductOrderBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private OnProductOrderListener mOrderListener;
@@ -20,7 +20,7 @@ public class ProductOrderBottomDialog extends BaseDialog<DialogBottomProductOrde
 
     @Override
     protected int getLayoutId() {
-        return R.layout.dialog_bottom_product_order;
+        return R.layout.dialog_product_order;
     }
 
     @Override

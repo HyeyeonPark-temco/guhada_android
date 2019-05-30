@@ -74,10 +74,6 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, BrandSubActivity.class));
-    }
-
     public static void startActivityForResult(Activity activity, int requestCode) {
         activity.startActivityForResult(new Intent(activity, BrandSubActivity.class), requestCode);
     }
@@ -99,10 +95,9 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 //        mBinding.listContents.setAdapter(adapter);
     }
 
-    private void finishWithData(Type.Category type, int[] hierarchies) {
+    private void finishWithData(int id) {
         Intent i = new Intent();
-//        i.putExtra(Info.INTENT_CATEGORY_TYPE, type);
-//        i.putExtra(Info.INTENT_CATEGORY_HIERARCHIES, hierarchies);
+        i.putExtra(Info.INTENT_BRAND_ID, id);
         setResult(RESULT_OK, i);
         onBackPressed();
     }
