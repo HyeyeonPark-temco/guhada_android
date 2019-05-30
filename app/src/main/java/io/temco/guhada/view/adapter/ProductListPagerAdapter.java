@@ -22,7 +22,6 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
     private OnAddCategoryListener mCategoryListener;
     private List<Category> mCategoryList;
     private List<ProductListFragment> mFragmentList;
-    private FragmentManager mFragmentManager;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -31,7 +30,6 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
 
     public ProductListPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
-        mFragmentManager = fm;
         mCategoryList = new ArrayList<>();
         mFragmentList = new ArrayList<>();
     }
@@ -43,16 +41,18 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getItemPosition(@NonNull Object object) {
         if (object instanceof ProductListFragment) {
-            int position = ((ProductListFragment) object).getPosition();
-            if (position < mCategoryList.size()) {
-                Category data = mCategoryList.get(position);
+            ProductListFragment frag = (ProductListFragment) object;
+            if (frag.getPosition() < mCategoryList.size()) {
+                Category data = mCategoryList.get(frag.getPosition());
                 if (data != null) {
-                    ((ProductListFragment) object).onUpdate(data);
+                    frag.onUpdate(data);
                 }
+            } else if (frag.getPosition() == mCategoryList.size()) {
+                frag.onReset();
             }
         }
-//        return POSITION_NONE;
         return super.getItemPosition(object);
+        // return POSITION_NONE;
     }
 
     @Override

@@ -58,7 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="@string/category_brand"
+                        android:text="@string/common_brand"
                         android:textColor="@drawable/selector_text_category"
                         android:textSize="@dimen/text_16" />
                 </RelativeLayout>

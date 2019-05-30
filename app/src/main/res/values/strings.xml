@@ -38,7 +38,6 @@
 
     <!-- CATEGORY -->
     <string name="category_all">전체보기</string>
-    <string name="category_brand">브랜드</string>
 
     <!-- PRODUCT -->
     <string name="product_order_title">상품정렬</string>
