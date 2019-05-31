@@ -9,6 +9,9 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
@@ -17,8 +20,7 @@ import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
-import io.temco.guhada.view.adapter.ProductDetailTagAdapter
+import io.temco.guhada.view.adapter.*
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
     private lateinit var viewModel: ProductDetailViewModel
@@ -56,6 +58,49 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
                 (this.adapter as ProductDetailInfoAdapter).setItems(list)
             }
         }
+
+        @JvmStatic
+        @BindingAdapter("productImage")
+        fun ViewPager.bindImage(list: MutableList<String>?) {
+            if (list != null && list.isNotEmpty()) {
+                if (this.adapter == null) {
+                    this.adapter = ImagePagerAdapter()
+                }
+
+                // 변경 예정
+                val images: MutableList<Product.Image> = ArrayList()
+                for (str in list) {
+                    Product.Image().apply { url = str }.let { img -> images.add(img) }
+                }
+                (this.adapter as ImagePagerAdapter).setItems(images)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("productOption")
+        fun RecyclerView.bindOption(list: List<Product.Option>?) {
+            if (list != null && list.isNotEmpty()) {
+                this.adapter = ProductDetailOptionAdapter().apply {
+                    this.list = list
+                    this.notifyDataSetChanged()
+                }
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("productOptionAttr")
+        fun RecyclerView.bindOptionAttr(option: Product.Option?) {
+            if (option != null) {
+                this.adapter = ProductDetailOptionAttrAdapter().apply {
+                    list = if (option.type == "COLOR") {
+                        option.rgb
+                    } else {
+                        option.attributes
+                    }
+                    this.notifyDataSetChanged()
+                }
+            }
+        }
     }
 
     override fun init() {
@@ -84,14 +129,33 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
             mBinding.includeProductdetailContentheader.viewModel = viewModel
             mBinding.includeProductdetailContentbody.viewModel = viewModel
             mBinding.includeProductdetailContentinfo.viewModel = viewModel
-
+            mBinding.includeProductdetailContentshipping.viewModel = viewModel
+            mBinding.includeProductdetailContentnotifies.viewModel = viewModel
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(it.desc, "text/html", null)
+
+            mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+                }
+
+                override fun onPageSelected(position: Int) {
+                    viewModel.imagePos = position + 1
+                    viewModel.notifyPropertyChanged(BR.imagePos)
+                }
+            })
         })
+
         viewModel.getDetail()
         mBinding.viewModel = viewModel
         mBinding.includeProductdetailContentbody.viewModel = viewModel
         mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         detectButton()
         mBinding.executePendingBindings()

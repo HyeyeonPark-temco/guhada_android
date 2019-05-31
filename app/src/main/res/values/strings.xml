@@ -184,6 +184,10 @@
 
     <string name="productdetail_option">옵션선택</string>
     <string name="productdetail_sizeinfo">사이즈정보</string>
+    <string name="productdetail_available">가능</string>
+    <string name="productdetail_disavailable">불가능</string>
+    <string name="productdetail_quick">퀵서비스</string>
+    <string name="productdetail_notquick">일반배송</string>
 
     <string name="productdetail_advantageinfo">헤택정보</string>
     <string name="productdetail_totalprice">총 상품금액</string>
@@ -217,4 +221,52 @@
     <string name="productdetail_unit_review">건</string>
     <string name="productdetail_unit_price">원</string>
     <string name="productdetail_unit_prercent">%</string>
+
+    <string name="productdetail_shipping_title">배송/반품/교환정보</string>
+    <string name="productdetail_shipping_info_title">배송정보</string>
+    <string name="productdetail_shipping_info_content1">배송방법</string>
+    <string name="productdetail_shipping_info_content2">묶음배송여부</string>
+    <string name="productdetail_shipping_info_content3">도서산간배송여부</string>
+
+    <string name="productdetail_shipping_as_title">AS안내사항</string>
+    <string name="productdetail_shipping_as_content1">AS 안내내용</string>
+    <string name="productdetail_shipping_as_content2">AS 전화번호</string>
+
+    <string name="productdetail_shipping_refund_title">교환/반품 안내</string>
+    <string name="productdetail_shipping_refund_description">교환/반품 시 먼저 판매자와 연락하셔서 교환/반품사유, 택배사, 반품지 주소 등을 협의하신 후 교환/반품 상품을 발송해 주시기 바랍니다.</string>
+
+
+    <string name="productdetail_shipping_refund_content1">판매자 지정택배사</string>
+    <string name="productdetail_shipping_refund_content2">반품배송비</string>
+    <string name="productdetail_shipping_refund_content3">교환배송비</string>
+    <string name="productdetail_shipping_refund_content4">보내실 곳</string>
+
+    <string name="productdetail_shipping_common_description1_title">- 반품/교환 사유에 따른 요청 가능 기간 곳</string>
+    <string name="productdetail_shipping_common_description1_content1">· 구매자 단순변심은 상품 수령 후 7일 이내 (구매자 반품배송비 부담)</string>
+    <string name="productdetail_shipping_common_description1_content2">· 표시/광고와 상이, 상품하자의 경우 상품 수령 후 3개월 이내 혹은 표시/광고와 다른 사실을 안 날로부터 30일 이내 (판매자 반품 배송비
+  부담) 둘 중 하나 경과 시 반품/교환 불가</string>
+
+    <string name="productdetail_shipping_common_description2_title">- 반품/교환 불가능 사유</string>
+    <string name="productdetail_shipping_common_description2_content1">1. 반품요청기간이 지난 경우</string>
+    <string name="productdetail_shipping_common_description2_content2">2. 구매자의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우 (단, 상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외)</string>
+    <string name="productdetail_shipping_common_description2_content3">3. 포장을 개봉하였으나 포장이 훼손되어 상품가치가 현저히 상실된 경우 (예: 화장품, 향수류 등)</string>
+    <string name="productdetail_shipping_common_description2_content4">4. 구매자의 사용 또는 일부 소비에 의하여 상품의 가치가 현저히 감소한 우, (라벨이 떨어진 의류 또는 태그가 떨어진 상품인 경우)</string>
+    <string name="productdetail_shipping_common_description2_content5">5. 시간의 경과에 의하여 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우</string>
+    <string name="productdetail_shipping_common_description2_content6">6. 고객주문 확인 후 상품제작에 들어가는 주문제작상품 (판매자에게 회복불가능한 손해가 예상되고, 그러한 예정으로 청약철회권행사가 불가하다는 사실을 서면 동의받은 경우)</string>
+
+    <string name="producdetail_shipping_seller_title">판매자 정보</string>
+    <string name="producdetail_shipping_seller_content1">상호명</string>
+    <string name="producdetail_shipping_seller_content2">대표자</string>
+    <string name="producdetail_shipping_seller_content3">사업자등록번호</string>
+    <string name="producdetail_shipping_seller_content4">통신판매업번호</string>
+    <string name="producdetail_shipping_seller_content5">사업장소재지</string>
+    <string name="producdetail_shipping_seller_content6">고객센터</string>
+
+    <string name="producdetail_shipping_notifies_title">상품고시정보</string>
+
+    <string name="producdetail_option_type_color">COLOR</string>
+    <string name="producdetail_option_type_size">SIZE</string>
+    <string name="producdetail_option_type_custom">CUSTOM</string>
+
+    <string name="price_format">%,2d</string>
 </resources>

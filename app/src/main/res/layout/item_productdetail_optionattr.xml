@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="attr"
+            type="String" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_all_whitethree"
+        android:padding="1dp">
+
+        <ImageView
+            android:id="@+id/imageview_productdetail_optionattr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent" />
+
+        <TextView
+            android:id="@+id/textview_productdetail_optionattr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@{attr}"
+            android:textColor="@color/greyish_brown_two"
+            android:textSize="@dimen/text_13" />
+    </FrameLayout>
+</layout>

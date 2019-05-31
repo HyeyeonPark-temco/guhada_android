@@ -2,6 +2,7 @@ package io.temco.guhada.data.viewmodel
 
 import android.view.View
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
@@ -14,6 +15,9 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObservableViewModel() {
     var dealId: Int = 0
+    var imagePos = 1
+        @Bindable
+        get() = field
     var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
     var bottomBtnVisibility = ObservableInt(View.GONE)
@@ -33,6 +37,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
         get() = field
 
     var totalPrice = ObservableInt(product.value?.sellPrice ?: 0)
+        @Bindable
+        get() = field
+
+    var refundInfoExpanded = ObservableBoolean(false)
+        @Bindable
+        get() = field
+
+    var productNotiifesExpanded = ObservableBoolean(false)
         @Bindable
         get() = field
 
@@ -79,5 +91,15 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
                 notifyPropertyChanged(BR.totalPrice)
             }
         }
+    }
+
+    fun onClickRefundInfo() {
+        refundInfoExpanded = ObservableBoolean(!refundInfoExpanded.get())
+        notifyPropertyChanged(BR.refundInfoExpanded)
+    }
+
+    fun onClickProductNotifies() {
+        productNotiifesExpanded = ObservableBoolean(!productNotiifesExpanded.get())
+        notifyPropertyChanged(BR.productNotiifesExpanded)
     }
 }

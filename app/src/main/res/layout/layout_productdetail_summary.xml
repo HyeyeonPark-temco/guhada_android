@@ -16,8 +16,8 @@
         android:id="@+id/linearlayout_productdetail_summay_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_white"
         android:layout_marginTop="8dp"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <LinearLayout
@@ -40,7 +40,7 @@
                 style="@style/ProductDetailContentTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : String.valueOf( viewModel.product.shipExpense)}'
+                android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : @string/price_format(viewModel.product.shipExpense)}'
                 android:textColor="@color/greyish_brown_two" />
 
             <TextView
