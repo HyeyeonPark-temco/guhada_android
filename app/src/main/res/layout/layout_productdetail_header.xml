@@ -266,50 +266,6 @@
                 android:background="@color/common_white"
                 app:productOption="@{viewModel.product.options}" />
 
-
-            <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="20dp"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<androidx.recyclerview.widget.RecyclerView-->
-            <!--android:id="@+id/recyclerview_productdetail_size"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="34dp"-->
-            <!--android:background="@color/black_overlay"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:gravity="right"-->
-            <!--android:orientation="vertical"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent">-->
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/productdetail_sizeinfo"-->
-            <!--android:textColor="@color/warm_grey_two"-->
-            <!--android:textSize="@dimen/text_12"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="@color/warm_grey_two" />-->
-            <!--</LinearLayout>-->
-            <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"

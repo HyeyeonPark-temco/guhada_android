@@ -1,9 +1,7 @@
 package io.temco.guhada.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,10 +30,10 @@ class ProductDetailOptionAdapter : RecyclerView.Adapter<ProductDetailOptionAdapt
         fun bind(option: Product.Option) {
             if (adapterPosition > 0) {
                 val params = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-                params.setMargins(0, 20, 0, 0)
+                params.setMargins(0, 50, 0, 0)
                 binding.linearlayoutProductdetailOption.layoutParams = params
             }
-            Log.e("옵션", "$adapterPosition/${option.type}")
+
             binding.option = option
             binding.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(BaseApplication.getInstance().applicationContext, RecyclerView.HORIZONTAL, false)
             binding.executePendingBindings()

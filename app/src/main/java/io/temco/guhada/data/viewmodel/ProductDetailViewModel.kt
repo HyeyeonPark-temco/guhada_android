@@ -15,11 +15,9 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObservableViewModel() {
     var dealId: Int = 0
-    var imagePos = 1
-        @Bindable
-        get() = field
     var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
+
     var bottomBtnVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
@@ -27,7 +25,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
             field = value
             notifyPropertyChanged(BR.bottomBtnVisibility)
         }
-
+    var imagePos = 1
+        @Bindable
+        get() = field
     var selectedTab = ObservableInt(0)
         @Bindable
         get() = field
@@ -52,12 +52,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
         @Bindable
         get() = field
 
-    fun onClickTab(view: View) {
-        val pos = view.tag.toString()
-        selectedTab = ObservableInt(pos.toInt())
-        listener.scrollToElement(pos.toInt())
-        notifyPropertyChanged(BR.selectedTab)
-    }
 
     fun getDetail() {
         ProductServer.getProductDetail({ success, o ->
@@ -70,6 +64,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
                 CommonUtil.debug(o.toString())
             }
         }, dealId)
+    }
+
+    // CLICK LISTENER
+    fun onClickTab(view: View) {
+        val pos = view.tag.toString()
+        selectedTab = ObservableInt(pos.toInt())
+        listener.scrollToElement(pos.toInt())
+        notifyPropertyChanged(BR.selectedTab)
     }
 
     fun onClickPlus() {
@@ -107,7 +109,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
         notifyPropertyChanged(BR.productNotifiesExpanded)
     }
 
-    fun onClickAdvantageInfo(){
+    fun onClickAdvantageInfo() {
         advantageInfoExpanded = ObservableBoolean(!advantageInfoExpanded.get())
         notifyPropertyChanged(BR.advantageInfoExpanded)
     }

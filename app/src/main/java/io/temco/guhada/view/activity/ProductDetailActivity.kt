@@ -116,6 +116,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
                 mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
             }
         })
+
         viewModel.dealId = 12492
 
 //        if (intent != null) {
@@ -124,7 +125,9 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
 //        }
 
         viewModel.product.observe(this, Observer<Product> { it ->
-            viewModel.totalPrice = ObservableInt(it.discountPrice)
+            //            //초기 값 0 원
+//            viewModel.totalPrice = ObservableInt(it.discountPrice)
+
             mBinding.includeProductdetailContentsummary.viewModel = viewModel
             mBinding.includeProductdetailContentheader.viewModel = viewModel
             mBinding.includeProductdetailContentbody.viewModel = viewModel
