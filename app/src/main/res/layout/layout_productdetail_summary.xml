@@ -87,8 +87,10 @@
             <ImageButton
                 android:id="@+id/imagebutton_productdetail_moreadvantagae"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/plus_icon" />
+                android:layout_height="match_parent"
+                android:onClick="@{()->viewModel.onClickAdvantageInfo()}"
+                android:scaleType="center"
+                android:src="@{viewModel.advantageInfoExpanded  ? @drawable/minus_icon : @drawable/plus_icon}" />
         </LinearLayout>
 
         <View
@@ -96,7 +98,14 @@
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white_four" />
+            android:background="@color/white_four"
+            android:visibility="@{viewModel.advantageInfoExpanded ? View.GONE : View.VISIBLE, default =visible}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/pale_grey"
+            android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =gone}" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -44,7 +44,11 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
         @Bindable
         get() = field
 
-    var productNotiifesExpanded = ObservableBoolean(false)
+    var productNotifiesExpanded = ObservableBoolean(false)
+        @Bindable
+        get() = field
+
+    var advantageInfoExpanded = ObservableBoolean(false)
         @Bindable
         get() = field
 
@@ -99,7 +103,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
     }
 
     fun onClickProductNotifies() {
-        productNotiifesExpanded = ObservableBoolean(!productNotiifesExpanded.get())
-        notifyPropertyChanged(BR.productNotiifesExpanded)
+        productNotifiesExpanded = ObservableBoolean(!productNotifiesExpanded.get())
+        notifyPropertyChanged(BR.productNotifiesExpanded)
+    }
+
+    fun onClickAdvantageInfo(){
+        advantageInfoExpanded = ObservableBoolean(!advantageInfoExpanded.get())
+        notifyPropertyChanged(BR.advantageInfoExpanded)
     }
 }

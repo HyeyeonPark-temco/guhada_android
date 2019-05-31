@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="@{()->viewModel.onClickProductNotifies()}"
-                android:src="@{viewModel.productNotiifesExpanded ? @drawable/minus_icon : @drawable/plus_icon}"
+                android:src="@{viewModel.productNotifiesExpanded ? @drawable/minus_icon : @drawable/plus_icon}"
                 android:text="@string/productdetail_report"
                 android:textColor="@color/greyish_brown_two"
                 android:textSize="@dimen/text_12" />
@@ -56,7 +56,7 @@
             android:id="@+id/recyclerview_productdetail_notifies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.productNotiifesExpanded ? View.VISIBLE : View.GONE, default = gone}"
+            android:visibility="@{viewModel.productNotifiesExpanded ? View.VISIBLE : View.GONE, default = gone}"
             app:productInfo="@{viewModel.product.productNotifies}" />
     </LinearLayout>
 </layout>
