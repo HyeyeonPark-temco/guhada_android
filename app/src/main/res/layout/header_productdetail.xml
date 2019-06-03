@@ -17,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/btn_burgermenu"
+                android:src="@drawable/top_btn_menu"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/btn_home"
+                android:src="@drawable/burger_top_home"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_search"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
                 android:id="@+id/imagebutton_headerproductdetail_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/search"
+                android:src="@drawable/btn_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_bag"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +45,7 @@
                 android:id="@+id/imagebutton_headerproductdetail_bag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/shoppin_bag"
+                android:src="@drawable/top_btn_bag"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

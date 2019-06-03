@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="438dp"
             android:background="@color/black_overlay"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                     android:id="@+id/imageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/arrow_r_line_s"
+                    android:src="@drawable/detail_icon_review_arrow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView10"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -160,7 +160,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/share_01"
+                    android:src="@drawable/detail_icon_share"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/checkBox5"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -264,8 +264,8 @@
                     android:layout_height="match_parent"
                     android:onClick="@{()->viewModel.onClickMinus()}"
                     android:scaleType="center"
-                    android:src="@drawable/minus_icon"
-                    android:tint="@color/white_three" />
+                    android:src="@drawable/detail_btn_quantity_minus_off"
+                  />
 
                 <View
                     android:layout_width="1dp"
@@ -293,8 +293,8 @@
                     android:layout_height="match_parent"
                     android:onClick="@{()->viewModel.onClickPlus()}"
                     android:scaleType="center"
-                    android:src="@drawable/plus_icon"
-                    android:tint="@color/greyish_brown_two" />
+                    android:src="@drawable/detail_btn_quantity_plus_on"
+                     />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

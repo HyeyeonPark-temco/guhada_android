@@ -198,7 +198,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/naver_icon" />
+                            android:src="@drawable/btn_naver_icon" />
 
                         <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
                             android:id="@+id/button_login_naver"
@@ -233,7 +233,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/kakao_icon" />
+                            android:src="@drawable/btn_kakao_icon" />
 
                         <com.kakao.usermgmt.LoginButton
                             android:id="@+id/button_login_kakao"
@@ -269,7 +269,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/facebook_icon" />
+                            android:src="@drawable/btn_facebook_icon" />
 
                         <com.facebook.login.widget.LoginButton
                             android:id="@+id/button_login_facebook"
@@ -300,7 +300,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/google_icon" />
+                        android:src="@drawable/btn_google_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"

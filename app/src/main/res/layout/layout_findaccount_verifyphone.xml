@@ -64,7 +64,7 @@
                     android:layout_marginEnd="11dp"
                     android:onClick="@{onClickNationalitySpinner}"
                     android:scaleType="fitXY"
-                    android:src="@drawable/seletbox_icon"
+                    android:src="@drawable/list_btn_lineup"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -152,7 +152,7 @@
                     android:layout_marginEnd="11dp"
                     android:onClick="@{onClickMobileSpinner}"
                     android:scaleType="fitXY"
-                    android:src="@drawable/seletbox_icon"
+                    android:src="@drawable/list_btn_lineup"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

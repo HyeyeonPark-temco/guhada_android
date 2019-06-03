@@ -88,7 +88,7 @@
                 android:id="@+id/imagebutton_productdetail_moreadvantagae"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/plus_icon" />
+                android:src="@drawable/detail_btn_quantity_plus_on" />
         </LinearLayout>
 
         <View
@@ -211,7 +211,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icon_good" />
+                            android:src="@drawable/detail_icon_seller_good" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -248,7 +248,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icon_soso" />
+                            android:src="@drawable/detail_icon_seller_average" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -285,7 +285,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/icon_bad" />
+                            android:src="@drawable/detail_icon_seller_bad" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -387,7 +387,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:src="@drawable/arrow_r_line"
+                    android:src="@drawable/detail_icon_review_arrow"
                     android:tint="@color/warm_grey_two" />
             </LinearLayout>
         </LinearLayout>
