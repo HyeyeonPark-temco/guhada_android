@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Brand {
 
+    public boolean isHeader = false;
+
     @SerializedName("id")
     public int id;
 

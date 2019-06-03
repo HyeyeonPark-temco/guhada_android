@@ -36,13 +36,13 @@
             android:background="@color/common_black"
             android:orientation="horizontal">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_contents"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:overScrollMode="never"
-                app:fastScrollEnabled="true" />
+            <!--<androidx.recyclerview.widget.RecyclerView-->
+                <!--android:id="@+id/list_contents"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:overScrollMode="never"-->
+                <!--app:fastScrollEnabled="true" />-->
 
             <!-- FAST SCROLL -->
             <LinearLayout
