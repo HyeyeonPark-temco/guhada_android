@@ -36,7 +36,6 @@
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@color/common_black"
                 android:src="@{icon}" />
         </RelativeLayout>
 

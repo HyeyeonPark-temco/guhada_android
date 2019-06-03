@@ -38,7 +38,7 @@
                         android:id="@+id/image_side_menu"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/btn_burgermenu"
+                        android:background="@drawable/top_btn_menu"
                         android:onClick="@{clickListener}" />
 
                     <RelativeLayout
@@ -49,7 +49,7 @@
                             android:layout_width="90dp"
                             android:layout_height="22dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/guhada_logo" />
+                            android:src="@drawable/logo_guhada" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -66,7 +66,7 @@
                         android:id="@+id/image_search"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/search"
+                        android:background="@drawable/top_btn_search"
                         android:onClick="@{clickListener}" />
 
                     <ImageView
@@ -74,7 +74,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/shoppin_bag"
+                        android:background="@drawable/top_btn_bag"
                         android:onClick="@{clickListener}" />
                 </LinearLayout>
             </RelativeLayout>

@@ -42,7 +42,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_weight="0"
-                    android:background="@drawable/btn_prevpage"
+                    android:background="@drawable/top_btn_back"
                     android:onClick="@{clickListener}" />
 
                 <ImageView
@@ -50,7 +50,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:background="@drawable/btn_burgermenu"
+                    android:background="@drawable/top_btn_menu"
                     android:onClick="@{clickListener}" />
             </LinearLayout>
 
@@ -78,7 +78,7 @@
                     android:id="@+id/image_search"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:background="@drawable/search"
+                    android:background="@drawable/btn_search"
                     android:onClick="@{clickListener}" />
 
                 <ImageView
@@ -86,7 +86,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:background="@drawable/shoppin_bag"
+                    android:background="@drawable/top_btn_bag"
                     android:onClick="@{clickListener}" />
             </LinearLayout>
         </LinearLayout>

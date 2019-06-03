@@ -94,6 +94,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             app:clickListener="@{clickListener}"
+                            app:icon="@{@drawable/burger_bottom_icon_sale}"
                             app:title="@{@string/side_menu_sub_sale}" />
 
                         <include
@@ -103,6 +104,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             app:clickListener="@{clickListener}"
+                            app:icon="@{@drawable/burger_bottom_icon_new}"
                             app:title="@{@string/side_menu_sub_new_product}" />
 
                         <include
@@ -112,6 +114,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             app:clickListener="@{clickListener}"
+                            app:icon="@{@drawable/burger_bottom_icon_power}"
                             app:title="@{@string/side_menu_sub_power_deal}" />
                     </LinearLayout>
 
@@ -128,6 +131,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             app:clickListener="@{clickListener}"
+                            app:icon="@{@drawable/burger_bottom_icon_time}"
                             app:title="@{@string/side_menu_sub_time_deal}" />
 
                         <include
@@ -137,6 +141,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             app:clickListener="@{clickListener}"
+                            app:icon="@{@drawable/burger_bottom_icon_limit}"
                             app:title="@{@string/side_menu_sub_limit_price}" />
 
                         <include
@@ -146,6 +151,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             app:clickListener="@{clickListener}"
+                            app:icon="@{@drawable/burger_bottom_icon_community}"
                             app:title="@{@string/side_menu_sub_community}" />
                     </LinearLayout>
                 </LinearLayout>

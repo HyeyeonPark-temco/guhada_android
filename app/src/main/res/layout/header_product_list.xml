@@ -117,7 +117,7 @@
                         android:layout_width="10dp"
                         android:layout_height="10dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/sarrow_icon" />
+                        android:background="@drawable/list_btn_lineup" />
                 </LinearLayout>
 
                 <!-- CENTER -->
@@ -173,7 +173,7 @@
                         android:layout_width="16dp"
                         android:layout_height="14dp"
                         android:layout_marginLeft="5dp"
-                        android:background="@drawable/fillter_icon" />
+                        android:background="@drawable/list_icon_fillter" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

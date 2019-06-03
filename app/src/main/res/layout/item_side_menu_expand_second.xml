@@ -30,6 +30,6 @@
             android:layout_width="19dp"
             android:layout_height="19dp"
             android:layout_weight="0"
-            android:background="@drawable/arrow_icon" />
+            android:background="@drawable/burger_menu_arrow" />
     </LinearLayout>
 </layout>

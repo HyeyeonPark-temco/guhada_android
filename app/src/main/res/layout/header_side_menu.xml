@@ -44,7 +44,7 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@drawable/btn_arrow" />
+                        android:background="@drawable/burger_top_login_arrow" />
                 </LinearLayout>
 
                 <!-- RIGHT -->
@@ -59,7 +59,7 @@
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/btn_home"
+                        android:background="@drawable/burger_top_home"
                         android:onClick="@{clickListener}" />
 
                     <ImageView
@@ -67,14 +67,14 @@
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10dp"
-                        android:background="@drawable/btn_setting"
+                        android:background="@drawable/burger_top_setting"
                         android:onClick="@{clickListener}" />
 
                     <ImageView
                         android:id="@+id/image_close"
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/btn_close"
+                        android:background="@drawable/burger_top_close"
                         android:onClick="@{clickListener}" />
                 </LinearLayout>
             </RelativeLayout>
