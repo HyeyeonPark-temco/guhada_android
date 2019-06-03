@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.view.adapter.base.BaseViewHolder
 
-class ProductDetailOptionAdapter : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
+class ProductDetailOptionAdapter(val viewModel: ProductDetailViewModel) : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
     var list: List<Product.Option> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_option, parent, false))
@@ -33,9 +34,9 @@ class ProductDetailOptionAdapter : RecyclerView.Adapter<ProductDetailOptionAdapt
                 params.setMargins(0, 50, 0, 0)
                 binding.linearlayoutProductdetailOption.layoutParams = params
             }
-
             binding.option = option
-            binding.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(BaseApplication.getInstance().applicationContext, RecyclerView.HORIZONTAL, false)
+            binding.recyclerviewProductdetailOptionattr.adapter = ProductDetailOptionAttrAdapter(viewModel, option)
+            binding.recyclerviewProductdetailOptionattr.layoutManager = LinearLayoutManager(BaseApplication.getInstance().applicationContext, RecyclerView.HORIZONTAL, false)
             binding.executePendingBindings()
         }
     }

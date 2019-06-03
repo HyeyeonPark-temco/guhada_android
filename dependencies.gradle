@@ -15,7 +15,6 @@ ext {
     logginInterceptorVersion = '3.12.1'
     compiler_version = '3.1.3'
     kotlin_version = '1.3.31'
-    koin_version = '2.0.1'
 
     androidDependencies = [
             supportDesign          : "com.android.support:design:${supportDesignVersion}",
@@ -36,14 +35,7 @@ ext {
             jsoup                : "org.jsoup:jsoup:${jsoupVersion}",
             stringUtils          : "org.apache.commons:commons-text:${stringUtilsVersion}",
             loggingInterceptor   : "com.squareup.okhttp3:logging-interceptor:${logginInterceptorVersion}",
-
-            kotlinJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",
-            koinViewModel        : "org.koin:koin-android-viewmodel:${koin_version}",
-            koinAndroid          : "org.koin:koin-android:${koin_version}",
-            koinAndroidScope :   "org.koin:koin-android-scope:${koin_version}",
-            koinExt: "org.koin:koin-android-ext:${koin_version}"
-
-
+            kotlinJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
     ]
 }
 

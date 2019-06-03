@@ -9,7 +9,6 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -22,7 +21,7 @@ import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.*
 
-class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
+class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
     private lateinit var viewModel: ProductDetailViewModel
 
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
@@ -39,8 +38,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
 
         @JvmStatic
         @BindingAdapter("productTags")
-        fun RecyclerView.bindTags(list: MutableList<String>) {
-            if (list.isNotEmpty()) {
+        fun RecyclerView.bindTags(list: MutableList<String>?) {
+            if (list != null && list.isNotEmpty()) {
                 if (this.adapter == null) {
                     this.adapter = ProductDetailTagAdapter()
                 }
@@ -79,63 +78,50 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
         @JvmStatic
         @BindingAdapter("productOption")
         fun RecyclerView.bindOption(list: List<Product.Option>?) {
-            if (list != null && list.isNotEmpty()) {
-                this.adapter = ProductDetailOptionAdapter().apply {
-                    this.list = list
-                    this.notifyDataSetChanged()
-                }
+            if (list != null && list.isNotEmpty() && this.adapter != null) {
+                (this.adapter as ProductDetailOptionAdapter).setItems(list)
             }
         }
 
         @JvmStatic
         @BindingAdapter("productOptionAttr")
         fun RecyclerView.bindOptionAttr(option: Product.Option?) {
-            if (option != null) {
-                this.adapter = ProductDetailOptionAttrAdapter().apply {
-                    list = if (option.type == "COLOR") {
-                        option.rgb
-                    } else {
-                        option.attributes
-                    }
-                    this.notifyDataSetChanged()
+            if (option != null && this.adapter != null) {
+                if (option.type == "COLOR") {
+                    (this.adapter as ProductDetailOptionAttrAdapter).setItems(option.rgb)
+                } else {
+                    (this.adapter as ProductDetailOptionAttrAdapter).setItems(option.attributes)
                 }
             }
         }
     }
 
     override fun init() {
-        viewModel = ProductDetailViewModel(object : OnProductDetailListener {
-            override fun scrollToElement(pos: Int) {
-                var h: Int = 0
-                when (pos) {
-                    0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
-                    1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-                    2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
-                }
-
-                mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
-            }
-        })
-
+        viewModel = ProductDetailViewModel(this)
         viewModel.dealId = 12492
 
 //        if (intent != null) {
 //           // viewModel.dealId = intent.getIntExtra("id", 0)
 //            viewModel.dealId = 12492
 //        }
+        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter = ProductDetailOptionAdapter(viewModel)
 
         viewModel.product.observe(this, Observer<Product> { it ->
-            //            //초기 값 0 원
-//            viewModel.totalPrice = ObservableInt(it.discountPrice)
+            //            viewModel.totalPrice = ObservableInt(it.discountPrice)
+            mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+            mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
+            mBinding.includeProductdetailContentbody.viewModel = viewModel
             mBinding.includeProductdetailContentsummary.viewModel = viewModel
             mBinding.includeProductdetailContentheader.viewModel = viewModel
             mBinding.includeProductdetailContentbody.viewModel = viewModel
             mBinding.includeProductdetailContentinfo.viewModel = viewModel
             mBinding.includeProductdetailContentshipping.viewModel = viewModel
             mBinding.includeProductdetailContentnotifies.viewModel = viewModel
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(it.desc, "text/html", null)
 
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(it.desc, "text/html", null)
             mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
 
@@ -154,11 +140,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
 
         viewModel.getDetail()
         mBinding.viewModel = viewModel
-        mBinding.includeProductdetailContentbody.viewModel = viewModel
-        mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         detectButton()
         mBinding.executePendingBindings()
@@ -176,6 +157,17 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
         }
     }
 
+    // OnProductDetailListener
+    override fun scrollToElement(pos: Int) {
+        var h: Int = 0
+        when (pos) {
+            0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
+            1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
+            2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
+        }
+
+        mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
+    }
 }
 
 

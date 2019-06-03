@@ -13,7 +13,8 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
-class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObservableViewModel() {
+class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
+    var optionMap: MutableMap<String, Int> = mutableMapOf()
     var dealId: Int = 0
     var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
@@ -36,7 +37,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
         @Bindable
         get() = field
 
-    var totalPrice = ObservableInt(product.value?.sellPrice ?: 0)
+    var totalPrice = ObservableInt(0)
         @Bindable
         get() = field
 
@@ -51,7 +52,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
     var advantageInfoExpanded = ObservableBoolean(false)
         @Bindable
         get() = field
-
 
     fun getDetail() {
         ProductServer.getProductDetail({ success, o ->
@@ -70,7 +70,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
     fun onClickTab(view: View) {
         val pos = view.tag.toString()
         selectedTab = ObservableInt(pos.toInt())
-        listener.scrollToElement(pos.toInt())
+        listener?.scrollToElement(pos.toInt())
         notifyPropertyChanged(BR.selectedTab)
     }
 
@@ -85,6 +85,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener) : BaseObserv
             }
         }
     }
+
 
     fun onClickMinus() {
         (productCount.get() - 1).let { count ->

@@ -19,7 +19,7 @@
         android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_productdetail_option"
+            android:id="@+id/recyclerview_productdetail_optionattr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

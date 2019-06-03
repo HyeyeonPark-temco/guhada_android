@@ -91,17 +91,13 @@ dependencies {
     // LOGGING INTERCEPTOR
     implementation libraryDependencies.loggingInterceptor
 
-    // KOIN
-    implementation libraryDependencies.koinViewModel
-    implementation libraryDependencies.koinAndroid
-    implementation libraryDependencies.koinAndroidScope
-    implementation libraryDependencies.koinExt
     ////////////////////////////////////////////////
 }
 kapt {
     generateStubs = true
 }
 repositories {
+    jcenter()
     mavenCentral()
     maven { url 'https://jitpack.io' }
 }
