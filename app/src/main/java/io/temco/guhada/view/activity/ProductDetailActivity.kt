@@ -21,7 +21,7 @@ import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.*
 
-class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
+class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener, ProductDetailOptionAttrAdapter.OnSelectAttrListener {
     private lateinit var viewModel: ProductDetailViewModel
 
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
@@ -87,11 +87,28 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         @BindingAdapter("productOptionAttr")
         fun RecyclerView.bindOptionAttr(option: Product.Option?) {
             if (option != null && this.adapter != null) {
+                val attrList: MutableList<ProductDetailOptionAdapter.OptionAttr> = ArrayList()
+
                 if (option.type == "COLOR") {
-                    (this.adapter as ProductDetailOptionAttrAdapter).setItems(option.rgb)
+                    for (i in 0 until option.rgb.size) {
+                        ProductDetailOptionAdapter.OptionAttr().apply {
+                            rgb = option.rgb[i]
+                            name = option.attributes[i]
+                        }.let {
+                            attrList.add(it)
+                        }
+                    }
                 } else {
-                    (this.adapter as ProductDetailOptionAttrAdapter).setItems(option.attributes)
+                    for (attr in option.attributes) {
+                        ProductDetailOptionAdapter.OptionAttr().apply {
+                            name = attr
+                        }.let {
+                            attrList.add(it)
+                        }
+                    }
                 }
+
+                (this.adapter as ProductDetailOptionAttrAdapter).setItems(attrList)
             }
         }
     }
@@ -104,15 +121,17 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 //           // viewModel.dealId = intent.getIntExtra("id", 0)
 //            viewModel.dealId = 12492
 //        }
-        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter = ProductDetailOptionAdapter(viewModel)
+        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter = ProductDetailOptionAdapter(viewModel, this)
+        mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(viewModel, this)
 
         viewModel.product.observe(this, Observer<Product> { it ->
-            //            viewModel.totalPrice = ObservableInt(it.discountPrice)
             mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
             mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
+            mBinding.includeProductdetailMenu.viewModel = viewModel
             mBinding.includeProductdetailContentbody.viewModel = viewModel
             mBinding.includeProductdetailContentsummary.viewModel = viewModel
             mBinding.includeProductdetailContentheader.viewModel = viewModel
@@ -167,6 +186,20 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
 
         mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
+    }
+
+    override fun notifyOptionAttrAdapter() {
+        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
+        (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
+    }
+
+    override fun onClickAttr(prevSelectedPos: Int, selectedPos: Int) {
+        // (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
+        // (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
+    }
+
+    override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
+        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(optionAttr)
     }
 }
 

@@ -14,28 +14,35 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.view.adapter.base.BaseViewHolder
+import io.temco.guhada.view.adapter.ProductDetailOptionAdapter.OptionAttr
 
-class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var option: Product.Option) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
-    var list: List<String> = ArrayList()
+class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var option: Product.Option, var selectListener: OnSelectAttrListener) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
+    var list: List<OptionAttr> = ArrayList()
     private var prevSelectedPos: Int = -1
     private var selectedPos: Int = -1
+    private lateinit var mHolder: Holder
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_optionattr, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        mHolder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_optionattr, parent, false))
+        return mHolder
+    }
+
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position], selectedPos)
     }
 
-    fun setItems(list: List<String>?) {
+    fun setItems(list: List<OptionAttr>?) {
         if (list != null && list.isNotEmpty()) {
             this.list = list
             notifyDataSetChanged()
         }
     }
 
+
     inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionattrBinding) : BaseViewHolder<io.temco.guhada.databinding.ItemProductdetailOptionattrBinding>(binding.root) {
-        fun bind(attr: String) {
+        fun bind(optionAttr: OptionAttr, selectedPos: Int) {
             // BORDER
             if (adapterPosition == selectedPos) {
                 binding.framelayoutProductdetailOptionattr.background = BaseApplication.getInstance().applicationContext.resources.getDrawable(R.drawable.border_all_purple_2dp)
@@ -53,8 +60,8 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var 
             }
 
             // CONTENT
-            if (attr.split("#").size >= 2) {
-                binding.imageviewProductdetailOptionattr.setBackgroundColor(Color.parseColor(attr))
+            if (optionAttr.rgb.isNotBlank()) {
+                binding.imageviewProductdetailOptionattr.setBackgroundColor(Color.parseColor(optionAttr.rgb))
                 binding.imageviewProductdetailOptionattr.visibility = View.VISIBLE
                 binding.textviewProductdetailOptionattr.visibility = View.GONE
             } else {
@@ -63,13 +70,16 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var 
             }
 
             binding.framelayoutProductdetailOptionattr.setOnClickListener {
-                prevSelectedPos = selectedPos
-                selectedPos = adapterPosition
-                notifyItemChanged(selectedPos)
+                prevSelectedPos = this@ProductDetailOptionAttrAdapter.selectedPos
+                this@ProductDetailOptionAttrAdapter.selectedPos = adapterPosition
+
+                // SELECT ATTR
+                selectListener.onClickAttr(prevSelectedPos, this@ProductDetailOptionAttrAdapter.selectedPos)
+                viewModel.onSelectAttr(optionAttr, option.type, adapterPosition)
+                notifyItemChanged(this@ProductDetailOptionAttrAdapter.selectedPos)
                 notifyItemChanged(prevSelectedPos)
 
                 // TOTAL PRICE
-                viewModel.optionMap[option.type] = selectedPos
                 if (viewModel.totalPrice.get() == 0 && viewModel.optionMap.keys.size == viewModel.product.value?.options?.size) {
                     viewModel.totalPrice = ObservableInt(viewModel.product.value?.discountPrice
                             ?: viewModel.product.value?.sellPrice ?: 0)
@@ -77,8 +87,19 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var 
                 }
             }
 
-            binding.attr = attr
+            binding.optionAttr = optionAttr
             binding.executePendingBindings()
         }
+    }
+
+    fun setSelectedItemPos(prevSelectedPos: Int, selectedPos: Int) {
+        this@ProductDetailOptionAttrAdapter.prevSelectedPos = prevSelectedPos
+        this@ProductDetailOptionAttrAdapter.selectedPos = selectedPos
+        notifyItemChanged(selectedPos)
+        notifyItemChanged(prevSelectedPos)
+    }
+
+    interface OnSelectAttrListener {
+        fun onClickAttr(prevSelectedPos: Int, selectedPos: Int)
     }
 }

@@ -7,6 +7,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ProductDetailViewModel" />
+
+        <variable
             name="option"
             type="io.temco.guhada.data.model.Product.Option" />
     </data>
@@ -21,11 +25,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_productdetail_optionattr"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:orientation="vertical"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintEnd_toStartOf="@+id/linearLayout9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,16 +43,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:visibility="@{option.type.equals(@string/producdetail_option_type_size) ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/productdetail_sizeinfo"
+                android:text="@{option.type.equals(@string/producdetail_option_type_size) ? @string/productdetail_sizeinfo : viewModel.colorName}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_12"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +60,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/warm_grey_two" />
+                android:background="@color/warm_grey_two"
+                android:visibility="@{option.type.equals(@string/producdetail_option_type_size) ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

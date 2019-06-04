@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
@@ -12,6 +13,7 @@ import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 
 class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
     var optionMap: MutableMap<String, Int> = mutableMapOf()
@@ -19,6 +21,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
 
+    var menuVisibility = ObservableInt(View.GONE)
+        @Bindable
+        get() = field
+    var colorName = ObservableField<String>("")
+        @Bindable
+        get() = field
     var bottomBtnVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
@@ -114,4 +122,25 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         advantageInfoExpanded = ObservableBoolean(!advantageInfoExpanded.get())
         notifyPropertyChanged(BR.advantageInfoExpanded)
     }
+
+    fun onClickBag() {
+        if (optionMap.keys.size == product.value?.options?.size) {
+            // 옵션 선택 완료 -> 장바구니 이동
+        } else {
+            // 옵션 선택 미완료 -> 메뉴 view 노출
+            menuVisibility = ObservableInt(View.VISIBLE)
+            notifyPropertyChanged(BR.menuVisibility)
+        }
+    }
+
+    fun onClickCloseMenu() {
+        menuVisibility = ObservableInt(View.GONE)
+        notifyPropertyChanged(BR.menuVisibility)
+    }
+
+    fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {
+        optionMap[type] = position
+        listener?.setColorName(optionAttr)
+    }
+
 }

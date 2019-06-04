@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -101,10 +100,35 @@
 
         </androidx.core.widget.NestedScrollView>
 
-
         <!-- 메뉴 -->
+        <View
+            android:onClick="@{()->viewModel.onClickCloseMenu()}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_overlay"
+            android:visibility="@{viewModel.menuVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/linearlayout_productdetail_button"
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"
+            app:layout_constraintTop_toTopOf="@+id/include_productdetail_header" />
+
+        <FrameLayout
+            android:id="@+id/framelayout_productdetail_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.menuVisibility,default = gone}"
+            app:layout_constraintBottom_toTopOf="@+id/linearlayout_productdetail_button"
+            app:layout_constraintEnd_toEndOf="@+id/scrollview_productdetail"
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail">
+
+            <include
+                android:id="@+id/include_productdetail_menu"
+                layout="@layout/layout_productdetail_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
 
+        <!-- 하단 버튼 -->
         <LinearLayout
             android:id="@+id/linearlayout_productdetail_button"
             android:layout_width="match_parent"
@@ -122,6 +146,7 @@
                 android:layout_weight="1"
                 android:background="@color/greyish_brown_two"
                 android:fontFamily="sans-serif-medium"
+                android:onClick="@{()->viewModel.onClickBag()}"
                 android:text="@string/productdetail_button_bag"
                 android:textSize="@dimen/text_18" />
 
