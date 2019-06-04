@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +25,7 @@ import io.temco.guhada.common.util.TextSearcher;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ActivityBrandSubBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
+import io.temco.guhada.view.adapter.BrandListAdapter;
 
 public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> implements View.OnClickListener {
 
@@ -88,14 +91,11 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
     private void initList() {
         List<Brand> data = Preferences.getBrands();
-
         // List
-//        mBinding.listContents.setLayoutManager(new LinearLayoutManager(this));
-//        CategorySubExpandFirstListAdapter adapter = new CategorySubExpandFirstListAdapter(this);
-//        adapter.setChildType(Type.CategoryData.getType(mCategoryData.hierarchies[0]));
-//        adapter.setOnCategoryListener(mCategoryListener);
-//        adapter.setItems(mCategoryData.children);
-//        mBinding.listContents.setAdapter(adapter);
+        mBinding.listContents.setHasFixedSize(true);
+        mBinding.listContents.setLayoutManager(new LinearLayoutManager(this));
+        BrandListAdapter adapter = new BrandListAdapter(this);
+        mBinding.listContents.setAdapter(adapter);
 
         if (data != null && data.size() > 0) {
             // Sort
@@ -122,10 +122,11 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
                     if (!index.containsKey(key)) {
                         // Header
                         Brand h = new Brand();
-                        h.isHeader = true;
+                        h.type = Type.List.HEADER;
                         h.nameEn = String.valueOf(key);
                         h.nameKo = data.get(i).nameKo;
                         h.nameDefault = data.get(i).nameDefault;
+                        h.layoutRes = R.layout.item_brand_list_header;
                         re.add(h);
                         // Index
                         index.put(key, i);
@@ -145,10 +146,12 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
                     if (!index.containsKey(key)) {
                         // Header
                         Brand h = new Brand();
-                        h.isHeader = true;
+                        h.type = Type.List.HEADER;
                         h.nameEn = data.get(i).nameEn;
                         h.nameKo = String.valueOf(key);
                         h.nameDefault = data.get(i).nameDefault;
+                        h.layoutRes = R.layout.item_brand_list_header;
+                        re.add(h);
                         // Index
                         index.put(key, i);
                     }
@@ -164,10 +167,13 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
             if (side.size() > 0) {
                 // Side
                 Brand h = new Brand();
-                h.isHeader = true;
+                h.type = Type.List.HEADER;
                 h.nameEn = "#";
                 h.nameKo = "#";
                 h.nameDefault = "#";
+                h.layoutRes = R.layout.item_brand_list_header;
+                re.add(h);
+                re.addAll(re.size(), side);
                 // Index
                 index.put('#', re.size());
                 CommonUtil.debug("" + side.size());
@@ -185,6 +191,9 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
                 CommonUtil.debug("" + c);
                 CommonUtil.debug("" + sb.toString());
             }
+
+            //
+            adapter.setItems(re);
         }
     }
 
