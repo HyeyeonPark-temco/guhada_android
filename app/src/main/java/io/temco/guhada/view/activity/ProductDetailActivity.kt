@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
+import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
@@ -111,6 +113,25 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 (this.adapter as ProductDetailOptionAttrAdapter).setItems(attrList)
             }
         }
+
+        @JvmStatic
+        @BindingAdapter("productClaims")
+        fun RecyclerView.bindClaims(list: MutableList<ClaimResponse.Claim>?) {
+            if (list != null) {
+                if (this.adapter == null) {
+                    this.adapter = ClaimAdapter()
+                }
+
+                if ((this.adapter as ClaimAdapter).itemCount > 0) {
+                    // MORE
+                    (this.adapter as ClaimAdapter).addItems(list)
+                } else {
+                    (this.adapter as ClaimAdapter).setItems(list)
+                }
+
+            }
+        }
+
     }
 
     override fun init() {
@@ -160,8 +181,20 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         viewModel.getDetail()
         mBinding.viewModel = viewModel
 
+
+        initClaims(10243)
+
         detectButton()
         mBinding.executePendingBindings()
+    }
+
+    private fun initClaims(productId: Int) {
+        mBinding.includeProductdetailContentclaim.viewModel = viewModel
+        mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.adapter = ClaimAdapter()
+        mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        viewModel.productId = productId
+        viewModel.getClaims(5)
     }
 
     private fun detectButton() {
@@ -200,6 +233,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
         (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(optionAttr)
+    }
+
+    override fun showMessage(message: String) {
+        Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
     }
 }
 

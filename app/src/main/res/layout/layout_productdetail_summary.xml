@@ -40,7 +40,7 @@
                 style="@style/ProductDetailContentTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : @string/price_format(viewModel.product.shipExpense)}'
+                android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : @string/common_price_format(viewModel.product.shipExpense)}'
                 android:textColor="@color/greyish_brown_two" />
 
             <TextView
@@ -388,7 +388,7 @@
                     style="@style/ProductDetailTitleTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/productdetail_unit_review"
+                    android:text="@string/productdetail_unit_board"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

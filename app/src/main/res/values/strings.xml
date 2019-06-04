@@ -23,6 +23,7 @@
     <string name="common_home">홈</string>
     <string name="common_my_page">마이페이지</string>
     <string name="common_community">커뮤니티</string>
+    <string name="common_price_format">%,2d</string>
 
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
 
@@ -218,7 +219,7 @@
     <string name="productdetail_button_store">셀러스토어</string>
 
     <string name="productdetail_unit_person">명</string>
-    <string name="productdetail_unit_review">건</string>
+    <string name="productdetail_unit_board">건</string>
     <string name="productdetail_unit_price">원</string>
     <string name="productdetail_unit_prercent">%</string>
 
@@ -234,7 +235,6 @@
 
     <string name="productdetail_shipping_refund_title">교환/반품 안내</string>
     <string name="productdetail_shipping_refund_description">교환/반품 시 먼저 판매자와 연락하셔서 교환/반품사유, 택배사, 반품지 주소 등을 협의하신 후 교환/반품 상품을 발송해 주시기 바랍니다.</string>
-
 
     <string name="productdetail_shipping_refund_content1">판매자 지정택배사</string>
     <string name="productdetail_shipping_refund_content2">반품배송비</string>
@@ -261,12 +261,24 @@
     <string name="producdetail_shipping_seller_content4">통신판매업번호</string>
     <string name="producdetail_shipping_seller_content5">사업장소재지</string>
     <string name="producdetail_shipping_seller_content6">고객센터</string>
-
     <string name="producdetail_shipping_notifies_title">상품고시정보</string>
 
     <string name="producdetail_option_type_color">COLOR</string>
     <string name="producdetail_option_type_size">SIZE</string>
     <string name="producdetail_option_type_custom">CUSTOM</string>
 
-    <string name="price_format">%,2d</string>
+    <string name="producdetail_qna_title">상품문의</string>
+    <string name="producdetail_qna_mine">내 문의만 보기</string>
+    <string name="producdetail_qna_description">구매하시려는 상품에 대해 궁금하신 점이 있으신 경우, 문의해주세요. 상품 이외의 문의는 ‘판매자 문의하기’를 이용해주세요.</string>
+    <string name="producdetail_qna_report">신고</string>
+    <string name="producdetail_qna_reply">답변</string>
+    <string name="producdetail_qna_reply_all">전체문의</string>
+    <string name="producdetail_qna_reply_pending">미답변</string>
+    <string name="producdetail_qna_reply_completed">답변완료</string>
+    <string name="producdetail_qna_reply_status_completed">COMPLETED</string>
+    <string name="producdetail_qna_reply_status_pending">PENDING</string>
+    <string name="producdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
+    <string name="producdetail_qna_button_contactforproduct">상품 문의하기</string>
+    <string name="producdetail_qna_button_contactwithseller">판매자 문의하기</string>
+    <string name="producdetail_qna_button_moreclaim">상품 리뷰 10개 더보기</string>
 </resources>
