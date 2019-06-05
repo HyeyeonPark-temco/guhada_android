@@ -74,9 +74,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp" />
 
-                    <include
-                        android:id="@+id/include_productdetail_contentclaim"
-                        layout="@layout/layout_productdetail_claim" />
+                    <!-- 작업중 -->
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_claim"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <!--<include-->
+                        <!--android:id="@+id/include_productdetail_contentclaim"-->
+                        <!--layout="@layout/layout_productdetail_claim" />-->
 
                     <include
                         android:id="@+id/include_productdetail_contentshipping"

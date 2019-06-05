@@ -6,5 +6,5 @@ interface OnProductDetailListener {
     fun scrollToElement(pos: Int)
     fun notifyOptionAttrAdapter()
     fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr)
-     fun showMessage(message: String)
+    fun showMessage(message: String)
 }
