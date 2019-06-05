@@ -1,6 +1,5 @@
 package io.temco.guhada.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -13,12 +12,16 @@ import io.temco.guhada.view.adapter.base.BaseViewHolder
 
 class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
     private var list: MutableList<ClaimResponse.Claim> = ArrayList()
+     lateinit var mBinding: ItemProductdetailClaimBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_claim, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_claim, parent, false)
+        return Holder(mBinding)
+    }
+
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        Log.e("ㅇㅇㅇ", (holder.binding.textviewProductdetailQnaReplydate.layout == null).toString())
         holder.bind(list[position])
     }
 
@@ -31,6 +34,10 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
         val rangeStart = this.list.size
         this.list.addAll(list)
         notifyItemRangeChanged(rangeStart, this.list.size)
+    }
+
+    fun clearItems() {
+        this.list.clear()
     }
 
     inner class Holder(val binding: ItemProductdetailClaimBinding) : BaseViewHolder<ItemProductdetailClaimBinding>(binding.root) {
