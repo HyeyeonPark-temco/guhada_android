@@ -13,21 +13,20 @@
         android:layout_height="@dimen/view_fast_scroll_brand_contents_row"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingLeft="12dp"
+        android:paddingRight="40dp">
 
         <!-- FAVORITE -->
         <ImageView
-            android:layout_width="14dp"
-            android:layout_height="13dp"
-            android:background="@color/common_black" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/selector_ratingbar" />
 
         <!-- TITLE -->
         <TextView
             style="@style/TextRegularSingleLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="9dp"
             android:text="@{title}"
             android:textColor="@color/text_1"
             android:textSize="@dimen/text_14" />

@@ -2,7 +2,9 @@ package io.temco.guhada.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomComparator;
 import io.temco.guhada.common.util.TextSearcher;
 import io.temco.guhada.data.model.Brand;
@@ -27,6 +30,7 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
     // -------- LOCAL VALUE --------
     private BrandListAdapter mListAdapter;
+    private List<Brand> mBrandList;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -50,13 +54,35 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
     @Override
     protected void init() {
-        //
         mBinding.setClickListener(this);
         mBinding.layoutHeader.setClickListener(this);
         mBinding.layoutHeader.setTitle(getString(R.string.common_brand));
 
-        //
+        // List
         initList();
+        selectInitial(true);
+
+        // EditText
+        mBinding.edittextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mListAdapter != null) {
+                    if (TextUtils.isEmpty(s)) {
+                        mListAdapter.resetFilterToOriginal();
+                    } else {
+                        mListAdapter.filter(s.toString());
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -69,6 +95,14 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
             case R.id.image_prev:
             case R.id.image_close:
                 onBackPressed();
+                break;
+
+            case R.id.image_alphabet:
+                selectInitial(true);
+                break;
+
+            case R.id.image_hangul:
+                selectInitial(false);
                 break;
         }
     }
@@ -92,10 +126,6 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
         onBackPressed();
     }
 
-    private void resetData(boolean isAlphabet) {
-        initBrandData(Preferences.getBrands(), isAlphabet);
-    }
-
     private void initList() {
         // Adapter
         mListAdapter = new BrandListAdapter(this);
@@ -103,8 +133,17 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
         mBinding.listContents.setHasFixedSize(true);
         mBinding.listContents.setLayoutManager(new LinearLayoutManager(this));
         mBinding.listContents.setAdapter(mListAdapter);
-        // Data
-        resetData(true);
+    }
+
+    private void selectInitial(boolean isAlphabet) {
+        mBinding.imageAlphabet.setSelected(isAlphabet);
+        mBinding.imageHangul.setSelected(!isAlphabet);
+        resetData(isAlphabet);
+    }
+
+    private void resetData(boolean isAlphabet) {
+        if (mBrandList == null) mBrandList = Preferences.getBrands();
+        initBrandData(mBrandList, isAlphabet);
     }
 
     private void initBrandData(List<Brand> data, boolean isAlphabet) {
@@ -131,9 +170,10 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
                 sort.addAll(sort.size(), side); // Row
             }
             // Adapter
+            mBinding.listContents.scrollToPosition(0);
             mListAdapter.changeLanguage(isAlphabet);
+            mListAdapter.setOriginalItems(sort);
             mListAdapter.setScrollIndex(index);
-            mListAdapter.setItems(sort);
         }
     }
 

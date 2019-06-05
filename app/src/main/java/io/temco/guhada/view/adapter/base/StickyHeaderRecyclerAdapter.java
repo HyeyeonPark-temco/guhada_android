@@ -15,7 +15,8 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
         extends RecyclerView.Adapter<VH> implements OnStickyHeaderListener {
 
     // -------- LOCAL VALUE --------
-    private List<M> mItems;
+    private List<M> mOriginalItems;
+    private List<M> mFilterItems;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -30,12 +31,12 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return mItems == null ? 0 : mItems.size();
+        return mFilterItems == null ? 0 : mFilterItems.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return Type.List.get(mItems.get(position).type);
+        return Type.List.get(mFilterItems.get(position).type);
     }
 
     ////////////////////////////////////////////////
@@ -44,12 +45,12 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
 
     @Override
     public boolean isHeader(int itemPosition) {
-        return mItems.get(itemPosition).type == Type.List.HEADER;
+        return mFilterItems.get(itemPosition).type == Type.List.HEADER;
     }
 
     @Override
     public int getHeaderLayout(int headerPosition) {
-        return mItems.get(headerPosition).layoutRes;
+        return mFilterItems.get(headerPosition).layoutRes;
     }
 
     @Override
@@ -70,21 +71,38 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
     ////////////////////////////////////////////////
 
     public void setItem(@NonNull M item) {
-        if (mItems == null) {
-            mItems = new ArrayList<>();
+        if (mFilterItems == null) {
+            mFilterItems = new ArrayList<>();
         }
-        mItems.add(mItems.size(), item);
+        mFilterItems.add(mFilterItems.size(), item);
     }
 
-    public void setItems(@NonNull List<M> items) {
-        if (mItems == null) {
-            mItems = new ArrayList<>();
+    public void setOriginalItems(@NonNull List<M> items) {
+        if (mOriginalItems == null) mOriginalItems = new ArrayList<>();
+        if (mFilterItems == null) mFilterItems = new ArrayList<>();
+        mOriginalItems.clear();
+        mOriginalItems.addAll(items);
+        mFilterItems.clear();
+        mFilterItems.addAll(items);
+    }
+
+    public void setFilterItems(@NonNull List<M> items) {
+        if (mFilterItems != null) {
+            mFilterItems.clear();
+            mFilterItems.addAll(items);
         }
-        mItems.addAll(items);
+    }
+
+    public void resetFilterToOriginal() {
+        setFilterItems(mOriginalItems);
     }
 
     public M getItem(int position) {
-        return mItems.get(position);
+        return mFilterItems.get(position);
+    }
+
+    public List<M> getItems() {
+        return mFilterItems;
     }
 
     ////////////////////////////////////////////////

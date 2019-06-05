@@ -53,6 +53,9 @@
     <string name="product_ship_free">무료배송</string>
     <string name="product_ship_free_split">무료\n배송</string>
 
+    <!-- BRAND -->
+    <string name="brand_search_hint">브랜드명을 검색해주세요.</string>
+
     <!-- LOGIN -->
     <string name="login_title">로그인</string>
     <string name="login_naver">네이버\n로그인</string>

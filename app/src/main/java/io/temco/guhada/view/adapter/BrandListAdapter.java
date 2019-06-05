@@ -1,6 +1,7 @@
 package io.temco.guhada.view.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,18 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.decoration.FastScrollItemDecoration;
 import io.temco.guhada.common.listener.OnFastScrollListener;
+import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomComparator;
+import io.temco.guhada.common.util.TextSearcher;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ItemBrandListHeaderBinding;
 import io.temco.guhada.view.adapter.base.BaseBrandViewHolder;
@@ -51,6 +57,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     private int mSectionText;
     @ColorInt
     private int mSectionBackground;
+    //
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -228,11 +235,123 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         for (String c : list) {
             mSections[i++] = c;
         }
+        notifyDataSetChanged();
+    }
+
+    public void filter(String text) {
+        List<Brand> list = getItems();
+        text = text.toLowerCase();
+
+
+        //
+//        List<Brand> f = new ArrayList<>();
+//        for (Brand b : list) {
+//            if (mIsAlphabet) {
+//                if (b.nameEn.toLowerCase().contains(text)) {
+//                    f.add()
+//                    items.add(recent);
+//                }
+//
+//            } else {
+//                if (b..toLowerCase().contains(text)) {
+//                    items.add(recent);
+//                }
+//            }
+//        }
     }
 
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
+
+    private void initBrandData(List<Brand> data, boolean isAlphabet) {
+        // mBinding.listContents.scrollToPosition(0);
+
+        setOriginalData(data, isAlphabet, true);
+    }
+
+    private void setOriginalData(List<Brand> data, boolean isAlphabet, boolean isReset) {
+        if (data != null && data.size() > 0) {
+            // Sort
+            Collections.sort(data, CustomComparator.getBrandComparator(true, isAlphabet));
+            List<Brand> sort = new ArrayList<>();
+            List<Brand> side = new ArrayList<>();
+            // Index
+            LinkedHashMap<String, Integer> index = new LinkedHashMap<>();
+            for (Brand b : data) {
+                if (isAlphabet) {
+                    setIndexBrandAlphabetData(b, index, sort, side);
+                } else {
+                    setIndexBrandHangulData(b, index, sort, side);
+                }
+            }
+            // Side (#)
+            if (side.size() > 0) {
+                String s = "#";
+                sort.add(createBrandHeaderData(s)); // Header
+                index.put(s, sort.size()); // Index
+                sort.addAll(sort.size(), side); // Row
+            }
+            // Adapter
+            changeLanguage(isAlphabet);
+            if (isReset) {
+                setOriginalItems(sort);
+            } else {
+                setFilterItems(sort);
+            }
+            setScrollIndex(index);
+        }
+    }
+
+    private void setIndexBrandAlphabetData(Brand data,
+                                           LinkedHashMap<String, Integer> index,
+                                           List<Brand> sort,
+                                           List<Brand> side) {
+        if (TextUtils.isEmpty(data.nameEn)) {
+            return;
+        }
+        char key = data.nameEn.toUpperCase().charAt(0);
+        if (!TextSearcher.isAlphabet(key)) {
+            side.add(data);
+            return;
+        }
+        String keyString = String.valueOf(key);
+        if (!index.containsKey(keyString)) {
+            sort.add(createBrandHeaderData(keyString)); // Header
+            index.put(keyString, sort.size()); // Index
+        }
+        sort.add(data); // Row
+    }
+
+    private void setIndexBrandHangulData(Brand data,
+                                         LinkedHashMap<String, Integer> index,
+                                         List<Brand> sort,
+                                         List<Brand> side) {
+        if (TextUtils.isEmpty(data.nameKo)) {
+            return;
+        }
+        char key = data.nameKo.charAt(0);
+        if (!TextSearcher.isHangul(key)) {
+            side.add(data);
+            return;
+        }
+        String keyString = String.valueOf(TextSearcher.getInitialHangulSound(key));
+        if (!index.containsKey(keyString)) {
+            sort.add(createBrandHeaderData(keyString)); // Header
+            index.put(keyString, sort.size()); // Index
+        }
+        sort.add(data); // Row
+    }
+
+    private Brand createBrandHeaderData(String title) {
+        Brand b = new Brand();
+        b.type = Type.List.HEADER;
+        b.nameEn = title;
+        b.nameKo = title;
+        b.nameDefault = title;
+        b.layoutRes = R.layout.item_brand_list_header;
+        return b;
+    }
 
     ////////////////////////////////////////////////
 }
