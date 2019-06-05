@@ -24,6 +24,9 @@
     <color name="text_3">#111111</color>
     <color name="text_4">#d9dde0</color>
     <color name="text_5">#777777</color>
+    <color name="text_6">@color/greyish_brown_two</color>
+    <color name="text_7">@color/greyish</color>
+    <color name="text_8">@color/blue_purple</color>
 
     <!-- COLOR -->
     <color name="blue_purple">#5d2ed1</color>
@@ -44,6 +47,7 @@
     <color name="brick">#ce2525</color>
     <color name="black_four">#111111</color>
 
+    <color name="greyish">#aaaaaa</color>
     <color name="greyish_brown">#555555</color>
     <color name="greyish_brown_two">#444444</color>
 

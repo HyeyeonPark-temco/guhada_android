@@ -42,4 +42,8 @@ class ProductDetailClaimViewModel(private val productId: Int, val listener: Prod
         this.claimPageSize = claimPageSize
         this.getClaims()
     }
+
+    fun onClickWriteClaimForProduct() {
+        listener.redirectWriteClaimActivity()
+    }
 }

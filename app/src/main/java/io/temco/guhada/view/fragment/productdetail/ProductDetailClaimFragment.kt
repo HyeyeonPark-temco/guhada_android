@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import io.temco.guhada.R
 import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.viewmodel.ProductDetailClaimViewModel
 import io.temco.guhada.databinding.LayoutProductdetailClaimBinding
+import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.adapter.ClaimAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
@@ -38,7 +40,6 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
         }
     }
 
-
     override fun getBaseTag(): String = ProductDetailClaimFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_claim
 
@@ -46,6 +47,10 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
         mViewModel = ProductDetailClaimViewModel(productId, object : OnProductDetailClaimListener {
             override fun showMessage(message: String) {
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun redirectWriteClaimActivity() {
+                startActivity(Intent(this@ProductDetailClaimFragment.context, WriteClaimActivity::class.java))
             }
         })
         mViewModel.getClaims()
@@ -78,5 +83,6 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
 
     interface OnProductDetailClaimListener {
         fun showMessage(message: String)
+        fun redirectWriteClaimActivity()
     }
 }

@@ -182,7 +182,6 @@
                                         가입은 14세 이상만 가능합니다.</string>
 
     <!-- PRODUCT DETAIL -->
-
     <string name="productdetail_option">옵션선택</string>
     <string name="productdetail_sizeinfo">사이즈정보</string>
     <string name="productdetail_available">가능</string>
@@ -281,4 +280,13 @@
     <string name="producdetail_qna_button_contactforproduct">상품 문의하기</string>
     <string name="producdetail_qna_button_contactwithseller">판매자 문의하기</string>
     <string name="producdetail_qna_button_moreclaim">상품 리뷰 10개 더보기</string>
+
+    <!-- CLAIM -->
+    <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
+    <string name="claim_write_private">비공개글 설정</string>
+    <string name="claim_write_description1">문의하신 내용에 대한 답변은 해당 상품의 상세페이지 또는</string>
+    <string name="claim_write_description2">마이페이지 &gt; 상품문의</string>
+    <string name="claim_write_description3">에서 확인하실 수 있습니다.</string>
+    <string name="claim_write_button_cancel">취소</string>
+    <string name="claim_write_button_submit">등록</string>
 </resources>
