@@ -90,7 +90,6 @@ public class ProductServer {
                 listener.onResult(response.isSuccessful(), response.body());
             }
 
-
             @Override
             public void onFailure(Call<BaseModel<Product>> call, Throwable t) {
                 listener.onResult(false, t.getMessage());

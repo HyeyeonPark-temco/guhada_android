@@ -13,7 +13,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
@@ -31,8 +30,6 @@ import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;

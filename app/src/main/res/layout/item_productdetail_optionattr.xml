@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="optionAttr"
+            type="io.temco.guhada.view.adapter.ProductDetailOptionAdapter.OptionAttr" />
+
+        <variable
+            name="attr"
+            type="String" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/framelayout_productdetail_optionattr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/border_all_whitethree">
+
+        <ImageView
+            android:id="@+id/imageview_productdetail_optionattr"
+            android:layout_width="34dp"
+            android:layout_height="34dp" />
+
+        <TextView
+            android:id="@+id/textview_productdetail_optionattr"
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:paddingStart="9dp"
+            android:paddingEnd="9dp"
+            android:singleLine="true"
+            android:text="@{optionAttr.name}"
+            android:textColor="@color/greyish_brown_two"
+            android:textSize="@dimen/text_13" />
+    </FrameLayout>
+</layout>

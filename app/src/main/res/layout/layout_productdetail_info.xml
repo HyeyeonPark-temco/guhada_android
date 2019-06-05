@@ -153,7 +153,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_productdetail_info"
             android:layout_width="match_parent"
-            app:productInfo="@{viewModel.product.productNotifies}"
+            app:productInfo="@{viewModel.product.filters}"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
 

@@ -22,7 +22,7 @@ ext {
             supportCoreUtils       : "com.android.support:support-core-utils:${supportCoreUtilsVersion}",
             supportCustomTabs      : "com.android.support:customtabs:${supportCustomTabsVersion}",
             dataBindingCompiler    : "com.android.databinding:compiler:${compiler_version}",
-            coreKtx : "androidx.core:core-ktx:+"
+            coreKtx                : "androidx.core:core-ktx:+"
     ]
 
     libraryDependencies = [
@@ -35,7 +35,6 @@ ext {
             jsoup                : "org.jsoup:jsoup:${jsoupVersion}",
             stringUtils          : "org.apache.commons:commons-text:${stringUtilsVersion}",
             loggingInterceptor   : "com.squareup.okhttp3:logging-interceptor:${logginInterceptorVersion}",
-
             kotlinJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
     ]
 }

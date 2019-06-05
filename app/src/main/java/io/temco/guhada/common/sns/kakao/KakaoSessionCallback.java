@@ -13,8 +13,6 @@ import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.data.model.SnsUser;
-import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
 
@@ -53,8 +51,8 @@ public class KakaoSessionCallback implements ISessionCallback {
                             mListener.kakaoLogin(result);
                         }
                     } else {
-                        String mesage = (String) o;
-                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), mesage, Toast.LENGTH_SHORT).show();
+                        String message = (String) o;
+                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
                 }, result.getEmail());
 

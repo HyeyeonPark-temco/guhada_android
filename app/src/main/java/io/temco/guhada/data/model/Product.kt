@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model
 
+import com.google.gson.annotations.SerializedName
+
 class Product {
     var brandId: Int = 0
     var totalStock: Int = 0
@@ -25,13 +27,18 @@ class Product {
     var asDesc: String = ""
     var desc: String = ""
     var tag: String = ""
-    var shipping: Shipping? = null
+    var shipping: Shipping? = Shipping()
 
     // list
     var imageUrls: List<String>? = ArrayList()
     var productNotifies: List<Item>? = ArrayList()
     var filters: List<Item>? = ArrayList()
-    var options: List<Option>? = ArrayList()
+
+    @SerializedName("separatedOptions")
+    var options: List<Option?>? = ArrayList()
+
+    // 변경 예정
+    var images: MutableList<Image> = ArrayList()
 
     // ids
     var lCategoryId: Int = 0
@@ -39,24 +46,21 @@ class Product {
     var sCategoryId: Int = 0
     var dCategoryId: Int = 0
 
-    data class Item(var label: String = "") {
+
+    class Item {
+        var label: String = ""
         var value: String = ""
     }
 
-    data class Option(var dealOptionSelectId: Int = 0) {
-
-        var stock: Int = 0
-        var price: Int = 0
-        var rgb1: String = ""
-        var label1: String = ""
-        var label2: String = ""
-        var attribute1: String = ""
-        var attribute2: String = ""
-        var viewType: String = ""
+    class Option {
+        var type: String = ""
+        var label: String = ""
+        var attributes: List<String> = ArrayList()
+        var rgb: List<String> = ArrayList()
     }
 
-    data class Shipping(var shipExpense: Int = 0) {
-
+    class Shipping {
+        var shipExpense: Int = 0
         var returnShipExpense: Int = 0
         var exchangeShipExpense: Int = 0
         var claimAddressId: Int = 0
@@ -67,6 +71,11 @@ class Product {
         var isQuickAvailable: Boolean = false
         var isBundleAvailable: Boolean = false
         var isIsolatedAreaAvailable: Boolean = false
+    }
+
+    // 변경 예정
+    class Image {
+        var url: String = ""
     }
 
 }

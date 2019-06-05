@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -27,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toTopOf="@+id/linearlayout_productdetail_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,10 +51,12 @@
                     <include
                         android:id="@+id/include_productdetail_contentsummary"
                         layout="@layout/layout_productdetail_summary" />
+
                     <View
                         android:id="@+id/productdetail_scrollflag_content"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp" />
+
                     <include
                         android:id="@+id/include_productdetail_contentbody"
                         layout="@layout/layout_productdetail_content" />
@@ -70,24 +72,24 @@
                     <View
                         android:id="@+id/productdetail_scrollflag_qna"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp" />
 
                     <include
-                        android:id="@+id/include_productdetail_contentqna"
-                        layout="@layout/layout_productdetail_qna" />
+                        android:id="@+id/include_productdetail_contentclaim"
+                        layout="@layout/layout_productdetail_claim" />
 
                     <include
-                        android:id="@+id/include_productdetail_contentmoreinfo"
-                        layout="@layout/layout_productdetail_moreinfo" />
+                        android:id="@+id/include_productdetail_contentshipping"
+                        layout="@layout/layout_productdetail_shipping" />
 
                     <include
-                        android:id="@+id/include_productdetail_contentmoreproduct"
-                        layout="@layout/layout_productdetail_moreproduct" />
+                        android:id="@+id/include_productdetail_contentnotifies"
+                        layout="@layout/layout_productdetail_productnotifies" />
 
                     <View
                         android:id="@+id/productdetail_scrollflag_store"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp" />
 
                     <include
                         android:id="@+id/include_productdetail_contentstore"
@@ -98,6 +100,35 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <!-- 메뉴 -->
+        <View
+            android:onClick="@{()->viewModel.onClickCloseMenu()}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_overlay"
+            android:visibility="@{viewModel.menuVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/linearlayout_productdetail_button"
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"
+            app:layout_constraintTop_toTopOf="@+id/include_productdetail_header" />
+
+        <FrameLayout
+            android:id="@+id/framelayout_productdetail_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.menuVisibility,default = gone}"
+            app:layout_constraintBottom_toTopOf="@+id/linearlayout_productdetail_button"
+            app:layout_constraintEnd_toEndOf="@+id/scrollview_productdetail"
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail">
+
+            <include
+                android:id="@+id/include_productdetail_menu"
+                layout="@layout/layout_productdetail_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+
+        <!-- 하단 버튼 -->
         <LinearLayout
             android:id="@+id/linearlayout_productdetail_button"
             android:layout_width="match_parent"
@@ -115,6 +146,7 @@
                 android:layout_weight="1"
                 android:background="@color/greyish_brown_two"
                 android:fontFamily="sans-serif-medium"
+                android:onClick="@{()->viewModel.onClickBag()}"
                 android:text="@string/productdetail_button_bag"
                 android:textSize="@dimen/text_18" />
 

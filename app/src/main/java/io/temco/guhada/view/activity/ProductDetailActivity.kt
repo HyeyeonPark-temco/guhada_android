@@ -4,23 +4,26 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
+import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
-import io.temco.guhada.view.adapter.ProductDetailTagAdapter
+import io.temco.guhada.view.adapter.*
 
-class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
+class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener, ProductDetailOptionAttrAdapter.OnSelectAttrListener {
     private lateinit var viewModel: ProductDetailViewModel
 
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
@@ -37,8 +40,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
 
         @JvmStatic
         @BindingAdapter("productTags")
-        fun RecyclerView.bindTags(list: MutableList<String>) {
-            if (list.isNotEmpty()) {
+        fun RecyclerView.bindTags(list: MutableList<String>?) {
+            if (list != null && list.isNotEmpty()) {
                 if (this.adapter == null) {
                     this.adapter = ProductDetailTagAdapter()
                 }
@@ -56,45 +59,142 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
                 (this.adapter as ProductDetailInfoAdapter).setItems(list)
             }
         }
+
+        @JvmStatic
+        @BindingAdapter("productImage")
+        fun ViewPager.bindImage(list: MutableList<String>?) {
+            if (list != null && list.isNotEmpty()) {
+                if (this.adapter == null) {
+                    this.adapter = ImagePagerAdapter()
+                }
+
+                // 변경 예정
+                val images: MutableList<Product.Image> = ArrayList()
+                for (str in list) {
+                    Product.Image().apply { url = str }.let { img -> images.add(img) }
+                }
+                (this.adapter as ImagePagerAdapter).setItems(images)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("productOption")
+        fun RecyclerView.bindOption(list: List<Product.Option>?) {
+            if (list != null && list.isNotEmpty() && this.adapter != null) {
+                (this.adapter as ProductDetailOptionAdapter).setItems(list)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("productOptionAttr")
+        fun RecyclerView.bindOptionAttr(option: Product.Option?) {
+            if (option != null && this.adapter != null) {
+                val attrList: MutableList<ProductDetailOptionAdapter.OptionAttr> = ArrayList()
+
+                if (option.type == "COLOR") {
+                    for (i in 0 until option.rgb.size) {
+                        ProductDetailOptionAdapter.OptionAttr().apply {
+                            rgb = option.rgb[i]
+                            name = option.attributes[i]
+                        }.let {
+                            attrList.add(it)
+                        }
+                    }
+                } else {
+                    for (attr in option.attributes) {
+                        ProductDetailOptionAdapter.OptionAttr().apply {
+                            name = attr
+                        }.let {
+                            attrList.add(it)
+                        }
+                    }
+                }
+
+                (this.adapter as ProductDetailOptionAttrAdapter).setItems(attrList)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("productClaims")
+        fun RecyclerView.bindClaims(list: MutableList<ClaimResponse.Claim>?) {
+            if (list != null) {
+                if (this.adapter == null) {
+                    this.adapter = ClaimAdapter()
+                }
+
+                if ((this.adapter as ClaimAdapter).itemCount > 0) {
+                    // MORE
+                    (this.adapter as ClaimAdapter).addItems(list)
+                } else {
+                    (this.adapter as ClaimAdapter).setItems(list)
+                }
+
+            }
+        }
+
     }
 
     override fun init() {
-        viewModel = ProductDetailViewModel(object : OnProductDetailListener {
-            override fun scrollToElement(pos: Int) {
-                var h: Int = 0
-                when (pos) {
-                    0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
-                    1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-                    2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
-                }
-
-                mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
-            }
-        })
+        viewModel = ProductDetailViewModel(this)
         viewModel.dealId = 12492
 
 //        if (intent != null) {
 //           // viewModel.dealId = intent.getIntExtra("id", 0)
 //            viewModel.dealId = 12492
 //        }
+        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter = ProductDetailOptionAdapter(viewModel, this)
+        mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(viewModel, this)
 
         viewModel.product.observe(this, Observer<Product> { it ->
-            viewModel.totalPrice = ObservableInt(it.discountPrice)
+            mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+            mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+            mBinding.includeProductdetailMenu.viewModel = viewModel
+            mBinding.includeProductdetailContentbody.viewModel = viewModel
             mBinding.includeProductdetailContentsummary.viewModel = viewModel
             mBinding.includeProductdetailContentheader.viewModel = viewModel
             mBinding.includeProductdetailContentbody.viewModel = viewModel
             mBinding.includeProductdetailContentinfo.viewModel = viewModel
+            mBinding.includeProductdetailContentshipping.viewModel = viewModel
+            mBinding.includeProductdetailContentnotifies.viewModel = viewModel
 
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(it.desc, "text/html", null)
+            mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+                }
+
+                override fun onPageSelected(position: Int) {
+                    viewModel.imagePos = position + 1
+                    viewModel.notifyPropertyChanged(BR.imagePos)
+                }
+            })
         })
+
         viewModel.getDetail()
         mBinding.viewModel = viewModel
-        mBinding.includeProductdetailContentbody.viewModel = viewModel
-        mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+
+        initClaims(10243)
 
         detectButton()
         mBinding.executePendingBindings()
+    }
+
+    private fun initClaims(productId: Int) {
+        mBinding.includeProductdetailContentclaim.viewModel = viewModel
+        mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.adapter = ClaimAdapter()
+        mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        viewModel.productId = productId
+        viewModel.getClaims(5)
     }
 
     private fun detectButton() {
@@ -109,6 +209,35 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>() {
         }
     }
 
+    // OnProductDetailListener
+    override fun scrollToElement(pos: Int) {
+        var h: Int = 0
+        when (pos) {
+            0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
+            1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
+            2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
+        }
+
+        mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
+    }
+
+    override fun notifyOptionAttrAdapter() {
+        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
+        (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
+    }
+
+    override fun onClickAttr(prevSelectedPos: Int, selectedPos: Int) {
+        // (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
+        // (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
+    }
+
+    override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
+        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(optionAttr)
+    }
+
+    override fun showMessage(message: String) {
+        Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
+    }
 }
 
 

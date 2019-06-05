@@ -16,8 +16,8 @@
         android:id="@+id/linearlayout_productdetail_summay_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_white"
         android:layout_marginTop="8dp"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <LinearLayout
@@ -40,7 +40,7 @@
                 style="@style/ProductDetailContentTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : String.valueOf( viewModel.product.shipExpense)}'
+                android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : @string/common_price_format(viewModel.product.shipExpense)}'
                 android:textColor="@color/greyish_brown_two" />
 
             <TextView
@@ -87,8 +87,11 @@
             <ImageButton
                 android:id="@+id/imagebutton_productdetail_moreadvantagae"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/detail_btn_quantity_plus_on" />
+
+                android:layout_height="match_parent"
+                android:onClick="@{()->viewModel.onClickAdvantageInfo()}"
+                android:scaleType="center"
+                android:src="@{viewModel.advantageInfoExpanded  ? @drawable/detail_btn_quantity_minus_on : @drawable/detail_btn_quantity_plus_on}" />
         </LinearLayout>
 
         <View
@@ -96,7 +99,14 @@
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white_four" />
+            android:background="@color/white_four"
+            android:visibility="@{viewModel.advantageInfoExpanded ? View.GONE : View.VISIBLE, default =visible}" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/pale_grey"
+            android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =gone}" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -379,7 +389,7 @@
                     style="@style/ProductDetailTitleTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/productdetail_unit_review"
+                    android:text="@string/productdetail_unit_board"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
