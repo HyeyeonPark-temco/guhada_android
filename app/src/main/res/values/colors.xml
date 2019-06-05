@@ -18,6 +18,8 @@
     <color name="line_1">#e6e6e6</color>
     <color name="line_2">#eeeeee</color>
     <color name="line_3">#ebedef</color>
+    <color name="line_4">#d9dde0</color>
+    <color name="line_5">#111111</color>
 
     <!-- TEXT -->
     <color name="text_1">#333333</color>
@@ -26,6 +28,7 @@
     <color name="text_4">#d9dde0</color>
     <color name="text_5">#777777</color>
     <color name="text_6">#c3c3c3</color>
+    <color name="text_7">#a0a0a0</color>
 
     <!-- COLOR -->
     <color name="blue_purple">#5d2ed1</color>
