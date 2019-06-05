@@ -11,18 +11,17 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
-import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.*
+import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener, ProductDetailOptionAttrAdapter.OnSelectAttrListener {
     private lateinit var viewModel: ProductDetailViewModel
@@ -115,23 +114,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
         }
 
-        @JvmStatic
-        @BindingAdapter("productClaims")
-        fun RecyclerView.bindClaims(list: MutableList<ClaimResponse.Claim>?) {
-            if (list != null) {
-                if (this.adapter == null) {
-                    this.adapter = ClaimAdapter()
-                }
-
-                if ((this.adapter as ClaimAdapter).itemCount > 0) {
-                    // MORE
-                    (this.adapter as ClaimAdapter).addItems(list)
-                } else {
-                    (this.adapter as ClaimAdapter).setItems(list)
-                }
-
-            }
-        }
 
     }
 
@@ -190,36 +172,11 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initClaims(productId: Int) {
-        val ALL_CLAIMS = 0
-        val PENDING_CLAIMS = 1
-        val COMPLETED_CLAIMS = 2
-
-        mBinding.includeProductdetailContentclaim.viewModel = viewModel
-        mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.itemAnimator = null
-        mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.adapter = ClaimAdapter()
-        mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        mBinding.includeProductdetailContentclaim.tablayoutProductdetailClaim.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                mBinding.includeProductdetailContentclaim.recyclerviewProductdetailClaim.adapter = ClaimAdapter()
-                when (tab?.position) {
-                    ALL_CLAIMS -> viewModel.claimStatus = ""
-                    PENDING_CLAIMS -> viewModel.claimStatus = "PENDING"
-                    COMPLETED_CLAIMS -> viewModel.claimStatus = "COMPLETED"
-                }
-
-                viewModel.claimPageNo = 0
-                viewModel.getClaims(5)
-            }
-        })
-        viewModel.productId = productId
-        viewModel.getClaims(5)
+        val fragment = ProductDetailClaimFragment(productId)
+        val fm = supportFragmentManager
+        val ft = fm.beginTransaction()
+        ft.add(mBinding.framelayoutProductdetailClaim.id, fragment)
+        ft.commit()
     }
 
     private fun detectButton() {
