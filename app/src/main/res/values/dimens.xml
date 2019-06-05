@@ -37,9 +37,14 @@
     <dimen name="height_header">50dp</dimen>
     <dimen name="height_dialog_header">50dp</dimen>
     <dimen name="height_snackbar">50dp</dimen>
-    <dimen name="hegiht_productdetail_button">60dp</dimen>
+    <dimen name="height_productdetail_button">60dp</dimen>
     <dimen name="height_invisible">0dp</dimen>
+    <dimen name="view_button_floating">41dp</dimen>
+    <dimen name="view_fast_scroll_brand_thumb">60dp</dimen>
+    <dimen name="view_fast_scroll_brand_header_row">42dp</dimen>
+    <dimen name="view_fast_scroll_brand_contents_row">37dp</dimen>
 
-    <!-- BUTTON -->
-    <dimen name="button_floating">41dp</dimen>
+    <!-- PADDING -->
+    <dimen name="padding_fast_scroll_brand_text">12dp</dimen>
+    <dimen name="padding_fast_scroll_brand_section">50dp</dimen>
 </resources>

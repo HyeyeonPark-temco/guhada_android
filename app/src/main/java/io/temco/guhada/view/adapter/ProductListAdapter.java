@@ -16,12 +16,12 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnProductListListener;
 import io.temco.guhada.data.model.Deal;
-import io.temco.guhada.view.adapter.base.BaseProductListViewHolder;
+import io.temco.guhada.view.adapter.base.BaseProductViewHolder;
 import io.temco.guhada.view.adapter.holder.ProductListOneViewHolder;
 import io.temco.guhada.view.adapter.holder.ProductListThreeViewHolder;
 import io.temco.guhada.view.adapter.holder.ProductListTwoViewHolder;
 
-public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListViewHolder> implements View.OnClickListener {
+public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
@@ -56,7 +56,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListView
 
     @NonNull
     @Override
-    public BaseProductListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (Type.Grid.getType(viewType)) {
             case TWO:
                 return new ProductListTwoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_two, parent, false));
@@ -70,7 +70,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductListView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseProductListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseProductViewHolder holder, int position) {
         holder.init(mContext, mRequestManager, getItem(position));
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);

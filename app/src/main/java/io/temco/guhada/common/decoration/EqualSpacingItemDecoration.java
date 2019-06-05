@@ -8,32 +8,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
-    public static final int HORIZONTAL = 0;
-    public static final int VERTICAL = 1;
-    public static final int GRID = 2;
+    // -------- LOCAL VALUE --------
+    private final int HORIZONTAL = 0;
+    private final int VERTICAL = 1;
+    private final int GRID = 2;
+    private int mSpacing;
+    private int mDisplayMode;
+    // -----------------------------
 
-    private int spacing;
-    private int displayMode;
+    ////////////////////////////////////////////////
+    // CONSTRUCTOR
+    ////////////////////////////////////////////////
 
     public EqualSpacingItemDecoration(int spacing) {
-        // this(spacing, -1);
         setSpacing(spacing);
     }
 
     public EqualSpacingItemDecoration(int spacing, int displayMode) {
-        // this.spacing = spacing;
-        // this.displayMode = displayMode;
         setSpacing(spacing, displayMode);
     }
 
-    public void setSpacing(int spacing) {
-        setSpacing(spacing, -1);
-    }
-
-    public void setSpacing(int spacing, int displayMode) {
-        this.spacing = spacing;
-        this.displayMode = displayMode;
-    }
+    ////////////////////////////////////////////////
+    // OVERRIDE
+    ////////////////////////////////////////////////
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -43,28 +40,40 @@ public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
         setSpacingForDirection(outRect, layoutManager, position, itemCount);
     }
 
+    ////////////////////////////////////////////////
+    // PRIVATE
+    ////////////////////////////////////////////////
+
+    private void setSpacing(int mSpacing) {
+        setSpacing(mSpacing, -1);
+    }
+
+    private void setSpacing(int spacing, int displayMode) {
+        mSpacing = spacing;
+        mDisplayMode = displayMode;
+    }
+
     private void setSpacingForDirection(Rect outRect,
                                         RecyclerView.LayoutManager layoutManager,
                                         int position,
                                         int itemCount) {
-
         // Resolve display mode automatically
-        if (displayMode == -1) {
-            displayMode = resolveDisplayMode(layoutManager);
+        if (mDisplayMode == -1) {
+            mDisplayMode = resolveDisplayMode(layoutManager);
         }
 
-        switch (displayMode) {
+        switch (mDisplayMode) {
             case HORIZONTAL:
-                outRect.left = spacing;
-                outRect.right = position == itemCount - 1 ? spacing : 0;
-                outRect.top = spacing;
-                outRect.bottom = spacing;
+                outRect.left = mSpacing;
+                outRect.right = position == itemCount - 1 ? mSpacing : 0;
+                outRect.top = mSpacing;
+                outRect.bottom = mSpacing;
                 break;
             case VERTICAL:
-                outRect.left = spacing;
-                outRect.right = spacing;
-                outRect.top = spacing;
-                outRect.bottom = position == itemCount - 1 ? spacing : 0;
+                outRect.left = mSpacing;
+                outRect.right = mSpacing;
+                outRect.top = mSpacing;
+                outRect.bottom = position == itemCount - 1 ? mSpacing : 0;
                 break;
             case GRID:
                 if (layoutManager instanceof GridLayoutManager) {
@@ -72,10 +81,10 @@ public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
                     int cols = gridLayoutManager.getSpanCount();
                     int rows = itemCount / cols;
 
-                    outRect.left = spacing;
-                    outRect.right = position % cols == cols - 1 ? spacing : 0;
-                    outRect.top = spacing;
-                    outRect.bottom = position / cols == rows - 1 ? spacing : 0;
+                    outRect.left = mSpacing;
+                    outRect.right = position % cols == cols - 1 ? mSpacing : 0;
+                    outRect.top = mSpacing;
+                    outRect.bottom = position / cols == rows - 1 ? mSpacing : 0;
                 }
                 break;
         }
@@ -86,4 +95,6 @@ public class EqualSpacingItemDecoration extends RecyclerView.ItemDecoration {
         if (layoutManager.canScrollHorizontally()) return HORIZONTAL;
         return VERTICAL;
     }
+
+    ////////////////////////////////////////////////
 }
