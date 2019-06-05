@@ -113,6 +113,7 @@
             android:text="@string/producdetail_qna_description" />
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout_productdetail_claim"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
