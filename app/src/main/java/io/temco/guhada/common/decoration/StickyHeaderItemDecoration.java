@@ -10,17 +10,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import io.temco.guhada.common.listener.OnStickyHeaderListener;
 
-/*
- * https://github.com/saber-solooki/StickyHeader
- */
 public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
 
+    // -------- LOCAL VALUE --------
     private OnStickyHeaderListener mListener;
     private int mStickyHeaderHeight;
+    // -----------------------------
+
+    ////////////////////////////////////////////////
+    // CONSTRUCTOR
+    ////////////////////////////////////////////////
 
     public StickyHeaderItemDecoration(@NonNull OnStickyHeaderListener listener) {
         mListener = listener;
     }
+
+    ////////////////////////////////////////////////
+    // OVERRIDE
+    ////////////////////////////////////////////////
 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -29,25 +36,25 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
         if (topChild == null) {
             return;
         }
-
         int topChildPosition = parent.getChildAdapterPosition(topChild);
         if (topChildPosition == RecyclerView.NO_POSITION) {
             return;
         }
-
         int headerPos = mListener.getHeaderPositionForItem(topChildPosition);
         View currentHeader = getHeaderViewForItem(headerPos, parent);
         fixLayoutSize(parent, currentHeader);
         int contactPoint = currentHeader.getBottom();
         View childInContact = getChildInContact(parent, contactPoint, headerPos);
-
         if (childInContact != null && mListener.isHeader(parent.getChildAdapterPosition(childInContact))) {
             moveHeader(c, currentHeader, childInContact);
             return;
         }
-
         drawHeader(c, currentHeader);
     }
+
+    ////////////////////////////////////////////////
+    // PRIVATE
+    ////////////////////////////////////////////////
 
     private View getHeaderViewForItem(int headerPosition, RecyclerView parent) {
         int layoutResId = mListener.getHeaderLayout(headerPosition);
@@ -110,4 +117,6 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
         view.measure(childWidthSpec, childHeightSpec);
         view.layout(0, 0, view.getMeasuredWidth(), mStickyHeaderHeight = view.getMeasuredHeight());
     }
+
+    ////////////////////////////////////////////////
 }

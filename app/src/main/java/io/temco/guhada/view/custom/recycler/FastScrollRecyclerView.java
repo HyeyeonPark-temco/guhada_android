@@ -101,16 +101,27 @@ public class FastScrollRecyclerView extends RecyclerView {
     }
 
     private boolean isNotAction(float x, float y) {
-        return x < getWidth() - mListener.getLetterTextSize() - mListener.getTopPadding() || x > getWidth() - mListener.getTopPadding()
-                || y < mListener.getTopPadding() || y > getTotalTextSize();
+        return x < getMinX() || x > getMaxX() || y < getMinY() || y > getMaxY();
     }
 
-    private float getTotalTextSize() {
+    private float getMaxX() {
+        return getWidth() - mListener.getTopPadding() - (mListener.getLetterTextSize() / 2); // Align Center
+    }
+
+    private float getMinX() {
+        return getMaxX() - mListener.getLetterTextSize();
+    }
+
+    private float getMaxY() {
         if (mListener.isAddPoint()) {
-            return (mListener.getLetterTextSize() + mListener.getPointTextSize()) * mListener.getSections().length + mListener.getTopPadding();
+            return getMinY() + mListener.getSections().length * (mListener.getLetterTextSize() + mListener.getPointTextSize());
         } else {
-            return mListener.getLetterTextSize() * mListener.getSections().length + mListener.getTopPadding();
+            return getMinY() + mListener.getSections().length * mListener.getLetterTextSize();
         }
+    }
+
+    private float getMinY() {
+        return mListener.getTopPadding();
     }
 
     private void setPositionEvent(float currentY) {
@@ -134,10 +145,16 @@ public class FastScrollRecyclerView extends RecyclerView {
         if (mListener.getIndex().containsKey(current.toUpperCase())) {
             positionInData = mListener.getIndex().get(current.toUpperCase());
         }
-        //
-        int offset = position * mListener.getChildHeight();
-        ((LinearLayoutManager) getLayoutManager()).scrollToPositionWithOffset(positionInData, -offset);
+        scrollTo(positionInData);
         invalidate();
+    }
+
+    private void scrollTo(int position) {
+        if (getLayoutManager() instanceof LinearLayoutManager) {
+            ((LinearLayoutManager) getLayoutManager()).scrollToPositionWithOffset(position, mListener.getHeaderHeight());
+        } else {
+            scrollToPosition(position);
+        }
     }
 
     ////////////////////////////////////////////////

@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_fast_scroll_brand_row"
+        android:layout_height="@dimen/view_fast_scroll_brand_contents_row"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="20dp"

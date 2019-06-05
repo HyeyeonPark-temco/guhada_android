@@ -70,6 +70,7 @@ public class FastScrollItemDecoration extends RecyclerView.ItemDecoration {
 
     private void createSectionBackground(Canvas canvas, RectF f) {
         Paint oval = new Paint();
+        oval.setAntiAlias(true);
         oval.setColor(mListener.getColorSectionBackground());
         canvas.drawOval(f, oval);
     }
@@ -105,21 +106,18 @@ public class FastScrollItemDecoration extends RecyclerView.ItemDecoration {
                                    String text, float totalHeight,
                                    boolean addPoint, boolean isSelected) {
         float x = parent.getWidth() - mListener.getLetterTextSize() - mListener.getTopPadding();
-        // paint.setTypeface()
         paint.setTextAlign(Paint.Align.CENTER);
         // Letter
         paint.setColor(isSelected ? mListener.getColorLetterTextSelect() : mListener.getColorLetterTextNormal());
         paint.setTextSize(mListener.getLetterTextSize());
-        canvas.drawText(text,
-                x,
+        canvas.drawText(text, x,
                 totalHeight + mListener.getLetterTextSize() + mListener.getTopPadding(),
                 paint);
         if (addPoint) {
             // Point
             paint.setColor(mListener.getColorLetterTextNormal());
             paint.setTextSize(mListener.getPointTextSize());
-            canvas.drawText("", // "•"
-                    x,
+            canvas.drawText("•", x,
                     totalHeight + mListener.getLetterTextSize() + mListener.getPointTextSize() + mListener.getTopPadding(),
                     paint);
             return mListener.getLetterTextSize() + mListener.getPointTextSize();

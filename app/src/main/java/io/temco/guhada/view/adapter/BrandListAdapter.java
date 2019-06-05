@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import io.temco.guhada.R;
@@ -35,7 +36,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     private String[] mSections;
     private String mCurrentSection;
     private boolean mIsShowSection = false;
-    private int mChildHeight;
+    private int mHeaderHeight;
     private float mPointTextSize;
     private float mLetterTextSize;
     private float mLetterTextPadding;
@@ -59,7 +60,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     public BrandListAdapter(Context context) {
         mContext = context;
         // Size
-        mChildHeight = context.getResources().getDimensionPixelSize(R.dimen.view_fast_scroll_brand_row);
+        mHeaderHeight = context.getResources().getDimensionPixelSize(R.dimen.view_fast_scroll_brand_header_row);
         mPointTextSize = context.getResources().getDimension(R.dimen.text_8);
         mLetterTextSize = context.getResources().getDimension(R.dimen.text_10);
         mLetterTextPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_text);
@@ -121,6 +122,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         return mIndex;
     }
 
+    // Section
     @Override
     public String[] getSections() {
         return mSections;
@@ -147,8 +149,8 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     }
 
     @Override
-    public int getChildHeight() {
-        return mChildHeight;
+    public int getHeaderHeight() {
+        return mHeaderHeight;
     }
 
     @Override
@@ -161,6 +163,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         return true;
     }
 
+    // Size
     @Override
     public float getLetterTextSize() {
         return mLetterTextSize;
@@ -186,6 +189,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         return mSectionThumbPadding;
     }
 
+    // Color
     @Override
     public int getColorLetterTextNormal() {
         return mLetterTextNormal;
@@ -214,7 +218,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         mIsAlphabet = isAlphabet;
     }
 
-    public void setScrollIndex(Map<String, Integer> index) {
+    public void setScrollIndex(LinkedHashMap<String, Integer> index) {
         // Index
         mIndex = index;
         // Sections

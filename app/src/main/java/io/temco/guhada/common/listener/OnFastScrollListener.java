@@ -4,6 +4,7 @@ import java.util.Map;
 
 public interface OnFastScrollListener {
 
+    // Point
     boolean isAddPoint();
 
     // Index
@@ -20,8 +21,8 @@ public interface OnFastScrollListener {
 
     boolean getShowSection();
 
-    // Float
-    int getChildHeight();
+    // Size
+    int getHeaderHeight();
 
     float getTopPadding();
 

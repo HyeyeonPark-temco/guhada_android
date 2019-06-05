@@ -41,7 +41,8 @@
     <dimen name="height_invisible">0dp</dimen>
     <dimen name="view_button_floating">41dp</dimen>
     <dimen name="view_fast_scroll_brand_thumb">60dp</dimen>
-    <dimen name="view_fast_scroll_brand_row">37dp</dimen>
+    <dimen name="view_fast_scroll_brand_header_row">42dp</dimen>
+    <dimen name="view_fast_scroll_brand_contents_row">37dp</dimen>
 
     <!-- PADDING -->
     <dimen name="padding_fast_scroll_brand_text">12dp</dimen>
