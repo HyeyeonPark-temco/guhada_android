@@ -285,9 +285,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
         if (checkedFindPwdByEmail) {
             verification.setVerificationTargetType("EMAIL");
-        }
-        if (checkedFindPwdByPhone) {
-            // 휴대폰 번호로 비밀번호 재설정
+
+        } else if (checkedFindPwdByPhone) {
+            verification.setVerificationTargetType("MOBILE");
         }
 
         LoginServer.verifyNumber((success, o) -> {
@@ -350,10 +350,10 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                     }
                 };
 
-                if(checkedFindPwdByVerifyingPhone){
+                if (checkedFindPwdByVerifyingPhone) {
                     // 본인인증으로 비밀번호 재설정
                     LoginServer.changePasswordByIdentifying(serverListener, verification);
-                }else{
+                } else {
                     LoginServer.changePassword(serverListener, verification);
                 }
             } else {

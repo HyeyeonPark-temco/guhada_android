@@ -31,15 +31,26 @@ public interface LoginService {
     @GET("/phoneCertification")
     Call<BaseModel<String>> getVerifyToken();
 
-    @POST("/verify/sendEmail")
-    Call<BaseModel<Object>> verifyEmail(@Body User user);
-
+    /**
+     * 인증번호 검증 API
+     */
     @POST("/verify")
     Call<BaseModel<Object>> verifyNumber(@Body Verification verification);
 
     /**
+     * 이메일로 인증번호 발송 API
+     */
+    @POST("/verify/sendEmail")
+    Call<BaseModel<Object>> verifyEmail(@Body User user);
+
+    /**
+     * 휴대폰 번호로 인증번호 발송 API
+     */
+    @POST("/verify/sendMobile")
+    Call<BaseModel<Object>> verifyPhone(@Body User user);
+
+    /**
      * 인증번호로 비밀번호 바꾸기 API
-     *
      * @param verification [field] email, newPassword, verificationNumber
      */
     @POST("/verify/change-password")
@@ -47,14 +58,11 @@ public interface LoginService {
 
     /**
      * 본인인증으로 비밀번호 바꾸기 API
-     *
      * @param verification [field] diCode, newPassword, mobile
      */
     @POST("/verify/identity/change-password")
     Call<BaseModel<Object>> changePasswordByIdentifying(@Body Verification verification);
 
-    @POST("/verify/sendMobile")
-    Call<BaseModel<Object>> verifyPhone(@Body User user);
 
     // SNS LOGIN
     @POST("/facebookLogin")
