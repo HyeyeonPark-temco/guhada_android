@@ -56,7 +56,7 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
     public int getHeaderPositionForItem(int itemPosition) {
         int headerPosition = 0;
         do {
-            if (this.isHeader(itemPosition)) {
+            if (isHeader(itemPosition)) {
                 headerPosition = itemPosition;
                 break;
             }

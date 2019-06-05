@@ -28,22 +28,12 @@
         </LinearLayout>
 
         <!-- CONTENTS -->
-        <androidx.recyclerview.widget.RecyclerView
+        <io.temco.guhada.view.custom.recycler.FastScrollRecyclerView
             android:id="@+id/list_contents"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
             android:overScrollMode="never" />
-
-        <!-- FAST SCROLL -->
-        <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="0"-->
-        <!--android:background="@color/common_blue_purple"-->
-        <!--android:paddingLeft="10dp"-->
-        <!--android:paddingTop="12dp"-->
-        <!--android:paddingRight="12dp">-->
-        <!--</LinearLayout>-->
     </LinearLayout>
 </layout>

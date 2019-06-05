@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/view_fast_scroll_brand_row"
         android:background="@color/background_default"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingTop="15dp"
         android:paddingRight="40dp">
 
         <!-- TITLE -->
@@ -16,8 +15,7 @@
             style="@style/TextMediumSingleLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_centerVertical="true"
             android:textColor="@color/common_blue_purple"
             android:textSize="@dimen/text_18" />
 
@@ -25,7 +23,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
             android:layerType="software"
             android:src="@drawable/line_dot" />
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

@@ -38,15 +38,15 @@
                 <include
                     android:id="@+id/button_floating_item"
                     layout="@layout/layout_floating_button_badge"
-                    android:layout_width="@dimen/button_floating"
-                    android:layout_height="@dimen/button_floating"
+                    android:layout_width="@dimen/view_button_floating"
+                    android:layout_height="@dimen/view_button_floating"
                     android:visibility="gone" />
 
                 <include
                     android:id="@+id/button_floating_top"
                     layout="@layout/layout_floating_button_top"
-                    android:layout_width="@dimen/button_floating"
-                    android:layout_height="@dimen/button_floating"
+                    android:layout_width="@dimen/view_button_floating"
+                    android:layout_height="@dimen/view_button_floating"
                     android:layout_marginTop="7dp"
                     android:visibility="gone" />
             </LinearLayout>
