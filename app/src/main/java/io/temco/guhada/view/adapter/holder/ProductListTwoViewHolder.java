@@ -13,9 +13,9 @@ import io.temco.guhada.common.util.ImageUtil;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.data.model.Deal;
 import io.temco.guhada.databinding.ItemProductListTwoBinding;
-import io.temco.guhada.view.adapter.base.BaseProductListViewHolder;
+import io.temco.guhada.view.adapter.base.BaseProductViewHolder;
 
-public class ProductListTwoViewHolder extends BaseProductListViewHolder<ItemProductListTwoBinding> {
+public class ProductListTwoViewHolder extends BaseProductViewHolder<ItemProductListTwoBinding> {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR

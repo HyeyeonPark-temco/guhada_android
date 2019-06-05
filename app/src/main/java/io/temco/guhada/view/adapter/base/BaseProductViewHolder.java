@@ -16,13 +16,13 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.util.ImageUtil;
 import io.temco.guhada.data.model.Deal;
 
-public abstract class BaseProductListViewHolder<B extends ViewDataBinding> extends BaseViewHolder<B> {
+public abstract class BaseProductViewHolder<B extends ViewDataBinding> extends BaseViewHolder<B> {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public BaseProductListViewHolder(@NonNull View itemView) {
+    public BaseProductViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
