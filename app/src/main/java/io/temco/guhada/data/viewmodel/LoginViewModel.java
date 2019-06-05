@@ -101,7 +101,7 @@ public class LoginViewModel extends BaseObservableViewModel {
                     switch (model.resultCode) {
                         case Flag.ResultCode.SUCCESS:
                             Token token = (Token) model.data;
-
+                            Preferences.setToken(token);
                             // save id
                             if (isIdSaved) {
                                 String savedId = Preferences.getSavedId();

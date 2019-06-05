@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <!--<variable-->
-            <!--name="viewModel"-->
-            <!--type="io.temco.guhada.data.viewmodel.FindPasswordViewModel" />-->
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.FindPasswordViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/common_white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,18 +30,18 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:text="@{viewModel.user.email}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="admin@temco.io"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_14" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="님,"
-                    android:textColor="@color/black_two"
-                    android:textSize="@dimen/text_14" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="님,"-->
+                    <!--android:textColor="@color/black_two"-->
+                    <!--android:textSize="@dimen/text_14" />-->
             </LinearLayout>
 
             <TextView

@@ -231,6 +231,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
             if (data != null) {
                 String name = data.getStringExtra("name");
                 String phoneNumber = data.getStringExtra("phoneNumber");
+                String di = data.getStringExtra("di");
 
                 LoginServer.findUserId((success, o) -> {
                     if (success) {
@@ -238,9 +239,10 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                         switch (model.resultCode) {
                             case Flag.ResultCode.SUCCESS:
                                 User user = (User) model.data;
-
                                 if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
                                     FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                                    passwordViewModel.setMobile(phoneNumber);
+                                    passwordViewModel.setDi(di);
                                     passwordViewModel.setResultVisibility(View.VISIBLE);
                                     passwordViewModel.setUser(user);
                                     passwordViewModel.notifyPropertyChanged(BR.resultVisibility);

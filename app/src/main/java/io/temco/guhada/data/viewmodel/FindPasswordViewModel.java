@@ -12,6 +12,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindPasswordListener;
+import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
@@ -22,20 +23,27 @@ import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 public class FindPasswordViewModel extends BaseObservableViewModel implements Observer {
-
     private OnFindPasswordListener listener;
     private boolean checkedFindPwdByEmail = false;
-    private boolean checkedFindIdByVerifyingPhone = false;
+    private boolean checkedFindPwdByVerifyingPhone = false;
     private boolean checkedFindPwdByPhone = false;
     private User user = new User();
-    private String verifyNumber = "", verifiedEmail = "", newPassword = "", newPasswordConfirm = "";
+    private String verifyNumber = "", verifiedEmail = "", newPassword = "", newPasswordConfirm = "", di = "", mobile = "";
 
     // VERIFY
     private int verifyEmailVisibility = View.GONE;
-    private int resultVisibility = View.GONE;
     private int verifyPhoneVisibility = View.GONE;
+    private int resultVisibility = View.GONE;
     private String timerMinute = "02";
     private String timerSecond = "60";
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public FindPasswordViewModel() {
         this.user.addObserver(this);
@@ -44,6 +52,14 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     public FindPasswordViewModel(OnFindPasswordListener listener) {
         this.listener = listener;
         this.user.addObserver(this);
+    }
+
+    public String getDi() {
+        return di;
+    }
+
+    public void setDi(String di) {
+        this.di = di;
     }
 
     @Bindable
@@ -140,23 +156,24 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     }
 
     @Bindable
-    public boolean isCheckedFindIdByVerifyingPhone() {
-        return checkedFindIdByVerifyingPhone;
+    public boolean isCheckedFindPwdByVerifyingPhone() {
+        return checkedFindPwdByVerifyingPhone;
     }
 
-    public void setCheckedFindIdByVerifyingPhone(boolean checkedFindIdByVerifyingPhone) {
-        this.checkedFindIdByVerifyingPhone = checkedFindIdByVerifyingPhone;
+    public void setCheckedFindPwdByVerifyingPhone(boolean checkedFindPwdByVerifyingPhone) {
+        this.checkedFindPwdByVerifyingPhone = checkedFindPwdByVerifyingPhone;
     }
+
 
     public void onCheckedFindPwdByEmail(boolean checked) {
         if (checkedFindPwdByEmail != checked) {
             resetTimer();
             checkedFindPwdByEmail = checked;
             checkedFindPwdByPhone = false;
-            checkedFindIdByVerifyingPhone = false;
+            checkedFindPwdByVerifyingPhone = false;
 //            user = new User();
 
-            notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            notifyPropertyChanged(BR.checkedFindPwdByVerifyingPhone);
             notifyPropertyChanged(BR.checkedFindPwdByEmail);
             notifyPropertyChanged(BR.checkedFindPwdByPhone);
 //            notifyPropertyChanged(BR.user);
@@ -167,23 +184,23 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         if (checkedFindPwdByPhone != checked) {
             resetTimer();
             checkedFindPwdByPhone = checked;
-            checkedFindIdByVerifyingPhone = false;
+            checkedFindPwdByVerifyingPhone = false;
             checkedFindPwdByEmail = false;
 
-            notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            notifyPropertyChanged(BR.checkedFindPwdByVerifyingPhone);
             notifyPropertyChanged(BR.checkedFindPwdByEmail);
             notifyPropertyChanged(BR.checkedFindPwdByPhone);
         }
     }
 
     public void onCheckedFindIdByVerifyingPhone(boolean checked) {
-        if (checkedFindIdByVerifyingPhone != checked) {
+        if (checkedFindPwdByVerifyingPhone != checked) {
             resetTimer();
-            checkedFindIdByVerifyingPhone = checked;
+            checkedFindPwdByVerifyingPhone = checked;
             checkedFindPwdByEmail = false;
             checkedFindPwdByPhone = false;
 
-            notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+            notifyPropertyChanged(BR.checkedFindPwdByVerifyingPhone);
             notifyPropertyChanged(BR.checkedFindPwdByEmail);
             notifyPropertyChanged(BR.checkedFindPwdByPhone);
         }
@@ -298,6 +315,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         }, verification);
     }
 
+    /**
+     * 비밀번호 재설정 API 호출
+     */
     public void onClickChangePassword() {
         if (newPassword.equals(newPasswordConfirm)) {
             if (CommonUtil.validatePassword(newPassword)) {
@@ -306,8 +326,10 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                 verification.setEmail(user.getEmail());
                 verification.setNewPassword(newPassword);
                 verification.setVerificationNumber(verifyNumber);
+                verification.setDiCode(di);
+                verification.setMobile(mobile);
 
-                LoginServer.changePassword((success, o) -> {
+                OnServerListener serverListener = (success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
                         switch (model.resultCode) {
@@ -323,8 +345,17 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
                                 break;
                         }
+                    } else {
+                        listener.showSnackBar((String) o);
                     }
-                }, verification);
+                };
+
+                if(checkedFindPwdByVerifyingPhone){
+                    // 본인인증으로 비밀번호 재설정
+                    LoginServer.changePasswordByIdentifying(serverListener, verification);
+                }else{
+                    LoginServer.changePassword(serverListener, verification);
+                }
             } else {
                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidformat));
             }
@@ -360,7 +391,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                         verifyPhoneVisibility = View.VISIBLE;
                         notifyPropertyChanged(BR.verifyPhoneVisibility);
 
-                       CountTimer.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
+                        CountTimer.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
                             @Override
                             public void changeSecond(String second) {
                                 timerSecond = second;

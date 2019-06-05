@@ -11,7 +11,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -38,8 +37,21 @@ public interface LoginService {
     @POST("/verify")
     Call<BaseModel<Object>> verifyNumber(@Body Verification verification);
 
-    @POST("/changePassword")
+    /**
+     * 인증번호로 비밀번호 바꾸기 API
+     *
+     * @param verification [field] email, newPassword, verificationNumber
+     */
+    @POST("/verify/change-password")
     Call<BaseModel<Object>> changePassword(@Body Verification verification);
+
+    /**
+     * 본인인증으로 비밀번호 바꾸기 API
+     *
+     * @param verification [field] diCode, newPassword, mobile
+     */
+    @POST("/verify/identity/change-password")
+    Call<BaseModel<Object>> changePasswordByIdentifying(@Body Verification verification);
 
     @POST("/verify/sendMobile")
     Call<BaseModel<Object>> verifyPhone(@Body User user);

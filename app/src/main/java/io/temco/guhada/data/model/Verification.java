@@ -2,12 +2,29 @@ package io.temco.guhada.data.model;
 
 public class Verification {
     // USING CHANGE PASSWORD
-    private String name = "", phoneNumber = "", email = "", newPassword = "";
+    private String name = "", phoneNumber = "", email = "", newPassword = "", diCode = "", mobile = "";
 
     // USING VERIFYING EMAIL
     private String verificationNumber = "";
     private String verificationTarget = ""; // EMAIL ADDRESS
     private String verificationTargetType = ""; // "EMAIL"
+
+
+    public String getDiCode() {
+        return diCode;
+    }
+
+    public void setDiCode(String diCode) {
+        this.diCode = diCode;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public String getVerificationNumber() {
         return verificationNumber;

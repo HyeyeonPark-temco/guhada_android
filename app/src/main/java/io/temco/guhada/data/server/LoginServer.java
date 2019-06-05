@@ -1,5 +1,6 @@
 package io.temco.guhada.data.server;
 
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -180,6 +181,20 @@ public class LoginServer {
 
     public static void changePassword(OnServerListener listener, Verification verification) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class).changePassword(verification).enqueue(new Callback<BaseModel<Object>>() {
+            @Override
+            public void onResponse(Call<BaseModel<Object>> call, Response<BaseModel<Object>> response) {
+                listener.onResult(response.isSuccessful(), response.body());
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel<Object>> call, Throwable t) {
+                listener.onResult(false, t.getMessage());
+            }
+        });
+    }
+
+    public static void changePasswordByIdentifying(OnServerListener listener, Verification verification) {
+        RetrofitManager.createService(Type.Server.USER, LoginService.class, true).changePasswordByIdentifying(verification).enqueue(new Callback<BaseModel<Object>>() {
             @Override
             public void onResponse(Call<BaseModel<Object>> call, Response<BaseModel<Object>> response) {
                 listener.onResult(response.isSuccessful(), response.body());

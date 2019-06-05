@@ -92,18 +92,15 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
                     String gender = map.get("sGender");
                     String nationalInfo = map.get("sNationalInfo");
 
+                    String di = map.get("sDueInfo");
                     String mobileCo = map.get("sMobileCo");
                     String requestNumber = map.get("sRequestNumber");
                     String responseNumber = map.get("sResponseNumber");
 
-                    // TEMP
-                    if (phoneNumber == null || phoneNumber.isEmpty()) {
-                        phoneNumber = "01076652371";
-                    }
-
                     Intent intent = getIntent();
                     intent.putExtra("name", name);
                     intent.putExtra("phoneNumber", phoneNumber);
+                    intent.putExtra("di", di);
                     setResult(RESULT_OK, intent);
                     finish();
 
