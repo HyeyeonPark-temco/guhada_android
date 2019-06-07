@@ -34,8 +34,11 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
 
     fun setItems(list: MutableList<ClaimResponse.Claim>) {
         this.list = list
-        notifyItemRangeChanged(0, list.size)
-//        notifyDataSetChanged()
+        if(list.isEmpty()){
+            notifyDataSetChanged()
+        }else {
+            notifyItemRangeChanged(0, list.size)
+        }
     }
 
     fun addItems(list: MutableList<ClaimResponse.Claim>) {

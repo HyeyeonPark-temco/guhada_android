@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
@@ -140,6 +141,9 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 WRITE_CLAIM -> {
                     // REFRESH
                     claimFragment.refreshClaims()
+                }
+                LOGIN -> {
+                    claimFragment.refreshIsMineVisible()
                 }
             }
         }

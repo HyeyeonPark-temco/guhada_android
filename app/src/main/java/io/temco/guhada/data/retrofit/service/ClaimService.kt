@@ -16,7 +16,7 @@ interface ClaimService {
      * @param size
      */
     @GET("products/{id}/inquiries")
-    fun getClaims(@Path("id") productId: Int, @Query("isMyInquiry") isMyInquiry: Boolean?, @Query("pageNo") pageNo: Int,
+    fun getClaims(@Header("Authorization") accessToken: String, @Path("id") productId: Int, @Query("isMyInquiry") isMyInquiry: Boolean?, @Query("pageNo") pageNo: Int,
                   @Query("size") size: Int, @Query("status") status: String): Call<BaseModel<ClaimResponse>>
 
     /**

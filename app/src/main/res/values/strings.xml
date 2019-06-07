@@ -253,33 +253,35 @@
     <string name="productdetail_shipping_common_description2_content5">5. 시간의 경과에 의하여 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우</string>
     <string name="productdetail_shipping_common_description2_content6">6. 고객주문 확인 후 상품제작에 들어가는 주문제작상품 (판매자에게 회복불가능한 손해가 예상되고, 그러한 예정으로 청약철회권행사가 불가하다는 사실을 서면 동의받은 경우)</string>
 
-    <string name="producdetail_shipping_seller_title">판매자 정보</string>
-    <string name="producdetail_shipping_seller_content1">상호명</string>
-    <string name="producdetail_shipping_seller_content2">대표자</string>
-    <string name="producdetail_shipping_seller_content3">사업자등록번호</string>
-    <string name="producdetail_shipping_seller_content4">통신판매업번호</string>
-    <string name="producdetail_shipping_seller_content5">사업장소재지</string>
-    <string name="producdetail_shipping_seller_content6">고객센터</string>
-    <string name="producdetail_shipping_notifies_title">상품고시정보</string>
+    <string name="productdetail_shipping_seller_title">판매자 정보</string>
+    <string name="productdetail_shipping_seller_content1">상호명</string>
+    <string name="productdetail_shipping_seller_content2">대표자</string>
+    <string name="productdetail_shipping_seller_content3">사업자등록번호</string>
+    <string name="productdetail_shipping_seller_content4">통신판매업번호</string>
+    <string name="productdetail_shipping_seller_content5">사업장소재지</string>
+    <string name="productdetail_shipping_seller_content6">고객센터</string>
+    <string name="productdetail_shipping_notifies_title">상품고시정보</string>
 
-    <string name="producdetail_option_type_color">COLOR</string>
-    <string name="producdetail_option_type_size">SIZE</string>
-    <string name="producdetail_option_type_custom">CUSTOM</string>
+    <string name="productdetail_option_type_color">COLOR</string>
+    <string name="productdetail_option_type_size">SIZE</string>
+    <string name="productdetail_option_type_custom">CUSTOM</string>
 
-    <string name="producdetail_qna_title">상품문의</string>
-    <string name="producdetail_qna_mine">내 문의만 보기</string>
-    <string name="producdetail_qna_description">구매하시려는 상품에 대해 궁금하신 점이 있으신 경우, 문의해주세요. 상품 이외의 문의는 ‘판매자 문의하기’를 이용해주세요.</string>
-    <string name="producdetail_qna_report">신고</string>
-    <string name="producdetail_qna_reply">답변</string>
-    <string name="producdetail_qna_reply_all">전체문의</string>
-    <string name="producdetail_qna_reply_pending">미답변</string>
-    <string name="producdetail_qna_reply_completed">답변완료</string>
-    <string name="producdetail_qna_reply_status_completed">COMPLETED</string>
-    <string name="producdetail_qna_reply_status_pending">PENDING</string>
-    <string name="producdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
-    <string name="producdetail_qna_button_contactforproduct">상품 문의하기</string>
-    <string name="producdetail_qna_button_contactwithseller">판매자 문의하기</string>
-    <string name="producdetail_qna_button_moreclaim">상품 리뷰 10개 더보기</string>
+    <string name="productdetail_qna_title">상품문의</string>
+    <string name="productdetail_qna_mine">내 문의만 보기</string>
+    <string name="productdetail_qna_description">구매하시려는 상품에 대해 궁금하신 점이 있으신 경우, 문의해주세요. 상품 이외의 문의는 ‘판매자 문의하기’를 이용해주세요.</string>
+    <string name="productdetail_qna_report">신고</string>
+    <string name="productdetail_qna_reply">답변</string>
+    <string name="productdetail_qna_reply_all">전체문의</string>
+    <string name="productdetail_qna_reply_pending">미답변</string>
+    <string name="productdetail_qna_reply_completed">답변완료</string>
+    <string name="productdetail_qna_reply_status_completed">COMPLETED</string>
+    <string name="productdetail_qna_reply_status_pending">PENDING</string>
+    <string name="productdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
+    <string name="productdetail_qna_button_contactforproduct">상품 문의하기</string>
+    <string name="productdetail_qna_button_contactwithseller">판매자 문의하기</string>
+    <string name="productdetail_qna_button_moreclaim">상품 리뷰 10개 더보기</string>
+
+    <string name="productdetail_notifies_empty">등록된 상품고시정보가 없습니다.</string>
 
     <!-- CLAIM -->
     <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
@@ -289,5 +291,8 @@
     <string name="claim_write_description3">에서 확인하실 수 있습니다.</string>
     <string name="claim_write_button_cancel">취소</string>
     <string name="claim_write_button_submit">등록</string>
+    <string name="claim_write_empty">작성된 상품 문의가 없습니다.</string>
+
     <string name="temp_productId">10243</string>
+
 </resources>

@@ -3,16 +3,22 @@ package io.temco.guhada.view.fragment.productdetail
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.viewmodel.ProductDetailClaimViewModel
 import io.temco.guhada.databinding.LayoutProductdetailClaimBinding
+import io.temco.guhada.view.activity.LoginActivity
 import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.adapter.ClaimAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -36,10 +42,18 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
                 val intent = Intent(this@ProductDetailClaimFragment.context, WriteClaimActivity::class.java)
                 activity?.startActivityForResult(intent, WRITE_CLAIM)
             }
+
+            override fun clearClaims() {
+                (mBinding.recyclerviewProductdetailClaim.adapter as ClaimAdapter).clearItems()
+            }
+
+            override fun redirectLoginActivity() {
+                val intent = Intent(this@ProductDetailClaimFragment.context, LoginActivity::class.java)
+                activity?.startActivityForResult(intent, LOGIN)
+            }
         })
         mBinding.viewModel = mViewModel
         mBinding.recyclerviewProductdetailClaim.adapter = ClaimAdapter()
-//        mBinding.recyclerviewProductdetailClaim.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         mBinding.recyclerviewProductdetailClaim.layoutManager = WrapContentLinearLayoutManager(context, RecyclerView.VERTICAL, false)
         mBinding.tablayoutProductdetailClaim.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -50,8 +64,6 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                // mBinding.recyclerviewProductdetailClaim.adapter = ClaimAdapter()
-
                 when (tab?.position) {
                     ALL_CLAIMS -> mViewModel.claimStatus = ""
                     PENDING_CLAIMS -> mViewModel.claimStatus = "PENDING"
@@ -60,9 +72,15 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
                 refreshClaims()
             }
         })
+        mViewModel.mineVisibility = if (Preferences.getToken() != null) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
 
         mViewModel.getClaims()
         mBinding.executePendingBindings()
+    }
+
+    fun refreshIsMineVisible() {
+        mViewModel.mineVisibility = if (Preferences.getToken() != null) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
+        mViewModel.notifyPropertyChanged(BR.mineVisibility)
     }
 
     fun refreshClaims() {
@@ -88,7 +106,6 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
                 } else {
                     (this.adapter as ClaimAdapter).setItems(list)
                 }
-
             }
         }
     }
@@ -111,5 +128,7 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
     interface OnProductDetailClaimListener {
         fun showMessage(message: String)
         fun redirectWriteClaimActivity()
+        fun clearClaims()
+        fun redirectLoginActivity()
     }
 }
