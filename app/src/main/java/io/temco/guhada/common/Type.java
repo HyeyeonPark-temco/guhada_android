@@ -18,7 +18,8 @@ public class Type {
         JOIN,
         FIND_ACCOUNT,
         TERMS,
-        VERIFY_PHONE // 임시
+        VERIFY_PHONE,
+        CLAIM
     }
 
     // Main

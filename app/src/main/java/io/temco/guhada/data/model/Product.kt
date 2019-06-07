@@ -46,7 +46,6 @@ class Product {
     var sCategoryId: Int = 0
     var dCategoryId: Int = 0
 
-
     class Item {
         var label: String = ""
         var value: String = ""

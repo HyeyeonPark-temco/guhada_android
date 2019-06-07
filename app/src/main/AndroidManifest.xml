@@ -81,6 +81,10 @@
             android:name=".view.activity.TermsActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".view.activity.WriteClaimActivity"
+            android:screenOrientation="portrait" />
+
         <!-- Verity Phone -->
         <activity
             android:name=".view.activity.VerifyPhoneActivity"

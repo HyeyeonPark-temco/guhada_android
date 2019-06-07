@@ -42,19 +42,14 @@ class ClaimResponse {
             get() = convertDateTimeFormat(field)
 
         var updatedAt: String = ""
+            get() = convertDateTimeFormat(field)
 
         @SuppressLint("SimpleDateFormat")
         private fun convertDateTimeFormat(str: String?): String {
             return if (str != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     LocalDateTime.parse(str).let {
-                        if (it.month.value < 10) {
-                            "0${it.month.value}"
-                        } else {
-                            it.month.value.toString()
-                        }.let { month ->
-                            "${it.year}.$month.${it.dayOfMonth} ${it.hour}:${it.minute}"
-                        }
+                        "${it.year}.${plusZero(it.month.value)}.${plusZero(it.dayOfMonth)} ${plusZero(it.hour)}:${plusZero(it.minute)}"
                     }
                 } else {
                     val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(str)
@@ -94,6 +89,4 @@ class ClaimResponse {
         var unsorted: Boolean = false
         var empty: Boolean = false
     }
-
-
 }

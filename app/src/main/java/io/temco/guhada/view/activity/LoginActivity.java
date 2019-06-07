@@ -51,7 +51,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         FacebookSdk.sdkInitialize(getApplicationContext());
         LoginManager.getInstance().logOut();
 
-
         // INIT SNS LOGIN
         mLoginListener = new OnSnsLoginListener() {
             @Override
@@ -126,6 +125,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
+                setResult(resultCode);
                 finish();
             }
         });

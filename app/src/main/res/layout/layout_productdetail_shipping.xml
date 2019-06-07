@@ -13,6 +13,7 @@
     </data>
 
     <ScrollView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -583,7 +584,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="22dp"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/producdetail_shipping_seller_title"
+                        android:text="@string/productdetail_shipping_seller_title"
                         android:textColor="@color/greyish_brown_two" />
 
                     <View
@@ -606,7 +607,7 @@
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
-                            android:text="@string/producdetail_shipping_seller_content1"
+                            android:text="@string/productdetail_shipping_seller_content1"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
@@ -641,7 +642,7 @@
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
-                            android:text="@string/producdetail_shipping_seller_content2"
+                            android:text="@string/productdetail_shipping_seller_content2"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
@@ -675,7 +676,7 @@
                             android:paddingTop="12dp"
                             android:paddingEnd="10dp"
                             android:paddingBottom="12dp"
-                            android:text="@string/producdetail_shipping_seller_content3"
+                            android:text="@string/productdetail_shipping_seller_content3"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
@@ -706,7 +707,7 @@
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
-                            android:text="@string/producdetail_shipping_seller_content4"
+                            android:text="@string/productdetail_shipping_seller_content4"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
@@ -741,7 +742,7 @@
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
-                            android:text="@string/producdetail_shipping_seller_content5"
+                            android:text="@string/productdetail_shipping_seller_content5"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
@@ -775,7 +776,7 @@
                             android:paddingTop="12dp"
                             android:paddingEnd="10dp"
                             android:paddingBottom="12dp"
-                            android:text="@string/producdetail_shipping_seller_content6"
+                            android:text="@string/productdetail_shipping_seller_content6"
                             android:textSize="@dimen/text_12" />
 
                         <TextView

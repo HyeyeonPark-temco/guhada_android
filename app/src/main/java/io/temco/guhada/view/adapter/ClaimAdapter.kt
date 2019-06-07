@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,12 +12,18 @@ import io.temco.guhada.databinding.ItemProductdetailClaimBinding
 import io.temco.guhada.view.adapter.base.BaseViewHolder
 
 class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
+    private lateinit var context: Context
+    private lateinit var parent: ViewGroup
     private var list: MutableList<ClaimResponse.Claim> = ArrayList()
-     lateinit var mBinding: ItemProductdetailClaimBinding
+    lateinit var mBinding: ItemProductdetailClaimBinding
+    lateinit var holder: Holder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        this.parent = parent
+        this.context = parent.context
         mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_claim, parent, false)
-        return Holder(mBinding)
+        holder = Holder(mBinding)
+        return holder
     }
 
     override fun getItemCount(): Int = list.size
@@ -27,7 +34,11 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
 
     fun setItems(list: MutableList<ClaimResponse.Claim>) {
         this.list = list
-        notifyDataSetChanged()
+        if(list.isEmpty()){
+            notifyDataSetChanged()
+        }else {
+            notifyItemRangeChanged(0, list.size)
+        }
     }
 
     fun addItems(list: MutableList<ClaimResponse.Claim>) {
@@ -44,28 +55,23 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
         fun bind(item: ClaimResponse.Claim) {
             binding.claim = item
             binding.isReplyClosed = true
+            binding.isArrowVisibilityForPending = false
 
-            if (item.private) {
-                binding.replyArrowVisibility = false
-            } else {
-                if (!item.reply.isNullOrBlank()) {
-                    // 답변 완료 -> arrow 표시
-                    binding.replyArrowVisibility = true
-                } else {
-                    // 미답변
-                    binding.textviewProductdetailClaimContent.viewTreeObserver.addOnGlobalLayoutListener {
-                        if (binding.textviewProductdetailClaimContent.layout != null) {
-                            val count = binding.textviewProductdetailClaimContent.layout?.getEllipsisCount(binding.textviewProductdetailClaimContent.lineCount - 1)
-                            binding.replyArrowVisibility = count ?: 0 > 0
-                        } else {
-                            binding.replyArrowVisibility = false
-                        }
-                    }
+            binding.textviewProductdetailClaimContent.viewTreeObserver.addOnGlobalLayoutListener {
+                if (binding.textviewProductdetailClaimContent.layout != null) {
+                    val count = binding.textviewProductdetailClaimContent.layout?.getEllipsisCount(binding.textviewProductdetailClaimContent.lineCount - 1)
+                    binding.isEllipsized = count ?: 0 > 0
+                    binding.executePendingBindings()
                 }
             }
 
             binding.setOnClickReplyArrow {
                 binding.isReplyClosed = !binding.isReplyClosed!!
+
+                if (item.reply == null && binding.isEllipsized == true) {
+                    binding.isArrowVisibilityForPending = true
+                    binding.notifyPropertyChanged(BR.isArrowVisibilityForPending)
+                }
 
                 binding.linearlayoutProductdetailClaim.setBackgroundColor(if (binding.isReplyClosed == true) {
                     binding.root.resources.getColor(R.color.common_white)
@@ -74,10 +80,7 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
                 })
 
                 binding.notifyPropertyChanged(BR.isReplyClosed)
-                binding.executePendingBindings()
             }
-
-            binding.executePendingBindings()
         }
     }
 }

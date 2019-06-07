@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{option.type.equals(@string/producdetail_option_type_size) ? @string/productdetail_sizeinfo : viewModel.colorName}"
+                android:text="@{option.type.equals(@string/productdetail_option_type_size) ? @string/productdetail_sizeinfo : viewModel.colorName}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_12"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/warm_grey_two"
-                android:visibility="@{option.type.equals(@string/producdetail_option_type_size) ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{option.type.equals(@string/productdetail_option_type_size) ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

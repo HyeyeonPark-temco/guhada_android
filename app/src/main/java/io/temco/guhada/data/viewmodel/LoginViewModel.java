@@ -16,6 +16,7 @@ import io.temco.guhada.data.server.LoginServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class LoginViewModel extends BaseObservableViewModel {
     public String toolBarTitle = "";
@@ -110,6 +111,7 @@ public class LoginViewModel extends BaseObservableViewModel {
                                 }
                             }
 
+                            loginListener.closeActivity(RESULT_OK);
                             loginListener.showMessage(token.getAccessToken());
                             return;
                         case Flag.ResultCode.USER_NOT_FOUND:
