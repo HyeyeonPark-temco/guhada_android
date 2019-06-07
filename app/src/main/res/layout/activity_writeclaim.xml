@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/checkbox_select_round"
+                android:background="@drawable/selector_roundcheckbox_all"
                 android:button="@null"
                 android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedPrivate(checked)}" />
 
