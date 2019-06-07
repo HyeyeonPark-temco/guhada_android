@@ -21,8 +21,8 @@ import java.util.Map;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.decoration.FastScrollItemDecoration;
+import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.listener.OnFastScrollListener;
-import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomComparator;
 import io.temco.guhada.common.util.TextSearcher;
 import io.temco.guhada.data.model.Brand;
@@ -32,11 +32,12 @@ import io.temco.guhada.view.adapter.base.StickyHeaderRecyclerAdapter;
 import io.temco.guhada.view.adapter.holder.BrandListContentsViewHolder;
 import io.temco.guhada.view.adapter.holder.BrandListHeaderViewHolder;
 
-public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewHolder, Brand> implements OnFastScrollListener {
+public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewHolder, Brand> implements OnFastScrollListener, View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
     private boolean mIsAlphabet = true;
+    private OnBrandListener mBrandListener;
     //
     private Map<String, Integer> mIndex;
     private String[] mSections;
@@ -57,7 +58,6 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     private int mSectionText;
     @ColorInt
     private int mSectionBackground;
-    //
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -105,6 +105,8 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     @Override
     public void onBindViewHolder(@NonNull BaseBrandViewHolder holder, int position) {
         holder.init(mContext, getItem(position), mIsAlphabet);
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(this);
     }
 
     @Override
@@ -112,11 +114,16 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         // Header
         ItemBrandListHeaderBinding binding = DataBindingUtil.bind(header);
         // Data
-
-        Brand b = getItem(headerPosition);
-
         if (binding != null) {
             binding.textTitle.setText(mIsAlphabet ? getItem(headerPosition).nameEn : getItem(headerPosition).nameKo);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mBrandListener != null
+                && v.getTag() != null && v.getTag() instanceof Integer) {
+            mBrandListener.onEvent(getItem((int) v.getTag()));
         }
     }
 
@@ -225,52 +232,43 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         mIsAlphabet = isAlphabet;
     }
 
-    public void setScrollIndex(LinkedHashMap<String, Integer> index) {
-        // Index
-        mIndex = index;
-        // Sections
-        ArrayList<String> list = new ArrayList<>(index.keySet());
-        mSections = new String[list.size()];
-        int i = 0;
-        for (String c : list) {
-            mSections[i++] = c;
-        }
-        notifyDataSetChanged();
+    public void initBrandData(List<Brand> data) {
+        setBrandData(data, mIsAlphabet, true);
     }
 
     public void filter(String text) {
-        List<Brand> list = getItems();
-        text = text.toLowerCase();
+        if (getOriginalItemCount() > 0) {
+            text = text.toLowerCase();
+            List<Brand> f = new ArrayList<>();
+            for (Brand b : getOriginalItems()) {
+                String t = mIsAlphabet ? b.nameEn : b.nameKo;
+                if (t.toLowerCase().contains(text)) {
+                    f.add(b);
+                }
+            }
+            if (f.size() > 0) {
+                setBrandData(f, mIsAlphabet, false);
+            } else {
+                setFilterItems(f);
+            }
+        }
+    }
 
+    public void resetFilterToOriginal() {
+        if (getOriginalItemCount() > 0) {
+            setBrandData(getOriginalItems(), mIsAlphabet, true);
+        }
+    }
 
-        //
-//        List<Brand> f = new ArrayList<>();
-//        for (Brand b : list) {
-//            if (mIsAlphabet) {
-//                if (b.nameEn.toLowerCase().contains(text)) {
-//                    f.add()
-//                    items.add(recent);
-//                }
-//
-//            } else {
-//                if (b..toLowerCase().contains(text)) {
-//                    items.add(recent);
-//                }
-//            }
-//        }
+    public void setOnBrandListener(OnBrandListener listener) {
+        mBrandListener = listener;
     }
 
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void initBrandData(List<Brand> data, boolean isAlphabet) {
-        // mBinding.listContents.scrollToPosition(0);
-
-        setOriginalData(data, isAlphabet, true);
-    }
-
-    private void setOriginalData(List<Brand> data, boolean isAlphabet, boolean isReset) {
+    private void setBrandData(List<Brand> data, boolean isAlphabet, boolean isReset) {
         if (data != null && data.size() > 0) {
             // Sort
             Collections.sort(data, CustomComparator.getBrandComparator(true, isAlphabet));
@@ -295,7 +293,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
             // Adapter
             changeLanguage(isAlphabet);
             if (isReset) {
-                setOriginalItems(sort);
+                setOriginalItems(data, sort);
             } else {
                 setFilterItems(sort);
             }
@@ -351,6 +349,19 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         b.nameDefault = title;
         b.layoutRes = R.layout.item_brand_list_header;
         return b;
+    }
+
+    private void setScrollIndex(LinkedHashMap<String, Integer> index) {
+        // Index
+        mIndex = index;
+        // Sections
+        ArrayList<String> list = new ArrayList<>(index.keySet());
+        mSections = new String[list.size()];
+        int i = 0;
+        for (String c : list) {
+            mSections[i++] = c;
+        }
+        notifyDataSetChanged();
     }
 
     ////////////////////////////////////////////////

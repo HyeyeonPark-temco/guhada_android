@@ -165,7 +165,9 @@ public class CommonUtil {
         Category all = new Category();
         all.type = Type.Category.ALL;
         all.id = id;
-        all.name = context.getString(R.string.category_all);
+        if (context != null) {
+            all.name = context.getString(R.string.category_all);
+        }
         all.hierarchies = hierarchies;
         return all;
     }

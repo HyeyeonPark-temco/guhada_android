@@ -70,22 +70,26 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setItem(@NonNull M item) {
-        if (mFilterItems == null) {
-            mFilterItems = new ArrayList<>();
+    // Original
+    public int getOriginalItemCount() {
+        return mOriginalItems == null ? 0 : mOriginalItems.size();
+    }
+
+    public void setOriginalItems(@NonNull List<M> original, List<M> filter) {
+        if (getOriginalItemCount() <= 0) {
+            if (mOriginalItems == null) mOriginalItems = new ArrayList<>();
+            mOriginalItems.addAll(original);
         }
-        mFilterItems.add(mFilterItems.size(), item);
-    }
-
-    public void setOriginalItems(@NonNull List<M> items) {
-        if (mOriginalItems == null) mOriginalItems = new ArrayList<>();
         if (mFilterItems == null) mFilterItems = new ArrayList<>();
-        mOriginalItems.clear();
-        mOriginalItems.addAll(items);
         mFilterItems.clear();
-        mFilterItems.addAll(items);
+        mFilterItems.addAll(filter);
     }
 
+    public List<M> getOriginalItems() {
+        return mOriginalItems;
+    }
+
+    // Filter
     public void setFilterItems(@NonNull List<M> items) {
         if (mFilterItems != null) {
             mFilterItems.clear();
@@ -93,8 +97,11 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
         }
     }
 
-    public void resetFilterToOriginal() {
-        setFilterItems(mOriginalItems);
+    public void setItem(@NonNull M item) {
+        if (mFilterItems == null) {
+            mFilterItems = new ArrayList<>();
+        }
+        mFilterItems.add(mFilterItems.size(), item);
     }
 
     public M getItem(int position) {

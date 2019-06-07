@@ -2,9 +2,11 @@ package io.temco.guhada.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import io.temco.guhada.data.model.base.BaseStickyHeaderModel;
 
-public class Brand extends BaseStickyHeaderModel {
+public class Brand extends BaseStickyHeaderModel implements Serializable {
 
     @SerializedName("id")
     public int id;

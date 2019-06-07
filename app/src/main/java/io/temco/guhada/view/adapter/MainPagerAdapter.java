@@ -9,6 +9,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.fragment.product.ProductFragment;
 import io.temco.guhada.view.fragment.main.MainCommunityFragment;
@@ -82,26 +83,26 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         mDrawerListener = listener;
     }
 
-    public void addProduct(Type.Category type, int[] hierarchies) {
+    public void addProductCategoryData(Type.Category type, int[] hierarchies) {
         Category c = CommonUtil.getCategory(hierarchies);
         if (c != null) {
             addProductFragment(c);
         }
     }
 
-    public void removeProduct() {
-        removeProductFragment();
+    public void setProductBrandData(Brand brand) {
+        addProductFragment(brand);
     }
 
-    public void setProductData() {
-
+    public void removeProduct() {
+        removeProductFragment();
     }
 
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void addProductFragment(Category c) {
+    private void checkProductFragment() {
         if (mProductFragment == null) {
             mProductFragment = new ProductFragment();
             mProductFragment.setOnDrawerLayoutListener(mDrawerListener);
@@ -114,7 +115,18 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                     .add(R.id.layout_container, mProductFragment, TAG_PRODUCT)
                     .commitAllowingStateLoss();
         }
+    }
+
+    private void addProductFragment(Category c) {
+        checkProductFragment();
+        mProductFragment.changeProduct(true);
         mProductFragment.setCategory(c);
+    }
+
+    private void addProductFragment(Brand b) {
+        checkProductFragment();
+        mProductFragment.changeProduct(false);
+        mProductFragment.setBrand(b);
     }
 
     private void removeProductFragment() {

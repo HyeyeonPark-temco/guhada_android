@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnChangeTitleListener;
+import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.fragment.product.ProductListFragment;
 
@@ -75,9 +76,10 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void addFragment(Category data) {
+    public void addCategoryFragment(Category data) {
         // Fragment
         ProductListFragment f = new ProductListFragment();
+        f.setIsCategory(true);
         f.setCategoryData(data);
         f.setOnAddCategoryListener(mCategoryListener);
         // Add
@@ -92,17 +94,30 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
+    public void addBrandFragment(Brand data) {
+        // Fragment
+        ProductListFragment f = new ProductListFragment();
+        f.setIsCategory(false);
+        f.setBrandData(data);
+        // Add
+        mFragmentList.add(f);
+        // Position
+        f.setPosition(mFragmentList.size() - 1);
+        // Title
+        notifyDataSetChanged();
+    }
+
     public boolean removeFragment() {
         int changeCount = getCount() - 1;
         // Title
-        if (mChangeTitleListener != null) {
+        if (mChangeTitleListener != null && getCategoryCount() > 0) {
             String title = mCategoryList.get(changeCount - 1).name;
             mChangeTitleListener.onSet(title);
         }
         // Remove
         if (getCount() > 1) {
             mFragmentList.remove(changeCount);
-            mCategoryList.remove(changeCount);
+            if (getCategoryCount() > 0) mCategoryList.remove(changeCount);
             notifyDataSetChanged();
             return true;
         }
@@ -115,6 +130,14 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
 
     public void setOnAddCategoryListener(OnAddCategoryListener listener) {
         mCategoryListener = listener;
+    }
+
+    ////////////////////////////////////////////////
+    // PRIVATE
+    ////////////////////////////////////////////////
+
+    private int getCategoryCount() {
+        return mCategoryList == null ? 0 : mCategoryList.size();
     }
 
     ////////////////////////////////////////////////

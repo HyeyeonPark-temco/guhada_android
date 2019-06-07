@@ -9,18 +9,10 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.common.util.CustomComparator;
-import io.temco.guhada.common.util.TextSearcher;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ActivityBrandSubBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -30,7 +22,6 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
     // -------- LOCAL VALUE --------
     private BrandListAdapter mListAdapter;
-    private List<Brand> mBrandList;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -74,13 +65,7 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mListAdapter != null) {
-                    if (TextUtils.isEmpty(s)) {
-                        mListAdapter.resetFilterToOriginal();
-                    } else {
-                        mListAdapter.filter(s.toString());
-                    }
-                }
+                setFilter(s.toString());
             }
         });
     }
@@ -88,10 +73,6 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.layout_all:
-//                finishWithData(Type.Category.ALL, mCategoryData.hierarchies);
-                break;
-
             case R.id.image_prev:
             case R.id.image_close:
                 onBackPressed();
@@ -119,9 +100,9 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void finishWithData(int id) {
+    private void finishWithData(Brand b) {
         Intent i = new Intent();
-        i.putExtra(Info.INTENT_BRAND_ID, id);
+        i.putExtra(Info.INTENT_BRAND_DATA, b);
         setResult(RESULT_OK, i);
         onBackPressed();
     }
@@ -129,6 +110,12 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
     private void initList() {
         // Adapter
         mListAdapter = new BrandListAdapter(this);
+        mListAdapter.setOnBrandListener(brand -> {
+            if (brand != null && brand.type != Type.List.HEADER) {
+                finishWithData(brand);
+            }
+        });
+        mListAdapter.initBrandData(Preferences.getBrands());
         // List
         mBinding.listContents.setHasFixedSize(true);
         mBinding.listContents.setLayoutManager(new LinearLayoutManager(this));
@@ -136,95 +123,23 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
     }
 
     private void selectInitial(boolean isAlphabet) {
-        mBinding.imageAlphabet.setSelected(isAlphabet);
-        mBinding.imageHangul.setSelected(!isAlphabet);
-        resetData(isAlphabet);
-    }
-
-    private void resetData(boolean isAlphabet) {
-        if (mBrandList == null) mBrandList = Preferences.getBrands();
-        initBrandData(mBrandList, isAlphabet);
-    }
-
-    private void initBrandData(List<Brand> data, boolean isAlphabet) {
-        if (mListAdapter != null &&
-                data != null && data.size() > 0) {
-            // Sort
-            Collections.sort(data, CustomComparator.getBrandComparator(true, isAlphabet));
-            List<Brand> sort = new ArrayList<>();
-            List<Brand> side = new ArrayList<>();
-            // Index
-            LinkedHashMap<String, Integer> index = new LinkedHashMap<>();
-            for (Brand b : data) {
-                if (isAlphabet) {
-                    setIndexBrandAlphabetData(b, index, sort, side);
-                } else {
-                    setIndexBrandHangulData(b, index, sort, side);
-                }
-            }
-            // Side (#)
-            if (side.size() > 0) {
-                String s = "#";
-                sort.add(createBrandHeaderData(s)); // Header
-                index.put(s, sort.size()); // Index
-                sort.addAll(sort.size(), side); // Row
-            }
-            // Adapter
-            mBinding.listContents.scrollToPosition(0);
+        if (mListAdapter != null) {
+            mBinding.imageAlphabet.setSelected(isAlphabet);
+            mBinding.imageHangul.setSelected(!isAlphabet);
             mListAdapter.changeLanguage(isAlphabet);
-            mListAdapter.setOriginalItems(sort);
-            mListAdapter.setScrollIndex(index);
+            mBinding.edittextSearch.setText(null);
         }
     }
 
-    private void setIndexBrandAlphabetData(Brand data,
-                                           LinkedHashMap<String, Integer> index,
-                                           List<Brand> sort,
-                                           List<Brand> side) {
-        if (TextUtils.isEmpty(data.nameEn)) {
-            return;
+    private void setFilter(String text) {
+        if (mListAdapter != null) {
+            mBinding.listContents.scrollToPosition(0);
+            if (TextUtils.isEmpty(text)) {
+                mListAdapter.resetFilterToOriginal();
+            } else {
+                mListAdapter.filter(text);
+            }
         }
-        char key = data.nameEn.toUpperCase().charAt(0);
-        if (!TextSearcher.isAlphabet(key)) {
-            side.add(data);
-            return;
-        }
-        String keyString = String.valueOf(key);
-        if (!index.containsKey(keyString)) {
-            sort.add(createBrandHeaderData(keyString)); // Header
-            index.put(keyString, sort.size()); // Index
-        }
-        sort.add(data); // Row
-    }
-
-    private void setIndexBrandHangulData(Brand data,
-                                         LinkedHashMap<String, Integer> index,
-                                         List<Brand> sort,
-                                         List<Brand> side) {
-        if (TextUtils.isEmpty(data.nameKo)) {
-            return;
-        }
-        char key = data.nameKo.charAt(0);
-        if (!TextSearcher.isHangul(key)) {
-            side.add(data);
-            return;
-        }
-        String keyString = String.valueOf(TextSearcher.getInitialHangulSound(key));
-        if (!index.containsKey(keyString)) {
-            sort.add(createBrandHeaderData(keyString)); // Header
-            index.put(keyString, sort.size()); // Index
-        }
-        sort.add(data); // Row
-    }
-
-    private Brand createBrandHeaderData(String title) {
-        Brand b = new Brand();
-        b.type = Type.List.HEADER;
-        b.nameEn = title;
-        b.nameKo = title;
-        b.nameDefault = title;
-        b.layoutRes = R.layout.item_brand_list_header;
-        return b;
     }
 
     ////////////////////////////////////////////////

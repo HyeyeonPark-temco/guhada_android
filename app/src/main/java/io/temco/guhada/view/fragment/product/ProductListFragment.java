@@ -20,8 +20,10 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
+import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
@@ -42,6 +44,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
     // Value
+    private boolean mIsCategory = true;
     private Category mCategoryData;
     private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
@@ -50,14 +53,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private int mId;
     private int mPageNumber = 1;
     // -----------------------------
-
-    public void setPosition(int position) {
-        mPosition = position;
-    }
-
-    public int getPosition() {
-        return mPosition;
-    }
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -88,24 +83,32 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         initProductList();
 
         // Data
-        getProductListByCategory(true);
+        if (mIsCategory) {
+            getProductListByCategory(true);
+        } else {
+            getProductListByBrand(true);
+        }
     }
 
     @Override
     public void onReset() {
-        mCategoryData = null;
-        checkCurrentListType(Type.Grid.TWO);
-        changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
-        resetList(true);
+        if (mIsCategory) {
+            mCategoryData = null;
+            checkCurrentListType(Type.Grid.TWO);
+            changeProductOrder(Type.ProductOrder.NEW_PRODUCT);
+            resetList(true);
+        }
     }
 
     @Override
     public void onUpdate(Category data) {
-        if (mCategoryData == null || mCategoryData.id != data.id) {
-            mCategoryData = data;
-            mId = data.id;
-            setTabLayout();
-            getProductListByCategory(false);
+        if (mIsCategory) {
+            if (mCategoryData == null || mCategoryData.id != data.id) {
+                mCategoryData = data;
+                mId = data.id;
+                setTabLayout();
+                getProductListByCategory(false);
+            }
         }
     }
 
@@ -140,13 +143,29 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // PUBLIC
     ////////////////////////////////////////////////
 
+    public void setPosition(int position) {
+        mPosition = position;
+    }
+
+    public int getPosition() {
+        return mPosition;
+    }
+
     public void setCategoryData(Category data) {
         mCategoryData = data;
-        mId = data.id;
+        mId = data == null ? 0 : data.id;
     }
 
     public void setOnAddCategoryListener(OnAddCategoryListener listener) {
         mCategoryListener = listener;
+    }
+
+    public void setBrandData(Brand data) {
+        mId = data == null ? 0 : data.id;
+    }
+
+    public void setIsCategory(boolean isCategory) {
+        mIsCategory = isCategory;
     }
 
     ////////////////////////////////////////////////
@@ -154,8 +173,19 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     ////////////////////////////////////////////////
 
     private void setTabLayout() {
-        if (mBinding != null
-                && mCategoryData != null && mCategoryData.children != null) {
+        if (mBinding != null) {
+            if (mIsCategory) {
+                setCategoryTabLayout();
+            } else {
+                mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void setCategoryTabLayout() {
+        if (mCategoryData != null &&
+                mCategoryData.children != null && mCategoryData.children.size() > 0) {
+            mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
             // Remove
             if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
                 mBinding.layoutHeader.layoutTab.removeAllTabs();
@@ -187,9 +217,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     }
                 }
             });
-
             // Scroll // Not Used
             // setTabLayoutScrollEvent();
+        } else {
+            mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
         }
     }
 
@@ -244,13 +275,17 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // Order
     private void changeProductOrderWithLoadList(Type.ProductOrder type) {
         changeProductOrder(type);
-        getProductListByCategory(true);
+        if (mIsCategory) {
+            getProductListByCategory(true);
+        } else {
+            getProductListByBrand(true);
+        }
     }
 
     private void changeProductOrder(Type.ProductOrder type) {
         dismissOrderBottomDialog();
         mCurrentOrderType = type;
-        if (mBinding != null) {
+        if (mBinding != null && getContext() != null) {
             switch (type) {
                 case NEW_PRODUCT:
                     mBinding.layoutHeader.setOrder(getString(R.string.product_order_new_product));
@@ -290,12 +325,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // List
     private void initProductList() {
         // Adapter
-        // if (mListAdapter == null)
         mListAdapter = new ProductListAdapter(getContext(), mRequestManager);
         mListAdapter.setOnProductListListener(id -> ProductDetailActivity.startActivity(getContext(), id));
 
         // List
-        // if (mGridManager == null)
         mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
         mBinding.listContents.setLayoutManager(mGridManager);
         mBinding.listContents.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -317,7 +350,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 // super.onScrolled(recyclerView, dx, dy);
                 if (mListAdapter.getItemCount() - mGridManager.findLastVisibleItemPosition() <= Info.LIST_PAGE_THRESHOLD) {
-                    getProductListByCategory(false);
+                    if (mIsCategory) {
+                        getProductListByCategory(false);
+                    } else {
+                        getProductListByBrand(false);
+                    }
                 }
             }
         });
@@ -342,7 +379,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void changeListType(Type.Grid type) {
         mCurrentGridType = type;
-
         if (mBinding != null) {
             switch (type) {
                 case ONE:
@@ -464,6 +500,25 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             resetList(false);
         }
         SearchServer.getProductListByCategory(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
+            if (mListAdapter != null) {
+                if (success) {
+                    mPageNumber++;
+                    mListAdapter.setItems(((ProductList) o).deals);
+                } else {
+                    ;
+                }
+            }
+            mIsLoading = false;
+        });
+    }
+
+    private void getProductListByBrand(boolean reset) {
+        if (mIsLoading) return;
+        mIsLoading = true;
+        if (reset) {
+            resetList(false);
+        }
+        SearchServer.getProductListByBrand(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
             if (mListAdapter != null) {
                 if (success) {
                     mPageNumber++;

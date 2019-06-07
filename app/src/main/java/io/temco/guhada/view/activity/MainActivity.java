@@ -15,7 +15,10 @@ import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -102,15 +105,15 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     if (data != null) {
                         Type.Category type = (Type.Category) data.getSerializableExtra(Info.INTENT_CATEGORY_TYPE);
                         int[] hierarchies = data.getIntArrayExtra(Info.INTENT_CATEGORY_HIERARCHIES);
-                        mPagerAdapter.addProduct(type, hierarchies);
+                        mPagerAdapter.addProductCategoryData(type, hierarchies);
                     }
                     break;
 
                 case REQUEST_CODE_BRAND:
                     changeDrawerLayout(false, false);
                     if (data != null) {
-                        int id = data.getIntExtra(Info.INTENT_BRAND_ID, 0);
-                        CommonUtil.debug("brand = " + id);
+                        Brand b = (Brand) data.getSerializableExtra(Info.INTENT_BRAND_DATA);
+                        mPagerAdapter.setProductBrandData(b);
                     }
                     break;
             }
@@ -253,7 +256,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         switch (type) {
             case ALL:
                 changeDrawerLayout(false, false);
-                mPagerAdapter.addProduct(type, hierarchies);
+                mPagerAdapter.addProductCategoryData(type, hierarchies);
                 break;
 
             default:

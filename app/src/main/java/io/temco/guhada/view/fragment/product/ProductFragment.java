@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
+import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.FragmentProductBinding;
 import io.temco.guhada.view.adapter.ProductListPagerAdapter;
@@ -20,7 +21,10 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     private OnBackPressListener mBackListener;
     private FragmentManager mFragmentManager;
     private ProductListPagerAdapter mListPagerAdapter;
+    //
+    private boolean mIsCategory = true;
     private Category mCategoryData;
+    private Brand mBrandData;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -46,7 +50,12 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         mBinding.layoutHeader.setClickListener(this);
 
         // List
-        addList();
+        initList();
+        if (mIsCategory) {
+            addCategoryList();
+        } else {
+            addBrandList();
+        }
     }
 
     @Override
@@ -75,9 +84,18 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     // PUBLIC
     ////////////////////////////////////////////////
 
+    public void changeProduct(boolean isCategory) {
+        mIsCategory = isCategory;
+    }
+
     public void setCategory(Category data) {
         mCategoryData = data;
-        addList();
+        addCategoryList();
+    }
+
+    public void setBrand(Brand data) {
+        mBrandData = data;
+        addBrandList();
     }
 
     public void setOnDrawerLayoutListener(OnDrawerLayoutListener listener) {
@@ -92,26 +110,49 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void addList() {
-        if (mBinding != null && mCategoryData != null) {
-            setTitle(mCategoryData.name);
+    private void initList() {
+        if (mBinding != null) {
             // Adapter
             mListPagerAdapter = new ProductListPagerAdapter(mFragmentManager);
             mListPagerAdapter.setOnChangeTitleListener(this::setTitle);
-            mListPagerAdapter.setOnAddCategoryListener(this::addChildFragment);
             // Pager
             mBinding.layoutPager.setAdapter(mListPagerAdapter);
             mBinding.layoutPager.setSwipeLocked(true);
-            // Add Child
-            addChildFragment(mCategoryData);
         }
     }
 
-    private void addChildFragment(Category data) {
-        mListPagerAdapter.addFragment(data);
+    private void addCategoryList() {
+        if (mBinding != null && mCategoryData != null) {
+            mListPagerAdapter.setOnAddCategoryListener(this::addCategoryChildFragment);
+            setTitle(mCategoryData.name);
+            addCategoryChildFragment(mCategoryData);
+        }
+    }
+
+    private void addCategoryChildFragment(Category data) {
+        mListPagerAdapter.addCategoryFragment(data);
         mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
         mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
     }
+
+    private void addBrandList() {
+        if (mBinding != null && mBrandData != null) {
+            setTitle(mBrandData.nameDefault);
+            addBrandChildFragment(mBrandData);
+        }
+    }
+
+    private void addBrandChildFragment(Brand data) {
+        mListPagerAdapter.addBrandFragment(data);
+        mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
+        mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
+    }
+
+//    private void addCategoryChildFragment(Category data) {
+//        mListPagerAdapter.addFragment(data);
+//        mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
+//        mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
+//    }
 
     private void checkBackEvent() {
         if (mBackListener != null) {
