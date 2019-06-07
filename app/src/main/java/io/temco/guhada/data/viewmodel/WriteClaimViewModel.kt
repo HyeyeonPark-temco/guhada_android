@@ -6,7 +6,7 @@ import io.temco.guhada.common.Flag.ResultCode.NEED_TO_LOGIN
 import io.temco.guhada.common.Flag.ResultCode.SUCCESS
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.data.model.ClaimResponse
-import io.temco.guhada.data.model.Inquiry
+import io.temco.guhada.data.model.InquiryRequest
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -14,7 +14,7 @@ import io.temco.guhada.view.activity.WriteClaimActivity
 
 class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener) : BaseObservableViewModel() {
     val toolBarTitle: String = "상품 문의하기"
-    val inquiry: Inquiry = Inquiry()
+    val inquiry: InquiryRequest = InquiryRequest()
 
     fun onClickBack() {
         listener.closeActivity(Activity.RESULT_CANCELED)

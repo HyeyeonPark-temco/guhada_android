@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
@@ -24,11 +26,124 @@ import io.temco.guhada.view.adapter.*
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener, ProductDetailOptionAttrAdapter.OnSelectAttrListener {
-    private lateinit var viewModel: ProductDetailViewModel
+    private lateinit var mViewModel: ProductDetailViewModel
+    private lateinit var claimFragment: ProductDetailClaimFragment
 
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
     override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
+
+    override fun init() {
+        mViewModel = ProductDetailViewModel(this)
+
+        // 임시 productId 12492
+        mViewModel.dealId = intent.getIntExtra("productId", resources.getString(R.string.temp_productId).toInt())
+        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter = ProductDetailOptionAdapter(mViewModel, this)
+        mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(mViewModel, this)
+
+        mViewModel.product.observe(this, Observer<Product> { it ->
+            mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+            mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+            mBinding.includeProductdetailMenu.viewModel = mViewModel
+            mBinding.includeProductdetailContentbody.viewModel = mViewModel
+            mBinding.includeProductdetailContentsummary.viewModel = mViewModel
+            mBinding.includeProductdetailContentheader.viewModel = mViewModel
+            mBinding.includeProductdetailContentbody.viewModel = mViewModel
+            mBinding.includeProductdetailContentinfo.viewModel = mViewModel
+            mBinding.includeProductdetailContentshipping.viewModel = mViewModel
+            mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
+
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(it.desc, "text/html", null)
+            mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+
+                }
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+                }
+
+                override fun onPageSelected(position: Int) {
+                    mViewModel.imagePos = position + 1
+                    mViewModel.notifyPropertyChanged(BR.imagePos)
+                }
+            })
+        })
+
+        mViewModel.getDetail()
+        mBinding.viewModel = mViewModel
+
+
+        initClaims(resources.getString(R.string.temp_productId).toInt())
+
+        detectButton()
+        mBinding.executePendingBindings()
+    }
+
+    private fun initClaims(productId: Int) {
+        claimFragment = ProductDetailClaimFragment(productId)
+        supportFragmentManager.beginTransaction().let {
+            it.add(mBinding.framelayoutProductdetailClaim.id, claimFragment)
+            it.commit()
+        }
+    }
+
+    private fun detectButton() {
+        val scrollBounds = Rect()
+        mBinding.scrollviewProductdetail.viewTreeObserver.addOnScrollChangedListener {
+            mBinding.scrollviewProductdetail.getHitRect(scrollBounds)
+            if (mBinding.linearlayoutProductdetailBodycontainer.getLocalVisibleRect(scrollBounds)) {
+                mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
+            } else {
+                mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
+            }
+        }
+    }
+
+    // OnProductDetailListener
+    override fun scrollToElement(pos: Int) {
+        var h = 0
+        when (pos) {
+            0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
+            1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
+            2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
+        }
+
+        mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
+    }
+
+    override fun notifyOptionAttrAdapter() {
+        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
+        (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
+    }
+
+    override fun onClickAttr(prevSelectedPos: Int, selectedPos: Int) {
+        // (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
+        // (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
+    }
+
+    override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
+        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(optionAttr)
+    }
+
+    override fun showMessage(message: String) {
+        Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                WRITE_CLAIM -> {
+                    // REFRESH
+                    claimFragment.refreshClaims()
+                }
+            }
+        }
+    }
 
     companion object {
         @JvmStatic
@@ -115,110 +230,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
 
 
-    }
-
-    override fun init() {
-        viewModel = ProductDetailViewModel(this)
-        viewModel.dealId = 12492
-
-//        if (intent != null) {
-//           // viewModel.dealId = intent.getIntExtra("id", 0)
-//            viewModel.dealId = 12492
-//        }
-        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter = ProductDetailOptionAdapter(viewModel, this)
-        mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(viewModel, this)
-
-        viewModel.product.observe(this, Observer<Product> { it ->
-            mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-            mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-            mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-            mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-            mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-            mBinding.includeProductdetailMenu.viewModel = viewModel
-            mBinding.includeProductdetailContentbody.viewModel = viewModel
-            mBinding.includeProductdetailContentsummary.viewModel = viewModel
-            mBinding.includeProductdetailContentheader.viewModel = viewModel
-            mBinding.includeProductdetailContentbody.viewModel = viewModel
-            mBinding.includeProductdetailContentinfo.viewModel = viewModel
-            mBinding.includeProductdetailContentshipping.viewModel = viewModel
-            mBinding.includeProductdetailContentnotifies.viewModel = viewModel
-
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(it.desc, "text/html", null)
-            mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
-
-                }
-
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-                }
-
-                override fun onPageSelected(position: Int) {
-                    viewModel.imagePos = position + 1
-                    viewModel.notifyPropertyChanged(BR.imagePos)
-                }
-            })
-        })
-
-        viewModel.getDetail()
-        mBinding.viewModel = viewModel
-
-
-        initClaims(10243)
-
-        detectButton()
-        mBinding.executePendingBindings()
-    }
-
-    private fun initClaims(productId: Int) {
-        val fragment = ProductDetailClaimFragment(productId)
-        val fm = supportFragmentManager
-        val ft = fm.beginTransaction()
-        ft.add(mBinding.framelayoutProductdetailClaim.id, fragment)
-        ft.commit()
-    }
-
-    private fun detectButton() {
-        val scrollBounds = Rect()
-        mBinding.scrollviewProductdetail.viewTreeObserver.addOnScrollChangedListener {
-            mBinding.scrollviewProductdetail.getHitRect(scrollBounds)
-            if (mBinding.linearlayoutProductdetailBodycontainer.getLocalVisibleRect(scrollBounds)) {
-                viewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
-            } else {
-                viewModel.bottomBtnVisibility = ObservableInt(View.GONE)
-            }
-        }
-    }
-
-    // OnProductDetailListener
-    override fun scrollToElement(pos: Int) {
-        var h: Int = 0
-        when (pos) {
-            0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
-            1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-            2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
-        }
-
-        mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
-    }
-
-    override fun notifyOptionAttrAdapter() {
-        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
-        (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
-    }
-
-    override fun onClickAttr(prevSelectedPos: Int, selectedPos: Int) {
-        // (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
-        // (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
-    }
-
-    override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
-        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(optionAttr)
-    }
-
-    override fun showMessage(message: String) {
-        Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
     }
 }
 

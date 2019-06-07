@@ -27,6 +27,8 @@ class WriteClaimActivity : BindActivity<ActivityWriteclaimBinding>() {
             }
         })
 
+        //// 임시 productID 12492
+        mViewModel.inquiry.productId = intent.getIntExtra("productId", resources.getString(R.string.temp_productId).toInt())
         mBinding.includeWriteclaimHeader.viewModel = mViewModel
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()

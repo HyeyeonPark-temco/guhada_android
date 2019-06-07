@@ -32,7 +32,7 @@ class ProductDetailClaimViewModel(private val productId: Int, val listener: Prod
                 } else {
                     listener.showMessage(o as String)
                 }
-            }, productId = productId, status = claimStatus, size = claimPageSize, pageNo = ++claimPageNo)
+            }, productId = productId, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
         } else {
             listener.showMessage("마지막 항목입니다.")
         }

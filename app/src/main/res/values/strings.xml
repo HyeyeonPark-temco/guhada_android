@@ -289,4 +289,5 @@
     <string name="claim_write_description3">에서 확인하실 수 있습니다.</string>
     <string name="claim_write_button_cancel">취소</string>
     <string name="claim_write_button_submit">등록</string>
+    <string name="temp_productId">10243</string>
 </resources>

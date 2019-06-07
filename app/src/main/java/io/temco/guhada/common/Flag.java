@@ -8,6 +8,7 @@ public class Flag {
         public static final int FACEBOOK_LOGIN = 1004;
         public static final int GOOGLE_LOGIN = 10005;
         public static final int RC_GOOGLE_LOGIN = 10006;
+        public static final int WRITE_CLAIM = 10007;
     }
 
     public static class ResultCode {
