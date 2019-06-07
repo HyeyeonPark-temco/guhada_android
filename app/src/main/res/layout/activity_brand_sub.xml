@@ -22,87 +22,9 @@
             layout="@layout/header_category_sub" />
 
         <!-- MIDDLE -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingTop="15dp"
-            android:paddingRight="5dp">
-
-            <!-- SEARCH -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <!-- Edit -->
-                    <EditText
-                        android:id="@+id/edittext_search"
-                        style="@style/TextRegularSingleLine"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:hint="@string/brand_search_hint"
-                        android:textColorHint="@color/text_7"
-                        android:textSize="@dimen/text_13" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_weight="0"
-                        android:background="@drawable/top_btn_search" />
-                </LinearLayout>
-
-                <!-- LINE -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="7dp"
-                    android:background="@color/line_5" />
-            </LinearLayout>
-
-            <!-- INITIAL -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="9dp"
-                android:layout_weight="0"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <!-- ALPHABET -->
-                <ImageView
-                    android:id="@+id/image_alphabet"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/selector_button_brand_alphabet"
-                    android:onClick="@{clickListener}" />
-
-                <!-- VERTICAL LINE -->
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="10dp"
-                    android:background="@color/line_4" />
-
-                <!-- HANGUL -->
-                <ImageView
-                    android:id="@+id/image_hangul"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/selector_button_brand_hangul"
-                    android:onClick="@{clickListener}" />
-            </LinearLayout>
-        </LinearLayout>
+        <include
+            android:id="@+id/layout_search"
+            layout="@layout/layout_brand_search" />
 
         <!-- CONTENTS -->
         <io.temco.guhada.view.custom.recycler.FastScrollRecyclerView

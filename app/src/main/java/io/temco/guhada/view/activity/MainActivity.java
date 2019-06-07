@@ -14,6 +14,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -23,6 +24,7 @@ import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
 import io.temco.guhada.view.adapter.expand.SideMenuExpandFirstListAdapter;
+import io.temco.guhada.view.custom.dialog.BrandListDialog;
 
 public class MainActivity extends BindActivity<ActivityMainBinding> implements View.OnClickListener {
 
@@ -31,6 +33,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private final int REQUEST_CODE_BRAND = 12;
 
     private MainPagerAdapter mPagerAdapter;
+    private BrandListDialog mBrandListDialog;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -156,6 +159,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                         break;
 
                     case 1: // Brand
+                        showBrandListDialog();
                         break;
 
                     case 2: // Home
@@ -263,6 +267,24 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 if (hierarchies != null && hierarchies.length >= 2) {
                     CategorySubActivity.startActivityForResult(this, hierarchies[1], REQUEST_CODE_CATEGORY);
                 }
+        }
+    }
+
+    private void showBrandListDialog() {
+        if (getSupportFragmentManager() != null) {
+            if (mBrandListDialog == null) {
+                mBrandListDialog = new BrandListDialog();
+                mBrandListDialog.setOnBrandListener(brand -> {
+                    if (brand != null) mPagerAdapter.setProductBrandData(brand);
+                });
+            }
+            mBrandListDialog.show(getSupportFragmentManager(), getBaseTag());
+        }
+    }
+
+    private void dismissBrandListDialog() {
+        if (mBrandListDialog != null) {
+            mBrandListDialog.dismiss();
         }
     }
 

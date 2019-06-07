@@ -20,7 +20,6 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
-import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
@@ -39,7 +38,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator(); // Button Animation
     private OnAddCategoryListener mCategoryListener;
     private RequestManager mRequestManager; // Glide
-    private ProductOrderDialog mOrderBottomDialog;
+    private ProductOrderDialog mOrderDialog;
     // List
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
@@ -130,11 +129,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
             // Option
             case R.id.layout_order:
-                showOrderBottomDialog();
+                showOrderDialog();
                 break;
 
             case R.id.layout_search_detail:
-                showOrderBottomDialog();
+                showOrderDialog();
                 break;
         }
     }
@@ -225,12 +224,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void addCategoryTab(Category data, boolean isSelect) {
-        View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
-        ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
-        TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
-        tab.setTag(data); // Tag
-        mBinding.layoutHeader.layoutTab.addTab(tab);
-        if (isSelect) tab.select();
+        if (getContext() != null) {
+            View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
+            ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
+            TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
+            tab.setTag(data); // Tag
+            mBinding.layoutHeader.layoutTab.addTab(tab);
+            if (isSelect) tab.select();
+        }
     }
 
     private void loadCategory(Category data, boolean isReselected) {
@@ -283,7 +284,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void changeProductOrder(Type.ProductOrder type) {
-        dismissOrderBottomDialog();
+        dismissOrderDialog();
         mCurrentOrderType = type;
         if (mBinding != null && getContext() != null) {
             switch (type) {
@@ -306,19 +307,19 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
-    private void showOrderBottomDialog() {
+    private void showOrderDialog() {
         if (getFragmentManager() != null) {
-            if (mOrderBottomDialog == null) {
-                mOrderBottomDialog = new ProductOrderDialog();
-                mOrderBottomDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
+            if (mOrderDialog == null) {
+                mOrderDialog = new ProductOrderDialog();
+                mOrderDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
             }
-            mOrderBottomDialog.show(getFragmentManager(), getBaseTag());
+            mOrderDialog.show(getFragmentManager(), getBaseTag());
         }
     }
 
-    private void dismissOrderBottomDialog() {
-        if (mOrderBottomDialog != null) {
-            mOrderBottomDialog.dismiss();
+    private void dismissOrderDialog() {
+        if (mOrderDialog != null) {
+            mOrderDialog.dismiss();
         }
     }
 

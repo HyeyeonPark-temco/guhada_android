@@ -54,7 +54,7 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
         selectInitial(true);
 
         // EditText
-        mBinding.edittextSearch.addTextChangedListener(new TextWatcher() {
+        mBinding.layoutSearch.edittextSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -124,10 +124,10 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
     private void selectInitial(boolean isAlphabet) {
         if (mListAdapter != null) {
-            mBinding.imageAlphabet.setSelected(isAlphabet);
-            mBinding.imageHangul.setSelected(!isAlphabet);
+            mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
+            mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
             mListAdapter.changeLanguage(isAlphabet);
-            mBinding.edittextSearch.setText(null);
+            mBinding.layoutSearch.edittextSearch.setText(null);
         }
     }
 
