@@ -153,31 +153,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.layoutContents.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mPagerAdapter.removeProduct();
-                switch (tab.getPosition()) {
-                    case 0: // Category
-                        break;
-
-                    case 1: // Brand
-                        showBrandListDialog();
-                        break;
-
-                    case 2: // Home
-                        mBinding.layoutContents.layoutPager.setCurrentItem(0);
-                        break;
-
-                    case 3: // Community
-                        mBinding.layoutContents.layoutPager.setCurrentItem(1);
-                        break;
-
-                    case 4: // My Page
-                        if (false) {
-                            // if login
-                        } else {
-                            mBinding.layoutContents.layoutPager.setCurrentItem(2);
-                        }
-                        break;
-                }
+                selectTab(tab.getPosition(), false);
             }
 
             @Override
@@ -186,7 +162,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                mPagerAdapter.removeProduct();
+                selectTab(tab.getPosition(), true);
             }
         });
     }
@@ -227,6 +203,36 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             if (i == current) {
                 tab.select();
             }
+        }
+    }
+
+    private void selectTab(int position, boolean isReselected) {
+        mPagerAdapter.removeProduct();
+        switch (position) {
+            case 0: // Category
+                break;
+
+            case 1: // Brand
+                showBrandListDialog();
+                break;
+
+            case 2: // Home
+                if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(0);
+                break;
+
+            case 3: // Community
+                if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(1);
+                break;
+
+            case 4: // My Page
+                if (!isReselected) {
+                    if (false) {
+                        // if login
+                    } else {
+                        mBinding.layoutContents.layoutPager.setCurrentItem(2);
+                    }
+                }
+                break;
         }
     }
 

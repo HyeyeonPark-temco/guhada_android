@@ -47,6 +47,7 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
     protected void init() {
         mBinding.setClickListener(this);
         mBinding.layoutHeader.setClickListener(this);
+        mBinding.layoutSearch.setClickListener(this);
         mBinding.layoutHeader.setTitle(getString(R.string.common_brand));
 
         // List
@@ -141,10 +142,6 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
             }
         }
     }
-
-    ////////////////////////////////////////////////
-    // LISTENER
-    ////////////////////////////////////////////////
 
     ////////////////////////////////////////////////
 }
