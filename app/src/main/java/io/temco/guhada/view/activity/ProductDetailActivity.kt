@@ -103,6 +103,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
             }
+
+            override fun showMessage(message: String) {
+                Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
+            }
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
@@ -115,6 +119,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
+            }
+
+            override fun showMessage(message: String) {
+                Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
             }
         }).apply {
             product = mViewModel.product.value ?: Product()
@@ -174,17 +182,23 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun showMenu() {
-        if (headerMenuFragment.getSelectedOptionCount() == mViewModel.product.value?.options?.size) {
+        val optionCount = mViewModel.product.value?.options?.size
+        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+            menuFragment.getSelectedOptionCount()
+        } else {
+            headerMenuFragment.getSelectedOptionCount()
+        }
+
+        if (selectedOptionCount == optionCount) {
             Toast.makeText(this@ProductDetailActivity, "장바구니 이동", Toast.LENGTH_SHORT).show()
         } else {
             mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
-
-
             mViewModel.notifyPropertyChanged(BR.menuVisibility)
         }
     }
 
     interface OnMenuListener {
+        fun showMessage(message: String)
         fun closeMenu()
         fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit)
     }

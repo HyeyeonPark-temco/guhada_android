@@ -10,9 +10,8 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.ProductDetailActivity
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 
-class ProductDetailMenuViewModel(private val menuListener: ProductDetailActivity.OnMenuListener) : BaseObservableViewModel() {
+class ProductDetailMenuViewModel(private val listener: ProductDetailActivity.OnMenuListener) : BaseObservableViewModel() {
     var closeButtonVisibility = View.VISIBLE
-
     var product: Product = Product()
     var totalPrice = ObservableInt(0)
         @Bindable
@@ -26,25 +25,33 @@ class ProductDetailMenuViewModel(private val menuListener: ProductDetailActivity
 
     var optionMap: MutableMap<String, Int> = mutableMapOf()
 
-    fun onClickCloseMenu() = menuListener.closeMenu()
+    fun onClickCloseMenu() = listener.closeMenu()
 
     fun onClickPlus() {
-        (productCount.get() + 1).let { count ->
-            productCount = ObservableInt(count)
-            totalPrice = ObservableInt(product.discountPrice * count)
+        if (optionMap.keys.size != product.options?.size) {
+            listener.showMessage("옵션을 선택해주세요.")
+        } else {
+            (productCount.get() + 1).let { count ->
+                productCount = ObservableInt(count)
+                totalPrice = ObservableInt(product.discountPrice * count)
 
-            notifyPropertyChanged(BR.productCount)
-            notifyPropertyChanged(BR.totalPrice)
+                notifyPropertyChanged(BR.productCount)
+                notifyPropertyChanged(BR.totalPrice)
+            }
         }
     }
 
     fun onClickMinus() {
-        (productCount.get() - 1).let { count ->
-            if (count > 0) {
-                productCount = ObservableInt(count)
-                totalPrice = ObservableInt(product.discountPrice * count)
-                notifyPropertyChanged(BR.productCount)
-                notifyPropertyChanged(BR.totalPrice)
+        if (optionMap.keys.size != product.options?.size) {
+            listener.showMessage("옵션을 선택해주세요.")
+        } else {
+            (productCount.get() - 1).let { count ->
+                if (count > 0) {
+                    productCount = ObservableInt(count)
+                    totalPrice = ObservableInt(product.discountPrice * count)
+                    notifyPropertyChanged(BR.productCount)
+                    notifyPropertyChanged(BR.totalPrice)
+                }
             }
         }
     }
@@ -52,12 +59,11 @@ class ProductDetailMenuViewModel(private val menuListener: ProductDetailActivity
     fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {
         optionMap[type] = position
         if (type == "COLOR") {
-            menuListener.setColorName(optionAttr) {
+            listener.setColorName(optionAttr) {
                 colorName = ObservableField(optionAttr.name)
                 notifyPropertyChanged(BR.colorName)
             }
         }
     }
-
 
 }

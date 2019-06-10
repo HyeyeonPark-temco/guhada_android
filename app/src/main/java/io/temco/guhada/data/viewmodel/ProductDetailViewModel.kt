@@ -15,15 +15,10 @@ import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
-    var optionMap: MutableMap<String, Int> = mutableMapOf()
     var dealId: Int = 0
     var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
-
     var menuVisibility = ObservableInt(View.GONE)
-        @Bindable
-        get() = field
-    var colorName = ObservableField<String>("")
         @Bindable
         get() = field
     var bottomBtnVisibility = ObservableInt(View.GONE)
@@ -37,10 +32,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         @Bindable
         get() = field
     var selectedTab = ObservableInt(0)
-        @Bindable
-        get() = field
-
-    var productCount = ObservableInt(1)
         @Bindable
         get() = field
 
@@ -81,32 +72,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         notifyPropertyChanged(BR.selectedTab)
     }
 
-    fun onClickPlus() {
-        (productCount.get() + 1).let { count ->
-            if (product.value != null) {
-                productCount = ObservableInt(count)
-                totalPrice = ObservableInt(product.value!!.discountPrice * count)
-
-                notifyPropertyChanged(BR.productCount)
-                notifyPropertyChanged(BR.totalPrice)
-            }
-        }
-    }
-
-
-    fun onClickMinus() {
-        (productCount.get() - 1).let { count ->
-            if (count > 0) {
-                productCount = ObservableInt(count)
-                totalPrice = ObservableInt(product.value?.discountPrice ?: product.value?.sellPrice
-                ?: 0
-                * count)
-                notifyPropertyChanged(BR.productCount)
-                notifyPropertyChanged(BR.totalPrice)
-            }
-        }
-    }
-
     fun onClickRefundInfo() {
         refundInfoExpanded = ObservableBoolean(!refundInfoExpanded.get())
         notifyPropertyChanged(BR.refundInfoExpanded)
@@ -122,25 +87,11 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         notifyPropertyChanged(BR.advantageInfoExpanded)
     }
 
-    fun onClickBag() {
-        listener?.showMenu()
-//        if (optionMap.keys.size == product.value?.options?.size) {
-//            // 옵션 선택 완료 -> 장바구니 이동
-//        } else {
-//            // 옵션 선택 미완료 -> 메뉴 view 노출
-//            menuVisibility = ObservableInt(View.VISIBLE)
-//            notifyPropertyChanged(BR.menuVisibility)
-//        }
-    }
+    fun onClickBag() = listener?.showMenu()
 
     fun onClickCloseMenu() {
         menuVisibility = ObservableInt(View.GONE)
         notifyPropertyChanged(BR.menuVisibility)
     }
-
-//    fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {
-//        optionMap[type] = position
-//        listener?.setColorName(optionAttr)
-//    }
 
 }
