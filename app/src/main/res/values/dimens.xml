@@ -45,6 +45,6 @@
     <dimen name="view_fast_scroll_brand_contents_row">37dp</dimen>
 
     <!-- PADDING -->
-    <dimen name="padding_fast_scroll_brand_text">12dp</dimen>
+    <dimen name="padding_fast_scroll_brand_top">11dp</dimen>
     <dimen name="padding_fast_scroll_brand_section">50dp</dimen>
 </resources>

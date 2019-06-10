@@ -44,9 +44,9 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     private String mCurrentSection;
     private boolean mIsShowSection = false;
     private int mHeaderHeight;
+    private float mTopPadding;
     private float mPointTextSize;
     private float mLetterTextSize;
-    private float mLetterTextPadding;
     private float mSectionThumbTextSize;
     private float mSectionThumbSize;
     private float mSectionThumbPadding;
@@ -68,9 +68,9 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
         mContext = context;
         // Size
         mHeaderHeight = context.getResources().getDimensionPixelSize(R.dimen.view_fast_scroll_brand_header_row);
+        mTopPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_top);
         mPointTextSize = context.getResources().getDimension(R.dimen.text_8);
         mLetterTextSize = context.getResources().getDimension(R.dimen.text_10);
-        mLetterTextPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_text);
         mSectionThumbTextSize = context.getResources().getDimension(R.dimen.text_30);
         mSectionThumbSize = context.getResources().getDimension(R.dimen.view_fast_scroll_brand_thumb);
         mSectionThumbPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_section);
@@ -169,7 +169,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
 
     @Override
     public float getTopPadding() {
-        return mLetterTextPadding;
+        return mTopPadding;
     }
 
     @Override
