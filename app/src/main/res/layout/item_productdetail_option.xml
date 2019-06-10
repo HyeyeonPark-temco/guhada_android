@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.ProductDetailViewModel" />
+            type="io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel" />
 
         <variable
             name="option"
@@ -35,8 +35,7 @@
             app:layout_constraintEnd_toStartOf="@+id/linearLayout9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:productOptionAttr="@{option}" />
-
+            app:productOptionAttr="@{option}"/>
         <LinearLayout
             android:id="@+id/linearLayout9"
             android:layout_width="wrap_content"

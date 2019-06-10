@@ -7,17 +7,12 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
-import io.temco.guhada.common.Flag.ResultCode.DATA_NOT_FOUND
 import io.temco.guhada.common.listener.OnProductDetailListener
-import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 
 class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
     var optionMap: MutableMap<String, Int> = mutableMapOf()
@@ -128,13 +123,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
     fun onClickBag() {
-        if (optionMap.keys.size == product.value?.options?.size) {
-            // 옵션 선택 완료 -> 장바구니 이동
-        } else {
-            // 옵션 선택 미완료 -> 메뉴 view 노출
-            menuVisibility = ObservableInt(View.VISIBLE)
-            notifyPropertyChanged(BR.menuVisibility)
-        }
+        listener?.showMenu()
+//        if (optionMap.keys.size == product.value?.options?.size) {
+//            // 옵션 선택 완료 -> 장바구니 이동
+//        } else {
+//            // 옵션 선택 미완료 -> 메뉴 view 노출
+//            menuVisibility = ObservableInt(View.VISIBLE)
+//            notifyPropertyChanged(BR.menuVisibility)
+//        }
     }
 
     fun onClickCloseMenu() {
@@ -142,8 +138,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         notifyPropertyChanged(BR.menuVisibility)
     }
 
-    fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {
-        optionMap[type] = position
-        listener?.setColorName(optionAttr)
-    }
+//    fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {
+//        optionMap[type] = position
+//        listener?.setColorName(optionAttr)
+//    }
+
 }

@@ -74,15 +74,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp" />
 
-                    <!-- 작업중 -->
                     <FrameLayout
                         android:id="@+id/framelayout_productdetail_claim"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
-
-                    <!--<include-->
-                        <!--android:id="@+id/include_productdetail_contentclaim"-->
-                        <!--layout="@layout/layout_productdetail_claim" />-->
 
                     <include
                         android:id="@+id/include_productdetail_contentshipping"
@@ -125,14 +120,7 @@
             app:layout_constraintBottom_toTopOf="@+id/linearlayout_productdetail_button"
             app:layout_constraintEnd_toEndOf="@+id/scrollview_productdetail"
             app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail">
-
-            <include
-                android:id="@+id/include_productdetail_menu"
-                layout="@layout/layout_productdetail_menu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </FrameLayout>
-
 
         <!-- 하단 버튼 -->
         <LinearLayout

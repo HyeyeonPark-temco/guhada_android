@@ -11,12 +11,12 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.Product
-import io.temco.guhada.data.viewmodel.ProductDetailViewModel
+import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionBinding
 import io.temco.guhada.view.adapter.base.BaseViewHolder
 
-class ProductDetailOptionAdapter(val viewModel: ProductDetailViewModel, var selectListener: ProductDetailOptionAttrAdapter.OnSelectAttrListener) : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
-    var list: List<Product.Option> = ArrayList()
+class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
+    var options: List<Product.Option> = ArrayList()
     lateinit var mBinding: ItemProductdetailOptionBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -24,14 +24,14 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailViewModel, var sele
         return Holder(mBinding)
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = options.size
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(options[position])
     }
 
     fun setItems(list: List<Product.Option>) {
-        this.list = list
+        this.options = list
         notifyDataSetChanged()
     }
 
@@ -44,9 +44,10 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailViewModel, var sele
                     binding.linearlayoutProductdetailOption.layoutParams = it
                 }
             }
+
             binding.viewModel = viewModel
             binding.option = option
-            binding.recyclerviewProductdetailOptionattr.adapter = ProductDetailOptionAttrAdapter(viewModel, option, selectListener)
+            binding.recyclerviewProductdetailOptionattr.adapter = ProductDetailOptionAttrAdapter(viewModel, option)
             binding.recyclerviewProductdetailOptionattr.layoutManager = LinearLayoutManager(BaseApplication.getInstance().applicationContext, RecyclerView.HORIZONTAL, false)
             binding.executePendingBindings()
         }
@@ -56,12 +57,10 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailViewModel, var sele
         mBinding.recyclerviewProductdetailOptionattr.adapter?.notifyDataSetChanged()
     }
 
-    fun setItemSelected(optionAttr: OptionAttr) {
+    fun setItemSelected(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
         if (::mBinding.isInitialized && optionAttr.rgb.isNotBlank()) {
             viewModel.colorName = ObservableField(optionAttr.name)
             viewModel.notifyPropertyChanged(BR.colorName)
-            //(mBinding.recyclerviewProductdetailOptionattr.adapter as ProductDetailOptionAttrAdapter).setSelectedItemPos(prevSelectedPos, selectedPos)
-            //(mBinding.recyclerviewProductdetailOptionattr.adapter as ProductDetailOptionAttrAdapter).setSelectedItemPos(prevSelectedPos, selectedPos)
         }
     }
 

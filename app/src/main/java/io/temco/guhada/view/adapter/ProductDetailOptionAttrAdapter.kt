@@ -12,12 +12,12 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.Product
-import io.temco.guhada.data.viewmodel.ProductDetailViewModel
-import io.temco.guhada.view.adapter.base.BaseViewHolder
+import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter.OptionAttr
+import io.temco.guhada.view.adapter.base.BaseViewHolder
 
-class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var option: Product.Option, var selectListener: OnSelectAttrListener) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
-    var list: List<OptionAttr> = ArrayList()
+class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Product.Option) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
+    var list: List<ProductDetailOptionAdapter.OptionAttr> = ArrayList()
     private var prevSelectedPos: Int = -1
     private var selectedPos: Int = -1
     private lateinit var mHolder: Holder
@@ -39,7 +39,6 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var 
             notifyDataSetChanged()
         }
     }
-
 
     inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionattrBinding) : BaseViewHolder<io.temco.guhada.databinding.ItemProductdetailOptionattrBinding>(binding.root) {
         fun bind(optionAttr: OptionAttr, selectedPos: Int) {
@@ -74,15 +73,14 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var 
                 this@ProductDetailOptionAttrAdapter.selectedPos = adapterPosition
 
                 // SELECT ATTR
-                selectListener.onClickAttr(prevSelectedPos, this@ProductDetailOptionAttrAdapter.selectedPos)
+//                selectListener.onClickAttr(prevSelectedPos, this@ProductDetailOptionAttrAdapter.selectedPos)
                 viewModel.onSelectAttr(optionAttr, option.type, adapterPosition)
                 notifyItemChanged(this@ProductDetailOptionAttrAdapter.selectedPos)
                 notifyItemChanged(prevSelectedPos)
 
                 // TOTAL PRICE
-                if (viewModel.totalPrice.get() == 0 && viewModel.optionMap.keys.size == viewModel.product.value?.options?.size) {
-                    viewModel.totalPrice = ObservableInt(viewModel.product.value?.discountPrice
-                            ?: viewModel.product.value?.sellPrice ?: 0)
+                if (viewModel.totalPrice.get() == 0 && viewModel.optionMap.keys.size == viewModel.product.options?.size) {
+                    viewModel.totalPrice = ObservableInt(viewModel.product.discountPrice)
                     viewModel.notifyPropertyChanged(BR.totalPrice)
                 }
             }
@@ -99,7 +97,4 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailViewModel, var 
         notifyItemChanged(prevSelectedPos)
     }
 
-    interface OnSelectAttrListener {
-        fun onClickAttr(prevSelectedPos: Int, selectedPos: Int)
-    }
 }

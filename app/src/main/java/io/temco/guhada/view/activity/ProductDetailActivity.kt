@@ -20,15 +20,22 @@ import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.*
+import io.temco.guhada.view.adapter.ImagePagerAdapter
+import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
+import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
+import io.temco.guhada.view.adapter.ProductDetailTagAdapter
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
+import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
 
-class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener, ProductDetailOptionAttrAdapter.OnSelectAttrListener {
+class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var claimFragment: ProductDetailClaimFragment
+    private lateinit var menuFragment: ProductDetailMenuFragment
+    private lateinit var headerMenuFragment: ProductDetailMenuFragment
 
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
@@ -39,17 +46,12 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
         // 임시 productId 12492
         mViewModel.dealId = intent.getIntExtra("productId", resources.getString(R.string.temp_productId).toInt())
-        mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter = ProductDetailOptionAdapter(mViewModel, this)
-        mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(mViewModel, this)
 
         mViewModel.product.observe(this, Observer<Product> { it ->
             mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
             mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-            mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-            mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-            mBinding.includeProductdetailMenu.viewModel = mViewModel
             mBinding.includeProductdetailContentbody.viewModel = mViewModel
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
             mBinding.includeProductdetailContentheader.viewModel = mViewModel
@@ -73,11 +75,12 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                     mViewModel.notifyPropertyChanged(BR.imagePos)
                 }
             })
+
+            initMenu()
         })
 
         mViewModel.getDetail()
         mBinding.viewModel = mViewModel
-
 
         initClaims(resources.getString(R.string.temp_productId).toInt())
 
@@ -91,6 +94,41 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             it.add(mBinding.framelayoutProductdetailClaim.id, claimFragment)
             it.commit()
         }
+    }
+
+    private fun initMenu() {
+        ProductDetailMenuViewModel(object : OnMenuListener {
+            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun closeMenu() {
+                mViewModel.menuVisibility = ObservableInt(View.GONE)
+                mViewModel.notifyPropertyChanged(BR.menuVisibility)
+            }
+        }).apply {
+            product = mViewModel.product.value ?: Product()
+            this.closeButtonVisibility = View.VISIBLE
+        }.let { menuViewModel ->
+            menuFragment = ProductDetailMenuFragment(menuViewModel)
+        }
+
+        ProductDetailMenuViewModel(object : OnMenuListener {
+            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun closeMenu() {
+                mViewModel.menuVisibility = ObservableInt(View.GONE)
+                mViewModel.notifyPropertyChanged(BR.menuVisibility)
+            }
+        }).apply {
+            product = mViewModel.product.value ?: Product()
+            this.closeButtonVisibility = View.GONE
+        }.let { menuViewModel ->
+            headerMenuFragment = ProductDetailMenuFragment(menuViewModel)
+        }
+
+        supportFragmentManager.beginTransaction().let {
+            it.add(mBinding.framelayoutProductdetailMenu.id, menuFragment)
+            it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, headerMenuFragment)
+            it.commit()
+        }
+
     }
 
     private fun detectButton() {
@@ -117,20 +155,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
     }
 
-    override fun notifyOptionAttrAdapter() {
-        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
-        (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).notifyAttrAdapter()
-    }
-
-    override fun onClickAttr(prevSelectedPos: Int, selectedPos: Int) {
-        // (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
-        // (mBinding.includeProductdetailMenu.recyclerviewProductdetailMenu.adapter as ProductDetailOptionAdapter).setItemSelected(prevSelectedPos, selectedPos)
-    }
-
-    override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
-        (mBinding.includeProductdetailContentheader.recyclerviewProductdetailOption.adapter as ProductDetailOptionAdapter).setItemSelected(optionAttr)
-    }
-
     override fun showMessage(message: String) {
         Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
     }
@@ -147,6 +171,22 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 }
             }
         }
+    }
+
+    override fun showMenu() {
+        if (headerMenuFragment.getSelectedOptionCount() == mViewModel.product.value?.options?.size) {
+            Toast.makeText(this@ProductDetailActivity, "장바구니 이동", Toast.LENGTH_SHORT).show()
+        } else {
+            mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
+
+
+            mViewModel.notifyPropertyChanged(BR.menuVisibility)
+        }
+    }
+
+    interface OnMenuListener {
+        fun closeMenu()
+        fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit)
     }
 
     companion object {
@@ -195,44 +235,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 (this.adapter as ImagePagerAdapter).setItems(images)
             }
         }
-
-        @JvmStatic
-        @BindingAdapter("productOption")
-        fun RecyclerView.bindOption(list: List<Product.Option>?) {
-            if (list != null && list.isNotEmpty() && this.adapter != null) {
-                (this.adapter as ProductDetailOptionAdapter).setItems(list)
-            }
-        }
-
-        @JvmStatic
-        @BindingAdapter("productOptionAttr")
-        fun RecyclerView.bindOptionAttr(option: Product.Option?) {
-            if (option != null && this.adapter != null) {
-                val attrList: MutableList<ProductDetailOptionAdapter.OptionAttr> = ArrayList()
-
-                if (option.type == "COLOR") {
-                    for (i in 0 until option.rgb.size) {
-                        ProductDetailOptionAdapter.OptionAttr().apply {
-                            rgb = option.rgb[i]
-                            name = option.attributes[i]
-                        }.let {
-                            attrList.add(it)
-                        }
-                    }
-                } else {
-                    for (attr in option.attributes) {
-                        ProductDetailOptionAdapter.OptionAttr().apply {
-                            name = attr
-                        }.let {
-                            attrList.add(it)
-                        }
-                    }
-                }
-
-                (this.adapter as ProductDetailOptionAttrAdapter).setItems(attrList)
-            }
-        }
-
 
     }
 }
