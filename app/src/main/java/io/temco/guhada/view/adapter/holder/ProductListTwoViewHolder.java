@@ -74,7 +74,7 @@ public class ProductListTwoViewHolder extends BaseProductViewHolder<ItemProductL
             }
 
             // Ship
-            // mBinding.textShipFree.setVisibility(View.VISIBLE);
+            mBinding.textShipFree.setVisibility(data.freeShipping ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -10,17 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.data.model.Brand;
-import io.temco.guhada.databinding.DialogBrandListBinding;
+import io.temco.guhada.databinding.DialogDetailSearchBinding;
 import io.temco.guhada.view.adapter.BrandListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
-public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implements View.OnClickListener {
+public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private OnBrandListener mListener;
-    private BrandListAdapter mListAdapter;
+    private BrandListAdapter mBrandListAdapter;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -29,33 +27,16 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
 
     @Override
     protected int getLayoutId() {
-        return R.layout.dialog_brand_list;
+        return R.layout.dialog_detail_search;
     }
 
     @Override
     protected void init() {
         mBinding.setClickListener(this);
-        mBinding.layoutSearch.setClickListener(this);
 
         // List
-        initList();
-        selectInitial(true);
-
-        // EditText
-        mBinding.layoutSearch.edittextSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                setFilter(s.toString());
-            }
-        });
+        initCategoryList();
+        setBrandData(null);
     }
 
     @Override
@@ -79,52 +60,68 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setOnBrandListener(OnBrandListener listener) {
-        mListener = listener;
+    private void setBrandData(Brand data) {
+        initBrandList();
+        selectInitial(true);
     }
 
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void dissmissWithData(Brand b) {
-        if (mListener != null) {
-            mListener.onEvent(b);
-        }
-        dismiss();
+    // Category
+    private void initCategoryList() {
+
     }
 
-    private void initList() {
+    // Brand
+    private void initBrandList() {
+        mBinding.layoutSearch.setClickListener(this);
         // Adapter
-        mListAdapter = new BrandListAdapter(getContext(), true);
-        mListAdapter.setOnBrandListener(brand -> {
+        mBrandListAdapter = new BrandListAdapter(getContext(), false);
+        mBrandListAdapter.setOnBrandListener(brand -> {
             if (brand != null && brand.type != Type.List.HEADER) {
-                dissmissWithData(brand);
+
             }
         });
-        mListAdapter.initBrandData(Preferences.getBrands());
+        mBrandListAdapter.initBrandData(Preferences.getBrands());
         // List
-        mBinding.listContents.setHasFixedSize(true);
-        mBinding.listContents.setLayoutManager(new LinearLayoutManager(getContext()));
-        mBinding.listContents.setAdapter(mListAdapter);
+        mBinding.listBrand.setHasFixedSize(true);
+        mBinding.listBrand.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.listBrand.setAdapter(mBrandListAdapter);
+        // EditText
+        mBinding.layoutSearch.edittextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setFilter(s.toString());
+            }
+        });
     }
 
     private void selectInitial(boolean isAlphabet) {
-        if (mListAdapter != null) {
+        if (mBrandListAdapter != null) {
             mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
             mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
-            mListAdapter.changeLanguage(isAlphabet);
+            mBrandListAdapter.changeLanguage(isAlphabet);
             mBinding.layoutSearch.edittextSearch.setText(null);
         }
     }
 
     private void setFilter(String text) {
-        if (mListAdapter != null) {
-            mBinding.listContents.scrollToPosition(0);
+        if (mBrandListAdapter != null) {
+            mBinding.listBrand.scrollToPosition(0);
             if (TextUtils.isEmpty(text)) {
-                mListAdapter.resetFilterToOriginal();
+                mBrandListAdapter.resetFilterToOriginal();
             } else {
-                mListAdapter.filter(text);
+                mBrandListAdapter.filter(text);
             }
         }
     }

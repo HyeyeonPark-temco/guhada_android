@@ -29,6 +29,7 @@ import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.adapter.ProductListAdapter;
+import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
@@ -133,7 +134,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_search_detail:
-                showOrderDialog();
+                showDetailSearchDialog();
                 break;
         }
     }
@@ -307,22 +308,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
-    private void showOrderDialog() {
-        if (getFragmentManager() != null) {
-            if (mOrderDialog == null) {
-                mOrderDialog = new ProductOrderDialog();
-                mOrderDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
-            }
-            mOrderDialog.show(getFragmentManager(), getBaseTag());
-        }
-    }
-
-    private void dismissOrderDialog() {
-        if (mOrderDialog != null) {
-            mOrderDialog.dismiss();
-        }
-    }
-
     // List
     private void initProductList() {
         // Adapter
@@ -488,6 +473,31 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     }
                 })
                 .start();
+    }
+
+    // Dialog
+    private void showOrderDialog() {
+        if (getFragmentManager() != null) {
+            if (mOrderDialog == null) {
+                mOrderDialog = new ProductOrderDialog();
+                mOrderDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
+            }
+            mOrderDialog.show(getFragmentManager(), getBaseTag());
+        }
+    }
+
+    private void dismissOrderDialog() {
+        if (mOrderDialog != null) {
+            mOrderDialog.dismiss();
+        }
+    }
+
+    private void showDetailSearchDialog() {
+        if (getFragmentManager() != null) {
+            DetailSearchDialog d = new DetailSearchDialog();
+
+            d.show(getFragmentManager(), getBaseTag());
+        }
     }
 
     ////////////////////////////////////////////////

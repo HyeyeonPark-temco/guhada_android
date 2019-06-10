@@ -110,7 +110,7 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
     private void initList() {
         // Adapter
-        mListAdapter = new BrandListAdapter(this);
+        mListAdapter = new BrandListAdapter(this, true);
         mListAdapter.setOnBrandListener(brand -> {
             if (brand != null && brand.type != Type.List.HEADER) {
                 finishWithData(brand);

@@ -15,6 +15,7 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
     // -------- LOCAL VALUE --------
     private OnStickyHeaderListener mListener;
     private int mStickyHeaderHeight;
+    private View mHeader;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -57,10 +58,14 @@ public class StickyHeaderItemDecoration extends RecyclerView.ItemDecoration {
     ////////////////////////////////////////////////
 
     private View getHeaderViewForItem(int headerPosition, RecyclerView parent) {
-        int layoutResId = mListener.getHeaderLayout(headerPosition);
-        View header = LayoutInflater.from(parent.getContext()).inflate(layoutResId, parent, false);
-        mListener.onBindHeaderData(header, headerPosition);
-        return header;
+        // View header = LayoutInflater.from(parent.getContext()).inflate(mListener.getHeaderLayout(headerPosition), parent, false);
+        // mListener.onBindHeaderData(header, headerPosition);
+        // return header;
+        if (mHeader == null) {
+            mHeader = LayoutInflater.from(parent.getContext()).inflate(mListener.getHeaderLayout(), parent, false);
+        }
+        mListener.onBindHeaderData(mHeader, headerPosition);
+        return mHeader;
     }
 
     private void drawHeader(Canvas c, View header) {

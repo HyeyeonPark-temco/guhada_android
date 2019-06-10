@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <!-- HEADER -->
+        <include
+            layout="@layout/header_dialog"
+            app:clickListener="@{clickListener}"
+            app:title="@{@string/product_search_detail_title}" />
+
+        <!-- CONTENTS -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_default"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- //////////////////////////////////////////////// -->
+                <!-- CATEGORY -->
+                <!-- //////////////////////////////////////////////// -->
+
+                <com.github.florent37.expansionpanel.ExpansionHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:expansion_layout="@id/layout_expand_category"
+                    app:expansion_toggleOnClick="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="20dp">
+
+                        <TextView
+                            style="@style/TextMediumSingleLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="test"
+                            android:textColor="@drawable/selector_text_category"
+                            android:textSize="@dimen/text_16" />
+                    </RelativeLayout>
+                </com.github.florent37.expansionpanel.ExpansionHeader>
+
+                <com.github.florent37.expansionpanel.ExpansionLayout
+                    android:id="@+id/layout_expand_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:expansion_expanded="false">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never" />
+                </com.github.florent37.expansionpanel.ExpansionLayout>
+
+                <!-- //////////////////////////////////////////////// -->
+                <!-- BRAND -->
+                <!-- //////////////////////////////////////////////// -->
+
+                <com.github.florent37.expansionpanel.ExpansionHeader
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:expansion_layout="@id/layout_expand_brand"
+                    app:expansion_toggleOnClick="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="30dp"
+                        android:paddingRight="20dp">
+
+                        <TextView
+                            style="@style/TextMediumSingleLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="test"
+                            android:textColor="@drawable/selector_text_category"
+                            android:textSize="@dimen/text_16" />
+                    </RelativeLayout>
+                </com.github.florent37.expansionpanel.ExpansionHeader>
+
+                <com.github.florent37.expansionpanel.ExpansionLayout
+                    android:id="@+id/layout_expand_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:expansion_expanded="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include
+                            android:id="@+id/layout_search"
+                            layout="@layout/layout_brand_search" />
+
+                        <io.temco.guhada.view.custom.recycler.FastScrollRecyclerView
+                            android:id="@+id/list_brand"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:paddingRight="20dp" />
+                    </LinearLayout>
+                </com.github.florent37.expansionpanel.ExpansionLayout>
+
+                <!-- //////////////////////////////////////////////// -->
+                <!-- FILTER -->
+                <!-- //////////////////////////////////////////////// -->
+
+                <LinearLayout
+                    android:id="@+id/layout_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <!-- //////////////////////////////////////////////// -->
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

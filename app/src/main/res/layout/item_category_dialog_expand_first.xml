@@ -51,16 +51,11 @@
             android:visibility="@{expand}"
             app:expansion_expanded="false">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_contents"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list_contents"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:overScrollMode="never" />
         </com.github.florent37.expansionpanel.ExpansionLayout>
     </LinearLayout>
 </layout>

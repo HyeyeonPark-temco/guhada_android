@@ -8,7 +8,9 @@ public interface OnStickyHeaderListener {
 
     int getHeaderPositionForItem(int itemPosition);
 
-    int getHeaderLayout(int headerPosition);
+    // int getHeaderLayout(int headerPosition);
+
+    int getHeaderLayout();
 
     void onBindHeaderData(View header, int headerPosition);
 }

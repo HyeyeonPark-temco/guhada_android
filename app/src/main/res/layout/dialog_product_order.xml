@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -14,20 +15,10 @@
         android:orientation="vertical">
 
         <!-- HEADER -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="35dp">
-
-            <ImageView
-                android:id="@+id/image_close"
-                android:layout_width="35dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/tool_btn_close"
-                android:onClick="@{clickListener}" />
-        </RelativeLayout>
+        <include
+            layout="@layout/header_dialog"
+            app:clickListener="@{clickListener}"
+            app:title="@{@string/product_order_title}" />
 
         <!-- CONTENTS -->
         <LinearLayout
@@ -35,24 +26,6 @@
             android:layout_height="match_parent"
             android:background="@color/background_default"
             android:orientation="vertical">
-
-            <!-- TITLE -->
-            <TextView
-                style="@style/TextBold"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_dialog_header"
-                android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/product_order_title"
-                android:textColor="@color/text_3"
-                android:textSize="@dimen/text_18" />
-
-            <!-- LINE -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_3" />
 
             <!-- ORDER -->
             <TextView

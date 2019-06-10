@@ -58,6 +58,9 @@ public class Deal {
     @SerializedName("discountRate")
     public int discountRate;
 
+    @SerializedName("freeShipping")
+    public boolean freeShipping;
+
     public class Option {
 
         @SerializedName("type")

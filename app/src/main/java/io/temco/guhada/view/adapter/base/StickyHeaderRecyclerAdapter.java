@@ -48,10 +48,10 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
         return mFilterItems.get(itemPosition).type == Type.List.HEADER;
     }
 
-    @Override
-    public int getHeaderLayout(int headerPosition) {
-        return mFilterItems.get(headerPosition).layoutRes;
-    }
+//    @Override
+//    public int getHeaderLayout(int headerPosition) {
+//        return mFilterItems.get(headerPosition).layoutRes;
+//    }
 
     @Override
     public int getHeaderPositionForItem(int itemPosition) {
