@@ -55,7 +55,7 @@ public class SnsLoginModule {
 
     // NAVER
     @SuppressLint("HandlerLeak")
-    public static void initNaverLogin(OAuthLoginButton button, OnSnsLoginListener loginListener) {
+    public static void initNaverLogin(OAuthLoginButton button, OnSnsLoginListener loginListener, OnServerListener serverListener) {
         Resources resources = BaseApplication.getInstance().getResources();
         mNaverLoginModule = OAuthLogin.getInstance();
         mNaverLoginModule.init(BaseApplication.getInstance(), resources.getString(R.string.naver_oauth_client_id), resources.getString(R.string.naver_oauth_client_secret),
@@ -86,7 +86,7 @@ public class SnsLoginModule {
                                         loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser);
                                     } else {
                                         // (중복O) 가입된 이메일 - /naverLogin 호출
-                                        naverLogin(naverUser);
+                                        naverLogin(naverUser, serverListener);
                                     }
                                 } else {
                                     Toast.makeText(context, (String) obj, Toast.LENGTH_SHORT).show();
@@ -112,20 +112,19 @@ public class SnsLoginModule {
     }
 
     // FACEBOOK
-    public static void initFacebookLogin() {
+    public static void initFacebookLogin(OnServerListener serverListener) {
         mFacebookCallback = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(mFacebookCallback, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
-                    facebookLogin(object);
+                    facebookLogin(object, serverListener);
                 });
 
                 Bundle bundle = new Bundle();
                 bundle.putString("fields", "id,name,email");
                 graphRequest.setParameters(bundle);
                 graphRequest.executeAsync();
-
             }
 
             @Override
@@ -140,7 +139,7 @@ public class SnsLoginModule {
         });
     }
 
-    private void initFacebookTracker(){
+    private void initFacebookTracker() {
         mFacebookTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
@@ -171,7 +170,7 @@ public class SnsLoginModule {
         return mGoogleSignInClient.getSignInIntent();
     }
 
-    public static void handleActivityResultForGoogle(int requestCode, @Nullable Intent data, OnSnsLoginListener loginListener) {
+    public static void handleActivityResultForGoogle(int requestCode, @Nullable Intent data, OnSnsLoginListener loginListener, OnServerListener serverListener) {
         if (requestCode == Flag.RequestCode.RC_GOOGLE_LOGIN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -185,7 +184,7 @@ public class SnsLoginModule {
                                 loginListener.redirectTermsActivity(requestCode, account);
                             } else {
                                 // (중복O) 가입된 이메일 - /googleLogin 호출
-                                googleLogin(account);
+                                googleLogin(account, serverListener);
                             }
                         } else {
                             Toast.makeText(BaseApplication.getInstance(), (String) o, Toast.LENGTH_SHORT).show();
@@ -214,31 +213,31 @@ public class SnsLoginModule {
         }
     }
 
-    public static void kakaoJoin(com.kakao.usermgmt.response.model.UserProfile result) {
+    public static void kakaoJoin(com.kakao.usermgmt.response.model.UserProfile result, OnServerListener serverListener) {
         SnsUser user = createSnsUser(result.getEmail(), String.valueOf(result.getId()), "KAKAO", result.getNickname(), result.getProfileImagePath());
-        LoginServer.kakaoLogin(user, getSnsLoginListener());
+        LoginServer.kakaoLogin(user, serverListener);
     }
 
-    public static void naverLogin(NaverUser naverUser) {
+    public static void naverLogin(NaverUser naverUser, OnServerListener serverListener) {
         SnsUser user = createSnsUser(naverUser.getEmail(), naverUser.getId(), "NAVER", naverUser.getName(), naverUser.getProfileImage());
-        LoginServer.naverLogin(user, getSnsLoginListener());
+        LoginServer.naverLogin(user, serverListener);
     }
 
-    public static void googleLogin(GoogleSignInAccount account) {
+    public static void googleLogin(GoogleSignInAccount account, OnServerListener snsLoginListener) {
         if (account != null) {
             SnsUser user = createSnsUser(account.getEmail(), account.getId(), "GOOGLE", account.getDisplayName(), account.getPhotoUrl() != null ? account.getPhotoUrl().getPath() : "");
-            LoginServer.googleLogin(getSnsLoginListener(), user);
+            LoginServer.googleLogin(snsLoginListener, user);
         }
     }
 
-    public static void facebookLogin(JSONObject object) {
+    public static void facebookLogin(JSONObject object, OnServerListener serverListener) {
         try {
             String email = object.getString("email");
             String name = object.getString("name");
             String picture = object.getString("picture");
             String snsId = object.getString("id");
             SnsUser user = createSnsUser(email, snsId, "FACEBOOK", name, picture);
-            LoginServer.facebookLogin(getSnsLoginListener(), user);
+            LoginServer.facebookLogin(serverListener, user);
         } catch (JSONException e) {
             CommonUtil.debug("[FACEBOOK] EXCEPTION: " + e.getMessage());
         }
@@ -267,7 +266,6 @@ public class SnsLoginModule {
                 if (model.resultCode == Flag.ResultCode.SUCCESS) {
                     Token token = (Token) model.data;
                     Preferences.setToken(token);
-                    Toast.makeText(BaseApplication.getInstance().getApplicationContext(), "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(BaseApplication.getInstance(), model.message, Toast.LENGTH_SHORT).show();
                 }

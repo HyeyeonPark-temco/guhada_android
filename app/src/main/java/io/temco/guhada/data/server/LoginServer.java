@@ -1,6 +1,5 @@
 package io.temco.guhada.data.server;
 
-import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -57,6 +56,7 @@ public class LoginServer {
                             BaseModel result = response.body();
                             listener.onResult(true, result);
                         } else {
+
                             listener.onResult(false, response.message());
                         }
                     }
@@ -106,6 +106,9 @@ public class LoginServer {
         });
     }
 
+    /**
+     * 존재하는 이메일인지 확인 API
+     */
     public static void checkEmail(OnServerListener listener, String email) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class).checkEmail(email).enqueue(new Callback<BaseModel<Object>>() {
             @Override
@@ -119,6 +122,7 @@ public class LoginServer {
             }
         });
     }
+
 
     public static void findUserId(OnServerListener listener, String name, String phoneNumber) {
         RetrofitManager.createService(Type.Server.USER, LoginService.class)

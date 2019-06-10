@@ -3,6 +3,7 @@ package io.temco.guhada.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -178,6 +179,17 @@ public class Preferences {
     public static Token getToken() {
         return new Gson().fromJson(getString(KEY_USER_TOKEN), new TypeToken<Token>() {
         }.getType());
+    }
+
+    public static void clearToken(){
+        SharedPreferences pref = getPreferences();
+        if (pref == null) {
+            return;
+        }
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove(KEY_USER_TOKEN);
+        editor.apply();
+        Toast.makeText(mApplicationContext, "FINISH CLEAR TOKEN", Toast.LENGTH_SHORT).show();
     }
 
     // is id saved

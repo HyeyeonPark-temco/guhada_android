@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.view.activity.CategorySubActivity;
 import io.temco.guhada.view.activity.FindAccountActivity;
 import io.temco.guhada.view.activity.JoinActivity;
@@ -88,6 +89,10 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(WriteClaimActivity.class);
                     break;
 
+                case 10: // Logout (only clear access Token in SP)
+                    Preferences.clearToken();
+                    break;
+
             }
         });
         list.setAdapter(adapter);
@@ -109,7 +114,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("PRODUCT_DETAIL"); // 8
         list.add("WRITE_CLAIM"); // 9
 
-        list.add(""); // 10
+        list.add("##### CLEAR_TOKEN #####"); // 10
         list.add(""); // 11
         list.add(""); // 12
 

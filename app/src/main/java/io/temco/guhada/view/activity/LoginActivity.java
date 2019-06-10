@@ -14,15 +14,18 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import java.util.Arrays;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnLoginListener;
+import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.viewmodel.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -55,7 +58,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mLoginListener = new OnSnsLoginListener() {
             @Override
             public void kakaoLogin(UserProfile result) {
-                SnsLoginModule.kakaoJoin(result);
+                SnsLoginModule.kakaoJoin(result, getSnsLoginServerListener());
             }
 
             @Override
@@ -74,10 +77,10 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
         };
 
-        SnsLoginModule.initFacebookLogin();
+        SnsLoginModule.initFacebookLogin(getSnsLoginServerListener());
         SnsLoginModule.initGoogleLogin();
         SnsLoginModule.initKakaoLogin(mLoginListener);
-        SnsLoginModule.initNaverLogin(mBinding.buttonLoginNaver, mLoginListener);
+        SnsLoginModule.initNaverLogin(mBinding.buttonLoginNaver, mLoginListener, getSnsLoginServerListener());
 
         // INIT BINDING
         mViewModel = new LoginViewModel(new OnLoginListener() {
@@ -147,20 +150,20 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         SnsLoginModule.handlerActivityResultForFacebook(requestCode, resultCode, data);
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
 
-        if(mViewModel.getSnsUser() == null){
-            SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener);
+        if (mViewModel.getSnsUser() == null) {
+            SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener, getSnsLoginServerListener());
         }
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case Flag.RequestCode.KAKAO_LOGIN:
-                    SnsLoginModule.kakaoJoin((UserProfile) mViewModel.getSnsUser());
+                    SnsLoginModule.kakaoJoin((UserProfile) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
-                    SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser());
+                    SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
-                    SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser());
+                    SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
 
@@ -168,5 +171,24 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private OnServerListener getSnsLoginServerListener() {
+        return (success, o) -> {
+            if (success) {
+                BaseModel model = (BaseModel) o;
+                if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                    Token token = (Token) model.data;
+                    Preferences.setToken(token);
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    Toast.makeText(BaseApplication.getInstance(), model.message, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                String message = (String) o;
+                Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 }

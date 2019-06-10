@@ -38,7 +38,6 @@ public class KakaoSessionCallback implements ISessionCallback {
 
             @Override
             public void onSuccess(UserProfile result) {
-//                Toast.makeText(BaseApplication.getInstance().getApplicationContext(), result.getEmail(), Toast.LENGTH_SHORT).show();
                 CommonUtil.debug("[KAKAO] " + result.getEmail());
 
                 LoginServer.checkEmail((success, o) -> {
