@@ -24,6 +24,7 @@ class TempLogoutActivity : BindActivity<ActivityTemplogoutBinding>() {
         mBinding.onClickKakaoLogout = View.OnClickListener { SnsLoginModule.logoutForKakao(listener) }
         mBinding.onClickGoogleLogout = View.OnClickListener { SnsLoginModule.logoutForGoogle(listener) }
         mBinding.onClickFacebookLogout = View.OnClickListener { SnsLoginModule.logoutForFacebook(listener) }
+        mBinding.onClickKakaoUnlink = View.OnClickListener { SnsLoginModule.unlinkForKakao(listener) }
         mBinding.onClickNaverLogout = View.OnClickListener { showMessage("네이버 정책상 미지원") }
         mBinding.executePendingBindings()
     }

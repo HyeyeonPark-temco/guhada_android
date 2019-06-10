@@ -7,7 +7,7 @@
     <string name="dummy_content_number">105000</string>
 
     <!-- API KEY -->
-    <string name="kakao_app_key">5df8590667c1d6d07f8f3ccf996ca8c4</string>
+    <string name="kakao_app_key">7f836567d87644f21c24e7f50a5f710e</string>
     <string name="facebook_app_id">670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
     <string name="fb_login_protocol_scheme">fb670035360083586</string> <!-- 회사 계정 API KEY로 변경 필요-->
     <string name="naver_oauth_client_id">v9how9jp1jb4bjog309d</string> <!-- 회사 계정 API KEY로 변경 필요-->

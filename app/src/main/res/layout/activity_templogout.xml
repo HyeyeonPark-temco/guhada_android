@@ -17,6 +17,9 @@
         <variable
             name="onClickNaverLogout"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickKakaoUnlink"
+            type="android.view.View.OnClickListener" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,6 +35,11 @@
             android:onClick="@{onClickKakaoLogout}"
             android:layout_height="wrap_content"
             android:text="KAKAO LOGOUT"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:onClick="@{onClickKakaoUnlink}"
+            android:layout_height="wrap_content"
+            android:text="KAKAO UNLINK"/>
         <Button
             android:layout_width="wrap_content"
             android:onClick="@{onClickGoogleLogout}"

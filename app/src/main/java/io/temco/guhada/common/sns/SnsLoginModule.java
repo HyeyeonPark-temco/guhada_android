@@ -28,12 +28,15 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.kakao.usermgmt.callback.UnLinkResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -281,6 +284,25 @@ public class SnsLoginModule {
         });
     }
 
+    public static void unlinkForKakao(OnServerListener listener) {
+        UserManagement.getInstance().requestUnlink(new UnLinkResponseCallback() {
+            @Override
+            public void onSessionClosed(ErrorResult errorResult) {
+
+            }
+
+            @Override
+            public void onNotSignedUp() {
+
+            }
+
+            @Override
+            public void onSuccess(Long result) {
+                listener.onResult(true, "SUCCESS KAKAOTALK UNLINK");
+            }
+        });
+    }
+
     public static void logoutForGoogle(OnServerListener listener) {
         if (mGoogleSignInClient != null) {
             mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
@@ -293,7 +315,7 @@ public class SnsLoginModule {
         }
     }
 
-    public static void logoutForFacebook(OnServerListener listener){
+    public static void logoutForFacebook(OnServerListener listener) {
         if (mFacebookAccessTokenTracker == null) {
             mFacebookAccessTokenTracker = new AccessTokenTracker() {
                 @Override
@@ -307,4 +329,5 @@ public class SnsLoginModule {
 
         LoginManager.getInstance().logOut();
     }
+
 }
