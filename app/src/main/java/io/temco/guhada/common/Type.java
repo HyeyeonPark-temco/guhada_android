@@ -264,8 +264,9 @@ public class Type {
 
     public enum ProductOption {
 
-        COLOR("rgb"),
-        TEXT("text");
+        COLOR("RGB_BUTTON"),
+        TEXT_BUTTON("TEXT_BUTTON"),
+        TEXT("TEXT");
 
         private String type;
 

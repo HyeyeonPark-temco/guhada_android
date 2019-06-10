@@ -71,7 +71,8 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
     // Category
     private void initCategoryList() {
-
+        mBinding.textCategoryDepth.setText(">>>>");
+        // mBinding.imageCategoryExpand.setVisibility(View.GONE);
     }
 
     // Brand

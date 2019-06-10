@@ -45,22 +45,60 @@
                     app:expansion_layout="@id/layout_expand_category"
                     app:expansion_toggleOnClick="true">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
-                        android:paddingLeft="30dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
                         android:paddingRight="20dp">
 
-                        <TextView
-                            style="@style/TextMediumSingleLine"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="test"
-                            android:textColor="@drawable/selector_text_category"
-                            android:textSize="@dimen/text_16" />
-                    </RelativeLayout>
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    style="@style/TextMedium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/common_category"
+                                    android:textColor="@color/text_3"
+                                    android:textSize="@dimen/text_14" />
+
+                                <TextView
+                                    android:id="@+id/text_category_depth"
+                                    style="@style/TextRegularSingleLine"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:textColor="@color/text_9"
+                                    android:textSize="@dimen/text_12" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/image_category_expand"
+                                android:layout_width="19dp"
+                                android:layout_height="19dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/selector_expand" />
+                        </LinearLayout>
+
+                        <!-- DOT LINE -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layerType="software"
+                            android:src="@drawable/line_dot" />
+                    </LinearLayout>
                 </com.github.florent37.expansionpanel.ExpansionHeader>
 
                 <com.github.florent37.expansionpanel.ExpansionLayout
@@ -86,22 +124,60 @@
                     app:expansion_layout="@id/layout_expand_brand"
                     app:expansion_toggleOnClick="true">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="10dp"
-                        android:paddingLeft="30dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="20dp"
                         android:paddingRight="20dp">
 
-                        <TextView
-                            style="@style/TextMediumSingleLine"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="test"
-                            android:textColor="@drawable/selector_text_category"
-                            android:textSize="@dimen/text_16" />
-                    </RelativeLayout>
+                            android:layout_height="40dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    style="@style/TextMedium"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/common_brand"
+                                    android:textColor="@color/text_3"
+                                    android:textSize="@dimen/text_14" />
+
+                                <TextView
+                                    android:id="@+id/text_brand_depth"
+                                    style="@style/TextRegularSingleLine"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:textColor="@color/text_9"
+                                    android:textSize="@dimen/text_12" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/image_brand_expand"
+                                android:layout_width="19dp"
+                                android:layout_height="19dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/selector_expand" />
+                        </LinearLayout>
+
+                        <!-- DOT LINE -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layerType="software"
+                            android:src="@drawable/line_dot" />
+                    </LinearLayout>
                 </com.github.florent37.expansionpanel.ExpansionHeader>
 
                 <com.github.florent37.expansionpanel.ExpansionLayout

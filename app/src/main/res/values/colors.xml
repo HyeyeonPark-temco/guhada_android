@@ -30,6 +30,7 @@
     <color name="text_6">@color/greyish_brown_two</color>
     <color name="text_7">@color/greyish</color>
     <color name="text_8">@color/blue_purple</color>
+    <color name="text_9">#afafaf</color>
 
     <!-- COLOR -->
     <color name="blue_purple">#5d2ed1</color>
