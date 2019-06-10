@@ -33,8 +33,6 @@
                 android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
 
-                <!-- //////////////////////////////////////////////// -->
-
                 <!-- CATEGORY -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/list_contents"
@@ -63,8 +61,6 @@
                         android:textSize="@dimen/text_16" />
                 </RelativeLayout>
 
-                <!-- //////////////////////////////////////////////// -->
-
                 <!-- BANNER -->
                 <View
                     android:layout_width="match_parent"
@@ -72,91 +68,13 @@
                     android:layout_marginTop="30dp"
                     android:background="#005500" />
 
-                <!-- //////////////////////////////////////////////// -->
-
                 <!-- SUB MENU -->
-                <LinearLayout
+                <include
+                    android:id="@+id/layout_sub_menu"
+                    layout="@layout/layout_sub_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <include
-                            android:id="@+id/layout_sub_menu_sale"
-                            layout="@layout/item_side_sub_menu"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            app:clickListener="@{clickListener}"
-                            app:icon="@{@drawable/burger_bottom_icon_sale}"
-                            app:title="@{@string/side_menu_sub_sale}" />
-
-                        <include
-                            android:id="@+id/layout_sub_menu_new_product"
-                            layout="@layout/item_side_sub_menu"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            app:clickListener="@{clickListener}"
-                            app:icon="@{@drawable/burger_bottom_icon_new}"
-                            app:title="@{@string/side_menu_sub_new_product}" />
-
-                        <include
-                            android:id="@+id/layout_sub_menu_power_deal"
-                            layout="@layout/item_side_sub_menu"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            app:clickListener="@{clickListener}"
-                            app:icon="@{@drawable/burger_bottom_icon_power}"
-                            app:title="@{@string/side_menu_sub_power_deal}" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <include
-                            android:id="@+id/layout_sub_menu_time_deal"
-                            layout="@layout/item_side_sub_menu"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            app:clickListener="@{clickListener}"
-                            app:icon="@{@drawable/burger_bottom_icon_time}"
-                            app:title="@{@string/side_menu_sub_time_deal}" />
-
-                        <include
-                            android:id="@+id/layout_sub_menu_limit_price"
-                            layout="@layout/item_side_sub_menu"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            app:clickListener="@{clickListener}"
-                            app:icon="@{@drawable/burger_bottom_icon_limit}"
-                            app:title="@{@string/side_menu_sub_limit_price}" />
-
-                        <include
-                            android:id="@+id/layout_sub_menu_community"
-                            layout="@layout/item_side_sub_menu"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            app:clickListener="@{clickListener}"
-                            app:icon="@{@drawable/burger_bottom_icon_community}"
-                            app:title="@{@string/side_menu_sub_community}" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- //////////////////////////////////////////////// -->
+                    android:layout_marginTop="20dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

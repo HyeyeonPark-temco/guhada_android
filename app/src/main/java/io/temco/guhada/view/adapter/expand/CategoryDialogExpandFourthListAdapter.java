@@ -11,14 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
-import io.temco.guhada.view.adapter.holder.SideMenuExpandAllListViewHolder;
-import io.temco.guhada.view.adapter.holder.SideMenuExpandSecondListViewHolder;
+import io.temco.guhada.view.adapter.holder.CategoryDialogExpandFourthListViewHolder;
 
-public class SideMenuExpandSecondListAdapter extends RecyclerView.Adapter<BaseCategoryViewHolder> implements View.OnClickListener {
+public class CategoryDialogExpandFourthListAdapter extends RecyclerView.Adapter<BaseCategoryViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
@@ -30,7 +28,7 @@ public class SideMenuExpandSecondListAdapter extends RecyclerView.Adapter<BaseCa
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public SideMenuExpandSecondListAdapter(Context context) {
+    public CategoryDialogExpandFourthListAdapter(Context context) {
         mContext = context;
     }
 
@@ -43,29 +41,31 @@ public class SideMenuExpandSecondListAdapter extends RecyclerView.Adapter<BaseCa
         return mItems == null ? 0 : mItems.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (getItem(position) != null) {
-            return Type.Category.get(getItem(position).type);
-        }
-        return super.getItemViewType(position);
-    }
+//    @Override
+//    public int getItemViewType(int position) {
+//        if (getItem(position) != null) {
+//            return Type.Category.get(getItem(position).type);
+//        }
+//        return super.getItemViewType(position);
+//    }
 
     @NonNull
     @Override
     public BaseCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (Type.Category.getType(viewType)) {
-            case ALL:
-                return new SideMenuExpandAllListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_side_menu_expand_all, parent, false));
+        return new CategoryDialogExpandFourthListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_category_dialog_expand_fourth, parent, false));
 
-            default:
-                return new SideMenuExpandSecondListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_side_menu_expand_second, parent, false));
-        }
+//        switch (Type.Category.getType(viewType)) {
+//            case ALL:
+//                return new CategoryDialogExpandAllListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_category_dialog_expand_all, parent, false));
+//
+//            default:
+//                return new CategoryDialogExpandFourthListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_category_dialog_expand_fourth, parent, false));
+//        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull BaseCategoryViewHolder holder, int position) {
-        holder.init(mContext, null, getItem(position), null);
+        holder.init(mContext, null, getItem(position), mCategoryListener);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
     }

@@ -5,6 +5,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemSideMenuExpandAllBinding;
@@ -25,7 +26,7 @@ public class SideMenuExpandAllListViewHolder extends BaseCategoryViewHolder<Item
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, Category data, OnCategoryListener listener) {
+    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
         // Data
         if (data != null) {
         }

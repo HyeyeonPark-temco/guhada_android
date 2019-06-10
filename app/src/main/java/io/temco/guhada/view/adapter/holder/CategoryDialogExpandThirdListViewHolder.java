@@ -12,17 +12,17 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
-import io.temco.guhada.databinding.ItemCategorySubExpandFirstBinding;
+import io.temco.guhada.databinding.ItemCategoryDialogExpandThirdBinding;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
-import io.temco.guhada.view.adapter.expand.CategorySubExpandSecondListAdapter;
+import io.temco.guhada.view.adapter.expand.CategoryDialogExpandFourthListAdapter;
 
-public class CategorySubExpandFirstListViewHolder extends BaseCategoryViewHolder<ItemCategorySubExpandFirstBinding> {
+public class CategoryDialogExpandThirdListViewHolder extends BaseCategoryViewHolder<ItemCategoryDialogExpandThirdBinding> {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public CategorySubExpandFirstListViewHolder(@NonNull View itemView) {
+    public CategoryDialogExpandThirdListViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
@@ -33,14 +33,16 @@ public class CategorySubExpandFirstListViewHolder extends BaseCategoryViewHolder
     @Override
     public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
         // Type
-        switch (type) {
-            case KIDS:
-                mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
-                break;
+        if (type != null) {
+            switch (type) {
+                case KIDS:
+                    mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
+                    break;
 
-            default: // Grid
-                mBinding.listContents.setLayoutManager(new GridLayoutManager(context, 2));
-                break;
+                default: // Grid
+                    mBinding.listContents.setLayoutManager(new GridLayoutManager(context, 2));
+                    break;
+            }
         }
         // Data
         if (data != null) {
@@ -60,7 +62,7 @@ public class CategorySubExpandFirstListViewHolder extends BaseCategoryViewHolder
                     data.children.add(0, CommonUtil.createAllCategoryData(context, data.id, data.hierarchies));
                 }
                 // Adapter
-                CategorySubExpandSecondListAdapter adapter = new CategorySubExpandSecondListAdapter(context);
+                CategoryDialogExpandFourthListAdapter adapter = new CategoryDialogExpandFourthListAdapter(context);
                 adapter.setOnCategoryListener(listener);
                 adapter.setItems(data.children);
                 mBinding.listContents.setAdapter(adapter);

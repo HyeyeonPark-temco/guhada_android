@@ -7,23 +7,21 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import java.util.ArrayList;
-
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
-import io.temco.guhada.databinding.ItemSideMenuExpandFirstBinding;
+import io.temco.guhada.databinding.ItemCategoryDialogExpandFirstBinding;
 import io.temco.guhada.view.adapter.base.BaseCategoryViewHolder;
-import io.temco.guhada.view.adapter.expand.SideMenuExpandSecondListAdapter;
+import io.temco.guhada.view.adapter.expand.CategoryDialogExpandSecondListAdapter;
 
-public class SideMenuExpandFirstListViewHolder extends BaseCategoryViewHolder<ItemSideMenuExpandFirstBinding> {
+public class CategoryDialogExpandFirstListViewHolder extends BaseCategoryViewHolder<ItemCategoryDialogExpandFirstBinding> {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public SideMenuExpandFirstListViewHolder(@NonNull View itemView) {
+    public CategoryDialogExpandFirstListViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
@@ -39,21 +37,25 @@ public class SideMenuExpandFirstListViewHolder extends BaseCategoryViewHolder<It
             if (!TextUtils.isEmpty(data.name)) {
                 mBinding.setTitle(data.name);
             }
-            // Add All
-            if (data.children != null && data.children.size() > 0) {
+            // Child
+            if (data.children == null) {
+                mBinding.setExpand(false);
+                mBinding.layoutExpandHeader.setToggleOnClick(false);
+            } else {
+                mBinding.setExpand(true);
+                mBinding.layoutExpandHeader.setToggleOnClick(true);
+                // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
                     data.children.add(0, CommonUtil.createAllCategoryData(context, data.id, data.hierarchies));
                 }
-            } else {
-                data.children = new ArrayList<>();
-                data.children.add(0, CommonUtil.createAllCategoryData(context, data.id, data.hierarchies));
+                // Adapter
+                CategoryDialogExpandSecondListAdapter adapter = new CategoryDialogExpandSecondListAdapter(context);
+                adapter.setOnCategoryListener(listener);
+                adapter.setChildType(type);
+                adapter.setItems(data.children);
+                mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
+                mBinding.listContents.setAdapter(adapter);
             }
-            // Adapter
-            SideMenuExpandSecondListAdapter adapter = new SideMenuExpandSecondListAdapter(context);
-            adapter.setOnCategoryListener(listener);
-            adapter.setItems(data.children);
-            mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
-            mBinding.listContents.setAdapter(adapter);
         }
     }
 

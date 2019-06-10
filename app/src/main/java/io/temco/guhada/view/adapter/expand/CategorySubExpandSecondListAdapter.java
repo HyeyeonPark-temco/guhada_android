@@ -65,7 +65,7 @@ public class CategorySubExpandSecondListAdapter extends RecyclerView.Adapter<Bas
 
     @Override
     public void onBindViewHolder(@NonNull BaseCategoryViewHolder holder, int position) {
-        holder.init(mContext, getItem(position), mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
     }
