@@ -30,6 +30,7 @@ class ProductDetailClaimViewModel(private val productId: Int, val listener: Prod
     var claimResponse: ClaimResponse = ClaimResponse()
         @Bindable
         get() = field
+
     private val getClaimListener = OnServerListener { success, o ->
         if (success) {
             val model = o as BaseModel<*>
@@ -40,7 +41,7 @@ class ProductDetailClaimViewModel(private val productId: Int, val listener: Prod
             } else {
                 this.claimResponse = model.data as ClaimResponse
 
-                if (claimStatus == "") {
+                if (claimStatus == "" && !isMineChecked) {
                     this.totalClaimCount = this.claimResponse.totalElements
                     notifyPropertyChanged(BR.totalClaimCount)
                 }
