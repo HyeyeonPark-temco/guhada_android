@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemSideMenuExpandSecondBinding;
@@ -26,7 +27,7 @@ public class SideMenuExpandSecondListViewHolder extends BaseCategoryViewHolder<I
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, Category data, OnCategoryListener listener) {
+    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
         // Data
         if (data != null) {
             // Title

@@ -16,23 +16,23 @@ import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
-import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
 import io.temco.guhada.view.adapter.expand.SideMenuExpandFirstListAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
+import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 
 public class MainActivity extends BindActivity<ActivityMainBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private final int REQUEST_CODE_CATEGORY = 11;
     private final int REQUEST_CODE_BRAND = 12;
-
+    //
     private MainPagerAdapter mPagerAdapter;
+    private CategoryListDialog mCategoryListDialog;
     private BrandListDialog mBrandListDialog;
     // -----------------------------
 
@@ -91,9 +91,29 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 break;
 
             // Sub Menu
-//            case R.id.layout_sub_menu_community:
-//                CommonUtil.debug(getBaseTag(), "layout_sub_menu_community");
-//                break;
+            case R.id.layout_sale:
+                CommonUtil.debug(getBaseTag(), "layout_sale");
+                break;
+
+            case R.id.layout_new_product:
+                CommonUtil.debug(getBaseTag(), "layout_new_product");
+                break;
+
+            case R.id.layout_power_deal:
+                CommonUtil.debug(getBaseTag(), "layout_power_deal");
+                break;
+
+            case R.id.layout_time_deal:
+                CommonUtil.debug(getBaseTag(), "layout_time_deal");
+                break;
+
+            case R.id.layout_limit_price:
+                CommonUtil.debug(getBaseTag(), "layout_limit_price");
+                break;
+
+            case R.id.layout_community:
+                CommonUtil.debug(getBaseTag(), "layout_community");
+                break;
 
             ////////////////////////////////////////////////
         }
@@ -108,7 +128,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     if (data != null) {
                         Type.Category type = (Type.Category) data.getSerializableExtra(Info.INTENT_CATEGORY_TYPE);
                         int[] hierarchies = data.getIntArrayExtra(Info.INTENT_CATEGORY_HIERARCHIES);
-                        mPagerAdapter.addProductCategoryData(type, hierarchies);
+                        startCategoryScreen(type, hierarchies);
                     }
                     break;
 
@@ -153,31 +173,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.layoutContents.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                mPagerAdapter.removeProduct();
-                switch (tab.getPosition()) {
-                    case 0: // Category
-                        break;
-
-                    case 1: // Brand
-                        showBrandListDialog();
-                        break;
-
-                    case 2: // Home
-                        mBinding.layoutContents.layoutPager.setCurrentItem(0);
-                        break;
-
-                    case 3: // Community
-                        mBinding.layoutContents.layoutPager.setCurrentItem(1);
-                        break;
-
-                    case 4: // My Page
-                        if (false) {
-                            // if login
-                        } else {
-                            mBinding.layoutContents.layoutPager.setCurrentItem(2);
-                        }
-                        break;
-                }
+                selectTab(tab.getPosition(), false);
             }
 
             @Override
@@ -186,7 +182,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                mPagerAdapter.removeProduct();
+                selectTab(tab.getPosition(), true);
             }
         });
     }
@@ -230,15 +226,47 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         }
     }
 
+    private void selectTab(int position, boolean isReselected) {
+        mPagerAdapter.removeProduct();
+        switch (position) {
+            case 0: // Category
+                showCategoryListDialog();
+                break;
+
+            case 1: // Brand
+                showBrandListDialog();
+                break;
+
+            case 2: // Home
+                if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(0);
+                break;
+
+            case 3: // Community
+                if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(1);
+                break;
+
+            case 4: // My Page
+                if (!isReselected) {
+                    if (false) {
+                        // if login
+                    } else {
+                        mBinding.layoutContents.layoutPager.setCurrentItem(2);
+                    }
+                }
+                break;
+        }
+    }
+
     private void initSideMenu() {
         // Listener
         mBinding.layoutSideMenu.setClickListener(this);
         mBinding.layoutSideMenu.layoutHeader.setClickListener(this);
+        mBinding.layoutSideMenu.layoutSubMenu.setClickListener(this);
 
         // Category
         mBinding.layoutSideMenu.listContents.setLayoutManager(new LinearLayoutManager(this));
         SideMenuExpandFirstListAdapter adapter = new SideMenuExpandFirstListAdapter(this);
-        adapter.setOnCategoryListener(mSideMenuCategoryListener);
+        adapter.setOnCategoryListener(this::startCategoryByHierarchy);
         adapter.setItems(Preferences.getCategories());
         mBinding.layoutSideMenu.listContents.setAdapter(adapter);
     }
@@ -256,11 +284,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         }
     }
 
-    private void startScreenByType(Type.Category type, int[] hierarchies) {
+    private void startCategoryByHierarchy(Type.Category type, int[] hierarchies) {
         switch (type) {
             case ALL:
                 changeDrawerLayout(false, false);
-                mPagerAdapter.addProductCategoryData(type, hierarchies);
+                startCategoryScreen(type, hierarchies);
                 break;
 
             default:
@@ -270,13 +298,32 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         }
     }
 
+    private void startCategoryScreen(Type.Category type, int[] hierarchies) {
+        mPagerAdapter.addProductCategoryData(type, hierarchies);
+    }
+
+    // Dialog
+    private void showCategoryListDialog() {
+        if (getSupportFragmentManager() != null) {
+            if (mCategoryListDialog == null) {
+                mCategoryListDialog = new CategoryListDialog();
+                mCategoryListDialog.setOnCategoryListener(this::startCategoryScreen);
+            }
+            mCategoryListDialog.show(getSupportFragmentManager(), getBaseTag());
+        }
+    }
+
+    private void dismissCategoryListDialog() {
+        if (mCategoryListDialog != null) {
+            mCategoryListDialog.dismiss();
+        }
+    }
+
     private void showBrandListDialog() {
         if (getSupportFragmentManager() != null) {
             if (mBrandListDialog == null) {
                 mBrandListDialog = new BrandListDialog();
-                mBrandListDialog.setOnBrandListener(brand -> {
-                    if (brand != null) mPagerAdapter.setProductBrandData(brand);
-                });
+                mBrandListDialog.setOnBrandListener(mBrandListener);
             }
             mBrandListDialog.show(getSupportFragmentManager(), getBaseTag());
         }
@@ -292,10 +339,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     // LISTENER
     ////////////////////////////////////////////////
 
-    private OnCategoryListener mSideMenuCategoryListener = this::startScreenByType;
-
-    private OnCategoryListener mTabCategoryListener = (type, hierarchies) -> {
-
+    private OnBrandListener mBrandListener = new OnBrandListener() {
+        @Override
+        public void onEvent(Brand brand) {
+            if (brand != null) mPagerAdapter.setProductBrandData(brand);
+        }
     };
 
     ////////////////////////////////////////////////

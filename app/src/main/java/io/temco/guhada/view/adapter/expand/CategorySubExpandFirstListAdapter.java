@@ -62,7 +62,7 @@ public class CategorySubExpandFirstListAdapter extends RecyclerView.Adapter<Cate
         } else {
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         }
-        holder.init(mContext, data, mCategoryListener, mChildType);
+        holder.init(mContext, mChildType, data, mCategoryListener);
     }
 
     @Override
