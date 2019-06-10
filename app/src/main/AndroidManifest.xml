@@ -58,11 +58,6 @@
             android:name=".view.activity.BrandSubActivity"
             android:screenOrientation="portrait" />
 
-        <!-- Product -->
-        <activity
-            android:name=".view.activity.ProductDetailActivity"
-            android:screenOrientation="portrait" />
-
         <!-- Login -->
         <activity
             android:name=".view.activity.LoginActivity"
@@ -82,7 +77,16 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".view.activity.TempLogoutActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- PRODUCT DETAIL-->
+        <activity
             android:name=".view.activity.WriteClaimActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.activity.ProductDetailActivity"
             android:screenOrientation="portrait" />
 
         <!-- Verity Phone -->

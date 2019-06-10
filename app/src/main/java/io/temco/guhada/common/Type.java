@@ -19,7 +19,8 @@ public class Type {
         FIND_ACCOUNT,
         TERMS,
         VERIFY_PHONE,
-        CLAIM
+        CLAIM,
+        TEMP_LOGOUT
     }
 
     // Main

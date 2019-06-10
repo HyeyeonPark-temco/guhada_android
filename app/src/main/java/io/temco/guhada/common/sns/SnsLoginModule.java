@@ -7,8 +7,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -22,8 +25,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.kakao.auth.Session;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
@@ -51,7 +57,8 @@ public class SnsLoginModule {
     private static KakaoSessionCallback mKakaoSessionCallback;
     private static GoogleSignInClient mGoogleSignInClient;
     private static CallbackManager mFacebookCallback;
-    private static ProfileTracker mFacebookTracker;
+    private static ProfileTracker mFacebookProfileTracker;
+    private static AccessTokenTracker mFacebookAccessTokenTracker;
 
     // NAVER
     @SuppressLint("HandlerLeak")
@@ -139,8 +146,8 @@ public class SnsLoginModule {
         });
     }
 
-    private void initFacebookTracker() {
-        mFacebookTracker = new ProfileTracker() {
+    private void initFacebookProfileTracker() {
+        mFacebookProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 String message = oldProfile != null ? oldProfile.getName() : currentProfile.getName();
@@ -150,9 +157,9 @@ public class SnsLoginModule {
         };
     }
 
-    public static void stopFacebookTracking() {
-        if (mFacebookTracker.isTracking()) {
-            mFacebookTracker.stopTracking();
+    public static void stopFacebookProfileTracking() {
+        if (mFacebookProfileTracker.isTracking()) {
+            mFacebookProfileTracker.stopTracking();
         }
     }
 
@@ -259,21 +266,45 @@ public class SnsLoginModule {
         return user;
     }
 
-    private static OnServerListener getSnsLoginListener() {
-        return (success, o) -> {
-            if (success) {
-                BaseModel model = (BaseModel) o;
-                if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                    Token token = (Token) model.data;
-                    Preferences.setToken(token);
-                } else {
-                    Toast.makeText(BaseApplication.getInstance(), model.message, Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                String message = (String) o;
-                Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT).show();
+    public static void logoutForKakao(OnServerListener listener) {
+        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+            @Override
+            public void onCompleteLogout() {
+                listener.onResult(true, "SUCCESS KAKAOTALK LOGOUT");
             }
-        };
+
+            @Override
+            public void onNotSignedUp() {
+                super.onNotSignedUp();
+                listener.onResult(false, "카카오톡 미가입 상태");
+            }
+        });
     }
 
+    public static void logoutForGoogle(OnServerListener listener) {
+        if (mGoogleSignInClient != null) {
+            mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    listener.onResult(true, "SUCCESS GOOGLE LOGOUT");
+                } else {
+                    listener.onResult(true, "FAILED GOOGLE LOGOUT");
+                }
+            });
+        }
+    }
+
+    public static void logoutForFacebook(OnServerListener listener){
+        if (mFacebookAccessTokenTracker == null) {
+            mFacebookAccessTokenTracker = new AccessTokenTracker() {
+                @Override
+                protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                    if (currentAccessToken == null) {
+                        listener.onResult(true, "SUCCESS FACEBOOK LOGOUT");
+                    }
+                }
+            };
+        }
+
+        LoginManager.getInstance().logOut();
+    }
 }

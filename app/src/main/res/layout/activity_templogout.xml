@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="onClickClearAccessToken"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickKakaoLogout"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickGoogleLogout"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickFacebookLogout"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickNaverLogout"
+            type="android.view.View.OnClickListener" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{onClickClearAccessToken}"
+            android:text="CLEAR ACCESS TOKEN"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:onClick="@{onClickKakaoLogout}"
+            android:layout_height="wrap_content"
+            android:text="KAKAO LOGOUT"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:onClick="@{onClickGoogleLogout}"
+            android:layout_height="wrap_content"
+            android:text="GOOGLE LOGOUT"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:onClick="@{onClickFacebookLogout}"
+            android:layout_height="wrap_content"
+            android:text="FACEBOOK LOGOUT"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{onClickNaverLogout}"
+            android:text="NAVER LOGOUT - 네이버 정책상 로그아웃 미지원"/>
+
+    </LinearLayout>
+
+</layout>

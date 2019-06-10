@@ -21,6 +21,7 @@ import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.activity.SplashActivity;
+import io.temco.guhada.view.activity.TempLogoutActivity;
 import io.temco.guhada.view.activity.TermsActivity;
 import io.temco.guhada.view.activity.VerifyPhoneActivity;
 import io.temco.guhada.view.activity.WriteClaimActivity;
@@ -90,7 +91,7 @@ public class TestListActivity extends AppCompatActivity {
                     break;
 
                 case 10: // Logout (only clear access Token in SP)
-                    Preferences.clearToken();
+                    startActivity(TempLogoutActivity.class);
                     break;
 
             }
@@ -114,7 +115,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("PRODUCT_DETAIL"); // 8
         list.add("WRITE_CLAIM"); // 9
 
-        list.add("##### CLEAR_TOKEN #####"); // 10
+        list.add("##### LOGOUT #####"); // 10
         list.add(""); // 11
         list.add(""); // 12
 
