@@ -3,7 +3,6 @@ package io.temco.guhada.data.viewmodel
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
@@ -88,6 +87,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
     fun onClickBag() = listener?.showMenu()
+
+    fun onClickPayment() {
+        listener?.redirectPaymentActivity(menuVisibility.get() == View.VISIBLE)
+    }
 
     fun onClickCloseMenu() {
         menuVisibility = ObservableInt(View.GONE)

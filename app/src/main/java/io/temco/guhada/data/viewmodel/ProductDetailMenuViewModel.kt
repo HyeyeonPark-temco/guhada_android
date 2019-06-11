@@ -23,7 +23,7 @@ class ProductDetailMenuViewModel(private val listener: ProductDetailActivity.OnM
         @Bindable
         get() = field
 
-    var optionMap: MutableMap<String, Int> = mutableMapOf()
+    var optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr> = mutableMapOf()
 
     fun onClickCloseMenu() = listener.closeMenu()
 
@@ -57,7 +57,7 @@ class ProductDetailMenuViewModel(private val listener: ProductDetailActivity.OnM
     }
 
     fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {
-        optionMap[type] = position
+        optionMap[type] = optionAttr
         if (type == "COLOR") {
             listener.setColorName(optionAttr) {
                 colorName = ObservableField(optionAttr.name)

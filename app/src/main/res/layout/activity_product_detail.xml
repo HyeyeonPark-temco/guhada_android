@@ -77,7 +77,7 @@
                     <FrameLayout
                         android:id="@+id/framelayout_productdetail_claim"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <include
                         android:id="@+id/include_productdetail_contentshipping"
@@ -103,10 +103,10 @@
 
         <!-- 메뉴 -->
         <View
-            android:onClick="@{()->viewModel.onClickCloseMenu()}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black_overlay"
+            android:onClick="@{()->viewModel.onClickCloseMenu()}"
             android:visibility="@{viewModel.menuVisibility}"
             app:layout_constraintBottom_toBottomOf="@+id/linearlayout_productdetail_button"
             app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"
@@ -119,8 +119,7 @@
             android:visibility="@{viewModel.menuVisibility,default = gone}"
             app:layout_constraintBottom_toTopOf="@+id/linearlayout_productdetail_button"
             app:layout_constraintEnd_toEndOf="@+id/scrollview_productdetail"
-            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail">
-        </FrameLayout>
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"></FrameLayout>
 
         <!-- 하단 버튼 -->
         <LinearLayout
@@ -150,6 +149,7 @@
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
+                android:onClick="@{()->viewModel.onClickPayment()}"
                 android:text="@string/productdetail_button_buy"
                 android:textSize="@dimen/text_18" />
         </LinearLayout>

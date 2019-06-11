@@ -19,6 +19,7 @@ import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
@@ -194,6 +195,50 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         } else {
             mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
             mViewModel.notifyPropertyChanged(BR.menuVisibility)
+        }
+    }
+
+    override fun redirectPaymentActivity(isOptionPopupSelected: Boolean) {
+        val optionCount = mViewModel.product.value?.options?.size
+        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+            menuFragment.getSelectedOptionCount()
+        } else {
+            headerMenuFragment.getSelectedOptionCount()
+        }
+
+        if (selectedOptionCount == optionCount) {
+            Toast.makeText(this@ProductDetailActivity, "바로구매 이동", Toast.LENGTH_SHORT).show()
+
+            // 전달 데이터
+            // 1.상품 대표 이미지, 2.상품 명, 3.옵션 선택 항목, 4.판매가, 5.수량
+            val image = mViewModel.product.value?.imageUrls?.get(0) // 대표이미지 임시
+            val name = mViewModel.product.value?.name
+            val optionAttr: MutableMap<String, ProductDetailOptionAdapter.OptionAttr>
+            val price: Int
+            val count: Int
+
+            if (isOptionPopupSelected) {
+                count = menuFragment.getProductCount()
+                price = menuFragment.getTotalPrice()
+                optionAttr = menuFragment.getSelectedOptionAttrs()
+            } else {
+                count = headerMenuFragment.getProductCount()
+                price = headerMenuFragment.getTotalPrice()
+                optionAttr = headerMenuFragment.getSelectedOptionAttrs()
+            }
+
+
+            // TEMP MESSAGE
+            val message = "상품명: $name \n판매가: $price \n수량: $count"
+            var attr = ""
+            for (oa in optionAttr) {
+                attr = "$attr \n선택옵션: ${oa.value.name}-${oa.value.rgb}"
+            }
+
+            Toast.makeText(this@ProductDetailActivity, "$message $attr", Toast.LENGTH_SHORT).show()
+            CommonUtil.debug("바로구매 클릭", "$message $attr")
+        }else {
+            Toast.makeText(this@ProductDetailActivity, "옵션을 선택해주세요.", Toast.LENGTH_SHORT).show()
         }
     }
 
