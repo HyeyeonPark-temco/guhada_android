@@ -335,7 +335,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                         switch (model.resultCode) {
                             case Flag.ResultCode.SUCCESS:
                                 listener.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
-                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
+                                // listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
                                 listener.closeActivity();
                                 break;
                             case Flag.ResultCode.DATA_NOT_FOUND:

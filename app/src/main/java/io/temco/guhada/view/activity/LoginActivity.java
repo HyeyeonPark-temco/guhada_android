@@ -51,8 +51,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void init() {
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        LoginManager.getInstance().logOut();
+        CommonUtil.debug("CURRENT ACCESS TOKEN", Preferences.getToken().getAccessToken());
+        initFacebookSdk();
 
         // INIT SNS LOGIN
         mLoginListener = new OnSnsLoginListener() {
@@ -136,6 +136,11 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
         mBinding.executePendingBindings();
+    }
+
+    private void initFacebookSdk() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        LoginManager.getInstance().logOut();
     }
 
     @Override

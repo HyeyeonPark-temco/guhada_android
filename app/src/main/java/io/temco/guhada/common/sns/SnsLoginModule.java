@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.AccessToken;
@@ -25,7 +24,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -36,21 +34,18 @@ import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
-import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.SnsUser;
-import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.UserProfile;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
@@ -186,6 +181,8 @@ public class SnsLoginModule {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null) {
+
+
                     LoginServer.checkEmail((success, o) -> {
                         if (success) {
                             BaseModel model = (BaseModel) o;
@@ -201,6 +198,8 @@ public class SnsLoginModule {
                         }
                     }, account.getEmail());
                 }
+
+
             } catch (ApiException e) {
                 CommonUtil.debug("[GOOGLE] " + e.getStatusCode() + "-" + e.getMessage());
             }
