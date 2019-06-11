@@ -35,7 +35,9 @@ class ProductDetailClaimViewModel(private val productId: Int, val listener: Prod
         if (success) {
             val model = o as BaseModel<*>
             if (model.resultCode == Flag.ResultCode.DATA_NOT_FOUND) {
-                listener.showMessage("마지막 항목입니다.")
+                if (this.claimResponse.last) {
+                    listener.showMessage("마지막 항목입니다.")
+                }
                 emptyVisibility = ObservableInt(View.VISIBLE)
                 notifyPropertyChanged(BR.emptyVisibility)
             } else {
@@ -51,9 +53,8 @@ class ProductDetailClaimViewModel(private val productId: Int, val listener: Prod
             }
         } else {
             if (o != null) listener.showMessage(o as String)
-            else listener.showMessage("오류") // 임시 메세지
+            else listener.showMessage("상품 문의 조회 오류") // 임시 메세지
 
-            // 임시 처리
             emptyVisibility = ObservableInt(View.GONE)
             notifyPropertyChanged(BR.emptyVisibility)
         }
