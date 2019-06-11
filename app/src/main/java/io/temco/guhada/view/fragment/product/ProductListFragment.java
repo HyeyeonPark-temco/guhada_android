@@ -495,7 +495,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void showDetailSearchDialog() {
         if (getFragmentManager() != null) {
             DetailSearchDialog d = new DetailSearchDialog();
-
             d.show(getFragmentManager(), getBaseTag());
         }
     }

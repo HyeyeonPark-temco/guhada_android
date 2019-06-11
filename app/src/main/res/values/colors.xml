@@ -13,6 +13,7 @@
     <!-- BACKGROUND -->
     <color name="background_default">@color/common_white</color>
     <color name="background_1">#e8e8e8</color>
+    <color name="background_2">#444444</color>
 
     <!-- LINE -->
     <color name="line_1">#e6e6e6</color>

@@ -25,7 +25,8 @@
     <string name="common_my_page">마이페이지</string>
     <string name="common_community">커뮤니티</string>
     <string name="common_price_format">%,2d</string>
-
+    <string name="common_more">더보기</string>
+    <string name="common_color_white">#ffffff</string>
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
 
     <!-- SIDE MENU -->

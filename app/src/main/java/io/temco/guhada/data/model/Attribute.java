@@ -2,9 +2,11 @@ package io.temco.guhada.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import io.temco.guhada.common.Type;
 
-public class Filter {
+public class Attribute {
+
+    public Type.List type = Type.List.CONTENTS;
 
     @SerializedName("id")
     public int id;
@@ -12,9 +14,6 @@ public class Filter {
     @SerializedName("name")
     public String name;
 
-    @SerializedName("viewType")
-    public String viewType;
-
-    @SerializedName("attributes")
-    public List<Attribute> attributes;
+    @SerializedName("selected")
+    public boolean selected;
 }
