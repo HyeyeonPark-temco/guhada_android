@@ -1,0 +1,68 @@
+package io.temco.guhada.common.util
+
+import android.util.Log
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+/**
+ *  Custom Retrofit Retryable Callback
+ *  @param call Retrofit Call<T>
+ *  @param totalRetries 재시도 횟수
+ */
+abstract class RetryableCallback<T>(private val call: Call<T>, private val totalRetries: Int) : Callback<T> {
+    private var retryCount = 0
+
+    override fun onResponse(call: Call<T>, response: Response<T>) {
+        if (!APIHelper.isCallSuccess(response = response)) {
+            if (retryCount++ < totalRetries) {
+                Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
+                retry()
+            } else {
+                onFinalResponse(call, response)
+            }
+        } else {
+            onFinalResponse(call, response)
+        }
+    }
+
+    override fun onFailure(call: Call<T>, t: Throwable) {
+        if (retryCount++ < totalRetries) {
+            Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
+            retry()
+        } else {
+            onFinalFailure(call, t)
+        }
+    }
+
+    open fun onFinalResponse(call: Call<T>, response: Response<T>) {
+
+    }
+
+    open fun onFinalFailure(call: Call<T>, t: Throwable) {
+
+    }
+
+    private fun retry() = call.clone().enqueue(this)
+
+    sealed class APIHelper {
+        companion object {
+            private val DEFAULT_RETRIES = 3
+
+            @JvmStatic
+            fun <T> enqueueWithRetry(call: Call<T>, retryCount: Int, callback: Callback<T>) {
+                call.enqueue(object : RetryableCallback<T>(call, retryCount) {
+                    override fun onFinalResponse(call: Call<T>, response: Response<T>) = callback.onResponse(call, response)
+                    override fun onFinalFailure(call: Call<T>, t: Throwable) = callback.onFailure(call, t)
+                })
+            }
+
+            @JvmStatic
+            fun <T> enqueueWithRetry(call: Call<T>, callback: Callback<T>) = enqueueWithRetry(call, DEFAULT_RETRIES, callback)
+
+            @JvmStatic
+            fun <T> isCallSuccess(response: Response<T>): Boolean = response.code() in 200 until 400
+
+        }
+    }
+}
