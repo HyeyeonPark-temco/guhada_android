@@ -13,10 +13,6 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
     public FindPasswordFragment() {
     }
 
-    public FindPasswordFragment(FindPasswordViewModel mViewModel) {
-        this.mViewModel = mViewModel;
-    }
-
     public FindPasswordViewModel getmViewModel() {
         return mViewModel;
     }

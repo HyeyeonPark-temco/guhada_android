@@ -40,22 +40,19 @@ public class KakaoSessionCallback implements ISessionCallback {
             public void onSuccess(UserProfile result) {
                 CommonUtil.debug("[KAKAO] " + result.getEmail());
 
-                LoginServer.checkEmail((success, o) -> {
+                LoginServer.checkExistSnsUser((success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
                         if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                            mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result);
-                        } else {
-                            // 로그인
                             mListener.kakaoLogin(result);
+                        } else {
+                            mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result);
                         }
                     } else {
                         String message = (String) o;
                         Toast.makeText(BaseApplication.getInstance().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                     }
-                }, result.getEmail());
-
-
+                }, "KAKAO", String.valueOf(result.getId()));
             }
         });
     }

@@ -82,21 +82,19 @@ public class SnsLoginModule {
                     OnServerListener listener = (successGetProfile, o) -> {
                         if (successGetProfile) {
                             NaverUser naverUser = (NaverUser) o;
-                            // 이메일 중복 체크
-                            LoginServer.checkEmail((success12, obj) -> {
+
+                            LoginServer.checkExistSnsUser((success12, obj) -> {
                                 if (success12) {
                                     BaseModel model = (BaseModel) obj;
                                     if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                                        // (중복X) 가입되지 않은 이메일 - 약관 동의 Activity 호출
-                                        loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser);
-                                    } else {
-                                        // (중복O) 가입된 이메일 - /naverLogin 호출
                                         naverLogin(naverUser, serverListener);
+                                    } else {
+                                        loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser);
                                     }
                                 } else {
                                     Toast.makeText(context, (String) obj, Toast.LENGTH_SHORT).show();
                                 }
-                            }, naverUser.getEmail());
+                            }, "NAVER", ((NaverUser) o).getId());
                         } else {
                             CommonUtil.debug("[NAVER] PROFILE-FAILED: " + o.toString());
                         }
@@ -180,25 +178,20 @@ public class SnsLoginModule {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                if (account != null) {
-
-
-                    LoginServer.checkEmail((success, o) -> {
+                if (account != null && account.getId() != null) {
+                    LoginServer.checkExistSnsUser((success, o) -> {
                         if (success) {
                             BaseModel model = (BaseModel) o;
                             if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                                // (중복X) 가입되지 않은 이메일 - 약관 동의 Activity 호출
-                                loginListener.redirectTermsActivity(requestCode, account);
-                            } else {
-                                // (중복O) 가입된 이메일 - /googleLogin 호출
                                 googleLogin(account, serverListener);
+                            } else {
+                                loginListener.redirectTermsActivity(requestCode, account);
                             }
                         } else {
                             Toast.makeText(BaseApplication.getInstance(), (String) o, Toast.LENGTH_SHORT).show();
                         }
-                    }, account.getEmail());
+                    }, "GOOGLE", account.getId());
                 }
-
 
             } catch (ApiException e) {
                 CommonUtil.debug("[GOOGLE] " + e.getStatusCode() + "-" + e.getMessage());

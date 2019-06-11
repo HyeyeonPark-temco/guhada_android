@@ -51,7 +51,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
     @Override
     protected void init() {
-        CommonUtil.debug("CURRENT ACCESS TOKEN", Preferences.getToken().getAccessToken());
         initFacebookSdk();
 
         // INIT SNS LOGIN

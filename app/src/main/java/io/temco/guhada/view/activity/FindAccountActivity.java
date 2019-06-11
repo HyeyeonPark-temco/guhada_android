@@ -115,8 +115,13 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
     private void initPagerAndTab() {
         // PAGER
         mAdapter = new FindAccountPagerAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(new FindIdFragment(mViewModel));
-        mAdapter.addFragment(new FindPasswordFragment(new FindPasswordViewModel(new OnFindPasswordListener() {
+
+        FindIdFragment findIdFragment = new FindIdFragment();
+        findIdFragment.setmVewModel(mViewModel);
+        mAdapter.addFragment(findIdFragment);
+
+        FindPasswordFragment findPasswordFragment = new FindPasswordFragment();
+        findPasswordFragment.setmViewModel(new FindPasswordViewModel(new OnFindPasswordListener() {
             @Override
             public void setVerifyNumberViewEmpty() {
                 if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_ID) {
@@ -176,7 +181,8 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     }
                 });
             }
-        })));
+        }));
+        mAdapter.addFragment(findPasswordFragment);
 
         mBinding.viewpagerFindaccount.setAdapter(mAdapter);
 

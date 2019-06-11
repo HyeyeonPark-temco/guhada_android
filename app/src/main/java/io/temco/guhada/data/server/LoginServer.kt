@@ -193,7 +193,7 @@ class LoginServer {
          */
         @JvmStatic
         fun getVerifyPhoneToken(listener: OnServerListener) {
-            val call = RetrofitManager.createService(Type.Server.LOCAL, LoginService::class.java).verifyToken
+            val call = RetrofitManager.createService(Type.Server.LOCAL, LoginService::class.java).getVerifyToken()
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<String>> {
                 override fun onResponse(call: Call<BaseModel<String>>, response: Response<BaseModel<String>>) {
                     listener.onResult(response.isSuccessful, response.body())
@@ -323,6 +323,20 @@ class LoginServer {
                 }
 
                 override fun onFailure(call: Call<BaseModel<Token>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+        @JvmStatic
+        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String) {
+            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkExistSnsUser(snsType, snsId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    listener.onResult(true, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
             })

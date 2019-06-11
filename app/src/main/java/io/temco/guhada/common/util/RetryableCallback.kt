@@ -10,8 +10,14 @@ import retrofit2.Response
  *  @param call Retrofit Call<T>
  *  @param totalRetries 재시도 횟수
  */
-abstract class RetryableCallback<T>(private val call: Call<T>, private val totalRetries: Int) : Callback<T> {
+abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     private var retryCount = 0
+    private var totalRetries = 1
+
+    constructor(call: Call<T>, totalRetries: Int) : this(call) {
+        this.call = call
+        this.totalRetries = totalRetries
+    }
 
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (!APIHelper.isCallSuccess(response = response)) {
