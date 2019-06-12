@@ -8,6 +8,8 @@ import io.temco.guhada.data.model.base.BaseStickyHeaderModel;
 
 public class Brand extends BaseStickyHeaderModel implements Serializable {
 
+    public boolean isSelected = false;
+
     @SerializedName("id")
     public int id;
 

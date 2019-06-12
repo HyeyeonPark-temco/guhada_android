@@ -35,6 +35,7 @@ public class RetrofitManager {
 
     /**
      * RetrofitManager constructor
+     *
      * @param type
      * @param isLogged 로그 여부
      */
@@ -60,6 +61,7 @@ public class RetrofitManager {
 
     /**
      * createService method
+     *
      * @param type
      * @param service
      * @param isLogged 로그 여부
@@ -89,13 +91,13 @@ public class RetrofitManager {
     }
 
     private Retrofit getRetrofit(boolean isLogged) {
-        if (isLogged){
+        if (isLogged) {
             return new Retrofit.Builder()
                     .baseUrl(Type.Server.getUrl(mCurrentType))
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(getClient())
                     .build();
-        }else {
+        } else {
             return new Retrofit.Builder()
                     .baseUrl(Type.Server.getUrl(mCurrentType))
                     .addConverterFactory(GsonConverterFactory.create())
@@ -120,7 +122,8 @@ public class RetrofitManager {
                 .addInterceptor(interceptor)
                 .build();
     }
-    private OkHttpClient getClient(){
+
+    private OkHttpClient getClient() {
         return new OkHttpClient.Builder().addInterceptor(getLoggingInterceptor()).build();
     }
 
@@ -136,7 +139,7 @@ public class RetrofitManager {
         };
     }
 
-    private HttpLoggingInterceptor getLoggingInterceptor(){
+    private HttpLoggingInterceptor getLoggingInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return interceptor;

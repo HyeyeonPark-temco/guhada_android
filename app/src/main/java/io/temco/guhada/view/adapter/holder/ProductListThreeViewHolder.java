@@ -72,9 +72,6 @@ public class ProductListThreeViewHolder extends BaseProductViewHolder<ItemProduc
             } else {
                 mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.intValue())));
             }
-
-            // Ship
-            // mBinding.textShipFree.setVisibility(View.VISIBLE);
         }
     }
 

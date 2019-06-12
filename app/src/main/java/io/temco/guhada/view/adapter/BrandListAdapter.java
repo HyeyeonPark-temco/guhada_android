@@ -39,6 +39,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     private boolean mIsAlphabet = true;
     private OnBrandListener mBrandListener;
     //
+    private boolean mUseFaseScroll = true;
     private Map<String, Integer> mIndex;
     private String[] mSections;
     private String mCurrentSection;
@@ -64,21 +65,10 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public BrandListAdapter(Context context) {
+    public BrandListAdapter(Context context, boolean userFastScroll) {
         mContext = context;
-        // Size
-        mHeaderHeight = context.getResources().getDimensionPixelSize(R.dimen.view_fast_scroll_brand_header_row);
-        mTopPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_top);
-        mPointTextSize = context.getResources().getDimension(R.dimen.text_8);
-        mLetterTextSize = context.getResources().getDimension(R.dimen.text_10);
-        mSectionThumbTextSize = context.getResources().getDimension(R.dimen.text_30);
-        mSectionThumbSize = context.getResources().getDimension(R.dimen.view_fast_scroll_brand_thumb);
-        mSectionThumbPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_section);
-        // Color
-        mLetterTextNormal = ContextCompat.getColor(context, R.color.text_4);
-        mLetterTextSelect = ContextCompat.getColor(context, R.color.common_blue_purple);
-        mSectionText = ContextCompat.getColor(context, R.color.common_white);
-        mSectionBackground = ContextCompat.getColor(context, R.color.background_1);
+        mUseFaseScroll = userFastScroll;
+        if (userFastScroll) initFastScrollValue(context);
     }
 
     ////////////////////////////////////////////////
@@ -88,7 +78,7 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        recyclerView.addItemDecoration(new FastScrollItemDecoration(this));
+        if (mUseFaseScroll) recyclerView.addItemDecoration(new FastScrollItemDecoration(this));
     }
 
     @NonNull
@@ -130,6 +120,11 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     ////////////////////////////////////////////////
     // LISTENER
     ////////////////////////////////////////////////
+
+    @Override
+    public int getHeaderLayout() {
+        return R.layout.item_brand_list_header;
+    }
 
     @Override
     public Map<String, Integer> getIndex() {
@@ -267,6 +262,22 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
+
+    private void initFastScrollValue(Context context) {
+        // Size
+        mHeaderHeight = context.getResources().getDimensionPixelSize(R.dimen.view_fast_scroll_brand_header_row);
+        mTopPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_top);
+        mPointTextSize = context.getResources().getDimension(R.dimen.text_8);
+        mLetterTextSize = context.getResources().getDimension(R.dimen.text_10);
+        mSectionThumbTextSize = context.getResources().getDimension(R.dimen.text_30);
+        mSectionThumbSize = context.getResources().getDimension(R.dimen.view_fast_scroll_brand_thumb);
+        mSectionThumbPadding = context.getResources().getDimension(R.dimen.padding_fast_scroll_brand_section);
+        // Color
+        mLetterTextNormal = ContextCompat.getColor(context, R.color.text_4);
+        mLetterTextSelect = ContextCompat.getColor(context, R.color.common_blue_purple);
+        mSectionText = ContextCompat.getColor(context, R.color.common_white);
+        mSectionBackground = ContextCompat.getColor(context, R.color.background_1);
+    }
 
     private void setBrandData(List<Brand> data, boolean isAlphabet, boolean isReset) {
         if (data != null && data.size() > 0) {

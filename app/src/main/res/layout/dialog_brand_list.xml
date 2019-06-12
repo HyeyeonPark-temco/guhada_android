@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -16,20 +17,10 @@
         android:orientation="vertical">
 
         <!-- HEADER -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="35dp">
-
-            <ImageView
-                android:id="@+id/image_close"
-                android:layout_width="35dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/tool_btn_close"
-                android:onClick="@{clickListener}" />
-        </RelativeLayout>
+        <include
+            layout="@layout/header_dialog"
+            app:clickListener="@{clickListener}"
+            app:title="@{@string/common_brand}" />
 
         <!-- CONTENTS -->
         <LinearLayout
@@ -38,36 +29,18 @@
             android:background="@color/background_default"
             android:orientation="vertical">
 
-            <!-- TITLE -->
-            <TextView
-                style="@style/TextBold"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_dialog_header"
-                android:gravity="center_vertical"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/common_brand"
-                android:textColor="@color/text_3"
-                android:textSize="@dimen/text_18" />
-
-            <!-- LINE -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/line_3" />
-
             <!-- MIDDLE -->
             <include
                 android:id="@+id/layout_search"
                 layout="@layout/layout_brand_search" />
 
-            <!-- CONTENTS -->
             <io.temco.guhada.view.custom.recycler.FastScrollRecyclerView
                 android:id="@+id/list_contents"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:overScrollMode="never" />
+                android:overScrollMode="never"
+                android:paddingRight="@dimen/padding_fast_scroll_brand_section" />
         </LinearLayout>
     </LinearLayout>
 </layout>
