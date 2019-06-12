@@ -26,6 +26,7 @@
     <string name="common_community">커뮤니티</string>
     <string name="common_price_format">%,2d</string>
     <string name="common_more">더보기</string>
+    <string name="common_reset">초기화</string>
     <string name="common_color_white">#ffffff</string>
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
 
@@ -56,6 +57,9 @@
 
     <!-- BRAND -->
     <string name="brand_search_hint">브랜드명을 검색해주세요.</string>
+
+    <!-- DETAIL SEARCH -->
+    <string name="detail_search_result">검색결과 보기(%s개)</string>
 
     <!-- LOGIN -->
     <string name="login_title">로그인</string>

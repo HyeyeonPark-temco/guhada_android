@@ -6,26 +6,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnFilterListener;
 import io.temco.guhada.data.model.Attribute;
+import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
 import io.temco.guhada.view.adapter.base.BaseFilterViewHolder;
 import io.temco.guhada.view.adapter.holder.FilterMoreListViewHolder;
 import io.temco.guhada.view.adapter.holder.FilterTextButtonListViewHolder;
 
-public class FilterTextListAdapter extends RecyclerView.Adapter<BaseFilterViewHolder> implements View.OnClickListener {
+public class FilterTextListAdapter extends BaseFilterListAdapter<BaseFilterViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
     private OnFilterListener mFilterListener;
     private int mFilterId;
-    private List<Attribute> mItems;
-    private List<Attribute> mOriginalItems;
+    private Attribute mMore;
+    private CopyOnWriteArrayList<Attribute> mItems;
+    private CopyOnWriteArrayList<Attribute> mOriginalItems;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -89,16 +91,36 @@ public class FilterTextListAdapter extends RecyclerView.Adapter<BaseFilterViewHo
         }
     }
 
+    @Override
+    public void reset() {
+    }
+
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
 
     public void setItems(int id, List<Attribute> items) {
         mFilterId = id;
-        mOriginalItems = items;
+        // Original
+        // if (mOriginalItems == null) mOriginalItems = new CopyOnWriteArrayList<>();
+        // mOriginalItems.removeAll(mOriginalItems);
+        mOriginalItems = new CopyOnWriteArrayList<>();
+        mOriginalItems.addAll(items);
+        // Items
+        // if (mItems == null) mItems = new CopyOnWriteArrayList<>();
+        // mItems.removeAll(mItems);
+        mItems = new CopyOnWriteArrayList<>();
         if (items != null && items.size() > 4) {
-            mItems = items.subList(0, 3);
-            mItems.add(createMoreFilter());
+            // Sub List
+            mItems.addAll(items.subList(0, 3));
+            // Add More
+            if (mMore == null) {
+                mMore = new Attribute();
+                mMore.type = Type.List.MORE;
+            }
+            mItems.add(mMore);
+        } else {
+            mItems.addAll(items);
         }
         notifyDataSetChanged();
     }
@@ -116,14 +138,9 @@ public class FilterTextListAdapter extends RecyclerView.Adapter<BaseFilterViewHo
     }
 
     private void changeOriginalItems() {
+        if (mMore != null) mOriginalItems.remove(mMore);
         mItems = mOriginalItems;
-        notifyDataSetChanged();
-    }
-
-    private Attribute createMoreFilter() {
-        Attribute more = new Attribute();
-        more.type = Type.List.MORE;
-        return more;
+        notifyItemRangeChanged(0, mOriginalItems.size());
     }
 
     ////////////////////////////////////////////////

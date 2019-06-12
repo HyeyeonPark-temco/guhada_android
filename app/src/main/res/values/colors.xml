@@ -12,6 +12,7 @@
 
     <!-- BACKGROUND -->
     <color name="background_default">@color/common_white</color>
+    <color name="background_dim">#80000000</color>
     <color name="background_1">#e8e8e8</color>
     <color name="background_2">#444444</color>
 

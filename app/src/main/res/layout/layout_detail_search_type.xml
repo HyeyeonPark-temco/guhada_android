@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
+            android:text="@{title}"
             android:textColor="@color/text_3"
             android:textSize="@dimen/text_14" />
 
@@ -30,6 +31,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_contents"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
     </LinearLayout>
 </layout>

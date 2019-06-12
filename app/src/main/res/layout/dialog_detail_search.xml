@@ -26,122 +26,169 @@
             app:title="@{@string/product_search_detail_title}" />
 
         <!-- CONTENTS -->
-        <androidx.core.widget.NestedScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/background_default"
-            android:overScrollMode="never"
-            android:scrollbars="none">
+            android:layout_weight="1">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- //////////////////////////////////////////////// -->
-                <!-- CATEGORY -->
-                <!-- //////////////////////////////////////////////// -->
-
-                <com.github.florent37.expansionpanel.ExpansionHeader
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:expansion_layout="@id/layout_expand_category"
-                    app:expansion_toggleOnClick="true">
-
-                    <include
-                        android:id="@+id/layout_header_category"
-                        layout="@layout/layout_detail_search_expand_title"
-                        app:title="@{@string/common_category}" />
-                </com.github.florent37.expansionpanel.ExpansionHeader>
-
-                <com.github.florent37.expansionpanel.ExpansionLayout
-                    android:id="@+id/layout_expand_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:expansion_expanded="false">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/list_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:overScrollMode="never" />
-                </com.github.florent37.expansionpanel.ExpansionLayout>
-
-                <!-- //////////////////////////////////////////////// -->
-                <!-- BRAND -->
-                <!-- //////////////////////////////////////////////// -->
-
-                <com.github.florent37.expansionpanel.ExpansionHeader
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:expansion_layout="@id/layout_expand_brand"
-                    app:expansion_toggleOnClick="true">
-
-                    <include
-                        android:id="@+id/layout_header_brand"
-                        layout="@layout/layout_detail_search_expand_title"
-                        app:title="@{@string/common_brand}" />
-                </com.github.florent37.expansionpanel.ExpansionHeader>
-
-                <com.github.florent37.expansionpanel.ExpansionLayout
-                    android:id="@+id/layout_expand_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:expansion_expanded="false">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <include
-                            android:id="@+id/layout_search"
-                            layout="@layout/layout_brand_search" />
-
-                        <io.temco.guhada.view.custom.recycler.FastScrollRecyclerView
-                            android:id="@+id/list_brand"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:overScrollMode="never"
-                            android:paddingRight="20dp" />
-                    </LinearLayout>
-                </com.github.florent37.expansionpanel.ExpansionLayout>
-
-                <!-- //////////////////////////////////////////////// -->
-                <!-- FILTER -->
-                <!-- //////////////////////////////////////////////// -->
+                android:layout_height="match_parent"
+                android:background="@color/background_default"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <LinearLayout
-                    android:id="@+id/layout_filter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:orientation="vertical">
 
-                <!-- //////////////////////////////////////////////// -->
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                    <!-- //////////////////////////////////////////////// -->
+                    <!-- CATEGORY -->
+                    <!-- //////////////////////////////////////////////// -->
+
+                    <com.github.florent37.expansionpanel.ExpansionHeader
+                        android:id="@+id/layout_expand_category_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:expansion_layout="@id/layout_expand_category_contents"
+                        app:expansion_toggleOnClick="true">
+
+                        <include
+                            android:id="@+id/layout_header_category"
+                            layout="@layout/layout_detail_search_expand_title"
+                            app:title="@{@string/common_category}" />
+                    </com.github.florent37.expansionpanel.ExpansionHeader>
+
+                    <com.github.florent37.expansionpanel.ExpansionLayout
+                        android:id="@+id/layout_expand_category_contents"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:expansion_expanded="false">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/list_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:overScrollMode="never" />
+                    </com.github.florent37.expansionpanel.ExpansionLayout>
+
+                    <!-- //////////////////////////////////////////////// -->
+                    <!-- BRAND -->
+                    <!-- //////////////////////////////////////////////// -->
+
+                    <com.github.florent37.expansionpanel.ExpansionHeader
+                        android:id="@+id/layout_expand_brand_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:expansion_layout="@id/layout_expand_brand_contents"
+                        app:expansion_toggleOnClick="true">
+
+                        <include
+                            android:id="@+id/layout_header_brand"
+                            layout="@layout/layout_detail_search_expand_title"
+                            app:title="@{@string/common_brand}" />
+                    </com.github.florent37.expansionpanel.ExpansionHeader>
+
+                    <com.github.florent37.expansionpanel.ExpansionLayout
+                        android:id="@+id/layout_expand_brand_contents"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:expansion_expanded="false">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include
+                                android:id="@+id/layout_search"
+                                layout="@layout/layout_brand_search" />
+
+                            <io.temco.guhada.view.custom.recycler.FastScrollRecyclerView
+                                android:id="@+id/list_brand"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:overScrollMode="never"
+                                android:paddingRight="20dp" />
+                        </LinearLayout>
+                    </com.github.florent37.expansionpanel.ExpansionLayout>
+
+                    <!-- //////////////////////////////////////////////// -->
+                    <!-- FILTER -->
+                    <!-- //////////////////////////////////////////////// -->
+
+                    <LinearLayout
+                        android:id="@+id/layout_filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                    <!-- //////////////////////////////////////////////// -->
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <RelativeLayout
+                android:id="@+id/layout_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background_dim" />
+        </RelativeLayout>
 
         <!-- BUTTON -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="0"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="3">
 
             <!-- RESET -->
-            <TextView
-                android:layout_width="120dp"
+            <RelativeLayout
+                android:id="@+id/layout_reset"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:background="@color/background_2" />
+                android:layout_weight="1"
+                android:background="@color/background_2"
+                android:onClick="@{clickListener}"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:background="@drawable/filter_icon_reset_w" />
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/common_reset"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <!-- RESULT -->
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/text_result"
+                style="@style/TextMedium"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/common_blue_purple" />
+                android:layout_weight="2"
+                android:background="@color/common_blue_purple"
+                android:gravity="center"
+                android:onClick="@{clickListener}"
+                android:text="@string/detail_search_result"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_13" />
         </LinearLayout>
     </LinearLayout>
 </layout>

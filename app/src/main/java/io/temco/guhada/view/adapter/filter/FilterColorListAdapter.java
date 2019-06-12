@@ -6,23 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnFilterListener;
 import io.temco.guhada.data.model.Attribute;
-import io.temco.guhada.data.model.Filter;
+import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
 import io.temco.guhada.view.adapter.holder.FilterColorListViewHolder;
 
-public class FilterColorListAdapter extends RecyclerView.Adapter<FilterColorListViewHolder> implements View.OnClickListener {
+public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorListViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
     private OnFilterListener mFilterListener;
     private int mFilterId;
-    private List<Attribute> mItems;
+    private CopyOnWriteArrayList<Attribute> mItems;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -68,13 +68,18 @@ public class FilterColorListAdapter extends RecyclerView.Adapter<FilterColorList
         }
     }
 
+    @Override
+    public void reset() {
+    }
+
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
 
     public void setItems(int id, List<Attribute> items) {
         mFilterId = id;
-        mItems = items;
+        mItems = new CopyOnWriteArrayList<>();
+        mItems.addAll(items);
         notifyDataSetChanged();
     }
 

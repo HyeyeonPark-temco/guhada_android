@@ -1,5 +1,8 @@
 package io.temco.guhada.view.custom.dialog;
 
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -9,21 +12,21 @@ import android.view.View;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnFilterListener;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
-import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
 import io.temco.guhada.databinding.LayoutDetailSearchTypeBinding;
 import io.temco.guhada.view.adapter.BrandListAdapter;
-import io.temco.guhada.view.adapter.expand.CategoryDialogExpandFirstListAdapter;
+import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
 import io.temco.guhada.view.adapter.filter.FilterColorListAdapter;
 import io.temco.guhada.view.adapter.filter.FilterTextButtonListAdapter;
 import io.temco.guhada.view.adapter.filter.FilterTextListAdapter;
@@ -32,8 +35,14 @@ import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
+    private OnDetailSearchListener mDetailSearchListener;
     private BrandListAdapter mBrandListAdapter;
-    private ProductList mProductData;
+    private boolean mIsChangeData = false;
+    private String mParentDepth;
+    private List<Category> mCategoryList;
+    private List<Brand> mBrandList;
+    private List<Filter> mFilterList;
+    // private List<BaseFilterListAdapter> mFilterAdapterList;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -49,9 +58,8 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     protected void init() {
         mBinding.setClickListener(this);
 
-        // Test
-        initCategoryList();
-        setBrandData(null);
+        // Data
+        initData();
     }
 
     @Override
@@ -61,13 +69,27 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 dismiss();
                 break;
 
+            ////////////////////////////////////////////////
+            // Brand
             case R.id.image_alphabet:
-                selectBrandInitial(true);
+                changeBrandLanguage(true);
                 break;
 
             case R.id.image_hangul:
-                selectBrandInitial(false);
+                changeBrandLanguage(false);
                 break;
+
+            // Bottom
+            case R.id.layout_reset:
+                reset();
+                break;
+
+            case R.id.text_result:
+                changeDataEvent();
+                dismiss();
+                break;
+
+            ////////////////////////////////////////////////
         }
     }
 
@@ -75,56 +97,114 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setProductData(ProductList data) {
-        if (data != null) {
-            mProductData = data;
-            setCategoryData(data.categories);
-            setBrandData(data.brands);
-            initFilter(data.filters);
-        }
+    public void setOnDetailSearchListener(OnDetailSearchListener listener) {
+        mDetailSearchListener = listener;
+    }
+
+    public void setCategoryData(String depth, List<Category> categories) {
+        mParentDepth = depth;
+        mCategoryList = categories;
+    }
+
+    public void setBrandData(List<Brand> brands) {
+        mBrandList = brands;
+    }
+
+    public void setFilterData(List<Filter> filters) {
+        mFilterList = filters;
     }
 
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
 
-    // Category
-    private void setCategoryData(List<Category> data) {
-        //
+    private void reset() {
+        mBinding.layoutFilter.removeAllViews();
+        mBinding.layoutExpandCategoryContents.collapse(true);
+        mBinding.layoutExpandBrandContents.collapse(true);
+        initData();
     }
 
-    private void initCategoryList() {
-        // mBinding.textCategoryDepth.setText(">>>>");
-        // mBinding.imageCategoryExpand.setVisibility(View.GONE);
+    private void initData() {
+        mBinding.layoutProgress.setVisibility(View.VISIBLE);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            setCategoryData();
+            setBrandData();
+            initFilter(mFilterList);
+            mBinding.layoutProgress.setVisibility(View.GONE);
+        }, 200);
+    }
+
+    ////////////////////////////////////////////////
+
+    private void changeDataEvent() {
+        if (mIsChangeData && mDetailSearchListener != null) {
+            if (mCategoryList != null) mDetailSearchListener.onCategory(mCategoryList);
+            if (mBrandList != null) mDetailSearchListener.onBrand(mBrandList);
+            if (mFilterList != null) mDetailSearchListener.onFilter(mFilterList);
+            mDetailSearchListener.onChange(true);
+        }
+    }
+
+    // Category
+    private void setCategoryData() {
+        // Depth
+        if (!TextUtils.isEmpty(mParentDepth)) {
+            mBinding.layoutHeaderCategory.setDepth(mParentDepth);
+        }
+        // List
+        if (mCategoryList != null && mCategoryList.size() > 0) {
+            mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.VISIBLE);
+            mBinding.layoutExpandCategoryHeader.setToggleOnClick(true);
+            initCategoryList(mCategoryList);
+        } else {
+            mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.GONE);
+            mBinding.layoutExpandCategoryHeader.setToggleOnClick(false);
+        }
+    }
+
+    private void initCategoryList(List<Category> data) {
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
-        CategoryDialogExpandFirstListAdapter adapter = new CategoryDialogExpandFirstListAdapter(getContext());
-//        adapter.setOnCategoryListener(this::setCategoryData);
-        adapter.setItems(Preferences.getCategories());
-        mBinding.listCategory.setAdapter(adapter);
+//        CategoryDialogExpandFirstListAdapter adapter = new CategoryDialogExpandFirstListAdapter(getContext());
+//        adapter.setOnCategoryListener((type, hierarchies) -> {
+//            //
+//        });
+//        adapter.setItems(data);
+//        mBinding.listCategory.setAdapter(adapter);
     }
 
     // Brand
-    private void setBrandData(List<Brand> data) {
-        if (data != null && data.size() > 0) {
+    private void setBrandData() {
+        if (mBrandList != null && mBrandList.size() > 0) {
+            if (mBrandList.size() == 1) {
+                mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
+                mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
+                // Set Title
 
+            } else {
+                mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.VISIBLE);
+                mBinding.layoutExpandBrandHeader.setToggleOnClick(true);
+                //
+                initBrandList(mBrandList);
+            }
         } else {
-//            mBinding.layoutExpandBrand.
-
+            mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
+            mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
         }
-        initBrandList();
-        selectBrandInitial(true);
     }
 
-    private void initBrandList() {
+    private void initBrandList(List<Brand> data) {
         mBinding.layoutSearch.setClickListener(this);
+        selectBrandLanguage(true);
         // Adapter
         mBrandListAdapter = new BrandListAdapter(getContext(), false);
         mBrandListAdapter.setOnBrandListener(brand -> {
             if (brand != null && brand.type != Type.List.HEADER) {
-
+                boolean result = changeBrandData(brand);
+                if (!mIsChangeData) mIsChangeData = result;
             }
         });
-        mBrandListAdapter.initBrandData(Preferences.getBrands());
+        mBrandListAdapter.initBrandData(data);
         // List
         mBinding.listBrand.setHasFixedSize(true);
         mBinding.listBrand.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -146,10 +226,9 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         });
     }
 
-    private void selectBrandInitial(boolean isAlphabet) {
+    private void changeBrandLanguage(boolean isAlphabet) {
         if (mBrandListAdapter != null) {
-            mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
-            mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
+            selectBrandLanguage(isAlphabet);
             mBrandListAdapter.changeLanguage(isAlphabet);
             mBinding.layoutSearch.edittextSearch.setText(null);
         }
@@ -164,6 +243,23 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 mBrandListAdapter.filter(text);
             }
         }
+    }
+
+    private void selectBrandLanguage(boolean isAlphabet) {
+        mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
+        mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
+    }
+
+    private boolean changeBrandData(Brand brand) {
+        if (mBrandList != null && mBrandList.size() > 0) {
+            for (Brand b : mBrandList) {
+                if (b.id == brand.id) {
+                    b.isSelected = brand.isSelected;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // Filter
@@ -228,10 +324,9 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         return b.getRoot();
     }
 
-    private boolean setFilterData(int id, List<Attribute> attributes) {
-        if (mProductData != null &&
-                mProductData.filters != null && mProductData.filters.size() > 0) {
-            for (Filter f : mProductData.filters) {
+    private boolean changeFilterData(int id, List<Attribute> attributes) {
+        if (mFilterList != null && mFilterList.size() > 0) {
+            for (Filter f : mFilterList) {
                 if (f.id == id) {
                     f.attributes = attributes;
                     return true;
@@ -245,7 +340,10 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     // LISTENER
     ////////////////////////////////////////////////
 
-    private OnFilterListener mFilterListener = this::setFilterData;
+    private OnFilterListener mFilterListener = (id, attributes) -> {
+        boolean result = changeFilterData(id, attributes);
+        if (!mIsChangeData) mIsChangeData = result;
+    };
 
     ////////////////////////////////////////////////
 }
