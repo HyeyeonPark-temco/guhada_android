@@ -13,6 +13,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ActivityBrandSubBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -51,7 +52,7 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
         mBinding.layoutHeader.setTitle(getString(R.string.common_brand));
 
         // List
-        initList();
+        CommonUtil.delayRunnable(this::initList);
 
         // EditText
         mBinding.layoutSearch.edittextSearch.addTextChangedListener(new TextWatcher() {
@@ -135,7 +136,7 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
         if (mListAdapter != null) {
             mBinding.listContents.scrollToPosition(0);
             if (TextUtils.isEmpty(text)) {
-                mListAdapter.resetFilterToOriginal();
+                CommonUtil.delayRunnable(() -> mListAdapter.resetFilterToOriginal());
             } else {
                 mListAdapter.filter(text);
             }

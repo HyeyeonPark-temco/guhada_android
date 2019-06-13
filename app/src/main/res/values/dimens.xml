@@ -47,4 +47,7 @@
     <!-- PADDING -->
     <dimen name="padding_fast_scroll_brand_top">11dp</dimen>
     <dimen name="padding_fast_scroll_brand_section">50dp</dimen>
+    <dimen name="padding_detail_search_filter">10dp</dimen>
+    <dimen name="padding_detail_search_filter_row">15dp</dimen>
+    <dimen name="padding_detail_search_filter_column">24dp</dimen>
 </resources>

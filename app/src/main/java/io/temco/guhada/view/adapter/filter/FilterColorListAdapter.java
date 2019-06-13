@@ -11,19 +11,11 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.listener.OnFilterListener;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
 import io.temco.guhada.view.adapter.holder.FilterColorListViewHolder;
 
 public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorListViewHolder> implements View.OnClickListener {
-
-    // -------- LOCAL VALUE --------
-    private Context mContext;
-    private OnFilterListener mFilterListener;
-    private int mFilterId;
-    private CopyOnWriteArrayList<Attribute> mItems;
-    // -----------------------------
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
@@ -36,11 +28,6 @@ public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorLis
     ////////////////////////////////////////////////
     // OVERRIDE
     ////////////////////////////////////////////////
-
-    @Override
-    public int getItemCount() {
-        return mItems == null ? 0 : mItems.size();
-    }
 
     @NonNull
     @Override
@@ -72,27 +59,12 @@ public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorLis
     public void reset() {
     }
 
-    ////////////////////////////////////////////////
-    // PUBLIC
-    ////////////////////////////////////////////////
-
+    @Override
     public void setItems(int id, List<Attribute> items) {
         mFilterId = id;
         mItems = new CopyOnWriteArrayList<>();
         mItems.addAll(items);
         notifyDataSetChanged();
-    }
-
-    public void setOnFilterListener(OnFilterListener listener) {
-        mFilterListener = listener;
-    }
-
-    ////////////////////////////////////////////////
-    // PRIVATE
-    ////////////////////////////////////////////////
-
-    private Attribute getItem(int position) {
-        return mItems == null ? null : mItems.get(position);
     }
 
     ////////////////////////////////////////////////

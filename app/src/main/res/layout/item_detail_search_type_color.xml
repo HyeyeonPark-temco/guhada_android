@@ -3,37 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/background_color_search">
 
         <RelativeLayout
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:background="@drawable/background_color_search"
-            android:orientation="vertical">
+            android:id="@+id/layout_color"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true">
 
-            <RelativeLayout
-                android:id="@+id/layout_color"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_centerInParent="true">
+            <!-- COLOR -->
+            <ImageView
+                android:id="@+id/image_color"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-                <!-- COLOR -->
-                <ImageView
-                    android:id="@+id/image_color"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <!-- SELECTED -->
-                <ImageView
-                    android:id="@+id/image_selected"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/filter_btn_check_w"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-            </RelativeLayout>
+            <!-- SELECTED -->
+            <ImageView
+                android:id="@+id/image_selected"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/filter_btn_check_w"
+                android:visibility="gone"
+                tools:visibility="visible" />
         </RelativeLayout>
     </RelativeLayout>
 </layout>

@@ -32,6 +32,7 @@
             android:layout_weight="1">
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/view_scroll_contents"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/background_default"
@@ -105,7 +106,7 @@
                                 android:id="@+id/layout_search"
                                 layout="@layout/layout_brand_search" />
 
-                            <io.temco.guhada.view.custom.recycler.FastScrollRecyclerView
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/list_brand"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -118,21 +119,28 @@
                     <!-- FILTER -->
                     <!-- //////////////////////////////////////////////// -->
 
-                    <LinearLayout
-                        android:id="@+id/layout_filter"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_filter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical" />
+                        android:overScrollMode="never" />
 
                     <!-- //////////////////////////////////////////////// -->
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
+            <!-- PROGRESS -->
             <RelativeLayout
                 android:id="@+id/layout_progress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_dim" />
+                android:background="@color/background_dim">
+
+                <!--<ProgressBar-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_centerInParent="true" />-->
+            </RelativeLayout>
         </RelativeLayout>
 
         <!-- BUTTON -->

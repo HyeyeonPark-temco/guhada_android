@@ -1,5 +1,7 @@
 package io.temco.guhada.view.custom.dialog;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +36,7 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
         mBinding.layoutSubMenu.setClickListener(this);
 
         // List
-        initList();
+        CommonUtil.delayRunnable(this::initList);
     }
 
     @Override
