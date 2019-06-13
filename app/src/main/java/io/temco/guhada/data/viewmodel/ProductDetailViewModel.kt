@@ -58,7 +58,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     product.postValue(it.data)
                 }
             } else {
-                CommonUtil.debug(o.toString())
+                CommonUtil.debug(o?.toString())
             }
         }, dealId)
     }

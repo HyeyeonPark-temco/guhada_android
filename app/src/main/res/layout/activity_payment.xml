@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.PaymentViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/pale_grey"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/include_payment_header"
+                layout="@layout/header_common_backbutton" />
+
+            <LinearLayout
+                android:id="@+id/linearlayout_payment_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@color/common_white"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/textview_payment_producttitle"
+                        style="@style/PaymentTitleBlackTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_title_product"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/textview_payment_productcount"
+                        style="@style/PaymentTitleBlackTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="@{String.valueOf(viewModel.product.totalCount)}"
+                        android:textColor="@color/colorPrimary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textview_payment_producttitle"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/PaymentTitleBlackTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_unit_product"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textview_payment_productcount"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{()->viewModel.onClickExpandProduct()}"
+                        android:src="@{viewModel.productVisible ? @drawable/payment_btn_myorder_close : @drawable/payment_btn_myorder_open}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:visibility="@{viewModel.productVisible ? View.VISIBLE : View.GONE, default = visible}">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="115dp"
+                        app:imageUrl="@{viewModel.product.profileUrl}" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="25dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textview_payment_productbrandname"
+                            style="@style/PaymentTitleBlackTextStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.product.brandName}"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            android:id="@+id/textview_payment_productname"
+                            style="@style/PaymentTitleBlackTextStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@{viewModel.product.name}"
+                            android:textSize="@dimen/text_13" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textview_payment_productprice"
+                                style="@style/PaymentTitleBlackTextStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{@string/common_price_format(viewModel.product.totalPrice)}"
+                                android:textSize="@dimen/text_14" />
+
+                            <TextView
+                                style="@style/PaymentTitleBlackTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/common_unit_price"
+                                android:textSize="@dimen/text_14" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textview_payment_productoption"
+                                style="@style/PaymentContentGreyTextStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@{viewModel.optionStr}" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@color/common_white"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/textView21"
+                    style="@style/PaymentTitleBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_title_buyer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        style="@style/PaymentContentDarkGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2dp"
+                        android:text="@string/payment_text_required"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        style="@style/PaymentContentDarkGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_text_verify" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_payment_buyerverify"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="3dp"
+                        android:onClick="@{()->viewModel.onClickBuyerVerify()}"
+                        android:src="@drawable/payment_link_arrow" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textview_payment_buyername"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/dummy_content_singleline"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+                <TextView
+                    android:id="@+id/textview_payment_buyerphone"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/dummy_content_singleline"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textview_payment_buyername" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@color/common_white"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="30dp">
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_payment_shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textview_payment_shippingtitle"
+                        style="@style/PaymentTitleBlackTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_title_shipping"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textview_payment_shippingchange"
+                        style="@style/PaymentContentDarkGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_text_changedestination" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_payment_shipping"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="3dp"
+                        android:onClick="@{()->viewModel.onClickBuyerVerify()}"
+                        android:src="@drawable/payment_link_arrow" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearlayout_payment_shipping">
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        style="@style/PaymentTitleBlackTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dummy_content_singleline"
+                        android:textSize="@dimen/text_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/payment_icon_basic_delivery"
+                        app:layout_constraintStart_toEndOf="@+id/textView23"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_payment_shippingaddress"
+                        style="@style/PaymentContentGreyTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+
+                        android:text="@string/dummy_content"
+                        android:textSize="@dimen/text_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_payment_shippingmemo"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="25dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingaddress">
+
+                        <TextView
+                            style="@style/PaymentContentGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/payment_hint_shippingmemo"
+                            android:textSize="@dimen/text_13" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+
+
+                    <EditText
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:hint="@string/payment_hint_textshippingmemo"
+                        android:padding="15dp"
+                        android:textColor="@color/warm_grey_two"
+                        android:textColorHint="@color/white_three"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/text_13"
+                        android:visibility="@{viewModel.textShippingMemoVisible ? View.VISIBLE : View.GONE, default = gone}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearlayout_payment_shippingmemo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/include_payment_discount"
+                layout="@layout/layout_payment_discount" />
+
+            <include
+                android:id="@+id/include_payment_discountresult"
+                layout="@layout/layout_payment_discountresult" />
+
+            <include
+                android:id="@+id/include_payment_paymentway"
+                layout="@layout/layout_payment_paymentway" />
+
+            <Button
+                style="@style/PaymentSubmitButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_button_submit" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

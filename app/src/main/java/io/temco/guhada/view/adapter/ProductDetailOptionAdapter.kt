@@ -14,6 +14,7 @@ import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionBinding
 import io.temco.guhada.view.adapter.base.BaseViewHolder
+import java.io.Serializable
 
 class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
     var options: List<Product.Option> = ArrayList()
@@ -64,7 +65,7 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : Re
         }
     }
 
-    class OptionAttr {
+    class OptionAttr : Serializable {
         var rgb: String = ""
         var name: String = ""
     }

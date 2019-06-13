@@ -209,7 +209,7 @@
                     style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/productdetail_unit_prercent"
+                    android:text="@string/common_unit_prercent"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp"
                     android:visibility="@{viewModel.product.discountRate == 0 ? View.GONE : View.VISIBLE}"
@@ -247,121 +247,6 @@
         android:layout_marginTop="8dp"
         android:background="@color/common_white"
         android:orientation="vertical"/>
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:background="@color/common_white"-->
-            <!--android:orientation="vertical"-->
-            <!--android:paddingStart="20dp"-->
-            <!--android:paddingTop="30dp"-->
-            <!--android:paddingEnd="20dp"-->
-            <!--android:paddingBottom="30dp">-->
-
-            <!--<TextView-->
-                <!--style="@style/TextMedium"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/productdetail_option"-->
-                <!--android:textColor="@color/black_four"-->
-                <!--android:textSize="@dimen/text_16" />-->
-
-            <!--<androidx.recyclerview.widget.RecyclerView-->
-                <!--android:id="@+id/recyclerview_productdetail_option"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:overScrollMode="never"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:background="@color/common_white"-->
-                <!--app:productOption="@{viewModel.product.options}" />-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="34dp"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--android:background="@drawable/border_all_whitethree"-->
-                <!--android:orientation="horizontal">-->
-
-
-                <!--<ImageButton-->
-                    <!--android:layout_width="34dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:onClick="@{()->viewModel.onClickMinus()}"-->
-                    <!--android:scaleType="center"-->
-                    <!--android:src="@drawable/detail_btn_quantity_minus_off"-->
-                  <!--/>-->
-                <!--<View-->
-                    <!--android:layout_width="1dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@color/white_three" />-->
-
-                <!--<TextView-->
-                    <!--style="@style/TextBold"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginStart="23dp"-->
-                    <!--android:layout_marginEnd="23dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@{String.valueOf(viewModel.productCount)}"-->
-                    <!--android:textColor="@color/black_four"-->
-                    <!--android:textSize="@dimen/text_14" />-->
-
-                <!--<View-->
-                    <!--android:layout_width="1dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="@color/white_three" />-->
-
-                <!--<ImageButton-->
-                    <!--android:layout_width="34dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:onClick="@{()->viewModel.onClickPlus()}"-->
-                    <!--android:scaleType="center"-->
-                    <!--android:src="@drawable/detail_btn_quantity_plus_on"-->
-                     <!--/>-->
-            <!--</LinearLayout>-->
-
-            <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="28dp">-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/textView12"-->
-                    <!--style="@style/TextBold"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/productdetail_totalprice"-->
-                    <!--android:textColor="@color/black_four"-->
-                    <!--android:textSize="@dimen/text_14"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--<TextView-->
-                    <!--style="@style/TextBold"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@{@string/common_price_format(viewModel.totalPrice)}"-->
-                    <!--android:textColor="@color/colorPrimary"-->
-                    <!--android:textSize="@dimen/text_24"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toStartOf="@+id/textView13"-->
-                    <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-                <!--<TextView-->
-                    <!--android:id="@+id/textView13"-->
-                    <!--style="@style/TextBold"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="@string/productdetail_unit_price"-->
-                    <!--android:textColor="@color/colorPrimary"-->
-                    <!--android:textSize="@dimen/text_16"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent" />-->
-            <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
-
-        <!--</LinearLayout>-->
     </LinearLayout>
 
 </layout>

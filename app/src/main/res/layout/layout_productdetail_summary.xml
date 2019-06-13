@@ -47,7 +47,7 @@
                 style="@style/ProductDetailContentTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/productdetail_unit_price"
+                android:text="@string/common_unit_price"
                 android:textColor="@color/greyish_brown_two"
                 android:visibility='@{viewModel.product.shipExpense == 0 ? View.GONE : View.VISIBLE}' />
 
@@ -253,7 +253,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text="@string/productdetail_unit_person"
+                            android:text="@string/common_unit_person"
                             android:textColor="@color/black_two"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
@@ -290,7 +290,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text="@string/productdetail_unit_person"
+                            android:text="@string/common_unit_person"
                             android:textColor="@color/black_two"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
@@ -327,7 +327,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center"
-                            android:text="@string/productdetail_unit_person"
+                            android:text="@string/common_unit_person"
                             android:textColor="@color/black_two"
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
@@ -414,7 +414,7 @@
                     style="@style/ProductDetailTitleTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/productdetail_unit_board"
+                    android:text="@string/common_unit_person"
                     android:textSize="@dimen/text_13"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
