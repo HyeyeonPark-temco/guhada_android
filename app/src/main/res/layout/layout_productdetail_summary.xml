@@ -30,21 +30,21 @@
             android:paddingBottom="17dp">
 
             <TextView
-                style="@style/ProductDetailContentTextStyle"
+                style="@style/ProductDetailContentBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:text="@string/productdetail_shipinfo" />
 
             <TextView
-                style="@style/ProductDetailContentTextStyle"
+                style="@style/ProductDetailContentBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : @string/common_price_format(viewModel.product.shipExpense)}'
                 android:textColor="@color/greyish_brown_two" />
 
             <TextView
-                style="@style/ProductDetailContentTextStyle"
+                style="@style/ProductDetailContentBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/common_unit_price"
@@ -70,14 +70,14 @@
             android:paddingBottom="17dp">
 
             <TextView
-                style="@style/ProductDetailContentTextStyle"
+                style="@style/ProductDetailContentBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
                 android:text="@string/productdetail_advantageinfo" />
 
             <TextView
-                style="@style/ProductDetailContentTextStyle"
+                style="@style/ProductDetailContentBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -354,7 +354,7 @@
 
             <TextView
                 android:id="@+id/textview_productdetail_review"
-                style="@style/ProductDetailTitleTextStyle"
+                style="@style/ProductDetailTitleBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -383,7 +383,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    style="@style/ProductDetailTitleTextStyle"
+                    style="@style/ProductDetailTitleBlackTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -402,7 +402,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/ProductDetailTitleTextStyle"
+                    style="@style/ProductDetailTitleBlackTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -411,7 +411,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    style="@style/ProductDetailTitleTextStyle"
+                    style="@style/ProductDetailTitleBlackTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/common_unit_person"

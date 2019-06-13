@@ -132,25 +132,26 @@
     </style>
 
     <style name="SpinnerItemStyle" parent="Widget.AppCompat.TextView.SpinnerItem" />
+
     <style name="SpinnerDropDownItemStyle" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem" />
 
     <!-- Product Detail -->
-    <style name="ProductDetailContentTextStyle" parent="@style/TextMedium">
+    <style name="ProductDetailContentBlackTextStyle" parent="@style/TextMedium">
         <item name="android:textSize">@dimen/text_13</item>
         <item name="android:textColor">@color/black_four</item>
     </style>
 
-    <style name="ProductDetailTitleTextStyle" parent="@style/TextBold">
+    <style name="ProductDetailTitleBlackTextStyle" parent="@style/TextBold">
         <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:textColor">@color/greyish_brown_two</item>
+        <item name="android:textColor">@color/black_four</item>
     </style>
 
-    <style name="ProductDetailQnaContentTextStyle"  parent="@style/TextRegular">
+    <style name="ProductDetailContentDarkGreyTextStyle" parent="@style/TextMedium">
         <item name="android:textSize">@dimen/text_12</item>
         <item name="android:textColor">@color/greyish_brown_two</item>
     </style>
 
-    <style name="ProductDetailQnaDescTextStyle" parent="@style/TextRegular">
+    <style name="ProductDetailContentGreyTextStyle" parent="@style/TextRegular">
         <item name="android:textSize">@dimen/text_12</item>
         <item name="android:textColor">@color/warm_grey_two</item>
     </style>

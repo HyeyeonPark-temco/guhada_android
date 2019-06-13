@@ -65,9 +65,10 @@
                         android:id="@+id/include_productdetail_contentinfo"
                         layout="@layout/layout_productdetail_info" />
 
-                    <include
-                        android:id="@+id/include_productdetail_contentreview"
-                        layout="@layout/layout_productdetail_review" />
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <View
                         android:id="@+id/productdetail_scrollflag_qna"
@@ -119,7 +120,7 @@
             android:visibility="@{viewModel.menuVisibility,default = gone}"
             app:layout_constraintBottom_toTopOf="@+id/linearlayout_productdetail_button"
             app:layout_constraintEnd_toEndOf="@+id/scrollview_productdetail"
-            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"></FrameLayout>
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"/>
 
         <!-- 하단 버튼 -->
         <LinearLayout

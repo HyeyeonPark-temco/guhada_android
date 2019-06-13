@@ -20,7 +20,6 @@ import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
@@ -33,12 +32,14 @@ import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.ProductDetailTagAdapter
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
+import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var claimFragment: ProductDetailClaimFragment
     private lateinit var menuFragment: ProductDetailMenuFragment
     private lateinit var headerMenuFragment: ProductDetailMenuFragment
+    private lateinit var reviewFragment: ProductDetailReviewFragment
 
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
@@ -80,12 +81,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             })
 
             initMenu()
+
         })
 
         mViewModel.getDetail()
         mBinding.viewModel = mViewModel
 
         initClaims(resources.getString(R.string.temp_productId).toInt())
+        initReview(resources.getString(R.string.temp_productId).toInt())
 
         detectButton()
         mBinding.executePendingBindings()
@@ -95,6 +98,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         claimFragment = ProductDetailClaimFragment(productId)
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, claimFragment)
+            it.commit()
+        }
+    }
+
+    private fun initReview(productId: Int) {
+        reviewFragment = ProductDetailReviewFragment()
+        supportFragmentManager.beginTransaction().let {
+            it.add(mBinding.framelayoutProductdetailReview.id, reviewFragment)
             it.commit()
         }
     }
@@ -171,6 +182,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 WRITE_CLAIM -> {

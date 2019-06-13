@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/textView15"
-            style="@style/ProductDetailTitleTextStyle"
+            style="@style/ProductDetailTitleBlackTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="19dp"
             android:text="@string/productdetail_info"
