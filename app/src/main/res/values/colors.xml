@@ -60,5 +60,10 @@
     <color name="white_two">#ededed</color>
     <color name="white_three">#dddddd</color>
     <color name="white_four">#eeeeee</color>
+    <color name="white_five">#fafafa</color>
+    <color name="white_six">#eaeaea</color>
+
+    <color name="perrywinkle">#aa91e6</color>
+    <color name="cool_grey">#9a9fa8</color>
 
 </resources>

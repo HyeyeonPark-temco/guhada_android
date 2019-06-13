@@ -25,10 +25,22 @@
     <string name="common_home">홈</string>
     <string name="common_my_page">마이페이지</string>
     <string name="common_community">커뮤니티</string>
+
+    <string name="common_show">보기</string>
+    <string name="common_max">최대</string>
     <string name="common_price_format">%,2d</string>
+
     <string name="common_more">더보기</string>
     <string name="common_reset">초기화</string>
     <string name="common_color_white">#ffffff</string>
+
+    <string name="common_unit_person">명</string>
+    <string name="common_unit_board">건</string>
+    <string name="common_unit_price">원</string>
+    <string name="common_unit_prercent">%</string>
+    <string name="common_unit_product">개</string>
+    <string name="common_unit_point">P</string>
+
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
 
     <!-- SIDE MENU -->
@@ -226,11 +238,6 @@
     <string name="productdetail_button_follow">팔로우</string>
     <string name="productdetail_button_store">셀러스토어</string>
 
-    <string name="productdetail_unit_person">명</string>
-    <string name="productdetail_unit_board">건</string>
-    <string name="productdetail_unit_price">원</string>
-    <string name="productdetail_unit_prercent">%</string>
-
     <string name="productdetail_shipping_title">배송/반품/교환정보</string>
     <string name="productdetail_shipping_info_title">배송정보</string>
     <string name="productdetail_shipping_info_content1">배송방법</string>
@@ -304,4 +311,42 @@
 
     <string name="temp_productId">12492</string>
 
+    <!-- PAYMENT -->
+    <string name="payment_title_product">주문 상품</string>
+    <string name="payment_title_buyer">주문자 정보</string>
+    <string name="payment_title_shipping">배송지</string>
+    <string name="payment_title_discount">할인 적용</string>
+    <string name="payment_title_coupon">쿠폰</string>
+    <string name="payment_title_point">포인트</string>
+    <string name="payment_title_paymentway">결제 수단</string>
+
+    <string name="payment_text_freeshipping">무료배송</string>
+    <string name="payment_text_verify">본인인증</string>
+    <string name="payment_text_required">[필수]</string>
+    <string name="payment_text_totalorderprice">총 주문금액</string>
+    <string name="payment_text_totaldiscount">할인금액</string>
+    <string name="payment_text_totalpayprice">최종 결제금액</string>
+    <string name="payment_text_discountcoupon">쿠폰 할인</string>
+    <string name="payment_text_discountproduct">상품 할인</string>
+    <string name="payment_text_discountpoint">포인트 사용</string>
+    <string name="payment_text_expectedpoint">적립 예정 내역</string>
+    <string name="payment_text_fixbuy">구매 확정</string>
+    <string name="payment_text_textreview">텍스트 리뷰</string>
+    <string name="payment_text_photoreview">포토 리뷰</string>
+
+    <string name="payment_text_card">신용/체크카드</string>
+    <string name="payment_text_mobile">휴대폰 결제</string>
+    <string name="payment_text_realtimetransfer">실시간 계좌이체</string>
+    <string name="payment_text_transfer">무통장 입금</string>
+    <string name="payment_text_terms">구매 및 결제대행서비스 이용약관 동의</string>
+
+    <string name="payment_text_emptyshippingaddress">등록된 배송지가 없습니다.</string>
+    <string name="payment_hint_shippingmemo">배송메모를 선택해 주세요</string>
+    <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
+    <string name="payment_hint_coupon">적용 가능한 쿠폰을 선택해주세요</string>
+
+    <string name="payment_text_changedestination">배송지 변경</string>
+    <string name="payment_button_submit">결제하기</string>
+    <string name="payment_button_autocoupon">자동 적용</string>
+    <string name="payment_button_allpoint">전액 사용</string>
 </resources>

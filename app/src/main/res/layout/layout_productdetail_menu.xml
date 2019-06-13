@@ -132,7 +132,7 @@
                 style="@style/TextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/productdetail_unit_price"
+                android:text="@string/common_unit_price"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_16"
                 app:layout_constraintBottom_toBottomOf="parent"

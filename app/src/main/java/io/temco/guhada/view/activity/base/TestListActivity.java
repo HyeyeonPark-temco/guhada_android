@@ -19,6 +19,7 @@ import io.temco.guhada.view.activity.FindAccountActivity;
 import io.temco.guhada.view.activity.JoinActivity;
 import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
+import io.temco.guhada.view.activity.PaymentActivity;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.activity.SplashActivity;
 import io.temco.guhada.view.activity.TempLogoutActivity;
@@ -94,6 +95,11 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(TempLogoutActivity.class);
                     break;
 
+                case 11:
+                    startActivity(PaymentActivity.class);
+                    break;
+
+
             }
         });
         list.setAdapter(adapter);
@@ -116,7 +122,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("WRITE_CLAIM"); // 9
 
         list.add("##### LOGOUT #####"); // 10
-        list.add(""); // 11
+        list.add("PAYMENT"); // 11
         list.add(""); // 12
 
         return list;

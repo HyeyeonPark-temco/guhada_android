@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.PaymentViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/payment_text_totalorderprice"
+                android:textColor="@color/perrywinkle"
+                android:textSize="@dimen/text_13" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/perrywinkle" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="@{()->viewModel.onClickDiscountInfo()}"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/payment_text_totaldiscount"
+                        android:textColor="@color/perrywinkle"
+                        android:textSize="@dimen/text_13" />
+
+                    <ImageView
+                        android:src="@{viewModel.discountInfoVisible ? @drawable/payment_btn_save_close : @drawable/payment_btn_save_open}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:tint="@color/perrywinkle" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/perrywinkle" />
+
+            <TextView
+                style="@style/TextBold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/payment_text_totalpayprice"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/pale_grey"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_text_freeshipping"
+                    android:textColor="@color/cool_grey"
+                    android:textSize="@dimen/text_12"
+                    app:layout_constraintBottom_toTopOf="@+id/linearlayout_payment_discounttotalprice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_payment_discounttotalprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView25"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/common_price_format(1234567)}"
+                        android:textColor="@color/greyish_brown_two"
+                        android:textSize="@dimen/text_16" />
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_unit_price"
+                        android:textColor="@color/greyish_brown_two"
+                        android:textSize="@dimen/text_14" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/white_six" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/payment_icon_discount_minus" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_payment_discountprice"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/common_price_format(1234567)}"
+                        android:textColor="@color/greyish_brown_two"
+                        android:textSize="@dimen/text_16"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_payment_discountprice_unit"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_unit_price"
+                        android:textColor="@color/greyish_brown_two"
+                        android:textSize="@dimen/text_14"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textview_payment_discountprice"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/white_six" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/payment_icon_discount_sum" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_payment_discounttotalprice"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/common_price_format(1234567)}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_18" />
+
+                    <TextView
+                        android:id="@+id/textview_payment_discounttotalprice_unit"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_unit_price"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_14" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="@{viewModel.discountInfoVisible ? View.VISIBLE: View.GONE, default=gone}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:background="@color/common_white"
+            android:paddingTop="26dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="30dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView26"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_text_discountcoupon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:src="@drawable/bag_btn_coupon_change"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView26"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView27"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_price_format(1234567)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView29"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView29"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_price"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_text_discountproduct"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_price_format(1234567)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView30"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView30"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_price"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_text_discountpoint"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_price_format(1234567)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView31"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView31"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_price"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_six" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@{viewModel.savePointInfoVisible ? @color/pale_grey : @color/common_white}"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <TextView
+                android:id="@+id/textView32"
+                style="@style/PaymentTitleBlackTextStyle"
+                android:layout_width="wrap_content"
+                android:onClick="@{()->viewModel.onClickSavePointInfo()}"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_text_expectedpoint"
+                android:textSize="@dimen/text_14"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:onClick="@{()->viewModel.onClickSavePointInfo()}"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:src="@{viewModel.savePointInfoVisible ? @drawable/payment_btn_save_close : @drawable/payment_btn_save_open}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView32"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView33"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="12dp"
+                    android:text="@string/common_max"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:id="@+id/textView35"
+                    style="@style/TextMedium"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_price_format(6000)}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_14"/>
+
+                <TextView
+                    android:id="@+id/textView34"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_point"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_11" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:background="@color/common_white"
+            android:visibility="@{viewModel.savePointInfoVisible ? View.VISIBLE : View.GONE, default = gone}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="30dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/payment_text_fixbuy" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_price_format(3000)}" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_point" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/payment_text_textreview" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_price_format(1000)}" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_point" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/payment_text_photoreview" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/common_price_format(2000)}" />
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_unit_point" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary" />
+    </LinearLayout>
+</layout>

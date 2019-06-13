@@ -2,7 +2,7 @@ package io.temco.guhada.data.model
 
 import com.google.gson.annotations.SerializedName
 
-class Product {
+class Product : BaseProduct(){
     var brandId: Int = 0
     var totalStock: Int = 0
     var sellPrice: Int = 0
@@ -11,10 +11,9 @@ class Product {
     var shipExpense: Int = 0
     var sellerId: Int = 0
 
-    var brandName: String = ""
     var modelNumber: String = ""
     var season: String = ""
-    var name: String = ""
+
     var shipExpenseType: String = ""
     var sellerName: String = ""
     var productStatus: String = ""

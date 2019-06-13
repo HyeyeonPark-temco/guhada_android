@@ -126,7 +126,7 @@
 
     <style name="HeaderTextStyle">
         <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:textColor">@color/black_two</item>
+        <item name="android:textColor">@color/black_four</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
     </style>
@@ -135,28 +135,24 @@
     <style name="SpinnerDropDownItemStyle" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem" />
 
     <!-- Product Detail -->
-    <style name="ProductDetailContentTextStyle">
+    <style name="ProductDetailContentTextStyle" parent="@style/TextMedium">
         <item name="android:textSize">@dimen/text_13</item>
         <item name="android:textColor">@color/black_four</item>
-        <item name="android:fontFamily">@style/TextMedium</item>
     </style>
 
-    <style name="ProductDetailTitleTextStyle">
+    <style name="ProductDetailTitleTextStyle" parent="@style/TextBold">
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/greyish_brown_two</item>
-        <item name="android:fontFamily">@style/TextBold</item>
     </style>
 
-    <style name="ProductDetailQnaContentTextStyle">
+    <style name="ProductDetailQnaContentTextStyle"  parent="@style/TextRegular">
         <item name="android:textSize">@dimen/text_12</item>
         <item name="android:textColor">@color/greyish_brown_two</item>
-        <item name="android:fontFamily">@style/TextRegular</item>
     </style>
 
-    <style name="ProductDetailQnaDescTextStyle">
+    <style name="ProductDetailQnaDescTextStyle" parent="@style/TextRegular">
         <item name="android:textSize">@dimen/text_12</item>
         <item name="android:textColor">@color/warm_grey_two</item>
-        <item name="android:fontFamily">@style/TextRegular</item>
     </style>
 
     <style name="ProductDetailButtonStyle" parent="Widget.AppCompat.Button.Borderless">
@@ -173,10 +169,32 @@
         <item name="android:layout_weight">1</item>
     </style>
 
-
     <style name="ReviewRatingStyle" parent="Widget.AppCompat.RatingBar">
         <item name="android:progressDrawable">@drawable/selector_ratingbar_review</item>
     </style>
 
+    <!-- Payment -->
+    <style name="PaymentTitleBlackTextStyle" parent="@style/TextBold">
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/black_four</item>
+    </style>
 
+    <style name="PaymentContentBlackTextStyle" parent="@style/TextMedium">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/black_four</item>
+    </style>
+
+    <style name="PaymentContentGreyTextStyle" parent="@style/TextMedium">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/warm_grey_two</item>
+    </style>
+
+    <style name="PaymentContentDarkGreyTextStyle" parent="@style/TextMedium">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/greyish_brown_two</item>
+    </style>
+
+    <style name="PaymentSubmitButton" parent="@style/WriteClaimButtonStyle">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 </resources>

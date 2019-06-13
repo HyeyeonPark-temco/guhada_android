@@ -20,6 +20,7 @@ public class Type {
         TERMS,
         VERIFY_PHONE,
         CLAIM,
+        PAYMENT,
         TEMP_LOGOUT
     }
 
