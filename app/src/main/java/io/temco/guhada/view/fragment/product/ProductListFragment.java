@@ -1,5 +1,7 @@
 package io.temco.guhada.view.fragment.product;
 
+import android.app.ProgressDialog;
+import android.os.Handler;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
@@ -16,19 +18,24 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
+import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.adapter.ProductListAdapter;
+import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
@@ -43,8 +50,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
     // Value
-    private boolean mIsCategory = true;
-    private Category mCategoryData;
+    private boolean mIsCategory = true; // Category/Brand
+    private ProductList mProductListData;
+    private Category mCategoryData; // Category
     private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
     private int mPosition;
@@ -133,7 +141,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_search_detail:
-                showOrderDialog();
+                showDetailSearchDialog();
                 break;
         }
     }
@@ -170,6 +178,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
+
+    private void changeLayout() {
+        if (mProductListData != null) {
+
+        }
+    }
 
     private void setTabLayout() {
         if (mBinding != null) {
@@ -304,22 +318,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mBinding.layoutHeader.setOrder(getString(R.string.product_order_high_price));
                     break;
             }
-        }
-    }
-
-    private void showOrderDialog() {
-        if (getFragmentManager() != null) {
-            if (mOrderDialog == null) {
-                mOrderDialog = new ProductOrderDialog();
-                mOrderDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
-            }
-            mOrderDialog.show(getFragmentManager(), getBaseTag());
-        }
-    }
-
-    private void dismissOrderDialog() {
-        if (mOrderDialog != null) {
-            mOrderDialog.dismiss();
         }
     }
 
@@ -490,6 +488,61 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 .start();
     }
 
+    // Dialog
+    private void showOrderDialog() {
+        if (getFragmentManager() != null) {
+            if (mOrderDialog == null) {
+                mOrderDialog = new ProductOrderDialog();
+                mOrderDialog.setOnProductOrderListener(this::changeProductOrderWithLoadList);
+            }
+            mOrderDialog.show(getFragmentManager(), getBaseTag());
+        }
+    }
+
+    private void dismissOrderDialog() {
+        if (mOrderDialog != null) {
+            mOrderDialog.dismiss();
+        }
+    }
+
+    private void showDetailSearchDialog() {
+        if (getFragmentManager() != null && mProductListData != null) {
+            DetailSearchDialog d = new DetailSearchDialog();
+//            d.setCategoryData();
+            d.setBrandData(mProductListData.brands);
+            d.setFilterData(mProductListData.filters);
+            d.setOnDetailSearchListener(new OnDetailSearchListener() {
+
+                @Override
+                public void onChange(boolean change) {
+                    if (change) changeLayout();
+                }
+
+                @Override
+                public void onCategory(List<Category> categories) {
+                    if (mProductListData != null) {
+                        mProductListData.categories = categories;
+                    }
+                }
+
+                @Override
+                public void onBrand(List<Brand> brands) {
+                    if (mProductListData != null) {
+                        mProductListData.brands = brands;
+                    }
+                }
+
+                @Override
+                public void onFilter(List<Filter> filters) {
+                    if (mProductListData != null) {
+                        mProductListData.filters = filters;
+                    }
+                }
+            });
+            d.show(getFragmentManager(), getBaseTag());
+        }
+    }
+
     ////////////////////////////////////////////////
     // SERVER
     ////////////////////////////////////////////////
@@ -505,6 +558,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (success) {
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
+                    if (mProductListData == null) mProductListData = (ProductList) o;
                 } else {
                     ;
                 }
@@ -524,6 +578,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (success) {
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
+                    if (mProductListData == null) mProductListData = (ProductList) o;
                 } else {
                     ;
                 }

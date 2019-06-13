@@ -39,7 +39,6 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
 
         // List
         initList();
-        selectInitial(true);
 
         // EditText
         mBinding.layoutSearch.edittextSearch.addTextChangedListener(new TextWatcher() {
@@ -66,11 +65,11 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
                 break;
 
             case R.id.image_alphabet:
-                selectInitial(true);
+                changeLanguage(true);
                 break;
 
             case R.id.image_hangul:
-                selectInitial(false);
+                changeLanguage(false);
                 break;
         }
     }
@@ -95,8 +94,9 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
     }
 
     private void initList() {
+        selectLanguage(true);
         // Adapter
-        mListAdapter = new BrandListAdapter(getContext());
+        mListAdapter = new BrandListAdapter(getContext(), true);
         mListAdapter.setOnBrandListener(brand -> {
             if (brand != null && brand.type != Type.List.HEADER) {
                 dissmissWithData(brand);
@@ -109,10 +109,9 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
         mBinding.listContents.setAdapter(mListAdapter);
     }
 
-    private void selectInitial(boolean isAlphabet) {
+    private void changeLanguage(boolean isAlphabet) {
         if (mListAdapter != null) {
-            mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
-            mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
+            selectLanguage(isAlphabet);
             mListAdapter.changeLanguage(isAlphabet);
             mBinding.layoutSearch.edittextSearch.setText(null);
         }
@@ -127,6 +126,11 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
                 mListAdapter.filter(text);
             }
         }
+    }
+
+    private void selectLanguage(boolean isAlphabet) {
+        mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
+        mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
     }
 
     ////////////////////////////////////////////////

@@ -52,7 +52,6 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
 
         // List
         initList();
-        selectInitial(true);
 
         // EditText
         mBinding.layoutSearch.edittextSearch.addTextChangedListener(new TextWatcher() {
@@ -80,11 +79,11 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
                 break;
 
             case R.id.image_alphabet:
-                selectInitial(true);
+                changeLanguage(true);
                 break;
 
             case R.id.image_hangul:
-                selectInitial(false);
+                changeLanguage(false);
                 break;
         }
     }
@@ -109,8 +108,9 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
     }
 
     private void initList() {
+        selectLanguage(true);
         // Adapter
-        mListAdapter = new BrandListAdapter(this);
+        mListAdapter = new BrandListAdapter(this, true);
         mListAdapter.setOnBrandListener(brand -> {
             if (brand != null && brand.type != Type.List.HEADER) {
                 finishWithData(brand);
@@ -123,10 +123,9 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
         mBinding.listContents.setAdapter(mListAdapter);
     }
 
-    private void selectInitial(boolean isAlphabet) {
+    private void changeLanguage(boolean isAlphabet) {
         if (mListAdapter != null) {
-            mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
-            mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
+            selectLanguage(isAlphabet);
             mListAdapter.changeLanguage(isAlphabet);
             mBinding.layoutSearch.edittextSearch.setText(null);
         }
@@ -141,6 +140,11 @@ public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> impl
                 mListAdapter.filter(text);
             }
         }
+    }
+
+    private void selectLanguage(boolean isAlphabet) {
+        mBinding.layoutSearch.imageAlphabet.setSelected(isAlphabet);
+        mBinding.layoutSearch.imageHangul.setSelected(!isAlphabet);
     }
 
     ////////////////////////////////////////////////

@@ -48,10 +48,10 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
         return mFilterItems.get(itemPosition).type == Type.List.HEADER;
     }
 
-    @Override
-    public int getHeaderLayout(int headerPosition) {
-        return mFilterItems.get(headerPosition).layoutRes;
-    }
+//    @Override
+//    public int getHeaderLayout(int headerPosition) {
+//        return mFilterItems.get(headerPosition).layoutRes;
+//    }
 
     @Override
     public int getHeaderPositionForItem(int itemPosition) {
@@ -76,12 +76,17 @@ public abstract class StickyHeaderRecyclerAdapter<VH extends RecyclerView.ViewHo
     }
 
     public void setOriginalItems(@NonNull List<M> original, List<M> filter) {
+        // Original
         if (getOriginalItemCount() <= 0) {
-            if (mOriginalItems == null) mOriginalItems = new ArrayList<>();
+            mOriginalItems = new ArrayList<>();
             mOriginalItems.addAll(original);
         }
-        if (mFilterItems == null) mFilterItems = new ArrayList<>();
-        mFilterItems.clear();
+        // Filter
+        if (getItemCount() > 0) {
+            mFilterItems.clear();
+        } else {
+            mFilterItems = new ArrayList<>();
+        }
         mFilterItems.addAll(filter);
     }
 

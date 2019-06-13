@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- HEADER -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+
+            <ImageView
+                android:id="@+id/image_close"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="12dp"
+                android:background="@drawable/tool_btn_close"
+                android:onClick="@{clickListener}" />
+        </RelativeLayout>
+
+        <!-- TITLE -->
+        <TextView
+            style="@style/TextBold"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_dialog_header"
+            android:background="@color/background_default"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@{title}"
+            android:textColor="@color/text_3"
+            android:textSize="@dimen/text_18" />
+
+        <!-- LINE -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_3" />
+    </LinearLayout>
+</layout>

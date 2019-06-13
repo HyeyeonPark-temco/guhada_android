@@ -89,7 +89,8 @@ public class Type {
 
         CONTENTS(0),
         HEADER(1),
-        FOOTER(2);
+        FOOTER(2),
+        MORE(3);
 
         private int type;
 
@@ -103,6 +104,8 @@ public class Type {
                     return HEADER.type;
                 case FOOTER:
                     return FOOTER.type;
+                case MORE:
+                    return MORE.type;
                 default:
                     return CONTENTS.type;
             }
@@ -113,6 +116,8 @@ public class Type {
                 return HEADER;
             } else if (type == FOOTER.type) {
                 return FOOTER;
+            } else if (type == MORE.type) {
+                return MORE;
             } else {
                 return CONTENTS;
             }
@@ -266,8 +271,10 @@ public class Type {
 
     public enum ProductOption {
 
-        COLOR("rgb"),
-        TEXT("text");
+        NONE(""),
+        COLOR("RGB_BUTTON"),
+        TEXT_BUTTON("TEXT_BUTTON"),
+        TEXT("TEXT");
 
         private String type;
 
@@ -279,16 +286,24 @@ public class Type {
             switch (type) {
                 case COLOR:
                     return COLOR.type;
-                default:
+                case TEXT_BUTTON:
+                    return TEXT_BUTTON.type;
+                case TEXT:
                     return TEXT.type;
+                default:
+                    return NONE.type;
             }
         }
 
         public static ProductOption getType(String type) {
             if (type.equals(COLOR.type)) {
                 return COLOR;
-            } else {
+            } else if (type.equals(TEXT_BUTTON.type)) {
+                return TEXT_BUTTON;
+            } else if (type.equals(TEXT.type)) {
                 return TEXT;
+            } else {
+                return NONE;
             }
         }
     }

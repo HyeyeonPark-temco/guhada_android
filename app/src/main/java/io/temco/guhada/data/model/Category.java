@@ -10,6 +10,8 @@ public class Category {
 
     public Type.Category type = Type.Category.NORMAL;
 
+    public boolean isSelected = false;
+
     @SerializedName("id")
     public int id;
 
