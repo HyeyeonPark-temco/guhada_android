@@ -125,7 +125,7 @@ public class SnsLoginModule {
                 });
 
                 Bundle bundle = new Bundle();
-                bundle.putString("fields", "id,name,email");
+                bundle.putString("fields", "id,name,email,picture");
                 graphRequest.setParameters(bundle);
                 graphRequest.executeAsync();
             }
@@ -232,7 +232,7 @@ public class SnsLoginModule {
         }
     }
 
-    public static void facebookLogin(JSONObject object, OnServerListener serverListener) {
+    private static void facebookLogin(JSONObject object, OnServerListener serverListener) {
         try {
             String email = object.getString("email");
             String name = object.getString("name");

@@ -7,12 +7,11 @@
     <string name="dummy_content_number">105000</string>
 
     <!-- API KEY -->
-    <string name="kakao_app_key">7f836567d87644f21c24e7f50a5f710e</string>
-    <string name="facebook_app_id">505842226111947</string>  <!-- 개인 -->
-    <!-- <string name="facebook_app_id">670035360083586</string> --> <!-- 개인 -->
-    <string name="fb_login_protocol_scheme">fb670035360083586</string> <!-- 개인 -->
-    <string name="naver_oauth_client_id">QybdM3REu31chIaeQ31g</string>
-    <string name="naver_oauth_client_secret">tGAuYZu085</string>
+    <string name="kakao_app_key">b6e5b0618148f61889b9e77c8a9a0e90</string>
+    <string name="facebook_app_id">2172540836200592</string>
+    <string name="fb_login_protocol_scheme">fb2172540836200592</string>
+    <string name="naver_oauth_client_id">xVqkhxmKT5JReAs5tXje</string>
+    <string name="naver_oauth_client_secret">ppA_6XaKuc</string>
     <string name="naver_oauth_client_name">네이버 아이디로 로그인</string>
 
     <!-- COMMON -->
