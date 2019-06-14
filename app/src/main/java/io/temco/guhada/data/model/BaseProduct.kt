@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 import java.io.Serializable
 
-open class BaseProduct : Serializable{
+open class BaseProduct : Serializable {
+    var productId: Long = 0
+
     var brandName: String = ""
 
     @SerializedName("name")

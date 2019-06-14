@@ -14,7 +14,7 @@ import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
-    var dealId: Int = 0
+    var dealId: Long = 0
     var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
     var menuVisibility = ObservableInt(View.GONE)

@@ -3,6 +3,7 @@ package io.temco.guhada.common.util
 import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
 
 /**
@@ -23,7 +24,9 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
         if (!APIHelper.isCallSuccess(response = response)) {
             if (retryCount++ < totalRetries) {
                 Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
-                retry()
+                if (response.code() == 401 || response.code() == 403) {
+                    retry()
+                }
             } else {
                 onFinalResponse(call, response)
             }
@@ -33,11 +36,18 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        if (retryCount++ < totalRetries) {
-            Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
-            retry()
-        } else {
-            onFinalFailure(call, t)
+        try {
+            if (retryCount++ < totalRetries) {
+                Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
+                val errorCode = (t as HttpException).code()
+                if (errorCode == 401 || errorCode == 403) {
+                    retry()
+                }
+            } else {
+                onFinalFailure(call, t)
+            }
+        } catch (e: Exception) {
+            CommonUtil.debug(e.message)
         }
     }
 
@@ -53,7 +63,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
 
     sealed class APIHelper {
         companion object {
-            private val DEFAULT_RETRIES = 3
+            private val DEFAULT_RETRIES = 1
 
             @JvmStatic
             fun <T> enqueueWithRetry(call: Call<T>, retryCount: Int, callback: Callback<T>) {

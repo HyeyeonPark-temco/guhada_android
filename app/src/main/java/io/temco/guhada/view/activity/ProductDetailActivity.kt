@@ -48,7 +48,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         mViewModel = ProductDetailViewModel(this)
 
         // 임시 productId 12492
-        mViewModel.dealId = intent.getIntExtra("productId", resources.getString(R.string.temp_productId).toInt())
+        mViewModel.dealId = intent.getLongExtra("productId", resources.getString(R.string.temp_productId).toLong())
 
         mViewModel.product.observe(this, Observer<Product> { it ->
             mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
@@ -171,6 +171,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 WRITE_CLAIM -> {
@@ -239,6 +240,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             CommonUtil.debug("바로구매 클릭", "$message $attr")*/
 
             BaseProduct().apply {
+                this.productId = mViewModel.dealId // 임시
                 this.profileUrl = product?.imageUrls?.get(0) ?: "" // 대표이미지 임시
                 this.name = name
                 this.brandName = brandName
