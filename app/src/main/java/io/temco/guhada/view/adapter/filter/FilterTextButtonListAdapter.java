@@ -15,8 +15,8 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
 import io.temco.guhada.view.holder.base.BaseFilterViewHolder;
-import io.temco.guhada.view.holder.filter.FilterMoreListViewHolder;
-import io.temco.guhada.view.holder.filter.FilterTextButtonListViewHolder;
+import io.temco.guhada.view.holder.filter.FilterMoreViewHolder;
+import io.temco.guhada.view.holder.filter.FilterTextButtonViewHolder;
 
 public class FilterTextButtonListAdapter extends BaseFilterListAdapter<BaseFilterViewHolder> implements View.OnClickListener {
 
@@ -47,9 +47,9 @@ public class FilterTextButtonListAdapter extends BaseFilterListAdapter<BaseFilte
     public BaseFilterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (Type.List.getType(viewType)) {
             case MORE:
-                return new FilterMoreListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_type_more, parent, false));
+                return new FilterMoreViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_type_more, parent, false));
             default:
-                return new FilterTextButtonListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_type_text_button, parent, false));
+                return new FilterTextButtonViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_type_text_button, parent, false));
         }
     }
 

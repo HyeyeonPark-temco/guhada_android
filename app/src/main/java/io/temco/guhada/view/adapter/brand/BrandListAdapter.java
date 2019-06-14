@@ -28,9 +28,9 @@ import io.temco.guhada.common.util.TextSearcher;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ItemBrandListHeaderBinding;
 import io.temco.guhada.view.holder.base.BaseBrandViewHolder;
-import io.temco.guhada.view.adapter.base.StickyHeaderRecyclerAdapter;
-import io.temco.guhada.view.holder.brand.BrandListContentsViewHolder;
-import io.temco.guhada.view.holder.brand.BrandListHeaderViewHolder;
+import io.temco.guhada.view.custom.StickyHeaderRecyclerAdapter;
+import io.temco.guhada.view.holder.brand.BrandContentsViewHolder;
+import io.temco.guhada.view.holder.brand.BrandHeaderViewHolder;
 
 public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewHolder, Brand> implements OnFastScrollListener, View.OnClickListener {
 
@@ -86,9 +86,9 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     public BaseBrandViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (Type.List.getType(viewType)) {
             case HEADER:
-                return new BrandListHeaderViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_brand_list_header, parent, false));
+                return new BrandHeaderViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_brand_list_header, parent, false));
             default:
-                return new BrandListContentsViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_brand_list_contents, parent, false));
+                return new BrandContentsViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_brand_list_contents, parent, false));
         }
     }
 

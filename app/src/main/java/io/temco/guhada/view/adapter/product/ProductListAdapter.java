@@ -17,9 +17,9 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnProductListListener;
 import io.temco.guhada.data.model.Deal;
 import io.temco.guhada.view.holder.base.BaseProductViewHolder;
-import io.temco.guhada.view.holder.product.ProductListOneViewHolder;
-import io.temco.guhada.view.holder.product.ProductListThreeViewHolder;
-import io.temco.guhada.view.holder.product.ProductListTwoViewHolder;
+import io.temco.guhada.view.holder.product.ProductOneViewHolder;
+import io.temco.guhada.view.holder.product.ProductThreeViewHolder;
+import io.temco.guhada.view.holder.product.ProductTwoViewHolder;
 
 public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHolder> implements View.OnClickListener {
 
@@ -59,13 +59,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHold
     public BaseProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (Type.Grid.getType(viewType)) {
             case TWO:
-                return new ProductListTwoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_two, parent, false));
+                return new ProductTwoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_two, parent, false));
 
             case THREE:
-                return new ProductListThreeViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_three, parent, false));
+                return new ProductThreeViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_three, parent, false));
 
             default:
-                return new ProductListOneViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_one, parent, false));
+                return new ProductOneViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_product_list_one, parent, false));
         }
     }
 

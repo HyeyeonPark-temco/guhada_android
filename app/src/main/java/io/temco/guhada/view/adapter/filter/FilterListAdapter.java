@@ -13,9 +13,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnFilterListener;
 import io.temco.guhada.data.model.Filter;
-import io.temco.guhada.view.holder.filter.FilterListViewHolder;
+import io.temco.guhada.view.holder.filter.FilterViewHolder;
 
-public class FilterListAdapter extends RecyclerView.Adapter<FilterListViewHolder> {
+public class FilterListAdapter extends RecyclerView.Adapter<FilterViewHolder> {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
@@ -42,12 +42,12 @@ public class FilterListAdapter extends RecyclerView.Adapter<FilterListViewHolder
 
     @NonNull
     @Override
-    public FilterListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FilterListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_detail_search_type, parent, false));
+    public FilterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FilterViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_detail_search_type, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FilterListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FilterViewHolder holder, int position) {
         holder.init(mContext, getItem(position), mFilterListener);
     }
 

@@ -20,7 +20,7 @@ import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
-import io.temco.guhada.view.adapter.category.SideMenuExpandFirstListAdapter;
+import io.temco.guhada.view.adapter.category.SideMenuCategoryFirstListAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
 import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 
@@ -264,7 +264,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
         // Category
         mBinding.layoutSideMenu.listContents.setLayoutManager(new LinearLayoutManager(this));
-        SideMenuExpandFirstListAdapter adapter = new SideMenuExpandFirstListAdapter(this);
+        SideMenuCategoryFirstListAdapter adapter = new SideMenuCategoryFirstListAdapter(this);
         adapter.setOnCategoryListener(this::startCategoryByHierarchy);
         adapter.setItems(Preferences.getCategories());
         mBinding.layoutSideMenu.listContents.setAdapter(adapter);

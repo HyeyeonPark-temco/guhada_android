@@ -179,7 +179,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
     private void initCategoryList(List<Category> data) {
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
-//        CategoryDialogExpandFirstListAdapter adapter = new CategoryDialogExpandFirstListAdapter(getContext());
+//        DialogCategoryFirstListAdapter adapter = new DialogCategoryFirstListAdapter(getContext());
 //        adapter.setOnCategoryListener((type, hierarchies) -> {
 //            //
 //        });

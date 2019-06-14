@@ -10,7 +10,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.databinding.DialogCategoryListBinding;
-import io.temco.guhada.view.adapter.category.CategoryDialogExpandFirstListAdapter;
+import io.temco.guhada.view.adapter.category.DialogCategoryFirstListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> implements View.OnClickListener {
@@ -97,7 +97,7 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
     private void initList() {
         // Category
         mBinding.listContents.setLayoutManager(new LinearLayoutManager(getContext()));
-        CategoryDialogExpandFirstListAdapter adapter = new CategoryDialogExpandFirstListAdapter(getContext());
+        DialogCategoryFirstListAdapter adapter = new DialogCategoryFirstListAdapter(getContext());
         adapter.setOnCategoryListener(this::dissmissWithData);
         adapter.setItems(Preferences.getCategories());
         mBinding.listContents.setAdapter(adapter);

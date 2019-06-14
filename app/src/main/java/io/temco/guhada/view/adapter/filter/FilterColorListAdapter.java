@@ -13,9 +13,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import io.temco.guhada.R;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
-import io.temco.guhada.view.holder.filter.FilterColorListViewHolder;
+import io.temco.guhada.view.holder.filter.FilterColorViewHolder;
 
-public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorListViewHolder> implements View.OnClickListener {
+public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorViewHolder> implements View.OnClickListener {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
@@ -31,12 +31,12 @@ public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorLis
 
     @NonNull
     @Override
-    public FilterColorListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FilterColorListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_type_color, parent, false));
+    public FilterColorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FilterColorViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_type_color, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FilterColorListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FilterColorViewHolder holder, int position) {
         holder.init(mContext, getItem(position), mFilterListener);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);

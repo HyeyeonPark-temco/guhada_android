@@ -14,7 +14,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <io.temco.guhada.view.custom.pager.SwipeViewPager
+            <io.temco.guhada.view.custom.SwipeViewPager
                 android:id="@+id/layout_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

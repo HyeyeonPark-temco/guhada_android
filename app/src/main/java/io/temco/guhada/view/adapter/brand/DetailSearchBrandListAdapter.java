@@ -21,8 +21,8 @@ import io.temco.guhada.common.util.CustomComparator;
 import io.temco.guhada.common.util.TextSearcher;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.view.holder.base.BaseBrandViewHolder;
-import io.temco.guhada.view.holder.brand.DetailSearchBrandListContentsViewHolder;
-import io.temco.guhada.view.holder.brand.DetailSearchBrandListHeaderViewHolder;
+import io.temco.guhada.view.holder.brand.DetailSearchBrandContentsViewHolder;
+import io.temco.guhada.view.holder.brand.DetailSearchBrandHeaderViewHolder;
 
 public class DetailSearchBrandListAdapter extends RecyclerView.Adapter<BaseBrandViewHolder> implements View.OnClickListener {
 
@@ -61,9 +61,9 @@ public class DetailSearchBrandListAdapter extends RecyclerView.Adapter<BaseBrand
     public BaseBrandViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (Type.List.getType(viewType)) {
             case HEADER:
-                return new DetailSearchBrandListHeaderViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_brand_list_header, parent, false));
+                return new DetailSearchBrandHeaderViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_brand_list_header, parent, false));
             default:
-                return new DetailSearchBrandListContentsViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_brand_list_contents, parent, false));
+                return new DetailSearchBrandContentsViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_brand_list_contents, parent, false));
         }
     }
 
