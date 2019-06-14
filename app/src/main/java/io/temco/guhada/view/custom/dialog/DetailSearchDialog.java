@@ -200,11 +200,13 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 mBinding.layoutExpandBrandHeader.setToggleOnClick(true);
                 //
                 initBrandList(mBrandList);
+                initSelectedBrandList(mBrandList);
             }
         } else {
             mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
             mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
         }
+        refreshBrandTitle();
     }
 
     private void initBrandList(List<Brand> data) {
@@ -277,6 +279,17 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         return false;
     }
 
+    private void initSelectedBrandList(List<Brand> brands) {
+        if (brands != null && brands.size() > 0) {
+            mBrandSelectedList = new ArrayList<>();
+            for (Brand b : brands) {
+                if (b.isSelected) {
+                    mBrandSelectedList.add(b);
+                }
+            }
+        }
+    }
+
     private void checkSelectedBrandList(Brand brand) {
         if (mBrandSelectedList == null) {
             mBrandSelectedList = new ArrayList<>();
@@ -295,12 +308,19 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         if (brand.isSelected) {
             mBrandSelectedList.add(brand);
         }
-        // Title
-        StringBuilder sb = new StringBuilder();
-        for (Brand b : mBrandSelectedList) {
-            sb.append(b.nameDefault).append(", ");
+        refreshBrandTitle();
+    }
+
+    private void refreshBrandTitle() {
+        if (mBrandSelectedList != null && mBrandSelectedList.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (Brand b : mBrandSelectedList) {
+                sb.append(b.nameDefault).append(", ");
+            }
+            mBinding.layoutHeaderBrand.setDepth(sb.toString());
+        } else {
+            mBinding.layoutHeaderBrand.setDepth(null);
         }
-        mBinding.layoutHeaderBrand.setDepth(sb.toString());
     }
 
     // Filter
