@@ -20,5 +20,5 @@ public interface ProductService {
     Call<BaseListModel<Brand>> getAllBrands();
 
     @GET("/deals/{id}")
-    Call<BaseModel<Product>> getProductDetail(@Path("id") int id);
+    Call<BaseModel<Product>> getProductDetail(@Path("id") Long id);
 }

@@ -341,5 +341,36 @@ class LoginServer {
                 }
             })
         }
+
+        /**
+         * 개별 유저 정보 조회 API
+         */
+        @JvmStatic
+        fun getUserById(listener: OnServerListener, userId: Int) {
+            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findUserById(userId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<User>> {
+                override fun onFailure(call: Call<BaseModel<User>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+
+                override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
+                    listener.onResult(true, response.body())
+                }
+            })
+        }
+
+        @JvmStatic
+        fun getUserShippingAddress(listener: OnServerListener, userId: Int) {
+            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<List<UserShipping>>> {
+                override fun onFailure(call: Call<BaseModel<List<UserShipping>>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+
+                override fun onResponse(call: Call<BaseModel<List<UserShipping>>>, response: Response<BaseModel<List<UserShipping>>>) {
+                    listener.onResult(true, response.body())
+                }
+            })
+        }
     }
 }

@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface LoginService {
+
     /**
      * 회원가입 API
      */
@@ -17,6 +18,13 @@ interface LoginService {
      */
     @POST("/loginUser")
     fun signIn(@Body user: User): Call<BaseModel<Token>>
+
+    /**
+     * 개별 회원 정보 가져오기 API
+     * @param userId
+     */
+    @GET("/users/{userId}")
+    fun findUserById(@Path("userId") id: Int): Call<BaseModel<User>>
 
     /**
      * 유저 정보 가져오기 API
@@ -117,4 +125,11 @@ interface LoginService {
      */
     @GET("v1/nid//me")
     fun getNaverProfile(@Header("Authorization") auth: String): Call<NaverResponse>
+
+    /**
+     * 회원 배송지 정보 조회 API
+     * @param userId
+     */
+    @GET("/users/{userId}/shipping-addresses")
+    fun findShippingAddress(@Path("userId") userId : Int) : Call<BaseModel<List<UserShipping>>>
 }

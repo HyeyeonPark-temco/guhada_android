@@ -20,11 +20,13 @@ public class User extends Observable {
     private String password = "";
     private String mobile = "";
     private String phoneNumber = "";
-    private String joinAt = "";
+    private String joinAt = "", withdrawalAt = "";
     private int gender = -1; // 1: MALE; 2: FEMALE;
-    private String birth ="";
+    private String birth = "";
     private int mobileCarriers = -1; // 1: SKT; 2: KT; 3: LG
     private int nationality = -1; // 1: INTERNAL; 2: FOREIGNER
+    private String address = "", roadAddress = "", detailAddress = "", zip;
+    private Boolean emailVerify = false;
 
     @Expose
     private String confirmPassword = "";
@@ -129,7 +131,7 @@ public class User extends Observable {
     }
 
     public String getJoinAt() {
-        return "("+joinAt+" 가입)";
+        return "(" + joinAt + " 가입)";
     }
 
     public void setJoinAt(String joinAt) {
@@ -186,5 +188,53 @@ public class User extends Observable {
         this.mobile = mobile;
         setChanged();
         notifyObservers("mobile");
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRoadAddress() {
+        return roadAddress;
+    }
+
+    public void setRoadAddress(String roadAddress) {
+        this.roadAddress = roadAddress;
+    }
+
+    public String getDetailAddress() {
+        return detailAddress;
+    }
+
+    public void setDetailAddress(String detailAddress) {
+        this.detailAddress = detailAddress;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public String getWithdrawalAt() {
+        return withdrawalAt;
+    }
+
+    public void setWithdrawalAt(String withdrawalAt) {
+        this.withdrawalAt = withdrawalAt;
+    }
+
+    public Boolean getEmailVerify() {
+        return emailVerify;
+    }
+
+    public void setEmailVerify(Boolean emailVerify) {
+        this.emailVerify = emailVerify;
     }
 }
