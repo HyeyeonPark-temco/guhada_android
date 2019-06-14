@@ -23,7 +23,7 @@ public class SearchServer {
             body.categoryIds = new int[]{id};
             body.searchResultOrder = Type.ProductOrder.get(type);
             // Request
-            RetrofitManager.createService(Type.Server.SEARCH, SearchService.class)
+            RetrofitManager.createService(Type.Server.SEARCH, SearchService.class, true)
                     .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                     .enqueue(new Callback<BaseModel<ProductList>>() {
                         @Override
@@ -58,7 +58,7 @@ public class SearchServer {
             body.brandIds = new int[]{id};
             body.searchResultOrder = Type.ProductOrder.get(type);
             // Request
-            RetrofitManager.createService(Type.Server.SEARCH, SearchService.class)
+            RetrofitManager.createService(Type.Server.SEARCH, SearchService.class, true)
                     .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                     .enqueue(new Callback<BaseModel<ProductList>>() {
                         @Override

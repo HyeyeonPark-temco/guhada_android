@@ -71,7 +71,8 @@
     <string name="brand_search_hint">브랜드명을 검색해주세요.</string>
 
     <!-- DETAIL SEARCH -->
-    <string name="detail_search_result">검색결과 보기(%s개)</string>
+    <string name="detail_search_result">검색결과 보기</string>
+    <string name="detail_search_result_count">검색결과 보기(%s개)</string>
 
     <!-- LOGIN -->
     <string name="login_title">로그인</string>

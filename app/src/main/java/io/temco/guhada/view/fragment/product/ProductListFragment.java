@@ -1,7 +1,5 @@
 package io.temco.guhada.view.fragment.product;
 
-import android.app.ProgressDialog;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
@@ -34,7 +32,7 @@ import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductDetailActivity;
-import io.temco.guhada.view.adapter.ProductListAdapter;
+import io.temco.guhada.view.adapter.product.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
@@ -204,7 +202,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mBinding.layoutHeader.layoutTab.removeAllTabs();
             }
             // Add All
-            Category all = CommonUtil.createAllCategoryData(getContext(), mCategoryData.id, mCategoryData.hierarchies);
+            Category all = CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), mCategoryData.id, mCategoryData.hierarchies);
             addCategoryTab(all, true);
             // Add Category
             for (Category c : mCategoryData.children) {
@@ -508,7 +506,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void showDetailSearchDialog() {
         if (getFragmentManager() != null && mProductListData != null) {
             DetailSearchDialog d = new DetailSearchDialog();
-//            d.setCategoryData();
+            d.setCategoryData(mIsCategory ? mCategoryData.fullDepthName : null, mProductListData.categories);
             d.setBrandData(mProductListData.brands);
             d.setFilterData(mProductListData.filters);
             d.setOnDetailSearchListener(new OnDetailSearchListener() {

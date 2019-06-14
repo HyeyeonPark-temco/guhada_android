@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.databinding.ItemProductdetailTagBinding
-import io.temco.guhada.view.adapter.base.BaseViewHolder
+import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailTagAdapter : RecyclerView.Adapter<ProductDetailTagAdapter.Holder>() {
     private var list: MutableList<String> = ArrayList()

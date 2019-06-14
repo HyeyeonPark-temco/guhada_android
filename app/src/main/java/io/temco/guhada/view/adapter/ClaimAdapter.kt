@@ -9,7 +9,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.databinding.ItemProductdetailClaimBinding
-import io.temco.guhada.view.adapter.base.BaseViewHolder
+import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
     private lateinit var context: Context

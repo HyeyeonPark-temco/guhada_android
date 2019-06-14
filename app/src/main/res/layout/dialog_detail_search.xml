@@ -57,7 +57,7 @@
 
                         <include
                             android:id="@+id/layout_header_category"
-                            layout="@layout/layout_detail_search_expand_title"
+                            layout="@layout/layout_detail_search_title"
                             app:title="@{@string/common_category}" />
                     </com.github.florent37.expansionpanel.ExpansionHeader>
 
@@ -87,7 +87,7 @@
 
                         <include
                             android:id="@+id/layout_header_brand"
-                            layout="@layout/layout_detail_search_expand_title"
+                            layout="@layout/layout_detail_search_title"
                             app:title="@{@string/common_brand}" />
                     </com.github.florent37.expansionpanel.ExpansionHeader>
 

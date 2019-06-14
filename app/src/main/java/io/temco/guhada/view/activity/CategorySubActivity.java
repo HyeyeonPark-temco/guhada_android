@@ -1,7 +1,6 @@
 package io.temco.guhada.view.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
@@ -17,7 +16,7 @@ import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ActivityCategorySubBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
-import io.temco.guhada.view.adapter.expand.CategorySubExpandFirstListAdapter;
+import io.temco.guhada.view.adapter.category.SubCategoryFirstListAdapter;
 
 public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding> implements View.OnClickListener {
 
@@ -107,7 +106,7 @@ public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding
         if (mCategoryData.children != null && mCategoryData.children.size() > 0) {
             // Category
             mBinding.listContents.setLayoutManager(new LinearLayoutManager(this));
-            CategorySubExpandFirstListAdapter adapter = new CategorySubExpandFirstListAdapter(this);
+            SubCategoryFirstListAdapter adapter = new SubCategoryFirstListAdapter(this);
             adapter.setChildType(Type.CategoryData.getType(mCategoryData.hierarchies[0]));
             adapter.setOnCategoryListener(mCategoryListener);
             adapter.setItems(mCategoryData.children);

@@ -17,7 +17,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ActivityBrandSubBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
-import io.temco.guhada.view.adapter.BrandListAdapter;
+import io.temco.guhada.view.adapter.brand.BrandListAdapter;
 
 public class BrandSubActivity extends BindActivity<ActivityBrandSubBinding> implements View.OnClickListener {
 

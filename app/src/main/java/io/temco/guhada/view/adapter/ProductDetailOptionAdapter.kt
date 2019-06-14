@@ -13,7 +13,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionBinding
-import io.temco.guhada.view.adapter.base.BaseViewHolder
+import io.temco.guhada.view.holder.base.BaseViewHolder
 import java.io.Serializable
 
 class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
@@ -36,7 +36,7 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : Re
         notifyDataSetChanged()
     }
 
-    inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionBinding) : BaseViewHolder<io.temco.guhada.databinding.ItemProductdetailOptionBinding>(binding.root) {
+    inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionBinding) : BaseViewHolder<ItemProductdetailOptionBinding>(binding.root) {
         fun bind(option: Product.Option) {
             if (adapterPosition > 0) {
                 ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {

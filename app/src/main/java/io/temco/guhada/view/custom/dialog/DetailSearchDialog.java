@@ -12,6 +12,7 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Attribute;
@@ -19,8 +20,9 @@ import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
-import io.temco.guhada.view.adapter.search.DetailSearchBrandListAdapter;
-import io.temco.guhada.view.adapter.search.FilterListAdapter;
+import io.temco.guhada.view.adapter.brand.DetailSearchBrandListAdapter;
+import io.temco.guhada.view.adapter.category.DetailSearchCategoryFirstListAdapter;
+import io.temco.guhada.view.adapter.filter.FilterListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> implements View.OnClickListener {
@@ -164,7 +166,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private void setCategoryData() {
         // Depth
         if (!TextUtils.isEmpty(mParentDepth)) {
-            mBinding.layoutHeaderCategory.setDepth(mParentDepth);
+            mBinding.layoutHeaderCategory.setParent(mParentDepth);
         }
         // List
         if (mCategoryList != null && mCategoryList.size() > 0) {
@@ -179,12 +181,12 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
     private void initCategoryList(List<Category> data) {
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
-//        CategoryDialogExpandFirstListAdapter adapter = new CategoryDialogExpandFirstListAdapter(getContext());
-//        adapter.setOnCategoryListener((type, hierarchies) -> {
-//            //
-//        });
-//        adapter.setItems(data);
-//        mBinding.listCategory.setAdapter(adapter);
+        DetailSearchCategoryFirstListAdapter adapter = new DetailSearchCategoryFirstListAdapter(getContext());
+        adapter.setOnCategoryListener((type, hierarchies) -> {
+            CommonUtil.debug("" + Type.Category.get(type));
+        });
+        adapter.setItems(data);
+        mBinding.listCategory.setAdapter(adapter);
     }
 
     // Brand
@@ -194,13 +196,15 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
                 mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
                 // Set Title
-
+                checkSelectedBrandList(mBrandList.get(0));
             } else {
                 mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.VISIBLE);
                 mBinding.layoutExpandBrandHeader.setToggleOnClick(true);
                 //
                 initBrandList(mBrandList);
+                initSelectedBrandList(mBrandList);
             }
+            refreshBrandTitle();
         } else {
             mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
             mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
@@ -270,11 +274,23 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 if (b.id == brand.id) {
                     b.isSelected = brand.isSelected;
                     checkSelectedBrandList(brand);
+                    refreshBrandTitle();
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private void initSelectedBrandList(List<Brand> brands) {
+        if (brands != null && brands.size() > 0) {
+            mBrandSelectedList = new ArrayList<>();
+            for (Brand b : brands) {
+                if (b.isSelected) {
+                    mBrandSelectedList.add(b);
+                }
+            }
+        }
     }
 
     private void checkSelectedBrandList(Brand brand) {
@@ -295,12 +311,19 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         if (brand.isSelected) {
             mBrandSelectedList.add(brand);
         }
-        // Title
-        StringBuilder sb = new StringBuilder();
-        for (Brand b : mBrandSelectedList) {
-            sb.append(b.nameDefault).append(", ");
+    }
+
+    private void refreshBrandTitle() {
+        if (mBrandSelectedList != null && mBrandSelectedList.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mBrandSelectedList.size(); i++) {
+                sb.append(mBrandSelectedList.get(i).nameDefault);
+                if (i != mBrandSelectedList.size() - 1) sb.append(", ");
+            }
+            mBinding.layoutHeaderBrand.setDepth(sb.toString());
+        } else {
+            mBinding.layoutHeaderBrand.setDepth(null);
         }
-        mBinding.layoutHeaderBrand.setDepth(sb.toString());
     }
 
     // Filter

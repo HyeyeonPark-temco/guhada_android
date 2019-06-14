@@ -14,7 +14,7 @@ import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.DialogBrandListBinding;
-import io.temco.guhada.view.adapter.BrandListAdapter;
+import io.temco.guhada.view.adapter.brand.BrandListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implements View.OnClickListener {

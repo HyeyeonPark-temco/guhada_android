@@ -15,13 +15,12 @@ import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
-import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
-import io.temco.guhada.view.adapter.expand.SideMenuExpandFirstListAdapter;
+import io.temco.guhada.view.adapter.category.SideMenuCategoryFirstListAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
 import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 
@@ -227,7 +226,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     }
 
     private void selectTab(int position, boolean isReselected) {
-        mPagerAdapter.removeProduct();
         switch (position) {
             case 0: // Category
                 showCategoryListDialog();
@@ -238,14 +236,17 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 break;
 
             case 2: // Home
+                mPagerAdapter.removeProduct();
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(0);
                 break;
 
             case 3: // Community
+                mPagerAdapter.removeProduct();
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(1);
                 break;
 
             case 4: // My Page
+                mPagerAdapter.removeProduct();
                 if (!isReselected) {
                     if (false) {
                         // if login
@@ -265,7 +266,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
         // Category
         mBinding.layoutSideMenu.listContents.setLayoutManager(new LinearLayoutManager(this));
-        SideMenuExpandFirstListAdapter adapter = new SideMenuExpandFirstListAdapter(this);
+        SideMenuCategoryFirstListAdapter adapter = new SideMenuCategoryFirstListAdapter(this);
         adapter.setOnCategoryListener(this::startCategoryByHierarchy);
         adapter.setItems(Preferences.getCategories());
         mBinding.layoutSideMenu.listContents.setAdapter(adapter);

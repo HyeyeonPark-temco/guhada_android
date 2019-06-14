@@ -13,8 +13,9 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
+import io.temco.guhada.databinding.ItemProductdetailOptionattrBinding
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter.OptionAttr
-import io.temco.guhada.view.adapter.base.BaseViewHolder
+import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Product.Option) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
     var list: List<ProductDetailOptionAdapter.OptionAttr> = ArrayList()
@@ -40,7 +41,7 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
         }
     }
 
-    inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionattrBinding) : BaseViewHolder<io.temco.guhada.databinding.ItemProductdetailOptionattrBinding>(binding.root) {
+    inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionattrBinding) : BaseViewHolder<ItemProductdetailOptionattrBinding>(binding.root) {
         fun bind(optionAttr: OptionAttr, selectedPos: Int) {
             // BORDER
             if (adapterPosition == selectedPos) {
