@@ -1,7 +1,5 @@
 package io.temco.guhada.view.fragment.product;
 
-import android.app.ProgressDialog;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
@@ -34,7 +32,7 @@ import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductDetailActivity;
-import io.temco.guhada.view.adapter.ProductListAdapter;
+import io.temco.guhada.view.adapter.product.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;

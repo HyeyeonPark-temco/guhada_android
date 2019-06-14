@@ -1,7 +1,5 @@
 package io.temco.guhada.view.custom.dialog;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +10,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.databinding.DialogCategoryListBinding;
-import io.temco.guhada.view.adapter.expand.CategoryDialogExpandFirstListAdapter;
+import io.temco.guhada.view.adapter.category.CategoryDialogExpandFirstListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> implements View.OnClickListener {

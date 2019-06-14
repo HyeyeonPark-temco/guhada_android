@@ -19,8 +19,8 @@ import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
-import io.temco.guhada.view.adapter.search.DetailSearchBrandListAdapter;
-import io.temco.guhada.view.adapter.search.FilterListAdapter;
+import io.temco.guhada.view.adapter.brand.DetailSearchBrandListAdapter;
+import io.temco.guhada.view.adapter.filter.FilterListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> implements View.OnClickListener {
@@ -187,6 +187,12 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 //        mBinding.listCategory.setAdapter(adapter);
     }
 
+
+
+
+
+
+
     // Brand
     private void setBrandData() {
         if (mBrandList != null && mBrandList.size() > 0) {
@@ -194,7 +200,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
                 mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
                 // Set Title
-
+                checkSelectedBrandList(mBrandList.get(0));
             } else {
                 mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.VISIBLE);
                 mBinding.layoutExpandBrandHeader.setToggleOnClick(true);
@@ -202,11 +208,11 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 initBrandList(mBrandList);
                 initSelectedBrandList(mBrandList);
             }
+            refreshBrandTitle();
         } else {
             mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
             mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
         }
-        refreshBrandTitle();
     }
 
     private void initBrandList(List<Brand> data) {
@@ -272,6 +278,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 if (b.id == brand.id) {
                     b.isSelected = brand.isSelected;
                     checkSelectedBrandList(brand);
+                    refreshBrandTitle();
                     return true;
                 }
             }
@@ -308,14 +315,14 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         if (brand.isSelected) {
             mBrandSelectedList.add(brand);
         }
-        refreshBrandTitle();
     }
 
     private void refreshBrandTitle() {
         if (mBrandSelectedList != null && mBrandSelectedList.size() > 0) {
             StringBuilder sb = new StringBuilder();
-            for (Brand b : mBrandSelectedList) {
-                sb.append(b.nameDefault).append(", ");
+            for (int i = 0; i < mBrandSelectedList.size(); i++) {
+                sb.append(mBrandSelectedList.get(i).nameDefault);
+                if (i != mBrandSelectedList.size() - 1) sb.append(", ");
             }
             mBinding.layoutHeaderBrand.setDepth(sb.toString());
         } else {
