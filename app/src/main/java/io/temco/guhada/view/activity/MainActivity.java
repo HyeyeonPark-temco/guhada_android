@@ -226,7 +226,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     }
 
     private void selectTab(int position, boolean isReselected) {
-        mPagerAdapter.removeProduct();
         switch (position) {
             case 0: // Category
                 showCategoryListDialog();
@@ -237,14 +236,17 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 break;
 
             case 2: // Home
+                mPagerAdapter.removeProduct();
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(0);
                 break;
 
             case 3: // Community
+                mPagerAdapter.removeProduct();
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(1);
                 break;
 
             case 4: // My Page
+                mPagerAdapter.removeProduct();
                 if (!isReselected) {
                     if (false) {
                         // if login

@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -46,7 +47,7 @@ public class DialogCategorySecondViewHolder extends BaseCategoryViewHolder<ItemD
                 mBinding.layoutExpandHeader.setToggleOnClick(true);
                 // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, CommonUtil.createAllCategoryData(context, data.id, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.id, data.hierarchies));
                 }
                 // Adapter
                 DialogCategoryThirdListAdapter adapter = new DialogCategoryThirdListAdapter(context);

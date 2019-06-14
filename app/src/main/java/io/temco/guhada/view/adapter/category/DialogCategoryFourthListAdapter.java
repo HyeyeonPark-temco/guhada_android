@@ -14,9 +14,10 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
+import io.temco.guhada.view.holder.category.DetailSearchCategoryFourthViewHolder;
 import io.temco.guhada.view.holder.category.DialogCategoryFourthViewHolder;
 
-public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<BaseCategoryViewHolder> implements View.OnClickListener {
+public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<DetailSearchCategoryFourthViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
@@ -43,12 +44,12 @@ public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<BaseCa
 
     @NonNull
     @Override
-    public BaseCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DialogCategoryFourthViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_dialog_category_fourth, parent, false));
+    public DetailSearchCategoryFourthViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DetailSearchCategoryFourthViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_category_fourth, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseCategoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DetailSearchCategoryFourthViewHolder holder, int position) {
         holder.init(mContext, null, getItem(position), mCategoryListener);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);

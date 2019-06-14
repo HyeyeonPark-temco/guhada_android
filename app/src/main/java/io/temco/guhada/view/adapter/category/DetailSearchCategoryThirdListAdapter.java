@@ -16,15 +16,15 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.view.holder.category.DetailSearchCategoryThirdViewHolder;
 import io.temco.guhada.view.holder.category.DialogCategoryThirdViewHolder;
 
-public class DetailSearchCategoryThirdListAdapter extends RecyclerView.Adapter<DialogCategoryThirdViewHolder> implements View.OnClickListener {
+public class DetailSearchCategoryThirdListAdapter extends RecyclerView.Adapter<DetailSearchCategoryThirdViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
     private ExpansionLayoutCollection mExpansionsCollection;
     private List<Category> mItems;
-    private Type.CategoryData mChildType;
     private OnCategoryListener mCategoryListener;
     // -----------------------------
 
@@ -49,12 +49,12 @@ public class DetailSearchCategoryThirdListAdapter extends RecyclerView.Adapter<D
 
     @NonNull
     @Override
-    public DialogCategoryThirdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DialogCategoryThirdViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_dialog_category_third, parent, false));
+    public DetailSearchCategoryThirdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DetailSearchCategoryThirdViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_category_third, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DialogCategoryThirdViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DetailSearchCategoryThirdViewHolder holder, int position) {
         Category data = getItem(position);
         if (data.children == null) {
             holder.getBinding().layoutHeader.setTag(position);
@@ -62,7 +62,7 @@ public class DetailSearchCategoryThirdListAdapter extends RecyclerView.Adapter<D
         } else {
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         }
-        holder.init(mContext, mChildType, getItem(position), mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener);
     }
 
     @Override
@@ -81,10 +81,6 @@ public class DetailSearchCategoryThirdListAdapter extends RecyclerView.Adapter<D
     public void setItems(List<Category> items) {
         mItems = items;
         notifyDataSetChanged();
-    }
-
-    public void setChildType(Type.CategoryData type) {
-        mChildType = type;
     }
 
     public void setOnCategoryListener(OnCategoryListener listener) {

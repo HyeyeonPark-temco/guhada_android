@@ -12,6 +12,7 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Attribute;
@@ -20,6 +21,7 @@ import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
 import io.temco.guhada.view.adapter.brand.DetailSearchBrandListAdapter;
+import io.temco.guhada.view.adapter.category.DetailSearchCategoryFirstListAdapter;
 import io.temco.guhada.view.adapter.filter.FilterListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
@@ -164,7 +166,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private void setCategoryData() {
         // Depth
         if (!TextUtils.isEmpty(mParentDepth)) {
-            mBinding.layoutHeaderCategory.setDepth(mParentDepth);
+            mBinding.layoutHeaderCategory.setParent(mParentDepth);
         }
         // List
         if (mCategoryList != null && mCategoryList.size() > 0) {
@@ -179,19 +181,13 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
     private void initCategoryList(List<Category> data) {
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
-//        DialogCategoryFirstListAdapter adapter = new DialogCategoryFirstListAdapter(getContext());
-//        adapter.setOnCategoryListener((type, hierarchies) -> {
-//            //
-//        });
-//        adapter.setItems(data);
-//        mBinding.listCategory.setAdapter(adapter);
+        DetailSearchCategoryFirstListAdapter adapter = new DetailSearchCategoryFirstListAdapter(getContext());
+        adapter.setOnCategoryListener((type, hierarchies) -> {
+            CommonUtil.debug("" + Type.Category.get(type));
+        });
+        adapter.setItems(data);
+        mBinding.listCategory.setAdapter(adapter);
     }
-
-
-
-
-
-
 
     // Brand
     private void setBrandData() {

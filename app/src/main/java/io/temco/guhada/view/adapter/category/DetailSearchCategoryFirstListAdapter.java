@@ -13,12 +13,11 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 import java.util.List;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
-import io.temco.guhada.view.holder.category.DialogCategoryFirstViewHolder;
+import io.temco.guhada.view.holder.category.DetailSearchCategoryFirstViewHolder;
 
-public class DetailSearchCategoryFirstListAdapter extends RecyclerView.Adapter<DialogCategoryFirstViewHolder> implements View.OnClickListener {
+public class DetailSearchCategoryFirstListAdapter extends RecyclerView.Adapter<DetailSearchCategoryFirstViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
@@ -48,12 +47,12 @@ public class DetailSearchCategoryFirstListAdapter extends RecyclerView.Adapter<D
 
     @NonNull
     @Override
-    public DialogCategoryFirstViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DialogCategoryFirstViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_dialog_category_first, parent, false));
+    public DetailSearchCategoryFirstViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DetailSearchCategoryFirstViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_category_first, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DialogCategoryFirstViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DetailSearchCategoryFirstViewHolder holder, int position) {
         Category data = getItem(position);
         if (data.children == null) {
             holder.getBinding().layoutHeader.setTag(position);
@@ -61,7 +60,7 @@ public class DetailSearchCategoryFirstListAdapter extends RecyclerView.Adapter<D
         } else {
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         }
-        holder.init(mContext, Type.CategoryData.getType(data.hierarchies[0]), data, mCategoryListener);
+        holder.init(mContext, null, data, mCategoryListener);
     }
 
     @Override

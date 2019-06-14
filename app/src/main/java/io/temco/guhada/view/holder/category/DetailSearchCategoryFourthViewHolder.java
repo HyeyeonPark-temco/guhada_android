@@ -31,8 +31,8 @@ public class DetailSearchCategoryFourthViewHolder extends BaseCategoryViewHolder
         // Data
         if (data != null) {
             // Title
-            if (!TextUtils.isEmpty(data.name)) {
-                mBinding.setTitle(data.name);
+            if (!TextUtils.isEmpty(data.title)) {
+                mBinding.setTitle(data.title);
             }
         }
     }

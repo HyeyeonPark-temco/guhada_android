@@ -179,13 +179,12 @@ public class CommonUtil {
         }
     }
 
-    public static Category createAllCategoryData(Context context, int id, int[] hierarchies) {
+    public static Category createAllCategoryData(String title, int id, int[] hierarchies) {
         Category all = new Category();
         all.type = Type.Category.ALL;
         all.id = id;
-        if (context != null) {
-            all.name = context.getString(R.string.category_all);
-        }
+        all.name = title;
+        all.title = title;
         all.hierarchies = hierarchies;
         return all;
     }

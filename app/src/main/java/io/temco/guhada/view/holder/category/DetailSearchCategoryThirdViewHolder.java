@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -32,23 +33,11 @@ public class DetailSearchCategoryThirdViewHolder extends BaseCategoryViewHolder<
 
     @Override
     public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
-        // Type
-        if (type != null) {
-            switch (type) {
-                case KIDS:
-                    mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
-                    break;
-
-                default: // Grid
-                    mBinding.listContents.setLayoutManager(new GridLayoutManager(context, 2));
-                    break;
-            }
-        }
         // Data
         if (data != null) {
             // Title
-            if (!TextUtils.isEmpty(data.name)) {
-                mBinding.setTitle(data.name);
+            if (!TextUtils.isEmpty(data.title)) {
+                mBinding.setTitle(data.title);
             }
             // Child
             if (data.children == null) {
@@ -59,12 +48,13 @@ public class DetailSearchCategoryThirdViewHolder extends BaseCategoryViewHolder<
                 mBinding.layoutExpandHeader.setToggleOnClick(true);
                 // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, CommonUtil.createAllCategoryData(context, data.id, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.id, data.hierarchies));
                 }
                 // Adapter
                 DialogCategoryFourthListAdapter adapter = new DialogCategoryFourthListAdapter(context);
                 adapter.setOnCategoryListener(listener);
                 adapter.setItems(data.children);
+                mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
                 mBinding.listContents.setAdapter(adapter);
             }
         }
