@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter.filter;
+package io.temco.guhada.view.adapter.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;

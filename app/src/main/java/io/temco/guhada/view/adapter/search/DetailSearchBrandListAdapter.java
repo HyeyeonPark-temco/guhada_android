@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter;
+package io.temco.guhada.view.adapter.search;
 
 import android.content.Context;
 import android.text.TextUtils;

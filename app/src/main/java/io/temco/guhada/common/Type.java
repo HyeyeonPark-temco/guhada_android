@@ -41,7 +41,7 @@ public class Type {
         PRODUCT("http://dev.product.guhada.com:8080/"),
         BBS("http://dev.bbs.guhada.com:8081/"),
         USER("http://dev.user.guhada.com:8080/"),
-//        USER("http://172.30.1.30:8080"),
+        //        USER("http://172.30.1.30:8080"),
         CLAIM("http://dev.claim.guhada.com:8081/"),
         ORDER("http://dev.order.guhada.com:8080/"),
         PAYMENT("http://dev.payment.guhada.com:8081/"),
@@ -79,6 +79,38 @@ public class Type {
                     return LOCAL.url;
                 default:
                     return COMMON.url;
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////
+    // Language
+    public enum Language {
+
+        KOREA("ko"),
+        AMERICA("en");
+
+        private String type;
+
+        Language(String type) {
+            this.type = type;
+        }
+
+        public static String get(Language type) {
+            switch (type) {
+                case AMERICA:
+                    return AMERICA.type;
+
+                default:
+                    return KOREA.type;
+            }
+        }
+
+        public static Language getType(String type) {
+            if (type.equals(AMERICA.type)) {
+                return AMERICA;
+            } else {
+                return KOREA;
             }
         }
     }

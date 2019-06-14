@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter.filter;
+package io.temco.guhada.view.adapter.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import io.temco.guhada.view.adapter.base.BaseFilterViewHolder;
 import io.temco.guhada.view.adapter.holder.FilterMoreListViewHolder;
 import io.temco.guhada.view.adapter.holder.FilterTextButtonListViewHolder;
 
-public class FilterTextButtonListAdapter extends BaseFilterListAdapter<BaseFilterViewHolder> implements View.OnClickListener {
+public class FilterTextListAdapter extends BaseFilterListAdapter<BaseFilterViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Attribute mMore;
@@ -29,7 +29,7 @@ public class FilterTextButtonListAdapter extends BaseFilterListAdapter<BaseFilte
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public FilterTextButtonListAdapter(Context context) {
+    public FilterTextListAdapter(Context context) {
         mContext = context;
     }
 
@@ -110,7 +110,6 @@ public class FilterTextButtonListAdapter extends BaseFilterListAdapter<BaseFilte
             mItems.addAll(items);
         }
         notifyDataSetChanged();
-
     }
 
     ////////////////////////////////////////////////

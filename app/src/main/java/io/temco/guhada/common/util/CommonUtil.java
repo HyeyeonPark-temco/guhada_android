@@ -72,6 +72,11 @@ public class CommonUtil {
         }
     }
 
+    // Country Code
+    public static String getSystemCountryCode() {
+        return BaseApplication.getInstance().getApplicationContext().getResources().getConfiguration().locale.getCountry();
+    }
+
     /**
      * Show snack bar
      * <p>

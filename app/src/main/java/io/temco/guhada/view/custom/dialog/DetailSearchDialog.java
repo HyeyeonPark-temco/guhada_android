@@ -19,8 +19,8 @@ import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
-import io.temco.guhada.view.adapter.DetailSearchBrandListAdapter;
-import io.temco.guhada.view.adapter.filter.FilterListAdapter;
+import io.temco.guhada.view.adapter.search.DetailSearchBrandListAdapter;
+import io.temco.guhada.view.adapter.search.FilterListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> implements View.OnClickListener {

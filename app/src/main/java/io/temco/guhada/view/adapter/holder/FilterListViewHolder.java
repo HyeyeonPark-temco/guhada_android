@@ -18,9 +18,9 @@ import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.LayoutDetailSearchTypeBinding;
 import io.temco.guhada.view.adapter.base.BaseViewHolder;
-import io.temco.guhada.view.adapter.filter.FilterColorListAdapter;
-import io.temco.guhada.view.adapter.filter.FilterTextButtonListAdapter;
-import io.temco.guhada.view.adapter.filter.FilterTextListAdapter;
+import io.temco.guhada.view.adapter.search.FilterColorListAdapter;
+import io.temco.guhada.view.adapter.search.FilterTextButtonListAdapter;
+import io.temco.guhada.view.adapter.search.FilterTextListAdapter;
 
 public class FilterListViewHolder extends BaseViewHolder<LayoutDetailSearchTypeBinding> {
 
