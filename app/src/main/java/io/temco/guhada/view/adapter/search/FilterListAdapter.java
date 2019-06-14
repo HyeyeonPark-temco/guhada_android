@@ -1,35 +1,33 @@
-package io.temco.guhada.view.adapter.filter;
+package io.temco.guhada.view.adapter.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnFilterListener;
-import io.temco.guhada.data.model.Attribute;
-import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
-import io.temco.guhada.view.adapter.holder.FilterColorListViewHolder;
+import io.temco.guhada.data.model.Filter;
+import io.temco.guhada.view.adapter.holder.FilterListViewHolder;
 
-public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorListViewHolder> implements View.OnClickListener {
+public class FilterListAdapter extends RecyclerView.Adapter<FilterListViewHolder> {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
     private OnFilterListener mFilterListener;
-    private int mFilterId;
-    private CopyOnWriteArrayList<Attribute> mItems;
+    private CopyOnWriteArrayList<Filter> mItems;
     // -----------------------------
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public FilterColorListAdapter(Context context) {
+    public FilterListAdapter(Context context) {
         mContext = context;
     }
 
@@ -44,40 +42,20 @@ public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorLis
 
     @NonNull
     @Override
-    public FilterColorListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FilterColorListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_type_color, parent, false));
+    public FilterListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FilterListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_detail_search_type, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FilterColorListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FilterListViewHolder holder, int position) {
         holder.init(mContext, getItem(position), mFilterListener);
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (mFilterListener != null
-                && v.getTag() != null && v.getTag() instanceof Integer) {
-            // Change
-            int position = (int) v.getTag();
-            getItem(position).selected = !v.isSelected();
-            notifyItemChanged(position);
-            // Listener
-            mFilterListener.onFilter(mFilterId, mItems);
-        }
-    }
-
-    @Override
-    public void reset() {
     }
 
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setItems(int id, List<Attribute> items) {
-        mFilterId = id;
+    public void setItems(List<Filter> items) {
         mItems = new CopyOnWriteArrayList<>();
         mItems.addAll(items);
         notifyDataSetChanged();
@@ -91,7 +69,7 @@ public class FilterColorListAdapter extends BaseFilterListAdapter<FilterColorLis
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private Attribute getItem(int position) {
+    private Filter getItem(int position) {
         return mItems == null ? null : mItems.get(position);
     }
 

@@ -3,6 +3,8 @@ package io.temco.guhada.common.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -57,6 +59,22 @@ public class CommonUtil {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    // Delay
+    public static void delayRunnable(Runnable run) {
+        delayRunnable(run, 100);
+    }
+
+    public static void delayRunnable(Runnable run, long delayMillis) {
+        if (run != null) {
+            new Handler(Looper.getMainLooper()).postDelayed(run, delayMillis);
+        }
+    }
+
+    // Country Code
+    public static String getSystemCountryCode() {
+        return BaseApplication.getInstance().getApplicationContext().getResources().getConfiguration().locale.getCountry();
     }
 
     /**

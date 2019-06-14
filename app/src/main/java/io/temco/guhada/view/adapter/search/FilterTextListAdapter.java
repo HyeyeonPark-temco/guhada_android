@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter.filter;
+package io.temco.guhada.view.adapter.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.listener.OnFilterListener;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
 import io.temco.guhada.view.adapter.base.BaseFilterViewHolder;
@@ -22,11 +21,7 @@ import io.temco.guhada.view.adapter.holder.FilterTextButtonListViewHolder;
 public class FilterTextListAdapter extends BaseFilterListAdapter<BaseFilterViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private Context mContext;
-    private OnFilterListener mFilterListener;
-    private int mFilterId;
     private Attribute mMore;
-    private CopyOnWriteArrayList<Attribute> mItems;
     private CopyOnWriteArrayList<Attribute> mOriginalItems;
     // -----------------------------
 
@@ -41,11 +36,6 @@ public class FilterTextListAdapter extends BaseFilterListAdapter<BaseFilterViewH
     ////////////////////////////////////////////////
     // OVERRIDE
     ////////////////////////////////////////////////
-
-    @Override
-    public int getItemCount() {
-        return mItems == null ? 0 : mItems.size();
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -95,10 +85,7 @@ public class FilterTextListAdapter extends BaseFilterListAdapter<BaseFilterViewH
     public void reset() {
     }
 
-    ////////////////////////////////////////////////
-    // PUBLIC
-    ////////////////////////////////////////////////
-
+    @Override
     public void setItems(int id, List<Attribute> items) {
         mFilterId = id;
         // Original
@@ -125,17 +112,9 @@ public class FilterTextListAdapter extends BaseFilterListAdapter<BaseFilterViewH
         notifyDataSetChanged();
     }
 
-    public void setOnFilterListener(OnFilterListener listener) {
-        mFilterListener = listener;
-    }
-
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
-
-    private Attribute getItem(int position) {
-        return mItems == null ? null : mItems.get(position);
-    }
 
     private void changeOriginalItems() {
         if (mMore != null) mOriginalItems.remove(mMore);

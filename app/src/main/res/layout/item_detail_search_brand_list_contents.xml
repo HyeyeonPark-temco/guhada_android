@@ -10,21 +10,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="38dp"
+        android:layout_height="@dimen/view_fast_scroll_brand_contents_row"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="15dp">
+        android:paddingLeft="20dp">
 
+        <!-- FAVORITE -->
         <ImageView
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:background="@drawable/selector_button_filter" />
 
+        <!-- TITLE -->
         <TextView
             style="@style/TextRegularSingleLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="11dp"
+            android:layout_marginLeft="13dp"
             android:text="@{title}"
             android:textColor="@drawable/selector_text_category"
             android:textSize="@dimen/text_14" />

@@ -1,15 +1,10 @@
 package io.temco.guhada.view.custom.dialog;
 
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
@@ -18,31 +13,27 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
-import io.temco.guhada.common.listener.OnFilterListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
-import io.temco.guhada.databinding.LayoutDetailSearchTypeBinding;
-import io.temco.guhada.view.adapter.BrandListAdapter;
-import io.temco.guhada.view.adapter.base.BaseFilterListAdapter;
-import io.temco.guhada.view.adapter.filter.FilterColorListAdapter;
-import io.temco.guhada.view.adapter.filter.FilterTextButtonListAdapter;
-import io.temco.guhada.view.adapter.filter.FilterTextListAdapter;
+import io.temco.guhada.view.adapter.search.DetailSearchBrandListAdapter;
+import io.temco.guhada.view.adapter.search.FilterListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private OnDetailSearchListener mDetailSearchListener;
-    private BrandListAdapter mBrandListAdapter;
+    private DetailSearchBrandListAdapter mBrandListAdapter;
     private boolean mIsChangeData = false;
     private String mParentDepth;
     private List<Category> mCategoryList;
     private List<Brand> mBrandList;
+    private List<Brand> mBrandSelectedList;
     private List<Filter> mFilterList;
-    // private List<BaseFilterListAdapter> mFilterAdapterList;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -119,20 +110,43 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     ////////////////////////////////////////////////
 
     private void reset() {
-        mBinding.layoutFilter.removeAllViews();
         mBinding.layoutExpandCategoryContents.collapse(true);
         mBinding.layoutExpandBrandContents.collapse(true);
+        resetData();
         initData();
     }
 
     private void initData() {
         mBinding.layoutProgress.setVisibility(View.VISIBLE);
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        CommonUtil.delayRunnable(() -> {
             setCategoryData();
             setBrandData();
             initFilter(mFilterList);
             mBinding.layoutProgress.setVisibility(View.GONE);
-        }, 200);
+            mBinding.viewScrollContents.scrollTo(0, 0);
+        });
+    }
+
+    private void resetData() {
+        if (mCategoryList != null && mCategoryList.size() > 0) {
+            for (Category c : mCategoryList) {
+                c.isSelected = false;
+            }
+        }
+        if (mBrandList != null && mBrandList.size() > 0) {
+            for (Brand b : mBrandList) {
+                b.isSelected = false;
+            }
+        }
+        if (mFilterList != null && mFilterList.size() > 0) {
+            for (Filter c : mFilterList) {
+                if (c.attributes != null && c.attributes.size() > 0) {
+                    for (Attribute a : c.attributes) {
+                        a.selected = false;
+                    }
+                }
+            }
+        }
     }
 
     ////////////////////////////////////////////////
@@ -197,7 +211,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         mBinding.layoutSearch.setClickListener(this);
         selectBrandLanguage(true);
         // Adapter
-        mBrandListAdapter = new BrandListAdapter(getContext(), false);
+        mBrandListAdapter = new DetailSearchBrandListAdapter(getContext());
         mBrandListAdapter.setOnBrandListener(brand -> {
             if (brand != null && brand.type != Type.List.HEADER) {
                 boolean result = changeBrandData(brand);
@@ -238,7 +252,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         if (mBrandListAdapter != null) {
             mBinding.listBrand.scrollToPosition(0);
             if (TextUtils.isEmpty(text)) {
-                mBrandListAdapter.resetFilterToOriginal();
+                CommonUtil.delayRunnable(() -> mBrandListAdapter.resetFilterToOriginal());
             } else {
                 mBrandListAdapter.filter(text);
             }
@@ -255,6 +269,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             for (Brand b : mBrandList) {
                 if (b.id == brand.id) {
                     b.isSelected = brand.isSelected;
+                    checkSelectedBrandList(brand);
                     return true;
                 }
             }
@@ -262,66 +277,44 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         return false;
     }
 
-    // Filter
-    private void initFilter(List<Filter> filters) {
-        if (filters != null && filters.size() > 0) {
-            for (Filter f : filters) {
-                if (!TextUtils.isEmpty(f.viewType)) {
-                    switch (Type.ProductOption.getType(f.viewType)) {
-                        case COLOR:
-                            mBinding.layoutFilter.addView(createColorFilterView(f.id, f.name, f.attributes));
-                            break;
-
-                        case TEXT_BUTTON:
-                            mBinding.layoutFilter.addView(createTextButtonFilterView(f.id, f.name, f.attributes));
-                            break;
-
-                        case TEXT:
-                            mBinding.layoutFilter.addView(createTextFilterView(f.id, f.name, f.attributes));
-                            break;
+    private void checkSelectedBrandList(Brand brand) {
+        if (mBrandSelectedList == null) {
+            mBrandSelectedList = new ArrayList<>();
+        } else {
+            if (mBrandSelectedList.size() > 0) {
+                for (Brand b : mBrandSelectedList) {
+                    if (b.id == brand.id) {
+                        if (!brand.isSelected) {
+                            mBrandSelectedList.remove(b);
+                        }
+                        break;
                     }
                 }
             }
         }
+        if (brand.isSelected) {
+            mBrandSelectedList.add(brand);
+        }
+        // Title
+        StringBuilder sb = new StringBuilder();
+        for (Brand b : mBrandSelectedList) {
+            sb.append(b.nameDefault).append(", ");
+        }
+        mBinding.layoutHeaderBrand.setDepth(sb.toString());
     }
 
-    private View createColorFilterView(int id, String title, List<Attribute> attributes) {
-        LayoutDetailSearchTypeBinding b = LayoutDetailSearchTypeBinding.inflate(LayoutInflater.from(getContext()));
-        // Title
-        b.setTitle(title);
-        // Data
-        b.listContents.setLayoutManager(new GridLayoutManager(getContext(), 7));
-        FilterColorListAdapter adapter = new FilterColorListAdapter(getContext());
-        adapter.setOnFilterListener(mFilterListener);
-        adapter.setItems(id, attributes);
-        b.listContents.setAdapter(adapter);
-        return b.getRoot();
-    }
-
-    private View createTextButtonFilterView(int id, String title, List<Attribute> attributes) {
-        LayoutDetailSearchTypeBinding b = LayoutDetailSearchTypeBinding.inflate(LayoutInflater.from(getContext()));
-        // Title
-        b.setTitle(title);
-        // Data
-        b.listContents.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        FilterTextButtonListAdapter adapter = new FilterTextButtonListAdapter(getContext());
-        adapter.setOnFilterListener(mFilterListener);
-        adapter.setItems(id, attributes);
-        b.listContents.setAdapter(adapter);
-        return b.getRoot();
-    }
-
-    private View createTextFilterView(int id, String title, List<Attribute> attributes) {
-        LayoutDetailSearchTypeBinding b = LayoutDetailSearchTypeBinding.inflate(LayoutInflater.from(getContext()));
-        // Title
-        b.setTitle(title);
-        // Data
-        b.listContents.setLayoutManager(new LinearLayoutManager(getContext()));
-        FilterTextListAdapter adapter = new FilterTextListAdapter(getContext());
-        adapter.setOnFilterListener(mFilterListener);
-        adapter.setItems(id, attributes);
-        b.listContents.setAdapter(adapter);
-        return b.getRoot();
+    // Filter
+    private void initFilter(List<Filter> filters) {
+        if (filters != null && filters.size() > 0) {
+            FilterListAdapter adapter = new FilterListAdapter(getContext());
+            adapter.setOnFilterListener((id, attributes) -> {
+                boolean result = changeFilterData(id, attributes);
+                if (!mIsChangeData) mIsChangeData = result;
+            });
+            adapter.setItems(filters);
+            mBinding.listFilter.setLayoutManager(new LinearLayoutManager(getContext()));
+            mBinding.listFilter.setAdapter(adapter);
+        }
     }
 
     private boolean changeFilterData(int id, List<Attribute> attributes) {
@@ -335,15 +328,6 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         }
         return false;
     }
-
-    ////////////////////////////////////////////////
-    // LISTENER
-    ////////////////////////////////////////////////
-
-    private OnFilterListener mFilterListener = (id, attributes) -> {
-        boolean result = changeFilterData(id, attributes);
-        if (!mIsChangeData) mIsChangeData = result;
-    };
 
     ////////////////////////////////////////////////
 }

@@ -11,6 +11,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.DialogBrandListBinding;
 import io.temco.guhada.view.adapter.BrandListAdapter;
@@ -38,7 +39,7 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
         mBinding.layoutSearch.setClickListener(this);
 
         // List
-        initList();
+        CommonUtil.delayRunnable(this::initList);
 
         // EditText
         mBinding.layoutSearch.edittextSearch.addTextChangedListener(new TextWatcher() {
@@ -121,7 +122,7 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
         if (mListAdapter != null) {
             mBinding.listContents.scrollToPosition(0);
             if (TextUtils.isEmpty(text)) {
-                mListAdapter.resetFilterToOriginal();
+                CommonUtil.delayRunnable(() -> mListAdapter.resetFilterToOriginal());
             } else {
                 mListAdapter.filter(text);
             }

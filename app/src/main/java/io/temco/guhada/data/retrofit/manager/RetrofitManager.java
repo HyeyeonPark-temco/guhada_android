@@ -1,10 +1,13 @@
 package io.temco.guhada.data.retrofit.manager;
 
 import android.app.Application;
+import android.os.Build;
 
-import java.util.concurrent.TimeUnit;
-
+import io.temco.guhada.BuildConfig;
+import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.util.CommonUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -27,10 +30,9 @@ public class RetrofitManager {
 
     private RetrofitManager(Type.Server type) {
         mCurrentType = type;
-        mManager = getRetrofit();
-//        mManager = getRetrofit(getClient(
-//                getCache(BaseApplication.getInstance()),
-//                getInterceptor()));
+        mManager = getRetrofit(getClient(
+                getCache(BaseApplication.getInstance()),
+                getInterceptor(), false));
     }
 
     /**
@@ -41,7 +43,9 @@ public class RetrofitManager {
      */
     private RetrofitManager(Type.Server type, boolean isLogged) {
         mCurrentType = type;
-        mManager = getRetrofit(isLogged);
+        mManager = getRetrofit(getClient(
+                getCache(BaseApplication.getInstance()),
+                getInterceptor(), isLogged));
     }
 
     ////////////////////////////////////////////////
@@ -83,28 +87,6 @@ public class RetrofitManager {
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private Retrofit getRetrofit() {
-        return new Retrofit.Builder()
-                .baseUrl(Type.Server.getUrl(mCurrentType))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
-
-    private Retrofit getRetrofit(boolean isLogged) {
-        if (isLogged) {
-            return new Retrofit.Builder()
-                    .baseUrl(Type.Server.getUrl(mCurrentType))
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(getClient())
-                    .build();
-        } else {
-            return new Retrofit.Builder()
-                    .baseUrl(Type.Server.getUrl(mCurrentType))
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-    }
-
     private Retrofit getRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(Type.Server.getUrl(mCurrentType))
@@ -113,32 +95,41 @@ public class RetrofitManager {
                 .build();
     }
 
-    private OkHttpClient getClient(Cache cache, Interceptor interceptor) {
-        return new OkHttpClient.Builder()
-                // .cache(cache)
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .writeTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(15, TimeUnit.SECONDS)
-                .addInterceptor(interceptor)
-                .build();
+    // Client
+    private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        // builder.cache(cache);
+        // builder.connectTimeout(15, TimeUnit.SECONDS)
+        // builder.writeTimeout(15, TimeUnit.SECONDS)
+        // builder.readTimeout(15, TimeUnit.SECONDS)
+        builder.addInterceptor(interceptor);
+        if (isLogging) builder.addInterceptor(getLoggingInterceptor());
+        return builder.build();
     }
 
-    private OkHttpClient getClient() {
-        return new OkHttpClient.Builder().addInterceptor(getLoggingInterceptor()).build();
-    }
-
+    // Cache
     private Cache getCache(Application application) {
         return new Cache(application.getCacheDir(), 10 * 1024 * 1024); // 10MB
     }
 
+    // Interceptor
     private Interceptor getInterceptor() {
         return chain -> {
             final Request.Builder builder = chain.request().newBuilder();
-            // .header("Accept", "application/json")
+            // Common
+            builder.header("X-Guhada-accessTime", String.valueOf(System.currentTimeMillis())); // Time
+            builder.header("X-Guhada-country", CommonUtil.getSystemCountryCode()); // Country
+            builder.header("X-Guhada-language", Preferences.getLanguage()); // Language
+            builder.header("X-Guhada-platform", "AOS"); // Platform
+            builder.header("X-Guhada-version", BuildConfig.VERSION_NAME); // Version
+            // Mobile
+            builder.header("X-Guhada-model", Build.DEVICE); // Device Model // Build.MANUFACTURER
+            builder.header("X-Guhada-os-version", Build.VERSION.RELEASE); // Device Version
             return chain.proceed(builder.build());
         };
     }
 
+    // Logging
     private HttpLoggingInterceptor getLoggingInterceptor() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

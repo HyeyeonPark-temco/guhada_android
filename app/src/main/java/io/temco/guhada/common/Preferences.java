@@ -3,6 +3,7 @@ package io.temco.guhada.common;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Token;
@@ -19,6 +21,7 @@ public class Preferences {
     // -------- LOCAL VALUE --------
     private static Context mApplicationContext;
     // Key
+    private static final String KEY_LANGUAGE = "language";
     private static final String KEY_AUTO_LOGIN = "auto_login";
     private static final String KEY_CATEGORY_DATA = "category_data";
     private static final String KEY_BRAND_DATA = "brand_data";
@@ -26,7 +29,6 @@ public class Preferences {
     private static final String KEY_USER_TOKEN = "token";
     private static final String KEY_IS_ID_SAVED = "is_id_saved";
     private static final String KEY_SAVED_ID = "saved_id";
-
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -181,7 +183,7 @@ public class Preferences {
         }.getType());
     }
 
-    public static void clearToken(){
+    public static void clearToken() {
         SharedPreferences pref = getPreferences();
         if (pref == null) {
             return;
@@ -208,6 +210,19 @@ public class Preferences {
 
     public static String getSavedId() {
         return getString(KEY_SAVED_ID);
+    }
+
+    // Language
+    public static void setLanguage(Type.Language type) {
+        putString(KEY_LANGUAGE, Type.Language.get(type));
+    }
+
+    public static String getLanguage() {
+        String lang = getString(KEY_LANGUAGE);
+        if (TextUtils.isEmpty(lang)) {
+            return Type.Language.get(Type.Language.KOREA);
+        }
+        return lang;
     }
 
     ////////////////////////////////////////////////

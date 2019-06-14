@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.FragmentProductBinding;
@@ -50,12 +51,14 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         mBinding.layoutHeader.setClickListener(this);
 
         // List
-        initList();
-        if (mIsCategory) {
-            addCategoryList();
-        } else {
-            addBrandList();
-        }
+        CommonUtil.delayRunnable(() -> {
+            initList();
+            if (mIsCategory) {
+                addCategoryList();
+            } else {
+                addBrandList();
+            }
+        });
     }
 
     @Override
