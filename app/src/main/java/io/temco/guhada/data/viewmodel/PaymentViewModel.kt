@@ -11,6 +11,14 @@ import io.temco.guhada.view.activity.PaymentActivity
 import java.text.NumberFormat
 
 class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseObservableViewModel() {
+    var selectedShippingMessage = ObservableField<String>("배송메모를 선택해 주세요.")
+        @Bindable
+        get() = field
+
+    var selectedDiscountCoupon= ObservableField<String>("적용 가능한 쿠폰을 선택해 주세요.")
+        @Bindable
+        get() = field
+
     var product: BaseProduct = BaseProduct()
         set(value) {
             field = value

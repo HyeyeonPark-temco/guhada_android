@@ -38,36 +38,91 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/linearlayout_payment_discountcoupon"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+            <FrameLayout
+                android:id="@+id/framelayout_payment_discountcoupon"
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/border_all_whitethree"
-                android:orientation="horizontal"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingaddress">
+                app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:id="@+id/textview_payment_discountcoupon"
-                    style="@style/PaymentContentGreyTextStyle"
+                <Spinner
+                    android:id="@+id/spinner_payment_shippingmemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:orientation="horizontal"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown" />
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:text="@string/payment_hint_coupon"
-                    android:textSize="@dimen/text_13" />
+                    android:padding="1dp"
+                    android:background="@color/white_three">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/payment_icon_selectbox_open" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linearlayout_payment_discountcoupon"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            android:id="@+id/textview_payment_discountcoupon"
+                            style="@style/PaymentContentGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@{viewModel.selectedDiscountCoupon}"
+                            android:textSize="@dimen/text_13" />
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+                </FrameLayout>
+            </FrameLayout>
+
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/linearlayout_payment_discountcoupon"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/border_all_whitethree"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingStart="15dp"-->
+                <!--android:paddingEnd="15dp"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingaddress">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/textview_payment_discountcoupon"-->
+                    <!--style="@style/PaymentContentGreyTextStyle"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/payment_hint_coupon"-->
+                    <!--android:textSize="@dimen/text_13" />-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:src="@drawable/payment_icon_selectbox_open" />-->
+            <!--</LinearLayout>-->
 
             <Button
                 android:id="@+id/button_payment_discountcoupon"
