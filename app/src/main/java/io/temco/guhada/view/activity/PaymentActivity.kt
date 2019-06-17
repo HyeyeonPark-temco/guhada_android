@@ -3,23 +3,24 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
+import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.data.model.BaseProduct
-import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.Order
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.PaymentSpinnerAdapter
+import io.temco.guhada.view.adapter.PaymentWayAdapter
 
 class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private lateinit var mViewModel: PaymentViewModel
@@ -38,7 +39,12 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             override fun showMessage(message: String) {
                 Toast.makeText(this@PaymentActivity, message, Toast.LENGTH_SHORT).show()
             }
+
+            override fun notifyRadioButtons() {
+                (mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter as PaymentWayAdapter).notifyDataSetChanged()
+            }
         })
+        mViewModel.quantity = intent.getIntExtra("quantity", 1)
         intent.getSerializableExtra("product").let { product ->
             if (product != null) {
                 mViewModel.product = product as BaseProduct
@@ -56,6 +62,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             mBinding.includePaymentDiscount.viewModel = mViewModel
             mBinding.includePaymentDiscountresult.viewModel = mViewModel
             mBinding.includePaymentPaymentway.viewModel = mViewModel
+
+            // 결제수단
+            PaymentWayAdapter().let {
+                it.mViewModel = mViewModel
+                it.setItems(mViewModel.order.paymentsMethod)
+                mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter = it
+            }
+
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
@@ -107,7 +121,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         @JvmStatic
         @BindingAdapter("userShippingAddress")
         fun Spinner.bindShippingAddress(list: MutableList<String>) {
-            if(list.isNotEmpty()){
+            if (list.isNotEmpty()) {
                 val emptyMessage = resources.getString(R.string.payment_hint_shippingmemo)
                 list.add(emptyMessage)
 
@@ -119,11 +133,20 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 this.setSelection(list.size - 1)
             }
         }
+
+        @JvmStatic
+        @BindingAdapter("paymentWay")
+        fun RecyclerView.bindPaymentWay(list: MutableList<Order.PaymentMethod>?) {
+            if (this.adapter != null && list != null) {
+                (this.adapter as PaymentWayAdapter).setItems(list)
+            }
+        }
     }
 
 
     interface OnPaymentListener {
         fun setUsedPointViewFocused()
         fun showMessage(message: String)
+        fun notifyRadioButtons()
     }
 }

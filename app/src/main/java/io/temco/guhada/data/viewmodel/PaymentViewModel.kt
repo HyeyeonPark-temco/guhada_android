@@ -1,19 +1,15 @@
 package io.temco.guhada.data.viewmodel
 
+import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.data.model.BaseProduct
-import io.temco.guhada.data.model.Order
-import io.temco.guhada.data.model.User
-import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.LoginServer
 import io.temco.guhada.data.server.OrderServer
@@ -45,10 +41,24 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
             optionStr += "${field.totalCount}개"
 
-            callWithToken { accessToken -> getOrderForm(accessToken) }
+            callWithToken { accessToken ->
+                Log.e("AccessToken", accessToken)
+                addCartItem(accessToken)
+            }
         }
+    lateinit var cart: Cart
+    var quantity: Int = 1
     var optionStr: String = ""
+    var holdingPoint: Long = 11223344
     var usedPointNumber: Long = 0
+        set(value) {
+            field = if (value > holdingPoint) {
+                listener.showMessage("최대 사용 가능 포인트는 $holdingPoint P 입니다")
+                holdingPoint
+            } else {
+                value
+            }
+        }
     var usedPoint: ObservableField<String> = ObservableField("")
         @Bindable
         get() {
@@ -82,15 +92,40 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    val shippingAddressText: String
+        @Bindable
+        get() = "[${order.shippingAddress.zip}] ${order.shippingAddress.roadAddress}${order.shippingAddress.detailAddress}"
+
+    private fun addCartItem(accessToken: String) {
+        OrderServer.addCartItm(OnServerListener { success, o ->
+            if (success) {
+                this.cart = (o as BaseModel<*>).data as Cart
+                getOrderForm(accessToken)
+                Log.e("cartItemId", cart.cartItemId.toString())
+            } else {
+                if (o != null) {
+                    listener.showMessage(o as String)
+                } else {
+                    listener.showMessage("addCartItem 오류")
+                }
+            }
+        }, accessToken = accessToken, productId = product.productId, optionId = product.dealOptionId, quantity = quantity)
+    }
+
     private fun getOrderForm(accessToken: String) {
         OrderServer.getOrderForm(OnServerListener { success, o ->
             if (success) {
                 this.order = (o as BaseModel<*>).data as Order
                 notifyPropertyChanged(BR.order)
+                notifyPropertyChanged(BR.shippingAddressText)
             } else {
-                //  listener.showMessage(o as String)
+                if (o != null) {
+                    listener.showMessage(o as String)
+                } else {
+                    listener.showMessage("orderForm 오류")
+                }
             }
-        }, accessToken, arrayOf(product.productId))
+        }, accessToken, arrayOf(cart.cartItemId))
     }
 
     private fun getUserInfo(userId: Int) {
@@ -122,6 +157,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             if (token != null && token.accessToken != null) {
                 task("Bearer ${token.accessToken}")
             } else {
+
                 listener.showMessage("저장된 토큰 없음")
             }
         }
@@ -131,12 +167,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     fun onPaymentWayChecked(view: View, checked: Boolean) {
         val pos = view.tag?.toString()?.toInt()
         if (pos != null) {
-            for (i in 0 until 4)
-                paymentWays[i] = false
-
             if (checked) {
+                for (i in 0 until 4)
+                    paymentWays[i] = false
+
                 paymentWays[pos] = checked
-                notifyPropertyChanged(BR.paymentWays)
+                listener.notifyRadioButtons()
+            } else {
+                paymentWays[pos] = false
             }
         }
     }
@@ -164,11 +202,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         listener.setUsedPointViewFocused()
     }
 
+    fun onClickUseAllPoint() {
+        usedPointNumber = holdingPoint
+        notifyPropertyChanged(BR.usedPoint)
+    }
+
     fun onShippingMemoSelected(position: Int) {
         if (order.shippingMessage.size > position) {
             selectedShippingMessage = ObservableField(order.shippingMessage[position])
             notifyPropertyChanged(BR.selectedShippingMessage)
         }
     }
-
 }

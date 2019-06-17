@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="paymentMethod"
+            type="io.temco.guhada.data.model.Order.PaymentMethod" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.PaymentViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radiobutton_paymentway"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:button="@drawable/selector_ovalradiobutton_all"
+            android:checked="false"
+            android:onCheckedChanged="@{(view,checked) -> viewModel.onPaymentWayChecked(view,checked)}" />
+
+        <TextView
+            style="@style/PaymentContentDarkGreyTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@{paymentMethod.methodName}"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+</layout>

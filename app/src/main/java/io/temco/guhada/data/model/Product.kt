@@ -2,7 +2,7 @@ package io.temco.guhada.data.model
 
 import com.google.gson.annotations.SerializedName
 
-class Product : BaseProduct(){
+class Product : BaseProduct() {
     var brandId: Int = 0
     var totalStock: Int = 0
     var sellPrice: Int = 0
@@ -33,6 +33,9 @@ class Product : BaseProduct(){
     var productNotifies: List<Item>? = ArrayList()
     var filters: List<Item>? = ArrayList()
 
+    @SerializedName("options")
+    var optionInfos: List<OptionInfo>? = ArrayList()
+
     @SerializedName("separatedOptions")
     var options: List<Option?>? = ArrayList()
 
@@ -55,6 +58,23 @@ class Product : BaseProduct(){
         var label: String = ""
         var attributes: List<String> = ArrayList()
         var rgb: List<String> = ArrayList()
+    }
+
+    class OptionInfo {
+        var dealOptionSelectId: Long = 0
+        var label1 = ""
+        var attribute1 = ""
+        var rgb1 = ""
+
+        var label2 = ""
+        var attribute2 = ""
+
+        var label3 = ""
+        var attribute3 = ""
+
+        var price = 0
+        var stock = 0
+        var viewType = ""
     }
 
     class Shipping {

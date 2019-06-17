@@ -38,9 +38,9 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     override fun onFailure(call: Call<T>, t: Throwable) {
         try {
             if (retryCount++ < totalRetries) {
-                Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
                 val errorCode = (t as HttpException).code()
                 if (errorCode == 401 || errorCode == 403) {
+                    Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
                     retry()
                 }
             } else {

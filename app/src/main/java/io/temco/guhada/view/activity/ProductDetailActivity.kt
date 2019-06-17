@@ -20,7 +20,6 @@ import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
@@ -248,11 +247,27 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 this.totalCount = count
                 this.totalPrice = price
             }.let { baseProduct ->
+                // 장바구니 API 파라미터
+                var quantity: Int = 1
+                when {
+                    menuFragment.getSelectedOptionCount() > 0 -> {
+                        baseProduct.dealOptionId = menuFragment.getSelectedOptionDealId()
+                        quantity = menuFragment.getProductCount()
+                    }
+                    headerMenuFragment.getSelectedOptionCount() > 0 -> {
+                        baseProduct.dealOptionId = headerMenuFragment.getSelectedOptionDealId()
+                        quantity = headerMenuFragment.getProductCount()
+                    }
+                    else -> baseProduct.dealOptionId = null
+                }
+
                 Intent(this@ProductDetailActivity, PaymentActivity::class.java).let { intent ->
+                    intent.putExtra("quantity", quantity)
                     intent.putExtra("product", baseProduct)
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
                 }
             }
+
         } else {
             Toast.makeText(this@ProductDetailActivity, "옵션을 선택해주세요.", Toast.LENGTH_SHORT).show()
         }

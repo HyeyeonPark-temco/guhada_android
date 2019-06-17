@@ -27,6 +27,7 @@ open class ClaimServer {
                 override fun onFailure(call: Call<BaseModel<ClaimResponse>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
+
             })
         }
 
