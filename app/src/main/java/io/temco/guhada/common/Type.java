@@ -22,6 +22,7 @@ public class Type {
         CLAIM,
         PAYMENT,
         PAYMENT_RESULT,
+        PAYMENT_WEBVIEW,
         TEMP_LOGOUT
     }
 

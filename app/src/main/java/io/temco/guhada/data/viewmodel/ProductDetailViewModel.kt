@@ -63,7 +63,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         }, dealId)
     }
 
-    // CLICK LISTENER
+    // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
     fun onClickTab(view: View) {
         val pos = view.tag.toString()
         selectedTab = ObservableInt(pos.toInt())

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
@@ -20,6 +21,7 @@ import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
@@ -34,6 +36,7 @@ import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
+    private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var claimFragment: ProductDetailClaimFragment
     private lateinit var menuFragment: ProductDetailMenuFragment
@@ -44,16 +47,12 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
 
     override fun init() {
+        loadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ProductDetailViewModel(this)
 
         // 임시 productId 12492
         mViewModel.dealId = intent.getLongExtra("productId", resources.getString(R.string.temp_productId).toLong())
-
-        mViewModel.product.observe(this, Observer<Product> { it ->
-            mBinding.includeProductdetailContentbody.recyclerviewProductdetailTag.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-            mBinding.includeProductdetailContentinfo.recyclerviewProductdetailInfo.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-            mBinding.includeProductdetailContentnotifies.recyclerviewProductdetailNotifies.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
+        mViewModel.product.observe(this, Observer<Product> { product ->
             mBinding.includeProductdetailContentbody.viewModel = mViewModel
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
             mBinding.includeProductdetailContentheader.viewModel = mViewModel
@@ -62,7 +61,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             mBinding.includeProductdetailContentshipping.viewModel = mViewModel
             mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
 
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(it.desc, "text/html", null)
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
             mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
 
@@ -78,15 +77,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 }
             })
 
+            Log.e("TASK", "PRODUCT FINISH")
             initMenu()
         })
+        loadingIndicatorUtil.execute { mViewModel.getDetail() }
 
-        mViewModel.getDetail()
         mBinding.viewModel = mViewModel
-
         initClaims(resources.getString(R.string.temp_productId).toInt())
-
-        detectButton()
+        detectScrollView()
         mBinding.executePendingBindings()
     }
 
@@ -137,23 +135,28 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             it.add(mBinding.framelayoutProductdetailMenu.id, menuFragment)
             it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, headerMenuFragment)
             it.commit()
+            loadingIndicatorUtil.dismiss()
+            Log.e("TASK", "MENU FINISH")
         }
-
     }
 
-    private fun detectButton() {
+    private fun detectScrollView() {
         val scrollBounds = Rect()
+
+
         mBinding.scrollviewProductdetail.viewTreeObserver.addOnScrollChangedListener {
             mBinding.scrollviewProductdetail.getHitRect(scrollBounds)
+
             if (mBinding.linearlayoutProductdetailBodycontainer.getLocalVisibleRect(scrollBounds)) {
                 mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
             } else {
                 mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
             }
+
         }
     }
 
-    // OnProductDetailListener
+    // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
     override fun scrollToElement(pos: Int) {
         var h = 0
         when (pos) {
@@ -227,16 +230,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 price = headerMenuFragment.getTotalPrice()
                 optionAttr = headerMenuFragment.getSelectedOptionAttrs()
             }
-
-            // TEMP MESSAGE
-            /* val message = "상품명: $name \n판매가: $price \n수량: $count"
-            var attr = ""
-            for (oa in optionAttr) {
-                attr = "$attr \n선택옵션: ${oa.value.name}-${oa.value.rgb}"
-            }
-
-            Toast.makeText(this@ProductDetailActivity, "$message $attr", Toast.LENGTH_SHORT).show()
-            CommonUtil.debug("바로구매 클릭", "$message $attr")*/
 
             BaseProduct().apply {
                 this.productId = mViewModel.dealId // 임시

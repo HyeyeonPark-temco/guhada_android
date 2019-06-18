@@ -101,6 +101,9 @@
         <activity
             android:name=".view.activity.PaymentResultActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PaymentWebViewActivity"
+            android:screenOrientation="portrait" />
 
         <!-- Kakao -->
         <activity

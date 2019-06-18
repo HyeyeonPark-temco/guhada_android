@@ -30,7 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:orientation="vertical"
             app:spanCount="2"
@@ -50,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:onCheckedChanged="@{(view, checked) -> viewModel.onTermsChecked(checked)}"
                 android:background="@android:color/transparent"
                 android:button="@drawable/selector_checkbox_all" />
 

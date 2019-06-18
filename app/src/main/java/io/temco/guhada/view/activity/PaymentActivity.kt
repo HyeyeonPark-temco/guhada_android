@@ -1,8 +1,10 @@
 package io.temco.guhada.view.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Order
@@ -42,6 +45,19 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
             override fun notifyRadioButtons() {
                 (mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter as PaymentWayAdapter).notifyDataSetChanged()
+            }
+
+            override fun redirectPayemntWebViewActivity() {
+                Intent(this@PaymentActivity, PaymentWebViewActivity::class.java).let {
+                    it.putExtra("pgResponse", mViewModel.pgResponse)
+                    startActivityForResult(it, Flag.RequestCode.PAYMENT_WEBVIEW)
+                }
+            }
+
+            override fun redirectLoginActivity() {
+                Intent(this@PaymentActivity, LoginActivity::class.java).let {
+                    this@PaymentActivity.startActivityForResult(it, Flag.RequestCode.LOGIN)
+                }
             }
         })
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
@@ -117,6 +133,24 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.setSelection(items.size - 1)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                Flag.RequestCode.LOGIN -> {
+                    mViewModel.callWithToken { accessToken ->
+                        Log.e("AccessToken", accessToken)
+                        mViewModel.addCartItem(accessToken)
+                    }
+                }
+            }
+        } else {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
+
+    }
+
     companion object {
         @JvmStatic
         @BindingAdapter("userShippingAddress")
@@ -143,10 +177,11 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
     }
 
-
     interface OnPaymentListener {
         fun setUsedPointViewFocused()
         fun showMessage(message: String)
         fun notifyRadioButtons()
+        fun redirectPayemntWebViewActivity()
+        fun redirectLoginActivity()
     }
 }

@@ -214,9 +214,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="5dp"
-                    android:text="@{viewModel.user.name}"
-                    android:visibility="@{viewModel.user.name.isEmpty() ? View.GONE : View.VISIBLE}"
+                    android:text="@{viewModel.order.user.name}"
                     android:textSize="@dimen/text_14"
+                    android:visibility="@{viewModel.order.user.name.isEmpty() ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView21" />
@@ -228,9 +228,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="5dp"
-                    android:text="@{viewModel.user.mobile}"
-                    android:visibility="@{viewModel.user.mobile.isEmpty() ? View.GONE : View.VISIBLE}"
+                    android:text="@{viewModel.order.user.mobile}"
                     android:textSize="@dimen/text_14"
+                    android:visibility="@{viewModel.order.user.mobile.isEmpty() ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textview_payment_buyername" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -425,6 +425,7 @@
                 style="@style/PaymentSubmitButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onClickPay()}"
                 android:text="@string/payment_button_submit" />
         </LinearLayout>
     </ScrollView>

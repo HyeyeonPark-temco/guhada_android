@@ -271,7 +271,7 @@ public class SnsLoginModule {
             @Override
             public void onNotSignedUp() {
                 super.onNotSignedUp();
-                listener.onResult(false, "카카오톡 미가입 상태");
+                listener.onResult(false, "NOT KAKAOTALK SGINED UP");
             }
         });
     }
@@ -280,17 +280,22 @@ public class SnsLoginModule {
         UserManagement.getInstance().requestUnlink(new UnLinkResponseCallback() {
             @Override
             public void onSessionClosed(ErrorResult errorResult) {
-
+                listener.onResult(false, "NOT KAKAOTALK LOGGED IN");
             }
 
             @Override
             public void onNotSignedUp() {
-
+                listener.onResult(false, "NOT KAKAOTALK SGINED UP");
             }
 
             @Override
             public void onSuccess(Long result) {
                 listener.onResult(true, "SUCCESS KAKAOTALK UNLINK");
+            }
+
+            @Override
+            public void onFailure(ErrorResult errorResult) {
+                listener.onResult(false, "FAILED KAKAOTALK UNLINK : " + errorResult.getErrorMessage());
             }
         });
     }
@@ -304,6 +309,8 @@ public class SnsLoginModule {
                     listener.onResult(true, "FAILED GOOGLE LOGOUT");
                 }
             });
+        } else {
+            listener.onResult(false, "NOT GOOGLE LOGGED IN");
         }
     }
 
@@ -320,6 +327,7 @@ public class SnsLoginModule {
         }
 
         LoginManager.getInstance().logOut();
+        listener.onResult(true, "SUCCESS FACEBOOK LOGOUT");
     }
 
 }

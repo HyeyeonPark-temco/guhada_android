@@ -2,6 +2,7 @@ package io.temco.guhada.data.model
 
 import android.annotation.SuppressLint
 import android.os.Build
+import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
@@ -17,8 +18,11 @@ class ClaimResponse {
     var size = 0
     var number = 0
 
+    @SerializedName("last")
     var last = false
     var first = false
+
+    @SerializedName("empty")
     var empty = false
 
     class Claim {

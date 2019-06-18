@@ -72,6 +72,9 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_productdetail_notifies"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="@{viewModel.productNotifiesExpanded ? View.VISIBLE : View.GONE, default=gone}"

@@ -21,6 +21,7 @@ import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.activity.PaymentActivity;
 import io.temco.guhada.view.activity.PaymentResultActivity;
+import io.temco.guhada.view.activity.PaymentWebViewActivity;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.activity.SplashActivity;
 import io.temco.guhada.view.activity.TempLogoutActivity;
@@ -96,12 +97,16 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(TempLogoutActivity.class);
                     break;
 
-                case 11:
+                case 11: // Payment
                     startActivity(PaymentActivity.class);
                     break;
 
-                case 12:
+                case 12: // Payment Result
                     startActivity(PaymentResultActivity.class);
+                    break;
+
+                case 13: // Payment WebView
+                    startActivity(PaymentWebViewActivity.class);
                     break;
             }
         });
@@ -127,7 +132,13 @@ public class TestListActivity extends AppCompatActivity {
         list.add("##### LOGOUT #####"); // 10
         list.add("PAYMENT"); // 11
         list.add("PAYMENT_RESULT"); // 12
+        list.add("PAYMENT_WEBVIEW"); // 13
 
+        list.add(""); // 14
+        list.add(""); // 15
+        list.add(""); // 16
+        list.add(""); // 17
+        list.add(""); // 18
         return list;
     }
 
