@@ -348,4 +348,30 @@
     <string name="payment_button_submit">결제하기</string>
     <string name="payment_button_autocoupon">자동 적용</string>
     <string name="payment_button_allpoint">전액 사용</string>
+
+    <string name="paymentresult_title1">님의 주문이</string>
+    <string name="paymentresult_title2">정상적으로 완료되었습니다.</string>
+    <string name="paymentresult_ordernumber">주문번호</string>
+    <string name="paymentresult_receptionname">받는분</string>
+    <string name="paymentresult_receptionnumber">연락처</string>
+    <string name="paymentresult_receptionaddr">주소</string>
+    <string name="paymentresult_receptionmemo">배송메모</string>
+    <string name="paymentresult_history">주문내역보기</string>
+    <string name="paymentresult_paymentway">결제방법</string>
+
+    <string name="paymentresult_totalprice">총 주문금액</string>
+    <string name="paymentresult_shippingprice">배송비</string>
+    <string name="paymentresult_totaldiscountprice">총 할인금액</string>
+    <string name="paymentresult_coupondiscount">쿠폰 할인</string>
+    <string name="paymentresult_productdiscount">상품 할인</string>
+    <string name="paymentresult_pointused">포인트 사용</string>
+    <string name="paymentresult_fixbuy">구매 확정</string>
+    <string name="paymentresult_textreview">텍스트 리뷰</string>
+    <string name="paymentresult_photoreview">포토 리뷰</string>
+
+    <string name="paymentresult_finalprice">최종 결제금액</string>
+    <string name="paymentresult_expectpoint">적립 예정 금액</string>
+
+    <string name="paymentreuslt_button_bag">장바구니</string>
+    <string name="paymentreuslt_button_continue">쇼핑 계속하기</string>
 </resources>

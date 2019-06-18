@@ -21,6 +21,7 @@ public class Type {
         VERIFY_PHONE,
         CLAIM,
         PAYMENT,
+        PAYMENT_RESULT,
         TEMP_LOGOUT
     }
 

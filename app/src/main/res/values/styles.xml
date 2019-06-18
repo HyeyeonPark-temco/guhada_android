@@ -197,4 +197,15 @@
     <style name="PaymentSubmitButton" parent="@style/WriteClaimButtonStyle">
         <item name="android:background">@color/colorPrimary</item>
     </style>
+
+    <style name="PaymentResultContentBlackTextStyle" parent="@style/TextMedium">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/black_four</item>
+    </style>
+
+    <style name="PaymentResultContentGreyTextStyle" parent="@style/TextMedium">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/warm_grey_two</item>
+    </style>
+
 </resources>
