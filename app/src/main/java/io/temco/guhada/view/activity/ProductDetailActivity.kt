@@ -79,8 +79,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             })
 
             Log.e("TASK", "PRODUCT FINISH")
+            mViewModel.getSellerInfo()
             initMenu()
-
         })
         loadingIndicatorUtil.execute { mViewModel.getDetail() }
 

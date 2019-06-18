@@ -144,7 +144,7 @@
                         android:id="@+id/textView14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/dummy_content_singleline"
+                        android:text="@{viewModel.seller.storeName}"
                         android:textColor="@color/black_two"
                         android:textSize="@dimen/text_12"
                         app:layout_constraintEnd_toStartOf="@+id/button3"

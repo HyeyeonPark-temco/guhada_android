@@ -9,7 +9,7 @@ class Product : BaseProduct() {
     var discountRate: Int = 0
     var discountPrice: Int = 0
     var shipExpense: Int = 0
-    var sellerId: Int = 0
+    var sellerId: Long = 0
 
     var modelNumber: String = ""
     var season: String = ""

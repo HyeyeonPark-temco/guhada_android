@@ -372,5 +372,20 @@ class LoginServer {
                 }
             })
         }
+
+        @JvmStatic
+        fun getSellerById(listener: OnServerListener, sellerId: Long) {
+            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getSellerById(sellerId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Seller>> {
+                override fun onResponse(call: Call<BaseModel<Seller>>, response: Response<BaseModel<Seller>>) {
+                    listener.onResult(true, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<Seller>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+
+            })
+        }
     }
 }

@@ -27,6 +27,13 @@ interface LoginService {
     fun findUserById(@Path("userId") id: Int): Call<BaseModel<User>>
 
     /**
+     * 셀러 정보 가져오기 API
+     * @param sellerId
+     */
+    @GET("/sellers/{sellerId}")
+    fun getSellerById(@Path("sellerId") id : Long) : Call<BaseModel<Seller>>
+
+    /**
      * 유저 정보 가져오기 API
      * @param name
      * @param phoneNumber

@@ -7,13 +7,19 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.common.listener.OnProductDetailListener
+import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.server.LoginServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
+    var seller: Seller = Seller()
+        @Bindable
+        get() = field
     var dealId: Long = 0
     var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
@@ -56,11 +62,27 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 (o as BaseModel<Product>).let {
                     tags = it.data.tag.split("/")
                     product.postValue(it.data)
+
                 }
             } else {
                 CommonUtil.debug(o?.toString())
             }
         }, dealId)
+    }
+
+    fun getSellerInfo() {
+        if (product.value?.sellerId != null) {
+            LoginServer.getSellerById(OnServerListener { success, o ->
+                if (success) {
+                    (o as BaseModel<Seller>).let {
+                        this.seller = it.data
+                        notifyPropertyChanged(BR.seller)
+                    }
+                } else {
+                    CommonUtil.debug(o?.toString())
+                }
+            }, product.value?.sellerId!!)
+        }
     }
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
