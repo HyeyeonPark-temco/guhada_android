@@ -1,9 +1,9 @@
 package io.temco.guhada.data.model
 
-class Review {
+class ReviewSummary {
     var satisfaction: Satisfaction = Satisfaction()
     var totalReviewsCount: Int = 0
-    var averageReviewsRating: Double = 0.0
+    var averageReviewsRating: Float = 0.0f
 
     class Satisfaction {
         var sizes: List<SatisfactionContent> = ArrayList()

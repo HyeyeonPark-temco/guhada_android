@@ -387,5 +387,20 @@ class LoginServer {
 
             })
         }
+
+        @JvmStatic
+        fun getProductReviewSummary(listener: OnServerListener, productId: Long) {
+            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getProductReviewSummary(productId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<ReviewSummary>> {
+                override fun onResponse(call: Call<BaseModel<ReviewSummary>>, response: Response<BaseModel<ReviewSummary>>) {
+                    listener.onResult(true, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<ReviewSummary>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+
+            })
+        }
     }
 }

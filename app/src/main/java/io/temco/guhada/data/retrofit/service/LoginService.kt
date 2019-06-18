@@ -31,7 +31,7 @@ interface LoginService {
      * @param sellerId
      */
     @GET("/sellers/{sellerId}")
-    fun getSellerById(@Path("sellerId") id : Long) : Call<BaseModel<Seller>>
+    fun getSellerById(@Path("sellerId") id: Long): Call<BaseModel<Seller>>
 
     /**
      * 유저 정보 가져오기 API
@@ -138,5 +138,8 @@ interface LoginService {
      * @param userId
      */
     @GET("/users/{userId}/shipping-addresses")
-    fun findShippingAddress(@Path("userId") userId : Int) : Call<BaseModel<List<UserShipping>>>
+    fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<List<UserShipping>>>
+
+    @GET("/products/{productId}/reviews/summary")
+    fun getProductReviewSummary(@Path("productId") productId: Long): Call<BaseModel<ReviewSummary>>
 }

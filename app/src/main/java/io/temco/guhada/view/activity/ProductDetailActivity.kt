@@ -87,7 +87,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         mBinding.viewModel = mViewModel
         initClaims(resources.getString(R.string.temp_productId).toInt())
 
-        initReview(resources.getString(R.string.temp_productId).toInt())
+        initReview(resources.getString(R.string.temp_productId).toLong())
         detectScrollView()
 
         mBinding.executePendingBindings()
@@ -101,8 +101,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
     }
 
-    private fun initReview(productId: Int) {
+    private fun initReview(productId: Long) {
         reviewFragment = ProductDetailReviewFragment()
+        reviewFragment.setProductId(productId = productId)
+
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, reviewFragment)
             it.commit()
