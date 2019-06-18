@@ -39,6 +39,7 @@
     <string name="common_unit_prercent">%</string>
     <string name="common_unit_product">개</string>
     <string name="common_unit_point">P</string>
+    <string name="common_unit_score">점</string>
 
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
 
@@ -295,7 +296,16 @@
     <string name="productdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
     <string name="productdetail_qna_button_contactforproduct">상품 문의하기</string>
     <string name="productdetail_qna_button_contactwithseller">판매자 문의하기</string>
-    <string name="productdetail_qna_button_moreclaim">상품 리뷰 10개 더보기</string>
+    <string name="productdetail_qna_button_moreclaim">상품 문의 10개 더보기</string>
+
+    <string name="productdetail_review_close">닫기</string>
+    <string name="productdetail_review_all">전체리뷰</string>
+    <string name="productdetail_review_photo">포토리뷰</string>
+    <string name="productdetail_review_size">수치포함</string>
+    <string name="productdetail_review_reply">댓글포함</string>
+    <string name="productdetail_review_title">리뷰</string>
+    <string name="productdetail_review_button_morereview">상품 리뷰 10개 더보기</string>
+
 
     <string name="productdetail_notifies_empty">등록된 상품고시정보가 없습니다.</string>
 

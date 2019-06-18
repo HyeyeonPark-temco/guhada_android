@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/textview_productdetail_qna_title"
-                style="@style/ProductDetailTitleTextStyle"
+                style="@style/ProductDetailTitleBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/productdetail_qna_title"
@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@+id/textview_productdetail_qna_count"
-                style="@style/ProductDetailTitleTextStyle"
+                style="@style/ProductDetailTitleBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/textView16"
-                style="@style/ProductDetailTitleTextStyle"
+                style="@style/ProductDetailTitleBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/common_unit_person"
@@ -71,7 +71,7 @@
 
             <TextView
                 android:id="@+id/textView17"
-                style="@style/ProductDetailQnaContentTextStyle"
+                style="@style/ProductDetailContentDarkGreyTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/productdetail_qna_mine"
@@ -110,7 +110,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/ProductDetailQnaContentTextStyle"
+            style="@style/ProductDetailContentDarkGreyTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -194,7 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:text="@string/productdetail_qna_button_moreclaim"
+                    android:text="@string/productdetail_review_button_morereview"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_14"
                     android:layout_gravity="center"
