@@ -25,6 +25,7 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
     fun getTotalPrice(): Int = mViewModel.totalPrice.get()
     fun getSelectedOptionCount(): Int = mViewModel.optionMap.keys.size
     fun getSelectedOptionAttrs() = mViewModel.optionMap
+    fun getSelectedOptionDealId(): Long? = mViewModel.getDealOptionId(mViewModel.optionMap)
 
     companion object {
         @JvmStatic

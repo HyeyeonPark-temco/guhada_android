@@ -13,4 +13,5 @@ class UserShipping {
     var detailAddress = ""
     var shippingMessageType = ""
     var shippingMessage = ""
+    var safetyMobile = true
 }

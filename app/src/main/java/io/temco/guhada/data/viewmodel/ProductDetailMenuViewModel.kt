@@ -25,6 +25,41 @@ class ProductDetailMenuViewModel(private val listener: ProductDetailActivity.OnM
 
     var optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr> = mutableMapOf()
 
+    fun getDealOptionId(optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr>): Long? {
+        val color = optionMap["COLOR"]
+        val size = optionMap["SIZE"]
+
+        if (product.optionInfos != null) {
+            for (optionInfo in product.optionInfos!!) {
+                if (color != null) {
+                    if (size != null) {
+                        // 색상 O, 사이즈 O
+                        if (optionInfo.attribute1 == color.name && optionInfo.attribute2 == size.name) {
+                            return optionInfo.dealOptionSelectId
+                        }
+                    } else {
+                        // 색상 O, 사이즈 X
+                        if (optionInfo.attribute1 == color.name) {
+                            return optionInfo.dealOptionSelectId
+                        }
+                    }
+                } else {
+                    if (size != null) {
+                        // 색상 X, 사이즈 O
+                        if (optionInfo.attribute1 == size.name) {
+                            return optionInfo.dealOptionSelectId
+                        }
+                    } else {
+                        // 색상 X, 사이즈 X => 옵션 없음
+                        return null
+                    }
+                }
+            }
+        }
+
+        return null
+    }
+
     fun onClickCloseMenu() = listener.closeMenu()
 
     fun onClickPlus() {

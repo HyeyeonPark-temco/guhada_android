@@ -1,19 +1,15 @@
 package io.temco.guhada.data.viewmodel
 
+import android.util.Log
 import android.view.View
-import android.widget.AdapterView
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.data.model.BaseProduct
-import io.temco.guhada.data.model.Order
-import io.temco.guhada.data.model.User
-import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.LoginServer
 import io.temco.guhada.data.server.OrderServer
@@ -30,6 +26,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    var selectedShippingAddress: UserShipping = UserShipping()
+
     var selectedShippingMessage = ObservableField<String>("배송메모를 선택해 주세요.")
         @Bindable
         get() = field
@@ -45,10 +43,25 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
             optionStr += "${field.totalCount}개"
 
-            callWithToken { accessToken -> getOrderForm(accessToken) }
+            callWithToken { accessToken ->
+                Log.e("AccessToken", accessToken)
+                addCartItem(accessToken)
+            }
         }
+    lateinit var pgResponse: PGResponse
+    lateinit var cart: Cart
+    var quantity: Int = 1
     var optionStr: String = ""
+    var holdingPoint: Long = 11223344
     var usedPointNumber: Long = 0
+        set(value) {
+            field = if (value > holdingPoint) {
+                listener.showMessage("최대 사용 가능 포인트는 $holdingPoint P 입니다")
+                holdingPoint
+            } else {
+                value
+            }
+        }
     var usedPoint: ObservableField<String> = ObservableField("")
         @Bindable
         get() {
@@ -82,15 +95,44 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    val shippingAddressText: String
+        @Bindable
+        get() = "[${order.shippingAddress.zip}] ${order.shippingAddress.roadAddress}${order.shippingAddress.detailAddress}"
+
+    var termsChecked = false
+
+    fun addCartItem(accessToken: String) {
+        OrderServer.addCartItm(OnServerListener { success, o ->
+            if (success) {
+                this.cart = (o as BaseModel<*>).data as Cart
+                getOrderForm(accessToken)
+                Log.e("cartItemId", cart.cartItemId.toString())
+            } else {
+                if (o != null) {
+                    listener.showMessage(o as String)
+                } else {
+                    listener.showMessage("addCartItem 오류")
+                }
+            }
+        }, accessToken = accessToken, productId = product.productId, optionId = product.dealOptionId, quantity = quantity)
+    }
+
     private fun getOrderForm(accessToken: String) {
         OrderServer.getOrderForm(OnServerListener { success, o ->
             if (success) {
                 this.order = (o as BaseModel<*>).data as Order
+                this.selectedShippingAddress = order.shippingAddress // 임시 초기값
+
                 notifyPropertyChanged(BR.order)
+                notifyPropertyChanged(BR.shippingAddressText)
             } else {
-                //  listener.showMessage(o as String)
+                if (o != null) {
+                    listener.showMessage(o as String)
+                } else {
+                    listener.showMessage("orderForm 오류")
+                }
             }
-        }, accessToken, arrayOf(product.productId))
+        }, accessToken, arrayOf(cart.cartItemId))
     }
 
     private fun getUserInfo(userId: Int) {
@@ -117,26 +159,51 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }, userId)
     }
 
-    private fun callWithToken(task: (accessToken: String) -> Unit) {
+    private fun requestOrder(accessToken: String, requestOrder: RequestOrder) {
+        OrderServer.requestOrder(OnServerListener { success, o ->
+            if (success) {
+                val model = (o as BaseModel<*>)
+                when (model.resultCode) {
+                    200 -> {// PG사 요청
+                        this.pgResponse = o.data as PGResponse
+                        listener.redirectPayemntWebViewActivity()
+                    }
+                    else -> listener.showMessage("[${model.resultCode}]${model.message}")
+                }
+            } else {
+                if (o != null) {
+                    listener.showMessage(o as String)
+                } else {
+                    listener.showMessage("orderForm 오류")
+                }
+            }
+        }, accessToken, requestOrder)
+    }
+
+    fun callWithToken(task: (accessToken: String) -> Unit) {
         Preferences.getToken().let { token ->
             if (token != null && token.accessToken != null) {
                 task("Bearer ${token.accessToken}")
             } else {
-                listener.showMessage("저장된 토큰 없음")
+                listener.redirectLoginActivity()
+                listener.showMessage("로그인이 필요한 서비스입니다.")
             }
         }
     }
+
 
     // LISTENER
     fun onPaymentWayChecked(view: View, checked: Boolean) {
         val pos = view.tag?.toString()?.toInt()
         if (pos != null) {
-            for (i in 0 until 4)
-                paymentWays[i] = false
-
             if (checked) {
+                for (i in 0 until 4)
+                    paymentWays[i] = false
+
                 paymentWays[pos] = checked
-                notifyPropertyChanged(BR.paymentWays)
+                listener.notifyRadioButtons()
+            } else {
+                paymentWays[pos] = false
             }
         }
     }
@@ -164,11 +231,49 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         listener.setUsedPointViewFocused()
     }
 
+    fun onClickUseAllPoint() {
+        usedPointNumber = holdingPoint
+        notifyPropertyChanged(BR.usedPoint)
+    }
+
+    // 결제하기 버튼 클릭
+    fun onClickPay() {
+        if (termsChecked) {
+            var selectedMethod: Order.PaymentMethod? = null
+
+            for (i in 0 until paymentWays.size) {
+                if (paymentWays[i]) {
+                    selectedMethod = order.paymentsMethod[i]
+                }
+            }
+
+            if (selectedMethod != null) {
+                if (this.user.get() != null) {
+                    RequestOrder().apply {
+                        this.user = this@PaymentViewModel.user.get()!!
+                        this.shippingAddress = this@PaymentViewModel.selectedShippingAddress
+                        this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
+                        this.parentMethodCd = selectedMethod.methodCode
+                    }.let { requestOrder ->
+                        callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+                    }
+                }
+            } else {
+                listener.showMessage("결제 수단을 선택해주세요.")
+            }
+        } else {
+            listener.showMessage("이용 약관에 동의해주세요.")
+        }
+    }
+
+    fun onTermsChecked(checked: Boolean) {
+        this.termsChecked = checked
+    }
+
     fun onShippingMemoSelected(position: Int) {
         if (order.shippingMessage.size > position) {
             selectedShippingMessage = ObservableField(order.shippingMessage[position])
             notifyPropertyChanged(BR.selectedShippingMessage)
         }
     }
-
 }

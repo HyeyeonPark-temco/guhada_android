@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.databinding.ItemProductdetailReviewscoreBinding
-import io.temco.guhada.view.adapter.base.BaseViewHolder
+import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailReviewScoreAdapter : RecyclerView.Adapter<ProductDetailReviewScoreAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

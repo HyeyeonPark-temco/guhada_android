@@ -112,7 +112,7 @@ public class LoginViewModel extends BaseObservableViewModel {
                             }
 
                             loginListener.closeActivity(RESULT_OK);
-                            loginListener.showMessage(token.getAccessToken());
+                            CommonUtil.debug(token.getAccessToken());
                             return;
                         case Flag.ResultCode.USER_NOT_FOUND:
                         case Flag.ResultCode.SIGNIN_INVALID_PASSWORD:

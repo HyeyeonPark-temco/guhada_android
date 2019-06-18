@@ -80,9 +80,6 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
                     }
                 }
 
-                /**
-                 *  <휴대폰번호> 는 업체에 따로 신청해야해서 추후에 필드값 넘어올 예정 (05.24)
-                 */
                 if (map.get("sName") != null) {
                     mBinding.webviewVerifyphone.setVisibility(View.GONE);
 
