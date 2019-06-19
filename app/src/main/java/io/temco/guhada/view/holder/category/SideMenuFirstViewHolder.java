@@ -43,11 +43,11 @@ public class SideMenuFirstViewHolder extends BaseCategoryViewHolder<ItemSideMenu
             // Add All
             if (data.children != null && data.children.size() > 0) {
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.id, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.fullDepthName, data.id, data.hierarchies));
                 }
             } else {
                 data.children = new ArrayList<>();
-                data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.id, data.hierarchies));
+                data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.fullDepthName, data.id, data.hierarchies));
             }
             // Adapter
             SideMenuCategorySecondListAdapter adapter = new SideMenuCategorySecondListAdapter(context);

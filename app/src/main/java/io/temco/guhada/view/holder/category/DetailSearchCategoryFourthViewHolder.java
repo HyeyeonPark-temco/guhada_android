@@ -34,6 +34,8 @@ public class DetailSearchCategoryFourthViewHolder extends BaseCategoryViewHolder
             if (!TextUtils.isEmpty(data.title)) {
                 mBinding.setTitle(data.title);
             }
+            // Selected
+            mBinding.getRoot().setSelected(data.isSelected);
         }
     }
 

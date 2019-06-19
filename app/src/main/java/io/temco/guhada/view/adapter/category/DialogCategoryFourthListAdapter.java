@@ -17,7 +17,7 @@ import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
 import io.temco.guhada.view.holder.category.DetailSearchCategoryFourthViewHolder;
 import io.temco.guhada.view.holder.category.DialogCategoryFourthViewHolder;
 
-public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<DetailSearchCategoryFourthViewHolder> implements View.OnClickListener {
+public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<DialogCategoryFourthViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
@@ -44,12 +44,12 @@ public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<Detail
 
     @NonNull
     @Override
-    public DetailSearchCategoryFourthViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DetailSearchCategoryFourthViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_category_fourth, parent, false));
+    public DialogCategoryFourthViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DialogCategoryFourthViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_dialog_category_fourth, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DetailSearchCategoryFourthViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DialogCategoryFourthViewHolder holder, int position) {
         holder.init(mContext, null, getItem(position), mCategoryListener);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
@@ -59,8 +59,7 @@ public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<Detail
     public void onClick(View v) {
         if (mCategoryListener != null
                 && v.getTag() != null && v.getTag() instanceof Integer) {
-            Category data = getItem((int) v.getTag());
-            mCategoryListener.onEvent(data.type, data.hierarchies);
+            mCategoryListener.onEvent(getItem((int) v.getTag()));
         }
     }
 

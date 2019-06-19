@@ -6,25 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
-import java.util.List;
-
 import io.temco.guhada.R;
-import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.view.adapter.base.BaseCategoryListAdapter;
 import io.temco.guhada.view.holder.category.DetailSearchCategoryFirstViewHolder;
 
-public class DetailSearchCategoryFirstListAdapter extends RecyclerView.Adapter<DetailSearchCategoryFirstViewHolder> implements View.OnClickListener {
-
-    // -------- LOCAL VALUE --------
-    private Context mContext;
-    private ExpansionLayoutCollection mExpansionsCollection;
-    private List<Category> mItems;
-    private OnCategoryListener mCategoryListener;
-    // -----------------------------
+public class DetailSearchCategoryFirstListAdapter extends BaseCategoryListAdapter<DetailSearchCategoryFirstViewHolder> implements View.OnClickListener {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
@@ -39,11 +30,6 @@ public class DetailSearchCategoryFirstListAdapter extends RecyclerView.Adapter<D
     ////////////////////////////////////////////////
     // OVERRIDE
     ////////////////////////////////////////////////
-
-    @Override
-    public int getItemCount() {
-        return mItems == null ? 0 : mItems.size();
-    }
 
     @NonNull
     @Override
@@ -60,37 +46,21 @@ public class DetailSearchCategoryFirstListAdapter extends RecyclerView.Adapter<D
         } else {
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         }
-        holder.init(mContext, null, data, mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener);
     }
 
     @Override
     public void onClick(View v) {
-        if (mCategoryListener != null
-                && v.getTag() != null && v.getTag() instanceof Integer) {
-            Category data = getItem((int) v.getTag());
-            mCategoryListener.onEvent(data.type, data.hierarchies);
+        if (v.getTag() != null && v.getTag() instanceof Integer) {
+            // Data
+            int position = (int) v.getTag();
+            Category c = getItem(position);
+            c.isSelected = !v.isSelected();
+            // Listener
+            if (mCategoryListener != null) mCategoryListener.onEvent(c);
+            // Notify
+            notifyItemChanged(position);
         }
-    }
-
-    ////////////////////////////////////////////////
-    // PUBLIC
-    ////////////////////////////////////////////////
-
-    public void setItems(List<Category> items) {
-        mItems = items;
-        notifyDataSetChanged();
-    }
-
-    public void setOnCategoryListener(OnCategoryListener listener) {
-        mCategoryListener = listener;
-    }
-
-    ////////////////////////////////////////////////
-    // PRIVATE
-    ////////////////////////////////////////////////
-
-    private Category getItem(int position) {
-        return mItems == null ? null : mItems.get(position);
     }
 
     ////////////////////////////////////////////////

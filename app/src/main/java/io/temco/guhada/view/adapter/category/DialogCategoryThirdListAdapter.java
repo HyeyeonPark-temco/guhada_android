@@ -69,8 +69,7 @@ public class DialogCategoryThirdListAdapter extends RecyclerView.Adapter<DialogC
     public void onClick(View v) {
         if (mCategoryListener != null
                 && v.getTag() != null && v.getTag() instanceof Integer) {
-            Category data = getItem((int) v.getTag());
-            mCategoryListener.onEvent(data.type, data.hierarchies);
+            mCategoryListener.onEvent(getItem((int) v.getTag()));
         }
     }
 

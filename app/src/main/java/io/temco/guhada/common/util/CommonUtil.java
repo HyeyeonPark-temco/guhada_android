@@ -179,14 +179,26 @@ public class CommonUtil {
         }
     }
 
-    public static Category createAllCategoryData(String title, int id, int[] hierarchies) {
+    public static Category createAllCategoryData(String title, String depth, int id, int[] hierarchies) {
         Category all = new Category();
         all.type = Type.Category.ALL;
         all.id = id;
         all.name = title;
         all.title = title;
+        all.fullDepthName = depth;
         all.hierarchies = hierarchies;
         return all;
+    }
+
+    public static boolean checkSelectCategoryData(Category parent, Category child) {
+        boolean isSelect = false;
+        for (Category c : parent.children) {
+            if (c.id == child.id) {
+                c.isSelected = child.isSelected;
+            }
+            isSelect = c.isSelected;
+        }
+        return isSelect;
     }
 
     ////////////////////////////////////////////////

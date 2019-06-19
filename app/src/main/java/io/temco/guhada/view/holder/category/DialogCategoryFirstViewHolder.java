@@ -47,7 +47,7 @@ public class DialogCategoryFirstViewHolder extends BaseCategoryViewHolder<ItemDi
                 mBinding.layoutExpandHeader.setToggleOnClick(true);
                 // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.id, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.fullDepthName, data.id, data.hierarchies));
                 }
                 // Adapter
                 DialogCategorySecondListAdapter adapter = new DialogCategorySecondListAdapter(context);

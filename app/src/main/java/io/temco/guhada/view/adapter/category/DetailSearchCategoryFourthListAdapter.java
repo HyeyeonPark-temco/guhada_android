@@ -6,23 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
-import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
-import io.temco.guhada.view.holder.category.DialogCategoryFourthViewHolder;
+import io.temco.guhada.view.adapter.base.BaseCategoryListAdapter;
+import io.temco.guhada.view.holder.category.DetailSearchCategoryFourthViewHolder;
 
-public class DetailSearchCategoryFourthListAdapter extends RecyclerView.Adapter<BaseCategoryViewHolder> implements View.OnClickListener {
-
-    // -------- LOCAL VALUE --------
-    private Context mContext;
-    private List<Category> mItems;
-    private OnCategoryListener mCategoryListener;
-    // -----------------------------
+public class DetailSearchCategoryFourthListAdapter extends BaseCategoryListAdapter<DetailSearchCategoryFourthViewHolder> implements View.OnClickListener {
 
     ////////////////////////////////////////////////
     // CONSTRUCTOR
@@ -36,52 +26,31 @@ public class DetailSearchCategoryFourthListAdapter extends RecyclerView.Adapter<
     // OVERRIDE
     ////////////////////////////////////////////////
 
-    @Override
-    public int getItemCount() {
-        return mItems == null ? 0 : mItems.size();
-    }
-
     @NonNull
     @Override
-    public BaseCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DialogCategoryFourthViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_dialog_category_fourth, parent, false));
+    public DetailSearchCategoryFourthViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new DetailSearchCategoryFourthViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_detail_search_category_fourth, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BaseCategoryViewHolder holder, int position) {
-        holder.init(mContext, null, getItem(position), mCategoryListener);
+    public void onBindViewHolder(@NonNull DetailSearchCategoryFourthViewHolder holder, int position) {
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
+        holder.init(mContext, null, getItem(position), mCategoryListener);
     }
 
     @Override
     public void onClick(View v) {
-        if (mCategoryListener != null
-                && v.getTag() != null && v.getTag() instanceof Integer) {
-            Category data = getItem((int) v.getTag());
-            mCategoryListener.onEvent(data.type, data.hierarchies);
+        if (v.getTag() != null && v.getTag() instanceof Integer) {
+            // Data
+            int position = (int) v.getTag();
+            Category c = getItem(position);
+            c.isSelected = !v.isSelected();
+            // Listener
+            if (mCategoryListener != null) mCategoryListener.onEvent(c);
+            // Notify
+            notifyItemChanged(position);
         }
-    }
-
-    ////////////////////////////////////////////////
-    // PUBLIC
-    ////////////////////////////////////////////////
-
-    public void setItems(List<Category> items) {
-        mItems = items;
-        notifyDataSetChanged();
-    }
-
-    public void setOnCategoryListener(OnCategoryListener listener) {
-        mCategoryListener = listener;
-    }
-
-    ////////////////////////////////////////////////
-    // PRIVATE
-    ////////////////////////////////////////////////
-
-    private Category getItem(int position) {
-        return mItems == null ? null : mItems.get(position);
     }
 
     ////////////////////////////////////////////////

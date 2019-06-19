@@ -14,7 +14,6 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemDetailSearchCategoryFirstBinding;
 import io.temco.guhada.view.adapter.category.DetailSearchCategorySecondListAdapter;
-import io.temco.guhada.view.adapter.category.DialogCategorySecondListAdapter;
 import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
 
 public class DetailSearchCategoryFirstViewHolder extends BaseCategoryViewHolder<ItemDetailSearchCategoryFirstBinding> {
@@ -48,7 +47,7 @@ public class DetailSearchCategoryFirstViewHolder extends BaseCategoryViewHolder<
                 mBinding.layoutExpandHeader.setToggleOnClick(true);
                 // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.id, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.fullDepthName, data.id, data.hierarchies));
                 }
                 // Adapter
                 DetailSearchCategorySecondListAdapter adapter = new DetailSearchCategorySecondListAdapter(context);
@@ -56,6 +55,10 @@ public class DetailSearchCategoryFirstViewHolder extends BaseCategoryViewHolder<
                 adapter.setItems(data.children);
                 mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
                 mBinding.listContents.setAdapter(adapter);
+                // Expand
+                if (data.isSelected) {
+                    mBinding.layoutExpandContents.expand(true);
+                }
             }
         }
     }

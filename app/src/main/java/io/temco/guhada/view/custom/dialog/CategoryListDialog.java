@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Preferences;
-import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.DialogCategoryListBinding;
 import io.temco.guhada.view.adapter.category.DialogCategoryFirstListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
@@ -87,9 +87,9 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void dissmissWithData(Type.Category type, int[] hierarchies) {
+    private void dissmissWithData(Category data) {
         if (mListener != null) {
-            mListener.onEvent(type, hierarchies);
+            mListener.onEvent(data);
         }
         dismiss();
     }
