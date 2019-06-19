@@ -26,6 +26,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
     var selectedShippingAddress: UserShipping = UserShipping()
 
     var selectedShippingMessage = ObservableField<String>("배송메모를 선택해 주세요.")
@@ -239,7 +240,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 결제하기 버튼 클릭
     fun onClickPay() {
         if (termsChecked) {
-            var selectedMethod: Order.PaymentMethod? = null
+
 
             for (i in 0 until paymentWays.size) {
                 if (paymentWays[i]) {

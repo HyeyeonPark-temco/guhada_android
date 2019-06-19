@@ -30,6 +30,8 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
             if (retryCount++ < totalRetries) {
                 Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
                 if (response.code() == 401 || response.code() == 403) {
+                    // Login 띄워주기
+                    BaseApplication.getInstance().startActivity(Intent(BaseApplication.getInstance().applicationContext, LoginActivity::class.java))
                     retry()
                 }
             } else {
