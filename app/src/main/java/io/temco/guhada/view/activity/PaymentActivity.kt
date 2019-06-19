@@ -49,6 +49,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
             override fun redirectPayemntWebViewActivity() {
                 Intent(this@PaymentActivity, PaymentWebViewActivity::class.java).let {
+                    it.putExtra("payMethod", mViewModel.selectedMethod.methodCode)
                     it.putExtra("pgResponse", mViewModel.pgResponse)
                     startActivityForResult(it, Flag.RequestCode.PAYMENT_WEBVIEW)
                 }
