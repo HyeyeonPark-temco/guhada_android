@@ -267,7 +267,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         // Category
         mBinding.layoutSideMenu.listContents.setLayoutManager(new LinearLayoutManager(this));
         SideMenuCategoryFirstListAdapter adapter = new SideMenuCategoryFirstListAdapter(this);
-        adapter.setOnCategoryListener(this::startCategoryByHierarchy);
+        adapter.setOnCategoryListener(category -> startCategoryByHierarchy(category.type, category.hierarchies));
         adapter.setItems(Preferences.getCategories());
         mBinding.layoutSideMenu.listContents.setAdapter(adapter);
     }
@@ -308,7 +308,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         if (getSupportFragmentManager() != null) {
             if (mCategoryListDialog == null) {
                 mCategoryListDialog = new CategoryListDialog();
-                mCategoryListDialog.setOnCategoryListener(this::startCategoryScreen);
+                mCategoryListDialog.setOnCategoryListener(category -> startCategoryScreen(category.type, category.hierarchies));
             }
             mCategoryListDialog.show(getSupportFragmentManager(), getBaseTag());
         }

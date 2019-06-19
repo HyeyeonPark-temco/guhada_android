@@ -10,11 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.listener.OnCategorySelectListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemDetailSearchCategorySecondBinding;
+import io.temco.guhada.view.adapter.category.DetailSearchCategorySecondListAdapter;
 import io.temco.guhada.view.adapter.category.DetailSearchCategoryThirdListAdapter;
-import io.temco.guhada.view.adapter.category.DialogCategoryThirdListAdapter;
 import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
 
 public class DetailSearchCategorySecondViewHolder extends BaseCategoryViewHolder<ItemDetailSearchCategorySecondBinding> {
@@ -48,7 +49,7 @@ public class DetailSearchCategorySecondViewHolder extends BaseCategoryViewHolder
                 mBinding.layoutExpandHeader.setToggleOnClick(true);
                 // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.id, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.fullDepthName, data.id, data.hierarchies));
                 }
                 // Adapter
                 DetailSearchCategoryThirdListAdapter adapter = new DetailSearchCategoryThirdListAdapter(context);
@@ -56,6 +57,10 @@ public class DetailSearchCategorySecondViewHolder extends BaseCategoryViewHolder
                 adapter.setItems(data.children);
                 mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
                 mBinding.listContents.setAdapter(adapter);
+                // Expand
+                if (data.isSelected) {
+                    mBinding.layoutExpandContents.expand(true);
+                }
             }
         }
     }

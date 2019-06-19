@@ -12,6 +12,8 @@ public class Category {
 
     public boolean isSelected = false;
 
+    public boolean isExpand = false;
+
     @SerializedName("id")
     public int id;
 

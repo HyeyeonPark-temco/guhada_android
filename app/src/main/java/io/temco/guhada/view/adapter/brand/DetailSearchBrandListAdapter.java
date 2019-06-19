@@ -101,7 +101,6 @@ public class DetailSearchBrandListAdapter extends RecyclerView.Adapter<BaseBrand
         notifyItemChanged(position);
     }
 
-
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////

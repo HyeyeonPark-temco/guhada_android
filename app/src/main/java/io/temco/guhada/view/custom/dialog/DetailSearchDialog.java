@@ -13,6 +13,7 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.listener.OnCategorySelectListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Attribute;
@@ -31,10 +32,17 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private OnDetailSearchListener mDetailSearchListener;
     private DetailSearchBrandListAdapter mBrandListAdapter;
     private boolean mIsChangeData = false;
-    private String mParentDepth;
+    // Category
+    private int mParentCategoryId;
+    private int[] mParentCategoryHierarchy;
+    private String mParentCategoryDepth;
     private List<Category> mCategoryList;
+    private List<Category> mCategorySelectedList;
+    private int[] mSelectedCategoryHierarchy;
+    // Brand
     private List<Brand> mBrandList;
     private List<Brand> mBrandSelectedList;
+    // Filter
     private List<Filter> mFilterList;
     // -----------------------------
 
@@ -94,8 +102,10 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         mDetailSearchListener = listener;
     }
 
-    public void setCategoryData(String depth, List<Category> categories) {
-        mParentDepth = depth;
+    public void setCategoryData(String depth, int id, int[] hierarchies, List<Category> categories) {
+        mParentCategoryDepth = depth;
+        mParentCategoryId = id;
+        mParentCategoryHierarchy = hierarchies;
         mCategoryList = categories;
     }
 
@@ -165,13 +175,14 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     // Category
     private void setCategoryData() {
         // Depth
-        if (!TextUtils.isEmpty(mParentDepth)) {
-            mBinding.layoutHeaderCategory.setParent(mParentDepth);
+        if (!TextUtils.isEmpty(mParentCategoryDepth)) {
+            mBinding.layoutHeaderCategory.setDepth(mParentCategoryDepth);
         }
         // List
         if (mCategoryList != null && mCategoryList.size() > 0) {
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.VISIBLE);
             mBinding.layoutExpandCategoryHeader.setToggleOnClick(true);
+            // Add All
             initCategoryList(mCategoryList);
         } else {
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.GONE);
@@ -182,11 +193,75 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private void initCategoryList(List<Category> data) {
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
         DetailSearchCategoryFirstListAdapter adapter = new DetailSearchCategoryFirstListAdapter(getContext());
-        adapter.setOnCategoryListener((type, hierarchies) -> {
-            CommonUtil.debug("" + Type.Category.get(type));
-        });
+        adapter.setOnCategoryListener(this::checkSelectedCategoryList);
         adapter.setItems(data);
         mBinding.listCategory.setAdapter(adapter);
+    }
+
+    private boolean checkSelectedCategoryHirarchy(int[] hirarchy) {
+        if (hirarchy != null && hirarchy.length > 0) {
+            if (mSelectedCategoryHierarchy == null) {
+                mSelectedCategoryHierarchy = hirarchy;
+                return false;
+            }
+            if (mSelectedCategoryHierarchy.length != hirarchy.length) {
+                mSelectedCategoryHierarchy = hirarchy;
+                return false;
+            }
+            //
+            int length = hirarchy.length - 1;
+            boolean check = true;
+            if (length == 0) {
+                if (mSelectedCategoryHierarchy[length] != hirarchy[length]) {
+                    check = false;
+                }
+            } else {
+                for (int i = 0; i < length; i++) {
+                    if (mSelectedCategoryHierarchy[i] != hirarchy[i]) {
+                        check = false;
+                        break;
+                    }
+                }
+            }
+            mSelectedCategoryHierarchy = hirarchy;
+            return check;
+        } else {
+            mSelectedCategoryHierarchy = null;
+            return false;
+        }
+    }
+
+    private void checkSelectedCategoryList(Category category) {
+        if (!checkSelectedCategoryHirarchy(category.hierarchies) || mCategorySelectedList == null) {
+            mCategorySelectedList = new ArrayList<>();
+        }
+        if (mCategorySelectedList.size() > 0) {
+            for (Category b : mCategorySelectedList) {
+                if (b.id == category.id) {
+                    if (!category.isSelected) {
+                        mCategorySelectedList.remove(b);
+                    }
+                    break;
+                }
+            }
+        }
+        if (category.isSelected) {
+            mCategorySelectedList.add(category);
+        }
+        refreshCategoryTitle();
+    }
+
+    private void refreshCategoryTitle() {
+        if (mCategorySelectedList != null && mCategorySelectedList.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(mCategorySelectedList.get(0).fullDepthName);
+            for (int i = 1; i < mCategorySelectedList.size(); i++) {
+                sb.append(", ").append(mCategorySelectedList.get(i).title);
+            }
+            mBinding.layoutHeaderCategory.setDepth(sb.toString());
+        } else {
+            mBinding.layoutHeaderCategory.setDepth(null);
+        }
     }
 
     // Brand
@@ -196,11 +271,12 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.GONE);
                 mBinding.layoutExpandBrandHeader.setToggleOnClick(false);
                 // Set Title
+                mBrandList.get(0).isSelected = true;
                 checkSelectedBrandList(mBrandList.get(0));
             } else {
                 mBinding.layoutHeaderBrand.imageExpand.setVisibility(View.VISIBLE);
                 mBinding.layoutExpandBrandHeader.setToggleOnClick(true);
-                //
+                // Set Data
                 initBrandList(mBrandList);
                 initSelectedBrandList(mBrandList);
             }

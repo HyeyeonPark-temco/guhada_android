@@ -51,12 +51,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private boolean mIsCategory = true; // Category/Brand
     private ProductList mProductListData;
     private Category mCategoryData; // Category
-    private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
-    private int mPosition;
+    private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
     private boolean mIsLoading = false; // Load More
+    private int mPosition;
     private int mId;
     private int mPageNumber = 1;
+    private List<Category> mFilterCategoryData;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -202,7 +203,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mBinding.layoutHeader.layoutTab.removeAllTabs();
             }
             // Add All
-            Category all = CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), mCategoryData.id, mCategoryData.hierarchies);
+            String title = getContext() != null ? getContext().getString(R.string.category_all) : null;
+            Category all = CommonUtil.createAllCategoryData(title, mCategoryData.fullDepthName, mCategoryData.id, mCategoryData.hierarchies);
             addCategoryTab(all, true);
             // Add Category
             for (Category c : mCategoryData.children) {
@@ -506,7 +508,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void showDetailSearchDialog() {
         if (getFragmentManager() != null && mProductListData != null) {
             DetailSearchDialog d = new DetailSearchDialog();
-            d.setCategoryData(mIsCategory ? mCategoryData.fullDepthName : null, mProductListData.categories);
+            d.setCategoryData(
+                    mIsCategory ? mCategoryData.fullDepthName : null,
+                    mIsCategory ? mCategoryData.id : 0,
+                    mIsCategory ? mCategoryData.hierarchies : null,
+                    mProductListData.categories);
             d.setBrandData(mProductListData.brands);
             d.setFilterData(mProductListData.filters);
             d.setOnDetailSearchListener(new OnDetailSearchListener() {

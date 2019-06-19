@@ -126,7 +126,7 @@ public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding
     // LISTENER
     ////////////////////////////////////////////////
 
-    private OnCategoryListener mCategoryListener = this::finishWithData;
+    private OnCategoryListener mCategoryListener = category -> finishWithData(category.type, category.hierarchies);
 
     ////////////////////////////////////////////////
 }

@@ -8,10 +8,6 @@
             type="String" />
 
         <variable
-            name="parent"
-            type="String" />
-
-        <variable
             name="depth"
             type="String" />
     </data>
@@ -21,7 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="18dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,14 +46,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="@{parent}"
-                    android:textColor="@color/text_9"
-                    android:textSize="@dimen/text_12" />
-
-                <TextView
-                    style="@style/TextRegularSingleLine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@{depth}"
                     android:textColor="@color/common_blue_purple"
                     android:textSize="@dimen/text_12" />
