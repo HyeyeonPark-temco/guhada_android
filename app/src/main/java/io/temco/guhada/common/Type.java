@@ -23,6 +23,7 @@ public class Type {
         PAYMENT,
         PAYMENT_RESULT,
         PAYMENT_WEBVIEW,
+        SHIPPING_ADDRESS,
         TEMP_LOGOUT
     }
 
