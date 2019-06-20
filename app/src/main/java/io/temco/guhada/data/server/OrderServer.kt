@@ -3,10 +3,7 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.RetryableCallback
-import io.temco.guhada.data.model.Cart
-import io.temco.guhada.data.model.Order
-import io.temco.guhada.data.model.PGResponse
-import io.temco.guhada.data.model.RequestOrder
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.OrderService
@@ -72,6 +69,45 @@ class OrderServer {
             })
         }
 
+        @JvmStatic
+        fun setOrderApproval(listener: OnServerListener, accessToken: String, pgAuth: PGAuth) {
+            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderApproval(accessToken, pgAuth)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    listener.onResult(response.isSuccessful, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+        @JvmStatic
+        fun setOrderCompleted(listener: OnServerListener, accessToken: String, purchaseId : Double){
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderCompleted(accessToken, purchaseId).enqueue(object : Callback<BaseModel<PurchaseOrderResponse>> {
+                override fun onResponse(call: Call<BaseModel<PurchaseOrderResponse>>, response: Response<BaseModel<PurchaseOrderResponse>>) {
+                    listener.onResult(response.isSuccessful, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<PurchaseOrderResponse>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+
+
+
+//            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderCompleted(accessToken, purchaseId)
+//            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<PurchaseOrderResponse>> {
+//                override fun onResponse(call: Call<BaseModel<PurchaseOrderResponse>>, response: Response<BaseModel<PurchaseOrderResponse>>) {
+//                    listener.onResult(response.isSuccessful, response.body())
+//                }
+//
+//                override fun onFailure(call: Call<BaseModel<PurchaseOrderResponse>>, t: Throwable) {
+//                    listener.onResult(false, t.message)
+//                }
+//            })
+        }
     }
 
 }

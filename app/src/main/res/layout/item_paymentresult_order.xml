@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="purchaseOrder"
+            type="io.temco.guhada.data.model.PurchaseOrder" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageview_paymentresult"
+            android:layout_width="90dp"
+            android:layout_height="115dp"
+            android:src="@color/black_four"
+            app:imageUrl="@{purchaseOrder.imageUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textview_paymentresult_brandname"
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{purchaseOrder.brandName}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textview_paymentresult_productname"
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{purchaseOrder.productName}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_brandname" />
+
+        <TextView
+            android:id="@+id/textview_paymentresult_price"
+            style="@style/TextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/common_price_format(purchaseOrder.sellPrice)}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_productname" />
+
+        <TextView
+            style="@style/TextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/common_unit_price"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/textview_paymentresult_price"
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_productname" />
+
+        <TextView
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/dummy_content_singleline"
+            android:textColor="@color/warm_grey_two"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
+            app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_price" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

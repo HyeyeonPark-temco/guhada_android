@@ -1,6 +1,8 @@
 package io.temco.guhada.data.model
 
-class OrderItemResponse {
+import java.io.Serializable
+
+open class OrderItemResponse : Serializable {
     var cartItemId = 0
 
     // SELLER
@@ -23,9 +25,9 @@ class OrderItemResponse {
     var brandName = ""
 
     // PRODUCT
-    var productId = 0
+    var productId: Long = 0
     var season = ""
-    var dealId = 0
+    var dealId: Long = 0
     var dealName = ""
     var imageName = "" // 대표 이미지 파일 명
     var imageUrl = "" // 대표 이미지 URL

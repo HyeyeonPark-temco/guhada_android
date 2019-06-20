@@ -5,6 +5,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="dummy_content_singleline">DUMMY CONTENT</string>
     <string name="dummy_content_number">105000</string>
+    <string name="temp_productId">2788</string>
 
     <!-- API KEY -->
     <string name="kakao_app_key">b6e5b0618148f61889b9e77c8a9a0e90</string>
@@ -318,8 +319,6 @@
     <string name="claim_write_button_cancel">취소</string>
     <string name="claim_write_button_submit">등록</string>
     <string name="claim_write_empty">작성된 상품 문의가 없습니다.</string>
-
-    <string name="temp_productId">12492</string>
 
     <!-- PAYMENT -->
     <string name="payment_title_product">주문 상품</string>

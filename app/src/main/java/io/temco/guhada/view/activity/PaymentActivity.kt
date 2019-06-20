@@ -11,6 +11,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -19,6 +20,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Order
+import io.temco.guhada.data.model.PGAuth
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -62,6 +64,15 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         })
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
+        mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
+            // 주문 완료 페이지 이동
+            Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->
+                intent.putExtra("purchaseOrderResponse", mViewModel.purchaseOrderResponse.value)
+                intent.putExtra("shippingMemo", mViewModel.selectedShippingMessage.get())
+                startActivity(intent)
+                finish()
+            }
+        })
         intent.getSerializableExtra("product").let { product ->
             if (product != null) {
                 mViewModel.product = product as BaseProduct
@@ -142,6 +153,13 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     mViewModel.callWithToken { accessToken ->
                         Log.e("AccessToken", accessToken)
                         mViewModel.addCartItem(accessToken)
+                    }
+                }
+                Flag.RequestCode.PAYMENT_WEBVIEW -> {
+                    val pgAuth = data?.getSerializableExtra("pgAuth")
+                    if (pgAuth != null) {
+                        mViewModel.pgAuth = pgAuth as PGAuth
+                        mViewModel.setOrderApproval()
                     }
                 }
             }

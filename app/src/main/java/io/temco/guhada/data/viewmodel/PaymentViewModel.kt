@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
@@ -18,6 +19,7 @@ import io.temco.guhada.view.activity.PaymentActivity
 import java.text.NumberFormat
 
 class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseObservableViewModel() {
+    var purchaseOrderResponse = MutableLiveData<PurchaseOrderResponse>()
     var user: ObservableField<User> = ObservableField(User())
         @Bindable
         get() = field
@@ -50,6 +52,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             }
         }
     lateinit var pgResponse: PGResponse
+    var pgAuth = PGAuth()
+
     lateinit var cart: Cart
     var quantity: Int = 1
     var optionStr: String = ""
@@ -192,6 +196,41 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
+    fun setOrderApproval() {
+        callWithToken { accessToken ->
+            OrderServer.setOrderApproval(OnServerListener { success, o ->
+                if (success) {
+                    val model = o as BaseModel<*>
+                    if (model.resultCode == 200) {
+                        val purchaseId = o.data as Double // double로 내려옴
+                        this@PaymentViewModel.setOrderCompleted(purchaseId)
+                    } else {
+                        listener.showMessage(o.message)
+                    }
+                } else {
+                    listener.showMessage("ORDER APPROVAL ERROR")
+                }
+            }, accessToken, pgAuth)
+        }
+    }
+
+    private fun setOrderCompleted(purchaseId: Double) {
+        callWithToken { accessToken ->
+            OrderServer.setOrderCompleted(OnServerListener { success, o ->
+                if (success) {
+                    val model = o as BaseModel<*>
+                    if (model.resultCode == 200) {
+                       this.purchaseOrderResponse.postValue( model.data as PurchaseOrderResponse)
+                    } else {
+                        listener.showMessage(o.message)
+                    }
+                } else {
+                    listener.showMessage("ORDER APPROVAL ERROR")
+                }
+            }, accessToken, purchaseId)
+        }
+    }
+
 
     // LISTENER
     fun onPaymentWayChecked(view: View, checked: Boolean) {
@@ -249,9 +288,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             }
 
             if (selectedMethod.methodCode.isNotEmpty()) {
-                if(selectedMethod.methodCode == "TOKEN"){
+                if (selectedMethod.methodCode == "TOKEN") {
                     listener.showMessage("준비중입니다.")
-                }else {
+                } else {
                     if (this.user.get() != null) {
                         RequestOrder().apply {
                             this.user = this@PaymentViewModel.user.get()!!
@@ -281,4 +320,5 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             notifyPropertyChanged(BR.selectedShippingMessage)
         }
     }
+
 }
