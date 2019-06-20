@@ -248,15 +248,19 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 }
             }
 
-            if (selectedMethod != null) {
-                if (this.user.get() != null) {
-                    RequestOrder().apply {
-                        this.user = this@PaymentViewModel.user.get()!!
-                        this.shippingAddress = this@PaymentViewModel.selectedShippingAddress
-                        this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
-                        this.parentMethodCd = selectedMethod.methodCode
-                    }.let { requestOrder ->
-                        callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+            if (selectedMethod.methodCode.isNotEmpty()) {
+                if(selectedMethod.methodCode == "TOKEN"){
+                    listener.showMessage("준비중입니다.")
+                }else {
+                    if (this.user.get() != null) {
+                        RequestOrder().apply {
+                            this.user = this@PaymentViewModel.user.get()!!
+                            this.shippingAddress = this@PaymentViewModel.selectedShippingAddress
+                            this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
+                            this.parentMethodCd = selectedMethod.methodCode
+                        }.let { requestOrder ->
+                            callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+                        }
                     }
                 }
             } else {
