@@ -3,8 +3,8 @@ package io.temco.guhada.view.activity
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Build
 import android.util.Log
 import android.webkit.*
@@ -13,13 +13,19 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.data.model.PGAuth
 import io.temco.guhada.data.model.PGResponse
+import io.temco.guhada.data.viewmodel.PaymentWebViewViewModel
 import io.temco.guhada.databinding.ActivityPaymentwebviewBinding
 import io.temco.guhada.view.activity.base.BindActivity
+import org.apache.commons.text.StringEscapeUtils
+import org.jsoup.Jsoup
 import java.net.URISyntaxException
 import java.net.URLEncoder
 
+
 class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
+    private var mViewModel: PaymentWebViewViewModel = PaymentWebViewViewModel()
     val SCHEME = "ispmobile://"
     val INSTALL_URL = "http://mobile.vpay.co.kr/jsp/MISP/andown.jsp"
     var URL = ""
@@ -66,36 +72,39 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
             }
         }
 
-        val pgResponse = intent.getSerializableExtra("pgResponse") as PGResponse
-        var params = "$SELLER_ID=${URLEncoder.encode(pgResponse.pgMid, "EUC-KR")}&" +
-                "$ORDER_ID=${URLEncoder.encode(pgResponse.pgOid, "EUC-KR")}&" +
-                "$ORDER_PRICE=${URLEncoder.encode(pgResponse.pgAmount, "EUC-KR")}&" +
-                "$USER_NAME=${URLEncoder.encode(pgResponse.purchaseUserName, "EUC-KR")}&" +
-                "$PRODUCT_NAME=${URLEncoder.encode(pgResponse.productName, "EUC-KR")}&" +
-                "$AUTH_NEXT_URL=${URLEncoder.encode(pgResponse.nextUrl, "EUC-KR")}&" +
-                "$FINISH_URL=${URLEncoder.encode(pgResponse.returnUrl, "EUC-KR")}&" +
-                "$TIMESTAMP=${URLEncoder.encode(pgResponse.timestamp, "EUC-KR")}&" +
-                "$SIGNATURE=${URLEncoder.encode(pgResponse.signature)}&" +
-                "$HASH_SIGNKEY=${URLEncoder.encode(pgResponse.key)}&" +
-                "$OFFER_PERIOD=${URLEncoder.encode(pgResponse.offerPeriod, "EUC-KR")}&" +
-                "$PURCHASE_EMAIL=${URLEncoder.encode(pgResponse.purchaseEmail, "EUC-KR")}&" +
-                "$PURCHASE_MOBILE=${URLEncoder.encode(pgResponse.purchasePhone, "EUC-KR")}&" +
-                "$STORE_NAME=${URLEncoder.encode(pgResponse.mallName, "EUC-KR")}"
+        mViewModel.pgResponse = intent.getSerializableExtra("pgResponse") as PGResponse
+        var params = "$SELLER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgMid, "EUC-KR")}&" +
+                "$ORDER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgOid, "EUC-KR")}&" +
+                "$ORDER_PRICE=${URLEncoder.encode(mViewModel.pgResponse.pgAmount, "EUC-KR")}&" +
+                "$USER_NAME=${URLEncoder.encode(mViewModel.pgResponse.purchaseUserName, "EUC-KR")}&" +
+                "$PRODUCT_NAME=${URLEncoder.encode(mViewModel.pgResponse.productName, "UTF-8")}&" +
+                "$AUTH_NEXT_URL=${URLEncoder.encode(mViewModel.pgResponse.nextUrl, "EUC-KR")}&" +
+                "$FINISH_URL=${URLEncoder.encode(mViewModel.pgResponse.returnUrl, "EUC-KR")}&" +
+                "$TIMESTAMP=${URLEncoder.encode(mViewModel.pgResponse.timestamp, "EUC-KR")}&" +
+                "$SIGNATURE=${URLEncoder.encode(mViewModel.pgResponse.signature)}&" +
+                "$HASH_SIGNKEY=${URLEncoder.encode(mViewModel.pgResponse.key)}&" +
+                "$OFFER_PERIOD=${URLEncoder.encode(mViewModel.pgResponse.offerPeriod, "EUC-KR")}&" +
+                "$PURCHASE_EMAIL=${URLEncoder.encode(mViewModel.pgResponse.purchaseEmail, "EUC-KR")}&" +
+                "$PURCHASE_MOBILE=${URLEncoder.encode(mViewModel.pgResponse.purchasePhone, "EUC-KR")}&" +
+                "$STORE_NAME=${URLEncoder.encode(mViewModel.pgResponse.mallName, "EUC-KR")}"
 
         params = "$params&$CARD_REQUIRED_OPTION=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
 
         mBinding.webviewPayment.webViewClient = PaymentWebViewClient()
         mBinding.webviewPayment.webChromeClient = object : WebChromeClient() {
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
-                AlertDialog.Builder(this@PaymentWebViewActivity)
+                val dialog = AlertDialog.Builder(this@PaymentWebViewActivity)
                         .setTitle("Alert")
                         .setMessage(message)
                         .setPositiveButton(android.R.string.ok) { dialog, which ->
-                                result?.confirm()
+                            result?.confirm()
                         }
                         .setCancelable(false)
                         .create()
-                        .show()
+
+                if (!isFinishing) {
+                    dialog.show()
+                }
 
                 return true
             }
@@ -120,6 +129,78 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
     }
 
     inner class PaymentWebViewClient : WebViewClient() {
+
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+
+            if (url == "http://13.209.10.68/lotte/mobile/privyCertifyResult") {
+                view?.evaluateJavascript("(function(){return window.document.body.outerHTML})();"
+                ) { html ->
+                    StringEscapeUtils.unescapeJava(html).let {
+                        val document = Jsoup.parse(it)
+                        val pgTid = document.getElementById("pgTid")?.`val`() ?: ""
+                        val resultCode = document.getElementById("resultCode")?.`val`() ?: ""
+                        val resultMsg = document.select("input[name=resultMsg]").`val`() ?: ""
+                        val pgKind = document.select("input[name=pgKind]").`val`() ?: ""
+                        val pgMid = document.select("input[name=pgMid]").`val`()
+                                ?: mViewModel.pgResponse.pgMid
+                        val pgOid = document.select("input[name=pgOid]").`val`()
+                                ?: mViewModel.pgResponse.pgOid
+                        val pgAmount = document.select("input[name=pgAmount]").`val`() ?: ""
+                        val pgTidSample = document.select("input[name=pgTidSample]").`val`() ?: ""
+
+                        val authToken = document.getElementById("rsltAuthToken")?.`val`() ?: ""
+                        val authUrl = document.getElementById("authUrl")?.`val`() ?: ""
+                        val netCancelUrl = document.getElementById("netCancelUrl")?.`val`() ?: ""
+                        val checkAckUrl = document.getElementById("checkAckUrl")?.`val`() ?: ""
+
+                        val vbankReceivedCd = document.getElementById("vbankReceivedCd")?.`val`()
+                                ?: ""
+                        val vbankReceivedNm = document.getElementById("vbankReceivedNm")?.`val`()
+                                ?: ""
+                        val vbankReceivedNo = document.getElementById("vbankReceivedNo")?.`val`()
+                                ?: ""
+
+                        Log.e("결제완료", pgTid)
+
+                        PGAuth().apply {
+                            this.pgTid = pgTid
+                            this.resultCode = resultCode
+                            this.resultMsg = resultMsg
+                            this.pgKind = mViewModel.pgResponse.pgKind
+                            this.pgMid = mViewModel.pgResponse.pgMid
+                            this.pgAmount = mViewModel.pgResponse.pgAmount
+                            this.pgOid = mViewModel.pgResponse.pgOid
+                            this.pgTidSample = pgTidSample
+                            this.cardQuota = mViewModel.pgResponse.cardQuota
+                            this.cardNo = mViewModel.pgResponse.cardCd ?: ""
+                            this.returnUrl = mViewModel.pgResponse.returnUrl
+
+                            this.authToken = authToken
+                            this.authUrl = authUrl
+                            this.netCancel = netCancelUrl
+                            this.checkAckUrl = checkAckUrl
+
+                            this.vbankReceivedCd = vbankReceivedCd
+                            this.vbankReceivedNm = vbankReceivedNm
+                            this.vbankReceivedNo = vbankReceivedNo
+
+
+                            this.parentMethodCd = mViewModel.pgResponse.parentMethodCd
+                            this.purchaseEmail = mViewModel.pgResponse.purchaseEmail
+                            this.purchaseUserName = mViewModel.pgResponse.purchaseUserName
+                            this.purchasePhone = mViewModel.pgResponse.purchasePhone
+                            this.productName = mViewModel.pgResponse.productName
+                        }.let { pgAuth ->
+                            intent.putExtra("pgAuth", pgAuth)
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        }
+                    }
+                }
+            }
+        }
+
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             Log.e("<LPAY>", url.toString())
 
@@ -145,14 +226,14 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                                 .setIcon(R.mipmap.ic_launcher_round)
                                 .setTitle("NOTIFICATION")
                                 .setMessage("모바일 ISP 어플리케이션이 설치되어있지 않습니다.\n설치를 눌러 진행해 주십시요.\n취소를 누르면 결제가 취소됩니다.")
-                                .setPositiveButton("설치", DialogInterface.OnClickListener { dialog, which ->
+                                .setPositiveButton("설치") { dialog, which ->
                                     view?.loadUrl(INSTALL_URL)
                                     finish()
-                                })
-                                .setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+                                }
+                                .setNegativeButton("취소") { dialog, which ->
                                     Toast.makeText(this@PaymentWebViewActivity, "(-1)결제를 취소하셨습니다.", Toast.LENGTH_SHORT).show()
                                     finish()
-                                }).create()
+                                }.create()
                         alertIsp.show()
                         // SHOW ISP
                         return false

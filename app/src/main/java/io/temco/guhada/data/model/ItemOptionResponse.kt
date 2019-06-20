@@ -1,6 +1,8 @@
 package io.temco.guhada.data.model
 
-class ItemOptionResponse {
+import java.io.Serializable
+
+class ItemOptionResponse : Serializable {
     var attribute1 = "" // 첫번째 옵션의 속성값
     var attribute2 = "" // 두번째 옵션의 속성값
     var attribute3 = "" // 세번째 옵션의 속성값

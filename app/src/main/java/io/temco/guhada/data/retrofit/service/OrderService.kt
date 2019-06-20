@@ -1,9 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
-import io.temco.guhada.data.model.Cart
-import io.temco.guhada.data.model.Order
-import io.temco.guhada.data.model.PGResponse
-import io.temco.guhada.data.model.RequestOrder
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import retrofit2.Call
 import retrofit2.http.*
@@ -26,4 +23,16 @@ interface OrderService {
      */
     @POST("/order/requestOrder")
     fun requestOrder(@Header("Authorization") accessToken: String, @Body requestOrder: RequestOrder): Call<BaseModel<PGResponse>>
+
+    /**
+     * 주문 승인 요청 API
+     */
+    @POST("/order/orderApproval")
+    fun setOrderApproval(@Header("Authorization") accessToken: String, @Body pgAuth: PGAuth): Call<BaseModel<Any>>
+
+    /**
+     * 주문 완료 API
+     */
+    @GET("/order/order-complete/{purchaseId}")
+    fun setOrderCompleted(@Header("Authorization") accessToken: String, @Path("purchaseId") purchaseId: Double) : Call<BaseModel<PurchaseOrderResponse>>
 }
