@@ -1,10 +1,7 @@
 package io.temco.guhada.common.util
 
-import android.content.Intent
 import android.util.Log
-import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
-import io.temco.guhada.view.activity.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -14,33 +11,43 @@ import retrofit2.Response
  *  Custom Retrofit Retryable Callback
  *  [임시] 토큰 만료 시 1회 재요청
  *  @param call Retrofit Call<T>
+ *  @param recall Retrofit Call<T> 실패 시 호출할 call (optional)
  *  @param totalRetries 재시도 횟수
  */
 abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     private var retryCount = 0
     private var totalRetries = 1
+    private lateinit var recall: Call<T>
 
     constructor(call: Call<T>, totalRetries: Int) : this(call) {
         this.call = call
         this.totalRetries = totalRetries
     }
 
+    constructor(call: Call<T>, recall: Call<T>, totalRetries: Int) : this(call) {
+        this.call = call
+        this.recall = recall
+        this.totalRetries = totalRetries
+    }
+
+
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (!APIHelper.isCallSuccess(response = response)) {
-            if (retryCount++ < totalRetries) {
+            if (response.code() == 401 || response.code() == 403) {
                 Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
-                if (response.code() == 401 || response.code() == 403) {
-                    // Login 띄워주기
-                    BaseApplication.getInstance().startActivity(Intent(BaseApplication.getInstance().applicationContext, LoginActivity::class.java))
+                if (retryCount++ < totalRetries) {
                     retry()
+                } else {
+                    Preferences.clearToken()
+                    if (::recall.isInitialized) {
+                        recall.clone().enqueue(this)
+                    }
                 }
             } else {
-                CommonUtil.debug("onResponse-토큰 만료")
-                Preferences.clearToken()
-                onFinalResponse(call, response)
+                this@RetryableCallback.onFinalResponse(call, response)
             }
         } else {
-            onFinalResponse(call, response)
+            this@RetryableCallback.onFinalResponse(call, response)
         }
     }
 
@@ -52,7 +59,10 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
                     retry()
                 } else {
-                    onFinalFailure(call, t)
+                    Preferences.clearToken()
+                    if (::recall.isInitialized) {
+                        recall.clone().enqueue(this)
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -60,17 +70,30 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
         }
     }
 
+
     open fun onFinalResponse(call: Call<T>, response: Response<T>) {
-        CommonUtil.debug("onResponse-토큰 만료")
-        Preferences.clearToken()
+        Log.e("onFinalResponse", "")
+//        CommonUtil.debug("onFinalResponse-토큰 만료")
+//        Preferences.clearToken()
+//        retry()
 
         // 테스트 필요
-        BaseApplication.getInstance().startActivity(Intent(BaseApplication.getInstance(), LoginActivity::class.java))
+//            BaseApplication.getInstance().startActivity(Intent(BaseApplication.getInstance(), LoginActivity::class.java))
     }
 
     open fun onFinalFailure(call: Call<T>, t: Throwable) {
-        CommonUtil.debug("onFailure-토큰 만료")
-        Preferences.clearToken()
+        try {
+            // val errorCode = (t as HttpException).code()
+            Log.e("onFinalFailure", "")
+//            CommonUtil.debug("onFinalFailure-토큰 만료")
+//            Preferences.clearToken()
+//            retry()
+            // 테스트 필요
+//                BaseApplication.getInstance().startActivity(Intent(BaseApplication.getInstance(), LoginActivity::class.java))
+
+        } catch (e: Exception) {
+            CommonUtil.debug(e.message)
+        }
     }
 
     private fun retry() = call.clone().enqueue(this)
@@ -86,6 +109,15 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     override fun onFinalFailure(call: Call<T>, t: Throwable) = callback.onFailure(call, t)
                 })
             }
+
+            @JvmStatic
+            fun <T> enqueueWithRetry(call: Call<T>, recall: Call<T>, retryCount: Int, callback: Callback<T>) {
+                call.enqueue(object : RetryableCallback<T>(call, recall, retryCount) {
+                    override fun onFinalResponse(call: Call<T>, response: Response<T>) = callback.onResponse(call, response)
+                    override fun onFinalFailure(call: Call<T>, t: Throwable) = callback.onFailure(call, t)
+                })
+            }
+
 
             @JvmStatic
             fun <T> enqueueWithRetry(call: Call<T>, callback: Callback<T>) = enqueueWithRetry(call, DEFAULT_RETRIES, callback)

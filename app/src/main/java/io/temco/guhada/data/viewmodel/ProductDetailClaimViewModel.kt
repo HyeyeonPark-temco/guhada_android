@@ -58,6 +58,11 @@ class ProductDetailClaimViewModel(private val productId: Int, val listener: Prod
             emptyVisibility = ObservableInt(View.GONE)
             notifyPropertyChanged(BR.emptyVisibility)
         }
+
+        if(Preferences.getToken() == null){
+            mineVisibility = ObservableInt(View.GONE)
+            notifyPropertyChanged(BR.mineVisibility)
+        }
     }
 
     fun getClaims() {
