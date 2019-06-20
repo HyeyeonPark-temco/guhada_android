@@ -5,6 +5,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.model.InquiryRequest
 import io.temco.guhada.data.model.base.BaseModel
@@ -18,8 +19,12 @@ open class ClaimServer {
     companion object {
         @JvmStatic
         fun getClaims(listener: OnServerListener, productId: Int, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
-            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).getClaims(productId = productId, isMyInquiry = isMyInquiry,
-                    pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}").enqueue(object : Callback<BaseModel<ClaimResponse>> {
+            val call = RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).getClaims(productId = productId, isMyInquiry = isMyInquiry,
+                    pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}")
+            val recall = RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).getClaimsForQuest(productId = productId,
+                    pageNo = pageNo, size = size, status = status)
+
+            RetryableCallback.APIHelper.enqueueWithRetry(call, recall, 1, object : Callback<BaseModel<ClaimResponse>> {
                 override fun onResponse(call: Call<BaseModel<ClaimResponse>>, response: Response<BaseModel<ClaimResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }
@@ -27,7 +32,6 @@ open class ClaimServer {
                 override fun onFailure(call: Call<BaseModel<ClaimResponse>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
-
             })
         }
 

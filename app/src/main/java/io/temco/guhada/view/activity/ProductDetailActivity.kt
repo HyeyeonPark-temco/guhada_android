@@ -18,11 +18,13 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding

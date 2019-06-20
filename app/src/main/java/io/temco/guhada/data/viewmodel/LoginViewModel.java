@@ -102,6 +102,7 @@ public class LoginViewModel extends BaseObservableViewModel {
                     switch (model.resultCode) {
                         case Flag.ResultCode.SUCCESS:
                             Token token = (Token) model.data;
+                            if (Preferences.getToken() != null) Preferences.clearToken();
                             Preferences.setToken(token);
                             // save id
                             if (isIdSaved) {
@@ -159,7 +160,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     public void onCheckedSaveId(boolean checked) {
         isIdSaved = checked;
         Preferences.setIsIdSaved(checked);
-        if(!checked){
+        if (!checked) {
             Preferences.setSavedId("");
         }
     }

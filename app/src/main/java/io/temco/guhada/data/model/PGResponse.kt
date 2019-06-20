@@ -14,7 +14,7 @@ class PGResponse : Serializable {
     var firmName = ""
 
     @SerializedName("mallNm")
-    var mallNm = ""
+    var mallName = ""
 
     var acceptMethod = ""
     var appScheme = ""

@@ -26,6 +26,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
     var selectedShippingAddress: UserShipping = UserShipping()
 
     var selectedShippingMessage = ObservableField<String>("배송메모를 선택해 주세요.")
@@ -239,7 +240,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 결제하기 버튼 클릭
     fun onClickPay() {
         if (termsChecked) {
-            var selectedMethod: Order.PaymentMethod? = null
+
 
             for (i in 0 until paymentWays.size) {
                 if (paymentWays[i]) {
@@ -247,15 +248,19 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 }
             }
 
-            if (selectedMethod != null) {
-                if (this.user.get() != null) {
-                    RequestOrder().apply {
-                        this.user = this@PaymentViewModel.user.get()!!
-                        this.shippingAddress = this@PaymentViewModel.selectedShippingAddress
-                        this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
-                        this.parentMethodCd = selectedMethod.methodCode
-                    }.let { requestOrder ->
-                        callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+            if (selectedMethod.methodCode.isNotEmpty()) {
+                if(selectedMethod.methodCode == "TOKEN"){
+                    listener.showMessage("준비중입니다.")
+                }else {
+                    if (this.user.get() != null) {
+                        RequestOrder().apply {
+                            this.user = this@PaymentViewModel.user.get()!!
+                            this.shippingAddress = this@PaymentViewModel.selectedShippingAddress
+                            this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
+                            this.parentMethodCd = selectedMethod.methodCode
+                        }.let { requestOrder ->
+                            callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+                        }
                     }
                 }
             } else {
