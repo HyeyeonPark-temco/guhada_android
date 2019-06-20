@@ -4,6 +4,7 @@
     package="io.temco.guhada">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
         android:name=".common.BaseApplication"
@@ -32,6 +33,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.activity.base.TestNfcActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".view.activity.base.FullscreenActivity"

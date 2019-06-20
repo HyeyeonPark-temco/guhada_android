@@ -108,6 +108,10 @@ public class TestListActivity extends AppCompatActivity {
                 case 13: // Payment WebView
                     startActivity(PaymentWebViewActivity.class);
                     break;
+
+                case 14: // Test NFC
+                    startActivity(TestNfcActivity.class);
+                    break;
             }
         });
         list.setAdapter(adapter);
@@ -134,7 +138,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("PAYMENT_RESULT"); // 12
         list.add("PAYMENT_WEBVIEW"); // 13
 
-        list.add(""); // 14
+        list.add("Test NFC"); // 14
         list.add(""); // 15
         list.add(""); // 16
         list.add(""); // 17

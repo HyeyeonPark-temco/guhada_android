@@ -51,8 +51,8 @@ public class Type {
 
         NAVER_PROFILE("https://openapi.naver.com/"),
 
-        // 핸드폰 인증
-        LOCAL("http://13.209.10.68/");
+        BLOCKCHAIN("http://52.79.95.78:8080/"), // BlockChain
+        LOCAL("http://13.209.10.68/"); // 핸드폰 인증
 
         private String url;
 
@@ -80,6 +80,8 @@ public class Type {
                     return NAVER_PROFILE.url;
                 case LOCAL:
                     return LOCAL.url;
+                case BLOCKCHAIN:
+                    return BLOCKCHAIN.url;
                 default:
                     return COMMON.url;
             }

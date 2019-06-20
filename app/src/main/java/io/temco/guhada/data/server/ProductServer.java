@@ -7,6 +7,7 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Product;
+import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.base.BaseListModel;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.retrofit.manager.RetrofitManager;
@@ -95,5 +96,36 @@ public class ProductServer {
                 listener.onResult(false, t.getMessage());
             }
         });
+    }
+
+    // 상품 상세 조회
+    public static void getProductByList(String id, OnServerListener listener) {
+        if (listener != null) {
+            RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class)
+                    .getProductByList(id)
+                    .enqueue(new Callback<BaseModel<ProductByList>>() {
+                        @Override
+                        public void onResponse(Call<BaseModel<ProductByList>> call, Response<BaseModel<ProductByList>> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body().resultCode == 200) {
+                                    listener.onResult(true, response.body().data);
+                                } else {
+                                    listener.onResult(false, response.body().message);
+                                }
+                            } else {
+                                try {
+                                    listener.onResult(false, response.errorBody().string());
+                                } catch (IOException e) {
+                                    // e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<BaseModel<ProductByList>> call, Throwable t) {
+                            listener.onResult(false, t.getMessage());
+                        }
+                    });
+        }
     }
 }

@@ -12,8 +12,6 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.common.listener.OnCategorySelectListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Attribute;
