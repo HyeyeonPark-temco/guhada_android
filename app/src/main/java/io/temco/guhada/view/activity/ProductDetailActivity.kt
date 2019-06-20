@@ -50,12 +50,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
 
     override fun init() {
-
-        val token = Token()
-        token.accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJncGR1czIzNzFAZ21haWwuY29tIiwic2NvcGUiOlsicmVhZCJdLCJleHAiOjE1NjA4NzEyMzcsInVzZXJJZCI6MzI0LCJhdXRob3JpdGllcyI6WyJCQlNfQ09NTUVOVF9SRUdJU1RFUiIsIlNXSVRDSF9UT19TRUxMRVIiLCJCQlNfQ09NTUVOVF9NT0RJRllfT1JfREVMRVRFIiwiQkJTX0JPT0tNQVJLIiwiQkJTX1BPU1RfSU5RVUlSWSIsIkJCU19QT1NUX0xJS0VfQU5EX0JPT0tNQVJLIiwiUkVQT1JUIiwiQkJTX1BPU1RfTU9ESUZZX0FORF9ERUxFVEUiLCJQUk9EVUNUX0lOUVVJUlkiLCJST0xFX1VTRVIiLCJQUk9EVUNUX0xJS0VfQU5EX0JPT0tNQVJLIiwiQkJTX0lOUVVJUlkiLCJCQlNfUE9TVF9XUklURSIsIlBST0RVQ1RfU0VBUkNIIiwiUk9MRV9CQlMiXSwianRpIjoiNzIxY2Y0YzYtNjRmYi00ODEyLWE4YmYtNzE2YjFiNzlkYWUyIiwiY2xpZW50X2lkIjoiZ3VoYWRhIn0.tIkWL7v2erKIFOwCT18DAle0OyojOQVLAnZzE3sKwDM"
-        Preferences.setToken(token)
-
-
         loadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ProductDetailViewModel(this)
 

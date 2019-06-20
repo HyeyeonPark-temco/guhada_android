@@ -6,10 +6,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import io.temco.guhada.common.util.ImageUtil;
 
@@ -25,16 +25,21 @@ public class BindAdapter {
         view.setImageResource(value);
     }
 
+    @BindingAdapter("ovalImageUrl")
+    public static void loadOvalImage(ImageView view, String url) {
+        Glide.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
+    }
+
     @BindingAdapter("android:visibility")
     public static void setVisibility(View view, Boolean value) {
         view.setVisibility(value ? View.VISIBLE : View.GONE);
     }
 
     @BindingAdapter("textBold")
-    public static void isBold(TextView textView, boolean isBold){
-        if (isBold){
+    public static void isBold(TextView textView, boolean isBold) {
+        if (isBold) {
             textView.setTypeface(null, Typeface.BOLD);
-        }else {
+        } else {
             textView.setTypeface(null, Typeface.NORMAL);
         }
     }

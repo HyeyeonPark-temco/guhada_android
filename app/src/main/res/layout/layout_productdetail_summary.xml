@@ -126,6 +126,7 @@
             android:paddingBottom="17dp">
 
             <ImageView
+                app:ovalImageUrl="@{viewModel.seller.profileImageUrl}"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="30dp"
