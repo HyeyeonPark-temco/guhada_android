@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- //////////////////////////////////////////////// -->
+        <!-- TOP -->
+        <!-- //////////////////////////////////////////////// -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f9f9fa"
+            android:padding="20dp">
+
+            <include
+                android:id="@+id/layout_calendar"
+                layout="@layout/layout_calendar" />
+        </LinearLayout>
+
+        <!-- //////////////////////////////////////////////// -->
+        <!-- MIDDLE -->
+        <!-- //////////////////////////////////////////////// -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp">
+
+            <include
+                layout="@layout/layout_order_ship_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- LINE -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/line_3" />
+        </LinearLayout>
+
+        <!-- //////////////////////////////////////////////// -->
+        <!-- CONTENTS-->
+        <!-- //////////////////////////////////////////////// -->
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never" />
+
+                <!-- INFORMATION -->
+                <include
+                    android:id="@+id/layout_information"
+                    layout="@layout/layout_information" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- //////////////////////////////////////////////// -->
+
+    </LinearLayout>
+</layout>

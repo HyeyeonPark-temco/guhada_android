@@ -18,6 +18,9 @@
     <string name="app_name">Guhada</string>
     <string name="app_logo_sub_title">쇼핑의 즐거움을 구하다</string>
     <string name="app_copyright">Ⓒ 2019 GUHADA</string>
+
+    <string name="common_check">조회</string>
+    
     <string name="common_top">TOP</string>
     <string name="common_category">카테고리</string>
     <string name="common_brand">브랜드</string>
@@ -41,7 +44,37 @@
     <string name="common_unit_point">P</string>
     <string name="common_unit_score">점</string>
 
+    <string name="common_week_one">1주일</string>
+    <string name="common_month_one">1개월</string>
+    <string name="common_month_three">3개월</string>
+    <string name="common_year_one">1년</string>
+
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
+
+    <!-- ORDER SHIPPING -->
+    <string name="order_shipping_deposit_confirm">입금확인</string>
+    <string name="order_shipping_payment_complete">결제완료</string>
+    <string name="order_shipping_product_ready">상품준비</string>
+    <string name="order_shipping_ing">배송중</string>
+    <string name="order_shipping_complete">배송완료</string>
+
+    <!-- INFORMATION -->
+    <string name="information_title_introduce">회사소개</string>
+    <string name="information_title_terms">이용약관</string>
+    <string name="information_title_advise">입점상담</string>
+    <string name="information_title_privacy_terms">개인정보처리방침</string>
+    <string name="information_title_partner">제휴문의</string>
+    <string name="information_title_as">고객센터</string>
+    <string name="information_title_recruit">채용정보</string>
+    <string name="information_company_name">(주)구하다</string>
+    <string name="information_company_ceo">대표자 : 윤재섭 ㅣ 개인정보보호책임자 : 이근일</string>
+    <string name="information_company_number">사업자등록번호: 000-88-00000</string>
+    <string name="information_company_address">주소 : 서울특별시 강남구 논현로75길 8 비드빌딩 6층</string>
+    <string name="information_company_sales_number">통신판매업자신고 : 제 2009호-서울강남-0000호</string>
+    <string name="information_description">고객님은 안전거래를 위해 결제 시 저희 사이트에서 가입한 구매안전 서비스(채무지급보증)을 이용하실 수 있습니다.</string>
+    <string name="information_confirm_company">사업자정보확인</string>
+    <string name="information_confirm_service">서비스 가입사실 확인</string>
+    <string name="information_copyright_all">COPYRIGHT Ⓒ 2019 GUHADA ALL RIGHTS RESERVED</string>
 
     <!-- SIDE MENU -->
     <string name="side_menu_login_need">로그인 해주세요</string>
@@ -385,4 +418,9 @@
 
     <string name="paymentreuslt_button_bag">장바구니</string>
     <string name="paymentreuslt_button_continue">쇼핑 계속하기</string>
+
+    <!-- MY PAGE -->
+    <string name="mypage_title_order_shipping">주문 배송</string>
+    <string name="mypage_title_cancel_swap_return">취소・교환・반품</string>
+
 </resources>

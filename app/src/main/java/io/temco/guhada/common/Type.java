@@ -23,7 +23,8 @@ public class Type {
         PAYMENT,
         PAYMENT_RESULT,
         PAYMENT_WEBVIEW,
-        TEMP_LOGOUT
+        TEMP_LOGOUT,
+        BLOCKCHAIN
     }
 
     // Main

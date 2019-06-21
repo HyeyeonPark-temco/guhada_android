@@ -46,8 +46,8 @@ public class SubCategoryFirstViewHolder extends BaseCategoryViewHolder<ItemSubCa
         // Data
         if (data != null) {
             // Title
-            if (!TextUtils.isEmpty(data.name)) {
-                mBinding.setTitle(data.name);
+            if (!TextUtils.isEmpty(data.title)) {
+                mBinding.setTitle(data.title);
             }
             // Child
             if (data.children == null) {

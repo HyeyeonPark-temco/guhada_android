@@ -2,10 +2,10 @@ package io.temco.guhada.view.fragment.main;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
-import io.temco.guhada.databinding.FragmentMainMyPageBinding;
+import io.temco.guhada.databinding.FragmentMainCommunityBinding;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
-public class MainMyPageFragment extends BaseFragment<FragmentMainMyPageBinding> {
+public class CommunityFragment extends BaseFragment<FragmentMainCommunityBinding> {
 
     // -------- LOCAL VALUE --------
     private OnDrawerLayoutListener mDrawerListener;
@@ -17,12 +17,12 @@ public class MainMyPageFragment extends BaseFragment<FragmentMainMyPageBinding> 
 
     @Override
     protected String getBaseTag() {
-        return MainMyPageFragment.class.getSimpleName();
+        return CommunityFragment.class.getSimpleName();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_main_my_page;
+        return R.layout.fragment_main_community;
     }
 
     @Override
