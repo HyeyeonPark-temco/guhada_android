@@ -180,7 +180,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="@string/dummy_content_singleline"
+                        android:text="파워셀러"
                         android:textColor="@color/warm_grey_two"
                         android:textSize="@dimen/text_11"
                         app:layout_constraintBottom_toBottomOf="parent"

@@ -160,17 +160,17 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     private fun detectScrollView() {
         val scrollBounds = Rect()
 
-
-        mBinding.scrollviewProductdetail.viewTreeObserver.addOnScrollChangedListener {
-            mBinding.scrollviewProductdetail.getHitRect(scrollBounds)
-
-            if (mBinding.linearlayoutProductdetailBodycontainer.getLocalVisibleRect(scrollBounds)) {
-                mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
-            } else {
-                mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
-            }
-
-        }
+        // Bottom Button
+//        mBinding.scrollviewProductdetail.viewTreeObserver.addOnScrollChangedListener {
+//            mBinding.scrollviewProductdetail.getHitRect(scrollBounds)
+//
+//            if (mBinding.linearlayoutProductdetailBodycontainer.getLocalVisibleRect(scrollBounds)) {
+//                mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
+//            } else {
+//                mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
+//            }
+//
+//        }
     }
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
