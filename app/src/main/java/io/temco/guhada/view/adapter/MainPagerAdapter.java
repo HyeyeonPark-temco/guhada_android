@@ -12,9 +12,9 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.fragment.product.ProductFragment;
-import io.temco.guhada.view.fragment.main.MainCommunityFragment;
-import io.temco.guhada.view.fragment.main.MainHomeFragment;
-import io.temco.guhada.view.fragment.main.MainMyPageFragment;
+import io.temco.guhada.view.fragment.main.CommunityFragment;
+import io.temco.guhada.view.fragment.main.HomeFragment;
+import io.temco.guhada.view.fragment.main.MyPageFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
@@ -23,9 +23,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private final String TAG_PRODUCT = "product";
     private FragmentManager mFragmentManager;
     private OnDrawerLayoutListener mDrawerListener;
-    private MainHomeFragment mHomeFragment;
-    private MainCommunityFragment mCommunityFragment;
-    private MainMyPageFragment mMyPageFragment;
+    private HomeFragment mHomeFragment;
+    private CommunityFragment mCommunityFragment;
+    private MyPageFragment mMyPageFragment;
     private ProductFragment mProductFragment;
     // -----------------------------
 
@@ -34,7 +34,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     ////////////////////////////////////////////////
 
     public MainPagerAdapter(@NonNull FragmentManager fm) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mFragmentManager = fm;
     }
 
@@ -53,21 +53,21 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0: // Home
                 if (mHomeFragment == null) {
-                    mHomeFragment = new MainHomeFragment();
+                    mHomeFragment = new HomeFragment();
                     mHomeFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mHomeFragment;
 
             case 1: // Community
                 if (mCommunityFragment == null) {
-                    mCommunityFragment = new MainCommunityFragment();
+                    mCommunityFragment = new CommunityFragment();
                     mCommunityFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mCommunityFragment;
 
             case 2: // My Page
                 if (mMyPageFragment == null) {
-                    mMyPageFragment = new MainMyPageFragment();
+                    mMyPageFragment = new MyPageFragment();
                     mMyPageFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mMyPageFragment;

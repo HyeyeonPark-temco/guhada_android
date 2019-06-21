@@ -8,7 +8,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.databinding.FragmentMainHomeBinding;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
-public class MainHomeFragment extends BaseFragment<FragmentMainHomeBinding> implements View.OnClickListener {
+public class HomeFragment extends BaseFragment<FragmentMainHomeBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private OnDrawerLayoutListener mDrawerListener;
@@ -20,7 +20,7 @@ public class MainHomeFragment extends BaseFragment<FragmentMainHomeBinding> impl
 
     @Override
     protected String getBaseTag() {
-        return MainHomeFragment.class.getSimpleName();
+        return HomeFragment.class.getSimpleName();
     }
 
     @Override

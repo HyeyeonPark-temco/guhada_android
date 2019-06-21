@@ -37,8 +37,8 @@ public class SideMenuFirstViewHolder extends BaseCategoryViewHolder<ItemSideMenu
         // Data
         if (data != null) {
             // Title
-            if (!TextUtils.isEmpty(data.name)) {
-                mBinding.setTitle(data.name);
+            if (!TextUtils.isEmpty(data.title)) {
+                mBinding.setTitle(data.title);
             }
             // Add All
             if (data.children != null && data.children.size() > 0) {

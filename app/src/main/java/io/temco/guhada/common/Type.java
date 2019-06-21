@@ -24,7 +24,8 @@ public class Type {
         PAYMENT_RESULT,
         PAYMENT_WEBVIEW,
         SHIPPING_ADDRESS,
-        TEMP_LOGOUT
+        TEMP_LOGOUT,
+        BLOCKCHAIN
     }
 
     // Main
