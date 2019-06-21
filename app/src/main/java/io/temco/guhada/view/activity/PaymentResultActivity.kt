@@ -1,5 +1,7 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
@@ -21,9 +23,22 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
     override fun getViewType(): Type.View = Type.View.PAYMENT_RESULT
 
     override fun init() {
-        mViewModel = PaymentResultViewModel().apply {
+        initHeader()
+
+        mViewModel = PaymentResultViewModel(object : OnPaymentResultListener {
+            override fun closeActivity() {
+                setResult(Activity.RESULT_CANCELED)
+                finish()
+            }
+
+            override fun showMessage(message: String) {
+                Toast.makeText(this@PaymentResultActivity, message, Toast.LENGTH_SHORT).show()
+            }
+        }).apply {
             val purchaseOrderResponse = intent.getSerializableExtra("purchaseOrderResponse")
-            val shippingMemo = intent.getStringExtra("shippingMemo")
+            val shippingMemo = intent.getStringExtra("shippingMemo") ?: ""
+            val userName = intent.getStringExtra("userName") ?: ""
+            this.userName = userName
             this.shippingMemo = shippingMemo
             if (purchaseOrderResponse != null) {
                 this.purchaseOrderResponse = purchaseOrderResponse as PurchaseOrderResponse
@@ -33,6 +48,19 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         mBinding.recyclerView.adapter = PaymentResultOrderAdapter()
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+    }
+
+    private fun initHeader() {
+        mBinding.includePaymentresultHeader.title = "주문 완료"
+        mBinding.includePaymentresultHeader.setOnClickBackButton {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
+    }
+
+    interface OnPaymentResultListener {
+        fun closeActivity()
+        fun showMessage(message: String)
     }
 
     companion object {

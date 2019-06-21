@@ -69,6 +69,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->
                 intent.putExtra("purchaseOrderResponse", mViewModel.purchaseOrderResponse.value)
                 intent.putExtra("shippingMemo", mViewModel.selectedShippingMessage.get())
+                intent.putExtra("userName", mViewModel.order.user.name?:"")
                 startActivity(intent)
                 finish()
             }

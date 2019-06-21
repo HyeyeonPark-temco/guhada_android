@@ -1,8 +1,9 @@
 package io.temco.guhada.data.model
 
+import com.google.gson.annotations.Expose
 import java.io.Serializable
 
-class Payment: Serializable {
+class Payment : Serializable {
     var amount = 0
     var cardQuota = ""
     var method = ""
@@ -21,4 +22,11 @@ class Payment: Serializable {
     var vbankExpireAt = ""
     var vbankNo = ""
     var vbankRemitterName = ""
+
+    @Expose
+    var methodName = ""
+
+    @Expose
+    var completeAtText = ""
+
 }

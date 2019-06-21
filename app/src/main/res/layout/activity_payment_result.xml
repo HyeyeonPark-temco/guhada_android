@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.PaymentResultViewModel" />
@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <include
-                android:id="@+id/header_paymentresult"
+                android:id="@+id/include_paymentresult_header"
                 layout="@layout/header_common_backbutton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,11 +31,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="50dp"
-                android:text="@{viewModel.purchaseOrderResponse.shippingAddress.receiverName}"
+                android:text="@{viewModel.userName}"
                 android:textColor="@color/common_blue_purple"
                 android:textSize="@dimen/text_22"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header_paymentresult" />
+                app:layout_constraintTop_toBottomOf="@+id/include_paymentresult_header" />
 
             <TextView
                 android:id="@+id/textView38"
@@ -46,7 +46,7 @@
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_22"
                 app:layout_constraintStart_toEndOf="@+id/textView37"
-                app:layout_constraintTop_toBottomOf="@+id/header_paymentresult" />
+                app:layout_constraintTop_toBottomOf="@+id/include_paymentresult_header" />
 
             <TextView
                 android:id="@+id/textView39"
@@ -297,13 +297,26 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView56"
-                    style="@style/PaymentResultContentGreyTextStyle"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{viewModel.purchaseOrderResponse.payment.method}" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView56"
+                        style="@style/PaymentResultContentGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.paymentMethod}" />
+
+                    <TextView
+                        android:id="@+id/textView87"
+                        style="@style/PaymentResultContentGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.completeAtText}" />
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -579,12 +592,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view5">
 
                     <TextView
                         android:id="@+id/textView73"
+                        android:layout_marginBottom="20dp"
                         style="@style/PaymentResultContentBlackTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -596,7 +611,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="6dp"
-                        app:srcCompat="@drawable/payment_btn_save_open" />
+                        android:onClick="@{()->viewModel.onClickPointHistory()}"
+                        android:src="@{viewModel.pointVisibility == View.VISIBLE ? @drawable/payment_btn_save_close : @drawable/payment_btn_save_open }" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -642,8 +658,8 @@
                     android:id="@+id/constraintLayout8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:visibility="@{viewModel.pointVisibility, default =gone}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -760,6 +776,7 @@
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:background="@color/greyish_brown_two"
+                android:onClick="@{()->viewModel.onClickBag()}"
                 android:text="@string/paymentreuslt_button_bag"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_18"
@@ -775,6 +792,7 @@
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:background="@color/common_blue_purple"
+                android:onClick="@{()->viewModel.onClickContinue()}"
                 android:text="@string/paymentreuslt_button_continue"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_18"

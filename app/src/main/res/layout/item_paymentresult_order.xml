@@ -7,11 +7,16 @@
         <variable
             name="purchaseOrder"
             type="io.temco.guhada.data.model.PurchaseOrder" />
+
+        <variable
+            name="attributeText"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp">
 
         <ImageView
             android:id="@+id/imageview_paymentresult"
@@ -21,28 +26,39 @@
             app:imageUrl="@{purchaseOrder.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/textview_paymentresult_brandname"
             style="@style/TextMedium"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+
+            android:layout_marginStart="25dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:text="@{purchaseOrder.brandName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textview_paymentresult_productname"
             style="@style/TextMedium"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+
             android:layout_height="wrap_content"
-            android:text="@{purchaseOrder.productName}"
+            android:layout_marginStart="25dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{purchaseOrder.season +' '+ purchaseOrder.productName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_brandname" />
 
         <TextView
@@ -50,7 +66,8 @@
             style="@style/TextBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{@string/common_price_format(purchaseOrder.sellPrice)}"
+            android:layout_marginStart="25dp"
+            android:text="@{@string/common_price_format(purchaseOrder.originalPrice)}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
@@ -70,12 +87,25 @@
             style="@style/TextMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
-            android:text="@string/dummy_content_singleline"
+            android:text="@{attributeText}"
             android:textColor="@color/warm_grey_two"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"
             app:layout_constraintTop_toBottomOf="@id/textview_paymentresult_price" />
+
+        <View
+            android:id="@+id/view_paymentresult_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white_six"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@id/imageview_paymentresult" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
