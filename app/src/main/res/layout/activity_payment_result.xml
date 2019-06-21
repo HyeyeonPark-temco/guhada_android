@@ -307,7 +307,8 @@
                         style="@style/PaymentResultContentGreyTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.paymentMethod}" />
+                        android:text="@{viewModel.purchaseOrderResponse.payment.method}" />
+                        <!--android:text="@{viewModel.paymentMethod}" />-->
 
                     <TextView
                         android:id="@+id/textView87"
@@ -588,6 +589,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
 
                 <LinearLayout
+                    android:onClick="@{()->viewModel.onClickPointHistory()}"
                     android:id="@+id/linearLayout13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -609,9 +611,7 @@
                         android:id="@+id/imageButton4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="6dp"
-                        android:onClick="@{()->viewModel.onClickPointHistory()}"
+
                         android:src="@{viewModel.pointVisibility == View.VISIBLE ? @drawable/payment_btn_save_close : @drawable/payment_btn_save_open }" />
                 </LinearLayout>
 

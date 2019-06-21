@@ -44,10 +44,10 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
     val PURCHASE_EMAIL = "P_EMAIL"
     val PURCHASE_MOBILE = "P_MOBILE"
     val STORE_NAME = "P_MNAME"
-
+    val CHARSET = "EUC-KR"
 
     // 신용카드
-    val CARD_REQUIRED_OPTION = "P_RESERVED"
+    val COMPLEX_FIELD = "P_RESERVED"
 
     override fun getBaseTag(): String = PaymentWebViewActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_paymentwebview
@@ -55,10 +55,29 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun init() {
+        mViewModel.pgResponse = intent.getSerializableExtra("pgResponse") as PGResponse
+
         // 전 결제 방식 공통 필드
+
+        var params = "$SELLER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgMid, CHARSET)}&" +
+                "$ORDER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgOid, CHARSET)}&" +
+                "$ORDER_PRICE=${URLEncoder.encode(mViewModel.pgResponse.pgAmount, CHARSET)}&" +
+                "$USER_NAME=${URLEncoder.encode(mViewModel.pgResponse.purchaseUserName, CHARSET)}&" +
+                "$PRODUCT_NAME=${URLEncoder.encode(mViewModel.pgResponse.productName, CHARSET)}&" +
+                "$AUTH_NEXT_URL=${URLEncoder.encode(mViewModel.pgResponse.nextUrl, CHARSET)}&" +
+                "$FINISH_URL=${URLEncoder.encode(mViewModel.pgResponse.returnUrl, CHARSET)}&" +
+                "$TIMESTAMP=${URLEncoder.encode(mViewModel.pgResponse.timestamp, CHARSET)}&" +
+                "$SIGNATURE=${URLEncoder.encode(mViewModel.pgResponse.signature)}&" +
+                "$HASH_SIGNKEY=${URLEncoder.encode(mViewModel.pgResponse.key)}&" +
+                "$OFFER_PERIOD=${URLEncoder.encode(mViewModel.pgResponse.offerPeriod, CHARSET)}&" +
+                "$PURCHASE_EMAIL=${URLEncoder.encode(mViewModel.pgResponse.purchaseEmail, CHARSET)}&" +
+                "$PURCHASE_MOBILE=${URLEncoder.encode(mViewModel.pgResponse.purchasePhone, CHARSET)}&" +
+                "$STORE_NAME=${URLEncoder.encode(mViewModel.pgResponse.mallName, CHARSET)}"
+
         when (intent.getStringExtra("payMethod")) {
             "CARD" -> {
                 URL = "https://devmobpay.lpay.com:410/smart/wcard/"
+                params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
             }
             "VBank" -> {
                 // 무통장 입금
@@ -67,28 +86,21 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
             "DirectBank" -> {
                 // 실시간 계좌
                 URL = "https://devmobpay.lpay.com:410/smart/bank/"
+                params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("apprun_checked=Y", "EUC-KR")}"
             }
             "TOKEN" -> {
             }
         }
 
-        mViewModel.pgResponse = intent.getSerializableExtra("pgResponse") as PGResponse
-        var params = "$SELLER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgMid, "EUC-KR")}&" +
-                "$ORDER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgOid, "EUC-KR")}&" +
-                "$ORDER_PRICE=${URLEncoder.encode(mViewModel.pgResponse.pgAmount, "EUC-KR")}&" +
-                "$USER_NAME=${URLEncoder.encode(mViewModel.pgResponse.purchaseUserName, "EUC-KR")}&" +
-                "$PRODUCT_NAME=${URLEncoder.encode(mViewModel.pgResponse.productName, "UTF-8")}&" +
-                "$AUTH_NEXT_URL=${URLEncoder.encode(mViewModel.pgResponse.nextUrl, "EUC-KR")}&" +
-                "$FINISH_URL=${URLEncoder.encode(mViewModel.pgResponse.returnUrl, "EUC-KR")}&" +
-                "$TIMESTAMP=${URLEncoder.encode(mViewModel.pgResponse.timestamp, "EUC-KR")}&" +
-                "$SIGNATURE=${URLEncoder.encode(mViewModel.pgResponse.signature)}&" +
-                "$HASH_SIGNKEY=${URLEncoder.encode(mViewModel.pgResponse.key)}&" +
-                "$OFFER_PERIOD=${URLEncoder.encode(mViewModel.pgResponse.offerPeriod, "EUC-KR")}&" +
-                "$PURCHASE_EMAIL=${URLEncoder.encode(mViewModel.pgResponse.purchaseEmail, "EUC-KR")}&" +
-                "$PURCHASE_MOBILE=${URLEncoder.encode(mViewModel.pgResponse.purchasePhone, "EUC-KR")}&" +
-                "$STORE_NAME=${URLEncoder.encode(mViewModel.pgResponse.mallName, "EUC-KR")}"
+        mBinding.webviewPayment.settings.defaultTextEncodingName = "EUC-KR"
+        mBinding.webviewPayment.settings.javaScriptEnabled = true
+        mBinding.webviewPayment.settings.javaScriptCanOpenWindowsAutomatically = true
+        mBinding.webviewPayment.settings.setSupportMultipleWindows(true)
+        mBinding.webviewPayment.settings.allowFileAccessFromFileURLs = true
+        mBinding.webviewPayment.settings.allowUniversalAccessFromFileURLs = true
+        mBinding.webviewPayment.settings.allowFileAccess = true
+        mBinding.webviewPayment.settings.allowContentAccess = true
 
-        params = "$params&$CARD_REQUIRED_OPTION=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
 
         mBinding.webviewPayment.webViewClient = PaymentWebViewClient()
         mBinding.webviewPayment.webChromeClient = object : WebChromeClient() {
@@ -109,9 +121,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 return true
             }
         }
-        mBinding.webviewPayment.settings.javaScriptEnabled = true
-        mBinding.webviewPayment.settings.javaScriptCanOpenWindowsAutomatically = true
-        mBinding.webviewPayment.settings.setSupportMultipleWindows(true)
+
 
         // Insecurity 페이지 허용
         mBinding.webviewPayment.settings.mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
@@ -124,8 +134,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         } else {
             cookieManager.setAcceptCookie(true)
         }
-
-        mBinding.webviewPayment.loadUrl("$URL?$params")
+        mBinding.webviewPayment.postUrl(URL, params.toByteArray())
     }
 
     inner class PaymentWebViewClient : WebViewClient() {
@@ -204,10 +213,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
             Log.e("<LPAY>", url.toString())
 
-            if (url.toString() == "http://13.209.10.68/lotte/mobile/privyCertifyResult") {
-                Log.e("ㅇㅇㅇ", "결과")
-            }
-
             if (!url?.startsWith("http://")!! && !url.startsWith("https://") && !url.startsWith("javascript")) {
                 val intent: Intent
                 try {
@@ -248,6 +253,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                             Log.e("<LPAY>", "INTENT:// 인입될 시 예외 처리 오류: $e")
                         }
                     }
+
                 }
             } else {
                 view?.loadUrl(url)
