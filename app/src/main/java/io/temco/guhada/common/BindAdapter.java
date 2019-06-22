@@ -17,7 +17,8 @@ public class BindAdapter {
 
     @BindingAdapter({"imageUrl"})
     public static void loadImage(ImageView view, String url) {
-        ImageUtil.loadImage(Glide.with(view.getContext()), view, url);
+//        ImageUtil.loadImage(Glide.with(view.getContext()), view, url);
+        ImageUtil.loadImage(GlideApp.with(view.getContext()), view, url);
     }
 
     @BindingAdapter({"imageRes"})
@@ -27,7 +28,7 @@ public class BindAdapter {
 
     @BindingAdapter("ovalImageUrl")
     public static void loadOvalImage(ImageView view, String url) {
-        Glide.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
+        GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
     }
 
     @BindingAdapter("android:visibility")
