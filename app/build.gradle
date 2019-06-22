@@ -59,7 +59,7 @@ dependencies {
 
     // Glide
     implementation libraryDependencies.glide
-    annotationProcessor libraryDependencies.glideCompiler
+    kapt libraryDependencies.glideCompiler
 //    implementation 'jp.wasabeef:glide-transformations:4.0.1'
     // Retrofit
     implementation libraryDependencies.retrofit
@@ -92,6 +92,16 @@ dependencies {
 
     // JWT DECODE
     implementation libraryDependencies.jwtDecode
+
+    // COROUTINE
+    implementation libraryDependencies.coroutine
+
+    // OKHTTP INTEGRATION FOR GLIDE
+    implementation libraryDependencies.okhttp
+    implementation (libraryDependencies.okhttpIntegration){
+        exclude group: 'glide-parent'
+    }
+
 
     ////////////////////////////////////////////////
 }
