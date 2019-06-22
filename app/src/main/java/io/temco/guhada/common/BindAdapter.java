@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.databinding.BindingAdapter;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import io.temco.guhada.common.util.GlideApp;
 import io.temco.guhada.common.util.ImageUtil;
 
 public class BindAdapter {

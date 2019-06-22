@@ -19,7 +19,7 @@ open class ClaimServer {
     companion object {
         @JvmStatic
         fun getClaims(listener: OnServerListener, productId: Int, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
-            val call = RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).getClaims(productId = productId, isMyInquiry = isMyInquiry,
+            val call = RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaims(productId = productId, isMyInquiry = isMyInquiry,
                     pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}")
             val recall = RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).getClaimsForQuest(productId = productId,
                     pageNo = pageNo, size = size, status = status)
@@ -37,7 +37,7 @@ open class ClaimServer {
 
         @JvmStatic
         fun getClaimsForGuest(listener: OnServerListener, productId: Int, pageNo: Int, size: Int, status: String) {
-            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).getClaimsForQuest(productId = productId,
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaimsForQuest(productId = productId,
                     pageNo = pageNo, size = size, status = status).enqueue(object : Callback<BaseModel<ClaimResponse>> {
                 override fun onResponse(call: Call<BaseModel<ClaimResponse>>, response: Response<BaseModel<ClaimResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())

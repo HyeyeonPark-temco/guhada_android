@@ -3,6 +3,8 @@ package io.temco.guhada.data.retrofit.manager;
 import android.app.Application;
 import android.os.Build;
 
+import java.util.concurrent.TimeUnit;
+
 import io.temco.guhada.BuildConfig;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Preferences;
@@ -98,8 +100,8 @@ public class RetrofitManager {
     // Client
     private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        // builder.cache(cache);
-        // builder.connectTimeout(15, TimeUnit.SECONDS)
+         builder.cache(cache);
+         builder.connectTimeout(5, TimeUnit.SECONDS);
         // builder.writeTimeout(15, TimeUnit.SECONDS)
         // builder.readTimeout(15, TimeUnit.SECONDS)
         builder.addInterceptor(interceptor);
