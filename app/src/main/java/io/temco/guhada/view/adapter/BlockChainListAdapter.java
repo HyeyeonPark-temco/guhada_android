@@ -1,6 +1,8 @@
 package io.temco.guhada.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,6 @@ public class BlockChainListAdapter extends RecyclerView.Adapter<BlockChainViewHo
 
     // -------- LOCAL VALUE --------
     private Context mContext;
-    //    private OnOrderShipListener mListener;
     private List<BlockChain> mItems;
     // -----------------------------
 
@@ -47,20 +48,32 @@ public class BlockChainListAdapter extends RecyclerView.Adapter<BlockChainViewHo
 
     @Override
     public void onBindViewHolder(@NonNull BlockChainViewHolder holder, int position) {
+        // Certificate (PDF)
+        holder.getBinding().imageCertificate.setTag(position);
+        holder.getBinding().imageCertificate.setOnClickListener(this);
+
+        // Link
+        holder.getBinding().imageLink.setTag(position);
+        holder.getBinding().imageLink.setOnClickListener(this);
+
+        // Data
         holder.init(mContext, position + 1, getItem(position), getItemCount() != position + 1);
     }
 
     @Override
     public void onClick(View v) {
-//        if (mListener != null
-//                && v.getTag() != null && v.getTag() instanceof Integer) {
-//            int position = (int) v.getTag();
-//            switch (v.getId()) {
-//                case R.id.text_review:
-//                    mListener.onReview(this, position, getItem(position));
-//                    break;
-//            }
-//        }
+        if (v.getTag() != null && v.getTag() instanceof Integer) {
+            int position = (int) v.getTag();
+            switch (v.getId()) {
+                case R.id.image_certificate:
+                    showUrlView(getItem(position).certificateUrl);
+                    break;
+
+                case R.id.image_link:
+                    showUrlView("https://ropsten.etherscan.io/tx/" + getItem(position).contractAddress);
+                    break;
+            }
+        }
     }
 
     ////////////////////////////////////////////////
@@ -72,16 +85,16 @@ public class BlockChainListAdapter extends RecyclerView.Adapter<BlockChainViewHo
         notifyDataSetChanged();
     }
 
-//    public void setOnOrderShipListener(OnOrderShipListener listener) {
-//        mListener = listener;
-//    }
-
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
 
     private BlockChain getItem(int position) {
         return mItems == null ? null : mItems.get(position);
+    }
+
+    private void showUrlView(String url) {
+        mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     ////////////////////////////////////////////////

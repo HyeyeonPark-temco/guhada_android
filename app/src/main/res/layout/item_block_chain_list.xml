@@ -309,6 +309,7 @@
                     android:textSize="@dimen/text_12" />
 
                 <ImageView
+                    android:id="@+id/image_certificate"
                     android:layout_width="17dp"
                     android:layout_height="21dp"
                     android:layout_marginLeft="10dp"

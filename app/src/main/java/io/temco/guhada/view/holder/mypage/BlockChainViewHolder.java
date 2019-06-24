@@ -52,9 +52,6 @@ public class BlockChainViewHolder extends BaseViewHolder<ItemBlockChainListBindi
             // Certificate
             mBinding.textCertificate.setText(data.certificateName);
 
-            // Link
-//            mBinding.imageLink.
-
             // Line
             mBinding.imageLine.setVisibility(isShowBottomLine ? View.VISIBLE : View.GONE);
         }
