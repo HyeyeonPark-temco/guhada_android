@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.listener.OnOrderShipListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.TextUtil;
+import io.temco.guhada.data.model.MyOrderItem;
 import io.temco.guhada.databinding.FragmentMypageOrderShipBinding;
 import io.temco.guhada.view.adapter.mypage.OrderShipListAdapter;
 import io.temco.guhada.view.fragment.base.BaseFragment;
@@ -95,18 +98,79 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
 
     private void initList() {
         OrderShipListAdapter adapter = new OrderShipListAdapter(getContext(), mRequestManager);
-        adapter.setOnOrderShipListener(() -> {
-            if (true) {
-                CommonUtil.debug("onEvent");
+        adapter.setOnOrderShipListener(new OnOrderShipListener() {
+            @Override
+            public void onEvent() {
+            }
+
+            @Override
+            public void onReview(OrderShipListAdapter adapter, int position, MyOrderItem data) {
+                data.checkReview = true;
+                adapter.changeItems(position, data);
             }
         });
         mBinding.listContents.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.listContents.setAdapter(adapter);
         // Test
-        List l = new ArrayList();
-        l.add(new Object());
-        l.add(new Object());
+        List<MyOrderItem> l = new ArrayList<>();
+        l.add(getTestItem(
+                123456,
+                "2019.06.28",
+                "ACNE",
+                "19FW",
+                "슬림핏 하프넥 플라워 패턴 슬림핏 하프넥 플라워 패턴",
+                "체리",
+                "85",
+                "1개",
+                new BigDecimal("215000"),
+                "입금완료"));
+        l.add(getTestItem(
+                123456,
+                "2019.06.28",
+                "ACNE",
+                "19FW",
+                "슬림핏 하프넥 플라워 패턴 슬림핏 하프넥 플라워 패턴",
+                "체리",
+                "85",
+                "1개",
+                new BigDecimal("215000"),
+                "입금완료"));
+        l.add(getTestItem(
+                123456,
+                "2019.06.28",
+                "ACNE",
+                "19FW",
+                "슬림핏 하프넥 플라워 패턴 슬림핏 하프넥 플라워 패턴",
+                "체리",
+                "85",
+                "1개",
+                new BigDecimal("215000"),
+                "입금완료"));
         adapter.setItems(l);
+    }
+
+    private MyOrderItem getTestItem(int orderNo,
+                                    String date,
+                                    String brand,
+                                    String season,
+                                    String productName,
+                                    String option1,
+                                    String option2,
+                                    String option3,
+                                    BigDecimal price,
+                                    String status) {
+        MyOrderItem i = new MyOrderItem();
+        i.orderProdGroupId = orderNo;
+        i.orderDate = date;
+        i.brandName = brand;
+        i.season = season;
+        i.prodName = productName;
+        i.optionAttribute1 = option1;
+        i.optionAttribute2 = option2;
+        i.optionAttribute3 = option3;
+        i.discountPrice = price;
+        i.purchaseStatusText = status;
+        return i;
     }
 
     private void setLinkText() {

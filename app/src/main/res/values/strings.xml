@@ -438,6 +438,11 @@
     <string name="shippingaddress_button_submit">선택 완료</string>
 
     <!-- MY PAGE -->
-    <string name="mypage_title_order_shipping">주문 배송</string>
-    <string name="mypage_title_cancel_swap_return">취소・교환・반품</string>
+    <string name="mypage_order_shipping">주문 배송</string>
+    <string name="mypage_order_number">주문 번호</string>
+    <string name="mypage_order_cancel">주문 취소</string>
+    <string name="mypage_order_change_shipping">배송지 변경</string>
+    <string name="mypage_order_qna">압구정 날라리에 문의하기</string>
+    <string name="mypage_order_review">리뷰하기</string>
+    <string name="mypage_cancel_swap_return">취소・교환・반품</string>
 </resources>

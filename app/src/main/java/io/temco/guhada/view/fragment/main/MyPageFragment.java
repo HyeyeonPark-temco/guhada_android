@@ -96,7 +96,7 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
         for (int i = 0; i < mPagerAdapter.getCount(); i++) {
             switch (i) {
                 case 0: // 주문 배송
-                    addCustomTabs(getString(R.string.mypage_title_order_shipping), true);
+                    addCustomTabs(getString(R.string.mypage_order_shipping), true);
                     break;
 
                 case 1: // 취소/교환/반품

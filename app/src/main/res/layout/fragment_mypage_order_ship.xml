@@ -68,7 +68,9 @@
                     android:id="@+id/list_contents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:overScrollMode="never" />
+                    android:overScrollMode="never"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp" />
 
                 <!-- INFORMATION -->
                 <include
