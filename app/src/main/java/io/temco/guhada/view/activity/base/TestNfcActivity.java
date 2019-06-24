@@ -22,8 +22,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.server.BlockChainServer;
 import io.temco.guhada.data.server.ProductServer;
+import io.temco.guhada.view.activity.BlockChainHistoryActivity;
 
 public class TestNfcActivity extends AppCompatActivity {
 
@@ -47,7 +49,7 @@ public class TestNfcActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mIsRead = false;
+//        mIsRead = false;
 
         init();
     }
@@ -93,6 +95,8 @@ public class TestNfcActivity extends AppCompatActivity {
                 showMessage("NFC OFF!");
             }
         }
+
+        getProductData(mTestId);
     }
 
     private void enableNfc() {
@@ -211,7 +215,7 @@ public class TestNfcActivity extends AppCompatActivity {
     private void getProductData(String id) {
         ProductServer.getProductByList(id, (success, o) -> {
             if (success) {
-
+                BlockChainHistoryActivity.startActivity(this, (ProductByList) o);
             } else {
 
             }

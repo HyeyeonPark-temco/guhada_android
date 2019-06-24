@@ -2,9 +2,10 @@ package io.temco.guhada.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ProductByList {
+public class ProductByList implements Serializable {
 
     @SerializedName("brandId")
     public int brandId;

@@ -25,6 +25,8 @@ public class Info {
     public static final String INTENT_CATEGORY_HIERARCHIES = "categoryHierarchies";
     public static final String INTENT_BRAND_DATA = "brandData";
     public static final String INTENT_DEAL_ID = "dealId";
+    public static final String INTENT_PRODUCT_ID = "productId";
+    public static final String INTENT_PRODUCT_DATA = "productData";
 
     ////////////////////////////////////////////////
 }

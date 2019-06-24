@@ -21,7 +21,7 @@
     <string name="app_copyright">Ⓒ 2019 GUHADA</string>
 
     <string name="common_check">조회</string>
-    
+
     <string name="common_top">TOP</string>
     <string name="common_category">카테고리</string>
     <string name="common_brand">브랜드</string>
@@ -445,4 +445,16 @@
     <string name="mypage_order_qna">압구정 날라리에 문의하기</string>
     <string name="mypage_order_review">리뷰하기</string>
     <string name="mypage_cancel_swap_return">취소・교환・반품</string>
+
+    <!-- BLOCKCHAIN -->
+    <string name="blockchain_title">Blockchain Information</string>
+    <string name="blockchain_title_serial_id">Serial ID</string>
+    <string name="blockchain_title_brand">Brand Name</string>
+    <string name="blockchain_title_seller">Seller</string>
+    <string name="blockchain_title_product">Product Name</string>
+    <string name="blockchain_title_price">Price</string>
+    <string name="blockchain_title_color">Color</string>
+    <string name="blockchain_title_certificate">Certificate(PDF)</string>
+    <string name="blockchain_title_tracker">Tracker</string>
+    <string name="blockchain_title_tracker_link">Block Chain Link</string>
 </resources>
