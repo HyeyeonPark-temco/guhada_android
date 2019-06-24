@@ -8,6 +8,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.sns.SnsLoginModule
 import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.databinding.ActivityTemplogoutBinding
 import io.temco.guhada.view.activity.base.BindActivity
 
@@ -55,7 +56,8 @@ class TempLogoutActivity : BindActivity<ActivityTemplogoutBinding>() {
     }
 
     private fun showMessage(message: String) {
-        Toast.makeText(this@TempLogoutActivity, message, Toast.LENGTH_SHORT).show()
+        ToastUtil.showMessage(message)
+//        Toast.makeText(this@TempLogoutActivity, message, Toast.LENGTH_SHORT).show()
     }
 
 }

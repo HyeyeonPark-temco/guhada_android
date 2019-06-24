@@ -66,6 +66,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 }
             } else {
                 CommonUtil.debug(o?.toString())
+                listener?.dismissLoadingIndicator()
             }
         }, dealId)
     }

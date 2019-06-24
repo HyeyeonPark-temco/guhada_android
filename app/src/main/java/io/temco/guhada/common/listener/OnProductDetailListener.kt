@@ -5,4 +5,5 @@ interface OnProductDetailListener {
     fun showMessage(message: String)
     fun showMenu()
     fun redirectPaymentActivity(isOptionPopupSelected: Boolean)
+    fun dismissLoadingIndicator()
 }

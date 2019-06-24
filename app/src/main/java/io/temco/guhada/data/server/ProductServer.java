@@ -85,7 +85,7 @@ public class ProductServer {
      * @param id       dealId
      */
     public static void getProductDetail(OnServerListener listener, Long id) {
-        RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class).getProductDetail(id).enqueue(new Callback<BaseModel<Product>>() {
+        RetrofitManager.createService(Type.Server.PRODUCT, ProductService.class, true).getProductDetail(id).enqueue(new Callback<BaseModel<Product>>() {
             @Override
             public void onResponse(Call<BaseModel<Product>> call, Response<BaseModel<Product>> response) {
                 listener.onResult(response.isSuccessful(), response.body());

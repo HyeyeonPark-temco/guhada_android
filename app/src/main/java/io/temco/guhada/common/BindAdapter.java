@@ -8,16 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.databinding.BindingAdapter;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import io.temco.guhada.common.util.GlideApp;
 import io.temco.guhada.common.util.ImageUtil;
 
 public class BindAdapter {
 
     @BindingAdapter({"imageUrl"})
     public static void loadImage(ImageView view, String url) {
-        ImageUtil.loadImage(Glide.with(view.getContext()), view, url);
+//        ImageUtil.loadImage(Glide.with(view.getContext()), view, url);
+        ImageUtil.loadImage(GlideApp.with(view.getContext()), view, url);
     }
 
     @BindingAdapter({"imageRes"})
@@ -27,7 +28,7 @@ public class BindAdapter {
 
     @BindingAdapter("ovalImageUrl")
     public static void loadOvalImage(ImageView view, String url) {
-        Glide.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
+        GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
     }
 
     @BindingAdapter("android:visibility")

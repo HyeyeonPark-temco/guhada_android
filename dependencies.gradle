@@ -16,6 +16,9 @@ ext {
     compiler_version = '3.1.3'
     kotlinVersion = '1.3.31'
     jwtDecodeVersion = '1.3.0'
+    coroutineVersion = '1.2.2'
+    okhttpIntegrationVersion = '4.9.0'
+    okhttpVersion = '3.12.0'
 
     androidDependencies = [
             supportDesign          : "com.android.support:design:${supportDesignVersion}",
@@ -37,7 +40,11 @@ ext {
             stringUtils          : "org.apache.commons:commons-text:${stringUtilsVersion}",
             loggingInterceptor   : "com.squareup.okhttp3:logging-interceptor:${logginInterceptorVersion}",
             kotlinJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
-            jwtDecode            : "com.auth0.android:jwtdecode:${jwtDecodeVersion}"
+            jwtDecode            : "com.auth0.android:jwtdecode:${jwtDecodeVersion}",
+            coroutine : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutineVersion}",
+            okhttp: "com.squareup.okhttp3:okhttp:${okhttpVersion}",
+            okhttpIntegration : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}"
+
     ]
 }
 

@@ -18,13 +18,12 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
-import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Product
-import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
@@ -36,6 +35,8 @@ import io.temco.guhada.view.adapter.ProductDetailTagAdapter
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
     private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
@@ -53,17 +54,12 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         loadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ProductDetailViewModel(this)
 
-        // 임시 productId 12492
+
         mViewModel.dealId = intent.getLongExtra("productId", resources.getString(R.string.temp_productId).toLong())
         mViewModel.product.observe(this, Observer<Product> { product ->
-            mBinding.includeProductdetailContentbody.viewModel = mViewModel
+            // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
             mBinding.includeProductdetailContentheader.viewModel = mViewModel
-            mBinding.includeProductdetailContentbody.viewModel = mViewModel
-            mBinding.includeProductdetailContentinfo.viewModel = mViewModel
-            mBinding.includeProductdetailContentshipping.viewModel = mViewModel
-            mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
-
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
             mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -80,26 +76,44 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 }
             })
 
-            Log.e("TASK", "PRODUCT FINISH")
-            mViewModel.getSellerInfo()
-            initMenu()
+            CommonUtil.debug("TASK", "PRODUCT FINISH")
+            if (::loadingIndicatorUtil.isInitialized && loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+
+            // [상세정보|상품문의|셀러스토어] 탭 하단부 display
+            GlobalScope.launch {
+                // delay(8000)
+                mBinding.includeProductdetailContentbody.viewModel = mViewModel
+                mBinding.includeProductdetailContentinfo.viewModel = mViewModel
+                mBinding.includeProductdetailContentshipping.viewModel = mViewModel
+                mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
+
+                mViewModel.getSellerInfo()
+                initOptionMenu()
+                initClaims(resources.getString(R.string.temp_productId).toInt())
+                initReview(resources.getString(R.string.temp_productId).toLong())
+            }
         })
-        loadingIndicatorUtil.execute { mViewModel.getDetail() }
+
+        loadingIndicatorUtil.execute {
+            mViewModel.getDetail()
+        }
 
         mBinding.viewModel = mViewModel
-        initClaims(resources.getString(R.string.temp_productId).toInt())
-
-        initReview(resources.getString(R.string.temp_productId).toLong())
         detectScrollView()
 
         mBinding.executePendingBindings()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::loadingIndicatorUtil.isInitialized && loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
     }
 
     private fun initClaims(productId: Int) {
         claimFragment = ProductDetailClaimFragment(productId)
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, claimFragment)
-            it.commit()
+            it.commitAllowingStateLoss()
         }
     }
 
@@ -109,11 +123,11 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, reviewFragment)
-            it.commit()
+            it.commitAllowingStateLoss()
         }
     }
 
-    private fun initMenu() {
+    private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnMenuListener {
             override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
@@ -123,7 +137,13 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
             override fun showMessage(message: String) {
                 Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
+
             }
+
+            override fun dismissLoadingIndicator() {
+                if (loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+            }
+
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
@@ -141,6 +161,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             override fun showMessage(message: String) {
                 Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
             }
+
+            override fun dismissLoadingIndicator() {
+                if (loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+            }
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
@@ -151,8 +175,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailMenu.id, menuFragment)
             it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, headerMenuFragment)
-            it.commit()
-            loadingIndicatorUtil.dismiss()
+            it.commitAllowingStateLoss()
             Log.e("TASK", "MENU FINISH")
         }
     }
@@ -283,10 +306,15 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+    override fun dismissLoadingIndicator() {
+        if (loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+    }
+
     interface OnMenuListener {
         fun showMessage(message: String)
         fun closeMenu()
         fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit)
+        fun dismissLoadingIndicator()
     }
 
     companion object {
