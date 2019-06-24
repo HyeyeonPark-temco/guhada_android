@@ -14,6 +14,7 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnOrderShipListener;
+import io.temco.guhada.data.model.MyOrderItem;
 import io.temco.guhada.view.holder.mypage.OrderShipViewHolder;
 
 public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHolder> implements View.OnClickListener {
@@ -22,7 +23,7 @@ public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHold
     private Context mContext;
     private RequestManager mRequestManager;
     private OnOrderShipListener mListener;
-    private List mItems;
+    private List<MyOrderItem> mItems;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -51,20 +52,45 @@ public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHold
 
     @Override
     public void onBindViewHolder(@NonNull OrderShipViewHolder holder, int position) {
+        MyOrderItem data = getItem(position);
 
+        // Review
+        holder.getBinding().textReview.setSelected(!data.checkReview);
+        if (!data.checkReview) {
+            holder.getBinding().textReview.setTag(position);
+            holder.getBinding().textReview.setOnClickListener(this);
+        }
+
+        holder.init(mContext, data, mListener);
     }
 
     @Override
     public void onClick(View v) {
+        if (mListener != null
+                && v.getTag() != null && v.getTag() instanceof Integer) {
+            int position = (int) v.getTag();
+            switch (v.getId()) {
+                case R.id.text_review:
+                    mListener.onReview(this, position, getItem(position));
+                    break;
+            }
+        }
     }
 
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setItems(List items) {
+    public void setItems(List<MyOrderItem> items) {
         mItems = items;
         notifyDataSetChanged();
+    }
+
+    public void changeItems(int position, MyOrderItem item) {
+        if (getItemCount() > 0) {
+            mItems.set(position, item);
+            notifyItemChanged(position);
+        }
     }
 
     public void setOnOrderShipListener(OnOrderShipListener listener) {
@@ -75,7 +101,7 @@ public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHold
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private Object getItem(int position) {
+    private MyOrderItem getItem(int position) {
         return mItems == null ? null : mItems.get(position);
     }
 
