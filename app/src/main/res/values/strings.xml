@@ -249,6 +249,7 @@
     <string name="productdetail_totalprice">총 상품금액</string>
     <string name="productdetail_tag">태그</string>
     <string name="productdetail_report">신고</string>
+    <string name="productdetail_comment">댓글</string>
 
     <string name="productdetail_info">상품 정보</string>
     <string name="productdetail_info_status">상품상태</string>
@@ -340,7 +341,13 @@
     <string name="productdetail_review_title">리뷰</string>
     <string name="productdetail_review_button_morereview">상품 리뷰 10개 더보기</string>
 
-
+    <string name="productdetail_review_like">도움되었어요</string>
+    <string name="productdetail_review_height">키:</string>
+    <string name="productdetail_review_averagesize">평소사이즈:</string>
+    <string name="productdetail_review_option">구매옵션:</string>
+    <string name="productdetail_review_graphsize">사이즈</string>
+    <string name="productdetail_review_graphcolor">컬러</string>
+    <string name="productdetail_review_graphlength">길이감</string>
     <string name="productdetail_notifies_empty">등록된 상품고시정보가 없습니다.</string>
 
     <!-- CLAIM -->
