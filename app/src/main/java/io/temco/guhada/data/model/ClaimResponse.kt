@@ -48,6 +48,7 @@ class ClaimResponse {
         var updatedAt: String = ""
             get() = convertDateTimeFormat(field)
 
+        /// 추후 Util로 분리 예정
         @SuppressLint("SimpleDateFormat")
         private fun convertDateTimeFormat(str: String?): String {
             return if (str != null) {
@@ -71,6 +72,7 @@ class ClaimResponse {
             }
         }
 
+        /// 추후 Util로 분리 예정
         private fun plusZero(number: Int): String = if (number < 10) {
             "0$number"
         } else {
@@ -78,19 +80,4 @@ class ClaimResponse {
         }
     }
 
-    class Paging {
-        var sort: Sort = Sort()
-        var pageSize = 0
-        var pageNumber = 0
-        var offset = 0
-
-        var paged: Boolean = false
-        var unpaged: Boolean = false
-    }
-
-    class Sort {
-        var sorted: Boolean = false
-        var unsorted: Boolean = false
-        var empty: Boolean = false
-    }
 }

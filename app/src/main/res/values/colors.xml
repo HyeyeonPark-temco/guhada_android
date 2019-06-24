@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="black_overlay">#66000000</color>
+    <color name="toast_background">#c4000000</color>
 
     <!-- COMMON -->
     <color name="common_white">#ffffff</color>
@@ -41,7 +42,7 @@
     <color name="silver">#b7bec4</color>
     <color name="light_grey">#f2f4f4</color>
     <color name="pale_grey">#f9f9fa</color>
-    <color name="black_two">#333333</color>
+    <color name="cool_grey">#9a9fa8</color>
 
     <color name="warm_grey">#898989</color>
     <color name="warm_grey_two">#777777</color>
@@ -50,8 +51,8 @@
     <color name="warm_grey_five">#9a9a9a</color>
     <color name="warm_grey_six">#999999</color>
 
+    <color name="black_two">#333333</color>
     <color name="black_three">#212121</color>
-    <color name="brick">#ce2525</color>
     <color name="black_four">#111111</color>
 
     <color name="greyish">#aaaaaa</color>
@@ -65,6 +66,7 @@
     <color name="white_six">#eaeaea</color>
 
     <color name="perrywinkle">#aa91e6</color>
-    <color name="cool_grey">#9a9fa8</color>
+    <color name="brick">#ce2525</color>
+
 
 </resources>

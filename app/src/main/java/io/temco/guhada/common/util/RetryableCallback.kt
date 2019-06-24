@@ -72,25 +72,17 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
 
 
     open fun onFinalResponse(call: Call<T>, response: Response<T>) {
+        val message = if (response.message().isNullOrBlank()) response.message() else response.errorBody().toString()
+        ToastUtil.showMessage(message)
         Log.e("onFinalResponse", "")
-//        CommonUtil.debug("onFinalResponse-토큰 만료")
-//        Preferences.clearToken()
-//        retry()
-
-        // 테스트 필요
-//            BaseApplication.getInstance().startActivity(Intent(BaseApplication.getInstance(), LoginActivity::class.java))
     }
 
     open fun onFinalFailure(call: Call<T>, t: Throwable) {
         try {
-            // val errorCode = (t as HttpException).code()
+            val message = if (t.message.isNullOrBlank()) "FAILED API CALL" else t.message
+                    ?: "FAILED API CALL"
+            ToastUtil.showMessage(message)
             Log.e("onFinalFailure", "")
-//            CommonUtil.debug("onFinalFailure-토큰 만료")
-//            Preferences.clearToken()
-//            retry()
-            // 테스트 필요
-//                BaseApplication.getInstance().startActivity(Intent(BaseApplication.getInstance(), LoginActivity::class.java))
-
         } catch (e: Exception) {
             CommonUtil.debug(e.message)
         }

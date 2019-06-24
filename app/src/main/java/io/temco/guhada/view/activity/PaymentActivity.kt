@@ -18,6 +18,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Order
 import io.temco.guhada.data.model.PGAuth
@@ -42,7 +43,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
 
             override fun showMessage(message: String) {
-                Toast.makeText(this@PaymentActivity, message, Toast.LENGTH_SHORT).show()
+                ToastUtil.showMessage(message)
+//                Toast.makeText(this@PaymentActivity, message, Toast.LENGTH_SHORT).show()
             }
 
             override fun notifyRadioButtons() {
@@ -69,7 +71,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->
                 intent.putExtra("purchaseOrderResponse", mViewModel.purchaseOrderResponse.value)
                 intent.putExtra("shippingMemo", mViewModel.selectedShippingMessage.get())
-                intent.putExtra("userName", mViewModel.order.user.name?:"")
+                intent.putExtra("userName", mViewModel.order.user.name ?: "")
                 startActivity(intent)
                 finish()
             }

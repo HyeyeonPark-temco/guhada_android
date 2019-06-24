@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.PGAuth
 import io.temco.guhada.data.model.PGResponse
 import io.temco.guhada.data.viewmodel.PaymentWebViewViewModel
@@ -176,10 +177,10 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                             this.pgTid = pgTid
                             this.resultCode = resultCode
                             this.resultMsg = resultMsg
-                            this.pgKind = mViewModel.pgResponse.pgKind
-                            this.pgMid = mViewModel.pgResponse.pgMid
-                            this.pgAmount = mViewModel.pgResponse.pgAmount
-                            this.pgOid = mViewModel.pgResponse.pgOid
+                            this.pgKind = pgKind
+                            this.pgMid = pgMid
+                            this.pgAmount = pgAmount
+                            this.pgOid = pgOid
                             this.pgTidSample = pgTidSample
                             this.cardQuota = mViewModel.pgResponse.cardQuota
                             this.cardNo = mViewModel.pgResponse.cardCd ?: ""
@@ -236,7 +237,8 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                                     finish()
                                 }
                                 .setNegativeButton("취소") { dialog, which ->
-                                    Toast.makeText(this@PaymentWebViewActivity, "(-1)결제를 취소하셨습니다.", Toast.LENGTH_SHORT).show()
+                                    ToastUtil.showMessage("(-1)결제를 취소하셨습니다.")
+//                                    Toast.makeText(this@PaymentWebViewActivity, "(-1)결제를 취소하셨습니다.", Toast.LENGTH_SHORT).show()
                                     finish()
                                 }.create()
                         alertIsp.show()

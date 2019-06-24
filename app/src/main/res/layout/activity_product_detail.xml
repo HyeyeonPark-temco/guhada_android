@@ -120,10 +120,9 @@
             android:visibility="@{viewModel.menuVisibility,default = visible}"
             app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"
             app:layout_constraintEnd_toEndOf="@+id/scrollview_productdetail"
-            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"/>
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail" />
 
         <Button
-            android:visibility="@{viewModel.bottomBtnVisibility}"
             android:id="@+id/button_productdetail_bag"
             style="@style/InactivatedButtonStyle"
             android:layout_width="0dp"
@@ -134,13 +133,13 @@
             android:onClick="@{()->viewModel.onClickBag()}"
             android:text="@string/productdetail_button_bag"
             android:textSize="@dimen/text_18"
+            android:visibility="@{viewModel.bottomBtnVisibility}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintRight_toLeftOf="@id/button_productdetail_payment"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/button_productdetail_payment" />
 
         <Button
-            android:visibility="@{viewModel.bottomBtnVisibility}"
             android:id="@+id/button_productdetail_payment"
             style="@style/ActivatedButtonStyle"
             android:layout_width="0dp"
@@ -150,10 +149,11 @@
             android:onClick="@{()->viewModel.onClickPayment()}"
             android:text="@string/productdetail_button_buy"
             android:textSize="@dimen/text_18"
+            android:visibility="@{viewModel.bottomBtnVisibility}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/button_productdetail_bag" />
+            app:layout_constraintLeft_toRightOf="@id/button_productdetail_bag"
+            app:layout_constraintRight_toRightOf="parent" />
         <!--</LinearLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

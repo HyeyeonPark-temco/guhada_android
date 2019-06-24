@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
-            name="review"
-            type="io.temco.guhada.data.model.ReviewSummary" />
+            name="reviewContent"
+            type="io.temco.guhada.data.model.ReviewResponseContent" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+    >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="18dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -22,7 +26,8 @@
                 android:layout_height="40dp"
                 android:background="@drawable/oval_all_grey"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:ovalImageUrl="@{reviewContent.review.profileImageUrl}" />
 
             <LinearLayout
                 android:id="@+id/linearLayout14"
@@ -60,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
-                    android:text="@string/dummy_content_singleline"
+                    android:text="@{reviewContent.review.userNickname}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintStart_toEndOf="@+id/frameLayout3"
@@ -123,15 +128,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:layout_marginStart="9dp"
+                android:rating="@{reviewContent.review.getRating()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView7"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout14" />
 
             <TextView
                 android:id="@+id/textView88"
-                android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="@string/productdetail_review_option"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_12"
@@ -195,7 +201,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="작아요"
+                    android:text="@{reviewContent.review.sizeSatisfaction}"
                     android:textColor="@color/common_blue_purple"
                     android:textSize="@dimen/text_11" />
             </LinearLayout>
@@ -237,7 +243,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="작아요"
+                    android:text="@{reviewContent.review.colorSatisfaction}"
                     android:textColor="@color/common_blue_purple"
                     android:textSize="@dimen/text_11" />
             </LinearLayout>
@@ -279,73 +285,78 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="작아요"
+                    android:text="@{reviewContent.review.lengthSatisfaction}"
                     android:textColor="@color/common_blue_purple"
                     android:textSize="@dimen/text_11" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textview_productdetail_reviewcontent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dummy_content"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/greyish_brown_two"
-            android:textSize="@dimen/text_13"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout15" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@{reviewContent.review.textReview}"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout15" />
 
             <TextView
                 android:id="@+id/textview_productdetail_reviewdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dummy_content_singleline"
                 android:layout_marginTop="11dp"
+                android:text="@{reviewContent.review.createdAt}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_13"
-                app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_reviewcontent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_reviewcontent" />
 
             <FrameLayout
                 android:id="@+id/file"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textview_productdetail_reviewdate" />
 
             <LinearLayout
-                android:layout_marginTop="22dp"
-                app:layout_constraintTop_toBottomOf="@+id/file"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/file">
+
                 <TextView
-                    android:layout_gravity="center"
-                    android:text="@string/productdetail_review_like"
-                    android:textColor="@color/greyish_brown_two"
-                    android:textSize="@dimen/text_13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <CheckBox
-                    android:layout_marginStart="5dp"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:button="@null"
-                    android:background="@drawable/selector_like_productdetail"/>
+                    android:text="@string/productdetail_review_like"
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_13" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/selector_like_productdetail"
+                    android:button="@null" />
+
                 <TextView
                     style="@style/TextRegular"
-                    android:layout_gravity="center"
-                    android:text="77"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@{reviewContent.getLikeCount()}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -357,6 +368,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_reviewdate">
 
                 <TextView
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/productdetail_comment"
@@ -371,6 +383,7 @@
                     android:background="@color/white_six" />
 
                 <TextView
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/productdetail_report"
@@ -379,5 +392,12 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/view_productdetailreview_line"
+            android:layout_marginTop="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_six"/>
     </LinearLayout>
 </layout>

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel" />
@@ -21,7 +23,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
 
             <TextView
                 style="@style/ProductDetailTitleBlackTextStyle"
@@ -33,12 +36,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:visibility="@{viewModel.closeButtonVisibility}"
                 android:id="@+id/imagebutton_productdetail_menuclose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->viewModel.onClickCloseMenu()}"
                 android:src="@drawable/close_btn"
+                android:visibility="@{viewModel.closeButtonVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,14 +51,14 @@
             android:id="@+id/recyclerview_productdetail_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="@{viewModel.product.options.size() == 0 ? View.GONE : View.VISIBLE}"
             app:productOption="@{viewModel.product.options}" />
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="34dp"
-            android:layout_marginTop="20dp"
             android:background="@drawable/border_all_whitethree"
             android:orientation="horizontal">
 
@@ -65,8 +68,7 @@
                 android:layout_height="match_parent"
                 android:onClick="@{()->viewModel.onClickMinus()}"
                 android:scaleType="center"
-                android:src="@drawable/detail_btn_quantity_minus_off"
-            />
+                android:src="@drawable/detail_btn_quantity_minus_off" />
 
             <View
                 android:layout_width="1dp"
@@ -94,8 +96,7 @@
                 android:layout_height="match_parent"
                 android:onClick="@{()->viewModel.onClickPlus()}"
                 android:scaleType="center"
-                android:src="@drawable/detail_btn_quantity_plus_on"
-              />
+                android:src="@drawable/detail_btn_quantity_plus_on" />
         </LinearLayout>
 
 
@@ -120,7 +121,7 @@
                 style="@style/TextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/common_price_format(viewModel.totalPrice)}"
+                android:text="@{ @string/common_price_format(viewModel.totalPrice)}"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_24"
                 app:layout_constraintBottom_toBottomOf="parent"

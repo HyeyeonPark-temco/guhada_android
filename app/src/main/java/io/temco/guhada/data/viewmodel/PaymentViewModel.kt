@@ -7,6 +7,8 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -31,7 +33,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
     var selectedShippingAddress: UserShipping = UserShipping()
 
-    var selectedShippingMessage = ObservableField<String>("배송메모를 선택해 주세요.")
+    var selectedShippingMessage = ObservableField<String>(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
         @Bindable
         get() = field
 
@@ -220,7 +222,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 if (success) {
                     val model = o as BaseModel<*>
                     if (model.resultCode == 200) {
-                       this.purchaseOrderResponse.postValue( model.data as PurchaseOrderResponse)
+                        this.purchaseOrderResponse.postValue(model.data as PurchaseOrderResponse)
                     } else {
                         listener.showMessage(o.message)
                     }
@@ -278,9 +280,13 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 결제하기 버튼 클릭
     fun onClickPay() {
+        val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress)
+        if (selectedShippingMessage.get().equals(defaultShippingMessage)) {
+            listener.showMessage("배송 메세지를 선택해주세요")
+            return
+        }
+
         if (termsChecked) {
-
-
             for (i in 0 until paymentWays.size) {
                 if (paymentWays[i]) {
                     selectedMethod = order.paymentsMethod[i]

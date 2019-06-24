@@ -23,6 +23,7 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
@@ -117,7 +118,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void showMessage(String message) {
-                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                ToastUtil.showMessage(message);
+//                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
             }
 
             @Override

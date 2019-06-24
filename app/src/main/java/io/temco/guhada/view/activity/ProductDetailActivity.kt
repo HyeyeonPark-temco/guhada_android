@@ -22,6 +22,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
@@ -39,6 +40,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
+    private val INVALID_DEAL_ID = -1
     private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var claimFragment: ProductDetailClaimFragment
@@ -55,7 +57,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         mViewModel = ProductDetailViewModel(this)
 
 
-        mViewModel.dealId = intent.getLongExtra("productId", resources.getString(R.string.temp_productId).toLong())
+        // mViewModel.dealId = intent.getIntExtra(Info.INTENT_DEAL_ID, resources.getString(R.string.temp_productId).toInt()).toLong()
+        mViewModel.dealId = intent.getIntExtra(Info.INTENT_DEAL_ID, INVALID_DEAL_ID).toLong()
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
@@ -89,13 +92,15 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
                 mViewModel.getSellerInfo()
                 initOptionMenu()
-                initClaims(resources.getString(R.string.temp_productId).toInt())
-                initReview(resources.getString(R.string.temp_productId).toLong())
+                initClaims()
+                initReview()
             }
         })
 
-        loadingIndicatorUtil.execute {
-            mViewModel.getDetail()
+        if (mViewModel.dealId > INVALID_DEAL_ID) {
+            loadingIndicatorUtil.execute {
+                mViewModel.getDetail()
+            }
         }
 
         mBinding.viewModel = mViewModel
@@ -109,17 +114,21 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         if (::loadingIndicatorUtil.isInitialized && loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
     }
 
-    private fun initClaims(productId: Int) {
-        claimFragment = ProductDetailClaimFragment(productId)
+    private fun initClaims() {
+        claimFragment = ProductDetailClaimFragment(mViewModel.dealId.toInt())
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, claimFragment)
             it.commitAllowingStateLoss()
         }
     }
 
-    private fun initReview(productId: Long) {
+    private fun initReview() {
         reviewFragment = ProductDetailReviewFragment()
-        reviewFragment.setProductId(productId = productId)
+        reviewFragment.notifySummary = { averageReviewsRating ->
+            mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
+            mBinding.executePendingBindings()
+        }
+        reviewFragment.setProductId(productId = mViewModel.dealId)
 
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, reviewFragment)
@@ -159,12 +168,15 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
 
             override fun showMessage(message: String) {
-                Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
+                ToastUtil.showMessage(message)
+//                Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
             }
 
             override fun dismissLoadingIndicator() {
                 if (loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
             }
+
+
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE

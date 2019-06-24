@@ -140,6 +140,15 @@ interface LoginService {
     @GET("/users/{userId}/shipping-addresses")
     fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<List<UserShipping>>>
 
+    /**
+     * 상품 리뷰 평점 및 그래프 정보 조회 API
+     */
     @GET("/products/{productId}/reviews/summary")
     fun getProductReviewSummary(@Path("productId") productId: Long): Call<BaseModel<ReviewSummary>>
+
+    /**
+     * 상품 리뷰 조회 API
+     */
+    @GET("/products/{productId}/reviews")
+    fun getProductReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
 }

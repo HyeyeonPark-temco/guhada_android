@@ -13,6 +13,12 @@ import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 class ProductDetailMenuViewModel(private val listener: ProductDetailActivity.OnMenuListener) : BaseObservableViewModel() {
     var closeButtonVisibility = View.VISIBLE
     var product: Product = Product()
+        set(value) {
+            field = value
+
+            totalPrice = ObservableInt(if (product.options?.isEmpty() == true) product.sellPrice else 0)
+            notifyPropertyChanged(BR.totalPrice)
+        }
     var totalPrice = ObservableInt(0)
         @Bindable
         get() = field

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.view.activity.CategorySubActivity;
 import io.temco.guhada.view.activity.FindAccountActivity;
@@ -29,6 +30,7 @@ import io.temco.guhada.view.activity.TermsActivity;
 import io.temco.guhada.view.activity.VerifyPhoneActivity;
 import io.temco.guhada.view.activity.WriteClaimActivity;
 import io.temco.guhada.view.adapter.base.TestListAdapter;
+import retrofit2.http.Path;
 
 public class TestListActivity extends AppCompatActivity {
 
@@ -86,7 +88,9 @@ public class TestListActivity extends AppCompatActivity {
                     break;
 
                 case 8: // Product Detail
-                    startActivity(ProductDetailActivity.class);
+                    Intent intent = new Intent(TestListActivity.this, ProductDetailActivity.class);
+                    intent.putExtra(Info.INTENT_DEAL_ID, Integer.parseInt(getResources().getString(R.string.temp_productId)));
+                    startActivity(intent);
                     break;
 
                 case 9: // Product Detail

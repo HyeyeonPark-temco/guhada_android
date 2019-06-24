@@ -5,7 +5,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="dummy_content_singleline">DUMMY CONTENT</string>
     <string name="dummy_content_number">105000</string>
-    <string name="temp_productId">2788</string>
+    <string name="temp_productId">10252</string>
 
     <!-- API KEY -->
     <string name="kakao_app_key">b6e5b0618148f61889b9e77c8a9a0e90</string>
@@ -266,6 +266,11 @@
     <string name="productdetail_review_good">만족</string>
     <string name="productdetail_review_normal">보통</string>
     <string name="productdetail_review_bad">불만족</string>
+    <string name="productdetail_review_empty">작성된 상품 리뷰가 없습니다.</string>
+    <string name="productdetail_review_description1">첫 상품 리뷰를 작성하고 </string>
+    <string name="productdetail_review_description2">최대 2,000점의 포인트 혜택</string>
+    <string name="productdetail_review_description3">을 누려보세요!</string>
+    <string name="productdetail_review_emptybutton">첫 리뷰 작성하기</string>
 
     <string name="productdetail_button_bag">장바구니</string>
     <string name="productdetail_button_buy">바로구매</string>
@@ -331,7 +336,7 @@
     <string name="productdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
     <string name="productdetail_qna_button_contactforproduct">상품 문의하기</string>
     <string name="productdetail_qna_button_contactwithseller">판매자 문의하기</string>
-    <string name="productdetail_qna_button_moreclaim">상품 문의 10개 더보기</string>
+    <string name="productdetail_qna_button_moreclaim">상품 문의 5개 더보기</string>
 
     <string name="productdetail_review_close">닫기</string>
     <string name="productdetail_review_all">전체리뷰</string>
@@ -339,7 +344,7 @@
     <string name="productdetail_review_size">수치포함</string>
     <string name="productdetail_review_reply">댓글포함</string>
     <string name="productdetail_review_title">리뷰</string>
-    <string name="productdetail_review_button_morereview">상품 리뷰 10개 더보기</string>
+    <string name="productdetail_review_button_morereview">상품 리뷰 5개 더보기</string>
 
     <string name="productdetail_review_like">도움되었어요</string>
     <string name="productdetail_review_height">키:</string>
@@ -389,6 +394,7 @@
     <string name="payment_text_transfer">무통장 입금</string>
     <string name="payment_text_terms">구매 및 결제대행서비스 이용약관 동의</string>
 
+    <string name="payment_text_defaultshippingaddress">배송메모를 선택해 주세요</string>
     <string name="payment_text_emptyshippingaddress">등록된 배송지가 없습니다.</string>
     <string name="payment_hint_shippingmemo">배송메모를 선택해 주세요</string>
     <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
