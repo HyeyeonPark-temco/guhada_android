@@ -81,6 +81,7 @@
 
     <!-- SIDE MENU -->
     <string name="side_menu_login_need">로그인 해주세요</string>
+    <string name="side_menu_login_out">로그아웃</string>
     <string name="side_menu_sub_sale">세일</string>
     <string name="side_menu_sub_new_product">신상품</string>
     <string name="side_menu_sub_power_deal">파워딜</string>

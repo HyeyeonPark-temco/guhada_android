@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.auth0.android.jwt.JWT;
 import com.google.android.material.tabs.TabLayout;
 
 import io.temco.guhada.BuildConfig;
@@ -18,6 +19,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.Token;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -28,8 +30,9 @@ import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 public class MainActivity extends BindActivity<ActivityMainBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private final int REQUEST_CODE_CATEGORY = 11;
-    private final int REQUEST_CODE_BRAND = 12;
+    private final int REQUEST_CODE_LOGIN = 101;
+    private final int REQUEST_CODE_CATEGORY = 201;
+    private final int REQUEST_CODE_BRAND = 202;
     //
     private MainPagerAdapter mPagerAdapter;
     private CategoryListDialog mCategoryListDialog;
@@ -57,12 +60,13 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
     @Override
     protected void init() {
-        if (mBinding != null) {
-            setFullWideDrawerLayout();
-            initMainPager();
-            initSideMenu();
-        }
         CommonUtil.debug("" + BuildConfig.BuildType);
+        // Init
+        setFullWideDrawerLayout();
+        initMainPager();
+        initSideMenu();
+        // Check
+        checkLogin();
     }
 
     @Override
@@ -71,10 +75,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
             ////////////////////////////////////////////////
             // Side Menu
-            case R.id.layout_login:
-                CommonUtil.debug(getBaseTag(), "layout_login");
-                break;
-
             case R.id.image_home:
                 CommonUtil.debug(getBaseTag(), "image_home");
                 break;
@@ -124,6 +124,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                case REQUEST_CODE_LOGIN:
+                    changeLoginStatus(checkToken());
+                    break;
+
                 case REQUEST_CODE_CATEGORY:
                     changeDrawerLayout(false, false);
                     if (data != null) {
@@ -154,12 +158,71 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     // PRIVATE
     ////////////////////////////////////////////////
 
+    private void checkLogin() {
+        if (checkToken()) {
+            changeLoginStatus(true);
+        } else {
+            startLoginActivity();
+            changeLoginStatus(false);
+        }
+    }
+
+    private void changeLoginStatus(boolean isLogin) {
+        if (mBinding != null) {
+            if (isLogin) {
+                mBinding.layoutSideMenu.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out));
+                mBinding.layoutSideMenu.layoutHeader.layoutLogin.setOnClickListener(v -> {
+                    startLoginActivity();
+                    Preferences.clearToken();
+                    changeLoginStatus(false);
+                });
+            } else {
+                mBinding.layoutSideMenu.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_need));
+                mBinding.layoutSideMenu.layoutHeader.layoutLogin.setOnClickListener(v -> {
+                    startLoginActivity();
+                });
+            }
+        }
+    }
+
+    private boolean checkToken() {
+        Token token = Preferences.getToken();
+        if (token == null) return false;
+        int current = (int) (System.currentTimeMillis() / 1000L);
+        int exp = new JWT(token.getAccessToken()).getClaim("exp").asInt();
+        if (exp > current) {
+            return true;
+        } else {
+            Preferences.clearToken();
+            return false;
+        }
+    }
+
+    private void startLoginActivity() {
+        startActivityForResult(new Intent(this, LoginActivity.class), REQUEST_CODE_LOGIN);
+    }
+
+    // Drawer
     private void setFullWideDrawerLayout() {
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mBinding.layoutSideMenu.getRoot().getLayoutParams();
         params.width = getResources().getDisplayMetrics().widthPixels;
         mBinding.layoutSideMenu.getRoot().setLayoutParams(params);
     }
 
+    private void changeDrawerLayout(boolean isOpen) {
+        changeDrawerLayout(isOpen, true);
+    }
+
+    private void changeDrawerLayout(boolean isOpen, boolean animate) {
+        if (isOpen &&
+                !mBinding.layoutDrawer.isDrawerOpen(mBinding.layoutSideMenu.getRoot())) {
+            mBinding.layoutDrawer.openDrawer(mBinding.layoutSideMenu.getRoot(), animate);
+        } else {
+            mBinding.layoutDrawer.closeDrawer(mBinding.layoutSideMenu.getRoot(), animate);
+        }
+    }
+
+    // Main Pager
     private void initMainPager() {
         // Adapter
         if (mPagerAdapter == null)
@@ -260,6 +323,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         }
     }
 
+    // Side Menu
     private void initSideMenu() {
         // Listener
         mBinding.layoutSideMenu.setClickListener(this);
@@ -274,19 +338,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.layoutSideMenu.listContents.setAdapter(adapter);
     }
 
-    private void changeDrawerLayout(boolean isOpen) {
-        changeDrawerLayout(isOpen, true);
-    }
-
-    private void changeDrawerLayout(boolean isOpen, boolean animate) {
-        if (isOpen &&
-                !mBinding.layoutDrawer.isDrawerOpen(mBinding.layoutSideMenu.getRoot())) {
-            mBinding.layoutDrawer.openDrawer(mBinding.layoutSideMenu.getRoot(), animate);
-        } else {
-            mBinding.layoutDrawer.closeDrawer(mBinding.layoutSideMenu.getRoot(), animate);
-        }
-    }
-
+    // Category
     private void startCategoryByHierarchy(Type.Category type, int[] hierarchies) {
         switch (type) {
             case ALL:

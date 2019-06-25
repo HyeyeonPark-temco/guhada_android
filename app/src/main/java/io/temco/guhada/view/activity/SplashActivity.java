@@ -1,5 +1,9 @@
 package io.temco.guhada.view.activity;
 
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+
 import java.util.List;
 
 import io.temco.guhada.R;
@@ -12,9 +16,6 @@ import io.temco.guhada.databinding.ActivitySplashBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 
 public class SplashActivity extends BindActivity<ActivitySplashBinding> {
-
-    // -------- LOCAL VALUE --------
-    // -----------------------------
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -38,12 +39,7 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
     @Override
     protected void init() {
         getCategories();
-        getAllBrands();
     }
-
-    ////////////////////////////////////////////////
-    // PUBLIC
-    ////////////////////////////////////////////////
 
     ////////////////////////////////////////////////
     // PRIVATE
@@ -54,6 +50,7 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
             if (success) {
                 Preferences.setCategories((List<Category>) o);
             }
+            getAllBrands();
         });
     }
 
@@ -62,7 +59,15 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
             if (success) {
                 Preferences.setBrands((List<Brand>) o);
             }
+            check();
         });
+    }
+
+    private void check() {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }, 1000);
     }
 
     ////////////////////////////////////////////////
