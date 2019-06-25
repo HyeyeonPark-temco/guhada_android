@@ -240,7 +240,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void addCategoryTab(Category data, boolean isSelect) {
         if (getContext() != null) {
             View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
-            ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
+            // ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
+            ((TextView) v.findViewById(R.id.text_title)).setText(data.title);
             TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
             tab.setTag(data); // Tag
             mBinding.layoutHeader.layoutTab.addTab(tab);

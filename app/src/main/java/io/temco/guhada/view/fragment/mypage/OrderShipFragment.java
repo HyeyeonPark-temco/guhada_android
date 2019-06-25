@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnOrderShipListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.DateUtil;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.data.model.MyOrderItem;
 import io.temco.guhada.databinding.FragmentMypageOrderShipBinding;
@@ -203,8 +205,9 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
     private void initCalendar() {
         setPeriod(0);
         //
-        mBinding.layoutCalendar.textDateFrom.setText("");
-        mBinding.layoutCalendar.textDateTo.setText("");
+        String today = DateUtil.getTodayToString(Type.DateFormat.TYPE_1);
+        mBinding.layoutCalendar.textDateFrom.setText(today);
+        mBinding.layoutCalendar.textDateTo.setText(today);
     }
 
     private void setPeriod(int position) {

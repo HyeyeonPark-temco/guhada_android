@@ -14,12 +14,20 @@ android {
     }
     buildTypes {
         debug {
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.DEV"
+        }
+        qa {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.QA"
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.RELEASE"
         }
     }
     compileOptions {
@@ -98,7 +106,7 @@ dependencies {
 
     // OKHTTP INTEGRATION FOR GLIDE
     implementation libraryDependencies.okhttp
-    implementation (libraryDependencies.okhttpIntegration){
+    implementation(libraryDependencies.okhttpIntegration) {
         exclude group: 'glide-parent'
     }
 

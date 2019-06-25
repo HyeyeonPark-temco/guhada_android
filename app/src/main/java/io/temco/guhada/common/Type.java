@@ -3,6 +3,15 @@ package io.temco.guhada.common;
 public class Type {
 
     ////////////////////////////////////////////////
+    // Build
+    public enum Build {
+
+        DEV,
+        QA,
+        RELEASE
+    }
+
+    ////////////////////////////////////////////////
     // View
     public enum View {
         TEST,
@@ -343,6 +352,32 @@ public class Type {
                 return TEXT;
             } else {
                 return NONE;
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////
+    // DateFormat
+    public enum DateFormat {
+
+        TYPE_1("yyyy.MM.dd"),
+        TYPE_2("yyyy-MM-dd"),
+        TYPE_3("yyyy-MM-dd HH:mm:ss");
+
+        private String type;
+
+        DateFormat(String type) {
+            this.type = type;
+        }
+
+        public static String get(DateFormat type) {
+            switch (type) {
+                case TYPE_2:
+                    return TYPE_2.type;
+                case TYPE_3:
+                    return TYPE_3.type;
+                default:
+                    return TYPE_1.type;
             }
         }
     }

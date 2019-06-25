@@ -183,7 +183,7 @@ public class CommonUtil {
         Category all = new Category();
         all.type = Type.Category.ALL;
         all.id = id;
-        all.name = title;
+        // all.name = title;
         all.title = title;
         all.fullDepthName = depth;
         all.hierarchies = hierarchies;

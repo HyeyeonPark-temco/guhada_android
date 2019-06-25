@@ -101,7 +101,8 @@ public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding
 
     private void initList() {
         // Title
-        mBinding.layoutHeader.setTitle(mCategoryData.name);
+        // mBinding.layoutHeader.setTitle(mCategoryData.name);
+        mBinding.layoutHeader.setTitle(mCategoryData.title);
         // List
         if (mCategoryData.children != null && mCategoryData.children.size() > 0) {
             // Category
