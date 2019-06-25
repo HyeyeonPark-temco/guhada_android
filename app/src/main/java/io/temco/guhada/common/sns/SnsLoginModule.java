@@ -83,8 +83,8 @@ public class SnsLoginModule {
                         if (successGetProfile) {
                             NaverUser naverUser = (NaverUser) o;
 
-                            LoginServer.checkExistSnsUser((success12, obj) -> {
-                                if (success12) {
+                            LoginServer.checkExistSnsUser((successCheckExist, obj) -> {
+                                if (successCheckExist) {
                                     BaseModel model = (BaseModel) obj;
                                     if (model.resultCode == Flag.ResultCode.SUCCESS) {
                                         naverLogin(naverUser, serverListener);
@@ -104,12 +104,8 @@ public class SnsLoginModule {
                 } else {
                     String errorCode = mNaverLoginModule.getLastErrorCode(context).getCode();
                     String errorDesc = mNaverLoginModule.getLastErrorDesc(context);
-                    CommonUtil.debug("[NAVER] LOGIN-FAILED: " + errorDesc);
-
-                    Toast.makeText(context, "errorCode:" + errorCode
-                            + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT).show();
-
-                }
+                    CommonUtil.debug("[NAVER] LOGIN-FAILED: " + "errorCode:" + errorCode + ", errorDesc:" + errorDesc);
+            }
             }
         });
     }

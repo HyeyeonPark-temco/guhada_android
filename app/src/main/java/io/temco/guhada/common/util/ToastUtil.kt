@@ -17,10 +17,14 @@ import io.temco.guhada.databinding.ViewToastBinding
 
 @SuppressLint("ViewConstructor")
 object ToastUtil : FrameLayout(BaseApplication.getInstance().applicationContext) {
-    private var mBinding: ViewToastBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_toast, this, false)
+    private lateinit var mBinding: ViewToastBinding
 
     @JvmStatic
     fun showMessage(message: String) {
+        if (!::mBinding.isInitialized) {
+            mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_toast, this, false)
+        }
+
         mBinding.message = message
         mBinding.executePendingBindings()
 
