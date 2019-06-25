@@ -306,6 +306,9 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                     else -> baseProduct.dealOptionId = null
                 }
 
+
+                mViewModel.menuVisibility.set(View.GONE)
+                mViewModel.notifyPropertyChanged(BR.menuVisibility)
                 Intent(this@ProductDetailActivity, PaymentActivity::class.java).let { intent ->
                     intent.putExtra("quantity", quantity)
                     intent.putExtra("product", baseProduct)

@@ -19,7 +19,7 @@ class Payment : Serializable {
     var requestAt = intArrayOf()
     var vbankBankName = ""
     var vbankDepositorName = ""
-    var vbankExpireAt = ""
+    var vbankExpireAt = intArrayOf()
     var vbankNo = ""
     var vbankRemitterName = ""
 
