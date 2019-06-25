@@ -207,7 +207,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         val purchaseId = o.data as Double // double로 내려옴
                         this@PaymentViewModel.setOrderCompleted(purchaseId)
                     } else {
-                        listener.showMessage(o.message)
+                        listener.showMessage(if (o.message == null) o.data.toString() else o.message)
                     }
                 } else {
                     listener.showMessage("ORDER APPROVAL ERROR")

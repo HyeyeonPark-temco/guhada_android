@@ -9,4 +9,5 @@ public interface OnSnsLoginListener {
     void redirectMainActivity(Token data);
 
     void kakaoLogin(UserProfile result);
+    void showMessage(String message);
 }

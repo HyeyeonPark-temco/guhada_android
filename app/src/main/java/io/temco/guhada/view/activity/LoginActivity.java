@@ -75,6 +75,11 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 Token token = Preferences.getToken();
                 Toast.makeText(LoginActivity.this, "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void showMessage(String message) {
+                ToastUtil.showMessage(message);
+            }
         };
 
         SnsLoginModule.initFacebookLogin(getSnsLoginServerListener());

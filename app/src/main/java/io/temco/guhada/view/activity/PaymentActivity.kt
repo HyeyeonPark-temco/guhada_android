@@ -18,6 +18,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Order
@@ -29,6 +30,7 @@ import io.temco.guhada.view.adapter.PaymentSpinnerAdapter
 import io.temco.guhada.view.adapter.PaymentWayAdapter
 
 class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
+    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: PaymentViewModel
 
     override fun getBaseTag(): String = PaymentActivity::class.java.simpleName
@@ -37,6 +39,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     override fun getViewType(): Type.View = Type.View.PAYMENT
 
     override fun init() {
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(this@PaymentActivity)
         mViewModel = PaymentViewModel(object : OnPaymentListener {
             override fun setUsedPointViewFocused() {
                 mBinding.includePaymentDiscount.edittextPaymentDiscountpoint.requestFocus()
@@ -68,6 +71,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
+            mLoadingIndicatorUtil.hide()
             Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->
                 intent.putExtra("purchaseOrderResponse", mViewModel.purchaseOrderResponse.value)
                 intent.putExtra("shippingMemo", mViewModel.selectedShippingMessage.get())
@@ -104,6 +108,11 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mLoadingIndicatorUtil.hide()
     }
 
     private fun initDiscountView() {
@@ -150,25 +159,33 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                Flag.RequestCode.LOGIN -> {
+
+
+
+        when (requestCode) {
+            Flag.RequestCode.LOGIN -> {
+                if (resultCode == Activity.RESULT_OK) {
                     mViewModel.callWithToken { accessToken ->
                         Log.e("AccessToken", accessToken)
                         mViewModel.addCartItem(accessToken)
                     }
+                } else {
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
                 }
-                Flag.RequestCode.PAYMENT_WEBVIEW -> {
+            }
+            Flag.RequestCode.PAYMENT_WEBVIEW -> {
+                if (resultCode == Activity.RESULT_OK) {
+//                    mLoadingIndicatorUtil.show()
                     val pgAuth = data?.getSerializableExtra("pgAuth")
                     if (pgAuth != null) {
                         mViewModel.pgAuth = pgAuth as PGAuth
                         mViewModel.setOrderApproval()
                     }
+                } else {
+                   ToastUtil.showMessage("결제가 취소되었습니다.")
                 }
             }
-        } else {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
         }
 
     }
