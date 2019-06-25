@@ -1,18 +1,19 @@
 package io.temco.guhada.view.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
-import android.util.Log
+import android.view.View
 import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-import android.widget.Toast
 import androidx.core.net.toUri
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.PGAuth
 import io.temco.guhada.data.model.PGResponse
@@ -27,10 +28,10 @@ import java.net.URLEncoder
 
 class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
     private var mViewModel: PaymentWebViewViewModel = PaymentWebViewViewModel()
+    val RESULT_CODE_SUCCESS = "00"
     val SCHEME = "ispmobile://"
     val INSTALL_URL = "http://mobile.vpay.co.kr/jsp/MISP/andown.jsp"
     var URL = ""
-    val DEV_CARD_URL = "https://devmobpay.lpay.com:410/smart/wcard/"
     val SELLER_ID = "P_MID"
     val ORDER_ID = "P_OID"
     val ORDER_PRICE = "P_AMT"
@@ -47,7 +48,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
     val STORE_NAME = "P_MNAME"
     val CHARSET = "EUC-KR"
 
-    // 신용카드
+    // 신용카드 전용 필드
     val COMPLEX_FIELD = "P_RESERVED"
 
     override fun getBaseTag(): String = PaymentWebViewActivity::class.java.simpleName
@@ -59,7 +60,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         mViewModel.pgResponse = intent.getSerializableExtra("pgResponse") as PGResponse
 
         // 전 결제 방식 공통 필드
-
         var params = "$SELLER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgMid, CHARSET)}&" +
                 "$ORDER_ID=${URLEncoder.encode(mViewModel.pgResponse.pgOid, CHARSET)}&" +
                 "$ORDER_PRICE=${URLEncoder.encode(mViewModel.pgResponse.pgAmount, CHARSET)}&" +
@@ -102,7 +102,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         mBinding.webviewPayment.settings.allowFileAccess = true
         mBinding.webviewPayment.settings.allowContentAccess = true
 
-
         mBinding.webviewPayment.webViewClient = PaymentWebViewClient()
         mBinding.webviewPayment.webChromeClient = object : WebChromeClient() {
             override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
@@ -122,7 +121,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 return true
             }
         }
-
 
         // Insecurity 페이지 허용
         mBinding.webviewPayment.settings.mixedContentMode = MIXED_CONTENT_ALWAYS_ALLOW
@@ -144,8 +142,8 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
             super.onPageStarted(view, url, favicon)
 
             if (url == "http://13.209.10.68/lotte/mobile/privyCertifyResult") {
-                view?.evaluateJavascript("(function(){return window.document.body.outerHTML})();"
-                ) { html ->
+                mBinding.webviewPayment.visibility = View.GONE
+                view?.evaluateJavascript("(function(){return window.document.body.outerHTML})();") { html ->
                     StringEscapeUtils.unescapeJava(html).let {
                         val document = Jsoup.parse(it)
                         val pgTid = document.getElementById("pgTid")?.`val`() ?: ""
@@ -171,48 +169,56 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                         val vbankReceivedNo = document.getElementById("vbankReceivedNo")?.`val`()
                                 ?: ""
 
-                        Log.e("결제완료", pgTid)
+                        CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid")
 
-                        PGAuth().apply {
-                            this.pgTid = pgTid
-                            this.resultCode = resultCode
-                            this.resultMsg = resultMsg
-                            this.pgKind = pgKind
-                            this.pgMid = pgMid
-                            this.pgAmount = pgAmount
-                            this.pgOid = pgOid
-                            this.pgTidSample = pgTidSample
-                            this.cardQuota = mViewModel.pgResponse.cardQuota
-                            this.cardNo = mViewModel.pgResponse.cardCd ?: ""
-                            this.returnUrl = mViewModel.pgResponse.returnUrl
+                        if (resultCode == RESULT_CODE_SUCCESS) {
+                            PGAuth().apply {
+                                this.pgTid = pgTid
+                                this.resultCode = resultCode
+                                this.resultMsg = resultMsg
+                                this.pgKind = pgKind
+                                this.pgMid = pgMid
+                                this.pgAmount = pgAmount
+                                this.pgOid = pgOid
+                                this.pgTidSample = pgTidSample
+                                this.cardQuota = mViewModel.pgResponse.cardQuota
+                                this.cardNo = mViewModel.pgResponse.cardCd ?: ""
+                                this.returnUrl = mViewModel.pgResponse.returnUrl
 
-                            this.authToken = authToken
-                            this.authUrl = authUrl
-                            this.netCancel = netCancelUrl
-                            this.checkAckUrl = checkAckUrl
+                                this.authToken = authToken
+                                this.authUrl = authUrl
+                                this.netCancel = netCancelUrl
+                                this.checkAckUrl = checkAckUrl
 
-                            this.vbankReceivedCd = vbankReceivedCd
-                            this.vbankReceivedNm = vbankReceivedNm
-                            this.vbankReceivedNo = vbankReceivedNo
+                                // 무통자 입금(가상계좌)
+                                this.vbankReceivedCd = vbankReceivedCd
+                                this.vbankReceivedNm = vbankReceivedNm
+                                this.vbankReceivedNo = vbankReceivedNo
 
+                                this.parentMethodCd = mViewModel.pgResponse.parentMethodCd
+                                this.purchaseEmail = mViewModel.pgResponse.purchaseEmail
+                                this.purchaseUserName = mViewModel.pgResponse.purchaseUserName
+                                this.purchasePhone = mViewModel.pgResponse.purchasePhone
+                                this.productName = mViewModel.pgResponse.productName
 
-                            this.parentMethodCd = mViewModel.pgResponse.parentMethodCd
-                            this.purchaseEmail = mViewModel.pgResponse.purchaseEmail
-                            this.purchaseUserName = mViewModel.pgResponse.purchaseUserName
-                            this.purchasePhone = mViewModel.pgResponse.purchasePhone
-                            this.productName = mViewModel.pgResponse.productName
-                        }.let { pgAuth ->
-                            intent.putExtra("pgAuth", pgAuth)
-                            setResult(RESULT_OK, intent)
+                                this.web = false
+                            }.let { pgAuth ->
+                                intent.putExtra("pgAuth", pgAuth)
+                                setResult(RESULT_OK, intent)
+                                finish()
+                            }
+                        } else {
+                            setResult(Activity.RESULT_CANCELED, intent)
                             finish()
                         }
+
                     }
                 }
             }
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            Log.e("<LPAY>", url.toString())
+            CommonUtil.debug("<LPAY>", url.toString())
 
             if (!url?.startsWith("http://")!! && !url.startsWith("https://") && !url.startsWith("javascript")) {
                 val intent: Intent
@@ -226,9 +232,8 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                     startActivity(intent)
                 } catch (e: ActivityNotFoundException) {
                     // ISP 앱이 없다면 알림을 통해 처리
-
                     if (url.startsWith(SCHEME)) {
-                        val alertIsp = AlertDialog.Builder(this@PaymentWebViewActivity)
+                        AlertDialog.Builder(this@PaymentWebViewActivity)
                                 .setIcon(R.mipmap.ic_launcher_round)
                                 .setTitle("NOTIFICATION")
                                 .setMessage("모바일 ISP 어플리케이션이 설치되어있지 않습니다.\n설치를 눌러 진행해 주십시요.\n취소를 누르면 결제가 취소됩니다.")
@@ -238,11 +243,8 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                                 }
                                 .setNegativeButton("취소") { dialog, which ->
                                     ToastUtil.showMessage("(-1)결제를 취소하셨습니다.")
-//                                    Toast.makeText(this@PaymentWebViewActivity, "(-1)결제를 취소하셨습니다.", Toast.LENGTH_SHORT).show()
                                     finish()
-                                }.create()
-                        alertIsp.show()
-                        // SHOW ISP
+                                }.create().show()
                         return false
                     } else if (url.startsWith("intent://")) {
                         try {
@@ -252,17 +254,26 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                             excepIntent.data = "market://search?q=$pNm".toUri()
                             startActivity(excepIntent)
                         } catch (e: URISyntaxException) {
-                            Log.e("<LPAY>", "INTENT:// 인입될 시 예외 처리 오류: $e")
+                            catchException("<LPAY>", "INTENT:// 진입될 시 예외 처리 오류: $e")
+                        } catch (e: ActivityNotFoundException) {
+                            catchException("<LPAY>", "INTENT:// AVD에서 진입될 시 예외 처리 오류: $e")
                         }
                     }
-
                 }
             } else {
                 view?.loadUrl(url)
                 return false
             }
             return true
-
         }
+    }
+
+    private fun catchException(tas: String, message: String) {
+        AlertDialog.Builder(this@PaymentWebViewActivity)
+                .setMessage("해당 외부 앱과 연결할 수 없습니다.")
+                .setPositiveButton("확인") { dialog, which ->
+                    finish()
+                }.create().show()
+        CommonUtil.debug(tas, message)
     }
 }
