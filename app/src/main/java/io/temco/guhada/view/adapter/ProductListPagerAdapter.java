@@ -89,7 +89,7 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
         f.setPosition(mFragmentList.size() - 1);
         // Title
         if (mChangeTitleListener != null) {
-            mChangeTitleListener.onSet(data.name);
+            mChangeTitleListener.onSet(data.title);
         }
         notifyDataSetChanged();
     }
@@ -111,7 +111,7 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
         int changeCount = getCount() - 1;
         // Title
         if (mChangeTitleListener != null && getCategoryCount() > 0) {
-            String title = mCategoryList.get(changeCount - 1).name;
+            String title = mCategoryList.get(changeCount - 1).title;
             mChangeTitleListener.onSet(title);
         }
         // Remove

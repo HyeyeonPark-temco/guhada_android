@@ -82,5 +82,5 @@ public class MyOrderItem {
     public String statusMessage; // 상태의 따른 메세지
 
 
-    public boolean checkReview = false;
+    public boolean checkReward = false;
 }

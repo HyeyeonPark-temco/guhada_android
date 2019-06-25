@@ -55,8 +55,8 @@ public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHold
         MyOrderItem data = getItem(position);
 
         // Review
-        holder.getBinding().textReview.setSelected(!data.checkReview);
-        if (!data.checkReview) {
+        holder.getBinding().textReview.setSelected(!data.checkReward);
+        if (!data.checkReward) {
             holder.getBinding().textReview.setTag(position);
             holder.getBinding().textReview.setOnClickListener(this);
         }
@@ -71,7 +71,7 @@ public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHold
             int position = (int) v.getTag();
             switch (v.getId()) {
                 case R.id.text_review:
-                    mListener.onReview(this, position, getItem(position));
+                    mListener.onReward(this, position, getItem(position));
                     break;
             }
         }

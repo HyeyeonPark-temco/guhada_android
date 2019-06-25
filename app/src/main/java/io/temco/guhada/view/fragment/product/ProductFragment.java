@@ -127,7 +127,8 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     private void addCategoryList() {
         if (mBinding != null && mCategoryData != null) {
             mListPagerAdapter.setOnAddCategoryListener(this::addCategoryChildFragment);
-            setTitle(mCategoryData.name);
+            // setTitle(mCategoryData.name);
+            setTitle(mCategoryData.title);
             addCategoryChildFragment(mCategoryData);
         }
     }

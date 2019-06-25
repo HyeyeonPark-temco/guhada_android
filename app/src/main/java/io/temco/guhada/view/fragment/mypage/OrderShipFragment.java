@@ -14,12 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnOrderShipListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.DateUtil;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.data.model.MyOrderItem;
 import io.temco.guhada.databinding.FragmentMypageOrderShipBinding;
 import io.temco.guhada.view.adapter.mypage.OrderShipListAdapter;
+import io.temco.guhada.view.custom.dialog.MessageDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
 public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBinding> implements View.OnClickListener {
@@ -104,8 +107,11 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
             }
 
             @Override
-            public void onReview(OrderShipListAdapter adapter, int position, MyOrderItem data) {
-                data.checkReview = true;
+            public void onReward(OrderShipListAdapter adapter, int position, MyOrderItem data) {
+                //
+                showRewardDialog();
+                //
+                data.checkReward = true;
                 adapter.changeItems(position, data);
             }
         });
@@ -199,8 +205,9 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
     private void initCalendar() {
         setPeriod(0);
         //
-        mBinding.layoutCalendar.textDateFrom.setText("");
-        mBinding.layoutCalendar.textDateTo.setText("");
+        String today = DateUtil.getTodayToString(Type.DateFormat.TYPE_1);
+        mBinding.layoutCalendar.textDateFrom.setText(today);
+        mBinding.layoutCalendar.textDateTo.setText(today);
     }
 
     private void setPeriod(int position) {
@@ -233,6 +240,12 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
                 mBinding.layoutCalendar.textYear.setSelected(true); //
                 break;
         }
+    }
+
+    private void showRewardDialog() {
+        MessageDialog md = new MessageDialog();
+        md.setMessage(getString(R.string.mypage_order_reward_message));
+        md.show(getFragmentManager(), getBaseTag());
     }
 
     ////////////////////////////////////////////////

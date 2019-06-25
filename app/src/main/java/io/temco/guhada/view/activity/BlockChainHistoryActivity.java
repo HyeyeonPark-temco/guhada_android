@@ -138,6 +138,11 @@ public class BlockChainHistoryActivity extends BindActivity<ActivityBlockchainHi
     // SERVER
     ////////////////////////////////////////////////
 
+    /**
+     * 상품의 블록채인 정보 가져오기 API
+     * 페이지 하단부
+     * @param id product id
+     */
     private void getBlockChainData(int id) {
         BlockChainServer.getTransactionData(id, (success, o) -> {
             if (success) {

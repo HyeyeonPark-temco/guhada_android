@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import io.temco.guhada.BuildConfig;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
@@ -61,6 +62,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             initMainPager();
             initSideMenu();
         }
+        CommonUtil.debug("" + BuildConfig.BuildType);
     }
 
     @Override

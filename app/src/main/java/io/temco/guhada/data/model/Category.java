@@ -17,8 +17,8 @@ public class Category {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("name")
-    public String name;
+//    @SerializedName("name")
+//    public String name;
 
     @SerializedName("title")
     public String title;
