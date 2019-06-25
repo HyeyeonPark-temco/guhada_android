@@ -40,6 +40,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     override fun init() {
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this@PaymentActivity)
+
+        mLoadingIndicatorUtil.show()
         mViewModel = PaymentViewModel(object : OnPaymentListener {
             override fun setUsedPointViewFocused() {
                 mBinding.includePaymentDiscount.edittextPaymentDiscountpoint.requestFocus()
@@ -47,7 +49,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
             override fun showMessage(message: String) {
                 ToastUtil.showMessage(message)
-//                Toast.makeText(this@PaymentActivity, message, Toast.LENGTH_SHORT).show()
             }
 
             override fun notifyRadioButtons() {
@@ -66,6 +67,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 Intent(this@PaymentActivity, LoginActivity::class.java).let {
                     this@PaymentActivity.startActivityForResult(it, Flag.RequestCode.LOGIN)
                 }
+            }
+
+            override fun hideLodingIndicator() {
+                mLoadingIndicatorUtil.hide()
             }
         })
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
@@ -159,9 +164,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-
-
         when (requestCode) {
             Flag.RequestCode.LOGIN -> {
                 if (resultCode == Activity.RESULT_OK) {
@@ -176,14 +178,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
             Flag.RequestCode.PAYMENT_WEBVIEW -> {
                 if (resultCode == Activity.RESULT_OK) {
-//                    mLoadingIndicatorUtil.show()
+                    mLoadingIndicatorUtil.show()
                     val pgAuth = data?.getSerializableExtra("pgAuth")
                     if (pgAuth != null) {
                         mViewModel.pgAuth = pgAuth as PGAuth
                         mViewModel.setOrderApproval()
                     }
                 } else {
-                   ToastUtil.showMessage("결제가 취소되었습니다.")
+                    ToastUtil.showMessage("결제가 취소되었습니다.")
                 }
             }
         }
@@ -222,5 +224,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun notifyRadioButtons()
         fun redirectPayemntWebViewActivity()
         fun redirectLoginActivity()
+        fun hideLodingIndicator()
     }
 }

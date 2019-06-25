@@ -121,7 +121,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
     fun onClickBack() {
-
+        listener?.closeActivity()
     }
 
 
