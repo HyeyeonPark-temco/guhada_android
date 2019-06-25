@@ -38,7 +38,7 @@ public class TestNfcActivity extends AppCompatActivity {
     private final String TAG_ID = "TAG_ID";
     private final String COMPANY_NAME = "GUHADA";
     //
-    private String mTestId = "12529";
+    private String mTestId = "12529"; // productID
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -84,7 +84,7 @@ public class TestNfcActivity extends AppCompatActivity {
     private void init() {
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
-            // 미지원
+            // 미지원 기기
             showMessage("NFC 미지원");
         } else {
             Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -96,22 +96,32 @@ public class TestNfcActivity extends AppCompatActivity {
             }
         }
 
-        getProductData(mTestId);
+        //
+        // getProductData(mTestId);
     }
 
+    /**
+     * 기기에서 nfc 사용 설정
+     */
     private void enableNfc() {
         if (mNfcAdapter != null) {
             mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, null, null);
         }
     }
 
+    /**
+     * 기기에서 nfc 미사용 설정
+     */
     private void disableNfc() {
         if (mNfcAdapter != null) {
             mNfcAdapter.disableForegroundDispatch(this);
         }
     }
 
-    // Read
+    /**
+     * NFC READ
+     * @param intent
+     */
     private void readData(Intent intent) {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
             Parcelable[] messages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -123,9 +133,9 @@ public class TestNfcActivity extends AppCompatActivity {
     private void showMessage(NdefMessage msg) {
         try {
             for (NdefRecord r : msg.getRecords()) {
-                JSONObject p = new JSONObject(new String(r.getPayload()));
+                JSONObject p = new JSONObject(new String(r.getPayload()));  // (*) 중요!
                 if (p.getString(TAG_COMPANY).equals(COMPANY_NAME)) {
-                    String id = p.getString(TAG_ID);
+                    String id = p.getString(TAG_ID); // get productId
                     CommonUtil.debug(id);
                     // Server
                     getProductData(id);
@@ -140,13 +150,23 @@ public class TestNfcActivity extends AppCompatActivity {
         }
     }
 
-    // Write
+    /**
+     * NFC WRITE/INSERT
+     * 이번 시연 버전에서는 미사용
+     * @param intent
+     */
     private void writeData(Intent intent) {
         Tag t = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         // Test
         writeTag(getTextAsNdef(mTestId), t);
     }
 
+    /**
+     * NFC 객체 생성
+     * 현재 임의로 TAG_COMPANY, TAG_ID 추가; 추후 규격 변경 시 반영 필요
+     * @param id product id
+     * @return
+     */
     private NdefMessage getTextAsNdef(String id) {
         try {
             JSONObject p = new JSONObject();
@@ -178,6 +198,12 @@ public class TestNfcActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * @param ndef NFC 규격
+     * @param message
+     * @throws IOException [line 212] writeNdefMessage() 호출 이전에 nfc 인식이 안될 경우 발생; 1초 이상 태깅 필요
+     * @throws FormatException
+     */
     private void writeNdefMessage(Ndef ndef, NdefMessage message) throws IOException, FormatException {
         int size = message.toByteArray().length;
         if (!ndef.isConnected()) {
@@ -212,6 +238,11 @@ public class TestNfcActivity extends AppCompatActivity {
     // SERVER
     ////////////////////////////////////////////////
 
+    /**
+     * product 정보 가져오기 API 호출
+     * 페이지 상단부
+     * @param id product id
+     */
     private void getProductData(String id) {
         ProductServer.getProductByList(id, (success, o) -> {
             if (success) {

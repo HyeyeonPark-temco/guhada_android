@@ -20,6 +20,8 @@
     <string name="app_logo_sub_title">쇼핑의 즐거움을 구하다</string>
     <string name="app_copyright">Ⓒ 2019 GUHADA</string>
 
+    <string name="common_confirm">확인</string>
+    <string name="common_cancel">취소</string>
     <string name="common_check">조회</string>
 
     <string name="common_top">TOP</string>
@@ -443,7 +445,9 @@
     <string name="mypage_order_cancel">주문 취소</string>
     <string name="mypage_order_change_shipping">배송지 변경</string>
     <string name="mypage_order_qna">압구정 날라리에 문의하기</string>
-    <string name="mypage_order_review">리뷰하기</string>
+    <string name="mypage_order_reward">보상받기</string>
+    <string name="mypage_order_reward_message">보상 되었습니다!</string>
+
     <string name="mypage_cancel_swap_return">취소・교환・반품</string>
 
     <!-- BLOCKCHAIN -->

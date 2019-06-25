@@ -20,6 +20,7 @@ import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.data.model.MyOrderItem;
 import io.temco.guhada.databinding.FragmentMypageOrderShipBinding;
 import io.temco.guhada.view.adapter.mypage.OrderShipListAdapter;
+import io.temco.guhada.view.custom.dialog.MessageDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
 public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBinding> implements View.OnClickListener {
@@ -104,8 +105,11 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
             }
 
             @Override
-            public void onReview(OrderShipListAdapter adapter, int position, MyOrderItem data) {
-                data.checkReview = true;
+            public void onReward(OrderShipListAdapter adapter, int position, MyOrderItem data) {
+                //
+                showRewardDialog();
+                //
+                data.checkReward = true;
                 adapter.changeItems(position, data);
             }
         });
@@ -233,6 +237,12 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
                 mBinding.layoutCalendar.textYear.setSelected(true); //
                 break;
         }
+    }
+
+    private void showRewardDialog() {
+        MessageDialog md = new MessageDialog();
+        md.setMessage(getString(R.string.mypage_order_reward_message));
+        md.show(getFragmentManager(), getBaseTag());
     }
 
     ////////////////////////////////////////////////
