@@ -226,6 +226,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
      * [아이디찾기] 회원정보
      */
     public void onClickFindId() {
+        user.deleteObserver(this);
         LoginServer.findUserId((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;

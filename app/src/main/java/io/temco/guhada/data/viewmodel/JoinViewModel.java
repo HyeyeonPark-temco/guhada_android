@@ -28,7 +28,6 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
     private ObservableBoolean essentialChecked = new ObservableBoolean(false);
     private ObservableBoolean optionalChecked = new ObservableBoolean(false);
 
-
     public JoinViewModel(OnJoinListener listener) {
         this.listener = listener;
         user.addObserver(this);
@@ -95,6 +94,7 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
         } else if (!user.getConfirmPassword().equals(user.getPassword())) {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_notequalpwd));
         } else {
+            user.deleteObserver(this);
             LoginServer.signUp((success, o) -> {
                 if (success) {
                     BaseModel model = ((BaseModel) o);

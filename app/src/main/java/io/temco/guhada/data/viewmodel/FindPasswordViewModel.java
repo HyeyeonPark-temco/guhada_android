@@ -245,6 +245,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
      */
     public void onClickSendEmail() {
         if (CommonUtil.validateEmail(user.getEmail())) {
+            user.deleteObserver(this);
             LoginServer.verifyEmail((success, o) -> {
                 if (success) {
                     BaseModel model = (BaseModel) o;
@@ -269,6 +270,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                     String message = (String) o;
                     listener.showSnackBar(message);
                 }
+
+                user.addObserver(this);
             }, user);
         } else {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
@@ -290,6 +293,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             verification.setVerificationTargetType("MOBILE");
         }
 
+        user.deleteObserver(this);
         LoginServer.verifyNumber((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
@@ -312,6 +316,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                 String message = (String) o;
                 listener.showSnackBar(message);
             }
+
+            user.addObserver(this);
         }, verification);
     }
 
@@ -329,6 +335,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                 verification.setDiCode(di);
                 verification.setMobile(mobile);
 
+                user.deleteObserver(this);
                 OnServerListener serverListener = (success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
@@ -348,6 +355,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                     } else {
                         listener.showSnackBar((String) o);
                     }
+
+                    user.addObserver(this);
                 };
 
                 if (checkedFindPwdByVerifyingPhone) {
@@ -378,6 +387,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         if (!CommonUtil.validateEmail(user.getEmail())) {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
         } else {
+            user.deleteObserver(this);
             LoginServer.verifyPhone((success, o) -> {
                 if (success) {
                     BaseModel model = (BaseModel) o;
@@ -416,6 +426,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                     String message = o != null ? (String) o : "잠시 후 다시 시도해주세요.";
                     listener.showSnackBar(message);
                 }
+
+                user.addObserver(this);
             }, user);
         }
     }

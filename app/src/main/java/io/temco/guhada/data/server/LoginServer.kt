@@ -50,7 +50,7 @@ class LoginServer {
         @JvmStatic
         fun signUp(listener: OnServerListener, user: User) {
             val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signUp(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
+            call.enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     if (response.isSuccessful) {
                         listener.onResult(true, response.body())
@@ -70,8 +70,7 @@ class LoginServer {
          */
         @JvmStatic
         fun signIn(listener: OnServerListener, user: User) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signIn(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, 1, object : Callback<BaseModel<Token>> {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signIn(user).enqueue(object : Callback<BaseModel<Token>> {
                 override fun onResponse(call: Call<BaseModel<Token>>, response: Response<BaseModel<Token>>) {
                     if (response.isSuccessful) {
                         listener.onResult(true, response.body())
