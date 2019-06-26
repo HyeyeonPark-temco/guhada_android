@@ -120,4 +120,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         notifyPropertyChanged(BR.menuVisibility)
     }
 
+    fun onClickBack() {
+        listener?.closeActivity()
+    }
+
+
 }

@@ -149,12 +149,10 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                         val pgTid = document.getElementById("pgTid")?.`val`() ?: ""
                         val resultCode = document.getElementById("resultCode")?.`val`() ?: ""
                         val resultMsg = document.select("input[name=resultMsg]").`val`() ?: ""
-                        val pgKind = document.select("input[name=pgKind]").`val`() ?: ""
-                        val pgMid = document.select("input[name=pgMid]").`val`()
-                                ?: mViewModel.pgResponse.pgMid
-                        val pgOid = document.select("input[name=pgOid]").`val`()
-                                ?: mViewModel.pgResponse.pgOid
-                        val pgAmount = document.select("input[name=pgAmount]").`val`() ?: ""
+                        val pgKind = mViewModel.pgResponse.pgKind
+                        val pgMid = mViewModel.pgResponse.pgMid
+                        val pgOid = mViewModel.pgResponse.pgOid
+                        val pgAmount = mViewModel.pgResponse.pgAmount
                         val pgTidSample = document.select("input[name=pgTidSample]").`val`() ?: ""
 
                         val authToken = document.getElementById("rsltAuthToken")?.`val`() ?: ""

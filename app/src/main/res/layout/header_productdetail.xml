@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ProductDetailViewModel" />
+    </data>
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_header">
@@ -13,13 +18,24 @@
             android:paddingEnd="10dp">
 
             <ImageButton
-                android:id="@+id/imagebutton_headerproductdetail_menu"
+                android:id="@+id/imagebutton_headerproductdetail_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/top_btn_menu"
+                android:src="@drawable/top_btn_back"
+                android:onClick="@{()->viewModel.onClickBack()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imagebutton_headerproductdetail_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/top_btn_menu"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/imagebutton_headerproductdetail_back"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton

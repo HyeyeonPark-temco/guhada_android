@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.PaymentResultViewModel" />
@@ -303,15 +305,24 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView56"
+                        android:id="@+id/textview_paymentresult_paymentmethod"
                         style="@style/PaymentResultContentGreyTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.purchaseOrderResponse.payment.method}" />
-                        <!--android:text="@{viewModel.paymentMethod}" />-->
+                        android:text="@{viewModel.paymentMethod}" />
 
                     <TextView
-                        android:id="@+id/textView87"
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/textview_paymentresult_method"
+                        style="@style/PaymentResultContentGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.methodName}"
+                        android:visibility="@{viewModel.methodName.isEmpty() ? View.GONE : View.VISIBLE}" />
+
+                    <TextView
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/textview_paymentresult_completeAt"
                         style="@style/PaymentResultContentGreyTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -589,22 +600,22 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
 
                 <LinearLayout
-                    android:onClick="@{()->viewModel.onClickPointHistory()}"
                     android:id="@+id/linearLayout13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
+                    android:onClick="@{()->viewModel.onClickPointHistory()}"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view5">
 
                     <TextView
                         android:id="@+id/textView73"
-                        android:layout_marginBottom="20dp"
                         style="@style/PaymentResultContentBlackTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
                         android:text="@string/paymentresult_expectpoint" />
 
                     <ImageButton

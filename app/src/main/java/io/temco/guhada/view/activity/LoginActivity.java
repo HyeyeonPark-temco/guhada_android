@@ -180,6 +180,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
                     break;
             }
+        } else {
+            mViewModel.setSnsUser(null);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

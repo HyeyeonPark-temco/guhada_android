@@ -41,23 +41,21 @@ import kotlinx.coroutines.launch
 
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
     private val INVALID_DEAL_ID = -1
-    private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
+    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: ProductDetailViewModel
-    private lateinit var claimFragment: ProductDetailClaimFragment
-    private lateinit var menuFragment: ProductDetailMenuFragment
-    private lateinit var headerMenuFragment: ProductDetailMenuFragment
-    private lateinit var reviewFragment: ProductDetailReviewFragment
+    private lateinit var mClaimFragment: ProductDetailClaimFragment
+    private lateinit var mMenuFragment: ProductDetailMenuFragment
+    private lateinit var mHeaderMenuFragment: ProductDetailMenuFragment
+    private lateinit var mReviewFragment: ProductDetailReviewFragment
 
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
     override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
 
     override fun init() {
-        loadingIndicatorUtil = LoadingIndicatorUtil(this)
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ProductDetailViewModel(this)
 
-
-        // mViewModel.dealId = intent.getIntExtra(Info.INTENT_DEAL_ID, resources.getString(R.string.temp_productId).toInt()).toLong()
         mViewModel.dealId = intent.getIntExtra(Info.INTENT_DEAL_ID, INVALID_DEAL_ID).toLong()
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
@@ -80,7 +78,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             })
 
             CommonUtil.debug("TASK", "PRODUCT FINISH")
-            if (::loadingIndicatorUtil.isInitialized && loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+            if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
@@ -98,7 +96,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
-            loadingIndicatorUtil.execute {
+            mLoadingIndicatorUtil.execute {
                 mViewModel.getDetail()
             }
         }
@@ -111,27 +109,27 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     override fun onDestroy() {
         super.onDestroy()
-        if (::loadingIndicatorUtil.isInitialized && loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+        if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
     }
 
     private fun initClaims() {
-        claimFragment = ProductDetailClaimFragment(mViewModel.dealId.toInt())
+        mClaimFragment = ProductDetailClaimFragment(mViewModel.dealId.toInt())
         supportFragmentManager.beginTransaction().let {
-            it.add(mBinding.framelayoutProductdetailClaim.id, claimFragment)
+            it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
         }
     }
 
     private fun initReview() {
-        reviewFragment = ProductDetailReviewFragment()
-        reviewFragment.notifySummary = { averageReviewsRating ->
+        mReviewFragment = ProductDetailReviewFragment()
+        mReviewFragment.notifySummary = { averageReviewsRating ->
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
-        reviewFragment.setProductId(productId = mViewModel.dealId)
+        mReviewFragment.setProductId(productId = mViewModel.dealId)
 
         supportFragmentManager.beginTransaction().let {
-            it.add(mBinding.framelayoutProductdetailReview.id, reviewFragment)
+            it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
             it.commitAllowingStateLoss()
         }
     }
@@ -150,14 +148,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
 
             override fun dismissLoadingIndicator() {
-                if (loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+                if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
             }
 
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
         }.let { menuViewModel ->
-            menuFragment = ProductDetailMenuFragment(menuViewModel)
+            mMenuFragment = ProductDetailMenuFragment(menuViewModel)
         }
 
         ProductDetailMenuViewModel(object : OnMenuListener {
@@ -173,7 +171,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
 
             override fun dismissLoadingIndicator() {
-                if (loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+                if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
             }
 
 
@@ -181,12 +179,12 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
         }.let { menuViewModel ->
-            headerMenuFragment = ProductDetailMenuFragment(menuViewModel)
+            mHeaderMenuFragment = ProductDetailMenuFragment(menuViewModel)
         }
 
         supportFragmentManager.beginTransaction().let {
-            it.add(mBinding.framelayoutProductdetailMenu.id, menuFragment)
-            it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, headerMenuFragment)
+            it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
+            it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
             it.commitAllowingStateLoss()
             Log.e("TASK", "MENU FINISH")
         }
@@ -230,10 +228,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             when (requestCode) {
                 WRITE_CLAIM -> {
                     // REFRESH
-                    claimFragment.refreshClaims()
+                    mClaimFragment.refreshClaims()
                 }
                 LOGIN -> {
-                    claimFragment.refreshIsMineVisible()
+                    mClaimFragment.refreshIsMineVisible()
                 }
             }
         }
@@ -242,9 +240,9 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun showMenu() {
         val optionCount = mViewModel.product.value?.options?.size
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            menuFragment.getSelectedOptionCount()
+            mMenuFragment.getSelectedOptionCount()
         } else {
-            headerMenuFragment.getSelectedOptionCount()
+            mHeaderMenuFragment.getSelectedOptionCount()
         }
 
         if (selectedOptionCount == optionCount) {
@@ -258,9 +256,9 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun redirectPaymentActivity(isOptionPopupSelected: Boolean) {
         val optionCount = mViewModel.product.value?.options?.size
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            menuFragment.getSelectedOptionCount()
+            mMenuFragment.getSelectedOptionCount()
         } else {
-            headerMenuFragment.getSelectedOptionCount()
+            mHeaderMenuFragment.getSelectedOptionCount()
         }
 
         if (selectedOptionCount == optionCount) {
@@ -274,13 +272,13 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             val count: Int
 
             if (isOptionPopupSelected) {
-                count = menuFragment.getProductCount()
-                price = menuFragment.getTotalPrice()
-                optionAttr = menuFragment.getSelectedOptionAttrs()
+                count = mMenuFragment.getProductCount()
+                price = mMenuFragment.getTotalPrice()
+                optionAttr = mMenuFragment.getSelectedOptionAttrs()
             } else {
-                count = headerMenuFragment.getProductCount()
-                price = headerMenuFragment.getTotalPrice()
-                optionAttr = headerMenuFragment.getSelectedOptionAttrs()
+                count = mHeaderMenuFragment.getProductCount()
+                price = mHeaderMenuFragment.getTotalPrice()
+                optionAttr = mHeaderMenuFragment.getSelectedOptionAttrs()
             }
 
             BaseProduct().apply {
@@ -295,17 +293,19 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 // 장바구니 API 파라미터
                 var quantity: Int = 1
                 when {
-                    menuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = menuFragment.getSelectedOptionDealId()
-                        quantity = menuFragment.getProductCount()
+                    mMenuFragment.getSelectedOptionCount() > 0 -> {
+                        baseProduct.dealOptionId = mMenuFragment.getSelectedOptionDealId()
+                        quantity = mMenuFragment.getProductCount()
                     }
-                    headerMenuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = headerMenuFragment.getSelectedOptionDealId()
-                        quantity = headerMenuFragment.getProductCount()
+                    mHeaderMenuFragment.getSelectedOptionCount() > 0 -> {
+                        baseProduct.dealOptionId = mHeaderMenuFragment.getSelectedOptionDealId()
+                        quantity = mHeaderMenuFragment.getProductCount()
                     }
                     else -> baseProduct.dealOptionId = null
                 }
 
+                mViewModel.menuVisibility.set(View.GONE)
+                mViewModel.notifyPropertyChanged(BR.menuVisibility)
                 Intent(this@ProductDetailActivity, PaymentActivity::class.java).let { intent ->
                     intent.putExtra("quantity", quantity)
                     intent.putExtra("product", baseProduct)
@@ -319,7 +319,12 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun dismissLoadingIndicator() {
-        if (loadingIndicatorUtil.isShowing) loadingIndicatorUtil.dismiss()
+        if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+    }
+
+    override fun closeActivity() {
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
 
     interface OnMenuListener {

@@ -139,6 +139,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     listener.showMessage("orderForm 오류")
                 }
             }
+
+            listener.hideLodingIndicator()
         }, accessToken, arrayOf(cart.cartItemId))
     }
 
@@ -184,6 +186,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     listener.showMessage("orderForm 오류")
                 }
             }
+
+            listener.hideLodingIndicator()
         }, accessToken, requestOrder)
     }
 
@@ -212,6 +216,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 } else {
                     listener.showMessage("ORDER APPROVAL ERROR")
                 }
+
+                listener.hideLodingIndicator()
             }, accessToken, pgAuth)
         }
     }
