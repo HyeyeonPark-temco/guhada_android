@@ -3,7 +3,6 @@ package io.temco.guhada.view.fragment.productdetail
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
@@ -133,10 +132,6 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
         }
     }
 
-    /**
-     * @exception [fragment not attached yet 처리 예정]
-     * @author Hyeyeon Park
-     */
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
             override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
@@ -173,12 +168,12 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
             mHeaderMenuFragment = ProductDetailMenuFragment(menuViewModel)
         }
 
-        // Exception 처리 필요 (not attatched yet)
-        childFragmentManager.beginTransaction().let {
-            if (::mMenuFragment.isInitialized && !mMenuFragment.isAdded) it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
-            if (::mHeaderMenuFragment.isInitialized && !mHeaderMenuFragment.isAdded) it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
-            it.commitAllowingStateLoss()
-            Log.e("TASK", "MENU FINISH")
+        if(isAdded){
+            childFragmentManager.beginTransaction().let {
+                if (::mMenuFragment.isInitialized && !mMenuFragment.isAdded) it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
+                if (::mHeaderMenuFragment.isInitialized && !mHeaderMenuFragment.isAdded) it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
+                it.commitAllowingStateLoss()
+            }
         }
     }
 

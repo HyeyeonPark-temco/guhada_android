@@ -13,6 +13,7 @@
         <item name="toolbarStyle">@style/DefaultToolBarStyle</item>
         <item name="imageButtonStyle">@style/DefaultImageButtonStyle</item>
         <item name="android:scrollViewStyle">@style/ScrollViewStyle</item>
+        <item name="android:statusBarColor">@color/common_black</item>
     </style>
 
     <style name="FullscreenTheme" parent="AppTheme">

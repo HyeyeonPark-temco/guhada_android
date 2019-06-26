@@ -40,8 +40,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     override fun init() {
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this@PaymentActivity)
-
         mLoadingIndicatorUtil.show()
+
         mViewModel = PaymentViewModel(object : OnPaymentListener {
             override fun setUsedPointViewFocused() {
                 mBinding.includePaymentDiscount.edittextPaymentDiscountpoint.requestFocus()
@@ -122,7 +122,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mLoadingIndicatorUtil.dismiss()
+        mLoadingIndicatorUtil.hide()
     }
 
     private fun initDiscountView() {
