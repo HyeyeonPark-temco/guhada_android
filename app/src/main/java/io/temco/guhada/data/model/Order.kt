@@ -2,7 +2,7 @@ package io.temco.guhada.data.model
 
 class Order {
     var user: User = User()
-    var shippingAddress: UserShipping = UserShipping()
+    var shippingAddress: UserShipping? = UserShipping()
     var orderItemList: List<OrderItemResponse> = ArrayList()
     var paymentsMethod: MutableList<PaymentMethod> = ArrayList()
     var shippingMessage: MutableList<String> = ArrayList()

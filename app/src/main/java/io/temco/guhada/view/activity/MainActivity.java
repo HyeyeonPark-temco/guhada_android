@@ -197,9 +197,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             if (isLogin) {
                 mBinding.layoutSideMenu.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out));
                 mBinding.layoutSideMenu.layoutHeader.layoutLogin.setOnClickListener(v -> {
-                    startLoginActivity();
+                 //   startLoginActivity();
                     Preferences.clearToken();
                     changeLoginStatus(false);
+                    if (productDetailFragment != null)
+                        productDetailFragment.refreshIsMyClaimsVisible();
                 });
             } else {
                 mBinding.layoutSideMenu.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_need));

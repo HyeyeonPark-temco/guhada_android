@@ -1,12 +1,9 @@
 package io.temco.guhada.view.fragment.productdetail
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.animation.addListener
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
@@ -113,6 +110,12 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
     override fun onDestroy() {
         super.onDestroy()
         if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+        if (::mClaimFragment.isInitialized) mClaimFragment.onDestroy()
+        if (::mMenuFragment.isInitialized) mMenuFragment.onDestroy()
+        if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.onDestroy()
+        if (::mReviewFragment.isInitialized) mReviewFragment.onDestroy()
+
+        (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
     }
 
     private fun initClaims() {

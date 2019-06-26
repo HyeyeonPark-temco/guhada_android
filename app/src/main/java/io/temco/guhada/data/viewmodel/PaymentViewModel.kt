@@ -31,7 +31,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         get() = field
 
     var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
-    var selectedShippingAddress: UserShipping = UserShipping()
+    var selectedShippingAddress: UserShipping? = UserShipping()
 
     var selectedShippingMessage = ObservableField<String>(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
         @Bindable
@@ -104,7 +104,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     val shippingAddressText: String
         @Bindable
-        get() = "[${order.shippingAddress.zip}] ${order.shippingAddress.roadAddress}${order.shippingAddress.detailAddress}"
+        get() {
+            return if(order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress}${order.shippingAddress?.detailAddress}"
+            else "등록된 배송지가 없습니다"
+        }
 
     var termsChecked = false
 
@@ -128,7 +131,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         OrderServer.getOrderForm(OnServerListener { success, o ->
             if (success) {
                 this.order = (o as BaseModel<*>).data as Order
-                this.selectedShippingAddress = order.shippingAddress // 임시 초기값
+                this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
 
                 notifyPropertyChanged(BR.order)
                 notifyPropertyChanged(BR.shippingAddressText)
@@ -304,13 +307,17 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     listener.showMessage("준비중입니다.")
                 } else {
                     if (this.user.get() != null) {
-                        RequestOrder().apply {
-                            this.user = this@PaymentViewModel.user.get()!!
-                            this.shippingAddress = this@PaymentViewModel.selectedShippingAddress
-                            this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
-                            this.parentMethodCd = selectedMethod.methodCode
-                        }.let { requestOrder ->
-                            callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+                        if (this@PaymentViewModel.selectedShippingAddress == null) {
+                            listener.showMessage("배송지를 선택해주세요.")
+                        } else {
+                            RequestOrder().apply {
+                                this.user = this@PaymentViewModel.user.get()!!
+                                this.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
+                                this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
+                                this.parentMethodCd = selectedMethod.methodCode
+                            }.let { requestOrder ->
+                                callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+                            }
                         }
                     }
                 }

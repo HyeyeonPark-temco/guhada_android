@@ -30,4 +30,9 @@ class ImagePagerAdapter : PagerAdapter() {
         this.list = list
         notifyDataSetChanged()
     }
+
+    fun clearItems(){
+        this.list.clear()
+        notifyDataSetChanged()
+    }
 }

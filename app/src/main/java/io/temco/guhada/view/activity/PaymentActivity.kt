@@ -122,7 +122,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mLoadingIndicatorUtil.hide()
+        mLoadingIndicatorUtil.dismiss()
     }
 
     private fun initDiscountView() {

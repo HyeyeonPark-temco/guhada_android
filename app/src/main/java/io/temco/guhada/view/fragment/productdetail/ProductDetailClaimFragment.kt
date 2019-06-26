@@ -15,6 +15,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.ClaimResponse
 import io.temco.guhada.data.viewmodel.ProductDetailClaimViewModel
 import io.temco.guhada.databinding.LayoutProductdetailClaimBinding
@@ -35,7 +36,8 @@ class ProductDetailClaimFragment(private val productId: Int) : BaseFragment<Layo
     override fun init() {
         mViewModel = ProductDetailClaimViewModel(productId, object : OnProductDetailClaimListener {
             override fun showMessage(message: String) {
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                ToastUtil.showMessage(message)
+//                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
 
             override fun redirectWriteClaimActivity() {
