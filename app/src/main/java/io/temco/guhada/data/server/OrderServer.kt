@@ -85,7 +85,8 @@ class OrderServer {
 
         @JvmStatic
         fun setOrderCompleted(listener: OnServerListener, accessToken: String, purchaseId : Double){
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderCompleted(accessToken, purchaseId).enqueue(object : Callback<BaseModel<PurchaseOrderResponse>> {
+            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderCompleted(accessToken, purchaseId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<PurchaseOrderResponse>> {
                 override fun onResponse(call: Call<BaseModel<PurchaseOrderResponse>>, response: Response<BaseModel<PurchaseOrderResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }
@@ -94,19 +95,6 @@ class OrderServer {
                     listener.onResult(false, t.message)
                 }
             })
-
-
-
-//            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderCompleted(accessToken, purchaseId)
-//            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<PurchaseOrderResponse>> {
-//                override fun onResponse(call: Call<BaseModel<PurchaseOrderResponse>>, response: Response<BaseModel<PurchaseOrderResponse>>) {
-//                    listener.onResult(response.isSuccessful, response.body())
-//                }
-//
-//                override fun onFailure(call: Call<BaseModel<PurchaseOrderResponse>>, t: Throwable) {
-//                    listener.onResult(false, t.message)
-//                }
-//            })
         }
     }
 
