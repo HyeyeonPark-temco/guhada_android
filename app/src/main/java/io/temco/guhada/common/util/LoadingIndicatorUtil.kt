@@ -10,11 +10,11 @@ import io.temco.guhada.databinding.LayoutLoadingindicatorBinding
 
 /**
  * Circle Loading Indicator
+ * You should call dismiss() in onDestroy()
  * @author Hyeyeon Park
  */
 class LoadingIndicatorUtil(val mContext: Context) : Dialog(mContext) {
     init {
-
         val binding = DataBindingUtil.inflate<LayoutLoadingindicatorBinding>(LayoutInflater.from(mContext), R.layout.layout_loadingindicator, null, false)
         binding.progressbarLoadingdialog.isIndeterminate = true
         binding.progressbarLoadingdialog.indeterminateDrawable.setColorFilter(context.resources.getColor(R.color.common_white), android.graphics.PorterDuff.Mode.MULTIPLY)
@@ -26,7 +26,7 @@ class LoadingIndicatorUtil(val mContext: Context) : Dialog(mContext) {
 
     /**
      * Execute task() with Loading Indicator
-     * You Should call dismiss() after calling execute(..) function
+     * You should call dismiss() after calling execute(..) function
      * @param task function
      */
     fun execute(task: () -> Unit) = task()

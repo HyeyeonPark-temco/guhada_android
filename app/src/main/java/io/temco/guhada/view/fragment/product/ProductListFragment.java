@@ -651,6 +651,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
+    @Override
+    public void onDestroy() {
+        mLoadingIndicator.dismiss();
+        super.onDestroy();
+    }
+
     ////////////////////////////////////////////////
     // SERVER
     ////////////////////////////////////////////////
