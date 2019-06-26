@@ -26,6 +26,7 @@ import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
@@ -45,6 +46,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private OnAddCategoryListener mCategoryListener;
     private RequestManager mRequestManager; // Glide
     private ProductOrderDialog mOrderDialog;
+    private LoadingIndicatorUtil mLoadingIndicator;
     // List
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
@@ -77,6 +79,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     @Override
     protected void init() {
+        mLoadingIndicator = new LoadingIndicatorUtil(getContext());
+
         // Glide
         mRequestManager = Glide.with(this);
 
@@ -657,6 +661,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (reset) {
             resetList(false);
         }
+        mLoadingIndicator.show();
         SearchServer.getProductListByCategory(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
             if (mListAdapter != null) {
                 if (success) {
@@ -668,6 +673,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             }
             mIsLoading = false;
+            mLoadingIndicator.hide();
         });
     }
 
@@ -677,6 +683,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (reset) {
             resetList(false);
         }
+        mLoadingIndicator.show();
         SearchServer.getProductListByBrand(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
             if (mListAdapter != null) {
                 if (success) {
@@ -688,6 +695,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             }
             mIsLoading = false;
+            mLoadingIndicator.hide();
         });
     }
 

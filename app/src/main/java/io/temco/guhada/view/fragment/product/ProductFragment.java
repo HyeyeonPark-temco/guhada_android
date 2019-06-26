@@ -101,6 +101,18 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         addBrandList();
     }
 
+    public void removeAll() {
+        if (mFragmentManager != null) {
+//            if (mFragmentManager.getBackStackEntryCount() > 0) {
+//                mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//            }
+            for (int i = 0; i < mFragmentManager.getBackStackEntryCount(); i++) {
+                mFragmentManager.popBackStackImmediate();
+            }
+            if (mListPagerAdapter != null) mListPagerAdapter.removeAll();
+        }
+    }
+
     public void setOnDrawerLayoutListener(OnDrawerLayoutListener listener) {
         mDrawerListener = listener;
     }
@@ -164,6 +176,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 mListPagerAdapter.removeFragment();
                 mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount() - 1, true);
                 mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount() - 1);
+                mFragmentManager.popBackStack();
             } else {
                 mBackListener.onPress();
             }

@@ -117,11 +117,17 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
         // Remove
         if (getCount() > 1) {
             mFragmentList.remove(changeCount);
-            if (getCategoryCount() > 0) mCategoryList.remove(changeCount);
+            if (getCategoryCount() > 1) mCategoryList.remove(changeCount);
             notifyDataSetChanged();
             return true;
         }
         return false;
+    }
+
+    public void removeAll() {
+        mFragmentList.clear();
+        mCategoryList.clear();
+        notifyDataSetChanged();
     }
 
     public void setOnChangeTitleListener(OnChangeTitleListener listener) {

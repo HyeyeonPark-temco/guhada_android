@@ -98,6 +98,12 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         removeProductFragment();
     }
 
+    public void removeAll() {
+        if (mProductFragment != null) {
+            mProductFragment.removeAll();
+        }
+    }
+
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////

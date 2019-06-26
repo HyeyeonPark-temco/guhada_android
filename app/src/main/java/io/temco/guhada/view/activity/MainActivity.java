@@ -151,6 +151,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 case REQUEST_CODE_CATEGORY:
                     changeDrawerLayout(false, false);
                     if (data != null) {
+                        mPagerAdapter.removeAll();
                         Type.Category type = (Type.Category) data.getSerializableExtra(Info.INTENT_CATEGORY_TYPE);
                         int[] hierarchies = data.getIntArrayExtra(Info.INTENT_CATEGORY_HIERARCHIES);
                         startCategoryScreen(type, hierarchies);
@@ -387,6 +388,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private void startCategoryByHierarchy(Type.Category type, int[] hierarchies) {
         switch (type) {
             case ALL:
+                mPagerAdapter.removeAll();
                 changeDrawerLayout(false, false);
                 startCategoryScreen(type, hierarchies);
                 break;
