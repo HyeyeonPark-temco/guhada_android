@@ -85,7 +85,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         mRequestManager = Glide.with(this);
 
         // Header
-        mBinding.layoutHeader.setClickListener(this);
+        mBinding.layoutHeaderSub.setClickListener(this);
         changeListType(mCurrentGridType);
         changeProductOrder(mCurrentOrderType);
         setTabLayout();
@@ -99,9 +99,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else {
             getProductListByBrand(true);
         }
-
-        // Test
-        initChipLayout();
     }
 
     @Override
@@ -317,19 +314,19 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (mBinding != null && getContext() != null) {
             switch (type) {
                 case NEW_PRODUCT:
-                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_new_product));
+                    mBinding.layoutHeaderSub.setOrder(getString(R.string.product_order_new_product));
                     break;
 
                 case MARKS:
-                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_marks));
+                    mBinding.layoutHeaderSub.setOrder(getString(R.string.product_order_marks));
                     break;
 
                 case LOW_PRICE:
-                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_low_price));
+                    mBinding.layoutHeaderSub.setOrder(getString(R.string.product_order_low_price));
                     break;
 
                 case HIGH_PRICE:
-                    mBinding.layoutHeader.setOrder(getString(R.string.product_order_high_price));
+                    mBinding.layoutHeaderSub.setOrder(getString(R.string.product_order_high_price));
                     break;
             }
         }
@@ -397,21 +394,21 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (mBinding != null) {
             switch (type) {
                 case ONE:
-                    mBinding.layoutHeader.imageListType1.setSelected(true);
-                    mBinding.layoutHeader.imageListType2.setSelected(false);
-                    mBinding.layoutHeader.imageListType3.setSelected(false);
+                    mBinding.layoutHeaderSub.imageListType1.setSelected(true);
+                    mBinding.layoutHeaderSub.imageListType2.setSelected(false);
+                    mBinding.layoutHeaderSub.imageListType3.setSelected(false);
                     break;
 
                 case TWO:
-                    mBinding.layoutHeader.imageListType1.setSelected(false);
-                    mBinding.layoutHeader.imageListType2.setSelected(true);
-                    mBinding.layoutHeader.imageListType3.setSelected(false);
+                    mBinding.layoutHeaderSub.imageListType1.setSelected(false);
+                    mBinding.layoutHeaderSub.imageListType2.setSelected(true);
+                    mBinding.layoutHeaderSub.imageListType3.setSelected(false);
                     break;
 
                 case THREE:
-                    mBinding.layoutHeader.imageListType1.setSelected(false);
-                    mBinding.layoutHeader.imageListType2.setSelected(false);
-                    mBinding.layoutHeader.imageListType3.setSelected(true);
+                    mBinding.layoutHeaderSub.imageListType1.setSelected(false);
+                    mBinding.layoutHeaderSub.imageListType2.setSelected(false);
+                    mBinding.layoutHeaderSub.imageListType3.setSelected(true);
                     break;
             }
         }
@@ -431,6 +428,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else {
             mBinding.listContents.scrollToPosition(0);
         }
+        mBinding.layoutAppbar.setExpanded(true);
     }
 
     // Floating Button
@@ -567,8 +565,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void initChipLayout() {
         if (mProductListData != null) {
             mBinding.layoutHeader.layoutTabParent.setVerticalGravity(View.GONE);
-            mBinding.layoutHeader.layoutFilterParent.setVisibility(View.VISIBLE);
-            mBinding.layoutHeader.layoutReset.setOnClickListener(this);
+
+//            mBinding.layoutHeader.layoutFilterParent.setVisibility(View.VISIBLE);
+//            mBinding.layoutHeader.layoutReset.setOnClickListener(this);
+//
+
+
             addCategoryChip(mProductListData.categories);
             addBrandChip(mProductListData.brands);
             addFilterChip(mProductListData.filters);
@@ -612,9 +614,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void resetChipLayout() {
         if (mProductListData != null) {
             mBinding.layoutHeader.layoutTabParent.setVerticalGravity(View.VISIBLE);
-            mBinding.layoutHeader.layoutFilterParent.setVisibility(View.GONE);
-            if (mBinding.layoutHeader.layoutChip.getChildCount() > 0) {
-                mBinding.layoutHeader.layoutChip.removeAllViews();
+            mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.GONE);
+            if (mBinding.layoutHeaderSub.layoutChip.getChildCount() > 0) {
+                mBinding.layoutHeaderSub.layoutChip.removeAllViews();
             }
             resetCategoryData(mProductListData.categories);
             resetBrandData(mProductListData.brands);
