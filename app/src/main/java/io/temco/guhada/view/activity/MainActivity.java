@@ -65,6 +65,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         setFullWideDrawerLayout();
         initMainPager();
         initSideMenu();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         // Check
         checkLogin();
     }
@@ -162,7 +167,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         if (checkToken()) {
             changeLoginStatus(true);
         } else {
-            startLoginActivity();
+            // startLoginActivity();
             changeLoginStatus(false);
         }
     }
@@ -400,10 +405,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             if (brand != null) mPagerAdapter.setProductBrandData(brand);
         }
     };
-
-    ////////////////////////////////////////////////
-    // SERVER
-    ////////////////////////////////////////////////
 
     ////////////////////////////////////////////////
 }
