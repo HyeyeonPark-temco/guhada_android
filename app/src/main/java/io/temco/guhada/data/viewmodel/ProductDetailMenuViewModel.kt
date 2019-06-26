@@ -5,12 +5,12 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
+import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.activity.ProductDetailActivity
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 
-class ProductDetailMenuViewModel(private val listener: ProductDetailActivity.OnMenuListener) : BaseObservableViewModel() {
+class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListener) : BaseObservableViewModel() {
     var closeButtonVisibility = View.VISIBLE
     var product: Product = Product()
         set(value) {

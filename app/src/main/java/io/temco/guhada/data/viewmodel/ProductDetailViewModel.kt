@@ -124,5 +124,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         listener?.closeActivity()
     }
 
+    fun onClickSideMenu(){
+        listener?.showSideMenu()
+    }
+
 
 }

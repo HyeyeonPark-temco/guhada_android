@@ -1,6 +1,5 @@
-package io.temco.guhada.view.activity
+package io.temco.guhada.view.fragment.productdetail
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -15,10 +14,8 @@ import androidx.viewpager.widget.ViewPager
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Flag.RequestCode.LOGIN
-import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Info
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.common.util.CommonUtil
@@ -29,18 +26,17 @@ import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
-import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.activity.PaymentActivity
+import io.temco.guhada.view.activity.ProductDetailActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.ProductDetailTagAdapter
-import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
-import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
-import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
+import io.temco.guhada.view.fragment.base.BaseFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
+class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
     private val INVALID_DEAL_ID = -1
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: ProductDetailViewModel
@@ -49,15 +45,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     private lateinit var mHeaderMenuFragment: ProductDetailMenuFragment
     private lateinit var mReviewFragment: ProductDetailReviewFragment
 
-    override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
+    override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
-    override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
 
     override fun init() {
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
-        mViewModel = ProductDetailViewModel(this)
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
 
-        mViewModel.dealId = intent.getIntExtra(Info.INTENT_DEAL_ID, INVALID_DEAL_ID).toLong()
+        mViewModel = ProductDetailViewModel(this)
+        mViewModel.dealId = dealId
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
@@ -102,9 +97,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
         }
 
-        mBinding.viewModel = mViewModel
         detectScrollView()
 
+        mBinding.includeProductdetailHeader.viewModel = mViewModel
+        mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
 
@@ -115,7 +111,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     private fun initClaims() {
         mClaimFragment = ProductDetailClaimFragment(mViewModel.dealId.toInt())
-        supportFragmentManager.beginTransaction().let {
+        childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
         }
@@ -129,12 +125,16 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
         mReviewFragment.setProductId(productId = mViewModel.dealId)
 
-        supportFragmentManager.beginTransaction().let {
+        childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
             it.commitAllowingStateLoss()
         }
     }
 
+    /**
+     * @exception [fragment not attached yet 처리 예정]
+     * @author Hyeyeon Park
+     */
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
             override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
@@ -144,7 +144,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
 
             override fun showMessage(message: String) {
-                Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 
             }
 
@@ -174,8 +174,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             override fun dismissLoadingIndicator() {
                 if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
             }
-
-
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
@@ -183,9 +181,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             mHeaderMenuFragment = ProductDetailMenuFragment(menuViewModel)
         }
 
-        supportFragmentManager.beginTransaction().let {
-            it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
-            it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
+        // Exception 처리 필요 (not attatched yet)
+        childFragmentManager.beginTransaction().let {
+            if (::mMenuFragment.isInitialized && !mMenuFragment.isAdded) it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
+            if (::mHeaderMenuFragment.isInitialized && !mHeaderMenuFragment.isAdded) it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
             it.commitAllowingStateLoss()
             Log.e("TASK", "MENU FINISH")
         }
@@ -207,6 +206,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 //        }
     }
 
+    override fun showSideMenu() = ProductBridge.showSideMenu()
+
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
     override fun scrollToElement(pos: Int) {
         var h = 0
@@ -220,22 +221,15 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                WRITE_CLAIM -> {
-                    // REFRESH
-                    mClaimFragment.refreshClaims()
-                }
-                LOGIN -> {
-                    mClaimFragment.refreshIsMineVisible()
-                }
-            }
-        }
+    public fun refreshClaims() {
+        mClaimFragment.refreshClaims()
+    }
+
+    public fun refreshIsMyClaimsVisible() {
+        mClaimFragment.refreshIsMineVisible()
     }
 
     override fun showMenu() {
@@ -247,7 +241,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
 
         if (selectedOptionCount == optionCount) {
-            Toast.makeText(this@ProductDetailActivity, "장바구니 이동", Toast.LENGTH_SHORT).show()
+            ToastUtil.showMessage("장바구니 이동")
         } else {
             mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
             mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -307,7 +301,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
                 mViewModel.menuVisibility.set(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
-                Intent(this@ProductDetailActivity, PaymentActivity::class.java).let { intent ->
+                Intent(context, PaymentActivity::class.java).let { intent ->
                     intent.putExtra("quantity", quantity)
                     intent.putExtra("product", baseProduct)
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
@@ -315,7 +309,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
 
         } else {
-            Toast.makeText(this@ProductDetailActivity, "옵션을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            ToastUtil.showMessage("옵션을 선택해주세요.")
         }
     }
 
@@ -323,20 +317,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
     }
 
-    override fun showSideMenu() {
-
-    }
-
     override fun closeActivity() {
-        setResult(Activity.RESULT_CANCELED)
-        finish()
-    }
-
-    interface OnMenuListener {
-        fun showMessage(message: String)
-        fun closeMenu()
-        fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit)
-        fun dismissLoadingIndicator()
+        ProductBridge.mainActivity.detachProductDetailView()
     }
 
     companion object {
@@ -388,5 +370,3 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     }
 }
-
-

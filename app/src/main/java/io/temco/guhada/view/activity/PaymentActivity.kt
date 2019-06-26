@@ -120,6 +120,11 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mLoadingIndicatorUtil.hide()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mLoadingIndicatorUtil.dismiss()
+    }
+
     private fun initDiscountView() {
         // POINT
         val editText = mBinding.includePaymentDiscount.edittextPaymentDiscountpoint
