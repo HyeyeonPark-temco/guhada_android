@@ -31,7 +31,7 @@
             <!-- LEFT -->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="0"
                 android:gravity="center_vertical"
@@ -40,15 +40,14 @@
                 <ImageView
                     android:id="@+id/image_prev"
                     android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_weight="0"
+                    android:layout_height="match_parent"
                     android:background="@drawable/top_btn_back"
                     android:onClick="@{clickListener}" />
 
                 <ImageView
                     android:id="@+id/image_side_menu"
                     android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:background="@drawable/top_btn_menu"
                     android:onClick="@{clickListener}" />
@@ -58,7 +57,7 @@
             <TextView
                 style="@style/TextMediumSingleLine"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@{title}"
@@ -68,7 +67,7 @@
             <!-- RIGHT -->
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="0"
                 android:gravity="center_vertical"
@@ -77,14 +76,14 @@
                 <ImageView
                     android:id="@+id/image_search"
                     android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_height="match_parent"
                     android:background="@drawable/btn_search"
                     android:onClick="@{clickListener}" />
 
                 <ImageView
                     android:id="@+id/image_shop_cart"
                     android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:background="@drawable/top_btn_bag"
                     android:onClick="@{clickListener}" />

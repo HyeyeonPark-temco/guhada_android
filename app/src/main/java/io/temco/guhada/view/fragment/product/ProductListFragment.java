@@ -25,6 +25,7 @@ import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
@@ -94,6 +95,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else {
             getProductListByBrand(true);
         }
+
+        // Test
+        initChipLayout();
     }
 
     @Override
@@ -141,6 +145,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
             case R.id.layout_search_detail:
                 showDetailSearchDialog();
+                break;
+
+            // Chip
+            case R.id.layout_reset:
+                resetChipLayout();
                 break;
         }
     }
@@ -545,6 +554,94 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             });
             d.show(getFragmentManager(), getBaseTag());
+        }
+    }
+
+    // Chip
+    private void initChipLayout() {
+        if (mProductListData != null) {
+            mBinding.layoutHeader.layoutTabParent.setVerticalGravity(View.GONE);
+            mBinding.layoutHeader.layoutFilterParent.setVisibility(View.VISIBLE);
+            mBinding.layoutHeader.layoutReset.setOnClickListener(this);
+            addCategoryChip(mProductListData.categories);
+            addBrandChip(mProductListData.brands);
+            addFilterChip(mProductListData.filters);
+        }
+    }
+
+    private void addCategoryChip(List<Category> categories) {
+        if (categories != null && categories.size() > 0) {
+            for (Category c : categories) {
+                if (c.isSelected) {
+                    // add chip
+
+                }
+                addCategoryChip(c.children);
+            }
+        }
+    }
+
+    private void addBrandChip(List<Brand> brands) {
+        for (Brand b : brands) {
+            if (b.isSelected) {
+                // add chip
+            }
+        }
+    }
+
+    private void addFilterChip(List<Filter> filters) {
+        for (Filter f : filters) {
+            for (Attribute a : f.attributes) {
+                if (a.selected) {
+                    // add chip
+                }
+            }
+        }
+    }
+
+    private void addChip() {
+        // mBinding.layoutHeader.layoutChip.addView();
+    }
+
+    private void resetChipLayout() {
+        if (mProductListData != null) {
+            mBinding.layoutHeader.layoutTabParent.setVerticalGravity(View.VISIBLE);
+            mBinding.layoutHeader.layoutFilterParent.setVisibility(View.GONE);
+            if (mBinding.layoutHeader.layoutChip.getChildCount() > 0) {
+                mBinding.layoutHeader.layoutChip.removeAllViews();
+            }
+            resetCategoryData(mProductListData.categories);
+            resetBrandData(mProductListData.brands);
+            resetFilterData(mProductListData.filters);
+        }
+    }
+
+    private void resetCategoryData(List<Category> categories) {
+        if (categories != null && categories.size() > 0) {
+            for (Category c : categories) {
+                c.isSelected = false;
+                resetCategoryData(c.children);
+            }
+        }
+    }
+
+    private void resetBrandData(List<Brand> brands) {
+        if (brands != null && brands.size() > 0) {
+            for (Brand b : brands) {
+                b.isSelected = false;
+            }
+        }
+    }
+
+    private void resetFilterData(List<Filter> filters) {
+        if (filters != null && filters.size() > 0) {
+            for (Filter f : filters) {
+                if (f.attributes != null && f.attributes.size() > 0) {
+                    for (Attribute a : f.attributes) {
+                        a.selected = false;
+                    }
+                }
+            }
         }
     }
 

@@ -7,12 +7,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
-
 import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.util.ExpansionCollection;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.holder.category.SideMenuFirstViewHolder;
 
@@ -20,7 +19,7 @@ public class SideMenuCategoryFirstListAdapter extends RecyclerView.Adapter<SideM
 
     // -------- LOCAL VALUE --------
     private Context mContext;
-    private ExpansionLayoutCollection mExpansionsCollection;
+    private ExpansionCollection mExpansionsCollection;
     private List<Category> mItems;
     private OnCategoryListener mCategoryListener;
     // -----------------------------
@@ -31,7 +30,7 @@ public class SideMenuCategoryFirstListAdapter extends RecyclerView.Adapter<SideM
 
     public SideMenuCategoryFirstListAdapter(Context context) {
         mContext = context;
-        mExpansionsCollection = new ExpansionLayoutCollection();
+        mExpansionsCollection = new ExpansionCollection();
         mExpansionsCollection.openOnlyOne(true);
     }
 
@@ -67,6 +66,10 @@ public class SideMenuCategoryFirstListAdapter extends RecyclerView.Adapter<SideM
 
     public void setOnCategoryListener(OnCategoryListener listener) {
         mCategoryListener = listener;
+    }
+
+    public void collapseAll() {
+        mExpansionsCollection.collapseAll();
     }
 
     ////////////////////////////////////////////////
