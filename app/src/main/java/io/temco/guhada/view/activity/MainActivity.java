@@ -453,4 +453,13 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         if (isOpen) mBinding.layoutSideMenu.linearlayoutSidemenuContainer.bringToFront();
         changeDrawerLayout(isOpen);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (productDetailFragment != null && productDetailFragment.isVisible()) {
+            detachProductDetailView();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

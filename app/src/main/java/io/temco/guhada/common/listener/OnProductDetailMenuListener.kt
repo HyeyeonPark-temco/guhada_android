@@ -6,5 +6,4 @@ interface OnProductDetailMenuListener {
     fun showMessage(message: String)
     fun closeMenu()
     fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit)
-    fun dismissLoadingIndicator()
 }

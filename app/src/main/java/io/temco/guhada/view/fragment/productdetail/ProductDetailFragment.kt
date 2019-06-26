@@ -49,7 +49,9 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
     override fun getLayoutId(): Int = R.layout.activity_product_detail
 
     override fun init() {
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
+        //[2019.06.26]임시브릿지
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(context?:ProductBridge.mainActivity)
+        mLoadingIndicatorUtil.show()
 
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
@@ -145,11 +147,6 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
 
             override fun showMessage(message: String) {
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun dismissLoadingIndicator() {
-                if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
             }
 
         }).apply {
@@ -168,11 +165,6 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
 
             override fun showMessage(message: String) {
                 ToastUtil.showMessage(message)
-//                Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun dismissLoadingIndicator() {
-                if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
             }
         }).apply {
             product = mViewModel.product.value ?: Product()
@@ -313,9 +305,11 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
         }
     }
 
-    override fun dismissLoadingIndicator() {
+    override fun hideLoadingIndicator() {
         if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
     }
+
+
 
     override fun closeActivity() {
         ProductBridge.mainActivity.detachProductDetailView()

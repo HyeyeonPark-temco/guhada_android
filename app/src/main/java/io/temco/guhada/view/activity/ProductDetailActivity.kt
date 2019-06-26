@@ -79,7 +79,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             })
 
             CommonUtil.debug("TASK", "PRODUCT FINISH")
-            if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+            if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.hide()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
@@ -110,7 +110,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     override fun onDestroy() {
         super.onDestroy()
-        if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+        if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.hide()
     }
 
     private fun initClaims() {
@@ -147,11 +147,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
 
             }
-
-            override fun dismissLoadingIndicator() {
-                if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
-            }
-
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
@@ -170,12 +165,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 ToastUtil.showMessage(message)
 //                Toast.makeText(this@ProductDetailActivity, message, Toast.LENGTH_SHORT).show()
             }
-
-            override fun dismissLoadingIndicator() {
-                if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
-            }
-
-
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
@@ -319,8 +308,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
     }
 
-    override fun dismissLoadingIndicator() {
-        if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+    override fun hideLoadingIndicator() {
+        if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.hide()
     }
 
     override fun showSideMenu() {
@@ -330,13 +319,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun closeActivity() {
         setResult(Activity.RESULT_CANCELED)
         finish()
-    }
-
-    interface OnMenuListener {
-        fun showMessage(message: String)
-        fun closeMenu()
-        fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit)
-        fun dismissLoadingIndicator()
     }
 
     companion object {
