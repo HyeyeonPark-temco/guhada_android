@@ -197,7 +197,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             if (isLogin) {
                 mBinding.layoutSideMenu.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out));
                 mBinding.layoutSideMenu.layoutHeader.layoutLogin.setOnClickListener(v -> {
-                 //   startLoginActivity();
+                    //   startLoginActivity();
                     Preferences.clearToken();
                     changeLoginStatus(false);
                     if (productDetailFragment != null)
@@ -464,8 +464,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     public void addProductDetailView(Long dealId) {
         mBinding.viewMainProductdetail.bringToFront();
         mBinding.viewMainProductdetail.setVisibility(View.VISIBLE);
-        productDetailFragment = new ProductDetailFragment(dealId);
-        getSupportFragmentManager().beginTransaction().add(mBinding.viewMainProductdetail.getId(), productDetailFragment).commitAllowingStateLoss();
+
+        if(productDetailFragment != null){
+            productDetailFragment = new ProductDetailFragment(dealId);
+            getSupportFragmentManager().beginTransaction().replace(mBinding.viewMainProductdetail.getId(), productDetailFragment).addToBackStack(null).commitAllowingStateLoss();
+        }else {
+            productDetailFragment = new ProductDetailFragment(dealId);
+            getSupportFragmentManager().beginTransaction().add(mBinding.viewMainProductdetail.getId(), productDetailFragment).addToBackStack(null).commitAllowingStateLoss();
+        }
     }
 
     // [2019.06.26] 임시 브릿지
