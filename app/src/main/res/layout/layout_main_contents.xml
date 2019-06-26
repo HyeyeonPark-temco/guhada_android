@@ -20,23 +20,31 @@
                 android:layout_height="match_parent" />
         </RelativeLayout>
 
-        <!-- LINE -->
-        <View
+        <!-- BOTTOM -->
+        <LinearLayout
+            android:id="@+id/layout_bottom"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:background="@color/line_1" />
+            android:background="@color/background_default"
+            android:orientation="vertical">
 
-        <!-- TAB -->
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/layout_tab"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_weight="0"
-            android:overScrollMode="never"
-            app:tabGravity="fill"
-            app:tabIndicator="@null"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed" />
+            <!-- LINE -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_1" />
+
+            <!-- TAB -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/layout_tab"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:overScrollMode="never"
+                app:tabGravity="fill"
+                app:tabIndicator="@null"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

@@ -97,14 +97,13 @@
                 <!--app:nts_type="point" />-->
             </RelativeLayout>
 
-            <!-- CATEGORY -->
-            <RelativeLayout
-                android:id="@+id/layout_sub_category"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_header"
-                android:background="#ffff55">
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/layout_sub_category"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/height_header"-->
+                <!--android:background="#ffff55">-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 </layout>
