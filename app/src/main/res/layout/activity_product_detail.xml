@@ -10,9 +10,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/common_white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <include
@@ -28,12 +29,13 @@
             android:layout_height="0dp"
             android:fillViewport="true"
             android:overScrollMode="never"
-            app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include_productdetail_header">
-
+            <!--app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"-->
             <LinearLayout
+                android:id="@+id/linearlayout_productdetail_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/pale_grey"
@@ -105,12 +107,14 @@
 
         <!-- 메뉴 -->
         <View
+            android:id="@+id/view_productdetail_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black_overlay"
             android:onClick="@{()->viewModel.onClickCloseMenu()}"
             android:visibility="@{viewModel.menuVisibility}"
             app:layout_constraintBottom_toBottomOf="@+id/button_productdetail_bag"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"
             app:layout_constraintTop_toTopOf="@+id/include_productdetail_header" />
 
@@ -157,4 +161,5 @@
             app:layout_constraintRight_toRightOf="parent" />
         <!--</LinearLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

@@ -1,10 +1,13 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.animation.addListener
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
@@ -35,8 +38,10 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
     private val INVALID_DEAL_ID = -1
+    private var animFlag = true
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var mClaimFragment: ProductDetailClaimFragment
@@ -49,7 +54,7 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
 
     override fun init() {
         //[2019.06.26]임시브릿지
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(context?:ProductBridge.mainActivity)
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(context ?: ProductBridge.mainActivity)
         mLoadingIndicatorUtil.show()
 
         mViewModel = ProductDetailViewModel(this)
@@ -168,7 +173,7 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
             mHeaderMenuFragment = ProductDetailMenuFragment(menuViewModel)
         }
 
-        if(isAdded){
+        if (isAdded) {
             childFragmentManager.beginTransaction().let {
                 if (::mMenuFragment.isInitialized && !mMenuFragment.isAdded) it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
                 if (::mHeaderMenuFragment.isInitialized && !mHeaderMenuFragment.isAdded) it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
@@ -178,19 +183,27 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
     }
 
     private fun detectScrollView() {
-        val scrollBounds = Rect()
-
-        // Bottom Button
-//        mBinding.scrollviewProductdetail.viewTreeObserver.addOnScrollChangedListener {
-//            mBinding.scrollviewProductdetail.getHitRect(scrollBounds)
-//
-//            if (mBinding.linearlayoutProductdetailBodycontainer.getLocalVisibleRect(scrollBounds)) {
-//                mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
-//            } else {
-//                mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
-//            }
-//
-//        }
+        // val scrollBounds = Rect()
+        mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            val height = mBinding.includeProductdetailHeader.toolbarProductdetailHeader.height + mBinding.includeProductdetailContentsummary.linearlayoutProductdetailSummayContainer.height
+            if (animFlag) {
+                if (oldScrollY > height) {
+                    if (scrollY - oldScrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.GONE) {
+                        animFlag = false
+                        mViewModel.bottomBtnVisibility = ObservableInt(View.VISIBLE)
+                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
+                        animFlag = true
+                    }
+                } else {
+                    if (oldScrollY - scrollY > 50 && mViewModel.bottomBtnVisibility.get() == View.VISIBLE) {
+                        animFlag = false
+                        mViewModel.bottomBtnVisibility = ObservableInt(View.GONE)
+                        mViewModel.notifyPropertyChanged(BR.bottomBtnVisibility)
+                        animFlag = true
+                    }
+                }
+            }
+        }
     }
 
     override fun showSideMenu() = ProductBridge.showSideMenu()
@@ -303,7 +316,6 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
     override fun hideLoadingIndicator() {
         if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
     }
-
 
 
     override fun closeActivity() {

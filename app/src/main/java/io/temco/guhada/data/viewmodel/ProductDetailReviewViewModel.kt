@@ -35,7 +35,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 notifyPropertyChanged(BR.reviewSummary)
 
 
-             listener.notifySummary(reviewSummary.averageReviewsRating)
+                listener.notifySummary(reviewSummary.averageReviewsRating)
             } else {
                 if (o != null) {
                     listener.showMessage(o as String)
@@ -52,13 +52,15 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         } else {
             LoginServer.getProductReview(OnServerListener { success, o ->
                 if (success) {
-                    val model = o as BaseModel<*>
-                    this.reviewResponse = model.data as ReviewResponse
-                    if (reviewResponse.content.isNullOrEmpty()) emptyVisibility = ObservableInt(View.VISIBLE)
+                    if (o != null) {
+                        val model = o as BaseModel<*>
+                        this.reviewResponse = model.data as ReviewResponse
+                        if (reviewResponse.content.isNullOrEmpty()) emptyVisibility = ObservableInt(View.VISIBLE)
 
-                    notifyPropertyChanged(BR.reviewResponse)
-                    notifyPropertyChanged(BR.emptyVisibility)
-                    listener.hideLoadingIndicator()
+                        notifyPropertyChanged(BR.reviewResponse)
+                        notifyPropertyChanged(BR.emptyVisibility)
+                        listener.hideLoadingIndicator()
+                    }
                 } else {
                     if (o != null) {
                         listener.showMessage(o as String)

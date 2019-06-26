@@ -8,6 +8,7 @@
             type="io.temco.guhada.data.viewmodel.ProductDetailViewModel" />
     </data>
     <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar_productdetail_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_header">
 

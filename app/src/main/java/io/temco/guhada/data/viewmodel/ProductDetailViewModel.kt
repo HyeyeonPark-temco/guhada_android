@@ -26,7 +26,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var menuVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
-    var bottomBtnVisibility = ObservableInt(View.VISIBLE) // ObservableInt(View.GONE)
+    var bottomBtnVisibility = ObservableInt(View.GONE) // ObservableInt(View.GONE)
         @Bindable
         get() = field
         set(value) {

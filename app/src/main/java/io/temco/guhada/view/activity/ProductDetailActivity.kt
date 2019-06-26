@@ -57,7 +57,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ProductDetailViewModel(this)
 
-        mViewModel.dealId = intent.getIntExtra(Info.INTENT_DEAL_ID, INVALID_DEAL_ID).toLong()
+        mViewModel.dealId = resources.getString(R.string.temp_productId).toLong()//intent.getIntExtra(Info.INTENT_DEAL_ID, INVALID_DEAL_ID).toLong()
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
