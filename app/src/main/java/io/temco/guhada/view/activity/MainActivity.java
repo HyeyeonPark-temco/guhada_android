@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,10 +39,12 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private final int REQUEST_CODE_BRAND = 202;
     //
     private MainPagerAdapter mPagerAdapter;
+    private SideMenuCategoryFirstListAdapter mSideMenuCategoryAdapter;
     private CategoryListDialog mCategoryListDialog;
     private BrandListDialog mBrandListDialog;
     // -----------------------------
     private ProductDetailFragment productDetailFragment;
+
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -350,13 +353,34 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.layoutSideMenu.setClickListener(this);
         mBinding.layoutSideMenu.layoutHeader.setClickListener(this);
         mBinding.layoutSideMenu.layoutSubMenu.setClickListener(this);
+        mBinding.layoutDrawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                if (mSideMenuCategoryAdapter != null) mSideMenuCategoryAdapter.collapseAll();
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
         // Category
         mBinding.layoutSideMenu.listContents.setLayoutManager(new LinearLayoutManager(this));
-        SideMenuCategoryFirstListAdapter adapter = new SideMenuCategoryFirstListAdapter(this);
-        adapter.setOnCategoryListener(category -> startCategoryByHierarchy(category.type, category.hierarchies));
-        adapter.setItems(Preferences.getCategories());
-        mBinding.layoutSideMenu.listContents.setAdapter(adapter);
+        mSideMenuCategoryAdapter = new SideMenuCategoryFirstListAdapter(this);
+        mSideMenuCategoryAdapter.setOnCategoryListener(category -> startCategoryByHierarchy(category.type, category.hierarchies));
+        mSideMenuCategoryAdapter.setItems(Preferences.getCategories());
+        mBinding.layoutSideMenu.listContents.setAdapter(mSideMenuCategoryAdapter);
     }
 
     // Category
