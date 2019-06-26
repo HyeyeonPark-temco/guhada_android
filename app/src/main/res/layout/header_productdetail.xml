@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:src="@drawable/top_btn_menu"
+                android:onClick="@{()->viewModel.onClickSideMenu()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/imagebutton_headerproductdetail_back"
                 app:layout_constraintTop_toTopOf="parent" />

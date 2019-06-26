@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
+import io.temco.guhada.common.ProductBridge;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
@@ -31,7 +32,6 @@ import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
-import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.adapter.product.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
@@ -326,8 +326,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void initProductList() {
         // Adapter
         mListAdapter = new ProductListAdapter(getContext(), mRequestManager);
-        mListAdapter.setOnProductListListener(id -> ProductDetailActivity.startActivity(getContext(), id));
 
+        // [2019.06.26] 임시 브릿지
+        mListAdapter.setOnProductListListener(ProductBridge.Companion::addProductDetailView);
+//        ProductDetailActivity.startActivity(getContext(), id)
         // List
         mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
         mBinding.listContents.setLayoutManager(mGridManager);

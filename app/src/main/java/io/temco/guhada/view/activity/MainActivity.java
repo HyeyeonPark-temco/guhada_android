@@ -13,8 +13,10 @@ import com.google.android.material.tabs.TabLayout;
 
 import io.temco.guhada.BuildConfig;
 import io.temco.guhada.R;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
+import io.temco.guhada.common.ProductBridge;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -26,6 +28,7 @@ import io.temco.guhada.view.adapter.MainPagerAdapter;
 import io.temco.guhada.view.adapter.category.SideMenuCategoryFirstListAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
 import io.temco.guhada.view.custom.dialog.CategoryListDialog;
+import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment;
 
 public class MainActivity extends BindActivity<ActivityMainBinding> implements View.OnClickListener {
 
@@ -38,6 +41,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private CategoryListDialog mCategoryListDialog;
     private BrandListDialog mBrandListDialog;
     // -----------------------------
+    private ProductDetailFragment productDetailFragment;
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -60,6 +64,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
     @Override
     protected void init() {
+        // 추가추가추가
+        ProductBridge.Companion.setMainActivity(this);
+
+
         CommonUtil.debug("" + BuildConfig.BuildType);
         // Init
         setFullWideDrawerLayout();
@@ -131,6 +139,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             switch (requestCode) {
                 case REQUEST_CODE_LOGIN:
                     changeLoginStatus(checkToken());
+
+                    if (productDetailFragment != null)
+                        productDetailFragment.refreshIsMyClaimsVisible();
+
                     break;
 
                 case REQUEST_CODE_CATEGORY:
@@ -148,6 +160,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                         Brand b = (Brand) data.getSerializableExtra(Info.INTENT_BRAND_DATA);
                         mPagerAdapter.setProductBrandData(b);
                     }
+                    break;
+
+                case Flag.RequestCode.WRITE_CLAIM:
+                    productDetailFragment.refreshClaims();
                     break;
             }
         } else {
@@ -360,6 +376,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
     private void startCategoryScreen(Type.Category type, int[] hierarchies) {
         mPagerAdapter.addProductCategoryData(type, hierarchies);
+
+        // [2019.06.26] 임시 브릿지
+        detachProductDetailView();
     }
 
     // Dialog
@@ -407,4 +426,31 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     };
 
     ////////////////////////////////////////////////
+    // SERVER
+    ////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////
+
+
+    // [2019.06.26] 임시 브릿지
+    public void addProductDetailView(Long dealId) {
+        mBinding.viewMainProductdetail.bringToFront();
+        mBinding.viewMainProductdetail.setVisibility(View.VISIBLE);
+        productDetailFragment = new ProductDetailFragment(dealId);
+        getSupportFragmentManager().beginTransaction().add(mBinding.viewMainProductdetail.getId(), productDetailFragment).commitAllowingStateLoss();
+    }
+
+    // [2019.06.26] 임시 브릿지
+    public void detachProductDetailView() {
+        mBinding.layoutSideMenu.linearlayoutSidemenuContainer.bringToFront();
+        mBinding.viewMainProductdetail.setVisibility(View.GONE);
+        if (productDetailFragment != null)
+            getSupportFragmentManager().beginTransaction().remove(productDetailFragment).commitAllowingStateLoss();
+    }
+
+    // [2019.06.26] 임시 브릿지
+    public void showSideMenu(Boolean isOpen) {
+        if (isOpen) mBinding.layoutSideMenu.linearlayoutSidemenuContainer.bringToFront();
+        changeDrawerLayout(isOpen);
+    }
 }
