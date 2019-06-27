@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-import android.webkit.ClientCertRequest;
 import android.webkit.CookieManager;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -58,69 +56,57 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
     @SuppressLint("SetJavaScriptEnabled")
     private void setWebView(String token) {
         String URL = "https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb?EncodeData=" + token + "&m=checkplusSerivce";
-        mBinding.webviewVerifyphone.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
 
         WebViewClient client = new WebViewClient() {
             @Override
-            public void onReceivedClientCertRequest(WebView view, ClientCertRequest request) {
-                super.onReceivedClientCertRequest(view, request);
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                Uri uri = Uri.parse(request.getUrl().toString());
-                Set<String> params = uri.getQueryParameterNames();
-                Map<String, String> map = new HashMap<>();
-                for (String key : params) {
-                    String value = uri.getQueryParameter(key);
-                    if (value != null) {
-                        map.put(key, value);
-                    }
-                }
-
-                if (map.get("sName") != null) {
+            public void onLoadResource(WebView view, String url) {
+                super.onLoadResource(view, url);
+                if (url.split("\\?")[0].equals(getResources().getString(R.string.verifyphone_result_url))) {
                     mBinding.webviewVerifyphone.setVisibility(View.GONE);
-
-                    String name = map.get("sName");
-                    String phoneNumber = map.get("sMobileNo");
-                    String authType = map.get("sAuthType");
-                    String gender = map.get("sGender");
-                    String nationalInfo = map.get("sNationalInfo");
-
-                    String di = map.get("sDueInfo");
-                    String mobileCo = map.get("sMobileCo");
-                    String requestNumber = map.get("sRequestNumber");
-                    String responseNumber = map.get("sResponseNumber");
-
-                    Intent intent = getIntent();
-                    intent.putExtra("name", name);
-                    intent.putExtra("phoneNumber", phoneNumber);
-                    intent.putExtra("di", di);
-                    setResult(RESULT_OK, intent);
-                    finish();
-
-                    return false;
-                } else {
-                    return super.shouldOverrideUrlLoading(view, request);
+                    getVerifyInfo(url);
                 }
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
             }
         };
 
+        mBinding.webviewVerifyphone.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         mBinding.webviewVerifyphone.getSettings().setJavaScriptEnabled(true);
         mBinding.webviewVerifyphone.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         mBinding.webviewVerifyphone.getSettings().setSupportMultipleWindows(true);
         mBinding.webviewVerifyphone.setWebViewClient(client);
-
         mBinding.webviewVerifyphone.loadUrl(URL);
     }
 
+    private void getVerifyInfo(String url) {
+        Uri uri = Uri.parse(url);
+        Set<String> params = uri.getQueryParameterNames();
+        Map<String, String> map = new HashMap<>();
+        for (String key : params) {
+            String value = uri.getQueryParameter(key);
+            if (value != null) {
+                map.put(key, value);
+            }
+        }
+
+        String name = map.get("sName");
+        String phoneNumber = map.get("sMobileNo");
+        String di = map.get("sDueInfo");
+
+        String authType = map.get("sAuthType");
+        String gender = map.get("sGender");
+        String nationalInfo = map.get("sNationalInfo");
+        String mobileCo = map.get("sMobileCo");
+        String requestNumber = map.get("sRequestNumber");
+        String responseNumber = map.get("sResponseNumber");
+
+        Intent intent = getIntent();
+        intent.putExtra("name", name);
+        intent.putExtra("phoneNumber", phoneNumber);
+        intent.putExtra("di", di);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
 }
 

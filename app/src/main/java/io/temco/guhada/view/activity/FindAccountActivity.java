@@ -19,6 +19,8 @@ import io.temco.guhada.common.listener.OnFindPasswordListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
+import io.temco.guhada.common.util.LoadingIndicatorUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.LoginServer;
@@ -33,6 +35,7 @@ import io.temco.guhada.view.fragment.findaccount.FindPasswordFragment;
 public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding> {
     private FindAccountViewModel mViewModel;
     private FindAccountPagerAdapter mAdapter;
+    private LoadingIndicatorUtil mLoadingIndicatorUtil;
     private int POSITION_FIND_ID = 0;
     private int POSITION_FIND_PWD = 1;
 
@@ -53,6 +56,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
     @Override
     protected void init() {
+        mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
         initViewModel();
         initPagerAndTab();
         mBinding.tablayoutFindaccount.setTabTextColors(getResources().getColor(R.color.common_black), getResources().getColor(R.color.colorPrimary));
@@ -62,6 +66,16 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
     private void initViewModel() {
         mViewModel = new FindAccountViewModel();
         mViewModel.setFindAccountListener(new OnFindAccountListener() {
+            @Override
+            public void showLoadingIndicator() {
+                mLoadingIndicatorUtil.show();
+            }
+
+            @Override
+            public void hideLoadingIndicator() {
+                mLoadingIndicatorUtil.hide();
+            }
+
             @Override
             public void redirectVerifyPhoneActivity() {
                 startActivityForResult(new Intent(getApplicationContext(), VerifyPhoneActivity.class), Flag.RequestCode.VERIFY_PHONE);
@@ -122,6 +136,18 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
         FindPasswordFragment findPasswordFragment = new FindPasswordFragment();
         findPasswordFragment.setmViewModel(new FindPasswordViewModel(new OnFindPasswordListener() {
+
+
+            @Override
+            public void showLoadingIndicator() {
+                mLoadingIndicatorUtil.show();
+            }
+
+            @Override
+            public void hideLoadingIndicator() {
+                mLoadingIndicatorUtil.hide();
+            }
+
             @Override
             public void setVerifyNumberViewEmpty() {
                 if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_ID) {
@@ -140,7 +166,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
             @Override
             public void showMessage(String message) {
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                ToastUtil.showMessage(message);
             }
 
             @Override
@@ -211,6 +237,11 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        mLoadingIndicatorUtil.dismiss();
+        super.onDestroy();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -218,61 +249,49 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
         if (requestCode == Flag.RequestCode.VERIFY_PHONE) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "인증 완료", Toast.LENGTH_SHORT).show();
-            }
+                ToastUtil.showMessage("본인인증이 완료되었습니다.");
 
-//            if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
-            // RESET CHECK BOX
-//                FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
-//                passwordViewModel.setCheckedFindIdByVerifyingPhone(false);
-//                passwordViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
+                if (data != null) {
+                    mLoadingIndicatorUtil.show();
+                    String name = data.getStringExtra("name");
+                    String phoneNumber = data.getStringExtra("phoneNumber");
+                    String di = data.getStringExtra("di");
 
-//            } else {
-            // RESET CHECK BOX
-//                FindAccountViewModel findAccountViewModel = ((FindIdFragment) mAdapter.getItem(POSITION_FIND_ID)).getmVewModel();
-//                findAccountViewModel.setCheckedFindIdByVerifyingPhone(false);
-//                findAccountViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
-
-            // RESULT
-            if (data != null) {
-                String name = data.getStringExtra("name");
-                String phoneNumber = data.getStringExtra("phoneNumber");
-                String di = data.getStringExtra("di");
-
-                LoginServer.findUserId((success, o) -> {
-                    if (success) {
-                        BaseModel model = (BaseModel) o;
-                        switch (model.resultCode) {
-                            case Flag.ResultCode.SUCCESS:
-                                User user = (User) model.data;
-                                if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
-                                    FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
-                                    passwordViewModel.setMobile(phoneNumber);
-                                    passwordViewModel.setDi(di);
-                                    passwordViewModel.setResultVisibility(View.VISIBLE);
-                                    passwordViewModel.setUser(user);
-                                    passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
-                                    passwordViewModel.notifyPropertyChanged(BR.user);
-                                } else {
-                                    mViewModel.setResultVisibility(View.VISIBLE);
-                                    mViewModel.setUser(user);
-                                    mViewModel.notifyPropertyChanged(BR.resultVisibility);
-                                    mViewModel.notifyPropertyChanged(BR.user);
-                                }
-                                break;
-                            case Flag.ResultCode.DATA_NOT_FOUND:
-                                String message = getResources().getString(R.string.findid_message_wronginfo);
-                                CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
-                                break;
+                    LoginServer.findUserId((success, o) -> {
+                        if (success) {
+                            BaseModel model = (BaseModel) o;
+                            switch (model.resultCode) {
+                                case Flag.ResultCode.SUCCESS:
+                                    User user = (User) model.data;
+                                    if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
+                                        FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                                        passwordViewModel.setMobile(phoneNumber);
+                                        passwordViewModel.setDi(di);
+                                        passwordViewModel.setResultVisibility(View.VISIBLE);
+                                        passwordViewModel.setUser(user);
+                                        passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
+                                        passwordViewModel.notifyPropertyChanged(BR.user);
+                                    } else {
+                                        mViewModel.setResultVisibility(View.VISIBLE);
+                                        mViewModel.setUser(user);
+                                        mViewModel.notifyPropertyChanged(BR.resultVisibility);
+                                        mViewModel.notifyPropertyChanged(BR.user);
+                                    }
+                                    break;
+                                case Flag.ResultCode.DATA_NOT_FOUND:
+                                    String message = getResources().getString(R.string.findid_message_wronginfo);
+                                    CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
+                                    break;
+                            }
+                        } else {
+                            String message = (String) o;
+                            CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
                         }
-                    } else {
-                        String message = (String) o;
-                        CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
-                    }
-                }, name, phoneNumber);
-            }
 
+                        mLoadingIndicatorUtil.hide();
+                    }, name, phoneNumber);
+                }
+            }
         }
-//        }
     }
 }
