@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
@@ -149,7 +150,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_search_detail:
-                showDetailSearchDialog();
+                // showDetailSearchDialog();
+                Toast.makeText(getContext(), getString(R.string.common_message_ing), Toast.LENGTH_SHORT).show();
                 break;
 
             // Tag
