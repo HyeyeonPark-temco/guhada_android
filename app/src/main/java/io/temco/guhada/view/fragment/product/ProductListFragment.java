@@ -157,7 +157,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_search_detail:
-                // showDetailSearchDialog();
+//                 showDetailSearchDialog();
                 Toast.makeText(getContext(), getString(R.string.common_message_ing), Toast.LENGTH_SHORT).show();
                 break;
 

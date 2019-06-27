@@ -1,16 +1,26 @@
 package io.temco.guhada.view.activity;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.auth0.android.jwt.JWT;
 import com.google.android.material.tabs.TabLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.temco.guhada.BuildConfig;
 import io.temco.guhada.R;
@@ -22,7 +32,9 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.server.ProductServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -42,9 +54,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private SideMenuCategoryFirstListAdapter mSideMenuCategoryAdapter;
     private CategoryListDialog mCategoryListDialog;
     private BrandListDialog mBrandListDialog;
-    // -----------------------------
     private ProductDetailFragment productDetailFragment;
-
+    // NFC
+    private NfcAdapter mNfcAdapter;
+    private PendingIntent mPendingIntent;
+    private final String TAG_COMPANY = "TAG_COMPANY";
+    private final String TAG_ID = "TAG_ID";
+    private final String COMPANY_NAME = "GUHADA";
+    // -----------------------------
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -73,6 +90,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
         CommonUtil.debug("" + BuildConfig.BuildType);
         // Init
+        initNfc();
         setFullWideDrawerLayout();
         initMainPager();
         initSideMenu();
@@ -81,8 +99,21 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     @Override
     protected void onResume() {
         super.onResume();
+        enableNfc();
         // Check
         checkLogin();
+    }
+
+    @Override
+    protected void onPause() {
+        disableNfc();
+        super.onPause();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) readData(intent);
     }
 
     @Override
@@ -447,6 +478,61 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     }
 
     ////////////////////////////////////////////////
+    // NFC
+    private void initNfc() {
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter == null) {
+            // 미지원 기기
+            showToast(R.string.common_message_nfc_unsupported);
+        } else {
+            if (mNfcAdapter.isEnabled()) {
+                Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                mPendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            } else {
+                showToast(R.string.common_message_nfc_off);
+            }
+        }
+    }
+
+    private void enableNfc() {
+        if (mNfcAdapter != null && mPendingIntent != null) {
+            mNfcAdapter.enableForegroundDispatch(this, mPendingIntent, null, null);
+        }
+    }
+
+    private void disableNfc() {
+        if (mNfcAdapter != null && mPendingIntent != null) {
+            mNfcAdapter.disableForegroundDispatch(this);
+        }
+    }
+
+    private void readData(Intent intent) {
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            Parcelable[] messages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if (messages == null) return;
+            for (Parcelable message : messages) showBlockChainProduct((NdefMessage) message);
+        }
+    }
+
+    private void showBlockChainProduct(NdefMessage msg) {
+        try {
+            for (NdefRecord r : msg.getRecords()) {
+                JSONObject p = new JSONObject(new String(r.getPayload()));  // (*) 중요!
+                if (p.getString(TAG_COMPANY).equals(COMPANY_NAME)) {
+                    String id = p.getString(TAG_ID); // get productId
+                    getProductData(id);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showToast(@StringRes int id) {
+        Toast.makeText(this, getString(id), Toast.LENGTH_SHORT).show();
+    }
+
+    ////////////////////////////////////////////////
     // LISTENER
     ////////////////////////////////////////////////
 
@@ -461,6 +547,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     // SERVER
     ////////////////////////////////////////////////
 
+    private void getProductData(String id) {
+        ProductServer.getProductByList(id, (success, o) -> {
+            if (success) {
+                BlockChainHistoryActivity.startActivity(this, (ProductByList) o);
+            }
+        });
+    }
+
     ////////////////////////////////////////////////
 
 
@@ -469,10 +563,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.viewMainProductdetail.bringToFront();
         mBinding.viewMainProductdetail.setVisibility(View.VISIBLE);
 
-        if(productDetailFragment != null){
+        if (productDetailFragment != null) {
             productDetailFragment = new ProductDetailFragment(dealId);
             getSupportFragmentManager().beginTransaction().replace(mBinding.viewMainProductdetail.getId(), productDetailFragment).addToBackStack(null).commitAllowingStateLoss();
-        }else {
+        } else {
             productDetailFragment = new ProductDetailFragment(dealId);
             getSupportFragmentManager().beginTransaction().add(mBinding.viewMainProductdetail.getId(), productDetailFragment).addToBackStack(null).commitAllowingStateLoss();
         }
@@ -493,7 +587,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     }
 
     // [2019.06.26] 임시 브릿지
-    public void setBrandProductList(Brand brand){
+    public void setBrandProductList(Brand brand) {
         mPagerAdapter.setProductBrandData(brand);
     }
 

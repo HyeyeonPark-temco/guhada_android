@@ -54,6 +54,9 @@
 
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
     <string name="common_message_ing">준비중입니다.</string>
+    
+    <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
+    <string name="common_message_nfc_off">NFC를 켜주세요.</string>
 
     <!-- ORDER SHIPPING -->
     <string name="order_shipping_deposit_confirm">입금확인</string>
