@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="0"
+                android:text="3"
                 android:textColor="@color/text_3"
                 android:textSize="@dimen/text_19" />
 
@@ -125,12 +125,12 @@
                 android:background="@drawable/arrow_r_line_m" />
 
             <TextView
-                style="@style/TextRegularSingleLine"
+                style="@style/TextBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/order_shipping_product_ready"
+                android:text="@string/order_shipping_product_authenticate"
                 android:textColor="@color/text_3"
                 android:textSize="@dimen/text_12" />
 

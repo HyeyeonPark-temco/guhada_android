@@ -15,6 +15,7 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.util.ImageUtil;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.data.model.BlockChain;
 import io.temco.guhada.data.model.ProductByList;
@@ -98,6 +99,9 @@ public class BlockChainHistoryActivity extends BindActivity<ActivityBlockchainHi
 
             // Product
             mBinding.textProduct.setText(product.productName);
+
+            // Thumbnail
+            ImageUtil.loadImage(mRequestManager, mBinding.imageThumb, product.imageUrl);
 
             // Option
             // mBinding.textOption.setText(mProduct.options.);

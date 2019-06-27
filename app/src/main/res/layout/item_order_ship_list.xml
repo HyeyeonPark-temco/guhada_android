@@ -166,17 +166,27 @@
                     android:textSize="@dimen/text_13" />
             </LinearLayout>
 
-            <!-- Q&A -->
             <TextView
                 style="@style/TextMedium"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/pale_grey"
                 android:gravity="center"
-                android:text="@string/mypage_order_qna"
+                android:text="@string/mypage_order_message_counterfeit"
                 android:textColor="@color/text_3"
                 android:textSize="@dimen/text_13" />
+
+            <!-- Q&A -->
+            <!--<TextView-->
+                <!--style="@style/TextMedium"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@color/pale_grey"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/mypage_order_qna"-->
+                <!--android:textColor="@color/text_3"-->
+                <!--android:textSize="@dimen/text_13" />-->
 
             <!-- REVIEW -->
             <TextView

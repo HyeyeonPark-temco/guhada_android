@@ -79,8 +79,8 @@ public class HomeFragment extends BaseFragment<FragmentMainHomeBinding> implemen
 
     private void setTabLayout() {
         // Remove
-        if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
-            mBinding.layoutHeader.layoutTab.removeAllTabs();
+        if (mBinding.layoutTab.getChildCount() > 0) {
+            mBinding.layoutTab.removeAllTabs();
         }
         // Tab
         // Dummy
@@ -97,8 +97,8 @@ public class HomeFragment extends BaseFragment<FragmentMainHomeBinding> implemen
         if (getContext() != null) {
             View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
             ((TextView) v.findViewById(R.id.text_title)).setText(title);
-            TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
-            mBinding.layoutHeader.layoutTab.addTab(tab);
+            TabLayout.Tab tab = mBinding.layoutTab.newTab().setCustomView(v);
+            mBinding.layoutTab.addTab(tab);
             if (isSelect) tab.select();
         }
     }
