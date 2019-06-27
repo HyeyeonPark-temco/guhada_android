@@ -4,6 +4,8 @@ import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -72,7 +74,33 @@ public class HomeFragment extends BaseFragment<FragmentMainHomeBinding> implemen
         mBinding.layoutHeader.setClickListener(this);
 
         // Tab
-        // mBinding.layoutHeader.viewTabStrip.setTitles("홈", "여성", "남성", "키즈", "신상품");
+        setTabLayout();
+    }
+
+    private void setTabLayout() {
+        // Remove
+        if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
+            mBinding.layoutHeader.layoutTab.removeAllTabs();
+        }
+        // Tab
+        // Dummy
+        String[] titles = {
+                "홈",
+                "여성", "남성", "키즈",
+                "신상품", "파워딜", "타임딜", "한정특가"};
+        for (String t : titles) {
+            addCustomTabs(t, false);
+        }
+    }
+
+    private void addCustomTabs(String title, boolean isSelect) {
+        if (getContext() != null) {
+            View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
+            ((TextView) v.findViewById(R.id.text_title)).setText(title);
+            TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
+            mBinding.layoutHeader.layoutTab.addTab(tab);
+            if (isSelect) tab.select();
+        }
     }
 
     private void setLinkText() {
