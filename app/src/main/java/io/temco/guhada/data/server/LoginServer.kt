@@ -175,8 +175,7 @@ class LoginServer {
          */
         @JvmStatic
         fun changePasswordByIdentifying(listener: OnServerListener, verification: Verification) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).changePasswordByIdentifying(verification)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).changePasswordByIdentifying(verification).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }

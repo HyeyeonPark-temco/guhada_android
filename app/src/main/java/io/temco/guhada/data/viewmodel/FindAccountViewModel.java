@@ -226,6 +226,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
      * [아이디찾기] 회원정보
      */
     public void onClickFindId() {
+        findAccountListener.showLoadingIndicator();
         user.deleteObserver(this);
         LoginServer.findUserId((success, o) -> {
             if (success) {
@@ -244,6 +245,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                         notifyPropertyChanged(BR.resultVisibility);
 
                         findAccountListener.hideKeyboard();
+                        findAccountListener.hideLoadingIndicator();
                         return;
                     case Flag.ResultCode.DATA_NOT_FOUND:
                         String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
@@ -252,6 +254,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
             } else {
                 findAccountListener.showMessage((String) o);
             }
+            findAccountListener.hideLoadingIndicator();
         }, Objects.requireNonNull(this.user).getName(), Objects.requireNonNull(this.user).getPhoneNumber());
     }
 

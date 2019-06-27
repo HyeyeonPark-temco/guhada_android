@@ -20,6 +20,7 @@ public class Flag {
         public static final int SUCCESS = 200;
 
         public static final int DATA_NOT_FOUND = 5004;
+        public static final int NOT_FOUND_VERIFY_INFO = 5400;
         public static final int ALREADY_EXIST_EMAIL = 6001;
         public static final int SIGNUP_INVALID_PASSWORD = 6002;
         public static final int SIGNIN_INVALID_PASSWORD = 6003;

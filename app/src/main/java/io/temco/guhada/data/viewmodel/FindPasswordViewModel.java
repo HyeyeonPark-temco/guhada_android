@@ -245,6 +245,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
      */
     public void onClickSendEmail() {
         if (CommonUtil.validateEmail(user.getEmail())) {
+            listener.showLoadingIndicator();
             user.deleteObserver(this);
             LoginServer.verifyEmail((success, o) -> {
                 if (success) {
@@ -261,17 +262,17 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                                 listener.startTimer(String.valueOf(minute - 1), "60");
                             }
                             listener.hideKeyboard();
-                            break;
+                            listener.hideLoadingIndicator();
+                        break;
                         case 6005:
                             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
-                            break;
                     }
                 } else {
                     String message = (String) o;
                     listener.showSnackBar(message);
                 }
-
                 user.addObserver(this);
+                listener.hideLoadingIndicator();
             }, user);
         } else {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
@@ -293,6 +294,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             verification.setVerificationTargetType("MOBILE");
         }
 
+        listener.showLoadingIndicator();
         user.deleteObserver(this);
         LoginServer.verifyNumber((success, o) -> {
             if (success) {
@@ -304,19 +306,22 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                         notifyPropertyChanged(BR.resultVisibility);
                         notifyPropertyChanged(BR.verifiedEmail);
                         listener.hideKeyboard();
+                        listener.hideLoadingIndicator();
                         break;
                     case Flag.ResultCode.EXPIRED_VERIFICATION_NUMBER:
                         listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
+                        listener.hideLoadingIndicator();
                         break;
                     case Flag.ResultCode.INVALID_VERIFICATION_NUMBER:
                         listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invaludverification));
+                        listener.hideLoadingIndicator();
                         break;
                 }
             } else {
                 String message = (String) o;
                 listener.showSnackBar(message);
             }
-
+            listener.hideLoadingIndicator();
             user.addObserver(this);
         }, verification);
     }
@@ -335,10 +340,12 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                 verification.setDiCode(di);
                 verification.setMobile(mobile);
 
+                listener.showLoadingIndicator();
                 user.deleteObserver(this);
                 OnServerListener serverListener = (success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
+                        listener.hideLoadingIndicator();
                         switch (model.resultCode) {
                             case Flag.ResultCode.SUCCESS:
                                 listener.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
@@ -351,11 +358,16 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             case Flag.ResultCode.INVALID_VERIFICATION_NUMBER:
                                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
                                 break;
+                            case Flag.ResultCode.NOT_FOUND_VERIFY_INFO:
+                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidverificationdata));
+                                break;
+                            default :
+                                listener.showSnackBar(((BaseModel) o).message);
                         }
                     } else {
                         listener.showSnackBar((String) o);
                     }
-
+                    listener.hideLoadingIndicator();
                     user.addObserver(this);
                 };
 
