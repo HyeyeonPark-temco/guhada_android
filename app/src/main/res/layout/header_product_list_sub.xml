@@ -24,7 +24,7 @@
         <!-- OPTION -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_header">
+            android:layout_height="56dp">
 
             <!-- LEFT -->
             <LinearLayout
@@ -44,7 +44,7 @@
                     android:gravity="center_vertical"
                     android:text="@{order}"
                     android:textColor="@color/text_1"
-                    android:textSize="@dimen/text_12" />
+                    android:textSize="@dimen/text_13" />
 
                 <ImageView
                     android:layout_width="10dp"

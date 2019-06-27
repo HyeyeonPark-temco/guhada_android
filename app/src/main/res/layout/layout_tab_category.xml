@@ -25,9 +25,9 @@
         android:layout_height="20dp"
         android:gravity="center"
         android:textColor="@drawable/selector_text_category"
-        android:textSize="@dimen/text_13" />
+        android:textSize="@dimen/text_15" />
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="10dp" />
+        android:layout_height="14dp" />
 </LinearLayout>
