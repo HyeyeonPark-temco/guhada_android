@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -12,16 +13,18 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnTagListener;
 import io.temco.guhada.data.Tag;
 import io.temco.guhada.view.holder.base.BaseTagViewHolder;
 import io.temco.guhada.view.holder.tag.TagTypeFullViewHolder;
 import io.temco.guhada.view.holder.tag.TagTypeNormalViewHolder;
 
-public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> {
+public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
     private Context mContext;
     private List<Tag> mItems;
+    private OnTagListener mTagListener;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -39,7 +42,6 @@ public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> {
     @Override
     public int getItemViewType(int position) {
         return Type.Tag.get(getItem(position).type);
-        // return super.getItemViewType(position);
     }
 
     @Override
@@ -61,7 +63,15 @@ public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull BaseTagViewHolder holder, int position) {
-        holder.init(mContext, getItem(position));
+        holder.init(mContext, position, getItem(position), this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mTagListener != null &&
+                v.getTag() != null && v.getTag() instanceof Integer) {
+            mTagListener.onClose(getItem((int) v.getTag()).tagData);
+        }
     }
 
     ////////////////////////////////////////////////
@@ -80,13 +90,18 @@ public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> {
     }
 
     public void removeAll() {
-        if (mItems != null) mItems.clear();
+        if (getItemCount() > 0) mItems.clear();
         notifyDataSetChanged();
     }
 
-//    public void setOnFilterListener(OnFilterListener listener) {
-//        mFilterListener = listener;
-//    }
+    public void remove(int position) {
+        if (getItemCount() > 0) mItems.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void setOnTagListener(OnTagListener listener) {
+        mTagListener = listener;
+    }
 
     ////////////////////////////////////////////////
     // PRIVATE

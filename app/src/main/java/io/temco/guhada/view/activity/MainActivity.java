@@ -161,6 +161,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 case REQUEST_CODE_BRAND:
                     changeDrawerLayout(false, false);
                     if (data != null) {
+                        mPagerAdapter.removeAll();
                         Brand b = (Brand) data.getSerializableExtra(Info.INTENT_BRAND_DATA);
                         mPagerAdapter.setProductBrandData(b);
                     }

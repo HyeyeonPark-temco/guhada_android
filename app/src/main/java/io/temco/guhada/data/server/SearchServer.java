@@ -5,6 +5,8 @@ import java.io.IOException;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
+import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.body.FilterBody;
@@ -85,4 +87,9 @@ public class SearchServer {
                     });
         }
     }
+
+//    public static void getProductListByFilter(Type.ProductOrder type,
+//                                              ) {
+//
+//    }
 }

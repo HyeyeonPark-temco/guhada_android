@@ -108,20 +108,26 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public boolean removeFragment() {
-        int changeCount = getCount() - 1;
-        // Title
-        if (mChangeTitleListener != null && getCategoryCount() > 0) {
-            String title = mCategoryList.get(changeCount - 1).title;
-            mChangeTitleListener.onSet(title);
+        try {
+            int changeCount = getCount() - 1;
+            // Title
+            if (mChangeTitleListener != null && getCategoryCount() > 0) {
+                if (changeCount - 1 <= mCategoryList.size()) {
+                    String title = mCategoryList.get(changeCount - 1).title;
+                    mChangeTitleListener.onSet(title);
+                }
+            }
+            // Remove
+            if (getCount() > 1) {
+                mFragmentList.remove(changeCount);
+                if (getCategoryCount() > 1) mCategoryList.remove(changeCount);
+                notifyDataSetChanged();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
         }
-        // Remove
-        if (getCount() > 1) {
-            mFragmentList.remove(changeCount);
-            if (getCategoryCount() > 1) mCategoryList.remove(changeCount);
-            notifyDataSetChanged();
-            return true;
-        }
-        return false;
     }
 
     public void removeAll() {
