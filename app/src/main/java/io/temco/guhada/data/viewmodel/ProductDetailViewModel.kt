@@ -9,6 +9,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.base.BaseModel
@@ -124,8 +125,22 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         listener?.closeActivity()
     }
 
-    fun onClickSideMenu(){
+    fun onClickSideMenu() {
         listener?.showSideMenu()
+    }
+
+    fun onClickBrand() {
+        if (product.value != null) {
+            Brand().apply {
+                this.id = product.value?.brandId ?: 0
+                this.nameDefault = product.value?.brandName
+            }.let { brand ->
+                listener?.closeActivity()
+                listener?.setBrandProductList(brand)
+            }
+        } else {
+            listener?.showMessage("일시적인 오류입니다. 다시 시도해주세요.")
+        }
     }
 
 

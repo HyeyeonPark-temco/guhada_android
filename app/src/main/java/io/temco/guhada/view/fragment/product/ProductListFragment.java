@@ -337,7 +337,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // Adapter
         mListAdapter = new ProductListAdapter(getContext(), mRequestManager);
 
-        // [2019.06.26] 임시 브릿지
+        // [2019.06.26] 임시 브릿지 ; 상품 리스트 아이템 클릭
         mListAdapter.setOnProductListListener(ProductBridge.Companion::addProductDetailView);
 //        ProductDetailActivity.startActivity(getContext(), id)
         // List
