@@ -119,12 +119,11 @@
             android:layout_height="@dimen/height_header"
             android:visibility="gone">
 
-            <!-- Chip -->
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/layout_chip"
+            <!-- TAG -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_tag"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/common_black" />
+                android:layout_height="match_parent" />
 
             <!-- RESET -->
             <LinearLayout
