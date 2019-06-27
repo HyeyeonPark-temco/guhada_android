@@ -21,6 +21,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
+import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
@@ -323,6 +324,10 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
 
     override fun closeActivity() {
         ProductBridge.mainActivity.detachProductDetailView()
+    }
+
+    override fun setBrandProductList(brand: Brand) {
+        ProductBridge.mainActivity.setBrandProductList(brand)
     }
 
     companion object {

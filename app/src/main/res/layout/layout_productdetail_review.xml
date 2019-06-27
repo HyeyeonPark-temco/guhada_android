@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.ProductDetailReviewViewModel" />
@@ -91,10 +93,10 @@
 
             <!-- [임시] 평점 그래프 안보이게 -->
             <FrameLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/border_all_whitethree">
+                android:background="@drawable/border_all_whitethree"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -176,13 +178,13 @@
 
             <!-- [임시] 탭 안보이게 -->
             <com.google.android.material.tabs.TabLayout
-                android:visibility="gone"
-
-
                 android:id="@+id/tablayout_productdetail_claim"
+
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:visibility="gone"
                 app:tabBackground="@drawable/selector_tab_productdetail_claim"
                 app:tabIndicatorAnimationDuration="0"
                 app:tabIndicatorHeight="0dp"
@@ -256,25 +258,31 @@
                         app:layout_constraintTop_toBottomOf="@+id/imageView8" />
 
 
+                    <TextView
+                        android:id="@+id/textView90"
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/productdetail_review_description1"
+                        android:textColor="@color/warm_grey_two"
+                        android:textSize="@dimen/text_12"
+                        app:layout_constraintBottom_toTopOf="@+id/linearlayout_productdetailreview_empty"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView89" />
+
+
                     <LinearLayout
                         android:id="@+id/linearlayout_productdetailreview_empty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView89">
-
-                        <TextView
-                            android:id="@+id/textView90"
-                            style="@style/TextMedium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="@string/productdetail_review_description1"
-                            android:textColor="@color/warm_grey_two"
-                            android:textSize="@dimen/text_12" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView90">
 
                         <TextView
                             android:id="@+id/textView91"

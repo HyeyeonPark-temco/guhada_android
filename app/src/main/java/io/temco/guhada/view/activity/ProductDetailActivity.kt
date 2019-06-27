@@ -25,6 +25,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
+import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
@@ -319,6 +320,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun closeActivity() {
         setResult(Activity.RESULT_CANCELED)
         finish()
+    }
+
+    override fun setBrandProductList(brand: Brand) {
+
     }
 
     companion object {

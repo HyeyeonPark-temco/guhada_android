@@ -164,6 +164,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                         mPagerAdapter.removeAll();
                         Brand b = (Brand) data.getSerializableExtra(Info.INTENT_BRAND_DATA);
                         mPagerAdapter.setProductBrandData(b);
+
+                        // [2019.06.26] 임시
+                        ProductBridge.Companion.detachProductDetailView();
                     }
                     break;
 
@@ -479,7 +482,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     public void detachProductDetailView() {
         mBinding.layoutSideMenu.linearlayoutSidemenuContainer.bringToFront();
         mBinding.viewMainProductdetail.setVisibility(View.GONE);
-        if (productDetailFragment != null)
+        if (productDetailFragment != null && productDetailFragment.isAdded())
             getSupportFragmentManager().beginTransaction().remove(productDetailFragment).commitAllowingStateLoss();
     }
 
@@ -487,6 +490,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     public void showSideMenu(Boolean isOpen) {
         if (isOpen) mBinding.layoutSideMenu.linearlayoutSidemenuContainer.bringToFront();
         changeDrawerLayout(isOpen);
+    }
+
+    // [2019.06.26] 임시 브릿지
+    public void setBrandProductList(Brand brand){
+        mPagerAdapter.setProductBrandData(brand);
     }
 
     @Override
