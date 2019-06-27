@@ -12,29 +12,35 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:background="@drawable/background_tag_type_2"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="8dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            style="@style/TextMedium"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dp"
-            android:text="@{title}"
-            android:textColor="@color/common_blue_purple"
-            android:textSize="@dimen/text_12" />
+            android:layout_height="26dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/background_tag_type_2"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="8dp">
 
-        <ImageView
-            android:id="@+id/image_close"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/filter_search_delete_p"
-            android:onClick="@{clickListener}" />
-    </LinearLayout>
+            <TextView
+                style="@style/TextMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="6dp"
+                android:text="@{title}"
+                android:textColor="@color/common_blue_purple"
+                android:textSize="@dimen/text_12" />
+
+            <ImageView
+                android:id="@+id/image_close"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/filter_search_delete_p"
+                android:onClick="@{clickListener}" />
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

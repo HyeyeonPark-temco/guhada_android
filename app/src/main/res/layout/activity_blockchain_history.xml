@@ -66,8 +66,7 @@
                     android:layout_width="80dp"
                     android:layout_height="106dp"
                     android:background="@color/pale_grey"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/rectangle_4174" />
+                    android:scaleType="centerCrop" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

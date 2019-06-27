@@ -54,11 +54,14 @@
 
     <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
     <string name="common_message_ing">준비중입니다.</string>
+    
+    <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
+    <string name="common_message_nfc_off">NFC를 켜주세요.</string>
 
     <!-- ORDER SHIPPING -->
     <string name="order_shipping_deposit_confirm">입금확인</string>
     <string name="order_shipping_payment_complete">결제완료</string>
-    <string name="order_shipping_product_ready">상품준비</string>
+    <string name="order_shipping_product_authenticate">제품감정</string>
     <string name="order_shipping_ing">배송중</string>
     <string name="order_shipping_complete">배송완료</string>
 
@@ -452,8 +455,10 @@
     <string name="mypage_order_cancel">주문 취소</string>
     <string name="mypage_order_change_shipping">배송지 변경</string>
     <string name="mypage_order_qna">압구정 날라리에 문의하기</string>
-    <string name="mypage_order_reward">보상받기</string>
+    <string name="mypage_order_reward">확인 후 보상받기</string>
     <string name="mypage_order_reward_message">보상 되었습니다!</string>
+
+    <string name="mypage_order_message_counterfeit">제품 감정 결과 \'가품\' 으로 확인 되었습니다.</string>
 
     <string name="mypage_cancel_swap_return">취소・교환・반품</string>
 

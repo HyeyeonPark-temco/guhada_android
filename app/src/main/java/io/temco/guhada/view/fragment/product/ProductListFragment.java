@@ -28,6 +28,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
+import io.temco.guhada.common.listener.OnTagListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.data.Tag;
@@ -129,6 +130,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     @Override
+    public void onDestroy() {
+        mLoadingIndicator.dismiss();
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             // List Type
@@ -150,7 +157,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_search_detail:
-                // showDetailSearchDialog();
+//                 showDetailSearchDialog();
                 Toast.makeText(getContext(), getString(R.string.common_message_ing), Toast.LENGTH_SHORT).show();
                 break;
 
@@ -584,9 +591,33 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void initTagList() {
-        if (mTagAdapter == null) mTagAdapter = new TagListAdapter(getContext());
+        // Adapter
+        if (mTagAdapter == null) {
+            mTagAdapter = new TagListAdapter(getContext());
+            mTagAdapter.setOnTagListener(tagData -> {
+                if (tagData != null) {
+                    if (tagData instanceof Category) {
+                        changeCategoryData((Category) tagData, false);
+                        // refresh list
+
+                    } else if (tagData instanceof Brand) {
+                        changeBrandData((Brand) tagData, false);
+                        // refresh list
+
+                    } else if (tagData instanceof Attribute) {
+                        changeFilterData((Attribute) tagData, false);
+                        // refresh list
+
+                    }
+                }
+            });
+        } else {
+            mTagAdapter.removeAll();
+        }
+
+        // List
         mBinding.layoutHeaderSub.listTag.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        mBinding.listContents.setAdapter(mTagAdapter);
+        mBinding.layoutHeaderSub.listTag.setAdapter(mTagAdapter);
     }
 
     private void addCategoryTag(List<Category> categories) {
@@ -634,6 +665,50 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         mTagAdapter.addItem(t);
     }
 
+    //
+    private void changeCategoryData(Category target, boolean isSelected) {
+        if (mProductListData != null) {
+            changeCategoryData(target, isSelected, mProductListData.categories);
+        }
+    }
+
+    private void changeCategoryData(Category target, boolean isSelected, List<Category> categories) {
+        if (categories != null && categories.size() > 0) {
+            for (Category c : categories) {
+                if (c.id == target.id) {
+                    c.isSelected = isSelected;
+                    break;
+                }
+                changeCategoryData(target, isSelected, c.children);
+            }
+        }
+    }
+
+    private void changeBrandData(Brand target, boolean isSelected) {
+        if (mProductListData != null) {
+            for (Brand b : mProductListData.brands) {
+                if (b.id == target.id) {
+                    b.isSelected = isSelected;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void changeFilterData(Attribute target, boolean isSelected) {
+        if (mProductListData != null) {
+            for (Filter f : mProductListData.filters) {
+                for (Attribute a : f.attributes) {
+                    if (a.id == target.id) {
+                        a.selected = isSelected;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    //
     private void resetTagLayout() {
         if (mProductListData != null) {
             mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
@@ -674,12 +749,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             }
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        mLoadingIndicator.dismiss();
-        super.onDestroy();
     }
 
     ////////////////////////////////////////////////
