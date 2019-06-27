@@ -13,7 +13,7 @@ import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 
-class ProductDetailClaimViewModel(private val productId: Int, val listener: ProductDetailClaimFragment.OnProductDetailClaimListener) : BaseObservableViewModel() {
+class ProductDetailClaimViewModel(private val productId: Long, val listener: ProductDetailClaimFragment.OnProductDetailClaimListener) : BaseObservableViewModel() {
     var emptyVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field

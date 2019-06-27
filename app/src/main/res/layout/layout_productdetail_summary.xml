@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/dummy_content_singleline"
+                android:text="@string/productdetail_dummy_advantage1"
                 android:textColor="@color/greyish_brown_two" />
 
             <ImageButton
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:layout_gravity="center"
-                android:text="@string/dummy_content_singleline"/>
+                android:text="@string/productdetail_dummy_advantage2"/>
         </LinearLayout>
 
         <View

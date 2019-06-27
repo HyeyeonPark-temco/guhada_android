@@ -244,6 +244,9 @@
                                         가입은 14세 이상만 가능합니다.</string>
 
     <!-- PRODUCT DETAIL -->
+    <string name="productdetail_dummy_advantage1">포인트 적립</string>
+    <string name="productdetail_dummy_advantage2">추가 적립 포인트 1,000원</string>
+
     <string name="productdetail_option">옵션선택</string>
     <string name="productdetail_sizeinfo">사이즈정보</string>
     <string name="productdetail_available">가능</string>
