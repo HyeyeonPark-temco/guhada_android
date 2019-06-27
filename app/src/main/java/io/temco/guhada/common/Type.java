@@ -383,4 +383,35 @@ public class Type {
     }
 
     ////////////////////////////////////////////////
+    // Tag
+    public enum Tag {
+
+        TYPE_NORMAL(0),
+        TYPE_FULL(1);
+
+        private int type;
+
+        Tag(int type) {
+            this.type = type;
+        }
+
+        public static int get(Tag type) {
+            switch (type) {
+                case TYPE_FULL:
+                    return TYPE_FULL.type;
+                default:
+                    return TYPE_NORMAL.type;
+            }
+        }
+
+        public static Tag getType(int type) {
+            if (type == TYPE_FULL.type) {
+                return TYPE_FULL;
+            } else {
+                return TYPE_NORMAL;
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////
 }

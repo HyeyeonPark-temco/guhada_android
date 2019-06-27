@@ -4,16 +4,19 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorListener;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
@@ -27,6 +30,7 @@ import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
+import io.temco.guhada.data.Tag;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
@@ -34,6 +38,7 @@ import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
+import io.temco.guhada.view.adapter.TagListAdapter;
 import io.temco.guhada.view.adapter.product.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
@@ -50,6 +55,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // List
     private ProductListAdapter mListAdapter;
     private GridLayoutManager mGridManager;
+    private TagListAdapter mTagAdapter;
     // Value
     private boolean mIsCategory = true; // Category/Brand
     private ProductList mProductListData;
@@ -60,7 +66,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private int mPosition;
     private int mId;
     private int mPageNumber = 1;
-    private List<Category> mFilterCategoryData;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -145,12 +150,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_search_detail:
-                showDetailSearchDialog();
+                // showDetailSearchDialog();
+                Toast.makeText(getContext(), getString(R.string.common_message_ing), Toast.LENGTH_SHORT).show();
                 break;
 
-            // Chip
+            // Tag
             case R.id.layout_reset:
-                resetChipLayout();
+                resetTagLayout();
                 break;
         }
     }
@@ -190,7 +196,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void changeLayout() {
         if (mProductListData != null) {
-
+            initTagLayout();
         }
     }
 
@@ -340,6 +346,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // [2019.06.26] 임시 브릿지 ; 상품 리스트 아이템 클릭
         mListAdapter.setOnProductListListener(ProductBridge.Companion::addProductDetailView);
 //        ProductDetailActivity.startActivity(getContext(), id)
+
         // List
         mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
         mBinding.listContents.setLayoutManager(mGridManager);
@@ -561,63 +568,79 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
-    // Chip
-    private void initChipLayout() {
+    // TAG
+    private void initTagLayout() {
         if (mProductListData != null) {
-            mBinding.layoutHeader.layoutTabParent.setVerticalGravity(View.GONE);
-
-//            mBinding.layoutHeader.layoutFilterParent.setVisibility(View.VISIBLE);
-//            mBinding.layoutHeader.layoutReset.setOnClickListener(this);
-//
-
-
-            addCategoryChip(mProductListData.categories);
-            addBrandChip(mProductListData.brands);
-            addFilterChip(mProductListData.filters);
+            mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
+            mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.VISIBLE);
+            mBinding.layoutHeaderSub.layoutReset.setOnClickListener(this);
+            //
+            initTagList();
+            addCategoryTag(mProductListData.categories);
+            addBrandTag(mProductListData.brands);
+            addFilterTag(mProductListData.filters);
+            mTagAdapter.notifyDataSetChanged();
         }
     }
 
-    private void addCategoryChip(List<Category> categories) {
+    private void initTagList() {
+        if (mTagAdapter == null) mTagAdapter = new TagListAdapter(getContext());
+        mBinding.layoutHeaderSub.listTag.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        mBinding.listContents.setAdapter(mTagAdapter);
+    }
+
+    private void addCategoryTag(List<Category> categories) {
         if (categories != null && categories.size() > 0) {
             for (Category c : categories) {
                 if (c.isSelected) {
-                    // add chip
-
+                    addTagTypeFull(c.title, c);
                 }
-                addCategoryChip(c.children);
+                addCategoryTag(c.children);
             }
         }
     }
 
-    private void addBrandChip(List<Brand> brands) {
+    private void addBrandTag(List<Brand> brands) {
         for (Brand b : brands) {
             if (b.isSelected) {
-                // add chip
+                addTagTypeNormal(b.nameKo, b);
             }
         }
     }
 
-    private void addFilterChip(List<Filter> filters) {
+    private void addFilterTag(List<Filter> filters) {
         for (Filter f : filters) {
             for (Attribute a : f.attributes) {
                 if (a.selected) {
-                    // add chip
+                    addTagTypeNormal(a.name, a);
                 }
             }
         }
     }
 
-    private void addChip() {
-        // mBinding.layoutHeader.layoutChip.addView();
+    private void addTagTypeFull(String title, Object tagData) {
+        Tag t = new Tag();
+        t.type = Type.Tag.TYPE_FULL;
+        t.title = title;
+        t.tagData = tagData;
+        mTagAdapter.addItem(t);
     }
 
-    private void resetChipLayout() {
+    private void addTagTypeNormal(String title, Object tagData) {
+        Tag t = new Tag();
+        t.type = Type.Tag.TYPE_NORMAL;
+        t.title = title;
+        t.tagData = tagData;
+        mTagAdapter.addItem(t);
+    }
+
+    private void resetTagLayout() {
         if (mProductListData != null) {
-            mBinding.layoutHeader.layoutTabParent.setVerticalGravity(View.VISIBLE);
+            mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
             mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.GONE);
-            if (mBinding.layoutHeaderSub.layoutChip.getChildCount() > 0) {
-                mBinding.layoutHeaderSub.layoutChip.removeAllViews();
-            }
+            mBinding.layoutHeaderSub.layoutReset.setOnClickListener(null);
+            //
+            mTagAdapter.removeAll();
             resetCategoryData(mProductListData.categories);
             resetBrandData(mProductListData.brands);
             resetFilterData(mProductListData.filters);

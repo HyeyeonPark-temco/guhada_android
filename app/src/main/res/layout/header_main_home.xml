@@ -82,28 +82,24 @@
             <!-- CATEGORY -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_header"
-                android:background="#55ffff">
+                android:layout_height="@dimen/height_header">
 
-                <!--<com.gigamole.navigationtabstrip.NavigationTabStrip-->
-                <!--android:id="@+id/view_tab_strip"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--app:nts_active_color="@color/common_blue_purple"-->
-                <!--app:nts_color="@color/common_blue_purple"-->
-                <!--app:nts_gravity="top"-->
-                <!--app:nts_inactive_color="@color/common_black"-->
-                <!--app:nts_size="@dimen/text_15"-->
-                <!--app:nts_type="point" />-->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/layout_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    app:tabContentStart="0dp"
+                    app:tabIndicator="@null"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMinWidth="0dp"
+                    app:tabMode="scrollable"
+                    app:tabPaddingBottom="0dp"
+                    app:tabPaddingEnd="10dp"
+                    app:tabPaddingStart="10dp"
+                    app:tabPaddingTop="0dp" />
             </RelativeLayout>
-
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/layout_sub_category"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/height_header"-->
-                <!--android:background="#ffff55">-->
-
-            <!--</RelativeLayout>-->
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 </layout>
