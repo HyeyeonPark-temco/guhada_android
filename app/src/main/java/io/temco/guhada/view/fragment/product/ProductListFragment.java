@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
@@ -28,10 +27,9 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
-import io.temco.guhada.common.listener.OnTagListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
-import io.temco.guhada.data.Tag;
+import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;

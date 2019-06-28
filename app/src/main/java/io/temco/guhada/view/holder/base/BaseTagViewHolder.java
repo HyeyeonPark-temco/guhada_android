@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
-import io.temco.guhada.data.Tag;
+import io.temco.guhada.data.model.Tag;
 
 public abstract class BaseTagViewHolder<B extends ViewDataBinding> extends BaseViewHolder<B> {
 
