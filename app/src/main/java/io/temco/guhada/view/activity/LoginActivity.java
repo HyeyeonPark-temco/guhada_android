@@ -196,11 +196,11 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     setResult(RESULT_OK);
                     finish();
                 } else {
-                    Toast.makeText(BaseApplication.getInstance(), model.message, Toast.LENGTH_SHORT).show();
+                    ToastUtil.showMessage(model.message);
                 }
             } else {
                 String message = (String) o;
-                Toast.makeText(BaseApplication.getInstance(), message, Toast.LENGTH_SHORT).show();
+                ToastUtil.showMessage(message);
             }
         };
     }

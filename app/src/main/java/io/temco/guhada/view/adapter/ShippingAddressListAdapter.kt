@@ -1,0 +1,37 @@
+package io.temco.guhada.view.adapter
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import io.temco.guhada.R
+import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.databinding.ItemShippingaddressListBinding
+import io.temco.guhada.view.holder.base.BaseViewHolder
+
+class ShippingAddressListAdapter : RecyclerView.Adapter<ShippingAddressListAdapter.Holder>() {
+    private var list: MutableList<UserShipping> = mutableListOf()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val binding = DataBindingUtil.inflate<ItemShippingaddressListBinding>(LayoutInflater.from(parent.context), R.layout.item_shippingaddress_list, parent, false)
+        return Holder(binding)
+    }
+
+    override fun getItemCount(): Int = list.size
+
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(list[position])
+    }
+
+    fun setItems(list: MutableList<UserShipping>) {
+        this.list = list
+        notifyDataSetChanged()
+    }
+
+    inner class Holder(val binding: ItemShippingaddressListBinding) : BaseViewHolder<ItemShippingaddressListBinding>(binding.root) {
+        fun bind(shipping: UserShipping) {
+            binding.shipping = shipping
+            binding.executePendingBindings()
+        }
+    }
+}

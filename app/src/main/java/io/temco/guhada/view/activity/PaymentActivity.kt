@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
 import androidx.lifecycle.Observer
@@ -43,6 +42,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mLoadingIndicatorUtil.show()
 
         mViewModel = PaymentViewModel(object : OnPaymentListener {
+            override fun redirectShippingAddressActivity() {
+                startActivityForResult(Intent(this@PaymentActivity, ShippingAddressActivity::class.java), Flag.RequestCode.SHIPPING_ADDRESS)
+            }
+
             override fun setUsedPointViewFocused() {
                 mBinding.includePaymentDiscount.edittextPaymentDiscountpoint.requestFocus()
             }
@@ -230,5 +233,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun redirectPayemntWebViewActivity()
         fun redirectLoginActivity()
         fun hideLodingIndicator()
+        fun redirectShippingAddressActivity()
     }
 }

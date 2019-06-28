@@ -26,10 +26,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
-    var shippingAddresses: ObservableField<List<UserShipping>> = ObservableField(ArrayList())
-        @Bindable
-        get() = field
-
     var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
     var selectedShippingAddress: UserShipping? = UserShipping()
 
@@ -154,17 +150,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             if (success) {
                 this.user = ObservableField((o as BaseModel<*>).data as User)
                 notifyPropertyChanged(BR.user)
-            } else {
-                CommonUtil.debug(o as String)
-            }
-        }, userId)
-    }
-
-    private fun getUserShippingAddress(userId: Int) {
-        LoginServer.getUserShippingAddress(OnServerListener { success, o ->
-            if (success) {
-                this.shippingAddresses = ObservableField((o as BaseModel<*>).data as List<UserShipping>)
-                notifyPropertyChanged(BR.shippingAddresses)
             } else {
                 CommonUtil.debug(o as String)
             }
@@ -327,6 +312,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         } else {
             listener.showMessage("이용 약관에 동의해주세요.")
         }
+    }
+
+    fun onClickChangeShippingAddress(){
+      //  listener.redirectShippingAddressActivity()
     }
 
     fun onTermsChecked(checked: Boolean) {

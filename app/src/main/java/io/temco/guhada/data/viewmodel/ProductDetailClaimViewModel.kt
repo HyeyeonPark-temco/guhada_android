@@ -35,7 +35,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         if (success) {
             val model = o as BaseModel<*>
             if (model.resultCode == Flag.ResultCode.DATA_NOT_FOUND) {
-                if (this.claimResponse.last) {
+                if (this.claimResponse.content.isNotEmpty() && this.claimResponse.last) {
                     listener.showMessage("마지막 항목입니다.")
                 }
                 emptyVisibility = ObservableInt(View.VISIBLE)
@@ -59,7 +59,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
             notifyPropertyChanged(BR.emptyVisibility)
         }
 
-        if(Preferences.getToken() == null){
+        if (Preferences.getToken() == null) {
             mineVisibility = ObservableInt(View.GONE)
             notifyPropertyChanged(BR.mineVisibility)
         }

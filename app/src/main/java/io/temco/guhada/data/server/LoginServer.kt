@@ -359,13 +359,12 @@ class LoginServer {
 
         @JvmStatic
         fun getUserShippingAddress(listener: OnServerListener, userId: Int) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<List<UserShipping>>> {
-                override fun onFailure(call: Call<BaseModel<List<UserShipping>>>, t: Throwable) {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId).enqueue(object : Callback<BaseModel<Any>> {
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
 
-                override fun onResponse(call: Call<BaseModel<List<UserShipping>>>, response: Response<BaseModel<List<UserShipping>>>) {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     listener.onResult(true, response.body())
                 }
             })
@@ -413,5 +412,7 @@ class LoginServer {
                 }
             })
         }
+
+
     }
 }

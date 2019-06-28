@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="shipping"
+            type="io.temco.guhada.data.model.UserShipping" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp">
+
+        <RadioButton
+
+            android:id="@+id/radiobutton_shippingaddresslist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_shippingaddresslist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toRightOf="@id/radiobutton_shippingaddresslist"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@{shipping.shippingName}"
+                android:textColor="@color/black_four" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/payment_icon_basic_delivery" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_shippingaddresslist_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="13dp"
+                android:text="@string/shippingaddress_button_edit"
+                android:textColor="@color/warm_grey_three" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/warm_grey_three" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="13dp"
+                android:text="@string/shippingaddress_button_delete"
+                android:textColor="@color/warm_grey_three" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textview_shippingaddresslist_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:text="@{`[` + shipping.zip + `]` + shipping.roadAddress + shipping.detailAddress}"
+            android:textColor="@color/warm_grey_two"
+            app:layout_constraintLeft_toRightOf="@id/radiobutton_shippingaddresslist"
+            app:layout_constraintTop_toBottomOf="@id/linearlayout_shippingaddresslist_name" />
+
+        <TextView
+            android:id="@+id/textview_shippingaddresslist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="20dp"
+            android:text="@{shipping.recepientName}"
+            android:textColor="@color/warm_grey_two"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/radiobutton_shippingaddresslist"
+            app:layout_constraintTop_toBottomOf="@id/textview_shippingaddresslist_address" />
+
+        <TextView
+            android:id="@+id/textview_shippingaddresslist_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="20dp"
+            android:text="@{shipping.recepientMobile}"
+            android:textColor="@color/warm_grey_two"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/textview_shippingaddresslist_name"
+            app:layout_constraintTop_toBottomOf="@id/textview_shippingaddresslist_address" />
+
+        <View
+            android:id="@+id/textview_shippingaddresslist_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_six"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

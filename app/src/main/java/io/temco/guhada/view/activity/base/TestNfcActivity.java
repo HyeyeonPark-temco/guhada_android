@@ -33,7 +33,7 @@ public class TestNfcActivity extends AppCompatActivity {
     private NfcAdapter mNfcAdapter;
     private PendingIntent mPendingIntent;
     //
-    private boolean mIsRead = true;
+    private boolean mIsRead = false;
     private final String TAG_COMPANY = "TAG_COMPANY";
     private final String TAG_ID = "TAG_ID";
     private final String COMPANY_NAME = "GUHADA";

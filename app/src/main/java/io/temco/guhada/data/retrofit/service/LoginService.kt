@@ -136,9 +136,10 @@ interface LoginService {
     /**
      * 회원 배송지 정보 조회 API
      * @param userId
+     * @return success: List<UserShipping>  failed: Object(result, data, resultCode)
      */
     @GET("/users/{userId}/shipping-addresses")
-    fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<List<UserShipping>>>
+    fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<Any>>
 
     /**
      * 상품 리뷰 평점 및 그래프 정보 조회 API
@@ -151,4 +152,5 @@ interface LoginService {
      */
     @GET("/products/{productId}/reviews")
     fun getProductReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
+
 }
