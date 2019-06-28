@@ -1,20 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- HEADER -->
-        <include
-            android:id="@+id/layout_header"
-            layout="@layout/header_main_my_page" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/layout_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_default"
+            android:fitsSystemWindows="true"
+            app:elevation="0dp">
+
+            <!-- HEADER -->
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <include
+                    android:id="@+id/layout_header"
+                    layout="@layout/header_main_my_page" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <!-- TAB -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/layout_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_header"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    app:tabContentStart="0dp"
+                    app:tabIndicator="@null"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMinWidth="0dp"
+                    app:tabMode="scrollable"
+                    app:tabPaddingBottom="0dp"
+                    app:tabPaddingEnd="10dp"
+                    app:tabPaddingStart="10dp"
+                    app:tabPaddingTop="0dp" />
+
+                <!-- LINE -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/line_2" />
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <!-- CONTENTS -->
         <io.temco.guhada.view.custom.SwipeViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

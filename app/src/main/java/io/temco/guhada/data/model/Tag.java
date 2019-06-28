@@ -1,4 +1,4 @@
-package io.temco.guhada.data;
+package io.temco.guhada.data.model;
 
 import io.temco.guhada.common.Type;
 

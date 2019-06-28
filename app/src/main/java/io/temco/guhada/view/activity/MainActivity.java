@@ -88,8 +88,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         // 추가추가추가
         ProductBridge.Companion.setMainActivity(this);
 
-
-        CommonUtil.debug("" + BuildConfig.BuildType);
         // Init
         initNfc();
         setFullWideDrawerLayout();

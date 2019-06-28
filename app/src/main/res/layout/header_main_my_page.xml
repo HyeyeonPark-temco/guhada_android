@@ -9,89 +9,56 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <androidx.appcompat.widget.Toolbar
+    <!-- TOP MENU -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/height_header"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- LEFT -->
+        <ImageView
+            android:id="@+id/image_side_menu"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/top_btn_menu"
+            android:onClick="@{clickListener}" />
+
+        <!-- TITLE -->
+        <TextView
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_centerHorizontal="true"
+            android:text="@string/common_my_page"
+            android:textColor="@color/text_3"
+            android:textSize="@dimen/text_16" />
 
-            <!-- TOP MENU -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_header"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+        <!-- RIGHT -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-                <!-- LEFT -->
-                <ImageView
-                    android:id="@+id/image_side_menu"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/top_btn_menu"
-                    android:onClick="@{clickListener}" />
+            <ImageView
+                android:id="@+id/image_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/top_btn_search"
+                android:onClick="@{clickListener}" />
 
-                <!-- TITLE -->
-                <TextView
-                    style="@style/TextMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/common_my_page"
-                    android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_16" />
-
-                <!-- RIGHT -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/image_search"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/top_btn_search"
-                        android:onClick="@{clickListener}" />
-
-                    <ImageView
-                        android:id="@+id/image_shop_cart"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="5dp"
-                        android:background="@drawable/top_btn_bag"
-                        android:onClick="@{clickListener}" />
-                </LinearLayout>
-            </RelativeLayout>
-
-            <!-- TAB -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_header">
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/layout_tab"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:overScrollMode="never"
-                    app:tabContentStart="0dp"
-                    app:tabIndicator="@null"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabMinWidth="0dp"
-                    app:tabMode="scrollable"
-                    app:tabPaddingBottom="0dp"
-                    app:tabPaddingEnd="10dp"
-                    app:tabPaddingStart="10dp"
-                    app:tabPaddingTop="0dp" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/image_shop_cart"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/top_btn_bag"
+                android:onClick="@{clickListener}" />
         </LinearLayout>
-    </androidx.appcompat.widget.Toolbar>
+    </RelativeLayout>
 </layout>

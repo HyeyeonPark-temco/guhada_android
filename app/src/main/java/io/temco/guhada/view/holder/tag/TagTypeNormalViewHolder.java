@@ -6,7 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import io.temco.guhada.data.Tag;
+import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.databinding.ItemTagTypeNormalBinding;
 import io.temco.guhada.view.holder.base.BaseTagViewHolder;
 

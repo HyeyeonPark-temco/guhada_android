@@ -14,7 +14,7 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnTagListener;
-import io.temco.guhada.data.Tag;
+import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.view.holder.base.BaseTagViewHolder;
 import io.temco.guhada.view.holder.tag.TagTypeFullViewHolder;
 import io.temco.guhada.view.holder.tag.TagTypeNormalViewHolder;

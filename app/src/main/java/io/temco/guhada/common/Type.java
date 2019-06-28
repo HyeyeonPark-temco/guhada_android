@@ -1,5 +1,7 @@
 package io.temco.guhada.common;
 
+import io.temco.guhada.BuildConfig;
+
 public class Type {
 
     ////////////////////////////////////////////////
@@ -50,52 +52,113 @@ public class Type {
     // Server
     public enum Server {
 
-        COMMON(""),
-        SEARCH("http://dev.search.guhada.com:9090/"),
-        PRODUCT("http://dev.product.guhada.com:8080/"),
-        BBS("http://dev.bbs.guhada.com:8081/"),
-        USER("http://dev.user.guhada.com:8080/"),
-        //        USER("http://172.30.1.30:8080"),
-        CLAIM("http://dev.claim.guhada.com:8081/"),
-        ORDER("http://dev.order.guhada.com:8080/"),
-        PAYMENT("http://dev.payment.guhada.com:8081/"),
-
-        NAVER_PROFILE("https://openapi.naver.com/"),
-
-        BLOCKCHAIN("http://52.79.95.78:8080/"), // BlockChain
-        LOCAL("http://13.209.10.68/"); // 핸드폰 인증
-
-        private String url;
-
-        Server(String url) {
-            this.url = url;
-        }
+        COMMON,
+        SEARCH,
+        PRODUCT,
+        BBS,
+        USER, // USER("http://172.30.1.30:8080"),
+        CLAIM,
+        ORDER,
+        PAYMENT,
+        BLOCKCHAIN, // BlockChain
+        LOCAL, // 핸드폰 인증
+        NAVER_PROFILE;
 
         public static String getUrl(Server type) {
             switch (type) {
                 case SEARCH:
-                    return SEARCH.url;
+                    return getSearchUrl();
                 case PRODUCT:
-                    return PRODUCT.url;
+                    return getProductUrl();
                 case BBS:
-                    return BBS.url;
+                    return getBBSUrl();
                 case USER:
-                    return USER.url;
+                    return getUserUrl();
                 case CLAIM:
-                    return CLAIM.url;
+                    return getClaimUrl();
                 case ORDER:
-                    return ORDER.url;
+                    return getOrderUrl();
                 case PAYMENT:
-                    return PAYMENT.url;
+                    return getPaymentUrl();
                 case NAVER_PROFILE:
-                    return NAVER_PROFILE.url;
+                    return "https://openapi.naver.com/";
                 case LOCAL:
-                    return LOCAL.url;
+                    return "http://13.209.10.68/";
                 case BLOCKCHAIN:
-                    return BLOCKCHAIN.url;
+                    return "http://52.79.95.78:8080/";
                 default:
-                    return COMMON.url;
+                    return "";
             }
+        }
+    }
+
+    private static String getSearchUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.search.guhada.com:9090/";
+
+            default:
+                return "http://dev.search.guhada.com:9090/";
+        }
+    }
+
+    private static String getProductUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.product.guhada.com:8080/";
+
+            default:
+                return "http://dev.product.guhada.com:8080/";
+        }
+    }
+
+    private static String getBBSUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.bbs.guhada.com:8081/";
+
+            default:
+                return "http://dev.bbs.guhada.com:8081/";
+        }
+    }
+
+    private static String getUserUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.user.guhada.com:8080/";
+
+            default:
+                return "http://dev.user.guhada.com:8080/";
+        }
+    }
+
+    private static String getClaimUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.claim.guhada.com:8081/";
+
+            default:
+                return "http://dev.claim.guhada.com:8081/";
+        }
+    }
+
+    private static String getOrderUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.order.guhada.com:8080/";
+
+            default:
+                return "http://dev.order.guhada.com:8080/";
+        }
+    }
+
+    private static String getPaymentUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.payment.guhada.com:8081/";
+
+            default:
+                return "http://dev.payment.guhada.com:8081/";
         }
     }
 
