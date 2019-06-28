@@ -34,8 +34,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 this.reviewSummary = model.data as ReviewSummary
                 notifyPropertyChanged(BR.reviewSummary)
 
-
-                listener.notifySummary(reviewSummary.averageReviewsRating)
+                if (::listener.isInitialized) listener.notifySummary(reviewSummary.averageReviewsRating)
             } else {
                 if (o != null) {
                     listener.showMessage(o as String)

@@ -115,7 +115,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initClaims() {
-        mClaimFragment = ProductDetailClaimFragment(mViewModel.dealId.toInt())
+        mClaimFragment = ProductDetailClaimFragment(mViewModel.dealId)
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()

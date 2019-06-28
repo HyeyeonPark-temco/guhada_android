@@ -119,21 +119,29 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
         (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
     }
 
+    /**
+     * 상품 문의 View 구성
+     * productId 전달
+     */
     private fun initClaims() {
-        mClaimFragment = ProductDetailClaimFragment(mViewModel.dealId.toInt())
+        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId ?: 0)
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
         }
     }
 
+    /**
+     * 상품 리뷰 View 구성
+     * productId 전달
+     */
     private fun initReview() {
         mReviewFragment = ProductDetailReviewFragment()
         mReviewFragment.notifySummary = { averageReviewsRating ->
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
-        mReviewFragment.setProductId(productId = mViewModel.dealId)
+        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId ?: 0)
 
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)

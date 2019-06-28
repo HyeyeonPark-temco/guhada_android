@@ -11,7 +11,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.TextUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Token;
@@ -191,7 +193,8 @@ public class Preferences {
         SharedPreferences.Editor editor = pref.edit();
         editor.remove(KEY_USER_TOKEN);
         editor.apply();
-        Toast.makeText(mApplicationContext, "FINISH CLEAR TOKEN", Toast.LENGTH_SHORT).show();
+        ToastUtil.showMessage("로그아웃 되었습니다.");
+        CommonUtil.debug("FINISH CLEAR TOKEN");
     }
 
     // is id saved
