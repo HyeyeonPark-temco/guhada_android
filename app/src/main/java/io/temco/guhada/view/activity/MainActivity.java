@@ -85,7 +85,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
     @Override
     protected void init() {
-        // 추가추가추가
+        // [2019.06.26] 임시 브릿지
         ProductBridge.Companion.setMainActivity(this);
 
         // Init
@@ -173,8 +173,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 case REQUEST_CODE_LOGIN:
                     changeLoginStatus(checkToken());
 
-                    if (productDetailFragment != null)
+                    // [상품 상세] 문의 리프레시
+                    if (productDetailFragment != null) {
                         productDetailFragment.refreshIsMyClaimsVisible();
+                        productDetailFragment.refreshClaims();
+                    }
 
                     break;
 
@@ -232,6 +235,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         }
     }
 
+    /**
+     * [사이드 메뉴] 상단 로그인/로그아웃
+     *
+     * @param isLogin
+     */
     private void changeLoginStatus(boolean isLogin) {
         if (mBinding != null) {
             if (isLogin) {
@@ -240,8 +248,12 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     //   startLoginActivity();
                     Preferences.clearToken();
                     changeLoginStatus(false);
-                    if (productDetailFragment != null)
+
+                    // [상품 상세] 문의 리스트 리프레시
+                    if (productDetailFragment != null) {
                         productDetailFragment.refreshIsMyClaimsVisible();
+                        productDetailFragment.refreshClaims();
+                    }
                 });
             } else {
                 mBinding.layoutSideMenu.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_need));

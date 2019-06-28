@@ -51,7 +51,7 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
     override fun getLayoutId(): Int = R.layout.activity_product_detail
 
     override fun init() {
-        //[2019.06.26]임시브릿지
+        //[2019.06.26]임시 브릿지
         mLoadingIndicatorUtil = LoadingIndicatorUtil(context ?: ProductBridge.mainActivity)
         mLoadingIndicatorUtil.show()
 
@@ -236,11 +236,11 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    public fun refreshClaims() {
+    fun refreshClaims() {
         mClaimFragment.refreshClaims()
     }
 
-    public fun refreshIsMyClaimsVisible() {
+    fun refreshIsMyClaimsVisible() {
         mClaimFragment.refreshIsMineVisible()
     }
 
