@@ -6,6 +6,8 @@ import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 import java.io.Serializable
 
 open class BaseProduct : Serializable {
+    var season: String = ""
+
     var productId: Long = 0
 
     var brandName: String = ""

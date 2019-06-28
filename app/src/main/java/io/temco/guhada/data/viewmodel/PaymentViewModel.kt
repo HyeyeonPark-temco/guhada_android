@@ -59,7 +59,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     lateinit var cart: Cart
     var quantity: Int = 1
     var optionStr: String = ""
-    var holdingPoint: Long = 11223344
+    var holdingPoint: Long = 0
     var usedPointNumber: Long = 0
         set(value) {
             field = if (value > holdingPoint) {

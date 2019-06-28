@@ -12,7 +12,6 @@ class Product : BaseProduct() {
     var sellerId: Long = 0
 
     var modelNumber: String = ""
-    var season: String = ""
 
     var shipExpenseType: String = ""
     var sellerName: String = ""

@@ -296,6 +296,7 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
                 this.optionMap = optionAttr
                 this.totalCount = count
                 this.totalPrice = price
+                this.season = product?.season ?: ""
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
                 var quantity: Int = 1
