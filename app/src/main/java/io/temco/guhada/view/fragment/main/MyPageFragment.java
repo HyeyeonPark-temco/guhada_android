@@ -76,11 +76,10 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
         setTabLayout();
     }
 
-
     private void setTabLayout() {
         // Remove
-        if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
-            mBinding.layoutHeader.layoutTab.removeAllTabs();
+        if (mBinding.layoutTab.getChildCount() > 0) {
+            mBinding.layoutTab.removeAllTabs();
         }
         // Adapter
         if (mPagerAdapter == null)
@@ -89,7 +88,7 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
         mBinding.pager.setAdapter(mPagerAdapter);
         mBinding.pager.setSwipeLocked(false);
         mBinding.pager.setOffscreenPageLimit(mPagerAdapter.getCount());
-        mBinding.pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutHeader.layoutTab));
+        mBinding.pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutTab));
         // Tab
         // mBinding.layoutHeader.layoutTab.addOnTabSelectedListener();
         // Add Tab
@@ -110,8 +109,8 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
         if (getContext() != null) {
             View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
             ((TextView) v.findViewById(R.id.text_title)).setText(title);
-            TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
-            mBinding.layoutHeader.layoutTab.addTab(tab);
+            TabLayout.Tab tab = mBinding.layoutTab.newTab().setCustomView(v);
+            mBinding.layoutTab.addTab(tab);
             if (isSelect) tab.select();
         }
     }
