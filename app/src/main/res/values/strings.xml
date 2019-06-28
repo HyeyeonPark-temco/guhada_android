@@ -52,7 +52,8 @@
     <string name="common_month_three">3개월</string>
     <string name="common_year_one">1년</string>
 
-    <string name="common_message_servererror">일시적인 서버 오류입니다.</string> <!-- 임시 -->
+    <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
+    <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_ing">준비중입니다.</string>
     
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>

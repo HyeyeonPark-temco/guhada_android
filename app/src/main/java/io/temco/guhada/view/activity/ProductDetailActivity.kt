@@ -115,7 +115,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initClaims() {
-        mClaimFragment = ProductDetailClaimFragment(mViewModel.dealId)
+        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId?:0)
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
@@ -128,7 +128,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
-        mReviewFragment.setProductId(productId = mViewModel.dealId)
+        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId?:0)
 
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)

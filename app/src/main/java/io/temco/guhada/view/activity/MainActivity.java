@@ -31,6 +31,7 @@ import io.temco.guhada.common.ProductBridge;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.Token;
@@ -207,6 +208,12 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+
+            switch (requestCode) {
+                case Flag.RequestCode.WRITE_CLAIM:
+                    ToastUtil.showMessage(getResources().getString(R.string.common_message_error));
+                    break;
+            }
         }
     }
 

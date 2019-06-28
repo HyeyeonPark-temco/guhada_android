@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 
 class InquiryRequest {
     @Expose
-    var productId: Int = 0
+    var productId: Long = 0
 
     var content: String = ""
     var privateInquiry: Boolean = false

@@ -34,6 +34,6 @@ interface ClaimService {
      * 상품 문의 작성하기 API
      */
     @POST("products/{id}/inquiries")
-    fun saveClaim(@Header("Authorization") accessToken: String, @Path("id") productId: Int, @Body inquiry: InquiryRequest): Call<BaseModel<ClaimResponse.Claim>>
+    fun saveClaim(@Header("Authorization") accessToken: String, @Path("id") productId: Long, @Body inquiry: InquiryRequest): Call<BaseModel<ClaimResponse.Claim>>
 
 }

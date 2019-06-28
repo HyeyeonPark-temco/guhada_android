@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +41,7 @@ class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<Lay
 
             override fun redirectWriteClaimActivity() {
                 val intent = Intent(this@ProductDetailClaimFragment.context, WriteClaimActivity::class.java)
+                intent.putExtra("productId", productId)
                 activity?.startActivityForResult(intent, WRITE_CLAIM)
             }
 

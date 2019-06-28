@@ -1,9 +1,11 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import android.widget.Toast
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.base.OnBaseActivityListener
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.WriteClaimViewModel
 import io.temco.guhada.databinding.ActivityWriteclaimBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -27,11 +29,16 @@ class WriteClaimActivity : BindActivity<ActivityWriteclaimBinding>() {
             }
         })
 
-        //// 임시 productID 12492
-        mViewModel.inquiry.productId = intent.getIntExtra("productId", resources.getString(R.string.temp_productId).toInt())
-        mBinding.includeWriteclaimHeader.viewModel = mViewModel
-        mBinding.viewModel = mViewModel
-        mBinding.executePendingBindings()
+        val productId = intent.getLongExtra("productId", -1)
+        if (productId > -1) {
+            mViewModel.inquiry.productId = productId
+            mBinding.includeWriteclaimHeader.viewModel = mViewModel
+            mBinding.viewModel = mViewModel
+            mBinding.executePendingBindings()
+        } else {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
     }
 
     interface OnWriteClaimListener : OnBaseActivityListener
