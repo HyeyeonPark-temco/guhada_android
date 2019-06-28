@@ -129,7 +129,7 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
                 "85",
                 "1개",
                 new BigDecimal("215000"),
-                "입금완료"));
+                "제품 감정 완료"));
         l.add(getTestItem(
                 123456,
                 "2019.06.28",
@@ -140,7 +140,7 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
                 "85",
                 "1개",
                 new BigDecimal("215000"),
-                "입금완료"));
+                "제품 감정 완료"));
         l.add(getTestItem(
                 123456,
                 "2019.06.28",
@@ -151,7 +151,7 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
                 "85",
                 "1개",
                 new BigDecimal("215000"),
-                "입금완료"));
+                "제품 감정 완료"));
         adapter.setItems(l);
     }
 
