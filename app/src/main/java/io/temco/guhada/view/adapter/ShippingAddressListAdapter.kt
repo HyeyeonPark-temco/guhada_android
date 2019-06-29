@@ -10,6 +10,8 @@ import io.temco.guhada.databinding.ItemShippingaddressListBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ShippingAddressListAdapter : RecyclerView.Adapter<ShippingAddressListAdapter.Holder>() {
+    private var prevPos = -1
+    private var currentPos = -1
     private var list: MutableList<UserShipping> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -30,7 +32,15 @@ class ShippingAddressListAdapter : RecyclerView.Adapter<ShippingAddressListAdapt
 
     inner class Holder(val binding: ItemShippingaddressListBinding) : BaseViewHolder<ItemShippingaddressListBinding>(binding.root) {
         fun bind(shipping: UserShipping) {
+            binding.radiobuttonShippingaddresslist.setOnCheckedChangeListener(null)
+            binding.radiobuttonShippingaddresslist.isChecked = (currentPos == adapterPosition)
             binding.shipping = shipping
+            binding.radiobuttonShippingaddresslist.setOnCheckedChangeListener { buttonView, isChecked ->
+                prevPos = currentPos
+                currentPos = adapterPosition
+                this@ShippingAddressListAdapter.notifyItemChanged(prevPos)
+                this@ShippingAddressListAdapter.notifyItemChanged(currentPos)
+            }
             binding.executePendingBindings()
         }
     }

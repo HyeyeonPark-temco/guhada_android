@@ -9,11 +9,29 @@
             type="io.temco.guhada.data.viewmodel.ShippingAddressViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <FrameLayout
+        android:background="@color/common_white"
         android:layout_width="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        app:bindShippingAddress="@{viewModel.shippingAddresses}" />
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            android:layout_height="match_parent"
+            app:bindShippingAddress="@{viewModel.shippingAddresses}" />
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_15"
+
+            android:textColor="@color/black_four"
+            android:layout_gravity="center"
+            android:text="등록된 배송지가 없습니다."
+            android:visibility="@{viewModel.emptyVisibility}"/>
+    </FrameLayout>
+
 
 </layout>

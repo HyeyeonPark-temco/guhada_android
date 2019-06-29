@@ -315,7 +315,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onClickChangeShippingAddress(){
-      //  listener.redirectShippingAddressActivity()
+        listener.redirectShippingAddressActivity()
     }
 
     fun onTermsChecked(checked: Boolean) {

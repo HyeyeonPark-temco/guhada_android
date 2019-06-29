@@ -359,12 +359,12 @@ class LoginServer {
 
         @JvmStatic
         fun getUserShippingAddress(listener: OnServerListener, userId: Int) {
-            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId).enqueue(object : Callback<BaseModel<Any>> {
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId).enqueue(object : Callback<BaseModel<MutableList<UserShipping>>> {
+                override fun onFailure(call: Call<BaseModel<MutableList<UserShipping>>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
 
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                override fun onResponse(call: Call<BaseModel<MutableList<UserShipping>>>, response: Response<BaseModel<MutableList<UserShipping>>>) {
                     listener.onResult(true, response.body())
                 }
             })

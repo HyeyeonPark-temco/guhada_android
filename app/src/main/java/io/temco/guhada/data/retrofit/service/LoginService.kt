@@ -139,7 +139,7 @@ interface LoginService {
      * @return success: List<UserShipping>  failed: Object(result, data, resultCode)
      */
     @GET("/users/{userId}/shipping-addresses")
-    fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<Any>>
+    fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<MutableList<UserShipping>>>
 
     /**
      * 상품 리뷰 평점 및 그래프 정보 조회 API

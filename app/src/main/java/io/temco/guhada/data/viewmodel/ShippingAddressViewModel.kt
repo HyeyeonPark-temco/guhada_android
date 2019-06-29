@@ -1,6 +1,8 @@
 package io.temco.guhada.data.viewmodel
 
+import android.view.View
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.common.Flag
@@ -16,7 +18,13 @@ class ShippingAddressViewModel : BaseObservableViewModel() {
     var shippingAddresses: MutableLiveData<MutableList<UserShipping>> = MutableLiveData()
         @Bindable
         get() = field
+    var emptyVisibility = ObservableInt(View.VISIBLE)
+        @Bindable
+        get() = field
 
+    /**
+     * @exception IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 36 path $.data
+     */
     fun getUserShippingAddress() {
         LoginServer.getUserShippingAddress(OnServerListener { success, o ->
             if (success) {
@@ -24,13 +32,19 @@ class ShippingAddressViewModel : BaseObservableViewModel() {
                 when (model.resultCode) {
                     Flag.ResultCode.SUCCESS -> {
                         this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
+                        emptyVisibility = ObservableInt(View.GONE)
+
                         notifyPropertyChanged(BR.shippingAddresses)
+                        notifyPropertyChanged(BR.emptyVisibility)
                     }
                     Flag.ResultCode.DATA_NOT_FOUND -> {
-                        // EMPTY
+                        emptyVisibility = ObservableInt(View.VISIBLE)
+                        notifyPropertyChanged(BR.emptyVisibility)
                     }
                 }
             } else {
+                emptyVisibility = ObservableInt(View.VISIBLE)
+                notifyPropertyChanged(BR.emptyVisibility)
                 CommonUtil.debug(o as String)
             }
         }, userId)
