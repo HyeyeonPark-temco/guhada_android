@@ -35,12 +35,12 @@
             app:layout_constraintTop_toBottomOf="@+id/include_productdetail_header">
             <!--app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"-->
             <LinearLayout
-                android:paddingBottom="60dp"
                 android:id="@+id/linearlayout_productdetail_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/pale_grey"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="60dp">
 
                 <include
                     android:id="@+id/include_productdetail_contentheader"
@@ -93,15 +93,15 @@
                         layout="@layout/layout_productdetail_productnotifies" />
 
                     <View
-                        android:visibility="gone"
                         android:id="@+id/productdetail_scrollflag_store"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp" />
+                        android:layout_height="1dp"
+                        android:visibility="gone" />
 
                     <include
-                        android:visibility="gone"
                         android:id="@+id/include_productdetail_contentstore"
-                        layout="@layout/layout_productdetail_store" />
+                        layout="@layout/layout_productdetail_store"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>

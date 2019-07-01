@@ -56,6 +56,7 @@
 
                 <Button
                     style="@style/TextMedium"
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/common_white"
@@ -67,6 +68,7 @@
                     app:textBold="@{viewModel.selectedTab == 0}" />
 
                 <View
+
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:background="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />
@@ -80,6 +82,7 @@
 
                 <Button
                     style="@style/TextMedium"
+                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/common_white"
@@ -105,6 +108,7 @@
                 <Button
                     style="@style/TextMedium"
                     android:layout_width="match_parent"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:background="@color/common_white"
                     android:onClick="@{(view)->viewModel.onClickTab(view)}"

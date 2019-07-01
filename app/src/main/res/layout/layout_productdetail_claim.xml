@@ -166,6 +166,7 @@
                 android:visibility="@{viewModel.emptyVisibility}" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:overScrollMode="never"
                 android:id="@+id/recyclerview_productdetail_claim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

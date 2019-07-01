@@ -34,9 +34,9 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
 
     fun setItems(list: MutableList<ClaimResponse.Claim>) {
         this.list = list
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             notifyDataSetChanged()
-        }else {
+        } else {
             notifyItemRangeChanged(0, list.size)
         }
     }
@@ -44,7 +44,7 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
     fun addItems(list: MutableList<ClaimResponse.Claim>) {
         val rangeStart = this.list.size
         this.list.addAll(list)
-        notifyItemRangeChanged(rangeStart, this.list.size)
+        notifyItemRangeChanged(rangeStart - 1, this.list.size)
     }
 
     fun clearItems() {
@@ -53,6 +53,7 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
 
     inner class Holder(val binding: ItemProductdetailClaimBinding) : BaseViewHolder<ItemProductdetailClaimBinding>(binding.root) {
         fun bind(item: ClaimResponse.Claim) {
+            binding.isLastItem = adapterPosition == list.size - 1
             binding.claim = item
             binding.isReplyClosed = true
             binding.isArrowVisibilityForPending = false

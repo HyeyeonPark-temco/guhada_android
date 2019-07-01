@@ -194,6 +194,7 @@
                         app:layout_constraintVertical_bias="1.0" />
 
                     <Button
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:id="@+id/button3"
                         android:layout_width="75dp"
                         android:layout_height="30dp"
@@ -207,6 +208,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:id="@+id/button4"
                         android:layout_width="77dp"
                         android:layout_height="30dp"

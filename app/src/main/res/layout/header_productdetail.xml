@@ -55,6 +55,7 @@
                 android:id="@+id/imagebutton_headerproductdetail_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
                 android:src="@drawable/btn_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_bag"
