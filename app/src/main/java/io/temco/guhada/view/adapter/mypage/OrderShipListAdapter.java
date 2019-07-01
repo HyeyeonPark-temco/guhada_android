@@ -54,6 +54,21 @@ public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHold
     public void onBindViewHolder(@NonNull OrderShipViewHolder holder, int position) {
         MyOrderItem data = getItem(position);
 
+        // TEMP
+        if (position > 0) {
+            holder.getBinding().textReview.setText("확인 후 배송시작");
+            holder.getBinding().textviewCertificationResult.setText("제품 감정 결과 '진품'으로 확인 되었습니다.");
+        } else {
+            holder.getBinding().textReview.setText("확인 후 환불받기");
+            holder.getBinding().textviewCertificationResult.setText("제품 감정 결과 '가품'으로 확인 되었습니다.");
+        }
+
+        if(position == 0) holder.getBinding().imageThumb.setImageResource(R.drawable.temp_product_thumbnail1);
+        if(position == 1) holder.getBinding().imageThumb.setImageResource(R.drawable.temp_product_thumbnail2);
+        if(position == 2) holder.getBinding().imageThumb.setImageResource(R.drawable.temp_product_thumbnail3);
+
+
+
         // Review
         holder.getBinding().textReview.setSelected(!data.checkReward);
         if (!data.checkReward) {
@@ -71,7 +86,12 @@ public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHold
             int position = (int) v.getTag();
             switch (v.getId()) {
                 case R.id.text_review:
-                    mListener.onReward(this, position, getItem(position));
+                    if (position > 0) {
+                        mListener.onReward(this, position, getItem(position), "배송 접수가 완료되었습니다.");
+                    } else {
+                        mListener.onReward(this, position, getItem(position), "환불 신청이 완료되었습니다.");
+                    }
+
                     break;
             }
         }

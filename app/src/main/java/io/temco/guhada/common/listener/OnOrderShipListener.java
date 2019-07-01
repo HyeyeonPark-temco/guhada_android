@@ -9,5 +9,5 @@ public interface OnOrderShipListener {
 
     // void onReview(OrderShipListAdapter adapter, int position, MyOrderItem data);
 
-    void onReward(OrderShipListAdapter adapter, int position, MyOrderItem data);
+    void onReward(OrderShipListAdapter adapter, int position, MyOrderItem data, String message);
 }

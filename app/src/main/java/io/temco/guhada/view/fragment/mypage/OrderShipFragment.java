@@ -107,9 +107,9 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
             }
 
             @Override
-            public void onReward(OrderShipListAdapter adapter, int position, MyOrderItem data) {
+            public void onReward(OrderShipListAdapter adapter, int position, MyOrderItem data, String message) {
                 //
-                showRewardDialog();
+                showRewardDialog(message);
                 //
                 data.checkReward = true;
                 adapter.changeItems(position, data);
@@ -120,37 +120,37 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
         // Test
         List<MyOrderItem> l = new ArrayList<>();
         l.add(getTestItem(
-                123456,
+                278453,
                 "2019.06.28",
-                "ACNE",
-                "19FW",
-                "슬림핏 하프넥 플라워 패턴 슬림핏 하프넥 플라워 패턴",
-                "체리",
-                "85",
+                "St.Jogn",
+                "19SS",
+                "여성 의류 원피스 & 드레스 니랭스 원피스/드레스 no.5676 상품 by.SP",
+                "라임",
+                "S",
                 "1개",
-                new BigDecimal("215000"),
+                new BigDecimal("568500"),
                 "제품 감정 완료"));
         l.add(getTestItem(
-                123456,
-                "2019.06.28",
-                "ACNE",
-                "19FW",
-                "슬림핏 하프넥 플라워 패턴 슬림핏 하프넥 플라워 패턴",
-                "체리",
-                "85",
+                342507,
+                "2019.06.17",
+                "Missoni",
+                "19SS",
+                "여성 의류 니트 & 스웻 셔츠 가디건 no.5462 상품 by.SP",
+                "카멜",
+                "FREE",
                 "1개",
-                new BigDecimal("215000"),
+                new BigDecimal("547100"),
                 "제품 감정 완료"));
         l.add(getTestItem(
-                123456,
-                "2019.06.28",
-                "ACNE",
-                "19FW",
-                "슬림핏 하프넥 플라워 패턴 슬림핏 하프넥 플라워 패턴",
-                "체리",
-                "85",
+                827692,
+                "2019.05.03",
+                "MaisonKitsune",
+                "19SS",
+                "여성 슈즈 펌프스 no.2964 상품 by.SP",
+                "블랙",
+                "US6",
                 "1개",
-                new BigDecimal("215000"),
+                new BigDecimal("958400"),
                 "제품 감정 완료"));
         adapter.setItems(l);
     }
@@ -242,9 +242,9 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
         }
     }
 
-    private void showRewardDialog() {
+    private void showRewardDialog(String message) {
         MessageDialog md = new MessageDialog();
-        md.setMessage(getString(R.string.mypage_order_reward_message));
+        md.setMessage(message);
         md.show(getFragmentManager(), getBaseTag());
     }
 
