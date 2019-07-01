@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.server.BlockChainServer;
 import io.temco.guhada.data.server.ProductServer;
@@ -51,6 +52,8 @@ public class TestNfcActivity extends AppCompatActivity {
 
 //        mIsRead = false;
 
+        mIsRead = getIntent().getBooleanExtra("isRead", false);
+        ToastUtil.showMessage(mIsRead ? "NFC READ" : "NFC WRITE");
         init();
     }
 
@@ -120,6 +123,7 @@ public class TestNfcActivity extends AppCompatActivity {
 
     /**
      * NFC READ
+     *
      * @param intent
      */
     private void readData(Intent intent) {
@@ -151,8 +155,8 @@ public class TestNfcActivity extends AppCompatActivity {
     }
 
     /**
-     * NFC WRITE/INSERT
-     * 이번 시연 버전에서는 미사용
+     * NFC WRITE
+     *
      * @param intent
      */
     private void writeData(Intent intent) {
@@ -164,6 +168,7 @@ public class TestNfcActivity extends AppCompatActivity {
     /**
      * NFC 객체 생성
      * 현재 임의로 TAG_COMPANY, TAG_ID 추가; 추후 규격 변경 시 반영 필요
+     *
      * @param id product id
      * @return
      */
@@ -199,9 +204,9 @@ public class TestNfcActivity extends AppCompatActivity {
     }
 
     /**
-     * @param ndef NFC 규격
+     * @param ndef    NFC 규격
      * @param message
-     * @throws IOException [line 212] writeNdefMessage() 호출 이전에 nfc 인식이 안될 경우 발생; 1초 이상 태깅 필요
+     * @throws IOException     [line 235] writeNdefMessage() 호출 이전에 nfc 인식이 안될 경우 발생; 1초 이상 태깅 필요
      * @throws FormatException
      */
     private void writeNdefMessage(Ndef ndef, NdefMessage message) throws IOException, FormatException {
@@ -214,7 +219,7 @@ public class TestNfcActivity extends AppCompatActivity {
 //        CommonUtil.debug("" + ndef.getMaxSize());
         if (!ndef.isWritable()) showMessage("can not write NFC tag");
         if (ndef.getMaxSize() < size) showMessage("NFC tag size too large");
-        ndef.writeNdefMessage(message);
+        ndef.writeNdefMessage(message); // [IOException] writeNdefMessage() 호출 이전에 nfc 인식이 안될 경우 발생; 1초 이상 태깅 필요
         ndef.close();
         showMessage("NFC tag is writted");
     }
@@ -241,6 +246,7 @@ public class TestNfcActivity extends AppCompatActivity {
     /**
      * product 정보 가져오기 API 호출
      * 페이지 상단부
+     *
      * @param id product id
      */
     private void getProductData(String id) {
