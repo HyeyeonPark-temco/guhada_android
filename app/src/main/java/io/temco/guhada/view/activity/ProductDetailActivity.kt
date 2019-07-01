@@ -326,6 +326,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     }
 
+    override fun redirectHome() {
+
+    }
+
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {

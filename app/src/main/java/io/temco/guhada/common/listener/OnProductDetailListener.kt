@@ -11,4 +11,5 @@ interface OnProductDetailListener {
     fun closeActivity()
     fun showSideMenu()
     fun setBrandProductList(brand: Brand)
+    fun redirectHome()
 }

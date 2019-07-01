@@ -48,6 +48,7 @@
                 android:src="@drawable/burger_top_home"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_search"
+                android:onClick="@{()->viewModel.onClickHome()}"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton

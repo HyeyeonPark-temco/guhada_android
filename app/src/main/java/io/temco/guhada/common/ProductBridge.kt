@@ -16,9 +16,9 @@ class ProductBridge {
                 mainActivity.addProductDetailView(dealId)
         }
 
-        fun detachProductDetailView() {
+        fun removeProductDetailFragment() {
             if (::mainActivity.isInitialized)
-                mainActivity.detachProductDetailView()
+                mainActivity.removeProductDetailFragment()
         }
 
         fun showSideMenu() {

@@ -22,7 +22,6 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.temco.guhada.BuildConfig;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
@@ -30,7 +29,9 @@ import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.ProductBridge;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
+import io.temco.guhada.common.listener.OnMainListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.ProductByList;
@@ -44,7 +45,7 @@ import io.temco.guhada.view.custom.dialog.BrandListDialog;
 import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment;
 
-public class MainActivity extends BindActivity<ActivityMainBinding> implements View.OnClickListener {
+public class MainActivity extends BindActivity<ActivityMainBinding> implements View.OnClickListener, OnMainListener {
 
     // -------- LOCAL VALUE --------
     private final int REQUEST_CODE_LOGIN = 101;
@@ -55,7 +56,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private SideMenuCategoryFirstListAdapter mSideMenuCategoryAdapter;
     private CategoryListDialog mCategoryListDialog;
     private BrandListDialog mBrandListDialog;
-    private ProductDetailFragment productDetailFragment;
+    private ProductDetailFragment mProductDetailFragment;
+    private LoadingIndicatorUtil mLoadingIndicatorUtil;
     // NFC
     private NfcAdapter mNfcAdapter;
     private PendingIntent mPendingIntent;
@@ -87,6 +89,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     protected void init() {
         // [2019.06.26] 임시 브릿지
         ProductBridge.Companion.setMainActivity(this);
+        mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
 
         // Init
         initNfc();
@@ -174,9 +177,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     changeLoginStatus(checkToken());
 
                     // [상품 상세] 문의 리프레시
-                    if (productDetailFragment != null) {
-                        productDetailFragment.refreshIsMyClaimsVisible();
-                        productDetailFragment.refreshClaims();
+                    if (mProductDetailFragment != null) {
+                        mProductDetailFragment.refreshIsMyClaimsVisible();
+                        mProductDetailFragment.refreshClaims();
                     }
 
                     break;
@@ -199,12 +202,12 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                         mPagerAdapter.setProductBrandData(b);
 
                         // [2019.06.26] 임시
-                        ProductBridge.Companion.detachProductDetailView();
+                        ProductBridge.Companion.removeProductDetailFragment();
                     }
                     break;
 
                 case Flag.RequestCode.WRITE_CLAIM:
-                    productDetailFragment.refreshClaims();
+                    mProductDetailFragment.refreshClaims();
                     break;
             }
         } else {
@@ -250,9 +253,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     changeLoginStatus(false);
 
                     // [상품 상세] 문의 리스트 리프레시
-                    if (productDetailFragment != null) {
-                        productDetailFragment.refreshIsMyClaimsVisible();
-                        productDetailFragment.refreshClaims();
+                    if (mProductDetailFragment != null) {
+                        mProductDetailFragment.refreshIsMyClaimsVisible();
+                        mProductDetailFragment.refreshClaims();
                     }
                 });
             } else {
@@ -458,7 +461,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mPagerAdapter.addProductCategoryData(type, hierarchies);
 
         // [2019.06.26] 임시 브릿지
-        detachProductDetailView();
+        removeProductDetailFragment();
     }
 
     // Dialog
@@ -580,40 +583,58 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.viewMainProductdetail.bringToFront();
         mBinding.viewMainProductdetail.setVisibility(View.VISIBLE);
 
-        if (productDetailFragment != null) {
-            productDetailFragment = new ProductDetailFragment(dealId);
-            getSupportFragmentManager().beginTransaction().replace(mBinding.viewMainProductdetail.getId(), productDetailFragment).addToBackStack(null).commitAllowingStateLoss();
+        if (mProductDetailFragment != null) {
+            mProductDetailFragment = new ProductDetailFragment(dealId, this);
+            getSupportFragmentManager().beginTransaction().replace(mBinding.viewMainProductdetail.getId(), mProductDetailFragment).addToBackStack(null).commitAllowingStateLoss();
         } else {
-            productDetailFragment = new ProductDetailFragment(dealId);
-            getSupportFragmentManager().beginTransaction().add(mBinding.viewMainProductdetail.getId(), productDetailFragment).addToBackStack(null).commitAllowingStateLoss();
+            mProductDetailFragment = new ProductDetailFragment(dealId, this);
+            getSupportFragmentManager().beginTransaction().add(mBinding.viewMainProductdetail.getId(), mProductDetailFragment).addToBackStack(null).commitAllowingStateLoss();
         }
     }
 
     // [2019.06.26] 임시 브릿지
-    public void detachProductDetailView() {
+    @Override
+    public void removeProductDetailFragment() {
         mBinding.layoutSideMenu.linearlayoutSidemenuContainer.bringToFront();
         mBinding.viewMainProductdetail.setVisibility(View.GONE);
-        if (productDetailFragment != null && productDetailFragment.isAdded())
-            getSupportFragmentManager().beginTransaction().remove(productDetailFragment).commitAllowingStateLoss();
+        if (mProductDetailFragment != null && mProductDetailFragment.isAdded())
+            getSupportFragmentManager().beginTransaction().remove(mProductDetailFragment).commitAllowingStateLoss();
+
+        mLoadingIndicatorUtil.hide();
     }
 
     // [2019.06.26] 임시 브릿지
-    public void showSideMenu(Boolean isOpen) {
+    @Override
+    public void showSideMenu(boolean isOpen) {
         if (isOpen) mBinding.layoutSideMenu.linearlayoutSidemenuContainer.bringToFront();
         changeDrawerLayout(isOpen);
     }
 
     // [2019.06.26] 임시 브릿지
+    @Override
     public void setBrandProductList(Brand brand) {
         mPagerAdapter.setProductBrandData(brand);
     }
 
     @Override
+    public void removeProductFragment() {
+        mLoadingIndicatorUtil.show();
+        mPagerAdapter.removeProduct();
+        removeProductDetailFragment();
+    }
+
+    @Override
     public void onBackPressed() {
-        if (productDetailFragment != null && productDetailFragment.isVisible()) {
-            detachProductDetailView();
+        if (mProductDetailFragment != null && mProductDetailFragment.isVisible()) {
+            removeProductDetailFragment();
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mLoadingIndicatorUtil != null) mLoadingIndicatorUtil.dismiss();
+        super.onDestroy();
     }
 }

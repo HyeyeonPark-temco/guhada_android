@@ -104,12 +104,25 @@ public class FastScrollRecyclerView extends RecyclerView {
         return x < getMinX() || x > getMaxX() || y < getMinY() || y > getMaxY();
     }
 
+    /**
+     * @throws NullPointerException Attempt to invoke interface method 'float io.temco.guhada.common.listener.OnFastScrollListener.getTopPadding()' on a null object reference
+     * @author Hyeyeon Park
+     */
     private float getMaxX() {
-        return getWidth() - mListener.getTopPadding() - (mListener.getLetterTextSize() / 2); // Align Center
+        if (mListener != null) {
+            return getWidth() - mListener.getTopPadding() - (mListener.getLetterTextSize() / 2); // Align Center
+        } else {
+            return 0;
+        }
     }
 
+    /**
+     * @throws NullPointerException: Attempt to invoke interface method 'float io.temco.guhada.common.listener.OnFastScrollListener.getLetterTextSize()' on a null object reference
+     */
     private float getMinX() {
-        return getMaxX() - mListener.getLetterTextSize();
+        if (mListener != null)
+            return getMaxX() - mListener.getLetterTextSize();
+        else return 0;
     }
 
     private float getMaxY() {

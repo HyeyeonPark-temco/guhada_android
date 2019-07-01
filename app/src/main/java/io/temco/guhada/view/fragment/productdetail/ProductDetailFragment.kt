@@ -15,6 +15,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.ProductBridge
+import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.common.util.CommonUtil
@@ -37,7 +38,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
+class ProductDetailFragment(val dealId: Long, val mainListener: OnMainListener) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
     private val INVALID_DEAL_ID = -1
     private var animFlag = true
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
@@ -107,6 +108,10 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
         mBinding.includeProductdetailHeader.viewModel = mViewModel
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+    }
+
+    override fun redirectHome() {
+        mainListener.removeProductFragment()
     }
 
     override fun onDestroy() {
@@ -333,7 +338,7 @@ class ProductDetailFragment(val dealId: Long) : BaseFragment<ActivityProductDeta
 
 
     override fun closeActivity() {
-        ProductBridge.mainActivity.detachProductDetailView()
+        ProductBridge.mainActivity.removeProductDetailFragment()
     }
 
     override fun setBrandProductList(brand: Brand) {

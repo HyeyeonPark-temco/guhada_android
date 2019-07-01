@@ -43,6 +43,9 @@ import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
+/**
+ * 상품 리스트
+ */
 public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements OnStateFragmentListener, View.OnClickListener {
 
     // -------- LOCAL VALUE --------

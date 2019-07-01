@@ -29,7 +29,10 @@ class LoadingIndicatorUtil(val mContext: Context) : Dialog(mContext) {
      * You should call dismiss() after calling execute(..) function
      * @param task function
      */
-    fun execute(task: () -> Unit) = task()
+    fun execute(task: () -> Unit) {
+        this.show()
+        task()
+    }
 
     override fun hide() {
         if (this.isShowing) super.hide()
@@ -38,4 +41,5 @@ class LoadingIndicatorUtil(val mContext: Context) : Dialog(mContext) {
     override fun show() {
         if (!this.isShowing) super.show()
     }
+
 }

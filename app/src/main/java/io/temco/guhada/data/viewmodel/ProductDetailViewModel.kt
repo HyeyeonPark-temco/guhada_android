@@ -143,5 +143,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         }
     }
 
+    fun onClickHome() {
+        listener?.redirectHome()
+    }
+
 
 }
