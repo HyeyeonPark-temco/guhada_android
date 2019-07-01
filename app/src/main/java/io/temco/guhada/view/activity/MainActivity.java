@@ -52,6 +52,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     private final int REQUEST_CODE_CATEGORY = 201;
     private final int REQUEST_CODE_BRAND = 202;
     //
+
     private MainPagerAdapter mPagerAdapter;
     private SideMenuCategoryFirstListAdapter mSideMenuCategoryAdapter;
     private CategoryListDialog mCategoryListDialog;

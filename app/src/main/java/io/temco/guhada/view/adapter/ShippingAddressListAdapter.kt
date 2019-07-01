@@ -6,10 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
 import io.temco.guhada.databinding.ItemShippingaddressListBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
-class ShippingAddressListAdapter : RecyclerView.Adapter<ShippingAddressListAdapter.Holder>() {
+class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : RecyclerView.Adapter<ShippingAddressListAdapter.Holder>() {
     private var prevPos = -1
     private var currentPos = -1
     private var list: MutableList<UserShipping> = mutableListOf()
@@ -36,6 +37,7 @@ class ShippingAddressListAdapter : RecyclerView.Adapter<ShippingAddressListAdapt
             binding.radiobuttonShippingaddresslist.isChecked = (currentPos == adapterPosition)
             binding.shipping = shipping
             binding.radiobuttonShippingaddresslist.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (currentPos > 0) mViewModel.selectedItem = list[currentPos]
                 prevPos = currentPos
                 currentPos = adapterPosition
                 this@ShippingAddressListAdapter.notifyItemChanged(prevPos)

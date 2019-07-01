@@ -1,6 +1,8 @@
 package io.temco.guhada.data.model
 
-class UserShipping {
+import java.io.Serializable
+
+class UserShipping : Serializable{
     var id: Int = 0
     var userId: Int = 0
     var defaultAddress: Boolean = false

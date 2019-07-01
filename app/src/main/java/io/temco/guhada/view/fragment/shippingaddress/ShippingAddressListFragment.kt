@@ -4,6 +4,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
@@ -11,7 +12,7 @@ import io.temco.guhada.databinding.FragmentShippingaddresslistBinding
 import io.temco.guhada.view.adapter.ShippingAddressListAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
-class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBinding>() {
+class ShippingAddressListFragment: BaseFragment<FragmentShippingaddresslistBinding>() {
     lateinit var mViewModel: ShippingAddressViewModel
     private lateinit var mLoadingIndicator: LoadingIndicatorUtil
 
@@ -27,9 +28,11 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
             mViewModel.getUserShippingAddress()
             mViewModel.shippingAddresses.observe(this, Observer { list ->
                 if (::mLoadingIndicator.isInitialized) mLoadingIndicator.hide()
+                mBinding.recyclerviewShippingaddress.adapter = ShippingAddressListAdapter(mViewModel)
                 mBinding.viewModel = mViewModel
                 mBinding.executePendingBindings()
             })
+
         }
     }
 
@@ -43,7 +46,6 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
         @BindingAdapter("bindShippingAddress")
         fun RecyclerView.bindShippingAddresses(list: MutableList<UserShipping>?) {
             if (list != null) {
-                if (this.adapter == null) this.adapter = ShippingAddressListAdapter()
                 (this.adapter as ShippingAddressListAdapter).setItems(list)
             }
         }

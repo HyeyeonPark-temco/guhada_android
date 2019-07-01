@@ -22,6 +22,7 @@ import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Order
 import io.temco.guhada.data.model.PGAuth
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -194,6 +195,18 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     }
                 } else {
                     ToastUtil.showMessage("결제가 취소되었습니다.")
+                }
+            }
+            Flag.RequestCode.SHIPPING_ADDRESS -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.getSerializableExtra("shippingAddress").let {
+                        if (it != null) {
+                            mViewModel.order.shippingAddress = it as UserShipping
+                            mViewModel.notifyPropertyChanged(BR.order)
+                        }
+                    }
+                } else {
+                    // 배송지 변경 취소
                 }
             }
         }
