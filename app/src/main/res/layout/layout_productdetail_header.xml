@@ -23,11 +23,12 @@
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager_productdetail_images"
-                android:layout_width="wrap_content"
-                android:layout_height="438dp"
+                android:layout_width="match_parent"
+                android:layout_height="437dp"
                 android:background="@color/black_overlay"
                 android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

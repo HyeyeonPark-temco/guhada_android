@@ -304,6 +304,7 @@
                     <TextView
                         android:id="@+id/textView23"
                         style="@style/PaymentTitleBlackTextStyle"
+                        android:visibility="@{viewModel.order.shippingAddress != null || viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.order.shippingAddress.shippingName}"
@@ -312,6 +313,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+                        android:visibility="@{viewModel.order.shippingAddress != null || viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"
                         android:id="@+id/imageView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -353,6 +355,7 @@
                             android:overlapAnchor="false"
                             android:popupBackground="@null"
                             android:spinnerMode="dropdown"
+                            android:overScrollMode="never"
                             app:userShippingAddress="@{viewModel.order.shippingMessage}" />
 
                         <FrameLayout
@@ -384,6 +387,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
+                                    android:onClick="@{()->viewModel.onClickCloseShippingMemoSpinner()}"
                                     android:src="@drawable/payment_icon_selectbox_open" />
                             </LinearLayout>
                         </FrameLayout>

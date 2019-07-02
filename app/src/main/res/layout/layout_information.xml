@@ -33,7 +33,7 @@
                         style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/information_title_introduce"
+                        android:text="@string/information_title_introduce_en"
                         android:textColor="@color/text_3"
                         android:textSize="@dimen/text_11" />
                 </LinearLayout>
@@ -48,47 +48,7 @@
                         style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/information_title_terms"
-                        android:textColor="@color/text_3"
-                        android:textSize="@dimen/text_11" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- //////////////////////////////////////////////// -->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/TextRegular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/information_title_advise"
-                        android:textColor="@color/text_3"
-                        android:textSize="@dimen/text_11" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/TextRegular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/information_title_privacy_terms"
+                        android:text="@string/information_title_terms_en"
                         android:textColor="@color/text_3"
                         android:textSize="@dimen/text_11" />
                 </LinearLayout>
@@ -113,7 +73,7 @@
                         style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/information_title_partner"
+                        android:text="@string/information_title_advise_en"
                         android:textColor="@color/text_3"
                         android:textSize="@dimen/text_11" />
                 </LinearLayout>
@@ -128,7 +88,7 @@
                         style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/information_title_as"
+                        android:text="@string/information_title_privacy_terms_en"
                         android:textColor="@color/text_3"
                         android:textSize="@dimen/text_11" />
                 </LinearLayout>
@@ -153,7 +113,47 @@
                         style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/information_title_recruit"
+                        android:text="@string/information_title_partner_en"
+                        android:textColor="@color/text_3"
+                        android:textSize="@dimen/text_11" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/information_title_as_en"
+                        android:textColor="@color/text_3"
+                        android:textSize="@dimen/text_11" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- //////////////////////////////////////////////// -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/information_title_recruit_en"
                         android:textColor="@color/text_3"
                         android:textSize="@dimen/text_11" />
                 </LinearLayout>
@@ -179,7 +179,7 @@
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/information_company_name"
+                android:text="@string/information_company_name_en"
                 android:textColor="@color/text_5"
                 android:textSize="@dimen/text_11" />
 
@@ -187,7 +187,7 @@
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/information_company_ceo"
+                android:text="@string/information_company_ceo_en"
                 android:textColor="@color/text_5"
                 android:textSize="@dimen/text_11" />
 
@@ -195,7 +195,7 @@
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/information_company_number"
+                android:text="@string/information_company_number_en"
                 android:textColor="@color/text_5"
                 android:textSize="@dimen/text_11" />
 
@@ -203,7 +203,7 @@
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/information_company_address"
+                android:text="@string/information_company_address_en"
                 android:textColor="@color/text_5"
                 android:textSize="@dimen/text_11" />
 
@@ -214,11 +214,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:textColor="@color/text_5"
-                android:textSize="@dimen/text_11" />
+                android:textSize="@dimen/text_11"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/text_information_description"
                 style="@style/TextRegular"
+                android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -230,7 +232,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                android:text="@string/information_copyright_all"
+                android:text="@string/information_copyright_all_en"
                 android:textColor="@color/text_5"
                 android:textSize="@dimen/text_11" />
         </LinearLayout>

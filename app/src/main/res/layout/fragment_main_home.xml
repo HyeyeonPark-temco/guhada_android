@@ -68,46 +68,112 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/main_01"
+                        app:height="384dp"
+                        app:width="360dp" />
+
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/visual01" />
+                        android:background="@drawable/featured_item_02"
+                        app:height="1317dp"
+                        app:width="360dp" />
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/approveditem02" />
+                        android:background="@drawable/plusitem03"
+                        app:height="1317dp"
+                        app:width="360dp" />
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/plusitem03" />
+                        android:background="@drawable/focuson04"
+                        app:height="556dp"
+                        app:width="360dp" />
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/focuson04" />
+                        android:background="@drawable/hotkeyword05"
+                        app:height="341dp"
+                        app:width="360dp" />
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/hotkeyword05" />
+                        android:background="@drawable/bestitem07"
+                        app:height="1260dp"
+                        app:width="360dp" />
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/best_store06" />
+                        android:background="@drawable/best_store06"
+                        app:height="1054dp"
+                        app:width="360dp" />
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bestitem07" />
+                        android:background="@drawable/foryou_08"
+                        app:height="858dp"
+                        app:width="360dp" />
 
-                    <ImageView
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/banner09" />
+                        android:background="@drawable/banner09"
+                        app:height="230dp"
+                        app:width="360dp" />
 
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/specialsale_10"
+                        app:height="936dp"
+                        app:width="360dp" />
+
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/mdpick_11"
+                        app:height="1833dp"
+                        app:width="360dp" />
+
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/newin_12"
+                        app:height="1286dp"
+                        app:width="360dp" />
+
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/banner_13"
+                        app:height="120dp"
+                        app:width="360dp" />
+
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/specialsale_14"
+                        app:height="928dp"
+                        app:width="360dp" />
+
+                    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/banner_15"
+                        app:height="120dp"
+                        app:width="360dp" />
                     <!-- INFORMATION -->
                     <include
                         android:id="@+id/layout_information"

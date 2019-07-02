@@ -84,6 +84,24 @@
     <string name="information_confirm_service">서비스 가입사실 확인</string>
     <string name="information_copyright_all">COPYRIGHT Ⓒ 2019 GUHADA ALL RIGHTS RESERVED</string>
 
+    <string name="information_title_introduce_en">About GUHADA</string>
+    <string name="information_title_terms_en">Terms of Service</string>
+    <string name="information_title_advise_en">Sell on GUHADA</string>
+    <string name="information_title_privacy_terms_en">Privacy Policy</string>
+    <string name="information_title_partner_en">Business Inquiry</string>
+    <string name="information_title_as_en">Contact Us</string>
+    <string name="information_title_recruit_en">Careers</string>
+    <string name="information_company_name_en">GUHADA Corporation</string>
+    <string name="information_company_ceo_en">CEO : Jaeseob Yoon ㅣ Privacy Officer : Guenil Lee</string>
+    <string name="information_company_number_en">Company Registration Number : 000-88-00000</string>
+    <string name="information_company_address_en">Address : 8, Nonhyeon-ro 75-gil, Gangnam-gu, Seoul, Republic of Korea</string>
+    <string name="information_company_sales_number_en">통신판매업자신고 : 제 2009호-서울강남-0000호</string>
+    <string name="information_description_en">You can use Purchase Safety Service (Dept Payment Guarantee) from our website to pay for a safe transaction. </string>
+    <string name="information_confirm_company_en">사업자정보확인</string>
+    <string name="information_confirm_service_en">Learn more for more detail</string>
+    <string name="information_copyright_all_en">COPYRIGHT Ⓒ 2019 GUHADA ALL RIGHTS RESERVED</string>
+
+
     <!-- SIDE MENU -->
     <string name="side_menu_login_need">로그인 해주세요</string>
     <string name="side_menu_login_out">로그아웃</string>
