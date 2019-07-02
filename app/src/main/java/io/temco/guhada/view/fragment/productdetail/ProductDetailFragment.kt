@@ -54,13 +54,12 @@ class ProductDetailFragment(val dealId: Long, val mainListener: OnMainListener) 
     override fun init() {
         //[2019.06.26]임시 브릿지
         mLoadingIndicatorUtil = LoadingIndicatorUtil(context ?: ProductBridge.mainActivity)
-        mLoadingIndicatorUtil.show()
+        if (::mLoadingIndicatorUtil.isInitialized)
+            mLoadingIndicatorUtil.show()
 
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
         mViewModel.product.observe(this, Observer<Product> { product ->
-            if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.dismiss()
-
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mBinding.includeProductdetailContentsummary.viewModel = mViewModel
             mBinding.includeProductdetailContentheader.viewModel = mViewModel
@@ -81,6 +80,8 @@ class ProductDetailFragment(val dealId: Long, val mainListener: OnMainListener) 
             })
 
             CommonUtil.debug("TASK", "PRODUCT FINISH")
+            if (::mLoadingIndicatorUtil.isInitialized)
+                mLoadingIndicatorUtil.dismiss()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {

@@ -29,7 +29,7 @@
             <EditText
                 android:id="@+id/editText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="@dimen/text_14"
                 android:background="@null"
@@ -37,7 +37,7 @@
                 android:inputType="textPersonName"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/pinkish_grey"
-
+                android:textCursorDrawable="@null"
                 android:textSize="@dimen/text_14"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

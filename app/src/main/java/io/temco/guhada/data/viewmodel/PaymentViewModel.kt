@@ -29,6 +29,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
     var selectedShippingAddress: UserShipping? = UserShipping()
 
+    var isOpenShippingMemo = false
+        @Bindable
+        get() = field
     var selectedShippingMessage = ObservableField<String>(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
         @Bindable
         get() = field
@@ -114,6 +117,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 getOrderForm(accessToken)
                 Log.e("cartItemId", cart.cartItemId.toString())
             } else {
+                listener.hideLoadingIndicator()
                 if (o != null) {
                     listener.showMessage(o as String)
                 } else {
@@ -139,7 +143,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 }
             }
 
-            listener.hideLodingIndicator()
+            listener.hideLoadingIndicator()
         }, accessToken, arrayOf(cart.cartItemId))
     }
 
@@ -175,7 +179,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 }
             }
 
-            listener.hideLodingIndicator()
+            listener.hideLoadingIndicator()
         }, accessToken, requestOrder)
     }
 
@@ -205,7 +209,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     listener.showMessage("ORDER APPROVAL ERROR")
                 }
 
-                listener.hideLodingIndicator()
+                listener.hideLoadingIndicator()
             }, accessToken, pgAuth)
         }
     }
@@ -318,6 +322,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         // listener.redirectShippingAddressActivity()
     }
 
+
+
+
+
     fun onTermsChecked(checked: Boolean) {
         this.termsChecked = checked
     }
@@ -325,8 +333,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     fun onShippingMemoSelected(position: Int) {
         if (order.shippingMessage.size > position) {
             selectedShippingMessage = ObservableField(order.shippingMessage[position])
+            isOpenShippingMemo = false
+
             notifyPropertyChanged(BR.selectedShippingMessage)
         }
+    }
+
+    fun onClickCloseShippingMemoSpinner() {
+      //  listener.onClickCloseShippingMemoSpinner()
     }
 
 }

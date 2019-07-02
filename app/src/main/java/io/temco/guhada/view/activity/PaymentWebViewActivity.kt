@@ -77,12 +77,14 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
 
         when (intent.getStringExtra("payMethod")) {
             "CARD" -> {
-                URL = "https://devmobpay.lpay.com:410/smart/wcard/"
+                URL = "https://mobpay.lpay.com/smart/wcard/"
+              //  URL = "https://devmobpay.lpay.com:410/smart/wcard/"
                 params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
             }
             "VBank" -> {
                 // 무통장 입금
                 URL = "https://devmobpay.lpay.com:410/smart/vbank/"
+//                URL = "https://ksmobile.inicis.com/smart/vbank/"
             }
             "DirectBank" -> {
                 // 실시간 계좌
@@ -133,6 +135,11 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         } else {
             cookieManager.setAcceptCookie(true)
         }
+
+        if (!mViewModel.pgResponse.jsUrl.isEmpty()) {
+            URL = mViewModel.pgResponse.jsUrl
+        }
+
         mBinding.webviewPayment.postUrl(URL, params.toByteArray())
     }
 

@@ -43,6 +43,18 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mLoadingIndicatorUtil.show()
 
         mViewModel = PaymentViewModel(object : OnPaymentListener {
+            override fun onClickCloseShippingMemoSpinner() {
+//                if (mViewModel.isOpenShippingMemo) {
+//                    mViewModel.isOpenShippingMemo = false
+//                    mBinding.spinnerPaymentShippingmemo.onDetachedFromWindow()
+//                    Log.e("스피너", "닫힘")
+//                } else {
+//                    Log.e("스피너", "열림")
+//                    mViewModel.isOpenShippingMemo = true
+//                    mBinding.spinnerPaymentShippingmemo.performClick()
+//                }
+            }
+
             override fun redirectShippingAddressActivity() {
                 startActivityForResult(Intent(this@PaymentActivity, ShippingAddressActivity::class.java), Flag.RequestCode.SHIPPING_ADDRESS)
             }
@@ -73,7 +85,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 }
             }
 
-            override fun hideLodingIndicator() {
+            override fun hideLoadingIndicator() {
                 mLoadingIndicatorUtil.hide()
             }
         })
@@ -94,6 +106,12 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mViewModel.product = product as BaseProduct
             }
         }
+
+        // 배송 메모
+        mBinding.framelayoutPaymentShippingmemobutton.bringToFront()
+
+
+
         if (::mViewModel.isInitialized) {
             mBinding.includePaymentHeader.title = "주문 결제"
             mBinding.includePaymentHeader.setOnClickBackButton {
@@ -245,7 +263,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun notifyRadioButtons()
         fun redirectPayemntWebViewActivity()
         fun redirectLoginActivity()
-        fun hideLodingIndicator()
+        fun hideLoadingIndicator()
         fun redirectShippingAddressActivity()
+        fun onClickCloseShippingMemoSpinner()
     }
 }
