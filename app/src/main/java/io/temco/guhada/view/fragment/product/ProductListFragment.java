@@ -461,7 +461,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void changeItemFloatingButton(boolean isShow, boolean animate) {
-        changeScaleView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+      //  changeScaleView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
     }
 
     private void changeTopFloatingButton(boolean isShow, boolean animate) {

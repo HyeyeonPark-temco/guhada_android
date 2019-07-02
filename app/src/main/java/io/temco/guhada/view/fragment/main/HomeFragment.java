@@ -107,7 +107,7 @@ public class HomeFragment extends BaseFragment<FragmentMainHomeBinding> implemen
         // Sales Number
         mBinding.layoutInformation.textInformationSalesNumber.setMovementMethod(LinkMovementMethod.getInstance());
         mBinding.layoutInformation.textInformationSalesNumber.setText(TextUtil.createTextWithLink(getContext(),
-                R.string.information_company_sales_number, R.string.information_confirm_company,
+                R.string.information_company_sales_number_en, R.string.information_confirm_company_en,
                 R.dimen.text_11, true,
                 () -> {
                     if (true) {
@@ -117,7 +117,7 @@ public class HomeFragment extends BaseFragment<FragmentMainHomeBinding> implemen
         // Description
         mBinding.layoutInformation.textInformationDescription.setMovementMethod(LinkMovementMethod.getInstance());
         mBinding.layoutInformation.textInformationDescription.setText(TextUtil.createTextWithLink(getContext(),
-                R.string.information_description, R.string.information_confirm_service,
+                R.string.information_description_en, R.string.information_confirm_service_en,
                 R.dimen.text_11, true,
                 () -> {
                     if (true) {
