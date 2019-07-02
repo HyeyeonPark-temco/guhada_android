@@ -101,7 +101,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     val shippingAddressText: String
         @Bindable
         get() {
-            return if(order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress}${order.shippingAddress?.detailAddress}"
+            return if (order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress}${order.shippingAddress?.detailAddress}"
             else "등록된 배송지가 없습니다"
         }
 
@@ -314,8 +314,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
-    fun onClickChangeShippingAddress(){
-        listener.redirectShippingAddressActivity()
+    fun onClickChangeShippingAddress() {
+        // listener.redirectShippingAddressActivity()
     }
 
     fun onTermsChecked(checked: Boolean) {

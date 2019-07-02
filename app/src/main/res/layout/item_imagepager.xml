@@ -10,9 +10,10 @@
     </data>
 
     <ImageView
-        android:scaleType="centerCrop"
         android:id="@+id/imageview_imagepager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/common_white"
+        android:scaleType="fitCenter"
         app:imageUrl="@{url}" />
 </layout>
