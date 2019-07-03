@@ -36,8 +36,11 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     }
 
     override fun closeActivity(resultCode: Int, withExtra: Boolean) {
-        if (withExtra) setResult(resultCode, intent.putExtra("shippingAddress", mViewModel.selectedItem))
-        else setResult(resultCode)
+        if (withExtra) {
+            intent.putExtra("shippingAddress", mViewModel.selectedItem)
+            setResult(resultCode, intent)
+        } else
+            setResult(resultCode)
         finish()
     }
 }

@@ -78,7 +78,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         when (intent.getStringExtra("payMethod")) {
             "CARD" -> {
                 URL = "https://mobpay.lpay.com/smart/wcard/"
-              //  URL = "https://devmobpay.lpay.com:410/smart/wcard/"
+                //  URL = "https://devmobpay.lpay.com:410/smart/wcard/"
                 params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
             }
             "VBank" -> {

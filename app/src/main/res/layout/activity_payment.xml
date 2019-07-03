@@ -345,7 +345,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingaddress">
 
-                        <io.temco.guhada.view.custom.ClosableSpinner
+                        <Spinner
                             android:id="@+id/spinner_payment_shippingmemo"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"

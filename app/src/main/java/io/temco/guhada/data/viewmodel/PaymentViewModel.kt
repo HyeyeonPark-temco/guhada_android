@@ -319,11 +319,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onClickChangeShippingAddress() {
-        // listener.redirectShippingAddressActivity()
+         listener.redirectShippingAddressActivity()
     }
-
-
-
 
 
     fun onTermsChecked(checked: Boolean) {
@@ -337,10 +334,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             notifyPropertyChanged(BR.selectedShippingMessage)
         }
-    }
+}
 
     fun onClickCloseShippingMemoSpinner() {
-      //  listener.onClickCloseShippingMemoSpinner()
+        listener.onClickCloseShippingMemoSpinner()
     }
 
 }

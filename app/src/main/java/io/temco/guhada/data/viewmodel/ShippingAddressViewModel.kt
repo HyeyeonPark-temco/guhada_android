@@ -54,7 +54,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
     }
 
     fun onClickSubmit() {
-        mListener.closeActivity(Activity.RESULT_CANCELED, true)
+        mListener.closeActivity(Activity.RESULT_OK, true)
     }
 
     fun onClickCancel() {

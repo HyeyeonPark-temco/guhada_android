@@ -108,7 +108,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
 
         // 배송 메모
-        mBinding.framelayoutPaymentShippingmemobutton.bringToFront()
+     //   mBinding.framelayoutPaymentShippingmemobutton.bringToFront()
 
 
 

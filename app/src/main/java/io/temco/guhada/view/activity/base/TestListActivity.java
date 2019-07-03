@@ -16,6 +16,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.view.activity.CategorySubActivity;
+import io.temco.guhada.view.activity.CustomViewActivity;
 import io.temco.guhada.view.activity.FindAccountActivity;
 import io.temco.guhada.view.activity.JoinActivity;
 import io.temco.guhada.view.activity.LoginActivity;
@@ -55,7 +56,7 @@ public class TestListActivity extends AppCompatActivity {
         adapter.setOnTestItemListener(position -> {
             switch (position) {
                 case 0: // Custom View
-                    // startActivity(TestCustomViewActivity.class);
+                     startActivity(CustomViewActivity.class);
                     break;
 
                 case 1: // Splash

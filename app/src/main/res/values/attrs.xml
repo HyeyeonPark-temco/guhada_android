@@ -16,4 +16,8 @@
         <attr name="width" format="dimension" />
         <attr name="height" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomSpinnerView">
+        <attr name="list" format="reference"/>
+    </declare-styleable>
 </resources>
