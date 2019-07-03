@@ -436,6 +436,13 @@
     <string name="payment_button_autocoupon">자동 적용</string>
     <string name="payment_button_allpoint">전액 사용</string>
 
+    <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
+    <string name="shippingmemo_security">경비실에 맡겨주세요.</string>
+    <string name="shippingmemo_call_if_absent">부재시 휴대폰으로 연락바랍니다.</string>
+    <string name="shippingmemo_postbox">택배함에 넣어주세요</string>
+    <string name="shippingmemo_self">배송 메세지를 입력해주세요.</string>
+    <string name="shippingmemo_put_door">문 앞에 놓아주세요.</string>
+
     <string name="paymentresult_title1">님의 주문이</string>
     <string name="paymentresult_title2">정상적으로 완료되었습니다.</string>
     <string name="paymentresult_ordernumber">주문번호</string>

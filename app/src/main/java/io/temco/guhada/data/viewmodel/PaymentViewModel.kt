@@ -80,6 +80,24 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var order: Order = Order()
         @Bindable
         get() = field
+        set(value) {
+            val list = mutableListOf<String>()
+            for (item in value.shippingMessage) {
+                val krText = when (item) {
+                    "BEFORE_CALL" -> BaseApplication.getInstance().getString(R.string.shippingmemo_before_call)
+                    "SECURITY" -> BaseApplication.getInstance().getString(R.string.shippingmemo_security)
+                    "CALL_IF_ABSENT" -> BaseApplication.getInstance().getString(R.string.shippingmemo_call_if_absent)
+                    "PUT_DOOR" -> BaseApplication.getInstance().getString(R.string.shippingmemo_put_door)
+                    "POSTBOX" -> BaseApplication.getInstance().getString(R.string.shippingmemo_postbox)
+                    "SELF" -> BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+                    else -> "기타"
+                }
+
+                list.add(krText)
+            }
+            value.shippingMessage = list
+            field = value
+        }
 
     var productVisible = ObservableBoolean(true)
         @Bindable
@@ -319,7 +337,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onClickChangeShippingAddress() {
-         listener.redirectShippingAddressActivity()
+        listener.redirectShippingAddressActivity()
     }
 
 
@@ -334,7 +352,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             notifyPropertyChanged(BR.selectedShippingMessage)
         }
-}
+    }
 
     fun onClickCloseShippingMemoSpinner() {
         listener.onClickCloseShippingMemoSpinner()

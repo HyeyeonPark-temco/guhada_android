@@ -194,11 +194,11 @@
                     style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginEnd="4dp"
-                    android:text="@string/productdetail_review_button_morereview"
+                    android:text="@string/productdetail_qna_button_moreclaim"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_14"
-                    android:layout_gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
