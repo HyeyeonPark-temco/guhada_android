@@ -29,12 +29,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
     var selectedShippingAddress: UserShipping? = UserShipping()
 
-    var isOpenShippingMemo = false
+    var shippingMemoVisible = ObservableBoolean(false)
         @Bindable
         get() = field
-    var selectedShippingMessage = ObservableField<String>(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
+
+    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress) }) // 스피너 표시 메세지
         @Bindable
         get() = field
+    var shippingMessage = "" // 결제 요청 시 보내는 메세지
 
     var selectedDiscountCoupon = ObservableField<String>("적용 가능한 쿠폰을 선택해 주세요.")
         @Bindable
@@ -81,9 +83,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
         set(value) {
-            val list = mutableListOf<String>()
-            for (item in value.shippingMessage) {
-                val krText = when (item) {
+            val list = mutableListOf<ShippingMessage>()
+            for (type in value.shippingMessage) {
+                val message = when (type) {
                     "BEFORE_CALL" -> BaseApplication.getInstance().getString(R.string.shippingmemo_before_call)
                     "SECURITY" -> BaseApplication.getInstance().getString(R.string.shippingmemo_security)
                     "CALL_IF_ABSENT" -> BaseApplication.getInstance().getString(R.string.shippingmemo_call_if_absent)
@@ -93,9 +95,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     else -> "기타"
                 }
 
-                list.add(krText)
+                list.add(ShippingMessage().apply {
+                    this.message = message
+                    this.type = type
+                })
             }
-            value.shippingMessage = list
+            value.shippingMessageType = list
             field = value
         }
 
@@ -110,11 +115,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var savePointInfoVisible = ObservableBoolean(false)
         @Bindable
         get() = field
-
-    var textShippingMemoVisible = ObservableBoolean(false)
-        @Bindable
-        get() = field
-
     var paymentWays = arrayOf(false, false, false, false)
         @Bindable
         get() = field
@@ -297,7 +297,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 결제하기 버튼 클릭
     fun onClickPay() {
         val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress)
-        if (selectedShippingMessage.get().equals(defaultShippingMessage)) {
+        if (selectedShippingMessage.get()?.equals(defaultShippingMessage) ?: true || shippingMessage.isEmpty()) {
             listener.showMessage("배송 메세지를 선택해주세요")
             return
         }
@@ -317,6 +317,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         if (this@PaymentViewModel.selectedShippingAddress == null) {
                             listener.showMessage("배송지를 선택해주세요.")
                         } else {
+                            this@PaymentViewModel.selectedShippingAddress?.shippingMessage = if (shippingMessage.isEmpty()) selectedShippingMessage.get()?.message
+                                    ?: ""
+                            else shippingMessage
+
+                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?.type
+                                    ?: ""
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!
                                 this.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
@@ -340,17 +346,28 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         listener.redirectShippingAddressActivity()
     }
 
-
     fun onTermsChecked(checked: Boolean) {
         this.termsChecked = checked
     }
 
     fun onShippingMemoSelected(position: Int) {
         if (order.shippingMessage.size > position) {
-            selectedShippingMessage = ObservableField(order.shippingMessage[position])
-            isOpenShippingMemo = false
+            val message = order.shippingMessageType[position].message
+            selectedShippingMessage = ObservableField(ShippingMessage().apply {
+                this.message = message
+                this.type = order.shippingMessageType[position].type
+            })
+
+            if (position == 5 || message == BaseApplication.getInstance().getString(R.string.shippingmemo_self)) {
+                shippingMessage = ""
+                this.shippingMemoVisible = ObservableBoolean(true)
+            } else {
+                shippingMessage = message
+                this.shippingMemoVisible = ObservableBoolean(false)
+            }
 
             notifyPropertyChanged(BR.selectedShippingMessage)
+            notifyPropertyChanged(BR.shippingMemoVisible)
         }
     }
 

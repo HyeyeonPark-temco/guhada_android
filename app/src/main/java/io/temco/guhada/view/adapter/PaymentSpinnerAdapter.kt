@@ -8,22 +8,23 @@ import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
+import io.temco.guhada.data.model.ShippingMessage
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ItemPaymentSpinnerBinding
 
-class PaymentSpinnerAdapter(context: Context, val layout: Int, var list: List<String> = ArrayList()) : ArrayAdapter<String>(context, layout, list) {
+class PaymentSpinnerAdapter(context: Context, val layout: Int, var list: List<ShippingMessage> = ArrayList()) : ArrayAdapter<ShippingMessage>(context, layout, list) {
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getCount(): Int = list.size - 1
 
-    fun setItems(list: List<String>) {
+    fun setItems(list: List<ShippingMessage>) {
         this.list = list
         notifyDataSetChanged()
     }
 
     private fun getCustomView(position: Int, convertView: View?, parent: ViewGroup): View {
         val binding = DataBindingUtil.inflate<ItemPaymentSpinnerBinding>(LayoutInflater.from(parent.context), layout, parent, false)
-        binding.message = list[position]
+        if (list.isNotEmpty()) binding.message = list[position].message
 
         when (position) {
             list.size - 2 -> binding.framelayoutPaymentSpinner.setPadding(2, 0, 2, 2)

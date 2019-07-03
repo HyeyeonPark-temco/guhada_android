@@ -19,10 +19,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.BaseProduct
-import io.temco.guhada.data.model.Order
-import io.temco.guhada.data.model.PGAuth
-import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -95,7 +92,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             mLoadingIndicatorUtil.hide()
             Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->
                 intent.putExtra("purchaseOrderResponse", mViewModel.purchaseOrderResponse.value)
-                intent.putExtra("shippingMemo", mViewModel.selectedShippingMessage.get())
+                intent.putExtra("shippingMemo", mViewModel.selectedShippingMessage.get()?.message)
                 intent.putExtra("userName", mViewModel.order.user.name ?: "")
                 startActivity(intent)
                 finish()
@@ -108,8 +105,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
 
         // 배송 메모
-     //   mBinding.framelayoutPaymentShippingmemobutton.bringToFront()
-
+        //   mBinding.framelayoutPaymentShippingmemobutton.bringToFront()
 
 
         if (::mViewModel.isInitialized) {
@@ -177,12 +173,13 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         // COUPON
         val emptyMessage = resources.getString(R.string.payment_hint_coupon)
-        val items = listOf<String>("장바구니 3,000원 할인쿠폰", "선착순 5% 할인쿠폰", "웰컴 5,000원 할인쿠폰", emptyMessage)
+      //  val items = listOf<String>("장바구니 3,000원 할인쿠폰", "선착순 5% 할인쿠폰", "웰컴 5,000원 할인쿠폰", emptyMessage)
+        val items = listOf<ShippingMessage>()
         mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.adapter = PaymentSpinnerAdapter(this@PaymentActivity, R.layout.item_payment_spinner, items)
         mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                mViewModel.selectedDiscountCoupon = ObservableField(items[position])
+                mViewModel.selectedDiscountCoupon = ObservableField(items[position].message)
                 mViewModel.notifyPropertyChanged(BR.selectedDiscountCoupon)
             }
         }
@@ -234,10 +231,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     companion object {
         @JvmStatic
         @BindingAdapter("userShippingAddress")
-        fun Spinner.bindShippingAddress(list: MutableList<String>) {
+        fun Spinner.bindShippingAddress(list: MutableList<ShippingMessage>) {
             if (list.isNotEmpty()) {
-                val emptyMessage = resources.getString(R.string.payment_hint_shippingmemo)
-                list.add(emptyMessage)
+                list.add(ShippingMessage().apply { this.message = resources.getString(R.string.payment_hint_shippingmemo) })
 
                 if (this.adapter == null) {
                     this.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, list)
