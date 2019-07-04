@@ -2,6 +2,8 @@ package io.temco.guhada.common.util
 
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Flag
+import io.temco.guhada.data.model.base.BaseModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,3 +50,4 @@ open class ServerResponseCallback<T>() : Callback<T> {
         }
     }
 }
+

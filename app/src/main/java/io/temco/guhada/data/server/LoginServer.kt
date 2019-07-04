@@ -13,6 +13,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * BASE URL: dev.user.guhada.com/
+ */
 class LoginServer {
     companion object {
         /**
@@ -200,18 +203,20 @@ class LoginServer {
             })
         }
 
+        /**
+         * 회원 배송지 조회 API
+         */
         @JvmStatic
-        fun getUserShippingAddress(listener: OnServerListener, userId: Int) {
-            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId).enqueue(object : Callback<BaseModel<MutableList<UserShipping>>> {
-                override fun onFailure(call: Call<BaseModel<MutableList<UserShipping>>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
+        fun getUserShippingAddress(listener: OnServerListener, userId: Int) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId).enqueue(ServerResponseCallback<BaseModel<MutableList<UserShipping>>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
-                override fun onResponse(call: Call<BaseModel<MutableList<UserShipping>>>, response: Response<BaseModel<MutableList<UserShipping>>>) {
-                    listener.onResult(true, response.body())
-                }
-            })
-        }
+        /**
+         * 회원 배송지 삭제 API
+         */
+        @JvmStatic
+        fun deleteUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddressId: Int) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).deleteShippingAddress(userId, shippingAddressId).enqueue(ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
 
         @JvmStatic
         fun getSellerById(listener: OnServerListener, sellerId: Long) {

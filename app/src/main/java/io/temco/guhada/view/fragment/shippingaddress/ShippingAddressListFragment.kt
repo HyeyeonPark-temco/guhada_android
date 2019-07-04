@@ -12,8 +12,9 @@ import io.temco.guhada.databinding.FragmentShippingaddresslistBinding
 import io.temco.guhada.view.adapter.ShippingAddressListAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
-class ShippingAddressListFragment: BaseFragment<FragmentShippingaddresslistBinding>() {
+class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBinding>() {
     lateinit var mViewModel: ShippingAddressViewModel
+    lateinit var mListAdapter: ShippingAddressListAdapter
     private lateinit var mLoadingIndicator: LoadingIndicatorUtil
 
     override fun getBaseTag(): String = ShippingAddressListFragment::class.java.simpleName
@@ -24,15 +25,14 @@ class ShippingAddressListFragment: BaseFragment<FragmentShippingaddresslistBindi
         if (::mViewModel.isInitialized) {
             //     if (context != null) mLoadingIndicator = LoadingIndicatorUtil(context!!)
             if (::mLoadingIndicator.isInitialized) mLoadingIndicator.show()
-
+            mListAdapter = ShippingAddressListAdapter(mViewModel)
             mViewModel.getUserShippingAddress()
             mViewModel.shippingAddresses.observe(this, Observer { list ->
                 if (::mLoadingIndicator.isInitialized) mLoadingIndicator.hide()
-                mBinding.recyclerviewShippingaddress.adapter = ShippingAddressListAdapter(mViewModel)
+                mBinding.recyclerviewShippingaddress.adapter = mListAdapter
                 mBinding.viewModel = mViewModel
                 mBinding.executePendingBindings()
             })
-
         }
     }
 

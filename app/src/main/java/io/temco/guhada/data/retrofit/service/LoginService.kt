@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 /**
- *
+ * BASE URL: dev.user.guhada.com/
  */
 interface LoginService {
 
@@ -143,6 +143,13 @@ interface LoginService {
      */
     @GET("/users/{userId}/shipping-addresses")
     fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<MutableList<UserShipping>>>
+
+    /**
+     * 회원 배송지 삭제 API
+     * @param userId
+     */
+    @DELETE("/users/{userId}/shipping-addresses")
+    fun deleteShippingAddress(@Path("userId") userId: Int, @Query("shippingAddressId") shippingAddressId: Int): Call<BaseModel<Any>>
 
     /**
      * 상품 리뷰 평점 및 그래프 정보 조회 API

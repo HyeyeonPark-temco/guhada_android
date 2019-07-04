@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 class UserShipping : Serializable{
-    var id: Int = 0
-    var userId: Int = 0
+    var id: Int = -1
+    var userId: Int = -1
     var defaultAddress: Boolean = false
     var shippingName = ""
 

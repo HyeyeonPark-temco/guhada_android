@@ -5,6 +5,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnShippingAddressListener
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.base.BaseFragmentPagerAdpter
@@ -25,6 +26,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     override fun init() {
         mViewModel = ShippingAddressViewModel(this)
         mViewModel.userId = JWT(Preferences.getToken().accessToken).getClaim("userId").asInt() ?: 0
+        mViewModel.selectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
 
         BaseFragmentPagerAdpter(supportFragmentManager).let { baseFragmentPagerAdapter ->
             mFragmentPagerAdapter = baseFragmentPagerAdapter
@@ -43,4 +45,6 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
             setResult(resultCode)
         finish()
     }
+
+    override fun notifyDeleteItem() = (mFragmentPagerAdapter.getItem(0) as ShippingAddressListFragment).mListAdapter.deleteItem()
 }

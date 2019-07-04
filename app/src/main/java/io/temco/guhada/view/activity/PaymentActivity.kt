@@ -53,7 +53,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
 
             override fun redirectShippingAddressActivity() {
-                startActivityForResult(Intent(this@PaymentActivity, ShippingAddressActivity::class.java), Flag.RequestCode.SHIPPING_ADDRESS)
+                Intent(this@PaymentActivity, ShippingAddressActivity::class.java).let {
+                    it.putExtra("shippingAddress", mViewModel.order.shippingAddress)
+                    startActivityForResult(it, Flag.RequestCode.SHIPPING_ADDRESS)
+                }
             }
 
             override fun setUsedPointViewFocused() {
