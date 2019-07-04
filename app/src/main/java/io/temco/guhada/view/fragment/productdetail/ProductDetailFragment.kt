@@ -38,7 +38,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class ProductDetailFragment(val dealId: Long, val mainListener: OnMainListener) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
+class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainListener) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
     private val INVALID_DEAL_ID = -1
     private var animFlag = true
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
@@ -78,14 +78,10 @@ class ProductDetailFragment(val dealId: Long, val mainListener: OnMainListener) 
                     mViewModel.notifyPropertyChanged(BR.imagePos)
                 }
             })
-
-            CommonUtil.debug("TASK", "PRODUCT FINISH")
-            if (::mLoadingIndicatorUtil.isInitialized)
-                mLoadingIndicatorUtil.dismiss()
+            // this@ProductDetailFragment.hideLoadingIndicator()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
-                // delay(8000)
                 mBinding.includeProductdetailContentbody.viewModel = mViewModel
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
@@ -199,6 +195,8 @@ class ProductDetailFragment(val dealId: Long, val mainListener: OnMainListener) 
                 it.commitAllowingStateLoss()
             }
         }
+
+        this@ProductDetailFragment.hideLoadingIndicator()
     }
 
     private fun detectScrollView() {

@@ -11,11 +11,13 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 
 class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListener) : BaseObservableViewModel() {
+    private val EXTRA_PRICE = 1
+    private val DEAL_OPTION_ID = 2
+
     var closeButtonVisibility = View.VISIBLE
     var product: Product = Product()
         set(value) {
             field = value
-
             totalPrice = ObservableInt(if (product.options?.isEmpty() == true) product.sellPrice else 0)
             notifyPropertyChanged(BR.totalPrice)
         }
@@ -28,73 +30,75 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
     var colorName = ObservableField<String>("")
         @Bindable
         get() = field
-
     var optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr> = mutableMapOf()
+    var extraPrice = ObservableInt(0)
+        @Bindable
+        get() = field
+    var extraPriceOperator = ObservableField<String>()
+        @Bindable
+        get() = field
 
-    fun getDealOptionId(optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr>): Long? {
+    fun getDealOptionId(): Long? = getOptionInfo(DEAL_OPTION_ID)
+
+    fun getExtraPrice() {
+        extraPrice = ObservableInt(getOptionInfo(EXTRA_PRICE)?.toInt() ?: 0)
+        totalPrice = ObservableInt(product.discountPrice + extraPrice.get())
+        getExtraPriceOperator()
+        notifyPropertyChanged(BR.extraPrice)
+        notifyPropertyChanged(BR.totalPrice)
+    }
+
+    private fun getOptionInfo(flag: Int): Long? {
         val color = optionMap["COLOR"]
         val size = optionMap["SIZE"]
+        var result: Any? = 0
 
         if (product.optionInfos != null) {
             for (optionInfo in product.optionInfos!!) {
                 if (color != null) {
-                    if (size != null) {
-                        // 색상 O, 사이즈 O
-                        if (optionInfo.attribute1 == color.name && optionInfo.attribute2 == size.name) {
-                            return optionInfo.dealOptionSelectId
-                        }
+                    if (size != null && optionInfo.attribute1 == color.name && optionInfo.attribute2 == size.name) {  // 색상 O, 사이즈 O
+                        result = if (flag == EXTRA_PRICE) optionInfo.price else optionInfo.dealOptionSelectId
                     } else {
-                        // 색상 O, 사이즈 X
-                        if (optionInfo.attribute1 == color.name) {
-                            return optionInfo.dealOptionSelectId
+                        if (optionInfo.attribute1 == color.name) { // 색상 O, 사이즈 X
+                            result = if (flag == EXTRA_PRICE) optionInfo.price else optionInfo.dealOptionSelectId
                         }
                     }
                 } else {
-                    if (size != null) {
-                        // 색상 X, 사이즈 O
-                        if (optionInfo.attribute1 == size.name) {
-                            return optionInfo.dealOptionSelectId
-                        }
-                    } else {
-                        // 색상 X, 사이즈 X => 옵션 없음
-                        return null
+                    if (size != null && optionInfo.attribute1 == size.name) {   // 색상 X, 사이즈 O
+                        result = if (flag == EXTRA_PRICE) optionInfo.price else optionInfo.dealOptionSelectId
+                    } else {  // 색상 X, 사이즈 X => 옵션 없음
+                        result = if (flag == EXTRA_PRICE) 0 else null
                     }
                 }
             }
         }
 
-        return null
+        return result.toString().toLong()
+    }
+
+    private fun getExtraPriceOperator() {
+        if (extraPrice.get().toString().split("-").size < 2) {
+            extraPriceOperator = ObservableField("+")
+            notifyPropertyChanged(BR.extraPriceOperator)
+        }
     }
 
     fun onClickCloseMenu() = listener.closeMenu()
 
-    fun onClickPlus() {
-        if (optionMap.keys.size != product.options?.size) {
-            listener.showMessage("옵션을 선택해주세요.")
-        } else {
-            (productCount.get() + 1).let { count ->
-                productCount = ObservableInt(count)
-                totalPrice = ObservableInt(product.discountPrice * count)
+    fun onClickPlus() = changeProductCount { changeTotalPrice((productCount.get() + 1)) }
 
-                notifyPropertyChanged(BR.productCount)
-                notifyPropertyChanged(BR.totalPrice)
-            }
-        }
+    fun onClickMinus() = changeProductCount { (productCount.get() - 1).let { count -> if (count > 0) changeTotalPrice(count) } }
+
+    private fun changeProductCount(task: () -> Unit) {
+        if (optionMap.keys.size != product.options?.size) listener.showMessage("옵션을 선택해주세요.")
+        else task()
     }
 
-    fun onClickMinus() {
-        if (optionMap.keys.size != product.options?.size) {
-            listener.showMessage("옵션을 선택해주세요.")
-        } else {
-            (productCount.get() - 1).let { count ->
-                if (count > 0) {
-                    productCount = ObservableInt(count)
-                    totalPrice = ObservableInt(product.discountPrice * count)
-                    notifyPropertyChanged(BR.productCount)
-                    notifyPropertyChanged(BR.totalPrice)
-                }
-            }
-        }
+    private fun changeTotalPrice(count: Int) {
+        productCount = ObservableInt(count)
+        totalPrice = ObservableInt((product.discountPrice + extraPrice.get()) * count)
+        notifyPropertyChanged(BR.productCount)
+        notifyPropertyChanged(BR.totalPrice)
     }
 
     fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {

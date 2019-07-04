@@ -84,6 +84,9 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
                     viewModel.totalPrice = ObservableInt(viewModel.product.discountPrice)
                     viewModel.notifyPropertyChanged(BR.totalPrice)
                 }
+
+                // EXTRA PRICE
+                viewModel.getExtraPrice()
             }
 
             binding.optionAttr = optionAttr

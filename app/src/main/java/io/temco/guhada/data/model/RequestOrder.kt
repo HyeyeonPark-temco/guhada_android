@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model
 
+import com.google.gson.annotations.SerializedName
+
 class RequestOrder {
     var user: User = User()
     var addShippingAddress = false
@@ -7,8 +9,11 @@ class RequestOrder {
     var parentMethodCd: String = ""
     var shippingAddress: UserShipping = UserShipping()
 
-    var recepientMobile = ""
-    var recepientName = ""
+    @SerializedName(value="recipientMobile", alternate = ["recepientMobile"])
+    var recipientMobile = ""
+
+    @SerializedName(value="recipientName", alternate = ["recepientName"])
+    var recipientName = ""
 
 //    var couponPayments
 //    var pointPayments

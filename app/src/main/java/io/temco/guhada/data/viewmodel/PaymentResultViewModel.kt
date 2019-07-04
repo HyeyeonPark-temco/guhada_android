@@ -18,7 +18,7 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
             field = value
 
             when (value.payment.parentMethod) {
-                "CARD" -> {
+                "Card" -> {
                     paymentMethod = ObservableField("신용/체크카드")
                     methodName = ObservableField(value.payment.method)
                     setCreatedAtText(value.payment.completeAt)

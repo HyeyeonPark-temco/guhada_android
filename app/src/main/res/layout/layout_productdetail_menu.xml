@@ -117,7 +117,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- 할인 금액 -->
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:text="@{ `(`+viewModel.extraPriceOperator + @string/common_price_format(viewModel.extraPrice) + @string/common_unit_price + `)` }"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_14"
+                android:visibility="@{viewModel.extraPrice > 0 ? View.VISIBLE : View.GONE, default = gone}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/textView14"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView14"
                 style="@style/TextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

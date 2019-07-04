@@ -5,6 +5,9 @@ import io.temco.guhada.data.model.base.BaseModel
 import retrofit2.Call
 import retrofit2.http.*
 
+/**
+ *
+ */
 interface LoginService {
 
     /**

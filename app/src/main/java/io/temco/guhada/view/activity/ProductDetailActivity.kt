@@ -41,6 +41,9 @@ import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * 현재 미사용/ ProductDetailFragment 사용중
+ */
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
     private val INVALID_DEAL_ID = -1
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil

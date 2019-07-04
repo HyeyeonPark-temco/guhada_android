@@ -4,6 +4,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.RetryableCallback
+import io.temco.guhada.common.util.ServerResponseCallback
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
@@ -14,15 +15,13 @@ import retrofit2.Response
 
 class LoginServer {
     companion object {
-
         /**
          * 네이버 유저 프로필 가져오기 API
          */
         @JvmStatic
         fun getNaverProfile(listener: OnServerListener, accessToken: String) {
             val NAVER_API_SUCCESS = "00"
-            val call = RetrofitManager.createService(Type.Server.NAVER_PROFILE, LoginService::class.java).getNaverProfile("Bearer $accessToken")
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<NaverResponse> {
+            RetrofitManager.createService(Type.Server.NAVER_PROFILE, LoginService::class.java).getNaverProfile("Bearer $accessToken").enqueue(object : Callback<NaverResponse> {
                 override fun onResponse(call: Call<NaverResponse>, response: Response<NaverResponse>) {
                     if (response.isSuccessful) {
                         val naverResponse = response.body()
@@ -45,45 +44,63 @@ class LoginServer {
         }
 
         /**
-         * 회원가입 API
+         * 이메일 회원가입 API
          */
         @JvmStatic
-        fun signUp(listener: OnServerListener, user: User) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signUp(user)
-            call.enqueue(object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    if (response.isSuccessful) {
-                        listener.onResult(true, response.body())
-                    } else {
-                        listener.onResult(false, response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
+        fun signUp(listener: OnServerListener, user: User) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signUp(user).enqueue(ServerResponseCallback<BaseModel<Any>>("이메일 회원가입 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 이메일 로그인 API
          */
         @JvmStatic
-        fun signIn(listener: OnServerListener, user: User) {
-            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signIn(user).enqueue(object : Callback<BaseModel<Token>> {
-                override fun onResponse(call: Call<BaseModel<Token>>, response: Response<BaseModel<Token>>) {
-                    if (response.isSuccessful) {
-                        listener.onResult(true, response.body())
-                    } else {
-                        listener.onResult(false, response.message())
-                    }
-                }
+        fun signIn(listener: OnServerListener, user: User) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signIn(user).enqueue(ServerResponseCallback<BaseModel<Token>>("이메일 로그인 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
-                override fun onFailure(call: Call<BaseModel<Token>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
+        /**
+         * 이메일로 인증번호 전송하기 API
+         */
+        @JvmStatic
+        fun verifyEmail(listener: OnServerListener, user: User) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyEmail(user).enqueue(ServerResponseCallback<BaseModel<Any>>("이메일로 인증번호 전송하기 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
+         * 핸드폰 번호로 인증번호 전송하기 API
+         */
+        @JvmStatic
+        fun verifyPhone(listener: OnServerListener, user: User) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyPhone(user).enqueue(ServerResponseCallback<BaseModel<Any>>("핸드폰 번호로 인증번호 전송하기 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
+         * 인증번호 검증 API
+         */
+        @JvmStatic
+        fun verifyNumber(listener: OnServerListener, verification: Verification) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyNumber(verification).enqueue(ServerResponseCallback<BaseModel<Any>>("인증번호 검증 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
+
+
+        /**
+         * 인증번호로 비밀번호 재설정하기 API
+         */
+        @JvmStatic
+        fun changePassword(listener: OnServerListener, verification: Verification) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).changePassword(verification).enqueue(ServerResponseCallback<BaseModel<Any>>("인증번호 검증 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
+
+
+        /**
+         * 본인인증으로 비밀번호 재설정하기 API
+         */
+        @JvmStatic
+        fun changePasswordByIdentifying(listener: OnServerListener, verification: Verification) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).changePasswordByIdentifying(verification).enqueue(ServerResponseCallback<BaseModel<Any>>("본인인증으로 비밀번호 재설정 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
+         * 나이스 본인인증 호출 토큰 가져오기 API
+         * BASE URL: http://13.209.10.68/
+         */
+        @JvmStatic
+        fun getVerifyPhoneToken(listener: OnServerListener) =
+                RetrofitManager.createService(Type.Server.LOCAL, LoginService::class.java).getVerifyToken().enqueue(ServerResponseCallback<BaseModel<String>>("나이스 본인인증 토큰 호출 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 유저 정보 가져오기 API
@@ -103,102 +120,50 @@ class LoginServer {
         }
 
         /**
-         * 이메일로 인증번호 전송하기 API
+         * 구글 로그인 API
          */
         @JvmStatic
-        fun verifyEmail(listener: OnServerListener, user: User) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyEmail(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
+        fun googleLogin(listener: OnServerListener, user: SnsUser) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).googleLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>("구글 로그인 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
-         * 핸드폰 번호로 인증번호 전송하기 API
+         * 네이버 로그인 API
          */
         @JvmStatic
-        fun verifyPhone(listener: OnServerListener, user: User) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyPhone(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
+        fun naverLogin(user: SnsUser, listener: OnServerListener) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).naverLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>("네이버 로그인 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
-         * 인증번호 검증 API
+         * 카카오톡 로그인 API
          */
         @JvmStatic
-        fun verifyNumber(listener: OnServerListener, verification: Verification) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyNumber(verification)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
+        fun kakaoLogin(user: SnsUser, listener: OnServerListener) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).kakaoLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>("카카오톡 로그인 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
-         * 인증번호로 비밀번호 재설정하기 API
+         * 페이스북 로그인 API
          */
         @JvmStatic
-        fun changePassword(listener: OnServerListener, verification: Verification) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).changePassword(verification)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
+        fun facebookLogin(listener: OnServerListener, user: SnsUser) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).facebookLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>("페이스북 로그인 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
+        @JvmStatic
+        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkExistSnsUser(snsType, snsId).enqueue(ServerResponseCallback<BaseModel<Any>>("중복 SNS 유저 체크 오류") { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
-         * 본인인증으로 비밀번호 재설정하기 API
+         * 개별 유저 정보 조회 API
          */
         @JvmStatic
-        fun changePasswordByIdentifying(listener: OnServerListener, verification: Verification) {
-            RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).changePasswordByIdentifying(verification).enqueue(object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+        fun getUserById(listener: OnServerListener, userId: Int) {
+            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findUserById(userId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<User>> {
+                override fun onFailure(call: Call<BaseModel<User>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
-            })
-        }
 
-        /**
-         * 나이스 본인인증 호출 토큰 가져오기 API
-         */
-        @JvmStatic
-        fun getVerifyPhoneToken(listener: OnServerListener) {
-            val call = RetrofitManager.createService(Type.Server.LOCAL, LoginService::class.java).getVerifyToken()
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<String>> {
-                override fun onResponse(call: Call<BaseModel<String>>, response: Response<BaseModel<String>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<String>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+                override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
+                    listener.onResult(true, response.body())
                 }
             })
         }
@@ -208,8 +173,7 @@ class LoginServer {
          */
         @JvmStatic
         fun checkEmail(listener: OnServerListener, email: String) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkEmail(email)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkEmail(email).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }
@@ -225,134 +189,13 @@ class LoginServer {
          */
         @JvmStatic
         fun checkPhone(listener: OnServerListener, phoneNumber: String) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkPhone(phoneNumber)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkPhone(phoneNumber).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }
 
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                     listener.onResult(false, t.message)
-                }
-            })
-        }
-
-        /**
-         * 구글 로그인 API
-         */
-        @JvmStatic
-        fun googleLogin(listener: OnServerListener, user: SnsUser) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).googleLogin(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Token>> {
-                override fun onResponse(call: Call<BaseModel<Token>>, response: Response<BaseModel<Token>>) {
-                    if (response.isSuccessful) {
-                        val result = response.body()
-                        listener.onResult(true, result)
-                    } else {
-
-                        listener.onResult(false, response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<BaseModel<Token>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
-
-        /**
-         * 네이버 로그인 API
-         */
-        @JvmStatic
-        fun naverLogin(user: SnsUser, listener: OnServerListener) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).naverLogin(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Token>> {
-                override fun onResponse(call: Call<BaseModel<Token>>, response: Response<BaseModel<Token>>) {
-                    if (response.isSuccessful) {
-                        val result = response.body()
-                        listener.onResult(true, result)
-                    } else {
-                        listener.onResult(false, response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<BaseModel<Token>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
-
-        /**
-         * 카카오톡 로그인 API
-         */
-        @JvmStatic
-        fun kakaoLogin(user: SnsUser, listener: OnServerListener) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).kakaoLogin(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Token>> {
-                override fun onResponse(call: Call<BaseModel<Token>>, response: Response<BaseModel<Token>>) {
-                    if (response.isSuccessful) {
-                        val result = response.body()
-                        listener.onResult(true, result)
-                    } else {
-                        listener.onResult(false, response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<BaseModel<Token>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
-
-        /**
-         * 페이스북 로그인 API
-         */
-        @JvmStatic
-        fun facebookLogin(listener: OnServerListener, user: SnsUser) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).facebookLogin(user)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Token>> {
-                override fun onResponse(call: Call<BaseModel<Token>>, response: Response<BaseModel<Token>>) {
-                    if (response.isSuccessful) {
-                        val result = response.body()
-                        listener.onResult(true, result)
-                    } else {
-                        listener.onResult(false, response.message())
-                    }
-                }
-
-                override fun onFailure(call: Call<BaseModel<Token>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
-
-        @JvmStatic
-        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkExistSnsUser(snsType, snsId)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(true, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
-
-        /**
-         * 개별 유저 정보 조회 API
-         */
-        @JvmStatic
-        fun getUserById(listener: OnServerListener, userId: Int) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findUserById(userId)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<User>> {
-                override fun onFailure(call: Call<BaseModel<User>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-
-                override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
-                    listener.onResult(true, response.body())
                 }
             })
         }
@@ -372,8 +215,7 @@ class LoginServer {
 
         @JvmStatic
         fun getSellerById(listener: OnServerListener, sellerId: Long) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getSellerById(sellerId)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Seller>> {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getSellerById(sellerId).enqueue(object : Callback<BaseModel<Seller>> {
                 override fun onResponse(call: Call<BaseModel<Seller>>, response: Response<BaseModel<Seller>>) {
                     listener.onResult(true, response.body())
                 }
@@ -387,8 +229,7 @@ class LoginServer {
 
         @JvmStatic
         fun getProductReviewSummary(listener: OnServerListener, productId: Long) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getProductReviewSummary(productId)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<ReviewSummary>> {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getProductReviewSummary(productId).enqueue(object : Callback<BaseModel<ReviewSummary>> {
                 override fun onResponse(call: Call<BaseModel<ReviewSummary>>, response: Response<BaseModel<ReviewSummary>>) {
                     listener.onResult(true, response.body())
                 }
@@ -401,8 +242,7 @@ class LoginServer {
 
         @JvmStatic
         fun getProductReview(listener: OnServerListener, productId: Long, page: Int, size: Int) {
-            val call = RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getProductReview(productId, page, size)
-            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<ReviewResponse>> {
+            RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getProductReview(productId, page, size).enqueue(object : Callback<BaseModel<ReviewResponse>> {
                 override fun onResponse(call: Call<BaseModel<ReviewResponse>>, response: Response<BaseModel<ReviewResponse>>) {
                     listener.onResult(true, response.body())
                 }
@@ -412,7 +252,5 @@ class LoginServer {
                 }
             })
         }
-
-
     }
 }

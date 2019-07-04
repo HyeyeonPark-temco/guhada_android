@@ -157,21 +157,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     private fun getOrderForm(accessToken: String) {
         OrderServer.getOrderForm(OnServerListener { success, o ->
-            if (success) {
+            executeServerResponse(success, o, "orderForm 오류") {
                 this.order = (o as BaseModel<*>).data as Order
                 this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
-
                 notifyPropertyChanged(BR.order)
                 notifyPropertyChanged(BR.shippingAddressText)
-            } else {
-                if (o != null) {
-                    listener.showMessage(o as String)
-                } else {
-                    listener.showMessage("orderForm 오류")
-                }
             }
-
-            listener.hideLoadingIndicator()
         }, accessToken, arrayOf(cart.cartItemId))
     }
 
@@ -190,25 +181,33 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     private fun requestOrder(accessToken: String, requestOrder: RequestOrder) {
         OrderServer.requestOrder(OnServerListener { success, o ->
-            if (success) {
-                val model = (o as BaseModel<*>)
-                when (model.resultCode) {
-                    200 -> {// PG사 요청
-                        this.pgResponse = o.data as PGResponse
-                        listener.redirectPayemntWebViewActivity()
-                    }
-                    else -> listener.showMessage("[${model.resultCode}]${model.message}")
-                }
-            } else {
-                if (o != null) {
-                    listener.showMessage(o as String)
-                } else {
-                    listener.showMessage("orderForm 오류")
-                }
+            executeServerResponse(success, o, "requestOrder 오류") {
+                // PG사 요청
+                this.pgResponse = (o as BaseModel<*>).data as PGResponse
+                listener.redirectPayemntWebViewActivity()
+            }
+        }, accessToken, requestOrder)
+    }
+
+    /**
+     * ServerListener response
+     */
+    private fun executeServerResponse(isSuccess: Boolean, o: Any?, failedMessage: String, successTask: () -> Unit) {
+        if (isSuccess) {
+            val model = (o as BaseModel<*>)
+            when (model.resultCode) {
+                200 -> successTask()
+                else -> listener.showMessage("[${model.resultCode}]${model.message}")
             }
 
-            listener.hideLoadingIndicator()
-        }, accessToken, requestOrder)
+        } else {
+            if (o != null) {
+                listener.showMessage(o as String)
+            } else {
+                listener.showMessage(failedMessage)
+            }
+        }
+        listener.hideLoadingIndicator()
     }
 
     fun callWithToken(task: (accessToken: String) -> Unit) {

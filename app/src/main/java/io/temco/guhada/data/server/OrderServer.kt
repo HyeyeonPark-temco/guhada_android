@@ -12,7 +12,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class OrderServer {
-
     companion object {
         /**
          * 주문서 조회 API
@@ -84,7 +83,7 @@ class OrderServer {
         }
 
         @JvmStatic
-        fun setOrderCompleted(listener: OnServerListener, accessToken: String, purchaseId : Double){
+        fun setOrderCompleted(listener: OnServerListener, accessToken: String, purchaseId: Double) {
             val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderCompleted(accessToken, purchaseId)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<PurchaseOrderResponse>> {
                 override fun onResponse(call: Call<BaseModel<PurchaseOrderResponse>>, response: Response<BaseModel<PurchaseOrderResponse>>) {
