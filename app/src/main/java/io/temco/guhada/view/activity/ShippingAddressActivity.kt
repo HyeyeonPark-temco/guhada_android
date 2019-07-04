@@ -26,6 +26,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     override fun init() {
         mViewModel = ShippingAddressViewModel(this)
         mViewModel.userId = JWT(Preferences.getToken().accessToken).getClaim("userId").asInt() ?: 0
+        mViewModel.prevSelectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
         mViewModel.selectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
 
         BaseFragmentPagerAdpter(supportFragmentManager).let { baseFragmentPagerAdapter ->

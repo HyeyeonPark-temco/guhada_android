@@ -4,7 +4,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.RetryableCallback
-import io.temco.guhada.common.util.ServerResponseCallback
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
@@ -51,35 +51,35 @@ class LoginServer {
          */
         @JvmStatic
         fun signUp(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signUp(user).enqueue(ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 회원가입 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signUp(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 회원가입 오류"))
 
         /**
          * 이메일 로그인 API
          */
         @JvmStatic
         fun signIn(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signIn(user).enqueue(ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).signIn(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 로그인 오류"))
 
         /**
          * 이메일로 인증번호 전송하기 API
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyEmail(user).enqueue(ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyEmail(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
 
         /**
          * 핸드폰 번호로 인증번호 전송하기 API
          */
         @JvmStatic
         fun verifyPhone(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyPhone(user).enqueue(ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "핸드폰 번호로 인증번호 전송하기 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyPhone(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "핸드폰 번호로 인증번호 전송하기 오류"))
 
         /**
          * 인증번호 검증 API
          */
         @JvmStatic
         fun verifyNumber(listener: OnServerListener, verification: Verification) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyNumber(verification).enqueue(ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "인증번호 검증 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).verifyNumber(verification).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "인증번호 검증 오류"))
 
 
         /**
@@ -87,7 +87,7 @@ class LoginServer {
          */
         @JvmStatic
         fun changePassword(listener: OnServerListener, verification: Verification) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).changePassword(verification).enqueue(ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "인증번호 검증 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).changePassword(verification).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "인증번호 검증 오류"))
 
 
         /**
@@ -95,7 +95,7 @@ class LoginServer {
          */
         @JvmStatic
         fun changePasswordByIdentifying(listener: OnServerListener, verification: Verification) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).changePasswordByIdentifying(verification).enqueue(ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "본인인증으로 비밀번호 재설정 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).changePasswordByIdentifying(verification).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "본인인증으로 비밀번호 재설정 오류"))
 
         /**
          * 나이스 본인인증 호출 토큰 가져오기 API
@@ -103,7 +103,7 @@ class LoginServer {
          */
         @JvmStatic
         fun getVerifyPhoneToken(listener: OnServerListener) =
-                RetrofitManager.createService(Type.Server.LOCAL, LoginService::class.java).getVerifyToken().enqueue(ServerResponseCallback<BaseModel<String>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "나이스 본인인증 토큰 호출 오류"))
+                RetrofitManager.createService(Type.Server.LOCAL, LoginService::class.java).getVerifyToken().enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<String>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "나이스 본인인증 토큰 호출 오류"))
 
         /**
          * 유저 정보 가져오기 API
@@ -127,32 +127,32 @@ class LoginServer {
          */
         @JvmStatic
         fun googleLogin(listener: OnServerListener, user: SnsUser) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).googleLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "구글 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).googleLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "구글 로그인 오류"))
 
         /**
          * 네이버 로그인 API
          */
         @JvmStatic
         fun naverLogin(user: SnsUser, listener: OnServerListener) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).naverLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "네이버 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).naverLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "네이버 로그인 오류"))
 
         /**
          * 카카오톡 로그인 API
          */
         @JvmStatic
         fun kakaoLogin(user: SnsUser, listener: OnServerListener) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).kakaoLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "카카오톡 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).kakaoLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "카카오톡 로그인 오류"))
 
         /**
          * 페이스북 로그인 API
          */
         @JvmStatic
         fun facebookLogin(listener: OnServerListener, user: SnsUser) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).facebookLogin(user).enqueue(ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
 
         @JvmStatic
         fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkExistSnsUser(snsType, snsId).enqueue(ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "중복 SNS 유저 체크 오류"))
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).checkExistSnsUser(snsType, snsId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "중복 SNS 유저 체크 오류"))
 
         /**
          * 개별 유저 정보 조회 API
@@ -208,14 +208,14 @@ class LoginServer {
          */
         @JvmStatic
         fun getUserShippingAddress(listener: OnServerListener, userId: Int) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId).enqueue(ServerResponseCallback<BaseModel<MutableList<UserShipping>>> { successResponse -> listener.onResult(true, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).findShippingAddress(userId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<UserShipping>>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 회원 배송지 삭제 API
          */
         @JvmStatic
         fun deleteUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddressId: Int) =
-                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).deleteShippingAddress(userId, shippingAddressId).enqueue(ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).deleteShippingAddress(userId, shippingAddressId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
 
         @JvmStatic

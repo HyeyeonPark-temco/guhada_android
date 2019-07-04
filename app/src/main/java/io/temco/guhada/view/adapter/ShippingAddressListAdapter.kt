@@ -34,9 +34,10 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
     }
 
     fun deleteItem() {
-        if (deletePos > 0) {
+        if (deletePos > -1) {
             list.removeAt(deletePos)
-            this@ShippingAddressListAdapter.notifyItemRemoved(deletePos)
+            if (list.size == 1) currentPos = 0 // 배송지 1개 남았을 경우
+            this@ShippingAddressListAdapter.notifyDataSetChanged()
             ToastUtil.showMessage("선택하신 배송지가 삭제되었습니다.")
         }
     }
@@ -58,8 +59,13 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
                 this@ShippingAddressListAdapter.notifyItemChanged(currentPos)
             }
             binding.textviewShippingaddressDelete.setOnClickListener {
-                deletePos = adapterPosition
-                mViewModel.deleteUserShippingAddress()
+                val id = list[adapterPosition].id
+                if (mViewModel.prevSelectedItem.id == id) {
+                    ToastUtil.showMessage("현재 선택된 배송지입니다.")
+                } else {
+                    deletePos = adapterPosition
+                    mViewModel.deleteUserShippingAddress(id)
+                }
             }
 
             binding.executePendingBindings()

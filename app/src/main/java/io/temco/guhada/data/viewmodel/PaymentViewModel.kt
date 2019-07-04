@@ -12,6 +12,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.LoginServer
@@ -92,28 +93,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             notifyPropertyChanged(BR.shippingMessages)
             field = value
         }
-//        set(value) {
-//            val list = mutableListOf<ShippingMessage>()
-//            for (type in value.shippingMessage) {
-//                val message = when (type) {
-//                    "BEFORE_CALL" -> BaseApplication.getInstance().getString(R.string.shippingmemo_before_call)
-//                    "SECURITY" -> BaseApplication.getInstance().getString(R.string.shippingmemo_security)
-//                    "CALL_IF_ABSENT" -> BaseApplication.getInstance().getString(R.string.shippingmemo_call_if_absent)
-//                    "PUT_DOOR" -> BaseApplication.getInstance().getString(R.string.shippingmemo_put_door)
-//                    "POSTBOX" -> BaseApplication.getInstance().getString(R.string.shippingmemo_postbox)
-//                    "SELF" -> BaseApplication.getInstance().getString(R.string.shippingmemo_self)
-//                    else -> "기타"
-//                }
-//
-//                list.add(ShippingMessage().apply {
-//                    this.message = message
-//                    this.type = type
-//                })
-//            }
-//            value.shippingMessageType = list
-//            field = value
-//        }
-
     var productVisible = ObservableBoolean(true)
         @Bindable
         get() = field
@@ -140,74 +119,45 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItm(OnServerListener { success, o ->
-            if (success) {
-                this.cart = (o as BaseModel<*>).data as Cart
-                getOrderForm(accessToken)
-                Log.e("cartItemId", cart.cartItemId.toString())
-            } else {
-                listener.hideLoadingIndicator()
-                if (o != null) {
-                    listener.showMessage(o as String)
-                } else {
-                    listener.showMessage("addCartItem 오류")
-                }
-            }
+            executeByResultCode(success, o,
+                    successTask = {
+                        this.cart = (o as BaseModel<*>).data as Cart
+                        getOrderForm(accessToken)
+                        Log.e("cartItemId", cart.cartItemId.toString())
+                    },
+                    failedTask = {
+                        listener.hideLoadingIndicator()
+                        if (o != null) listener.showMessage(o as String)
+                        else listener.showMessage("addCartItem 오류")
+                    })
         }, accessToken = accessToken, productId = product.productId, optionId = product.dealOptionId, quantity = quantity)
     }
 
     private fun getOrderForm(accessToken: String) {
         OrderServer.getOrderForm(OnServerListener { success, o ->
-            executeServerResponse(success, o, "orderForm 오류") {
-                this.order = (o as BaseModel<*>).data as Order
-                this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
-                notifyPropertyChanged(BR.order)
-                notifyPropertyChanged(BR.shippingAddressText)
-            }
+            executeByResultCode(success, o,
+                    successTask = {
+                        this.order = (o as BaseModel<*>).data as Order
+                        this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
+                        notifyPropertyChanged(BR.order)
+                        notifyPropertyChanged(BR.shippingAddressText)
+                    },
+                    failedTask = {
+                        if (o != null) listener.showMessage(o as String)
+                        else listener.showMessage("orderForm 오류")
+                    })
+            listener.hideLoadingIndicator()
         }, accessToken, arrayOf(cart.cartItemId))
-    }
-
-    private fun getUserInfo(userId: Int) {
-//        val userId = JWT(token.accessToken).getClaim("userId").asInt()
-
-        LoginServer.getUserById(OnServerListener { success, o ->
-            if (success) {
-                this.user = ObservableField((o as BaseModel<*>).data as User)
-                notifyPropertyChanged(BR.user)
-            } else {
-                CommonUtil.debug(o as String)
-            }
-        }, userId)
     }
 
     private fun requestOrder(accessToken: String, requestOrder: RequestOrder) {
         OrderServer.requestOrder(OnServerListener { success, o ->
-            executeServerResponse(success, o, "requestOrder 오류") {
-                // PG사 요청
-                this.pgResponse = (o as BaseModel<*>).data as PGResponse
-                listener.redirectPayemntWebViewActivity()
-            }
+            executeByResultCode(success, o,
+                    successTask = {
+                        this.pgResponse = (o as BaseModel<*>).data as PGResponse
+                        listener.redirectPayemntWebViewActivity()
+                    })
         }, accessToken, requestOrder)
-    }
-
-    /**
-     * ServerListener response
-     */
-    private fun executeServerResponse(isSuccess: Boolean, o: Any?, failedMessage: String, successTask: () -> Unit) {
-        if (isSuccess) {
-            val model = (o as BaseModel<*>)
-            when (model.resultCode) {
-                200 -> successTask()
-                else -> listener.showMessage("[${model.resultCode}]${model.message}")
-            }
-
-        } else {
-            if (o != null) {
-                listener.showMessage(o as String)
-            } else {
-                listener.showMessage(failedMessage)
-            }
-        }
-        listener.hideLoadingIndicator()
     }
 
     fun callWithToken(task: (accessToken: String) -> Unit) {
@@ -224,18 +174,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     fun setOrderApproval() {
         callWithToken { accessToken ->
             OrderServer.setOrderApproval(OnServerListener { success, o ->
-                if (success) {
-                    val model = o as BaseModel<*>
-                    if (model.resultCode == 200) {
-                        val purchaseId = o.data as Double // double로 내려옴
-                        this@PaymentViewModel.setOrderCompleted(purchaseId)
-                    } else {
-                        listener.showMessage(if (o.message == null) o.data.toString() else o.message)
-                    }
-                } else {
-                    listener.showMessage("ORDER APPROVAL ERROR")
-                }
-
+                executeByResultCode(success, o,
+                        successTask = {
+                            val purchaseId = it.data as Double // double로 내려옴
+                            this@PaymentViewModel.setOrderCompleted(purchaseId)
+                        },
+                        failedTask = {
+                            listener.showMessage(if (it.message == null) it.data.toString() else it.message)
+                        })
                 listener.hideLoadingIndicator()
             }, accessToken, pgAuth)
         }
@@ -244,20 +190,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     private fun setOrderCompleted(purchaseId: Double) {
         callWithToken { accessToken ->
             OrderServer.setOrderCompleted(OnServerListener { success, o ->
-                if (success) {
-                    val model = o as BaseModel<*>
-                    if (model.resultCode == 200) {
-                        this.purchaseOrderResponse.postValue(model.data as PurchaseOrderResponse)
-                    } else {
-                        listener.showMessage(o.message)
-                    }
-                } else {
-                    listener.showMessage("ORDER APPROVAL ERROR")
-                }
+                executeByResultCode(success, o,
+                        successTask = { this.purchaseOrderResponse.postValue(it.data as PurchaseOrderResponse) },
+                        failedTask = { listener.showMessage(it.message) })
             }, accessToken, purchaseId)
         }
     }
-
 
     // LISTENER
     fun onPaymentWayChecked(view: View, checked: Boolean) {
