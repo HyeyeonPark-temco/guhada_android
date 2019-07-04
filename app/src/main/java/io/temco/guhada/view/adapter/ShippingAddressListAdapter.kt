@@ -37,7 +37,7 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
             binding.radiobuttonShippingaddresslist.isChecked = (currentPos == adapterPosition)
             binding.shipping = shipping
             binding.radiobuttonShippingaddresslist.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (adapterPosition > 0 && isChecked) {
+                if (isChecked) {
                     mViewModel.selectedItem = list[adapterPosition]
                 }
                 prevPos = currentPos

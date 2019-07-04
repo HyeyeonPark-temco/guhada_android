@@ -173,7 +173,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         // COUPON
         val emptyMessage = resources.getString(R.string.payment_hint_coupon)
-      //  val items = listOf<String>("장바구니 3,000원 할인쿠폰", "선착순 5% 할인쿠폰", "웰컴 5,000원 할인쿠폰", emptyMessage)
+        //  val items = listOf<String>("장바구니 3,000원 할인쿠폰", "선착순 5% 할인쿠폰", "웰컴 5,000원 할인쿠폰", emptyMessage)
         val items = listOf<ShippingMessage>()
         mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.adapter = PaymentSpinnerAdapter(this@PaymentActivity, R.layout.item_payment_spinner, items)
         mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -217,6 +217,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     data?.getSerializableExtra("shippingAddress").let {
                         if (it != null) {
                             mViewModel.order.shippingAddress = it as UserShipping
+                            mViewModel.selectedShippingAddress = it
                             mViewModel.notifyPropertyChanged(BR.order)
                         }
                     }
@@ -230,10 +231,11 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter("userShippingAddress")
+        @BindingAdapter("userShippingMemo")
         fun Spinner.bindShippingAddress(list: MutableList<ShippingMessage>) {
             if (list.isNotEmpty()) {
-                list.add(ShippingMessage().apply { this.message = resources.getString(R.string.payment_hint_shippingmemo) })
+                if (list[list.size - 1].message != resources.getString(R.string.payment_hint_shippingmemo))
+                    list.add(ShippingMessage().apply { this.message = resources.getString(R.string.payment_hint_shippingmemo) })
 
                 if (this.adapter == null) {
                     this.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, list)

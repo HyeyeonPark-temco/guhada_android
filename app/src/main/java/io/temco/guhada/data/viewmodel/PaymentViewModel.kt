@@ -33,11 +33,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    var shippingMessages: MutableList<ShippingMessage> = mutableListOf()
+        @Bindable
+        get() = field
     var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress) }) // 스피너 표시 메세지
         @Bindable
         get() = field
     var shippingMessage = "" // 결제 요청 시 보내는 메세지
-
+        @Bindable
+        get() = field
     var selectedDiscountCoupon = ObservableField<String>("적용 가능한 쿠폰을 선택해 주세요.")
         @Bindable
         get() = field
@@ -83,26 +87,31 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
         set(value) {
-            val list = mutableListOf<ShippingMessage>()
-            for (type in value.shippingMessage) {
-                val message = when (type) {
-                    "BEFORE_CALL" -> BaseApplication.getInstance().getString(R.string.shippingmemo_before_call)
-                    "SECURITY" -> BaseApplication.getInstance().getString(R.string.shippingmemo_security)
-                    "CALL_IF_ABSENT" -> BaseApplication.getInstance().getString(R.string.shippingmemo_call_if_absent)
-                    "PUT_DOOR" -> BaseApplication.getInstance().getString(R.string.shippingmemo_put_door)
-                    "POSTBOX" -> BaseApplication.getInstance().getString(R.string.shippingmemo_postbox)
-                    "SELF" -> BaseApplication.getInstance().getString(R.string.shippingmemo_self)
-                    else -> "기타"
-                }
-
-                list.add(ShippingMessage().apply {
-                    this.message = message
-                    this.type = type
-                })
-            }
-            value.shippingMessageType = list
+            this.shippingMessages = value.shippingMessage
+            notifyPropertyChanged(BR.shippingMessages)
             field = value
         }
+//        set(value) {
+//            val list = mutableListOf<ShippingMessage>()
+//            for (type in value.shippingMessage) {
+//                val message = when (type) {
+//                    "BEFORE_CALL" -> BaseApplication.getInstance().getString(R.string.shippingmemo_before_call)
+//                    "SECURITY" -> BaseApplication.getInstance().getString(R.string.shippingmemo_security)
+//                    "CALL_IF_ABSENT" -> BaseApplication.getInstance().getString(R.string.shippingmemo_call_if_absent)
+//                    "PUT_DOOR" -> BaseApplication.getInstance().getString(R.string.shippingmemo_put_door)
+//                    "POSTBOX" -> BaseApplication.getInstance().getString(R.string.shippingmemo_postbox)
+//                    "SELF" -> BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+//                    else -> "기타"
+//                }
+//
+//                list.add(ShippingMessage().apply {
+//                    this.message = message
+//                    this.type = type
+//                })
+//            }
+//            value.shippingMessageType = list
+//            field = value
+//        }
 
     var productVisible = ObservableBoolean(true)
         @Bindable
@@ -351,11 +360,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onShippingMemoSelected(position: Int) {
-        if (order.shippingMessage.size > position) {
-            val message = order.shippingMessageType[position].message
+        if (shippingMessages.size > position) {
+            val message = shippingMessages[position].message
             selectedShippingMessage = ObservableField(ShippingMessage().apply {
                 this.message = message
-                this.type = order.shippingMessageType[position].type
+                this.type = shippingMessages[position].type
             })
 
             if (position == 5 || message == BaseApplication.getInstance().getString(R.string.shippingmemo_self)) {
@@ -366,6 +375,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 this.shippingMemoVisible = ObservableBoolean(false)
             }
 
+            notifyPropertyChanged(BR.shippingMessage)
             notifyPropertyChanged(BR.selectedShippingMessage)
             notifyPropertyChanged(BR.shippingMemoVisible)
         }
