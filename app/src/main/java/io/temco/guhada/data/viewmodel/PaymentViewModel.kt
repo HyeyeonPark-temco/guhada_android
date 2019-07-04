@@ -26,9 +26,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
-    var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
-    var selectedShippingAddress: UserShipping? = UserShipping()
-
     var shippingMemoVisible = ObservableBoolean(false)
         @Bindable
         get() = field
@@ -36,10 +33,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var shippingMessages: MutableList<ShippingMessage> = mutableListOf()
         @Bindable
         get() = field
-    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress) }) // 스피너 표시 메세지
+
+    var shippingMessage = "" // 결제 요청 시 보내는 메세지
         @Bindable
         get() = field
-    var shippingMessage = "" // 결제 요청 시 보내는 메세지
+
+    var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
+    var selectedShippingAddress: UserShipping? = UserShipping()
+    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress) }) // 스피너 표시 메세지
         @Bindable
         get() = field
     var selectedDiscountCoupon = ObservableField<String>("적용 가능한 쿠폰을 선택해 주세요.")

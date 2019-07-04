@@ -58,7 +58,6 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 
                         notifyPropertyChanged(BR.reviewResponse)
                         notifyPropertyChanged(BR.emptyVisibility)
-                        if (::listener.isInitialized) listener.hideLoadingIndicator()
                     }
                 } else {
                     if (o != null) {
@@ -67,6 +66,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                         listener.showMessage("PRODUCT REVIEW ERROR")
                     }
                 }
+
+                if (::listener.isInitialized) listener.hideLoadingIndicator()
             }, productId, page, size)
         }
     }
