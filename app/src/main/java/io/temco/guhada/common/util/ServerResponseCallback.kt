@@ -8,6 +8,9 @@ import retrofit2.Response
 
 /**
  * Common Retrofit2 Response Callback
+ * @param successTask (required) API 호출 성공 시 수행할 메서드
+ * @param failedTask (optional) API 호출 실패 시 수행할 메서드
+ * @param failedMessage (optional)  API 호출 실패 시 보여줄 메시지
  * @author Hyeyeon Park
  */
 open class ServerResponseCallback<T>() : Callback<T> {
