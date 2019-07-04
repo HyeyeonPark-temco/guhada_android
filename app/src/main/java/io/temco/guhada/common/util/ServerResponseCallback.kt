@@ -22,12 +22,12 @@ open class ServerResponseCallback<T>() : Callback<T> {
         this.successTask = successTask
     }
 
-    constructor(failedMessage: String, successTask: (Response<T>) -> Unit) : this() {
+    constructor(successTask: (Response<T>) -> Unit, failedMessage: String) : this() {
         this.failedMessage = failedMessage
         this.successTask = successTask
     }
 
-    constructor(failedMessage: String, successTask: (Response<T>) -> Unit, failedTask: (Throwable) -> Unit) : this() {
+    constructor(successTask: (Response<T>) -> Unit, failedTask: (Throwable) -> Unit, failedMessage: String) : this() {
         this.failedMessage = failedMessage
         this.successTask = successTask
         this.failedTask = failedTask
