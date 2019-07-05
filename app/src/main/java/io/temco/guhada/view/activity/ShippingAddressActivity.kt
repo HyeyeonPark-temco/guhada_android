@@ -17,12 +17,12 @@ import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressListFragment
 
 /**
  * 배송지 변경 Activity
+ * @author Hyeyeon Park
  */
 class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.ActivityShippingaddressBinding>(), OnShippingAddressListener {
     private lateinit var mFragmentPagerAdapter: BaseFragmentPagerAdpter
     private lateinit var mViewModel: ShippingAddressViewModel
     private lateinit var mShippingAddressListFragment: ShippingAddressListFragment
- //   private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     override fun getBaseTag(): String = ShippingAddressActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_shippingaddress
@@ -30,7 +30,6 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     override fun getViewType(): Type.View = Type.View.SHIPPING_ADDRESS
 
     override fun init() {
-     //   mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ShippingAddressViewModel(this)
         mViewModel.userId = JWT(Preferences.getToken().accessToken).getClaim("userId").asInt() ?: 0
         mViewModel.prevSelectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
@@ -75,7 +74,5 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
         }else {
 
         }
-
-     //   if(::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.hide()
     }
 }

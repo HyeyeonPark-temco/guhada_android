@@ -16,6 +16,7 @@ public class Flag {
         public static final int PAYMENT_WEBVIEW= 10010;
         public static final int SHIPPING_ADDRESS = 10011;
         public static final int EDIT_SHIPPING_ADDRESS = 10012;
+        public static final int SEARCH_ZIP = 10013;
     }
 
     public static class ResultCode {

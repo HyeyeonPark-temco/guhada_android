@@ -25,6 +25,7 @@ import io.temco.guhada.view.activity.PaymentActivity;
 import io.temco.guhada.view.activity.PaymentResultActivity;
 import io.temco.guhada.view.activity.PaymentWebViewActivity;
 import io.temco.guhada.view.activity.ProductDetailActivity;
+import io.temco.guhada.view.activity.SearchZipWebViewActivity;
 import io.temco.guhada.view.activity.SplashActivity;
 import io.temco.guhada.view.activity.TempLogoutActivity;
 import io.temco.guhada.view.activity.TermsActivity;
@@ -120,6 +121,10 @@ public class TestListActivity extends AppCompatActivity {
                 case 15: // Test Write NFC
                     startActivity(new Intent(this, TestNfcActivity.class).putExtra("isRead", false));
                     break;
+
+                case 16 : // Search Zip WebView
+                    startActivity(SearchZipWebViewActivity.class);
+                    break;
             }
         });
         list.setAdapter(adapter);
@@ -148,7 +153,7 @@ public class TestListActivity extends AppCompatActivity {
 
         list.add("Test Read NFC "); // 14
         list.add("Test Write NFC "); // 15
-        list.add(""); // 16
+        list.add("SEARCH_ZIP_WEBVIEW"); // 16
         list.add(""); // 17
         list.add(""); // 18
         return list;

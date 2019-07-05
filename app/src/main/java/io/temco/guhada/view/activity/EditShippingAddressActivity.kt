@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.listener.OnEditShippingAddressListener
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.EditShippingAddressViewModel
@@ -28,7 +30,7 @@ class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressLi
 
         mBinding.includeEditshippingaddress.shippingAddress = mViewModel.shippingAddress
         mBinding.includeEditshippingaddress.setOnClickZipListener {
-
+            redirectSearchZipWebViewActivity()
         }
 
         mBinding.includeEditshippingaddress.setOnClickDefaultListener {
@@ -41,12 +43,16 @@ class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressLi
         mBinding.executePendingBindings()
     }
 
-
     override fun closeActivity(resultCode: Int, withExtra: Boolean) {
 //        if(withExtra)
 //            intent.putExtra("shippingAddress", mViewModel.shippingAddress)
 
         setResult(resultCode, intent)
         finish()
+    }
+
+    private fun redirectSearchZipWebViewActivity() {
+        val intent = Intent(this, SearchZipWebViewActivity::class.java)
+        startActivityForResult(intent, Flag.RequestCode.SEARCH_ZIP)
     }
 }

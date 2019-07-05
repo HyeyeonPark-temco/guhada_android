@@ -133,6 +133,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleBarDialog" />
 
+        <activity
+            android:name=".view.activity.SearchZipWebViewActivity"
+            android:screenOrientation="portrait" />
+
 
         <!-- Kakao -->
         <activity
