@@ -56,6 +56,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
         String text = typedArray.getString(R.styleable.BorderEditTextView_txt);
         String inputType = typedArray.getString(R.styleable.BorderEditTextView_type);
         int max = typedArray.getInteger(R.styleable.BorderEditTextView_max, 0);
+        boolean readonly = typedArray.getBoolean(R.styleable.BorderEditTextView_readonly, false);
         inputType = inputType != null ? inputType : "text";
 
         if(max > 0){
@@ -64,6 +65,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
             binding.editText.setFilters(inputFilters);
         }
 
+        binding.editText.setEnabled(!readonly);
         binding.editText.setText(text);
         binding.editText.setHint(typedArray.getString(R.styleable.BorderEditTextView_hint));
         binding.editText.setOnFocusChangeListener(this);

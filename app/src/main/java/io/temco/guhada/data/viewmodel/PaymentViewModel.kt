@@ -11,11 +11,9 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.server.LoginServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentActivity

@@ -8,7 +8,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.data.model.ReviewResponse
 import io.temco.guhada.data.model.ReviewSummary
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.server.LoginServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
 
@@ -28,7 +28,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         get() = field
 
     fun getProductReviewSummary() {
-        LoginServer.getProductReviewSummary(OnServerListener { success, o ->
+        UserServer.getProductReviewSummary(OnServerListener { success, o ->
             if (success) {
                 val model = o as BaseModel<*>
                 this.reviewSummary = model.data as ReviewSummary
@@ -49,7 +49,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         if (reviewResponse.last) {
             listener.showMessage("마지막 항목입니다.")
         } else {
-            LoginServer.getProductReview(OnServerListener { success, o ->
+            UserServer.getProductReview(OnServerListener { success, o ->
                 if (success) {
                     if (o != null) {
                         val model = o as BaseModel<*>

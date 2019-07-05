@@ -12,7 +12,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -96,7 +96,7 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     public void onClickSignIn() {
         if (CommonUtil.validateEmail(id)) {
-            LoginServer.signIn((success, o) -> {
+            UserServer.signIn((success, o) -> {
                 if (success) {
                     BaseModel model = ((BaseModel) o);
                     switch (model.resultCode) {

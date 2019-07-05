@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnEditShippingAddressListener
 import io.temco.guhada.data.model.UserShipping
@@ -25,11 +26,22 @@ class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressLi
         mViewModel = EditShippingAddressViewModel(this)
         mViewModel.shippingAddress = intent.getSerializableExtra("shippingAddress") as UserShipping
 
+        mBinding.includeEditshippingaddress.shippingAddress = mViewModel.shippingAddress
+        mBinding.includeEditshippingaddress.setOnClickZipListener {
+
+        }
+
+        mBinding.includeEditshippingaddress.setOnClickDefaultListener {
+            mViewModel.shippingAddress.defaultAddress = !mViewModel.shippingAddress.defaultAddress
+            mBinding.includeEditshippingaddress.shippingAddress = mViewModel.shippingAddress
+            mBinding.executePendingBindings()
+        }
+
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
 
-    // OnEditShippingAddressListener
+
     override fun closeActivity(resultCode: Int, withExtra: Boolean) {
 //        if(withExtra)
 //            intent.putExtra("shippingAddress", mViewModel.shippingAddress)

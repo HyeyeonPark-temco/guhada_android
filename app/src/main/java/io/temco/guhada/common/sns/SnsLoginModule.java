@@ -48,7 +48,7 @@ import io.temco.guhada.data.model.NaverUser;
 import io.temco.guhada.data.model.SnsUser;
 import io.temco.guhada.data.model.UserProfile;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 
 public class SnsLoginModule {
     private static OAuthLogin mNaverLoginModule;
@@ -83,7 +83,7 @@ public class SnsLoginModule {
                         if (successGetProfile) {
                             NaverUser naverUser = (NaverUser) o;
 
-                            LoginServer.checkExistSnsUser((successCheckExist, obj) -> {
+                            UserServer.checkExistSnsUser((successCheckExist, obj) -> {
                                 if (successCheckExist) {
                                     BaseModel model = (BaseModel) obj;
                                     if (model.resultCode == Flag.ResultCode.SUCCESS) {
@@ -100,7 +100,7 @@ public class SnsLoginModule {
                         }
                     };
 
-                    LoginServer.getNaverProfile(listener, accessToken);
+                    UserServer.getNaverProfile(listener, accessToken);
                 } else {
                     String errorCode = mNaverLoginModule.getLastErrorCode(context).getCode();
                     String errorDesc = mNaverLoginModule.getLastErrorDesc(context);
@@ -175,7 +175,7 @@ public class SnsLoginModule {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null && account.getId() != null) {
-                    LoginServer.checkExistSnsUser((success, o) -> {
+                    UserServer.checkExistSnsUser((success, o) -> {
                         if (success) {
                             BaseModel model = (BaseModel) o;
                             if (model.resultCode == Flag.ResultCode.SUCCESS) {
@@ -213,18 +213,18 @@ public class SnsLoginModule {
 
     public static void kakaoJoin(com.kakao.usermgmt.response.model.UserProfile result, OnServerListener serverListener) {
         SnsUser user = createSnsUser(result.getEmail(), String.valueOf(result.getId()), "KAKAO", result.getNickname(), result.getProfileImagePath());
-        LoginServer.kakaoLogin(user, serverListener);
+        UserServer.kakaoLogin(user, serverListener);
     }
 
     public static void naverLogin(NaverUser naverUser, OnServerListener serverListener) {
         SnsUser user = createSnsUser(naverUser.getEmail(), naverUser.getId(), "NAVER", naverUser.getName(), naverUser.getProfileImage());
-        LoginServer.naverLogin(user, serverListener);
+        UserServer.naverLogin(user, serverListener);
     }
 
     public static void googleLogin(GoogleSignInAccount account, OnServerListener snsLoginListener) {
         if (account != null) {
             SnsUser user = createSnsUser(account.getEmail(), account.getId(), "GOOGLE", account.getDisplayName(), account.getPhotoUrl() != null ? account.getPhotoUrl().getPath() : "");
-            LoginServer.googleLogin(snsLoginListener, user);
+            UserServer.googleLogin(snsLoginListener, user);
         }
     }
 
@@ -235,7 +235,7 @@ public class SnsLoginModule {
             String picture = object.getString("picture");
             String snsId = object.getString("id");
             SnsUser user = createSnsUser(email, snsId, "FACEBOOK", name, picture);
-            LoginServer.facebookLogin(serverListener, user);
+            UserServer.facebookLogin(serverListener, user);
         } catch (JSONException e) {
             CommonUtil.debug("[FACEBOOK] EXCEPTION: " + e.getMessage());
         }

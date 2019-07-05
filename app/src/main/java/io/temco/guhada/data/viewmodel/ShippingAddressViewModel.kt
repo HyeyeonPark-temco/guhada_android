@@ -12,7 +12,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.server.LoginServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseObservableViewModel() {
@@ -31,7 +31,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
      * @exception IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 36 path $.data
      */
     fun getUserShippingAddress() {
-        LoginServer.getUserShippingAddress(OnServerListener { success, o ->
+        UserServer.getUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = { model ->
                         this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
@@ -52,7 +52,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
     }
 
     fun deleteShippingAddress(shippingAddressId: Int) {
-        LoginServer.deleteUserShippingAddress(OnServerListener { success, o ->
+        UserServer.deleteUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = {
                         mListener.notifyDeleteItem()

@@ -16,7 +16,7 @@ import retrofit2.Response
 /**
  * BASE URL: dev.user.guhada.com/
  */
-class LoginServer {
+class UserServer {
     companion object {
         /**
          * 네이버 유저 프로필 가져오기 API
@@ -217,6 +217,9 @@ class LoginServer {
         fun deleteUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddressId: Int) =
                 RetrofitManager.createService(Type.Server.USER, LoginService::class.java).deleteShippingAddress(userId, shippingAddressId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
+        @JvmStatic
+        fun updateUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddressId: Int, shippingAddress: UserShipping) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).updateeShippingAddress(userId, shippingAddressId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<UserShipping>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         @JvmStatic
         fun getSellerById(listener: OnServerListener, sellerId: Long) {

@@ -23,7 +23,7 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.FindAccountViewModel;
 import io.temco.guhada.data.viewmodel.FindPasswordViewModel;
 import io.temco.guhada.databinding.ActivityFindaccountBinding;
@@ -257,7 +257,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     String phoneNumber = data.getStringExtra("phoneNumber");
                     String di = data.getStringExtra("di");
 
-                    LoginServer.findUserId((success, o) -> {
+                    UserServer.findUserId((success, o) -> {
                         if (success) {
                             BaseModel model = (BaseModel) o;
                             switch (model.resultCode) {

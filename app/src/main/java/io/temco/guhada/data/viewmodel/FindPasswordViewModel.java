@@ -19,7 +19,7 @@ import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 public class FindPasswordViewModel extends BaseObservableViewModel implements Observer {
@@ -247,7 +247,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         if (CommonUtil.validateEmail(user.getEmail())) {
             listener.showLoadingIndicator();
             user.deleteObserver(this);
-            LoginServer.verifyEmail((success, o) -> {
+            UserServer.verifyEmail((success, o) -> {
                 if (success) {
                     BaseModel model = (BaseModel) o;
                     switch (model.resultCode) {
@@ -296,7 +296,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
         listener.showLoadingIndicator();
         user.deleteObserver(this);
-        LoginServer.verifyNumber((success, o) -> {
+        UserServer.verifyNumber((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
@@ -373,9 +373,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
                 if (checkedFindPwdByVerifyingPhone) {
                     // 본인인증으로 비밀번호 재설정
-                    LoginServer.changePasswordByIdentifying(serverListener, verification);
+                    UserServer.changePasswordByIdentifying(serverListener, verification);
                 } else {
-                    LoginServer.changePassword(serverListener, verification);
+                    UserServer.changePassword(serverListener, verification);
                 }
             } else {
                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidformat));
@@ -400,7 +400,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
         } else {
             user.deleteObserver(this);
-            LoginServer.verifyPhone((success, o) -> {
+            UserServer.verifyPhone((success, o) -> {
                 if (success) {
                     BaseModel model = (BaseModel) o;
                     if (model.resultCode == Flag.ResultCode.SUCCESS) {

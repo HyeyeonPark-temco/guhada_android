@@ -13,7 +13,7 @@ import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 import static android.app.Activity.RESULT_OK;
@@ -95,7 +95,7 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.join_message_notequalpwd));
         } else {
             user.deleteObserver(this);
-            LoginServer.signUp((success, o) -> {
+            UserServer.signUp((success, o) -> {
                 if (success) {
                     BaseModel model = ((BaseModel) o);
                     switch (model.resultCode) {

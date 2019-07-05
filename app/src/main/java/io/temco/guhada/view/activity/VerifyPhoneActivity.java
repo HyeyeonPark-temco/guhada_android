@@ -17,7 +17,7 @@ import java.util.Set;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.databinding.ActivityVerifyphoneBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 
@@ -41,7 +41,7 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void init() {
-        LoginServer.getVerifyPhoneToken((success, o) -> {
+        UserServer.getVerifyPhoneToken((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
                 String token = (String) model.data;

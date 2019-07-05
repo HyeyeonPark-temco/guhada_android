@@ -152,6 +152,14 @@ interface LoginService {
     fun deleteShippingAddress(@Path("userId") userId: Int, @Query("shippingAddressId") shippingAddressId: Int): Call<BaseModel<Any>>
 
     /**
+     * 회원 배송지 수정 API
+     * @param userId
+     */
+    @PUT("/users/{userId}/shipping-addresses")
+    fun updateeShippingAddress(@Path("userId") userId: Int, @Query("shippingAddressId") shippingAddressId: Int, @Body shippingAddress: UserShipping): Call<BaseModel<UserShipping>>
+
+
+    /**
      * 상품 리뷰 평점 및 그래프 정보 조회 API
      */
     @GET("/products/{productId}/reviews/summary")

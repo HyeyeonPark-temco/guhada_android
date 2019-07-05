@@ -13,7 +13,7 @@ import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.server.LoginServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
@@ -74,7 +74,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     fun getSellerInfo() {
         if (product.value?.sellerId != null) {
-            LoginServer.getSellerById(OnServerListener { success, o ->
+            UserServer.getSellerById(OnServerListener { success, o ->
                 if (success) {
                     (o as BaseModel<Seller>).let {
                         this.seller = it.data

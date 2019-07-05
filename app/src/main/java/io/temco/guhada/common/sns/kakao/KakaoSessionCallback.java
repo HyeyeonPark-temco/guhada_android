@@ -15,9 +15,8 @@ import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 
 public class KakaoSessionCallback implements ISessionCallback {
     private OnSnsLoginListener mListener;
@@ -68,7 +67,7 @@ public class KakaoSessionCallback implements ISessionCallback {
                     });
                     mListener.showMessage("회원가입을 위해 이메일 제공 동의가 필요합니다");
                 } else {
-                    LoginServer.checkExistSnsUser((success, o) -> {
+                    UserServer.checkExistSnsUser((success, o) -> {
                         if (success) {
                             BaseModel model = (BaseModel) o;
                             if (model.resultCode == Flag.ResultCode.SUCCESS) {

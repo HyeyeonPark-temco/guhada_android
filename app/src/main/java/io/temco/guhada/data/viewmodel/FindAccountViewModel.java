@@ -16,7 +16,7 @@ import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindAccountListener;
 import io.temco.guhada.data.model.User;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.LoginServer;
+import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -228,7 +228,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     public void onClickFindId() {
         findAccountListener.showLoadingIndicator();
         user.deleteObserver(this);
-        LoginServer.findUserId((success, o) -> {
+        UserServer.findUserId((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
