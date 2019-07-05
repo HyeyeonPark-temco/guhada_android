@@ -42,14 +42,17 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/FullscreenTheme" />
 
+        <!-- Custom View Text -->
+        <activity android:name=".view.activity.CustomViewActivity" />
+
         <!-- Splash -->
         <activity
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
@@ -120,11 +123,16 @@
             android:name=".view.activity.PaymentWebViewActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Shipping Address -->
         <activity
             android:name=".view.activity.ShippingAddressActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".view.activity.CustomViewActivity"/>
+        <activity
+            android:name=".view.activity.EditShippingAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleBarDialog" />
+
 
         <!-- Kakao -->
         <activity

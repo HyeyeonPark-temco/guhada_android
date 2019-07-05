@@ -51,7 +51,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
         }, userId)
     }
 
-    fun deleteUserShippingAddress(shippingAddressId: Int) {
+    fun deleteShippingAddress(shippingAddressId: Int) {
         LoginServer.deleteUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = {
@@ -61,6 +61,13 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
                         ToastUtil.showMessage("배송지 삭제에 실패했습니다. 다시 시도해주세요.")
                     })
         }, userId, shippingAddressId)
+    }
+
+    fun editShippingAddress(position: Int) {
+        val shippingAddress = shippingAddresses.value?.get(position)
+        if(shippingAddress != null){
+            mListener.redirectEditShippingAddressActivity(shippingAddress)
+        }
     }
 
     fun onClickSubmit() {

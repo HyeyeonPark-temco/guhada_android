@@ -24,6 +24,13 @@
         <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
 
+    <!-- Dialog -->
+    <style name="NoTitleBarDialog" parent="Theme.AppCompat.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="imageButtonStyle">@style/DefaultImageButtonStyle</item>
+    </style>
+
     <!-- TEXTVIEW -->
     <style name="TextRegular">
         <item name="android:fontFamily">sans-serif</item>

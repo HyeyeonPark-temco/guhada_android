@@ -503,4 +503,17 @@
     <string name="blockchain_title_certificate">Certificate(PDF)</string>
     <string name="blockchain_title_tracker">Tracker</string>
     <string name="blockchain_title_tracker_link">Block Chain Link</string>
+
+    <!-- EDIT SHIPPING ADDRESS -->
+    <string name="editshippingaddress_title">배송지 수정</string>
+    <string name="editshippingaddress_set_default">기본 배송지 설정</string>
+    <string name="editshippingaddress_button_cancel">취소</string>
+    <string name="editshippingaddress_button_submit">변경</string>
+    <string name="editshippingaddress_button_zip">우편번호 찾기</string>
+    <string name="editshippingaddress_hint_addressname">배송지명을 입력해주세요</string>
+    <string name="editshippingaddress_hint_zip">우편번호</string>
+    <string name="editshippingaddress_hint_address">주소</string>
+    <string name="editshippingaddress_hint_detailaddress">상세주소를 입력해주세요</string>
+    <string name="editshippingaddress_hint_recipientname">수령인을 입력해주세요</string>
+    <string name="editshippingaddress_hint_recipientmobile">연락처를 입력해주세요</string>
 </resources>

@@ -27,6 +27,7 @@ import java.net.URLEncoder
 
 
 class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
+    private val RESULT_URL = "http://13.209.10.68/lotte/mobile/privyCertifyResult"
     private var mViewModel: PaymentWebViewViewModel = PaymentWebViewViewModel()
     val RESULT_CODE_SUCCESS = "00"
     val SCHEME = "ispmobile://"
@@ -147,36 +148,38 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-
-            if (url == "http://13.209.10.68/lotte/mobile/privyCertifyResult") {
+            if (url == RESULT_URL) {
                 mBinding.webviewPayment.visibility = View.GONE
                 view?.evaluateJavascript("(function(){return window.document.body.outerHTML})();") { html ->
                     StringEscapeUtils.unescapeJava(html).let {
                         val document = Jsoup.parse(it)
-                        val pgTid = document.getElementById("pgTid")?.`val`() ?: ""
                         val resultCode = document.getElementById("resultCode")?.`val`() ?: ""
-                        val resultMsg = document.select("input[name=resultMsg]").`val`() ?: ""
-                        val pgKind = mViewModel.pgResponse.pgKind
-                        val pgMid = mViewModel.pgResponse.pgMid
-                        val pgOid = mViewModel.pgResponse.pgOid
-                        val pgAmount = mViewModel.pgResponse.pgAmount
-                        val pgTidSample = document.select("input[name=pgTidSample]").`val`() ?: ""
-
-                        val authToken = document.getElementById("rsltAuthToken")?.`val`() ?: ""
-                        val authUrl = document.getElementById("authUrl")?.`val`() ?: ""
-                        val netCancelUrl = document.getElementById("netCancelUrl")?.`val`() ?: ""
-                        val checkAckUrl = document.getElementById("checkAckUrl")?.`val`() ?: ""
-
-                        val vbankReceivedCd = document.getElementById("vbankReceivedCd")?.`val`()
-                                ?: ""
-                        val vbankReceivedNm = document.getElementById("vbankReceivedNm")?.`val`()
-                                ?: ""
-                        val vbankReceivedNo = document.getElementById("vbankReceivedNo")?.`val`()
-                                ?: ""
-
-                        CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid")
 
                         if (resultCode == RESULT_CODE_SUCCESS) {
+                            val pgTid = document.getElementById("pgTid")?.`val`() ?: ""
+                            val resultMsg = document.select("input[name=resultMsg]").`val`() ?: ""
+                            val pgKind = mViewModel.pgResponse.pgKind
+                            val pgMid = mViewModel.pgResponse.pgMid
+                            val pgOid = mViewModel.pgResponse.pgOid
+                            val pgAmount = mViewModel.pgResponse.pgAmount
+                            val pgTidSample = document.select("input[name=pgTidSample]").`val`()
+                                    ?: ""
+
+                            val authToken = document.getElementById("rsltAuthToken")?.`val`() ?: ""
+                            val authUrl = document.getElementById("authUrl")?.`val`() ?: ""
+                            val netCancelUrl = document.getElementById("netCancelUrl")?.`val`()
+                                    ?: ""
+                            val checkAckUrl = document.getElementById("checkAckUrl")?.`val`() ?: ""
+
+                            val vbankReceivedCd = document.getElementById("vbankReceivedCd")?.`val`()
+                                    ?: ""
+                            val vbankReceivedNm = document.getElementById("vbankReceivedNm")?.`val`()
+                                    ?: ""
+                            val vbankReceivedNo = document.getElementById("vbankReceivedNo")?.`val`()
+                                    ?: ""
+
+                            CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid")
+
                             PGAuth().apply {
                                 this.pgTid = pgTid
                                 this.resultCode = resultCode

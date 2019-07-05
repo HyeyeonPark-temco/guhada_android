@@ -64,8 +64,11 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
                     ToastUtil.showMessage("현재 선택된 배송지입니다.")
                 } else {
                     deletePos = adapterPosition
-                    mViewModel.deleteUserShippingAddress(id)
+                    mViewModel.deleteShippingAddress(id)
                 }
+            }
+            binding.textviewShippingaddressEdit.setOnClickListener {
+                mViewModel.editShippingAddress(adapterPosition)
             }
 
             binding.executePendingBindings()
