@@ -19,6 +19,7 @@ ext {
     coroutineVersion = '1.3.0-M1'
     okhttpIntegrationVersion = '4.9.0'
     okhttpVersion = '3.12.0'
+    fcmVersion = '17.0.0'
 
     androidDependencies = [
             supportDesign          : "com.android.support:design:${supportDesignVersion}",
@@ -43,7 +44,8 @@ ext {
             jwtDecode            : "com.auth0.android:jwtdecode:${jwtDecodeVersion}",
             coroutine : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutineVersion}",
             okhttp: "com.squareup.okhttp3:okhttp:${okhttpVersion}",
-            okhttpIntegration : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}"
+            okhttpIntegration : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}",
+            fcm : "com.google.firebase:firebase-core:${fcmVersion}"
 
     ]
 }

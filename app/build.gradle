@@ -109,6 +109,9 @@ dependencies {
         exclude group: 'glide-parent'
     }
 
+    // FCM
+    implementation libraryDependencies.fcm
+
 
     ////////////////////////////////////////////////
 }
@@ -122,3 +125,5 @@ repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
 }
+
+apply plugin: 'com.google.gms.google-services'
