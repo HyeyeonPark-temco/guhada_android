@@ -5,10 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="averageReviewsRating"
             type="Float" />
-        <import type="android.view.View" />
+
 
         <variable
             name="viewModel"
@@ -100,15 +102,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/pale_grey"
-            android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =gone}"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =gone}">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:layout_gravity="center"
-                android:text="@string/productdetail_dummy_advantage2"/>
+                android:layout_margin="20dp"
+                android:text="@string/productdetail_dummy_advantage2" />
         </LinearLayout>
 
         <View
@@ -129,15 +131,15 @@
             android:paddingBottom="17dp">
 
             <ImageView
-                app:ovalImageUrl="@{viewModel.seller.profileImageUrl}"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="30dp"
-                android:src="@color/black_overlay" />
+                android:src="@color/black_overlay"
+                app:ovalImageUrl="@{viewModel.seller.profileImageUrl}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="64dp"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -194,8 +196,8 @@
                         app:layout_constraintVertical_bias="1.0" />
 
                     <Button
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:id="@+id/button3"
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="6dp"
@@ -208,8 +210,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Button
-                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:id="@+id/button4"
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="77dp"
                         android:layout_height="30dp"
                         android:background="@color/greyish_brown_two"
@@ -251,7 +253,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="4dp"
                             android:gravity="center"
-                            android:text="0"
+                            android:text="@{String.valueOf(viewModel.sellerSatisfaction.good)}"
                             android:textColor="@color/black_two"
                             android:textSize="@dimen/text_12" />
 
@@ -288,7 +290,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="4dp"
                             android:gravity="center"
-                            android:text="0"
+                            android:text="@{String.valueOf(viewModel.sellerSatisfaction.normal)}"
                             android:textColor="@color/black_two"
                             android:textSize="@dimen/text_12" />
 
@@ -325,7 +327,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginStart="4dp"
                             android:gravity="center"
-                            android:text="0"
+                            android:text="@{String.valueOf(viewModel.sellerSatisfaction.bad)}"
                             android:textColor="@color/black_two"
                             android:textSize="@dimen/text_12" />
 
@@ -395,8 +397,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="4dp"
                     android:text="@{String.valueOf(averageReviewsRating)}"
-                    android:textSize="@dimen/text_13"
                     android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_13"
                     app:layout_constraintStart_toEndOf="@+id/ratingBar"
                     tools:layout_editor_absoluteY="17dp" />
             </LinearLayout>

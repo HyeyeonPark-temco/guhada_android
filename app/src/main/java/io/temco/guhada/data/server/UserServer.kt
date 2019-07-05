@@ -217,10 +217,16 @@ class UserServer {
         fun deleteUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddressId: Int) =
                 RetrofitManager.createService(Type.Server.USER, LoginService::class.java).deleteShippingAddress(userId, shippingAddressId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
+        /**
+         * 회원 배송지 수정 API
+         */
         @JvmStatic
         fun updateUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddressId: Int, shippingAddress: UserShipping) =
                 RetrofitManager.createService(Type.Server.USER, LoginService::class.java).updateeShippingAddress(userId, shippingAddressId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<UserShipping>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
+        /**
+         * 셀러 정보 가져오기 API
+         */
         @JvmStatic
         fun getSellerById(listener: OnServerListener, sellerId: Long) {
             RetrofitManager.createService(Type.Server.USER, LoginService::class.java, true).getSellerById(sellerId).enqueue(object : Callback<BaseModel<Seller>> {
@@ -260,5 +266,12 @@ class UserServer {
                 }
             })
         }
+
+        /**
+         * 셀러 만족도 조회 API
+         */
+        @JvmStatic
+        fun getSellerSatisfaction(listener: OnServerListener, sellerId: Long) =
+                RetrofitManager.createService(Type.Server.USER, LoginService::class.java).getSellerSatisfaction(sellerId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerSatisfaction>> { successResponse -> listener.onResult(true, successResponse.body()) })
     }
 }

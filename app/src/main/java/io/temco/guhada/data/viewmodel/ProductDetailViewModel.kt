@@ -9,9 +9,11 @@ import io.temco.guhada.BR
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.Seller
+import io.temco.guhada.data.model.SellerSatisfaction
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.server.ProductServer
@@ -19,6 +21,9 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
     var seller: Seller = Seller()
+        @Bindable
+        get() = field
+    var sellerSatisfaction = SellerSatisfaction()
         @Bindable
         get() = field
     var dealId: Long = 0
@@ -147,5 +152,16 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         listener?.redirectHome()
     }
 
-
+    fun getSellerSatisfaction() {
+        val sellerId = product.value?.sellerId
+        if (sellerId != null) {
+            UserServer.getSellerSatisfaction(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            sellerSatisfaction = it.data as SellerSatisfaction
+                            notifyPropertyChanged(BR.sellerSatisfaction)
+                        })
+            }, sellerId)
+        }
+    }
 }

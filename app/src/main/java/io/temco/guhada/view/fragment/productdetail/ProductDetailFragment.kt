@@ -18,12 +18,14 @@ import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
+import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
@@ -52,34 +54,31 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun getLayoutId(): Int = R.layout.activity_product_detail
 
     override fun init() {
+        initUtils()
+        initViewModel()
+        setDetectScrollView()
+
+        mBinding.includeProductdetailHeader.viewModel = mViewModel
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
+    }
+
+    private fun initUtils() {
         //[2019.06.26]임시 브릿지
         mLoadingIndicatorUtil = LoadingIndicatorUtil(context ?: ProductBridge.mainActivity)
-        if (::mLoadingIndicatorUtil.isInitialized)
-            mLoadingIndicatorUtil.show()
+        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
+    }
 
+    private fun initViewModel() {
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
-            mBinding.includeProductdetailContentsummary.viewModel = mViewModel
-            mBinding.includeProductdetailContentheader.viewModel = mViewModel
+            initSummary()
+            initContentHeader()
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
-            mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
 
-                }
-
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-                }
-
-                override fun onPageSelected(position: Int) {
-                    mViewModel.imagePos = position + 1
-                    mViewModel.notifyPropertyChanged(BR.imagePos)
-                }
-            })
             // this@ProductDetailFragment.hideLoadingIndicator()
-
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
                 mBinding.includeProductdetailContentbody.viewModel = mViewModel
@@ -99,12 +98,25 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 mViewModel.getDetail()
             }
         }
+    }
 
-        detectScrollView()
+    private fun initSummary() {
+        mViewModel.getSellerSatisfaction()
+        mBinding.includeProductdetailContentsummary.viewModel = mViewModel
+    }
 
-        mBinding.includeProductdetailHeader.viewModel = mViewModel
-        mBinding.viewModel = mViewModel
-        mBinding.executePendingBindings()
+    private fun initContentHeader() {
+        mBinding.includeProductdetailContentheader.viewModel = mViewModel
+        mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {}
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) {
+                mViewModel.imagePos = position + 1
+                mViewModel.notifyPropertyChanged(BR.imagePos)
+            }
+        })
     }
 
     override fun redirectHome() {
@@ -199,7 +211,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         this@ProductDetailFragment.hideLoadingIndicator()
     }
 
-    private fun detectScrollView() {
+    private fun setDetectScrollView() {
         // val scrollBounds = Rect()
         mBinding.scrollviewProductdetail.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             val height = mBinding.includeProductdetailHeader.toolbarProductdetailHeader.height + mBinding.includeProductdetailContentsummary.linearlayoutProductdetailSummayContainer.height

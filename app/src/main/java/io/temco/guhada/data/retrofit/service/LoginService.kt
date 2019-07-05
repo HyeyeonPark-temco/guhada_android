@@ -171,4 +171,9 @@ interface LoginService {
     @GET("/products/{productId}/reviews")
     fun getProductReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
 
+    /**
+     * 셀러 만족도 조회 API
+     */
+    @GET("/sellers/{sellerId}/purchase-satisfaction")
+    fun getSellerSatisfaction(@Path("sellerId") sellerId: Long) : Call<BaseModel<SellerSatisfaction>>
 }
