@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -71,7 +72,7 @@
                 <TextView
                     android:id="@+id/textView38"
                     style="@style/ProductDetailContentDarkGreyTextStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="8dp"
                     android:layout_height="wrap_content"
                     android:text="@string/common_unit_score"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -150,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:text="전체평점"
+                    android:text="@string/productdetaininfo_review_sort2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton2"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -170,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:text="최신순"
+                    android:text="@string/productdetaininfo_review_sort1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton3"
                     app:layout_constraintTop_toTopOf="parent" />
