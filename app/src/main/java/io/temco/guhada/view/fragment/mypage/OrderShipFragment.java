@@ -124,6 +124,39 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
                 "2019.06.28",
                 "St.Jogn",
                 "19SS",
+                "Beanpole Ladies / 19SS Beige single a-line long trench coat",
+                "Blue",
+                "S",
+                "Qty  1",
+                new BigDecimal("568500"),
+                "Appraisal completed"));
+        l.add(getTestItem(
+                342507,
+                "2019.06.17",
+                "Missoni",
+                "19SS",
+                "Maison Kitsune / 19SS Women knit fox head pullover sweatshirts",
+                "Camel",
+                "M",
+                "Qty  1",
+                new BigDecimal("547100"),
+                "Appraisal completed"));
+        l.add(getTestItem(
+                827692,
+                "2019.05.03",
+                "MaisonKitsune",
+                "19SS",
+                "Burberry 19SS / Burberry house checks leather ankle boots",
+                "Black",
+                "36",
+                "Qty  1",
+                new BigDecimal("958400"),
+                "Appraisal completed"));
+        /*l.add(getTestItem(
+                278453,
+                "2019.06.28",
+                "St.Jogn",
+                "19SS",
                 "여성 의류 원피스 & 드레스 니랭스 원피스/드레스 no.5676 상품 by.SP",
                 "라임",
                 "S",
@@ -151,7 +184,7 @@ public class OrderShipFragment extends BaseFragment<FragmentMypageOrderShipBindi
                 "US6",
                 "1개",
                 new BigDecimal("958400"),
-                "제품 감정 완료"));
+                "제품 감정 완료"));*/
         adapter.setItems(l);
     }
 
