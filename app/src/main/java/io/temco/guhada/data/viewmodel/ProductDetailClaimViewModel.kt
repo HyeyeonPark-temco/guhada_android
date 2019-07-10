@@ -52,10 +52,10 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
                 notifyPropertyChanged(BR.emptyVisibility)
             }
         } else {
-            if (o != null) listener.showMessage(o as String)
-            else listener.showMessage("상품 문의 조회 오류") // 임시 메세지
+//            if (o != null) listener.showMessage(o as String)
+//            else listener.showMessage("상품 문의 조회 오류") // 임시 메세지
 
-            emptyVisibility = ObservableInt(View.GONE)
+            emptyVisibility = ObservableInt(View.VISIBLE)
             notifyPropertyChanged(BR.emptyVisibility)
         }
 

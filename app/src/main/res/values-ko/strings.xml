@@ -136,6 +136,8 @@
     <string name="detail_search_result_count">검색결과 보기(%s개)</string>
 
     <!-- LOGIN -->
+    <string name="login_hint_email">이메일</string>
+    <string name="login_hint_password">비밀번호</string>
     <string name="login_title">로그인</string>
     <string name="login_naver">네이버\n로그인</string>
     <string name="login_google">구글\n로그인</string>

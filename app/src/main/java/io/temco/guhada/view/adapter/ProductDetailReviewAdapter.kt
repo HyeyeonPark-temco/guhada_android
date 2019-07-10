@@ -37,7 +37,7 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
 
     inner class Holder(mBinding: ItemProductdetailReviewBinding) : BaseViewHolder<ItemProductdetailReviewBinding>(mBinding.root) {
         fun bind(reviewContent: ReviewResponseContent) {
-            if (adapterPosition == list.size) mBinding.viewProductdetailreviewLine.visibility = View.GONE
+            if (adapterPosition == list.size - 1) mBinding.viewProductdetailreviewLine.visibility = View.GONE
             mBinding.reviewContent = reviewContent
             mBinding.executePendingBindings()
         }

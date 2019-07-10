@@ -162,6 +162,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
             android:layout_marginTop="12dp">
 
             <LinearLayout
@@ -396,7 +397,7 @@
 
         <View
             android:id="@+id/view_productdetailreview_line"
-            android:layout_marginTop="18dp"
+
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/white_six"/>

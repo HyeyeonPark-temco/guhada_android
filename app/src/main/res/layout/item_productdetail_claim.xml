@@ -93,7 +93,7 @@
                 style="@style/ProductDetailContentGreyTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{claim.createdAt}"
+                android:text="@{claim.createdAt[0]+ `.` +claim.createdAt[1]+ `.` +claim.createdAt[2]+` `+ claim.createdAt[3] + `:` + claim.createdAt[4]+ `:` +claim.createdAt[5]}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -105,9 +105,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:orientation="horizontal"
-            android:paddingBottom="20dp"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp">
+            android:paddingEnd="20dp"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/textview_productdetail_claim_content"
@@ -117,8 +117,8 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{claim.inquiry}"
                 android:singleLine="@{isReplyClosed}"
+                android:text="@{claim.inquiry}"
                 android:textSize="@dimen/text_12" />
 
             <ImageButton
@@ -135,8 +135,8 @@
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:visibility="@{isLastItem ? View.GONE : View.VISIBLE, default = visible}"
-            android:background="@color/white_four" />
+            android:background="@color/white_four"
+            android:visibility="@{isLastItem ? View.GONE : View.VISIBLE, default = visible}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintlayout_productdetail_reply"
@@ -208,7 +208,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@{claim.replyAt}"
+                android:text="@{claim.replyAt[0] + `.` +claim.replyAt[1] + `.` +claim.replyAt[2]+` `+ claim.replyAt[3] + `:` + claim.replyAt[4]+ `:` +claim.replyAt[5]}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_qna_replycontent" />

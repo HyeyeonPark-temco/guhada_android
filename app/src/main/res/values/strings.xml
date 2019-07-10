@@ -33,10 +33,10 @@
     <string name="common_community">Community</string>
 
     <string name="common_show">보기</string>
-    <string name="common_max">최대</string>
+    <string name="common_max">Maximum</string>
     <string name="common_price_format">%,2d</string>
 
-    <string name="common_more">더보기</string>
+    <string name="common_more">More</string>
     <string name="common_reset">초기화</string>
     <string name="common_color_white">#ffffff</string>
 
@@ -44,7 +44,7 @@
     <string name="common_unit_board">건</string>
     <string name="common_unit_price"></string>
     <string name="common_unit_prercent">%</string>
-    <string name="common_unit_product">개</string>
+    <string name="common_unit_product">Items</string>
     <string name="common_unit_point">P</string>
     <string name="common_unit_score"></string>
 
@@ -124,10 +124,10 @@
     <string name="product_order_high_price">높은가격순</string>
 
     <string name="product_search_detail_title">상세검색</string>
-    <string name="product_price">%s원</string>
+    <string name="product_price">\%s</string>
     <string name="product_price_sale_per">%d%%</string>
-    <string name="product_ship_free">무료배송</string>
-    <string name="product_ship_free_split">무료\n배송</string>
+    <string name="product_ship_free">Free shipping</string>
+    <string name="product_ship_free_split">Free\nshipping</string>
 
     <!-- BRAND -->
     <string name="brand_search_hint">Search for brand</string>
@@ -137,7 +137,9 @@
     <string name="detail_search_result_count">검색결과 보기(%s개)</string>
 
     <!-- LOGIN -->
-    <string name="login_title">Community</string>
+    <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Password</string>
+    <string name="login_title">Login</string>
     <string name="login_naver">Naver\nlog in</string>
     <string name="login_google">Google\nlog in</string>
     <string name="login_kakao">Kakao\nlog in</string>
@@ -149,7 +151,7 @@
     <string name="login_button_signin">Log in</string>
     <string name="login_button_signup">Create an account</string>
     <string name="login_button_saveid">Remember me</string>
-    <string name="login_button_guestorder">비회원 주문조회</string>
+    <string name="login_button_guestorder">Non-member Order Inquiry</string>
 
     <string name="login_message_wrongidformat">아이디 형태가 올바르지 않습니다.</string>
     <string name="login_message_wrongpwdformat">비밀번호는 영문과 숫자 그리고 특수문자로만 구성이 가능합니다.</string>
@@ -299,9 +301,9 @@
     <string name="productdetail_review_normal">Average</string>
     <string name="productdetail_review_bad">Bad</string>
     <string name="productdetail_review_empty">There is no product review yet.</string>
-    <string name="productdetail_review_description1">Please be the first one to write review and earn up to </string>
-    <string name="productdetail_review_description2">2,000 points</string>
-    <string name="productdetail_review_description3">!</string>
+    <string name="productdetail_review_description1">Please be the first one to write review and </string>
+    <string name="productdetail_review_description2">earn up to 2,000 points</string>
+    <string name="productdetail_review_description3"></string>
     <string name="productdetail_review_emptybutton">Write review</string>
 
     <string name="productdetail_button_bag">ADD TO BAG</string>
@@ -397,24 +399,24 @@
     <string name="claim_write_empty">There is no product inquiry yet.</string>
 
     <!-- PAYMENT -->
-    <string name="payment_title_product">주문 상품</string>
-    <string name="payment_title_buyer">주문자 정보</string>
-    <string name="payment_title_shipping">배송지</string>
-    <string name="payment_title_discount">할인 적용</string>
-    <string name="payment_title_coupon">쿠폰</string>
-    <string name="payment_title_point">포인트</string>
-    <string name="payment_title_paymentway">결제 수단</string>
+    <string name="payment_title_product">Placed Order</string>
+    <string name="payment_title_buyer">Your information</string>
+    <string name="payment_title_shipping">Shipping address</string>
+    <string name="payment_title_discount">Discount options</string>
+    <string name="payment_title_coupon">Coupon</string>
+    <string name="payment_title_point">Point</string>
+    <string name="payment_title_paymentway">Payment methods</string>
 
     <string name="payment_text_freeshipping">무료배송</string>
-    <string name="payment_text_verify">본인인증</string>
-    <string name="payment_text_required">[필수]</string>
-    <string name="payment_text_totalorderprice">총 주문금액</string>
-    <string name="payment_text_totaldiscount">할인금액</string>
-    <string name="payment_text_totalpayprice">최종 결제금액</string>
+    <string name="payment_text_verify">Identity verification</string>
+    <string name="payment_text_required">[Required]</string>
+    <string name="payment_text_totalorderprice">Total</string>
+    <string name="payment_text_totaldiscount">Discount</string>
+    <string name="payment_text_totalpayprice">Your total</string>
     <string name="payment_text_discountcoupon">쿠폰 할인</string>
     <string name="payment_text_discountproduct">상품 할인</string>
     <string name="payment_text_discountpoint">포인트 사용</string>
-    <string name="payment_text_expectedpoint">적립 예정 내역</string>
+    <string name="payment_text_expectedpoint">You will earn</string>
     <string name="payment_text_fixbuy">구매 확정</string>
     <string name="payment_text_textreview">텍스트 리뷰</string>
     <string name="payment_text_photoreview">포토 리뷰</string>
@@ -423,18 +425,18 @@
     <string name="payment_text_mobile">휴대폰 결제</string>
     <string name="payment_text_realtimetransfer">실시간 계좌이체</string>
     <string name="payment_text_transfer">무통장 입금</string>
-    <string name="payment_text_terms">구매 및 결제대행서비스 이용약관 동의</string>
+    <string name="payment_text_terms">I agree to GUHADA’s privacy notice and conditions of use.</string>
 
-    <string name="payment_text_defaultshippingaddress">배송메모를 선택해 주세요</string>
+    <string name="payment_text_defaultshippingaddress">배송지를 선택해 주세요</string>
     <string name="payment_text_emptyshippingaddress">등록된 배송지가 없습니다.</string>
-    <string name="payment_hint_shippingmemo">배송메모를 선택해 주세요</string>
+    <string name="payment_hint_shippingmemo">Please select your shipping note</string>
     <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
-    <string name="payment_hint_coupon">적용 가능한 쿠폰을 선택해주세요</string>
+    <string name="payment_hint_coupon">Please select available coupons</string>
 
     <string name="payment_text_changedestination">배송지 변경</string>
-    <string name="payment_button_submit">결제하기</string>
-    <string name="payment_button_autocoupon">자동 적용</string>
-    <string name="payment_button_allpoint">전액 사용</string>
+    <string name="payment_button_submit">Place your order</string>
+    <string name="payment_button_autocoupon">Apply</string>
+    <string name="payment_button_allpoint">User All</string>
 
     <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
     <string name="shippingmemo_security">경비실에 맡겨주세요.</string>
@@ -481,7 +483,7 @@
     <string name="mypage_order_shipping">Your orders</string>
     <string name="mypage_order_number">Order #</string>
     <string name="mypage_order_list">Order list</string>
-    <string name="mypage_order_cancel">Order cancle</string>
+    <string name="mypage_order_cancel">Order cancel</string>
     <string name="mypage_order_as">Customer service</string>
     <string name="mypage_order_change_shipping">배송지 변경</string>
     <string name="mypage_order_qna">압구정 날라리에 문의하기</string>

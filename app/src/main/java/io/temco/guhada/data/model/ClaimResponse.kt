@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ClaimResponse {
     var content: MutableList<Claim> = ArrayList()
@@ -39,14 +40,14 @@ class ClaimResponse {
         var inquiry: String = ""
         var nickname: String = ""
         var reply: String? = null
-        var replyAt: String = ""
-            get() = convertDateTimeFormat(field)
+        var replyAt : ArrayList<Int> = arrayListOf()
+//            get() = convertDateTimeFormat(field)
 
-        var createdAt: String = ""
-            get() = convertDateTimeFormat(field)
+        var createdAt: ArrayList<Int> = arrayListOf()
+        //  get() = convertDateTimeFormat(field)
 
-        var updatedAt: String = ""
-            get() = convertDateTimeFormat(field)
+        var updatedAt:  ArrayList<Int> = arrayListOf()
+//            get() = convertDateTimeFormat(field)
 
         /// 추후 Util로 분리 예정
         @SuppressLint("SimpleDateFormat")

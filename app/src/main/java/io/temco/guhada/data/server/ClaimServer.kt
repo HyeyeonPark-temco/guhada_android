@@ -19,20 +19,20 @@ open class ClaimServer {
     companion object {
         @JvmStatic
         fun getClaims(listener: OnServerListener, productId: Long, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
-            val call = RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaims(productId = productId, isMyInquiry = isMyInquiry,
-                    pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}")
-            val recall = RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).getClaimsForQuest(productId = productId,
-                    pageNo = pageNo, size = size, status = status)
+//          c
 
-            RetryableCallback.APIHelper.enqueueWithRetry(call, recall, 1, object : Callback<BaseModel<ClaimResponse>> {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaims(productId = productId, isMyInquiry = isMyInquiry,
+                    pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}").enqueue( object : Callback<BaseModel<ClaimResponse>> {
                 override fun onResponse(call: Call<BaseModel<ClaimResponse>>, response: Response<BaseModel<ClaimResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }
 
                 override fun onFailure(call: Call<BaseModel<ClaimResponse>>, t: Throwable) {
-                    listener.onResult(false, t.message)
+//                    listener.onResult(false, t.message)
                 }
             })
+
+
         }
 
         @JvmStatic

@@ -60,11 +60,16 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                         notifyPropertyChanged(BR.emptyVisibility)
                     }
                 } else {
-                    if (o != null) {
-                        listener.showMessage(o as String)
-                    } else {
-                        listener.showMessage("PRODUCT REVIEW ERROR")
-                    }
+                    this.reviewResponse = ReviewResponse()
+                    emptyVisibility = ObservableInt(View.VISIBLE)
+
+                    notifyPropertyChanged(BR.reviewResponse)
+                    notifyPropertyChanged(BR.emptyVisibility)
+//                    if (o != null) {
+//                        listener.showMessage(o as String)
+//                    } else {
+//                        listener.showMessage("PRODUCT REVIEW ERROR")
+//                    }
                 }
 
                 if (::listener.isInitialized) listener.hideLoadingIndicator()

@@ -81,7 +81,7 @@
                 android:id="@+id/edittextview_login_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:hint="이메일"
+                app:hint="@string/login_hint_email"
                 app:txt="@={viewModel.id}"
                 app:type="email" />
 
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:hint="비밀번호"
+                app:hint="@string/login_hint_password"
                 app:txt="@={viewModel.pwd}"
                 app:type="password" />
 
