@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- TEST -->
@@ -43,6 +44,7 @@
     <string name="common_unit_person">명</string>
     <string name="common_unit_board">건</string>
     <string name="common_unit_price">원</string>
+    <string name="common_unit_krw"></string>
     <string name="common_unit_prercent">%</string>
     <string name="common_unit_product">개</string>
     <string name="common_unit_point">P</string>
@@ -307,6 +309,7 @@
     <string name="productdetail_review_description2">최대 2,000점의 포인트 혜택</string>
     <string name="productdetail_review_description3">을 누려보세요!</string>
     <string name="productdetail_review_emptybutton">첫 리뷰 작성하기</string>
+    <string name="productdetail_review_message_lastitem">마지막 상품 리뷰입니다.</string>
 
     <string name="productdetail_button_bag">장바구니</string>
     <string name="productdetail_button_buy">바로구매</string>
@@ -401,8 +404,11 @@
     <string name="claim_write_button_cancel">취소</string>
     <string name="claim_write_button_submit">등록</string>
     <string name="claim_write_empty">작성된 상품 문의가 없습니다.</string>
+    <string name="claim_write_message_empty">문의 내용을 작성해주세요.</string>
+    <string name="claim_message_lastitem">마지막 상품 문의입니다.</string>
 
     <!-- PAYMENT -->
+    <string name="payment_title_header">주문 결제</string>
     <string name="payment_title_product">주문 상품</string>
     <string name="payment_title_buyer">주문자 정보</string>
     <string name="payment_title_shipping">배송지</string>
@@ -431,7 +437,7 @@
     <string name="payment_text_transfer">무통장 입금</string>
     <string name="payment_text_terms">구매 및 결제대행서비스 이용약관 동의</string>
 
-    <string name="payment_text_defaultshippingaddress">배송메모를 선택해 주세요</string>
+    <string name="payment_text_defaultshippingaddress">배송지를 선택해 주세요</string>
     <string name="payment_text_emptyshippingaddress">등록된 배송지가 없습니다.</string>
     <string name="payment_hint_shippingmemo">배송메모를 선택해 주세요</string>
     <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
@@ -441,6 +447,8 @@
     <string name="payment_button_submit">결제하기</string>
     <string name="payment_button_autocoupon">자동 적용</string>
     <string name="payment_button_allpoint">전액 사용</string>
+
+    <string name="payment_message_cancel">결제가 취소되었습니다</string>
 
     <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
     <string name="shippingmemo_security">경비실에 맡겨주세요.</string>
@@ -474,6 +482,11 @@
 
     <string name="paymentreuslt_button_bag">장바구니</string>
     <string name="paymentreuslt_button_continue">쇼핑 계속하기</string>
+
+    <string name="payment_message_maxusagepoint1">최대 사용 가능 포인트는 </string>
+    <string name="payment_message_maxusagepoint2">P 입니다</string>
+    <string name="payment_message_selectpaymentway">결제 수단을 선택해주세요.</string>
+    <string name="payment_message_confirmtemrs">이용 약관에 동의해주세요</string>
 
     <!-- SHIPPING ADDRESS -->
     <string name="shippingaddress_list">배송지 목록</string>

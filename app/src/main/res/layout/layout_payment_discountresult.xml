@@ -422,7 +422,7 @@
                     android:id="@+id/textView33"
                     style="@style/TextMedium"
                     android:layout_width="wrap_content"
-                    android:layout_height="12dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/common_max"
                     android:textColor="@color/colorPrimary"

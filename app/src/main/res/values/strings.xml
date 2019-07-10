@@ -44,6 +44,7 @@
     <string name="common_unit_person"></string>
     <string name="common_unit_board">건</string>
     <string name="common_unit_price"></string>
+    <string name="common_unit_krw">KRW</string>
     <string name="common_unit_prercent">%</string>
     <string name="common_unit_product">Items</string>
     <string name="common_unit_point">P</string>
@@ -272,7 +273,7 @@
 
     <!-- PRODUCT DETAIL -->
     <string name="productdetail_dummy_advantage1">Points</string>
-    <string name="productdetail_dummy_advantage2">추가 적립 포인트 1,000원</string>
+    <string name="productdetail_dummy_advantage2">Earn Additional 1,000 Points</string>
 
     <string name="productdetail_option">Product options</string>
     <string name="productdetail_sizeinfo">Size info</string>
@@ -307,6 +308,7 @@
     <string name="productdetail_review_description2">earn up to 2,000 points</string>
     <string name="productdetail_review_description3"></string>
     <string name="productdetail_review_emptybutton">Write review</string>
+    <string name="productdetail_review_message_lastitem">No More Reviews</string>
 
     <string name="productdetail_button_bag">ADD TO BAG</string>
     <string name="productdetail_button_buy">Buy Now</string>
@@ -358,7 +360,7 @@
     <string name="productdetail_option_type_size">SIZE</string>
     <string name="productdetail_option_type_custom">CUSTOM</string>
 
-    <string name="productdetail_qna_title">product inquiries</string>
+    <string name="productdetail_qna_title">Product Inquiries</string>
     <string name="productdetail_qna_mine">View my inquiries only</string>
     <string name="productdetail_qna_description">Please write inquiry if you have any questions about the item.\nPlease click \'Contact Seller\' if you have any other questions.</string>
     <string name="productdetail_qna_report">신고</string>
@@ -371,7 +373,7 @@
     <string name="productdetail_qna_message_empty">There is no product inquiry yet.</string>
     <string name="productdetail_qna_button_contactforproduct">Write Inquiry</string>
     <string name="productdetail_qna_button_contactwithseller">Contact Seller</string>
-    <string name="productdetail_qna_button_moreclaim">See 5 more inquiries +</string>
+    <string name="productdetail_qna_button_moreclaim">See 5 more inquiries</string>
 
     <string name="productdetail_review_close">close</string>
     <string name="productdetail_review_all">All reviews</string>
@@ -379,7 +381,7 @@
     <string name="productdetail_review_size">Size</string>
     <string name="productdetail_review_reply">cComments</string>
     <string name="productdetail_review_title">Reviews</string>
-    <string name="productdetail_review_button_morereview">See 5 more reviews +</string>
+    <string name="productdetail_review_button_morereview">See 5 more reviews</string>
 
     <string name="productdetail_review_like">It was helpful</string>
     <string name="productdetail_review_height">Heights:</string>
@@ -392,16 +394,19 @@
     <string name="productdetail_message_selectoption">Please select one of the options</string>
 
     <!-- CLAIM -->
-    <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
-    <string name="claim_write_private">비공개글 설정</string>
-    <string name="claim_write_description1">문의하신 내용에 대한 답변은 해당 상품의 상세페이지 또는</string>
-    <string name="claim_write_description2">마이페이지 &gt; 상품문의</string>
-    <string name="claim_write_description3">에서 확인하실 수 있습니다.</string>
-    <string name="claim_write_button_cancel">취소</string>
-    <string name="claim_write_button_submit">등록</string>
-    <string name="claim_write_empty">There is no product inquiry yet.</string>
+    <string name="claim_write_hint">Enter the inquiry content</string>
+    <string name="claim_write_private">private</string>
+    <string name="claim_write_description1">Answers to inquiries can be found </string>
+    <string name="claim_write_description2">on the product page or on the My Page</string>
+    <string name="claim_write_description3"></string>
+    <string name="claim_write_button_cancel">Cancel</string>
+    <string name="claim_write_button_submit">Confirm</string>
+    <string name="claim_write_empty">There is no product inquiry yet</string>
+    <string name="claim_write_message_empty">Inquiry content is empty</string>
+    <string name="claim_message_lastitem">No More Inquiries</string>
 
     <!-- PAYMENT -->
+    <string name="payment_title_header">Order payment</string>
     <string name="payment_title_product">Placed Order</string>
     <string name="payment_title_buyer">Your information</string>
     <string name="payment_title_shipping">Shipping address</string>
@@ -430,10 +435,10 @@
     <string name="payment_text_transfer">무통장 입금</string>
     <string name="payment_text_terms">I agree to GUHADA’s privacy notice and conditions of use.</string>
 
-    <string name="payment_text_defaultshippingaddress">배송지를 선택해 주세요</string>
-    <string name="payment_text_emptyshippingaddress">등록된 배송지가 없습니다.</string>
+    <string name="payment_text_defaultshippingaddress">Please select a shipping address</string>
+    <string name="payment_text_emptyshippingaddress">No registered shipping address</string>
     <string name="payment_hint_shippingmemo">Please select your shipping note</string>
-    <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
+    <string name="payment_hint_textshippingmemo">Please enter 50 characters or less</string>
     <string name="payment_hint_coupon">Please select available coupons</string>
 
     <string name="payment_text_changedestination">Change shipping address</string>
@@ -441,11 +446,13 @@
     <string name="payment_button_autocoupon">Apply</string>
     <string name="payment_button_allpoint">Use All</string>
 
+    <string name="payment_message_cancel">Payment canceled</string>
+
     <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
     <string name="shippingmemo_security">경비실에 맡겨주세요.</string>
     <string name="shippingmemo_call_if_absent">부재시 휴대폰으로 연락바랍니다.</string>
     <string name="shippingmemo_postbox">택배함에 넣어주세요</string>
-    <string name="shippingmemo_self">배송 메세지를 입력해주세요.</string>
+    <string name="shippingmemo_self">Please enter your shipping message</string>
     <string name="shippingmemo_put_door">문 앞에 놓아주세요.</string>
 
     <string name="paymentresult_title1">님의 주문이</string>
@@ -473,6 +480,11 @@
 
     <string name="paymentreuslt_button_bag">장바구니</string>
     <string name="paymentreuslt_button_continue">쇼핑 계속하기</string>
+    
+    <string name="payment_message_maxusagepoint1">The maximum usable point is</string>
+    <string name="payment_message_maxusagepoint2">P</string>
+    <string name="payment_message_selectpaymentway">Please select a payment method</string>
+    <string name="payment_message_confirmtemrs">Please agree to the terms and conditions</string>
 
     <!-- SHIPPING ADDRESS -->
     <string name="shippingaddress_list">배송지 목록</string>

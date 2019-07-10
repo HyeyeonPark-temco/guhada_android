@@ -68,7 +68,6 @@
                     app:textBold="@{viewModel.selectedTab == 0}" />
 
                 <View
-
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:background="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />

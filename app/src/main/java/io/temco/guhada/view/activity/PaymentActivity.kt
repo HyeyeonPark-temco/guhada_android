@@ -112,7 +112,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
 
         if (::mViewModel.isInitialized) {
-            mBinding.includePaymentHeader.title = "주문 결제"
+            mBinding.includePaymentHeader.title = BaseApplication.getInstance().getString(R.string.payment_title_header)
             mBinding.includePaymentHeader.setOnClickBackButton {
                 setResult(Activity.RESULT_CANCELED)
                 this.finish()
@@ -212,7 +212,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                         mViewModel.setOrderApproval()
                     }
                 } else {
-                    ToastUtil.showMessage("결제가 취소되었습니다.")
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_cancel))
                 }
             }
             Flag.RequestCode.SHIPPING_ADDRESS -> {

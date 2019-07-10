@@ -4,6 +4,8 @@ import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
@@ -36,8 +38,9 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
             val model = o as BaseModel<*>
             if (model.resultCode == Flag.ResultCode.DATA_NOT_FOUND) {
                 if (this.claimResponse.content.isNotEmpty() && this.claimResponse.last) {
-                    listener.showMessage("마지막 항목입니다.")
+                    listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
                 }
+                notifyPropertyChanged(BR.claimResponse)
                 emptyVisibility = ObservableInt(View.VISIBLE)
                 notifyPropertyChanged(BR.emptyVisibility)
             } else {
@@ -73,7 +76,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
                 ClaimServer.getClaimsForGuest(getClaimListener, productId = productId, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
             }
         } else {
-            listener.showMessage("마지막 항목입니다.")
+            listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
         }
     }
 

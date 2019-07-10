@@ -166,10 +166,10 @@
                 android:visibility="@{viewModel.emptyVisibility}" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:overScrollMode="never"
                 android:id="@+id/recyclerview_productdetail_claim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 android:visibility="@{viewModel.emptyVisibility == View.GONE ? View.VISIBLE : View.GONE}"
                 app:productClaims="@{viewModel.claimResponse.content}" />
         </FrameLayout>
@@ -182,7 +182,7 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/border_all_whitethree"
             android:onClick="@{()->viewModel.onClickMoreClaim(5)}"
-            android:visibility="@{viewModel.emptyVisibility == View.GONE ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewModel.emptyVisibility == View.VISIBLE || viewModel.claimResponse.last ? View.GONE : View.VISIBLE}">
 
             <LinearLayout
                 android:layout_width="wrap_content"

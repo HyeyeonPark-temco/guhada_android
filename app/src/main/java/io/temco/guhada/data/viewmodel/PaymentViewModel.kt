@@ -51,7 +51,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             field = value
             field.optionMap["COLOR"].let { if (it != null) optionStr += "${it.name}, " }
             field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
-            optionStr += "${field.totalCount}개"
+            optionStr += "${field.totalCount} ${BaseApplication.getInstance().getString(R.string.common_unit_product)}"
 
             callWithToken { accessToken ->
                 Log.e("AccessToken", accessToken)
@@ -68,7 +68,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var usedPointNumber: Long = 0
         set(value) {
             field = if (value > holdingPoint) {
-                listener.showMessage("최대 사용 가능 포인트는 $holdingPoint P 입니다")
+                listener.showMessage("${BaseApplication.getInstance().getString(R.string.payment_message_maxusagepoint1)} $holdingPoint ${BaseApplication.getInstance().getString(R.string.payment_message_maxusagepoint2)}")
                 holdingPoint
             } else {
                 value
@@ -110,7 +110,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() {
             return if (order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress}${order.shippingAddress?.detailAddress}"
-            else "등록된 배송지가 없습니다"
+            else BaseApplication.getInstance().getString(R.string.payment_text_emptyshippingaddress)
         }
 
     var termsChecked = false
@@ -179,8 +179,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         },
                         failedTask = {
                             listener.showMessage(if (it.message == null) it.data.toString() else it.message)
+                            listener.hideLoadingIndicator()
                         })
-                listener.hideLoadingIndicator()
+
             }, accessToken, pgAuth)
         }
     }
@@ -189,8 +190,13 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         callWithToken { accessToken ->
             OrderServer.setOrderCompleted(OnServerListener { success, o ->
                 executeByResultCode(success, o,
-                        successTask = { this.purchaseOrderResponse.postValue(it.data as PurchaseOrderResponse) },
-                        failedTask = { listener.showMessage(it.message) })
+                        successTask = {
+                            this.purchaseOrderResponse.postValue(it.data as PurchaseOrderResponse)
+                        },
+                        failedTask = {
+                            listener.showMessage(it.message)
+                        })
+                listener.hideLoadingIndicator()
             }, accessToken, purchaseId)
         }
     }
@@ -243,7 +249,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     fun onClickPay() {
         val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress)
         if (selectedShippingMessage.get()?.equals(defaultShippingMessage) ?: true || shippingMessage.isEmpty()) {
-            listener.showMessage("배송 메세지를 선택해주세요")
+            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
             return
         }
 
@@ -256,11 +262,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             if (selectedMethod.methodCode.isNotEmpty()) {
                 if (selectedMethod.methodCode == "TOKEN") {
-                    listener.showMessage("준비중입니다.")
+                    listener.showMessage(BaseApplication.getInstance().getString(R.string.common_message_ing))
                 } else {
                     if (this.user.get() != null) {
                         if (this@PaymentViewModel.selectedShippingAddress == null) {
-                            listener.showMessage("배송지를 선택해주세요.")
+                            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
                             this@PaymentViewModel.selectedShippingAddress?.shippingMessage = if (shippingMessage.isEmpty()) selectedShippingMessage.get()?.message
                                     ?: ""
@@ -280,10 +286,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     }
                 }
             } else {
-                listener.showMessage("결제 수단을 선택해주세요.")
+                listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_selectpaymentway))
             }
         } else {
-            listener.showMessage("이용 약관에 동의해주세요.")
+            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
         }
     }
 

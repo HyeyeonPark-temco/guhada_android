@@ -4,6 +4,8 @@ import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.data.model.ReviewResponse
 import io.temco.guhada.data.model.ReviewSummary
@@ -47,7 +49,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 
     fun getProductReview(page: Int, size: Int) {
         if (reviewResponse.last) {
-            listener.showMessage("마지막 항목입니다.")
+            listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_review_message_lastitem))
         } else {
             UserServer.getProductReview(OnServerListener { success, o ->
                 if (success) {

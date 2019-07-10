@@ -7,6 +7,13 @@ class ReviewResponseContent {
     var productOption: ProductOption = ProductOption()
     var userSize: String? = ""    // 확인 필요
     var likesUserIds: Array<Long>? = arrayOf()
+    var reviewTexts: ReviewSatisfactionText = ReviewSatisfactionText()
 
-    fun getLikeCount() = if(likesUserIds == null) "0" else likesUserIds?.size.toString()
+    fun getLikeCount() = if (likesUserIds == null) "0" else likesUserIds?.size.toString()
+
+    class ReviewSatisfactionText {
+        var size = ""
+        var color = ""
+        var length = ""
+    }
 }

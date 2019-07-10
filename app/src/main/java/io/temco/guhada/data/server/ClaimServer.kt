@@ -20,10 +20,8 @@ open class ClaimServer {
     companion object {
         @JvmStatic
         fun getClaims(listener: OnServerListener, productId: Long, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
-//          c
-
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaims(productId = productId, isMyInquiry = isMyInquiry,
-                    pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}").enqueue( object : Callback<BaseModel<ClaimResponse>> {
+                    pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}").enqueue(object : Callback<BaseModel<ClaimResponse>> {
                 override fun onResponse(call: Call<BaseModel<ClaimResponse>>, response: Response<BaseModel<ClaimResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }
@@ -32,8 +30,6 @@ open class ClaimServer {
 //                    listener.onResult(false, t.message)
                 }
             })
-
-
         }
 
         @JvmStatic

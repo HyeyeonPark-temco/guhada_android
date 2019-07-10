@@ -1,7 +1,8 @@
 package io.temco.guhada.data.viewmodel
 
-import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
+import android.app.backup.BackupAgent
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag.ResultCode.NEED_TO_LOGIN
@@ -19,7 +20,7 @@ class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener)
     val inquiry: InquiryRequest = InquiryRequest()
 
     fun onClickBack() {
-        listener.closeActivity(Activity.RESULT_CANCELED)
+        listener.closeActivity(RESULT_CANCELED)
     }
 
     fun onCheckedPrivate(checked: Boolean) {
@@ -27,24 +28,28 @@ class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener)
     }
 
     fun onClickSubmit() {
-        ClaimServer.saveClaim(OnServerListener { success, o ->
-            if (success) {
-                val model = o as BaseModel<ClaimResponse.Claim>
-                when (model.resultCode) {
-                    SUCCESS -> {
-                        // 문의 리스트 REFRESH
-                        val claim = model.data as ClaimResponse.Claim
-                        listener.showMessage("[${claim.id}] 문의가 등록되었습니다.")
-                        listener.closeActivity(RESULT_OK)
+        if(inquiry.content.isEmpty()){
+            listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_write_message_empty))
+        }else {
+            ClaimServer.saveClaim(OnServerListener { success, o ->
+                if (success) {
+                    val model = o as BaseModel<ClaimResponse.Claim>
+                    when (model.resultCode) {
+                        SUCCESS -> {
+                            // 문의 리스트 REFRESH
+                            val claim = model.data as ClaimResponse.Claim
+                            listener.showMessage("[${claim.id}] 문의가 등록되었습니다.")
+                            listener.closeActivity(RESULT_OK)
+                        }
+                        NEED_TO_LOGIN -> {
+                            listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                        }
                     }
-                    NEED_TO_LOGIN -> {
-                        listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-                    }
+                } else {
+                    // 임시 메세지
+                    listener.showMessage(o?.toString() ?: "오류")
                 }
-            } else {
-                // 임시 메세지
-                listener.showMessage(o?.toString() ?: "오류")
-            }
-        }, inquiry)
+            }, inquiry)
+        }
     }
 }

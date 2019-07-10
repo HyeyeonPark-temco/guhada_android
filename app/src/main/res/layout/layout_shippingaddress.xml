@@ -26,7 +26,7 @@
             app:hint="@string/editshippingaddress_hint_addressname"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_editshippingaddress_line"
+            app:layout_constraintTop_toTopOf="parent"
             app:txt="@={shippingAddress.shippingName}" />
 
         <io.temco.guhada.view.custom.BorderEditTextView

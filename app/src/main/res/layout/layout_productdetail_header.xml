@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -147,16 +146,31 @@
                 android:layout_marginEnd="20dp">
 
                 <TextView
-                    android:id="@+id/textView11"
                     style="@style/TextBold"
+                    android:id="@+id/textview_productdetail_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/common_unit_krw"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_18"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/textView11"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    style="@style/TextBold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
                     android:text="@{@string/common_price_format(viewModel.product.discountPrice)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_22"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_productdetail_unit"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
                 <!--android:text="@{String.valueOf(viewModel.product.discountPrice)}"-->
 

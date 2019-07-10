@@ -216,7 +216,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
             switch (requestCode) {
                 case Flag.RequestCode.WRITE_CLAIM:
-                    ToastUtil.showMessage(getResources().getString(R.string.common_message_error));
+                 //   ToastUtil.showMessage(getResources().getString(R.string.common_message_error));
                     break;
             }
         }
