@@ -84,10 +84,7 @@ public class HomeFragment extends BaseFragment<FragmentMainHomeBinding> implemen
         }
         // Tab
         // Dummy
-        String[] titles = {
-                "홈",
-                "여성", "남성", "키즈",
-                "신상품", "파워딜", "타임딜", "한정특가"};
+        String[] titles = getResources().getStringArray(R.array.main_titles);
         for (String t : titles) {
             addCustomTabs(t, false);
         }
