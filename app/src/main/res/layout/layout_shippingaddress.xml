@@ -3,12 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="shippingAddress"
             type="io.temco.guhada.data.model.UserShipping" />
+
         <variable
             name="onClickZipListener"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="onClickDefaultListener"
             type="android.view.View.OnClickListener" />
@@ -43,7 +46,6 @@
             app:txt="@={shippingAddress.zip}" />
 
         <Button
-            android:onClick="@{onClickZipListener}"
             android:id="@+id/button_editshippingaddress_zip"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
@@ -51,6 +53,7 @@
             android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/border_all_whitethree"
+            android:onClick="@{onClickZipListener}"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:text="@string/editshippingaddress_button_zip"
@@ -65,11 +68,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:readonly="true"
             app:hint="@string/editshippingaddress_hint_address"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_zip"
+            app:readonly="true"
             app:txt="@={shippingAddress.address}" />
 
         <io.temco.guhada.view.custom.BorderEditTextView
@@ -122,10 +125,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="12dp"
+            android:onClick="@{onClickDefaultListener}"
             android:text="@string/editshippingaddress_set_default"
             android:textColor="@color/greyish_brown_two"
             android:textSize="@dimen/text_14"
-            android:onClick="@{onClickDefaultListener}"
             app:layout_constraintLeft_toRightOf="@+id/checkbox_editshippingaddress_default"
             app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_recipientmobile" />
     </androidx.constraintlayout.widget.ConstraintLayout>

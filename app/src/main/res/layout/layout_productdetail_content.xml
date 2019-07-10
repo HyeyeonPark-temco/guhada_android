@@ -18,7 +18,6 @@
         android:background="@color/common_white"
         android:orientation="vertical">
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -48,80 +47,106 @@
                     android:background="@color/white_four" />
             </LinearLayout>
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                style="@style/TabLayoutPurpleIndicatorStyle"
+                android:id="@+id/tablayout_productdetail"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_height="50dp">
 
-                <Button
-                    style="@style/TextMedium"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/common_white"
-                    android:onClick="@{(view)->viewModel.onClickTab(view)}"
-                    android:tag="0"
-                    android:text="@string/productdetail_button_detail"
-                    android:textColor="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"
-                    android:textSize="@dimen/text_15"
-                    app:textBold="@{viewModel.selectedTab == 0}" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/productdetail_button_detail" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />
-            </LinearLayout>
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/productdetail_button_qna" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/productdetail_button_store" />
+            </com.google.android.material.tabs.TabLayout>
 
-                <Button
-                    style="@style/TextMedium"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/common_white"
-                    android:onClick="@{(view)->viewModel.onClickTab(view)}"
-                    android:tag="1"
-                    android:text="@string/productdetail_button_qna"
-                    android:textColor="@{viewModel.selectedTab == 1 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"
-                    android:textSize="@dimen/text_15"
-                    app:textBold="@{viewModel.selectedTab == 1}" />
+            <!--<LinearLayout-->
+                <!--android:visibility="gone"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical">-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@{viewModel.selectedTab == 1 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />
-            </LinearLayout>
+                <!--<Button-->
+                    <!--style="@style/TextMedium"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@color/common_white"-->
+                    <!--android:onClick="@{(view)->viewModel.onClickTab(view)}"-->
+                    <!--android:tag="0"-->
+                    <!--android:text="@string/productdetail_button_detail"-->
+                    <!--android:textColor="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"-->
+                    <!--android:textSize="@dimen/text_15"-->
+                    <!--app:textBold="@{viewModel.selectedTab == 0}" />-->
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="3dp"-->
+                    <!--android:background="@{viewModel.selectedTab == 0 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />-->
+            <!--</LinearLayout>-->
 
-                <Button
-                    style="@style/TextMedium"
-                    android:layout_width="match_parent"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:background="@color/common_white"
-                    android:onClick="@{(view)->viewModel.onClickTab(view)}"
-                    android:tag="2"
-                    android:text="@string/productdetail_button_store"
-                    android:textColor="@{viewModel.selectedTab == 2 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"
-                    android:textSize="@dimen/text_15"
-                    app:textBold="@{viewModel.selectedTab == 2}" />
+            <!--<LinearLayout-->
+                <!--android:visibility="gone"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical">-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@{viewModel.selectedTab == 2 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />
-            </LinearLayout>
+                <!--<Button-->
+                    <!--style="@style/TextMedium"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@color/common_white"-->
+                    <!--android:onClick="@{(view)->viewModel.onClickTab(view)}"-->
+                    <!--android:tag="1"-->
+                    <!--android:text="@string/productdetail_button_qna"-->
+                    <!--android:textColor="@{viewModel.selectedTab == 1 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"-->
+                    <!--android:textSize="@dimen/text_15"-->
+                    <!--app:textBold="@{viewModel.selectedTab == 1}" />-->
+
+                <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="3dp"-->
+                    <!--android:background="@{viewModel.selectedTab == 1 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />-->
+            <!--</LinearLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:visibility="gone"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<Button-->
+                    <!--style="@style/TextMedium"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@color/common_white"-->
+                    <!--android:onClick="@{(view)->viewModel.onClickTab(view)}"-->
+                    <!--android:tag="2"-->
+                    <!--android:text="@string/productdetail_button_store"-->
+                    <!--android:textColor="@{viewModel.selectedTab == 2 ? @color/colorPrimary : @color/black_four, default = @color/black_four }"-->
+                    <!--android:textSize="@dimen/text_15"-->
+                    <!--app:textBold="@{viewModel.selectedTab == 2}" />-->
+
+                <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="3dp"-->
+                    <!--android:background="@{viewModel.selectedTab == 2 ? @color/colorPrimary : @color/white_four, default = @color/white_four}" />-->
+            <!--</LinearLayout>-->
 
 
             <LinearLayout

@@ -132,6 +132,12 @@
         <item name="tabIndicatorHeight">0dp</item>
     </style>
 
+    <style name="TabLayoutPurpleIndicatorStyle" parent="android:Widget">
+        <item name="tabBackground">@drawable/selector_tab_purpleindicator</item>
+        <item name="tabIndicatorColor">@android:color/transparent</item>
+        <item name="tabIndicatorHeight">0dp</item>
+    </style>
+
     <style name="HeaderTextStyle">
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/black_four</item>

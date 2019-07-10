@@ -36,7 +36,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 this.reviewSummary = model.data as ReviewSummary
                 notifyPropertyChanged(BR.reviewSummary)
 
-                if (::listener.isInitialized) listener.notifySummary(reviewSummary.averageReviewsRating)
+                if (::listener.isInitialized)
+                    listener.notifySummary(reviewSummary.averageReviewsRating)
             } else {
                 if (o != null) {
                     listener.showMessage(o as String)
@@ -44,6 +45,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                     listener.showMessage("PRODUCT REVIEW SUMMARY ERROR")
                 }
             }
+
+            if (::listener.isInitialized) listener.hideLoadingIndicator()
         }, productId)
     }
 
@@ -74,7 +77,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 //                    }
                 }
 
-                if (::listener.isInitialized) listener.hideLoadingIndicator()
+                if (::listener.isInitialized)
+                    listener.hideLoadingIndicator()
             }, productId, page, size)
         }
     }

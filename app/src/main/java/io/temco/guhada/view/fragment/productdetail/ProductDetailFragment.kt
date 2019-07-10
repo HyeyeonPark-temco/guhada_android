@@ -10,6 +10,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
@@ -56,6 +57,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun init() {
         initUtils()
         initViewModel()
+        initTabListener()
         setDetectScrollView()
 
         mBinding.includeProductdetailHeader.viewModel = mViewModel
@@ -98,6 +100,20 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 mViewModel.getDetail()
             }
         }
+    }
+
+    private fun initTabListener() {
+        mBinding.includeProductdetailContentbody.tablayoutProductdetail.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                this@ProductDetailFragment.scrollToElement(tab?.position ?: 0)
+            }
+        })
     }
 
     private fun initSummary() {
