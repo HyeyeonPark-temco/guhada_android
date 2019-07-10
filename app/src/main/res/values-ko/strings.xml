@@ -23,6 +23,7 @@
     <string name="common_confirm">확인</string>
     <string name="common_cancel">취소</string>
     <string name="common_check">조회</string>
+    <string name="common_remaining">보유</string>
 
     <string name="common_top">TOP</string>
     <string name="common_category">카테고리</string>
@@ -58,6 +59,7 @@
 
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
+
 
     <!-- ORDER SHIPPING -->
     <string name="order_shipping_deposit_confirm">입금확인</string>
@@ -158,6 +160,7 @@
     <string name="login_message_invalidinfo">아이디 또는 비밀번호가 일치하지 않습니다.</string>
     <string name="login_message_notequalpwd">비밀번호가 일치하지 않습니다.</string>
     <string name="login_message_existemail">해당 아이디(이메일)가 이미 존재합니다.</string>
+    <string name="login_message_requiredlogin">로그인이 필요한 서비스입니다.</string>
 
     <!-- JOIN -->
     <string name="join_agreeall">전체동의</string>
@@ -387,6 +390,7 @@
     <string name="productdetail_review_graphcolor">컬러</string>
     <string name="productdetail_review_graphlength">길이감</string>
     <string name="productdetail_notifies_empty">등록된 상품고시정보가 없습니다.</string>
+    <string name="productdetail_message_selectoption">옵션을 선택해주세요.</string>
 
     <!-- CLAIM -->
     <string name="claim_write_hint">문의하실 내용을 입력하세요</string>

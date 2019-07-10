@@ -1,6 +1,7 @@
 package io.temco.guhada.data.server
 
 import android.widget.Toast
+import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
@@ -54,7 +55,7 @@ open class ClaimServer {
             val accessToken = Preferences.getToken()?.accessToken
             if (accessToken.isNullOrBlank()) {
                 // 로그인 팝업 노출
-                Toast.makeText(BaseApplication.getInstance().applicationContext, "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
             } else {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<ClaimResponse.Claim>> {
                     override fun onResponse(call: Call<BaseModel<ClaimResponse.Claim>>, response: Response<BaseModel<ClaimResponse.Claim>>) {

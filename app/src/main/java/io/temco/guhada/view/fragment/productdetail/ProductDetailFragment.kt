@@ -339,7 +339,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
             }
 
         } else {
-            ToastUtil.showMessage("옵션을 선택해주세요.")
+            ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
         }
     }
 

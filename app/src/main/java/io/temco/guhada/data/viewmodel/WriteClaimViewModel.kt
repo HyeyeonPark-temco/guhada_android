@@ -2,6 +2,8 @@ package io.temco.guhada.data.viewmodel
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag.ResultCode.NEED_TO_LOGIN
 import io.temco.guhada.common.Flag.ResultCode.SUCCESS
 import io.temco.guhada.common.listener.OnServerListener
@@ -36,7 +38,7 @@ class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener)
                         listener.closeActivity(RESULT_OK)
                     }
                     NEED_TO_LOGIN -> {
-                        listener.showMessage("로그인이 필요한 서비스입니다.")
+                        listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
                     }
                 }
             } else {

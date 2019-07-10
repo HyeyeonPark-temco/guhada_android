@@ -5,6 +5,8 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -90,7 +92,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
     fun onClickMinus() = changeProductCount { (productCount.get() - 1).let { count -> if (count > 0) changeTotalPrice(count) } }
 
     private fun changeProductCount(task: () -> Unit) {
-        if (optionMap.keys.size != product.options?.size) listener.showMessage("옵션을 선택해주세요.")
+        if (optionMap.keys.size != product.options?.size) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
         else task()
     }
 

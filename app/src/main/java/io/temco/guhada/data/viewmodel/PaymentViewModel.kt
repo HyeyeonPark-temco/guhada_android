@@ -42,7 +42,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress) }) // 스피너 표시 메세지
         @Bindable
         get() = field
-    var selectedDiscountCoupon = ObservableField<String>("적용 가능한 쿠폰을 선택해 주세요.")
+    var selectedDiscountCoupon = ObservableField<String>(BaseApplication.getInstance().getString(R.string.payment_hint_coupon))
         @Bindable
         get() = field
 
@@ -164,7 +164,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 task("Bearer ${token.accessToken}")
             } else {
                 listener.redirectLoginActivity()
-                listener.showMessage("로그인이 필요한 서비스입니다.")
+                listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             }
         }
     }

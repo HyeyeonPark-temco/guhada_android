@@ -3,6 +3,8 @@ package io.temco.guhada.data.viewmodel
 import android.app.Activity
 import androidx.databinding.Bindable
 import com.auth0.android.jwt.JWT
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnEditShippingAddressListener
 import io.temco.guhada.common.listener.OnServerListener
@@ -40,7 +42,7 @@ class EditShippingAddressViewModel(val mListener: OnEditShippingAddressListener)
                         successTask = { mListener.closeActivity(Activity.RESULT_OK, true) })
             }, userId, shippingAddress.id, shippingAddress)
         } else {
-            ToastUtil.showMessage("로그인이 필요한 서비스입니다.")
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             mListener.closeActivity(Activity.RESULT_CANCELED, false)
         }
     }

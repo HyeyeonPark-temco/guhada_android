@@ -87,7 +87,7 @@
                     android:layout_marginStart="2dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="44반"
+                    android:text="44"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_12" />
 
@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
-                android:text="체리/85"
+                android:text="red/85"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_12"
                 app:layout_constraintBottom_toBottomOf="parent"

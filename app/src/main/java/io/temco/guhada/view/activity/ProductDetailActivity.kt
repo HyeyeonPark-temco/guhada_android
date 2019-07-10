@@ -308,7 +308,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
 
         } else {
-            Toast.makeText(this@ProductDetailActivity, "옵션을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ProductDetailActivity, resources.getString(R.string.productdetail_message_selectoption), Toast.LENGTH_SHORT).show()
         }
     }
 

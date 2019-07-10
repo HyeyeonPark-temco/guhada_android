@@ -21,9 +21,10 @@
     <string name="app_logo_sub_title">쇼핑의 즐거움을 구하다</string>
     <string name="app_copyright">Ⓒ 2019 GUHADA</string>
 
-    <string name="common_confirm">확인</string>
-    <string name="common_cancel">취소</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_cancel">Cancel</string>
     <string name="common_check">Search</string>
+    <string name="common_remaining">Remaining</string>
 
     <string name="common_top">TOP</string>
     <string name="common_category">Category</string>
@@ -32,7 +33,7 @@
     <string name="common_my_page">My Page</string>
     <string name="common_community">Community</string>
 
-    <string name="common_show">보기</string>
+    <string name="common_show">show</string>
     <string name="common_max">Maximum</string>
     <string name="common_price_format">%,2d</string>
 
@@ -55,7 +56,7 @@
 
     <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
-    <string name="common_message_ing">준비중입니다.</string>
+    <string name="common_message_ing">Under Development</string>
 
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
@@ -117,13 +118,13 @@
     <string name="category_all">All</string>
 
     <!-- PRODUCT -->
-    <string name="product_order_title">상품정렬</string>
-    <string name="product_order_new_product">신상품순</string>
-    <string name="product_order_marks">평점순</string>
-    <string name="product_order_low_price">낮은가격순</string>
-    <string name="product_order_high_price">높은가격순</string>
+    <string name="product_order_title">Product Arrangement</string>
+    <string name="product_order_new_product">By Recent</string>
+    <string name="product_order_marks">By rating: high to Low</string>
+    <string name="product_order_low_price">By Price: High to Low</string>
+    <string name="product_order_high_price">By Price: Low to High</string>
 
-    <string name="product_search_detail_title">상세검색</string>
+    <string name="product_search_detail_title">Advanced Search</string>
     <string name="product_price">\%s</string>
     <string name="product_price_sale_per">%d%%</string>
     <string name="product_ship_free">Free shipping</string>
@@ -153,12 +154,13 @@
     <string name="login_button_saveid">Remember me</string>
     <string name="login_button_guestorder">Non-member Order Inquiry</string>
 
-    <string name="login_message_wrongidformat">아이디 형태가 올바르지 않습니다.</string>
-    <string name="login_message_wrongpwdformat">비밀번호는 영문과 숫자 그리고 특수문자로만 구성이 가능합니다.</string>
-    <string name="login_message_wrondpwdlength">비밀번호는 8자에서 15자 사이에서만 생성할 수 있습니다.</string>
+    <string name="login_message_wrongidformat">Id form is invalid</string>
+    <string name="login_message_wrongpwdformat">Passwords can only consist of alphanumeric characters and special characters</string>
+    <string name="login_message_wrondpwdlength">Passwords can only be generated between 8 and 15 characters</string>
     <string name="login_message_invalidinfo">Incorrect email address or password</string>
-    <string name="login_message_notequalpwd">비밀번호가 일치하지 않습니다.</string>
-    <string name="login_message_existemail">해당 아이디(이메일)가 이미 존재합니다.</string>
+    <string name="login_message_notequalpwd">Incorrect password</string>
+    <string name="login_message_existemail">This Id(email) already exists</string>
+    <string name="login_message_requiredlogin">Login Required</string>
 
     <!-- JOIN -->
     <string name="join_agreeall">전체동의</string>
@@ -347,7 +349,7 @@
     <string name="productdetail_shipping_seller_content1">Business Name</string>
     <string name="productdetail_shipping_seller_content2">Representative</string>
     <string name="productdetail_shipping_seller_content3">Company registration number</string>
-    <string name="productdetail_shipping_seller_content4">통신판매업번호</string>
+    <string name="productdetail_shipping_seller_content4">Registered number for business through telecommunications</string>
     <string name="productdetail_shipping_seller_content5">Business address</string>
     <string name="productdetail_shipping_seller_content6">Customer service</string>
     <string name="productdetail_shipping_notifies_title">Product information</string>
@@ -387,6 +389,7 @@
     <string name="productdetail_review_graphcolor">Color</string>
     <string name="productdetail_review_graphlength">Length</string>
     <string name="productdetail_notifies_empty">No registered product information</string>
+    <string name="productdetail_message_selectoption">Please select one of the options</string>
 
     <!-- CLAIM -->
     <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
@@ -407,19 +410,19 @@
     <string name="payment_title_point">Point</string>
     <string name="payment_title_paymentway">Payment methods</string>
 
-    <string name="payment_text_freeshipping">무료배송</string>
+    <string name="payment_text_freeshipping">Free shipping</string>
     <string name="payment_text_verify">Identity verification</string>
     <string name="payment_text_required">[Required]</string>
     <string name="payment_text_totalorderprice">Total</string>
     <string name="payment_text_totaldiscount">Discount</string>
     <string name="payment_text_totalpayprice">Your total</string>
-    <string name="payment_text_discountcoupon">쿠폰 할인</string>
-    <string name="payment_text_discountproduct">상품 할인</string>
-    <string name="payment_text_discountpoint">포인트 사용</string>
+    <string name="payment_text_discountcoupon">Coupon Discount</string>
+    <string name="payment_text_discountproduct">Product Discount</string>
+    <string name="payment_text_discountpoint">Points Used</string>
     <string name="payment_text_expectedpoint">You will earn</string>
-    <string name="payment_text_fixbuy">구매 확정</string>
-    <string name="payment_text_textreview">텍스트 리뷰</string>
-    <string name="payment_text_photoreview">포토 리뷰</string>
+    <string name="payment_text_fixbuy">Purchase Confirmation Points</string>
+    <string name="payment_text_textreview">Text Review Points</string>
+    <string name="payment_text_photoreview">Photo Review Points</string>
 
     <string name="payment_text_card">신용/체크카드</string>
     <string name="payment_text_mobile">휴대폰 결제</string>
@@ -433,10 +436,10 @@
     <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
     <string name="payment_hint_coupon">Please select available coupons</string>
 
-    <string name="payment_text_changedestination">배송지 변경</string>
+    <string name="payment_text_changedestination">Change shipping address</string>
     <string name="payment_button_submit">Place your order</string>
     <string name="payment_button_autocoupon">Apply</string>
-    <string name="payment_button_allpoint">User All</string>
+    <string name="payment_button_allpoint">Use All</string>
 
     <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
     <string name="shippingmemo_security">경비실에 맡겨주세요.</string>

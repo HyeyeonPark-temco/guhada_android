@@ -31,8 +31,11 @@ public class Deal {
     @SerializedName("imageName")
     public String imageName;
 
-    @SerializedName("imageUrl")
-    public String imageUrl;
+//    @SerializedName("imageUrl")
+//    public String imageUrl;
+
+    @SerializedName("productImage")
+    public Image productImage;
 
     @SerializedName("dealId")
     public int dealId;

@@ -1,5 +1,6 @@
 package io.temco.guhada.view.holder.product;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 
@@ -29,11 +30,12 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
     // OVERRIDE
     ////////////////////////////////////////////////
 
+    @SuppressLint("StringFormatMatches")
     @Override
     public void init(Context context, RequestManager manager, Deal data) {
         if (data != null) {
             // Thumbnail
-            ImageUtil.loadImage(manager, mBinding.imageThumb, data.imageUrl);
+            ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
 
             // Brand
             mBinding.textBrand.setText(data.brandName);
