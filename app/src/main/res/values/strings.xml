@@ -61,9 +61,9 @@
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
 
     <!-- ORDER SHIPPING -->
-    <string name="order_shipping_deposit_confirm">Payment processed</string>
-    <string name="order_shipping_payment_complete">Payment received</string>
-    <string name="order_shipping_product_authenticate">Evaluating your product</string>
+    <string name="order_shipping_deposit_confirm">Ordered</string>
+    <string name="order_shipping_payment_complete">Paid</string>
+    <string name="order_shipping_product_authenticate">Being evaluated</string>
     <string name="order_shipping_ing">In transit</string>
     <string name="order_shipping_complete">Delivered</string>
 
@@ -80,7 +80,7 @@
     <string name="information_company_number">사업자등록번호: 000-88-00000</string>
     <string name="information_company_address">주소 : 서울특별시 강남구 논현로75길 8 비드빌딩 6층</string>
     <string name="information_company_sales_number">통신판매업자신고 : 제 2009호-서울강남-0000호</string>
-    <string name="information_description">고객님은 안전거래를 위해 결제 시 저희 사이트에서 가입한 구매안전 서비스(채무지급보증)을 이용하실 수 있습니다.</string>
+    <string name="information_description">- GUHADA is committed to your privacy. This privacy notice explains our collection, use, disclosure, retention, and protection of your personal information.</string>
     <string name="information_confirm_company">사업자정보확인</string>
     <string name="information_confirm_service">서비스 가입사실 확인</string>
     <string name="information_copyright_all">COPYRIGHT Ⓒ 2019 GUHADA ALL RIGHTS RESERVED</string>
@@ -272,10 +272,10 @@
 
     <string name="productdetail_option">Product options</string>
     <string name="productdetail_sizeinfo">Size info</string>
-    <string name="productdetail_available">가능</string>
-    <string name="productdetail_disavailable">불가능</string>
+    <string name="productdetail_available">Yes</string>
+    <string name="productdetail_disavailable">No</string>
     <string name="productdetail_quick">퀵서비스</string>
-    <string name="productdetail_notquick">일반배송</string>
+    <string name="productdetail_notquick">Standard shipping</string>
 
     <string name="productdetail_advantageinfo">Benefit</string>
     <string name="productdetail_totalprice">Total Price</string>
@@ -298,18 +298,18 @@
     <string name="productdetail_review_good">Satified</string>
     <string name="productdetail_review_normal">Average</string>
     <string name="productdetail_review_bad">Bad</string>
-    <string name="productdetail_review_empty">작성된 상품 리뷰가 없습니다.</string>
-    <string name="productdetail_review_description1">첫 상품 리뷰를 작성하고 </string>
-    <string name="productdetail_review_description2">최대 2,000점의 포인트 혜택</string>
-    <string name="productdetail_review_description3">을 누려보세요!</string>
-    <string name="productdetail_review_emptybutton">첫 리뷰 작성하기</string>
+    <string name="productdetail_review_empty">There is no product review yet.</string>
+    <string name="productdetail_review_description1">Please be the first one to write review and earn up to </string>
+    <string name="productdetail_review_description2">2,000 points</string>
+    <string name="productdetail_review_description3">!</string>
+    <string name="productdetail_review_emptybutton">Write review</string>
 
     <string name="productdetail_button_bag">ADD TO BAG</string>
     <string name="productdetail_button_buy">Buy Now</string>
     <string name="productdetail_button_detail">Detail</string>
     <string name="productdetail_button_qna"><![CDATA[Q&A]]></string>
     <string name="productdetail_button_follow">Follow</string>
-    <string name="productdetail_button_store">Seller\'s Store</string>
+    <string name="productdetail_button_store">Store</string>
 
     <string name="productdetail_shipping_title">Shipping/Return/Exchange</string>
     <string name="productdetail_shipping_info_title">Shipping</string>
@@ -364,7 +364,7 @@
     <string name="productdetail_qna_reply_completed">Answered</string>
     <string name="productdetail_qna_reply_status_completed">COMPLETED</string>
     <string name="productdetail_qna_reply_status_pending">PENDING</string>
-    <string name="productdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
+    <string name="productdetail_qna_message_empty">There is no product inquiry yet.</string>
     <string name="productdetail_qna_button_contactforproduct">Write Inquiry</string>
     <string name="productdetail_qna_button_contactwithseller">Contact Seller</string>
     <string name="productdetail_qna_button_moreclaim">See 5 more inquiries +</string>
@@ -394,7 +394,7 @@
     <string name="claim_write_description3">에서 확인하실 수 있습니다.</string>
     <string name="claim_write_button_cancel">취소</string>
     <string name="claim_write_button_submit">등록</string>
-    <string name="claim_write_empty">작성된 상품 문의가 없습니다.</string>
+    <string name="claim_write_empty">There is no product inquiry yet.</string>
 
     <!-- PAYMENT -->
     <string name="payment_title_product">주문 상품</string>
@@ -478,10 +478,10 @@
     <string name="shippingaddress_button_delete">삭제</string>
 
     <!-- MY PAGE -->
-    <string name="mypage_order_shipping">주문 배송</string>
-    <string name="mypage_order_number">주문 번호</string>
-    <string name="mypage_order_list">주문 목록</string>
-    <string name="mypage_order_cancel">주문 취소</string>
+    <string name="mypage_order_shipping">Your orders</string>
+    <string name="mypage_order_number">Order #</string>
+    <string name="mypage_order_list">Order list</string>
+    <string name="mypage_order_cancel">Order cancle</string>
     <string name="mypage_order_as">Customer service</string>
     <string name="mypage_order_change_shipping">배송지 변경</string>
     <string name="mypage_order_qna">압구정 날라리에 문의하기</string>
@@ -531,10 +531,10 @@
     </string-array>
 
     <!-- MYPAGE ORDER SHIP -->
-    <string name="mypageordership_deliverystart">mypageordership_deliverystart</string>
-    <string name="mypageordership_deliveryrefund">Proceed with refund</string>
-    <string name="mypageordership_deliverycounterfeit"><![CDATA[I’m sorry. Your product is evaluated as “Counterfeit”]]></string>
-    <string name="mypageordership_deliverygenuine"><![CDATA[Congratulation! Your product is evaluated as “Genuine”]]></string>
+    <string name="mypageordership_deliverystart">Start Shipping</string>
+    <string name="mypageordership_deliveryrefund">Proceed with Refund</string>
+    <string name="mypageordership_deliverycounterfeit"><![CDATA[Your product is evaluated as “Counterfeit”]]></string>
+    <string name="mypageordership_deliverygenuine"><![CDATA[Your product is evaluated as “Genuine”]]></string>
     <string name="mypageordership_deliveryrefundok">환불 신청이 완료되었습니다.</string>
     <string name="mypageordership_deliverydeliveryok">배송 접수가 완료되었습니다.</string>
 
