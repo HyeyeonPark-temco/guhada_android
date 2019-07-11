@@ -17,6 +17,8 @@
     <string name="naver_oauth_client_name">네이버 아이디로 로그인</string>
     <string name="appcenter_release_secret">0cc1eaf2-b5b2-44a2-b9df-adafd5eb16b7</string>
     <string name="appcenter_dev_secret">4a626301-2fa4-4e3b-bdce-25bb4ea8e730</string>
+    <string name="fcm_channel_id">GUHADA</string>
+    <string name="fcm_channel_name">GUHADA</string>
 
     <!-- COMMON -->
     <string name="app_name">Guhada</string>

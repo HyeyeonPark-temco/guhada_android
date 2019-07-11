@@ -19,7 +19,8 @@ ext {
     coroutineVersion = '1.3.0-M1'
     okhttpIntegrationVersion = '4.9.0'
     okhttpVersion = '3.12.0'
-    fcmVersion = '17.0.0'
+    firebaseCoreVersion = '17.0.0'
+    firebaseMessagingVersion = '19.0.0'
     appCenterSdkVersion = '2.1.0'
 
     androidDependencies = [
@@ -46,7 +47,8 @@ ext {
             coroutine            : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutineVersion}",
             okhttp               : "com.squareup.okhttp3:okhttp:${okhttpVersion}",
             okhttpIntegration    : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}",
-            fcm                  : "com.google.firebase:firebase-core:${fcmVersion}",
+            firebaseAnalytics         : "com.google.firebase:firebase-core:${firebaseCoreVersion}",
+            firebaseMessaging         : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
             appCenterAnalytics   : "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}",
             appCenterCrashes     : "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
     ]
