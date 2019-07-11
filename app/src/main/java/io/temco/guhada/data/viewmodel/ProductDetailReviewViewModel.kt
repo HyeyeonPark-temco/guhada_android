@@ -46,7 +46,6 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 }
             }
 
-            if (::listener.isInitialized) listener.hideLoadingIndicator()
         }, productId)
     }
 
@@ -77,8 +76,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 //                    }
                 }
 
-                if (::listener.isInitialized)
-                    listener.hideLoadingIndicator()
+                if (::listener.isInitialized)  listener.hideLoadingIndicator()
             }, productId, page, size)
         }
     }

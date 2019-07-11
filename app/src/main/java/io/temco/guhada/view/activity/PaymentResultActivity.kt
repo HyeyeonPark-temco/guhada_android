@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.Type
 import io.temco.guhada.data.model.PurchaseOrder
 import io.temco.guhada.data.model.PurchaseOrderResponse
@@ -26,6 +27,13 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         initHeader()
 
         mViewModel = PaymentResultViewModel(object : OnPaymentResultListener {
+            override fun redirectMainActivity() {
+                ProductBridge.removeProductDetailFragment()
+                ProductBridge.mainActivity.removeProductFragment()
+                setResult(Activity.RESULT_CANCELED)
+                finish()
+            }
+
             override fun closeActivity() {
                 setResult(Activity.RESULT_CANCELED)
                 finish()
@@ -61,6 +69,7 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
     interface OnPaymentResultListener {
         fun closeActivity()
         fun showMessage(message: String)
+        fun redirectMainActivity()
     }
 
     companion object {

@@ -56,7 +56,8 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
     }
 
     fun onClickContinue() {
-        listener.closeActivity()
+        listener.redirectMainActivity()
+       // listener.closeActivity()
     }
 
     fun onClickPointHistory() {

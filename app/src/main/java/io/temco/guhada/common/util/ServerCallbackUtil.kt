@@ -69,8 +69,9 @@ class ServerCallbackUtil {
         fun executeByResultCode(success: Boolean, o: Any,
                                 successTask: (BaseModel<*>) -> Unit,
                                 failedTask: (BaseModel<*>) -> Unit = {
-                                    CommonUtil.debug(o as String)
-                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                                    CommonUtil.debug("${it.resultCode}: ${it.message}")
+                                    ToastUtil.showMessage(it.message
+                                            ?: BaseApplication.getInstance().getString(R.string.common_message_error))
                                 },
                                 dataNotFoundTask: () -> Unit = {}) {
             if (success) {
@@ -78,6 +79,7 @@ class ServerCallbackUtil {
                 when (model.resultCode) {
                     Flag.ResultCode.SUCCESS -> successTask(model)
                     Flag.ResultCode.DATA_NOT_FOUND -> dataNotFoundTask()
+                    else -> failedTask(o)
                 }
             } else {
                 failedTask(o as BaseModel<*>)
