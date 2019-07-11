@@ -34,7 +34,7 @@
     <dimen name="text_30">30dp</dimen>
 
     <!-- VIEW SIZE -->
-    <dimen name="height_header">50dp</dimen>
+    <dimen name="height_header">60dp</dimen>
     <dimen name="height_dialog_header">55dp</dimen>
     <dimen name="height_snackbar">50dp</dimen>
     <dimen name="height_productdetail_button">60dp</dimen>

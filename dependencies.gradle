@@ -20,6 +20,7 @@ ext {
     okhttpIntegrationVersion = '4.9.0'
     okhttpVersion = '3.12.0'
     fcmVersion = '17.0.0'
+    appCenterSdkVersion = '2.1.0'
 
     androidDependencies = [
             supportDesign          : "com.android.support:design:${supportDesignVersion}",
@@ -42,11 +43,12 @@ ext {
             loggingInterceptor   : "com.squareup.okhttp3:logging-interceptor:${logginInterceptorVersion}",
             kotlinJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             jwtDecode            : "com.auth0.android:jwtdecode:${jwtDecodeVersion}",
-            coroutine : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutineVersion}",
-            okhttp: "com.squareup.okhttp3:okhttp:${okhttpVersion}",
-            okhttpIntegration : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}",
-            fcm : "com.google.firebase:firebase-core:${fcmVersion}"
-
+            coroutine            : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutineVersion}",
+            okhttp               : "com.squareup.okhttp3:okhttp:${okhttpVersion}",
+            okhttpIntegration    : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}",
+            fcm                  : "com.google.firebase:firebase-core:${fcmVersion}",
+            appCenterAnalytics   : "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}",
+            appCenterCrashes     : "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
     ]
 }
 

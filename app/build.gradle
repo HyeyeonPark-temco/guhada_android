@@ -94,7 +94,7 @@ dependencies {
     implementation libraryDependencies.kotlinJdk7
     kapt androidDependencies.dataBindingCompiler
 
-    // LOGGING INTERCEPTOR
+    // OKHTTP LOGGING INTERCEPTOR
     implementation libraryDependencies.loggingInterceptor
 
     // JWT DECODE
@@ -111,6 +111,10 @@ dependencies {
 
     // FCM
     implementation libraryDependencies.fcm
+
+    // APP CENTER
+    implementation libraryDependencies.appCenterAnalytics
+    implementation libraryDependencies.appCenterCrashes
 
 
     ////////////////////////////////////////////////
