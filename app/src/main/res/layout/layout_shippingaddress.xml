@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="shippingAddress"
             type="io.temco.guhada.data.model.UserShipping" />
@@ -15,17 +17,26 @@
         <variable
             name="onClickDefaultListener"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClickAddListListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="addButtonVisible"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <io.temco.guhada.view.custom.BorderEditTextView
-            android:id="@+id/edittext_editshippingaddress_addressname"
+            android:id="@+id/edittext_shippingaddress_addressname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             app:hint="@string/editshippingaddress_hint_addressname"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -33,23 +44,23 @@
             app:txt="@={shippingAddress.shippingName}" />
 
         <io.temco.guhada.view.custom.BorderEditTextView
-            android:id="@+id/edittext_editshippingaddress_zip"
+            android:id="@+id/edittext_shippingaddress_zip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:hint="@string/editshippingaddress_hint_zip"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/button_editshippingaddress_zip"
+            app:layout_constraintRight_toLeftOf="@+id/button_shippingaddress_zip"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_addressname"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_addressname"
             app:readonly="true"
             app:txt="@={shippingAddress.zip}" />
 
         <Button
-            android:id="@+id/button_editshippingaddress_zip"
+            android:id="@+id/button_shippingaddress_zip"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/border_all_whitethree"
@@ -59,77 +70,108 @@
             android:text="@string/editshippingaddress_button_zip"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
-            app:layout_constraintLeft_toRightOf="@+id/edittext_editshippingaddress_zip"
+            app:layout_constraintLeft_toRightOf="@+id/edittext_shippingaddress_zip"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_addressname" />
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_addressname" />
 
         <io.temco.guhada.view.custom.BorderEditTextView
-            android:id="@+id/edittext_editshippingaddress_address"
+            android:id="@+id/edittext_shippingaddress_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:hint="@string/editshippingaddress_hint_address"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_zip"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_zip"
             app:readonly="true"
             app:txt="@={shippingAddress.address}" />
 
         <io.temco.guhada.view.custom.BorderEditTextView
-            android:id="@+id/edittext_editshippingaddress_detailaddress"
+            android:id="@+id/edittext_shippingaddress_detailaddress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:hint="@string/editshippingaddress_hint_detailaddress"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_address"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_address"
             app:txt="@={shippingAddress.detailAddress}" />
 
         <io.temco.guhada.view.custom.BorderEditTextView
-            android:id="@+id/edittext_editshippingaddress_recipientname"
+            android:id="@+id/edittext_shippingaddress_recipientname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:hint="@string/editshippingaddress_hint_recipientname"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_detailaddress"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_detailaddress"
             app:txt="@={shippingAddress.recipientName}" />
 
         <io.temco.guhada.view.custom.BorderEditTextView
-            android:id="@+id/edittext_editshippingaddress_recipientmobile"
+            android:id="@+id/edittext_shippingaddress_recipientmobile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:hint="@string/editshippingaddress_hint_recipientmobile"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_recipientname"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_recipientname"
             app:txt="@={shippingAddress.recipientMobile}" />
 
         <CheckBox
-            android:id="@+id/checkbox_editshippingaddress_default"
+            android:id="@+id/checkbox_shippingadress_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/selector_checkbox_all"
             android:button="@null"
-            android:checked="@={shippingAddress.defaultAddress}"
+            android:checked="@={shippingAddress.addList, default = false}"
+            android:visibility="@{addButtonVisible ? View.VISIBLE : View.GONE}"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_recipientmobile" />
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_recipientmobile" />
 
         <TextView
+            android:id="@+id/textview_shippingaddress_add"
             style="@style/TextMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="30dp"
+            android:onClick="@{onClickAddListListener}"
+            android:text="@string/editshippingaddress_add"
+            android:textColor="@color/greyish_brown_two"
+            android:textSize="@dimen/text_14"
+            android:visibility="@{addButtonVisible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintLeft_toRightOf="@+id/checkbox_shippingadress_add"
+            app:layout_constraintTop_toBottomOf="@+id/edittext_shippingaddress_recipientmobile" />
+
+        <CheckBox
+            android:id="@+id/checkbox_shippingadress_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_15"
+            android:background="@drawable/selector_checkbox_all"
+            android:button="@null"
+            android:checked="@={shippingAddress.defaultAddress,default = false}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/textview_shippingaddress_default"
+            app:layout_constraintTop_toBottomOf="@+id/checkbox_shippingadress_add" />
+
+        <TextView
+            android:id="@+id/textview_shippingaddress_default"
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
             android:onClick="@{onClickDefaultListener}"
             android:text="@string/editshippingaddress_set_default"
             android:textColor="@color/greyish_brown_two"
             android:textSize="@dimen/text_14"
-            app:layout_constraintLeft_toRightOf="@+id/checkbox_editshippingaddress_default"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_editshippingaddress_recipientmobile" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/checkbox_shippingadress_default"
+            app:layout_constraintTop_toBottomOf="@+id/textview_shippingaddress_add" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

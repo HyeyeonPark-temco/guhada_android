@@ -491,12 +491,23 @@
     <string name="payment_message_confirmtemrs">Please agree to the terms and conditions</string>
 
     <!-- SHIPPING ADDRESS -->
+    <string name="shippingaddress_title">배송지 변경</string>
     <string name="shippingaddress_list">배송지 목록</string>
     <string name="shippingaddress_add">배송지 직접 입력</string>
     <string name="shippingaddress_button_back">돌아가기</string>
     <string name="shippingaddress_button_submit">선택 완료</string>
     <string name="shippingaddress_button_edit">수정</string>
     <string name="shippingaddress_button_delete">삭제</string>
+
+    <string name="shippingaddress_messaeg_empty_shippingname">배송지 명을 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_address">주소를 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_detailaddress">상세주소를 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_recipientname">수령인을 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_recipientmobile">연락처를 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_zip">우편번호를 입력해주세요</string>
+
+    <string name="shippingaddress_messaeg_delete_failed">배송지 삭제에 실패했습니다. 다시 시도해주세요</string>
+    <string name="shippingaddress_messaeg_add_success">배송지가 등록되었습니다</string>
 
     <!-- MY PAGE -->
     <string name="mypage_order_shipping">Your orders</string>
@@ -528,6 +539,7 @@
     <!-- EDIT SHIPPING ADDRESS -->
     <string name="editshippingaddress_title">배송지 수정</string>
     <string name="editshippingaddress_set_default">기본 배송지 설정</string>
+    <string name="editshippingaddress_add">주문 완료 시 배송지 목록에 추가</string>
     <string name="editshippingaddress_button_cancel">취소</string>
     <string name="editshippingaddress_button_submit">변경</string>
     <string name="editshippingaddress_button_zip">우편번호 찾기</string>
@@ -538,6 +550,9 @@
     <string name="editshippingaddress_hint_recipientname">수령인을 입력해주세요</string>
     <string name="editshippingaddress_hint_recipientmobile">연락처를 입력해주세요</string>
 
+    <!-- ADD SHIPPING ADDRESS -->
+    <string name="addshippingaddress_button_cancel">입력  취소</string>
+    <string name="addshippingaddress_button_submit">입력 완료</string>
 
     <!-- HOME FRAGMENT -->
     <string-array name="main_titles">

@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -22,4 +23,7 @@ class UserShipping : Serializable {
     var shippingMessageType = ""
     var shippingMessage = ""
     var safetyMobile = true
+
+    @Expose
+    var addList = false // 배송지 목록에 추가 여부
 }

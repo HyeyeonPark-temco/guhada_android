@@ -68,7 +68,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     private fun initUtils() {
         //[2019.06.26]임시 브릿지
         mLoadingIndicatorUtil = LoadingIndicatorUtil(context ?: ProductBridge.mainActivity)
-        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
+        //  if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
     }
 
     private fun initViewModel() {

@@ -6,6 +6,8 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.common.util.CommonUtil
@@ -20,6 +22,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
     var deletePos = -1
     var prevSelectedItem: UserShipping = UserShipping()
     var selectedItem: UserShipping = UserShipping()
+    var newItem = UserShipping()
     var shippingAddresses: MutableLiveData<MutableList<UserShipping>> = MutableLiveData()
         @Bindable
         get() = field
@@ -58,23 +61,43 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
                         mListener.notifyDeleteItem()
                     },
                     failedTask = {
-                        ToastUtil.showMessage("배송지 삭제에 실패했습니다. 다시 시도해주세요.")
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_delete_failed))
                     })
         }, userId, shippingAddressId)
     }
 
+    private fun saveShippingAddress() {
+        UserServer.saveUserShippingAddress(OnServerListener { success, o ->
+            executeByResultCode(success, o,
+                    successTask = {
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_add_success))
+                        mListener.closeActivity(Activity.RESULT_OK, newItem)
+                    })
+        }, userId, newItem)
+    }
+
     fun editShippingAddress(position: Int) {
         val shippingAddress = shippingAddresses.value?.get(position)
-        if(shippingAddress != null){
+        if (shippingAddress != null) {
             mListener.redirectEditShippingAddressActivity(shippingAddress)
         }
     }
 
-    fun onClickSubmit() {
-        mListener.closeActivity(Activity.RESULT_OK, true)
+    private fun checkEmptyField(task: () -> Unit) {
+        when {
+            newItem.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_shippingname))
+            newItem.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_zip))
+            newItem.address.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_address))
+            newItem.detailAddress.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_detailaddress))
+            newItem.recipientName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_recipientname))
+            newItem.recipientMobile.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_recipientmobile))
+            else -> task()
+        }
     }
 
-    fun onClickCancel() {
-        mListener.closeActivity(Activity.RESULT_CANCELED, false)
-    }
+    fun onClickUpdate() = mListener.closeActivity(Activity.RESULT_OK, selectedItem)
+
+    fun onClickAdd() = checkEmptyField { saveShippingAddress() }
+
+    fun onClickCancel() = mListener.closeActivity(Activity.RESULT_CANCELED, null)
 }

@@ -126,11 +126,13 @@
         <!-- Shipping Address -->
         <activity
             android:name=".view.activity.ShippingAddressActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".view.activity.EditShippingAddressActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/NoTitleBarDialog" />
 
         <activity

@@ -3,16 +3,19 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import com.auth0.android.jwt.JWT
+import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Flag.RequestCode.ADD_SHIPPING_ADDRESS
+import io.temco.guhada.common.Flag.RequestCode.EDIT_SHIPPING_ADDRESS
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnShippingAddressListener
-import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.base.BaseFragmentPagerAdpter
+import io.temco.guhada.view.adapter.base.BaseFragmentPagerAdapter
+import io.temco.guhada.view.fragment.shippingaddress.AddShippingAddressFragment
 import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressListFragment
 
 /**
@@ -20,34 +23,60 @@ import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressListFragment
  * @author Hyeyeon Park
  */
 class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.ActivityShippingaddressBinding>(), OnShippingAddressListener {
-    private lateinit var mFragmentPagerAdapter: BaseFragmentPagerAdpter
+    private lateinit var mFragmentPagerAdapter: BaseFragmentPagerAdapter
     private lateinit var mViewModel: ShippingAddressViewModel
     private lateinit var mShippingAddressListFragment: ShippingAddressListFragment
+    private lateinit var mAddShippingAddressFragment: AddShippingAddressFragment
 
     override fun getBaseTag(): String = ShippingAddressActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_shippingaddress
-
     override fun getViewType(): Type.View = Type.View.SHIPPING_ADDRESS
 
     override fun init() {
+        initHeader()
+        initViewModel()
+        initFragmentPager()
+
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
+    }
+
+    private fun initHeader() {
+        mBinding.includeShippingaddressHeader.title = getString(R.string.shippingaddress_title)
+        mBinding.includeShippingaddressHeader.setOnClickBackButton {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
+    }
+
+    private fun initViewModel() {
         mViewModel = ShippingAddressViewModel(this)
         mViewModel.userId = JWT(Preferences.getToken().accessToken).getClaim("userId").asInt() ?: 0
         mViewModel.prevSelectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
         mViewModel.selectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
-
-        BaseFragmentPagerAdpter(supportFragmentManager).let { baseFragmentPagerAdapter ->
-            mShippingAddressListFragment = ShippingAddressListFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
-            mFragmentPagerAdapter = baseFragmentPagerAdapter
-            mFragmentPagerAdapter.addFragment(mShippingAddressListFragment)
-            mBinding.viewpagerShippingaddress.adapter = mFragmentPagerAdapter
-            mBinding.viewModel = mViewModel
-            mBinding.executePendingBindings()
-        }
     }
 
-    override fun closeActivity(resultCode: Int, withExtra: Boolean) {
-        if (withExtra) {
-            intent.putExtra("shippingAddress", mViewModel.selectedItem)
+    private fun initFragmentPager() {
+        val mFragmentPagerAdapter = BaseFragmentPagerAdapter(supportFragmentManager)
+        mShippingAddressListFragment = ShippingAddressListFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
+        mAddShippingAddressFragment = AddShippingAddressFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
+        mFragmentPagerAdapter.addFragment(mShippingAddressListFragment)
+        mFragmentPagerAdapter.addFragment(mAddShippingAddressFragment)
+
+        mBinding.viewpagerShippingaddress.adapter = mFragmentPagerAdapter
+        mBinding.viewpagerShippingaddress.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mBinding.tablayoutShippingaddress))
+        mBinding.tablayoutShippingaddress.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                mBinding.viewpagerShippingaddress.currentItem = tab?.position ?: 0
+            }
+        })
+    }
+
+    override fun closeActivity(resultCode: Int, shippingAddress: UserShipping?) {
+        if (resultCode == Activity.RESULT_OK) {
+            intent.putExtra("shippingAddress", shippingAddress)
             setResult(resultCode, intent)
         } else
             setResult(resultCode)
@@ -69,9 +98,11 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 //            var editedShippingAddress = data?.getSerializableExtra("shippingAddress")
 //            if (editedShippingAddress != null) editedShippingAddress = editedShippingAddress as UserShipping
 
-            // REFRESH
-            mShippingAddressListFragment.getShippingAddressList()
-        }else {
+            when (requestCode) {
+                EDIT_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList()// REFRESH
+                ADD_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList()// REFRESH
+            }
+        } else {
 
         }
     }
