@@ -66,7 +66,7 @@ class ServerCallbackUtil {
          * Retrofit2 resultCode 별 task 분기
          * @author Hyeyeon Park
          */
-        fun executeByResultCode(success: Boolean, o: Any,
+        fun executeByResultCode(success: Boolean, o: Any?,
                                 successTask: (BaseModel<*>) -> Unit,
                                 failedTask: (BaseModel<*>) -> Unit = {
                                     CommonUtil.debug("${it.resultCode}: ${it.message}")
@@ -74,15 +74,17 @@ class ServerCallbackUtil {
                                             ?: BaseApplication.getInstance().getString(R.string.common_message_error))
                                 },
                                 dataNotFoundTask: () -> Unit = {}) {
-            if (success) {
-                val model = o as BaseModel<*>
-                when (model.resultCode) {
-                    Flag.ResultCode.SUCCESS -> successTask(model)
-                    Flag.ResultCode.DATA_NOT_FOUND -> dataNotFoundTask()
-                    else -> failedTask(o)
+            if (o != null) {
+                if (success) {
+                    val model = o as BaseModel<*>
+                    when (model.resultCode) {
+                        Flag.ResultCode.SUCCESS -> successTask(model)
+                        Flag.ResultCode.DATA_NOT_FOUND -> dataNotFoundTask()
+                        else -> failedTask(o)
+                    }
+                } else {
+                    failedTask(o as BaseModel<*>)
                 }
-            } else {
-                failedTask(o as BaseModel<*>)
             }
         }
     }

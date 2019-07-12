@@ -28,10 +28,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <io.temco.guhada.view.custom.BorderEditTextView
             android:id="@+id/edittext_shippingaddress_addressname"

@@ -72,16 +72,6 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
         }, userId, shippingAddressId)
     }
 
-    private fun saveShippingAddress() {
-        UserServer.saveUserShippingAddress(OnServerListener { success, o ->
-            executeByResultCode(success, o,
-                    successTask = {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_add_success))
-                        mListener.closeActivity(Activity.RESULT_OK, newItem)
-                    })
-        }, userId, newItem)
-    }
-
     fun editShippingAddress(position: Int) {
         val shippingAddress = shippingAddresses.value?.get(position)
         if (shippingAddress != null) {
@@ -105,5 +95,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
 
     fun onClickUpdate() = mListener.closeActivity(Activity.RESULT_OK, selectedItem)
 
-    fun onClickAdd() = checkEmptyField { saveShippingAddress() }
+    fun onClickAdd() = checkEmptyField { mListener.closeActivity(Activity.RESULT_OK, newItem) }
+
+    fun redirectSearchZipActivity() = mListener.redirectSearchZipActivity()
 }

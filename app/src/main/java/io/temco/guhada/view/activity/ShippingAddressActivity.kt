@@ -6,8 +6,7 @@ import com.auth0.android.jwt.JWT
 import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Flag.RequestCode.ADD_SHIPPING_ADDRESS
-import io.temco.guhada.common.Flag.RequestCode.EDIT_SHIPPING_ADDRESS
+import io.temco.guhada.common.Flag.RequestCode.*
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnShippingAddressListener
@@ -94,6 +93,10 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
         }
     }
 
+    override fun redirectSearchZipActivity() {
+        startActivityForResult(Intent(this@ShippingAddressActivity, SearchZipWebViewActivity::class.java), Flag.RequestCode.SEARCH_ZIP)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -102,6 +105,8 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 
             when (requestCode) {
                 EDIT_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList()// REFRESH
+                SEARCH_ZIP -> mAddShippingAddressFragment.updateSearchZipResult(data?.getStringExtra("zip")
+                        ?: "", data?.getStringExtra("address") ?: "")
             }
         } else {
 

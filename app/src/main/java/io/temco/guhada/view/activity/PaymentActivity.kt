@@ -71,7 +71,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 (mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter as PaymentWayAdapter).notifyDataSetChanged()
             }
 
-            override fun redirectPayemntWebViewActivity() {
+            override fun redirectPaymentWebViewActivity() {
                 Intent(this@PaymentActivity, PaymentWebViewActivity::class.java).let {
                     it.putExtra("payMethod", mViewModel.selectedMethod.methodCode)
                     it.putExtra("pgResponse", mViewModel.pgResponse)
@@ -106,10 +106,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mViewModel.product = product as BaseProduct
             }
         }
-
-        // 배송 메모
-        //   mBinding.framelayoutPaymentShippingmemobutton.bringToFront()
-
 
         if (::mViewModel.isInitialized) {
             mBinding.includePaymentHeader.title = BaseApplication.getInstance().getString(R.string.payment_title_header)
@@ -222,6 +218,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                             mViewModel.order.shippingAddress = it as UserShipping
                             mViewModel.selectedShippingAddress = it
                             mViewModel.notifyPropertyChanged(BR.order)
+                            mViewModel.notifyPropertyChanged(BR.shippingAddressText)
                         }
                     }
                 } else {
@@ -229,7 +226,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 }
             }
         }
-
     }
 
     companion object {
@@ -262,7 +258,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun setUsedPointViewFocused()
         fun showMessage(message: String)
         fun notifyRadioButtons()
-        fun redirectPayemntWebViewActivity()
+        fun redirectPaymentWebViewActivity()
         fun redirectLoginActivity()
         fun hideLoadingIndicator()
         fun redirectShippingAddressActivity()

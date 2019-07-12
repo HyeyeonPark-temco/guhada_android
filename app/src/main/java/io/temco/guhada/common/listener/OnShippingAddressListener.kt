@@ -6,5 +6,6 @@ interface OnShippingAddressListener {
     fun closeActivity(resultCode : Int, shippingAddress: UserShipping?)
     fun notifyDeleteItem()
     fun redirectEditShippingAddressActivity(shippingAddress: UserShipping)
+    fun redirectSearchZipActivity()
 
 }

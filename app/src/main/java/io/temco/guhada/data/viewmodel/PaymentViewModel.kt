@@ -1,20 +1,24 @@
 package io.temco.guhada.data.viewmodel
 
+import android.app.Activity
 import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.OrderServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentActivity
 import java.text.NumberFormat
@@ -153,7 +157,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             executeByResultCode(success, o,
                     successTask = {
                         this.pgResponse = (o as BaseModel<*>).data as PGResponse
-                        listener.redirectPayemntWebViewActivity()
+                        listener.redirectPaymentWebViewActivity()
                     })
         }, accessToken, requestOrder)
     }
@@ -198,6 +202,18 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         })
                 listener.hideLoadingIndicator()
             }, accessToken, purchaseId)
+        }
+    }
+
+    private fun saveShippingAddress(userId: Int) {
+        if (selectedShippingAddress != null) {
+            UserServer.saveUserShippingAddress(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_add_success))
+
+                        })
+            }, userId, selectedShippingAddress!!)
         }
     }
 
@@ -274,13 +290,22 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
                             this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?.type
                                     ?: ""
+
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!
                                 this.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
                                 this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
                                 this.parentMethodCd = selectedMethod.methodCode
                             }.let { requestOrder ->
-                                callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+                                callWithToken { accessToken ->
+                                    if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+                                        // 배송지 추가
+                                        val userId = JWT(accessToken).getClaim("userId").asInt()
+                                        if (userId != null) saveShippingAddress(userId)
+                                    }
+
+                                    requestOrder(accessToken, requestOrder)
+                                }
                             }
                         }
                     }
