@@ -574,9 +574,12 @@
     <string name="mypageordership_deliveryrefundok">환불 신청이 완료되었습니다.</string>
     <string name="mypageordership_deliverydeliveryok">배송 접수가 완료되었습니다.</string>
 
-
     <!-- PRODUCT INFO REVIEW -->
     <string name="productdetaininfo_review_sort1">Newly Listed</string>
     <string name="productdetaininfo_review_sort2">Rating</string>
+
+    <!-- SEARCH ZIP -->
+    <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>
+    <string name="searchzip_loadurl">http://hyeyeonpark.github.io/temp_upload</string>
 
 </resources>

@@ -579,4 +579,7 @@
     <string name="productdetaininfo_review_sort1">최신순</string>
     <string name="productdetaininfo_review_sort2">전체평점</string>
 
+    <!-- SEARCH ZIP -->
+    <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>
+    <string name="searchzip_loadurl">http://hyeyeonpark.github.io/temp_upload</string>
 </resources>
