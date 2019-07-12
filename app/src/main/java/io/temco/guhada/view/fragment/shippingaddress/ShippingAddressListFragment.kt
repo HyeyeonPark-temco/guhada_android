@@ -27,14 +27,14 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
             getShippingAddressList()
 
             mViewModel.shippingAddresses.observe(this, Observer {
-                if (::mLoadingIndicator.isInitialized)
-                    mLoadingIndicator.hide()
-
                 mListAdapter = ShippingAddressListAdapter(mViewModel)
                 mListAdapter.setItems(it)
                 mBinding.recyclerviewShippingaddress.adapter = mListAdapter
                 mBinding.viewModel = mViewModel
                 mBinding.executePendingBindings()
+
+                if (::mLoadingIndicator.isInitialized)
+                    mLoadingIndicator.hide()
             })
         }
     }

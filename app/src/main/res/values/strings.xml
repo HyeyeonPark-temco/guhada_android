@@ -552,7 +552,7 @@
 
     <!-- ADD SHIPPING ADDRESS -->
     <string name="addshippingaddress_button_cancel">입력  취소</string>
-    <string name="addshippingaddress_button_submit">입력 완료</string>
+    <string name="addshippingaddress_button_confirm">입력 완료</string>
 
     <!-- HOME FRAGMENT -->
     <string-array name="main_titles">

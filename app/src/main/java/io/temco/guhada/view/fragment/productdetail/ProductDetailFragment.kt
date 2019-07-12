@@ -80,7 +80,6 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
             initContentHeader()
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
 
-            // this@ProductDetailFragment.hideLoadingIndicator()
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
                 mBinding.includeProductdetailContentbody.viewModel = mViewModel
@@ -96,9 +95,12 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
-            mLoadingIndicatorUtil.execute {
-                mViewModel.getDetail()
-            }
+            mLoadingIndicatorUtil.show()
+            mViewModel.getDetail()
+
+//            mLoadingIndicatorUtil.execute {
+//                mViewModel.getDetail()
+//            }
         }
     }
 
@@ -133,6 +135,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 mViewModel.notifyPropertyChanged(BR.imagePos)
             }
         })
+        this@ProductDetailFragment.hideLoadingIndicator()
     }
 
     override fun redirectHome() {

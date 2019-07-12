@@ -48,6 +48,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:visibility="gone"
             android:id="@+id/button_shippingaddress_back"
             android:layout_width="0dp"
             android:layout_height="60dp"
@@ -63,6 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/recyclerview_shippingaddress" />
 
         <Button
+            android:visibility="gone"
             android:id="@+id/button_shippingaddress_submit"
             android:layout_width="0dp"
             android:layout_height="60dp"

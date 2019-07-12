@@ -57,7 +57,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     }
 
     private fun initFragmentPager() {
-        val mFragmentPagerAdapter = BaseFragmentPagerAdapter(supportFragmentManager)
+        mFragmentPagerAdapter = BaseFragmentPagerAdapter(supportFragmentManager)
         mShippingAddressListFragment = ShippingAddressListFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
         mAddShippingAddressFragment = AddShippingAddressFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
         mFragmentPagerAdapter.addFragment(mShippingAddressListFragment)
@@ -69,7 +69,9 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
             override fun onTabReselected(tab: TabLayout.Tab?) {}
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                mBinding.viewpagerShippingaddress.currentItem = tab?.position ?: 0
+                val pos = tab?.position ?: 0
+                mViewModel.viewpagerPos = pos
+                mBinding.viewpagerShippingaddress.currentItem = pos
             }
         })
     }
@@ -100,7 +102,6 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 
             when (requestCode) {
                 EDIT_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList()// REFRESH
-                ADD_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList()// REFRESH
             }
         } else {
 

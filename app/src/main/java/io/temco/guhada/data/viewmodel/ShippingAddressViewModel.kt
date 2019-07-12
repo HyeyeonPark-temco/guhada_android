@@ -19,7 +19,6 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseObservableViewModel() {
     var userId: Int = -1
-    var deletePos = -1
     var prevSelectedItem: UserShipping = UserShipping()
     var selectedItem: UserShipping = UserShipping()
     var newItem = UserShipping()
@@ -29,6 +28,13 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
     var emptyVisibility = ObservableInt(View.VISIBLE)
         @Bindable
         get() = field
+    var viewpagerPos = 0
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.viewpagerPos)
+        }
 
     /**
      * @exception IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 36 path $.data
@@ -95,9 +101,9 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
         }
     }
 
+    fun onClickCancel() = mListener.closeActivity(Activity.RESULT_CANCELED, null)
+
     fun onClickUpdate() = mListener.closeActivity(Activity.RESULT_OK, selectedItem)
 
     fun onClickAdd() = checkEmptyField { saveShippingAddress() }
-
-    fun onClickCancel() = mListener.closeActivity(Activity.RESULT_CANCELED, null)
 }

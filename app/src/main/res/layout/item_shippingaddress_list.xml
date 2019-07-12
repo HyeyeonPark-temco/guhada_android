@@ -21,10 +21,11 @@
         android:paddingTop="20dp">
 
         <RadioButton
-
             android:id="@+id/radiobutton_shippingaddresslist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:button="@null"
+            android:background="@drawable/selector_ovalradiobutton_all"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
