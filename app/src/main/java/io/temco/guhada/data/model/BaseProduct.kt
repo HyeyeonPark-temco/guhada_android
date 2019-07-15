@@ -25,7 +25,7 @@ open class BaseProduct : Serializable {
     var totalCount: Int = 0
 
     @Expose
-    var optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr> = mutableMapOf()
+    var optionMap: MutableMap<String, OptionAttr> = mutableMapOf()
 
     @Expose
     var dealOptionId: Long? = null

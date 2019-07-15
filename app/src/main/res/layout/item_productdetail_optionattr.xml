@@ -5,7 +5,7 @@
 
         <variable
             name="optionAttr"
-            type="io.temco.guhada.view.adapter.ProductDetailOptionAdapter.OptionAttr" />
+            type="io.temco.guhada.data.model.OptionAttr" />
 
         <variable
             name="attr"

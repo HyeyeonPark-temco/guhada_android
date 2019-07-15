@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionBinding
@@ -58,16 +59,10 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : Re
         mBinding.recyclerviewProductdetailOptionattr.adapter?.notifyDataSetChanged()
     }
 
-    fun setItemSelected(optionAttr: ProductDetailOptionAdapter.OptionAttr) {
+    fun setItemSelected(optionAttr: OptionAttr) {
         if (::mBinding.isInitialized && optionAttr.rgb.isNotBlank()) {
             viewModel.colorName = ObservableField(optionAttr.name)
             viewModel.notifyPropertyChanged(BR.colorName)
         }
-    }
-
-    class OptionAttr : Serializable {
-        var dealOptionId = 0 // 장바구니 API 호출 파라미터
-        var rgb: String = ""
-        var name: String = ""
     }
 }

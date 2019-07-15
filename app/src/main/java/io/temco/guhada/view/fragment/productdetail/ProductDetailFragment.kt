@@ -25,6 +25,7 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Brand
+import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
@@ -185,7 +186,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -203,7 +204,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -310,7 +311,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
             val product = mViewModel.product.value
             val brandName = product?.brandName ?: ""
             val name = product?.name ?: ""
-            val optionAttr: MutableMap<String, ProductDetailOptionAdapter.OptionAttr>
+            val optionAttr: MutableMap<String, OptionAttr>
             val price: Int
             val count: Int
 

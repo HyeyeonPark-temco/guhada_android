@@ -8,9 +8,9 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
+import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
 
 class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListener) : BaseObservableViewModel() {
     private val EXTRA_PRICE = 1
@@ -32,7 +32,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
     var colorName = ObservableField<String>("")
         @Bindable
         get() = field
-    var optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr> = mutableMapOf()
+    var optionMap: MutableMap<String, OptionAttr> = mutableMapOf()
     var extraPrice = ObservableInt(0)
         @Bindable
         get() = field
@@ -103,7 +103,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
         notifyPropertyChanged(BR.totalPrice)
     }
 
-    fun onSelectAttr(optionAttr: ProductDetailOptionAdapter.OptionAttr, type: String, position: Int) {
+    fun onSelectAttr(optionAttr: OptionAttr, type: String, position: Int) {
         optionMap[type] = optionAttr
         if (type == "COLOR") {
             listener.setColorName(optionAttr) {

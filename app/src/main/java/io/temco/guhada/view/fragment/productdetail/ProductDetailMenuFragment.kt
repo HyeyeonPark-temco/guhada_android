@@ -4,6 +4,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
@@ -40,11 +41,11 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
         @BindingAdapter("productOptionAttr")
         fun RecyclerView.bindOptionAttr(option: Product.Option?) {
             if (option != null && this.adapter != null) {
-                val attrList: MutableList<ProductDetailOptionAdapter.OptionAttr> = ArrayList()
+                val attrList: MutableList<OptionAttr> = ArrayList()
 
                 if (option.type == "COLOR") {
                     for (i in 0 until option.rgb.size) {
-                        ProductDetailOptionAdapter.OptionAttr().apply {
+                        OptionAttr().apply {
                             rgb = option.rgb[i]
                             name = option.attributes[i]
                         }.let {
@@ -53,7 +54,7 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
                     }
                 } else {
                     for (attr in option.attributes) {
-                        ProductDetailOptionAdapter.OptionAttr().apply {
+                        OptionAttr().apply {
                             name = attr
                         }.let {
                             attrList.add(it)

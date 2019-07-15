@@ -26,6 +26,7 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Brand
+import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
@@ -118,7 +119,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initClaims() {
-        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId?:0)
+        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId ?: 0)
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
@@ -131,7 +132,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
-        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId?:0)
+        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId ?: 0)
 
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
@@ -141,7 +142,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -159,7 +160,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -261,7 +262,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             val product = mViewModel.product.value
             val brandName = product?.brandName ?: ""
             val name = product?.name ?: ""
-            val optionAttr: MutableMap<String, ProductDetailOptionAdapter.OptionAttr>
+            val optionAttr: MutableMap<String, OptionAttr>
             val price: Int
             val count: Int
 
