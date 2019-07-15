@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel
 
-import android.app.Activity
 import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
@@ -297,15 +296,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                 this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
                                 this.parentMethodCd = selectedMethod.methodCode
                             }.let { requestOrder ->
-                                callWithToken { accessToken ->
-                                    if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
-                                        // 배송지 추가
-                                        val userId = JWT(accessToken).getClaim("userId").asInt()
-                                        if (userId != null) saveShippingAddress(userId)
-                                    }
-
-                                    requestOrder(accessToken, requestOrder)
+                                val accessToken = Preferences.getToken().accessToken
+                                if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+                                    // 배송지 추가
+                                    val userId = JWT(accessToken).getClaim("userId").asInt()
+                                    if (userId != null) saveShippingAddress(userId)
                                 }
+
+                                requestOrder("Bearer $accessToken" +
+                                        "", requestOrder)
                             }
                         }
                     }
