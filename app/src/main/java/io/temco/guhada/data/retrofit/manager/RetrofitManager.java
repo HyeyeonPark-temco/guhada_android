@@ -119,14 +119,14 @@ public class RetrofitManager {
         return chain -> {
             final Request.Builder builder = chain.request().newBuilder();
             // Common
-            builder.header("X-Guhada-accessTime", String.valueOf(System.currentTimeMillis())); // Time
-            builder.header("X-Guhada-country", CommonUtil.getSystemCountryCode()); // Country
-            builder.header("X-Guhada-language", Preferences.getLanguage()); // Language
-            builder.header("X-Guhada-platform", "AOS"); // Platform
-            builder.header("X-Guhada-version", BuildConfig.VERSION_NAME); // Version
+            builder.header("x-guhada-accesstime", String.valueOf(System.currentTimeMillis())); // Time
+            builder.header("x-guhada-country", CommonUtil.getSystemCountryCode()); // Country (KR)
+            builder.header("x-guhada-language", Preferences.getLanguage()); // Language (ko)
+            builder.header("x-guhada-platform", "AOS"); // Platform
+            builder.header("x-guhada-version", BuildConfig.VERSION_NAME); // Version
             // Mobile
-            builder.header("X-Guhada-model", Build.DEVICE); // Device Model // Build.MANUFACTURER
-            builder.header("X-Guhada-os-version", Build.VERSION.RELEASE); // Device Version
+            builder.header("x-guhada-model", Build.DEVICE); // Device Model // Build.MANUFACTURER
+            builder.header("x-guhada-os-version", Build.VERSION.RELEASE); // Device Version
             return chain.proceed(builder.build());
         };
     }
