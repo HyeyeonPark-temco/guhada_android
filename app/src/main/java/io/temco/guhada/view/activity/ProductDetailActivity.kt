@@ -334,6 +334,11 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     }
 
+    override fun redirectCartActivity() {
+        val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
+        startActivity(intent)
+    }
+
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {

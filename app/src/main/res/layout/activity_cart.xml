@@ -2,6 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.CartViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,12 +26,12 @@
         <CheckBox
             android:id="@+id/checkbox_cart_all"
             android:layout_width="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/recyclerview_cart"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/selector_checkbox_all"
             android:button="@null"
+            app:layout_constraintBottom_toTopOf="@id/recyclerview_cart"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include_cart_header" />
 
@@ -144,9 +153,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:onClick="@{()->viewModel.onClickDiscountContent()}"
                 android:text="@string/cart_result_totaldiscount"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_13"
+                app:layout_constraintBottom_toTopOf="@id/textview_cart_productdiscount"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_cart_shippingprice" />
 
@@ -168,13 +179,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
+
+                android:onClick="@{()->viewModel.onClickDiscountContent()}"
                 android:src="@drawable/bag_btn_option_open"
                 app:layout_constraintBottom_toTopOf="@id/textview_cart_productdiscount"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintLeft_toRightOf="@id/textview_cart_totaldiscount"
                 app:layout_constraintRight_toLeftOf="@+id/textview_cart_totaldiscount_content"
                 app:layout_constraintTop_toBottomOf="@id/textview_cart_shippingprice" />
-
+            <!--android:layout_marginTop="@{viewModel.totalDiscountVisible ? @dimen/margin_common_0: @dimen/margin_common_15}"-->
             <TextView
                 android:id="@+id/textview_cart_productdiscount"
                 style="@style/TextMedium"
@@ -184,6 +197,7 @@
                 android:text="@string/cart_result_productdiscount"
                 android:textColor="@color/greyish"
                 android:textSize="@dimen/text_13"
+                android:visibility="@{viewModel.totalDiscountVisible ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_cart_totaldiscount" />
 
@@ -194,6 +208,7 @@
                 android:layout_marginTop="15dp"
                 android:textColor="@color/greyish"
                 android:textSize="@dimen/text_13"
+                android:visibility="@{viewModel.totalDiscountVisible ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintLeft_toRightOf="@+id/textview_cart_productdiscount"
                 app:layout_constraintRight_toRightOf="parent"
@@ -208,6 +223,7 @@
                 android:text="@string/cart_result_extradiscount"
                 android:textColor="@color/greyish"
                 android:textSize="@dimen/text_13"
+                android:visibility="@{viewModel.totalDiscountVisible ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="@id/view_cart_line"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_cart_productdiscount"
@@ -221,6 +237,7 @@
                 android:layout_marginTop="15dp"
                 android:textColor="@color/greyish"
                 android:textSize="@dimen/text_13"
+                android:visibility="@{viewModel.totalDiscountVisible ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="@id/view_cart_line"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintLeft_toRightOf="@+id/textview_cart_extradiscount"
@@ -311,7 +328,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="123213원"
+                    android:text="@{@string/cart_result_price(123456)}"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_20" />
 

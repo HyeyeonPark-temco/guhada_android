@@ -37,7 +37,8 @@ public class Type {
         SHIPPING_ADDRESS,
         TEMP_LOGOUT,
         BLOCKCHAIN,
-        SEARCH_ZIP_WEBVIEW
+        SEARCH_ZIP_WEBVIEW,
+        CART
     }
 
     // Main

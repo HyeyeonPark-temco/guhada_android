@@ -31,6 +31,7 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
+import io.temco.guhada.view.activity.CartActivity
 import io.temco.guhada.view.activity.PaymentActivity
 import io.temco.guhada.view.activity.ProductDetailActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
@@ -141,6 +142,11 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
     override fun redirectHome() {
         mainListener.removeProductFragment()
+    }
+
+    override fun redirectCartActivity() {
+        val intent = Intent(context, CartActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroy() {

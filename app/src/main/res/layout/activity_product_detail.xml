@@ -138,7 +138,7 @@
             android:layout_weight="1"
             android:background="@color/greyish_brown_two"
             android:fontFamily="sans-serif-medium"
-            android:onClick="@{()->viewModel.onClickBag()}"
+            android:onClick="@{()->viewModel.onClickCart()}"
             android:text="@string/productdetail_button_bag"
             android:textSize="@dimen/text_18"
             android:visibility="@{viewModel.bottomBtnVisibility}"

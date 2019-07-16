@@ -28,8 +28,8 @@
             android:name=".view.activity.base.TestListActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -50,9 +50,9 @@
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
@@ -126,17 +126,22 @@
         <!-- Shipping Address -->
         <activity
             android:name=".view.activity.ShippingAddressActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing" />
 
         <activity
             android:name=".view.activity.EditShippingAddressActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/NoTitleBarDialog" />
+            android:theme="@style/NoTitleBarDialog"
+            android:windowSoftInputMode="adjustNothing" />
 
         <activity
             android:name=".view.activity.SearchZipWebViewActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- Cart -->
+        <activity
+            android:name=".view.activity.CartActivity"
             android:screenOrientation="portrait" />
 
 

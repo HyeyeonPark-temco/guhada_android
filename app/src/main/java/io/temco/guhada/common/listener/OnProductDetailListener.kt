@@ -12,4 +12,5 @@ interface OnProductDetailListener {
     fun showSideMenu()
     fun setBrandProductList(brand: Brand)
     fun redirectHome()
+    fun redirectCartActivity()
 }

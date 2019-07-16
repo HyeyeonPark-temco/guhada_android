@@ -584,6 +584,7 @@
     <string name="searchzip_loadurl">http://hyeyeonpark.github.io/temp_upload</string>
 
     <!-- CART -->
+    <string name="cart_title">장바구니</string>
     <string name="cart_buy">바로구매</string>
     <string name="cart_option_title">구매옵션</string>
     <string name="cart_option_change">변경</string>
