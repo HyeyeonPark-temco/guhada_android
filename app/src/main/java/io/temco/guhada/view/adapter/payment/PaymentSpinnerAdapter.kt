@@ -1,15 +1,12 @@
-package io.temco.guhada.view.adapter
+package io.temco.guhada.view.adapter.payment
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.data.model.ShippingMessage
-import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ItemPaymentSpinnerBinding
 
 class PaymentSpinnerAdapter(context: Context, val layout: Int, var list: List<ShippingMessage> = ArrayList()) : ArrayAdapter<ShippingMessage>(context, layout, list) {

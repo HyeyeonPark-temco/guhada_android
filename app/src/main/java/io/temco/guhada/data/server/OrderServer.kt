@@ -95,6 +95,20 @@ class OrderServer {
                 }
             })
         }
+
+        @JvmStatic
+        fun getCart(listener: OnServerListener, accessToken: String) {
+            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCart(accessToken)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<CartResponse>> {
+                override fun onResponse(call: Call<BaseModel<CartResponse>>, response: Response<BaseModel<CartResponse>>) {
+                    listener.onResult(response.isSuccessful, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<CartResponse>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
     }
 
 }

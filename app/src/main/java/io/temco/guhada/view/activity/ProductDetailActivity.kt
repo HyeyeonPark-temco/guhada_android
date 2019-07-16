@@ -33,9 +33,8 @@ import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
-import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
-import io.temco.guhada.view.adapter.ProductDetailTagAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment

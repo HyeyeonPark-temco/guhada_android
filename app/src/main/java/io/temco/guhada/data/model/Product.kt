@@ -38,9 +38,6 @@ class Product : BaseProduct() {
     @SerializedName("separatedOptions")
     var options: List<Option?>? = ArrayList()
 
-    // 변경 예정
-    var images: MutableList<Image> = ArrayList()
-
     // ids
     var lCategoryId: Int = 0
     var mCategoryId: Int = 0

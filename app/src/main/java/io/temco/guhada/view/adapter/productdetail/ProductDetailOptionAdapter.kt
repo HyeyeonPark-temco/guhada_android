@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter
+package io.temco.guhada.view.adapter.productdetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,7 +15,6 @@ import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
-import java.io.Serializable
 
 class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
     var options: List<Product.Option> = ArrayList()

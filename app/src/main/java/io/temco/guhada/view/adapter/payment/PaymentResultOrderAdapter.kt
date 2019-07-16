@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter
+package io.temco.guhada.view.adapter.payment
 
 import android.view.LayoutInflater
 import android.view.View

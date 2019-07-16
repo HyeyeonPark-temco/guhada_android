@@ -10,7 +10,7 @@ import io.temco.guhada.data.model.ReviewResponseContent
 import io.temco.guhada.data.model.ReviewSummary
 import io.temco.guhada.data.viewmodel.ProductDetailReviewViewModel
 import io.temco.guhada.databinding.LayoutProductdetailReviewBinding
-import io.temco.guhada.view.adapter.ProductDetailReviewAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBinding>() {

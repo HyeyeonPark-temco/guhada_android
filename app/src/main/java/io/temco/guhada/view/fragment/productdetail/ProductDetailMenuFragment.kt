@@ -7,8 +7,8 @@ import io.temco.guhada.R
 import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
-import io.temco.guhada.view.adapter.ProductDetailOptionAttrAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>() {

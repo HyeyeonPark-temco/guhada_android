@@ -19,25 +19,22 @@ import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
-import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.CartActivity
+import io.temco.guhada.view.activity.LoginActivity
 import io.temco.guhada.view.activity.PaymentActivity
 import io.temco.guhada.view.activity.ProductDetailActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
-import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
-import io.temco.guhada.view.adapter.ProductDetailTagAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -69,7 +66,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
     private fun initUtils() {
         //[2019.06.26]임시 브릿지
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(context ?: ProductBridge.mainActivity)
+        if(context != null) mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
         //  if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
     }
 
@@ -287,6 +284,10 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         mClaimFragment.refreshIsMineVisible()
     }
 
+    private fun redirectLoginActivity() {
+        startActivityForResult(Intent(context, LoginActivity::class.java), Flag.RequestCode.LOGIN)
+    }
+
     override fun showMenu() {
         val optionCount = mViewModel.product.value?.options?.size
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
@@ -372,7 +373,6 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun hideLoadingIndicator() {
         if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
     }
-
 
     override fun closeActivity() {
         ProductBridge.mainActivity.removeProductDetailFragment()

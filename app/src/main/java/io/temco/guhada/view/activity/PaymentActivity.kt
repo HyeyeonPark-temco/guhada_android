@@ -23,8 +23,8 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.PaymentSpinnerAdapter
-import io.temco.guhada.view.adapter.PaymentWayAdapter
+import io.temco.guhada.view.adapter.payment.PaymentSpinnerAdapter
+import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 
 class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil

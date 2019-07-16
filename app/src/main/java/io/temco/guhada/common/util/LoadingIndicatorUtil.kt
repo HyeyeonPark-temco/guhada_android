@@ -35,11 +35,13 @@ class LoadingIndicatorUtil(val mContext: Context) : Dialog(mContext) {
     }
 
     override fun hide() {
-        if (this.isShowing) super.hide()
+        if (this.isShowing)
+            super.hide()
     }
 
     override fun show() {
-        if (!this.isShowing) super.show()
+        if (!this.isShowing)
+            super.show()
     }
 
 }
