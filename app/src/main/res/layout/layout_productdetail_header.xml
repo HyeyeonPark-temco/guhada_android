@@ -226,7 +226,7 @@
                     style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/common_unit_prercent"
+                    android:text="@string/common_unit_percent"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp"
                     android:visibility="@{viewModel.product.discountRate == 0 ? View.GONE : View.VISIBLE}"

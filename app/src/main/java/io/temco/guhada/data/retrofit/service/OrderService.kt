@@ -35,4 +35,10 @@ interface OrderService {
      */
     @GET("/order/order-complete/{purchaseId}")
     fun setOrderCompleted(@Header("Authorization") accessToken: String, @Path("purchaseId") purchaseId: Double) : Call<BaseModel<PurchaseOrderResponse>>
+
+    /**
+     * 장바구니 조회 API
+     */
+    @GET("/cart")
+    fun getCart(@Header("Authorization") accessToken: String) : Call<BaseModel<CartResponse>>
 }

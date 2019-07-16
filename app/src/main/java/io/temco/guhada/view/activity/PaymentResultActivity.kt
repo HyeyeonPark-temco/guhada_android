@@ -12,7 +12,7 @@ import io.temco.guhada.data.model.PurchaseOrderResponse
 import io.temco.guhada.data.viewmodel.PaymentResultViewModel
 import io.temco.guhada.databinding.ActivityPaymentResultBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.PaymentResultOrderAdapter
+import io.temco.guhada.view.adapter.payment.PaymentResultOrderAdapter
 
 class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
     private lateinit var mViewModel: PaymentResultViewModel

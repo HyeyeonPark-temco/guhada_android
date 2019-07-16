@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter
+package io.temco.guhada.view.adapter.productdetail
 
 import android.graphics.Color
 import android.view.LayoutInflater
