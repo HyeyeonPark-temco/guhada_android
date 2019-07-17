@@ -46,22 +46,12 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         }
     }
 
-    companion object {
-        @JvmStatic
-        @BindingAdapter("cartOption")
-        fun RecyclerView.bindOption(list: MutableList<CartOption>) {
-            if (this.adapter != null && list.isNotEmpty()) {
-                (this.adapter as CartOptionAdapter).setItems(list)
-            }
-        }
-    }
-
     inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root), View.OnClickListener {
         fun bind(cart: Cart) {
             setSpacing()
             setSoldOutOverlay(cart.cartValidStatus)
             addCancelLine(cart)
-            binding.recyclerviewCartOption.adapter = CartOptionAdapter()
+            binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
             if (cart.cartOptionList.isNotEmpty())
                 (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
             binding.optionText = getOptionText(cart)

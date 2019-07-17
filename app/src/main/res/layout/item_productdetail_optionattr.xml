@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:layout_gravity="center"
-            android:ellipsize="end"
+
             android:gravity="center"
             android:paddingStart="9dp"
             android:paddingEnd="9dp"

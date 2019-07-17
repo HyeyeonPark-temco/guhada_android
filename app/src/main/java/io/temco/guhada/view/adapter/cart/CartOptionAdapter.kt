@@ -6,10 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.cart.CartOption
+import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.databinding.ItemCartOptionBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
-class CartOptionAdapter : RecyclerView.Adapter<CartOptionAdapter.Holder>() {
+class CartOptionAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartOptionAdapter.Holder>() {
     private var items: MutableList<CartOption> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -30,12 +31,17 @@ class CartOptionAdapter : RecyclerView.Adapter<CartOptionAdapter.Holder>() {
 
     inner class Holder(val binding: ItemCartOptionBinding) : BaseViewHolder<ItemCartOptionBinding>(binding.root) {
         fun bind(cartOption: CartOption) {
-            setSpacing(cartOption)
+            setSpacing()
             binding.cartOption = cartOption
+            CartOptionAttrAdapter(mViewModel).let {
+                it.setItems(cartOption.attrList)
+                binding.recyclerviewCartOptionattr.adapter = it
+            }
+
             binding.executePendingBindings()
         }
 
-        private fun setSpacing(cartOption: CartOption) {
+        private fun setSpacing() {
             if (adapterPosition < items.size - 1) {
                 (binding.constraintlayoutCartOption.layoutParams as ViewGroup.MarginLayoutParams).apply {
                     bottomMargin = 40

@@ -1,6 +1,7 @@
-package io.temco.guhada.view.adapter.productdetail
+package io.temco.guhada.view.adapter.cart
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,46 +12,42 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
-import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
+import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionattrBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
-class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Option) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
-    var list: List<OptionAttr> = ArrayList()
+class CartOptionAttrAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartOptionAttrAdapter.Holder>() {
+    private var items: List<OptionAttr> = ArrayList()
     private var prevSelectedPos: Int = -1
     private var selectedPos: Int = -1
-    private lateinit var mHolder: Holder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        mHolder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_optionattr, parent, false))
-        return mHolder
+        val binding = DataBindingUtil.inflate<ItemProductdetailOptionattrBinding>(LayoutInflater.from(parent.context), R.layout.item_productdetail_optionattr, parent, false)
+        return Holder(binding)
     }
 
-    override fun getItemCount(): Int = list.size
-
+    override fun getItemCount(): Int = items.size
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(list[position], selectedPos)
+        holder.bind(items[position])
     }
 
-    fun setItems(list: List<OptionAttr>?) {
-        if (list != null && list.isNotEmpty()) {
-            this.list = list
-            notifyDataSetChanged()
-        }
+    fun setItems(items: MutableList<OptionAttr>) {
+        this.items = items
+        notifyDataSetChanged()
     }
 
-    inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionattrBinding) : BaseViewHolder<ItemProductdetailOptionattrBinding>(binding.root) {
-        fun bind(optionAttr: OptionAttr, selectedPos: Int) {
+    inner class Holder(val binding: ItemProductdetailOptionattrBinding) : BaseViewHolder<ItemProductdetailOptionattrBinding>(binding.root) {
+        fun bind(optionAttr: OptionAttr) {
             // BORDER
+            binding.optionAttr = optionAttr
+
             if (adapterPosition == selectedPos) {
                 binding.framelayoutProductdetailOptionattr.background = BaseApplication.getInstance().applicationContext.resources.getDrawable(R.drawable.border_all_purple_2dp)
                 BaseApplication.getInstance().applicationContext.resources.let {
                     val padding = (2 * it.displayMetrics.density + 0.5).toInt()
                     binding.framelayoutProductdetailOptionattr.setPadding(padding)
                 }
-
             } else {
                 binding.framelayoutProductdetailOptionattr.background = BaseApplication.getInstance().applicationContext.resources.getDrawable(R.drawable.border_all_whitethree)
                 BaseApplication.getInstance().applicationContext.resources.let {
@@ -60,7 +57,7 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
             }
 
             // CONTENT
-            if (optionAttr.rgb.isNotBlank()) {
+            if (optionAttr.rgb.isNotBlank() && optionAttr.rgb != "null") {
                 binding.imageviewProductdetailOptionattr.setBackgroundColor(Color.parseColor(optionAttr.rgb))
                 binding.imageviewProductdetailOptionattr.visibility = View.VISIBLE
                 binding.textviewProductdetailOptionattr.visibility = View.GONE
@@ -69,29 +66,17 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
                 binding.imageviewProductdetailOptionattr.visibility = View.GONE
             }
 
+            // CLICK EVENT
             binding.framelayoutProductdetailOptionattr.setOnClickListener {
-                prevSelectedPos = this@ProductDetailOptionAttrAdapter.selectedPos
-                this@ProductDetailOptionAttrAdapter.selectedPos = adapterPosition
 
-                // SELECT ATTR
-//                selectListener.onClickAttr(prevSelectedPos, this@ProductDetailOptionAttrAdapter.selectedPos)
-                viewModel.onSelectAttr(optionAttr, option.type, adapterPosition)
-                notifyItemChanged(this@ProductDetailOptionAttrAdapter.selectedPos)
+                prevSelectedPos = this@CartOptionAttrAdapter.selectedPos
+                this@CartOptionAttrAdapter.selectedPos = adapterPosition
+
+                notifyItemChanged(this@CartOptionAttrAdapter.selectedPos)
                 notifyItemChanged(prevSelectedPos)
-
-                // TOTAL PRICE
-                if (viewModel.totalPrice.get() == 0 && viewModel.optionMap.keys.size == viewModel.product.options?.size) {
-                    viewModel.totalPrice = ObservableInt(viewModel.product.discountPrice)
-                    viewModel.notifyPropertyChanged(BR.totalPrice)
-                }
-
-                // EXTRA PRICE
-                viewModel.getExtraPrice()
             }
 
-            binding.optionAttr = optionAttr
             binding.executePendingBindings()
         }
     }
-
 }

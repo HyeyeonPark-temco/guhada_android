@@ -19,8 +19,7 @@
         android:id="@+id/linearlayout_productdetail_option"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_white"
-        android:orientation="horizontal">
+        android:background="@color/common_white">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_productdetail_optionattr"
