@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
@@ -97,9 +96,10 @@ class CartViewModel : BaseObservableViewModel() {
             getCartOption(label3Option, item, label = "label3", attribute = "attribute3", colorRgb = "rgb3")
         }
 
-        cartOptionList.add(label1Option)
-        cartOptionList.add(label2Option)
-        cartOptionList.add(label3Option)
+        if (label1Option.label != null && label1Option.label?.isNotBlank() == true && label1Option.label != "null") cartOptionList.add(label1Option)
+        if (label2Option.label != null && label2Option.label?.isNotBlank() == true && label2Option.label != "null") cartOptionList.add(label2Option)
+        if (label3Option.label != null && label3Option.label?.isNotBlank() == true && label3Option.label != "null") cartOptionList.add(label3Option)
+
         return cartOptionList
     }
 

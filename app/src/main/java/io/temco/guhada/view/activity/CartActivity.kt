@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
@@ -40,6 +41,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         }
         mCartProductAdapter = CartProductAdapter(mViewModel)
         mBinding.recyclerviewCartProduct.adapter = mCartProductAdapter
+        (mBinding.recyclerviewCartProduct.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         mBinding.viewModel = mViewModel
 
         mBinding.executePendingBindings()

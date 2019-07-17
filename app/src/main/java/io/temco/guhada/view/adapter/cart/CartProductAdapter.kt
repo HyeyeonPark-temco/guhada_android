@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
@@ -20,10 +21,11 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartProductAdapter.Holder>() {
     private var items: MutableList<Cart> = mutableListOf()
+    private lateinit var mBinding: ItemCartProductBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = DataBindingUtil.inflate<ItemCartProductBinding>(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false)
-        return Holder(binding)
+        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false)
+        return Holder(mBinding)
     }
 
     override fun getItemCount(): Int = items.size
@@ -38,8 +40,19 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
     }
 
     fun setCartItemOptionList(cartOptionList: MutableList<CartOption>) {
-        if (mViewModel.shownMenuPos > -1) {
+        if (mViewModel.shownMenuPos > -1 && items[mViewModel.shownMenuPos].cartOptionList.isEmpty()) {
             items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
+            notifyItemChanged(mViewModel.shownMenuPos)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        @BindingAdapter("cartOption")
+        fun RecyclerView.bindOption(list: MutableList<CartOption>) {
+            if (this.adapter != null && list.isNotEmpty()) {
+                (this.adapter as CartOptionAdapter).setItems(list)
+            }
         }
     }
 
@@ -48,6 +61,9 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             setSpacing()
             setSoldOutOverlay(cart.cartValidStatus)
             addCancelLine(cart)
+            binding.recyclerviewCartOption.adapter = CartOptionAdapter()
+            if (cart.cartOptionList.isNotEmpty())
+                (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
             binding.optionText = getOptionText(cart)
             binding.checkboxCart.isEnabled = cart.cartValidStatus.status
 
@@ -106,7 +122,9 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 if (optionInfo.attribute3 != null) text += (", ${optionInfo.attribute3}")
             }
 
-            text += (", ${cart.currentQuantity}개")
+            text += if (text.isEmpty()) ("${cart.currentQuantity}개")
+            else (", ${cart.currentQuantity}개")
+
             return text
         }
     }

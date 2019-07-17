@@ -85,7 +85,6 @@
             android:scaleType="centerInside"
             android:src="@color/white_six"
             app:imageUrl="@{cart.imageUrl}"
-            app:layout_constraintBottom_toTopOf="@id/view_cart_line"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/checkbox_cart" />
 
@@ -321,7 +320,6 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <TextView
                 android:id="@+id/textview_cart_ammounttitle"
