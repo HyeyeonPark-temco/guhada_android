@@ -1,4 +1,8 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.order
+
+import io.temco.guhada.data.model.ShippingMessage
+import io.temco.guhada.data.model.User
+import io.temco.guhada.data.model.UserShipping
 
 class Order {
     var user: User = User()

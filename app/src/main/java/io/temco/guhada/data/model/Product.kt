@@ -1,6 +1,8 @@
 package io.temco.guhada.data.model
 
 import com.google.gson.annotations.SerializedName
+import io.temco.guhada.data.model.option.Option
+import io.temco.guhada.data.model.option.OptionInfo
 
 class Product : BaseProduct() {
     var brandId: Int = 0

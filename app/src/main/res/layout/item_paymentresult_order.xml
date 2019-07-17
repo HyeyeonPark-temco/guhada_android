@@ -6,7 +6,7 @@
 
         <variable
             name="purchaseOrder"
-            type="io.temco.guhada.data.model.PurchaseOrder" />
+            type="io.temco.guhada.data.model.order.PurchaseOrder" />
 
         <variable
             name="attributeText"

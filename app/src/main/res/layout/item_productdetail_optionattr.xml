@@ -5,7 +5,7 @@
 
         <variable
             name="optionAttr"
-            type="io.temco.guhada.data.model.OptionAttr" />
+            type="io.temco.guhada.data.model.option.OptionAttr" />
 
         <variable
             name="attr"

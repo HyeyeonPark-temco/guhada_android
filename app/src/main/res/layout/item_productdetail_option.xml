@@ -12,7 +12,7 @@
 
         <variable
             name="option"
-            type="io.temco.guhada.data.model.Option" />
+            type="io.temco.guhada.data.model.option.Option" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

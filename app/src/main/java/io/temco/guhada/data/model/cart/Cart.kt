@@ -1,4 +1,7 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.cart
+
+import com.google.gson.annotations.Expose
+import io.temco.guhada.data.model.option.OptionInfo
 
 class Cart {
     var brandName: String = ""
@@ -20,10 +23,13 @@ class Cart {
     var maxQuantity: Int = 0
     var minQuantity: Int = 0
     var priority: Int = 0
-    var selectedCartOption: OptionInfo = OptionInfo()
+    var selectedCartOption: OptionInfo? = OptionInfo()
     var sellPrice: Int = 0
     var shipExpense: Int = 0
     var totalStock: Int = 0
+
+    @Expose
+    var cartOptionList: MutableList<CartOption> = mutableListOf()
 
     class ValidStatus {
         var status = false

@@ -1,4 +1,4 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.option
 
 class Option {
     var type: String = ""

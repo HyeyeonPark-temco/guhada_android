@@ -7,8 +7,8 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.data.model.ReviewResponse
-import io.temco.guhada.data.model.ReviewSummary
+import io.temco.guhada.data.model.review.ReviewResponse
+import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel

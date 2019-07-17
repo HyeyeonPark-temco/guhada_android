@@ -20,6 +20,8 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity

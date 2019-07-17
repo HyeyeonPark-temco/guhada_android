@@ -2,6 +2,8 @@ package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.review.ReviewResponse
+import io.temco.guhada.data.model.review.ReviewSummary
 import retrofit2.Call
 import retrofit2.http.*
 

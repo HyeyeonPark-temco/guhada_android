@@ -1,4 +1,6 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.review
+
+import io.temco.guhada.data.model.ProductOption
 
 class ReviewResponseContent {
     var review: Review = Review()

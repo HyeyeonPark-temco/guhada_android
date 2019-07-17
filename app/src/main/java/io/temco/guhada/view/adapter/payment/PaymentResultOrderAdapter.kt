@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.data.model.PurchaseOrder
+import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.databinding.ItemPaymentresultOrderBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 

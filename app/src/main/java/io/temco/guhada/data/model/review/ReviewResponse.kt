@@ -1,6 +1,8 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.review
 
 import com.google.gson.annotations.SerializedName
+import io.temco.guhada.data.model.Paging
+import io.temco.guhada.data.model.Sort
 
 class ReviewResponse {
     var content: MutableList<ReviewResponseContent> = mutableListOf()

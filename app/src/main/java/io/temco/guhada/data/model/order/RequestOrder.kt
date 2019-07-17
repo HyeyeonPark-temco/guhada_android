@@ -1,6 +1,8 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.order
 
 import com.google.gson.annotations.SerializedName
+import io.temco.guhada.data.model.User
+import io.temco.guhada.data.model.UserShipping
 
 class RequestOrder {
     var user: User = User()

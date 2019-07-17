@@ -3,14 +3,23 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.RetryableCallback
-import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.cart.CartResponse
+import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.payment.PGAuth
+import io.temco.guhada.data.model.payment.PGResponse
+import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.OrderService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * BASE URL: dev.order.guhada.com/
+ */
 class OrderServer {
     companion object {
         /**
@@ -96,6 +105,9 @@ class OrderServer {
             })
         }
 
+        /**
+         * 장바구니 조회 API
+         */
         @JvmStatic
         fun getCart(listener: OnServerListener, accessToken: String) {
             val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCart(accessToken)
@@ -108,6 +120,23 @@ class OrderServer {
                     listener.onResult(false, t.message)
                 }
             })
+        }
+
+        /**
+         * 장바구니 아이템의 옵션 리스트 조회 API
+         */
+        @JvmStatic
+        fun getCartItemOptionList(listener: OnServerListener, accessToken: String, cartItemId: Long) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCartItemOptionList(accessToken, cartItemId).enqueue(object : Callback<BaseModel<Any>> {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    listener.onResult(response.isSuccessful, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+
         }
     }
 

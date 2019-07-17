@@ -8,7 +8,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.data.model.OptionAttr
+import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 

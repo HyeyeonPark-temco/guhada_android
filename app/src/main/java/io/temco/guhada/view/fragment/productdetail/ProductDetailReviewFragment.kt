@@ -6,8 +6,8 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.ReviewResponseContent
-import io.temco.guhada.data.model.ReviewSummary
+import io.temco.guhada.data.model.review.ReviewResponseContent
+import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.viewmodel.ProductDetailReviewViewModel
 import io.temco.guhada.databinding.LayoutProductdetailReviewBinding
 import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewAdapter

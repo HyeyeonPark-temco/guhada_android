@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.data.model.Option
-import io.temco.guhada.data.model.OptionAttr
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.option.Option
+import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder

@@ -5,7 +5,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
-import io.temco.guhada.data.model.PurchaseOrderResponse
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentResultActivity
 

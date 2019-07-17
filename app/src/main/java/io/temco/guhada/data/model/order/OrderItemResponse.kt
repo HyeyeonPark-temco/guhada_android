@@ -1,5 +1,6 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.order
 
+import io.temco.guhada.data.model.option.OptionInfo
 import java.io.Serializable
 
 open class OrderItemResponse : Serializable {

@@ -1,5 +1,7 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.order
 
+import io.temco.guhada.data.model.ShippingAddress
+import io.temco.guhada.data.model.payment.Payment
 import java.io.Serializable
 
 class PurchaseOrderResponse : Serializable{

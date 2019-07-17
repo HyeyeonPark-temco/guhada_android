@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -12,7 +13,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.Cart
+import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
@@ -29,12 +30,15 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mBinding.includeCartHeader.title = resources.getString(R.string.cart_title)
 
         mViewModel = CartViewModel()
+        mViewModel.cartOptionList.observe(this, Observer {
+            mCartProductAdapter.setCartItemOptionList(it)
+        })
         mViewModel.getCart {
             LoadingIndicatorUtil(BaseApplication.getInstance()).hide()
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             redirectLoginActivity()
         }
-        mCartProductAdapter = CartProductAdapter()
+        mCartProductAdapter = CartProductAdapter(mViewModel)
         mBinding.recyclerviewCartProduct.adapter = mCartProductAdapter
         mBinding.viewModel = mViewModel
 

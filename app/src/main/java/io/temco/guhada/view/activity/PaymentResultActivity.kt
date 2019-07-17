@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.Type
-import io.temco.guhada.data.model.PurchaseOrder
-import io.temco.guhada.data.model.PurchaseOrderResponse
+import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.viewmodel.PaymentResultViewModel
 import io.temco.guhada.databinding.ActivityPaymentResultBinding
 import io.temco.guhada.view.activity.base.BindActivity

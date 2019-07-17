@@ -9,11 +9,15 @@
 
         <variable
             name="cart"
-            type="io.temco.guhada.data.model.Cart" />
+            type="io.temco.guhada.data.model.cart.Cart" />
 
         <variable
             name="onClickShowOption"
             type="android.view.View.OnClickListener" />
+
+        <variable
+            name="optionText"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,9 +52,9 @@
 
         <TextView
             android:id="@+id/textview_cart_status"
-            android:layout_marginStart="6dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
             android:ellipsize="end"
             android:gravity="start"
             android:text="@{cart.cartValidStatus.cartErrorMessage}"
@@ -58,10 +62,10 @@
             android:textSize="@dimen/text_12"
             android:visibility="@{cart.cartValidStatus.status ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@+id/imageview_cart_product"
-            app:layout_constraintVertical_bias="0.15"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@id/imageview_cart_status"
-            app:layout_constraintRight_toLeftOf="@+id/imagebutton_cart_delete"/>
+            app:layout_constraintRight_toLeftOf="@+id/imagebutton_cart_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
 
         <ImageButton
             android:id="@+id/imagebutton_cart_delete"
@@ -138,29 +142,28 @@
         <TextView
             android:id="@+id/textview_cart_productprice"
             style="@style/TextMedium"
-            android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
             android:text="@{@string/cart_result_price(cart.sellPrice)}"
             android:textColor="@color/warm_grey_two"
             android:textSize="@dimen/text_12"
             android:visibility="@{cart.discountPrice == cart.sellPrice ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/button_cart_buy"
-            app:layout_constraintVertical_bias="0"
             app:layout_constraintLeft_toRightOf="@id/textview_cart_discountprice"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_productname" />
+            app:layout_constraintTop_toBottomOf="@id/textview_cart_productname"
+            app:layout_constraintVertical_bias="0" />
 
         <TextView
             style="@style/TextBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"
+            android:layout_marginBottom="25dp"
             android:text="@{cart.discountDiffPrice + @string/common_unit_percent}"
             android:textColor="@color/common_blue_purple"
-            app:layout_constraintVertical_bias="0"
             android:textSize="@dimen/text_14"
             android:visibility="@{cart.discountDiffPrice == 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/button_cart_buy"
@@ -168,7 +171,7 @@
             app:layout_constraintLeft_toRightOf="@id/textview_cart_productprice"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_cart_productname"
-         />
+            app:layout_constraintVertical_bias="0" />
 
         <Button
             android:id="@+id/button_cart_buy"
@@ -176,8 +179,8 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginStart="25dp"
-            android:background="@drawable/border_all_purple_1dp"
             android:layout_marginTop="25dp"
+            android:background="@drawable/border_all_purple_1dp"
             android:text="@string/cart_button_buy"
             android:textColor="@color/common_blue_purple"
             android:textSize="@dimen/text_13"
@@ -259,7 +262,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="체리,85,1개"
+            android:text="@{optionText}"
             android:textColor="@{cart.cartValidStatus.status ? @color/warm_grey_two : @color/white_two}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toTopOf="@id/constraintllayout_cart_option"

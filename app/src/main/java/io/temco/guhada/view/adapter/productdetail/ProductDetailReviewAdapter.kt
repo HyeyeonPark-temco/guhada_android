@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.data.model.ReviewResponseContent
+import io.temco.guhada.data.model.review.ReviewResponseContent
 import io.temco.guhada.databinding.ItemProductdetailReviewBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 

@@ -2,16 +2,15 @@ package io.temco.guhada.view.adapter.cart
 
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.data.model.Cart
+import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.cart.CartOption
+import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.databinding.ItemCartProductBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
@@ -19,7 +18,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  * 장바구니 상품 리스트 Adapter
  * @author Hyeyeon Park
  */
-class CartProductAdapter : RecyclerView.Adapter<CartProductAdapter.Holder>() {
+class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartProductAdapter.Holder>() {
     private var items: MutableList<Cart> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -38,11 +37,18 @@ class CartProductAdapter : RecyclerView.Adapter<CartProductAdapter.Holder>() {
         notifyDataSetChanged()
     }
 
+    fun setCartItemOptionList(cartOptionList: MutableList<CartOption>) {
+        if (mViewModel.shownMenuPos > -1) {
+            items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
+        }
+    }
+
     inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root), View.OnClickListener {
         fun bind(cart: Cart) {
             setSpacing()
             setSoldOutOverlay(cart.cartValidStatus)
             addCancelLine(cart)
+            binding.optionText = getOptionText(cart)
             binding.checkboxCart.isEnabled = cart.cartValidStatus.status
 
             binding.onClickShowOption = this
@@ -57,6 +63,10 @@ class CartProductAdapter : RecyclerView.Adapter<CartProductAdapter.Holder>() {
             } else {
                 binding.constraintllayoutCartOption.visibility = View.VISIBLE
                 binding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_close)
+                if (items[adapterPosition].cartOptionList.isEmpty()) {
+                    mViewModel.shownMenuPos = adapterPosition
+                    mViewModel.getCartItemOptionList(items[adapterPosition].cartItemId)
+                }
             }
         }
 
@@ -85,6 +95,19 @@ class CartProductAdapter : RecyclerView.Adapter<CartProductAdapter.Holder>() {
         private fun addCancelLine(cart: Cart) {
             if (cart.discountPrice != cart.sellPrice)
                 binding.textviewCartProductprice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        }
+
+        private fun getOptionText(cart: Cart): String {
+            var text = ""
+            val optionInfo = cart.selectedCartOption
+            if (optionInfo != null) {
+                if (optionInfo.attribute1 != null) text += (optionInfo.attribute1)
+                if (optionInfo.attribute2 != null) text += (", ${optionInfo.attribute2}")
+                if (optionInfo.attribute3 != null) text += (", ${optionInfo.attribute3}")
+            }
+
+            text += (", ${cart.currentQuantity}개")
+            return text
         }
     }
 }

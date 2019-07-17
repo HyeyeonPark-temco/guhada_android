@@ -26,7 +26,7 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.OptionAttr
+import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel

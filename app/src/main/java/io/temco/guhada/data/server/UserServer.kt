@@ -7,6 +7,8 @@ import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.review.ReviewResponse
+import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.UserService
 import retrofit2.Call
