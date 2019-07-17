@@ -4,8 +4,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.data.model.Option
 import io.temco.guhada.data.model.OptionAttr
-import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
@@ -31,7 +31,7 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
     companion object {
         @JvmStatic
         @BindingAdapter("productOption")
-        fun RecyclerView.bindOption(list: List<Product.Option>?) {
+        fun RecyclerView.bindOption(list: List<Option>?) {
             if (list != null && list.isNotEmpty() && this.adapter != null) {
                 (this.adapter as ProductDetailOptionAdapter).setItems(list)
             }
@@ -39,7 +39,7 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
 
         @JvmStatic
         @BindingAdapter("productOptionAttr")
-        fun RecyclerView.bindOptionAttr(option: Product.Option?) {
+        fun RecyclerView.bindOptionAttr(option: Option?) {
             if (option != null && this.adapter != null) {
                 val attrList: MutableList<OptionAttr> = ArrayList()
 

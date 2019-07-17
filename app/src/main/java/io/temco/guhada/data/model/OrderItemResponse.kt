@@ -38,6 +38,6 @@ open class OrderItemResponse : Serializable {
     var shipExpense = 0
     var orderValidStatus = "" // 상품 상태 ("VALID", "NOT_SALE", "NOT_DISPLAY", "SOLD_OUT", "CHANGE_PRICE", "CHANGE_OPTION")
     var quantity = 0 // 구매 수량
-    var itemOptionResponse = ItemOptionResponse()
+    var optionInfo = OptionInfo()
 }
 

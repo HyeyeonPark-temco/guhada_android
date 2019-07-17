@@ -20,7 +20,7 @@ class Cart {
     var maxQuantity: Int = 0
     var minQuantity: Int = 0
     var priority: Int = 0
-    var selectedCartOption: Product.OptionInfo = Product.OptionInfo()
+    var selectedCartOption: OptionInfo = OptionInfo()
     var sellPrice: Int = 0
     var shipExpense: Int = 0
     var totalStock: Int = 0

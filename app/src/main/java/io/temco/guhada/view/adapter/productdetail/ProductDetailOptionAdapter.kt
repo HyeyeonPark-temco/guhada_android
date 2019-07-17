@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.data.model.Option
 import io.temco.guhada.data.model.OptionAttr
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
@@ -17,7 +18,7 @@ import io.temco.guhada.databinding.ItemProductdetailOptionBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : RecyclerView.Adapter<ProductDetailOptionAdapter.Holder>() {
-    var options: List<Product.Option> = ArrayList()
+    var options: List<Option> = ArrayList()
     lateinit var mBinding: ItemProductdetailOptionBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -31,13 +32,13 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : Re
         holder.bind(options[position])
     }
 
-    fun setItems(list: List<Product.Option>) {
+    fun setItems(list: List<Option>) {
         this.options = list
         notifyDataSetChanged()
     }
 
     inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionBinding) : BaseViewHolder<ItemProductdetailOptionBinding>(binding.root) {
-        fun bind(option: Product.Option) {
+        fun bind(option: Option) {
             if (adapterPosition > 0) {
                 ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {
                     topMargin = 50

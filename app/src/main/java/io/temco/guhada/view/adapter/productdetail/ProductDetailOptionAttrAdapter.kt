@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.data.model.Option
 import io.temco.guhada.data.model.OptionAttr
-import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionattrBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
-class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Product.Option) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
+class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Option) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
     var list: List<OptionAttr> = ArrayList()
     private var prevSelectedPos: Int = -1
     private var selectedPos: Int = -1
