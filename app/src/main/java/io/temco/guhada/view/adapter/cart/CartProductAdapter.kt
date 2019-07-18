@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.ToastUtil
@@ -24,10 +25,14 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartProductAdapter.Holder>() {
     private var items: MutableList<Cart> = mutableListOf()
+    private var expansionCollection: ExpansionLayoutCollection = ExpansionLayoutCollection()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false))
     override fun getItemCount(): Int = items.size
-    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(items[position])
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(items[position])
+        expansionCollection.add(holder.binding.constraintllayoutCartOption)
+    }
 
     fun setItems(items: MutableList<Cart>) {
         this.items = items
@@ -38,12 +43,21 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         if (mViewModel.shownMenuPos > -1) {
             if (items[mViewModel.shownMenuPos].cartOptionList.isEmpty())
                 items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
-            notifyItemChanged(mViewModel.shownMenuPos)
         }
     }
 
     inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root) {
         fun bind(cart: Cart) {
+            binding.constraintllayoutCartOption.addListener { expansionLayout, expanded ->
+                if (expanded) {
+                    if (items[adapterPosition].cartOptionList.isEmpty()) {
+                        mViewModel.shownMenuPos = adapterPosition
+                        mViewModel.getCartItemOptionList(items[adapterPosition].cartItemId)
+                    }
+                }
+            }
+            binding.constraintllayoutCartOption.collapse(true)
+
             setSpacing()
             setSoldOutOverlay(cart.cartValidStatus)
             addCancelLine(cart)
@@ -75,10 +89,10 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             }
             binding.setOnClickCancel {
                 // 옵션 변경 취소 클릭
-                hideOption()
                 cart.tempQuantity = cart.currentQuantity
                 binding.cart = cart
-                notifyItemChanged(adapterPosition)
+                binding.executePendingBindings()
+                binding.constraintllayoutCartOption.collapse(true)
             }
             binding.setOnClickConfirm {
                 // 옵션 변경 클릭
@@ -100,12 +114,14 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 }
             }
             binding.setOnClickShowOption {
-                if (binding.constraintllayoutCartOption.visibility == View.VISIBLE) hideOption()
-                else showOption()
+                val expansionLayout = binding.constraintllayoutCartOption
+                if (expansionLayout.isExpanded) expansionLayout.collapse(true)
+                else expansionLayout.expand(true)
             }
             binding.cart = cart
             binding.executePendingBindings()
         }
+
 
         // 선택한 옵션 값의 dealOptionId 추출
         private fun getOptionId(cartItemId: Long): Int? {
@@ -148,8 +164,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
         private fun setOptionAdapter(cart: Cart) {
             binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
-            if (cart.cartOptionList.isNotEmpty())
-                (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
+//            if (cart.cartOptionList.isNotEmpty())
+            (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
         }
 
         private fun setSpacing() {

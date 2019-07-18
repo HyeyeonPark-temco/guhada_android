@@ -17,6 +17,7 @@ import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.adapter.cart.CartOptionAdapter
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
 
 class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBinding>() {
@@ -32,7 +33,9 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
 
         mViewModel = CartViewModel()
         mViewModel.cartOptionList.observe(this, Observer {
+            val holder = mBinding.recyclerviewCartProduct.findViewHolderForAdapterPosition(mViewModel.shownMenuPos) as CartProductAdapter.Holder
             mCartProductAdapter.setCartItemOptionList(it)
+            (holder.binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(it)
         })
         mViewModel.getCart {
             LoadingIndicatorUtil(BaseApplication.getInstance()).hide()
@@ -40,6 +43,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             redirectLoginActivity()
         }
         mCartProductAdapter = CartProductAdapter(mViewModel)
+
         mBinding.recyclerviewCartProduct.adapter = mCartProductAdapter
         (mBinding.recyclerviewCartProduct.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         mBinding.viewModel = mViewModel

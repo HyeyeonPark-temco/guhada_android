@@ -40,407 +40,429 @@
             type="Integer" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintlayout_cart_product"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_white"
-        android:paddingTop="30dp">
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/checkbox_cart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/selector_checkbox_all"
-            android:button="@null"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0" />
-
-        <ImageView
-            android:id="@+id/imageview_cart_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:src="@{cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeoption) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeprice) ? @drawable/exclamation_mark : @drawable/sold_out}"
-            android:visibility="@{cart.cartValidStatus.status ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/imageview_cart_product"
-            app:layout_constraintLeft_toRightOf="@id/checkbox_cart"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2" />
-
-        <TextView
-            android:id="@+id/textview_cart_status"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:ellipsize="end"
-            android:gravity="start"
-            android:text="@{cart.cartValidStatus.cartErrorMessage}"
-            android:textColor="@{cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeoption) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeprice) ? @color/common_blue_purple : @color/tomato}"
-            android:textSize="@dimen/text_12"
-            android:visibility="@{cart.cartValidStatus.status ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@+id/imageview_cart_product"
-            app:layout_constraintLeft_toRightOf="@id/imageview_cart_status"
-            app:layout_constraintRight_toLeftOf="@+id/imagebutton_cart_delete"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.15" />
-
-        <ImageButton
-            android:id="@+id/imagebutton_cart_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/bag_icon_delete"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageview_cart_product"
-            android:layout_width="91dp"
-            android:layout_height="120dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:scaleType="centerInside"
-            android:src="@color/white_six"
-            app:imageUrl="@{cart.imageUrl}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/checkbox_cart" />
-
-        <TextView
-            android:id="@+id/textview_cart_brandname"
-            style="@style/TextMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="25dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@{cart.brandName}"
-            android:textColor="@color/black_four"
-            android:textSize="@dimen/text_13"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintLeft_toRightOf="@+id/imageview_cart_product"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/checkbox_cart" />
-
-        <TextView
-            android:id="@+id/textview_cart_productname"
-            style="@style/TextMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="25dp"
-            android:ellipsize="end"
-            android:gravity="start"
-            android:singleLine="true"
-            android:text="@{cart.season + ` ` + cart.dealName}"
-            android:textColor="@color/black_four"
-            android:textSize="@dimen/text_13"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintLeft_toRightOf="@+id/imageview_cart_product"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_brandname" />
-
-        <TextView
-            android:id="@+id/textview_cart_discountprice"
-            style="@style/TextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="6dp"
-            android:text="@{@string/cart_result_price(cart.discountPrice)}"
-            android:textColor="@color/black_four"
-            android:textSize="@dimen/text_14"
-            app:layout_constraintLeft_toRightOf="@+id/imageview_cart_product"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_productname" />
-
-        <TextView
-            android:id="@+id/textview_cart_productprice"
-            style="@style/TextMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="7dp"
-            android:text="@{@string/cart_result_price(cart.sellPrice)}"
-            android:textColor="@color/warm_grey_two"
-            android:textSize="@dimen/text_12"
-            android:visibility="@{cart.discountPrice == cart.sellPrice ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/button_cart_buy"
-            app:layout_constraintLeft_toRightOf="@id/textview_cart_discountprice"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_productname"
-            app:layout_constraintVertical_bias="0" />
-
-        <TextView
-            style="@style/TextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="25dp"
-            android:text="@{cart.discountDiffPrice + @string/common_unit_percent}"
-            android:textColor="@color/common_blue_purple"
-            android:textSize="@dimen/text_14"
-            android:visibility="@{cart.discountDiffPrice == 0 ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/button_cart_buy"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toRightOf="@id/textview_cart_productprice"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_productname"
-            app:layout_constraintVertical_bias="0" />
-
-        <Button
-            android:id="@+id/button_cart_buy"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/border_all_purple_1dp"
-            android:text="@string/cart_button_buy"
-            android:textColor="@color/common_blue_purple"
-            android:textSize="@dimen/text_13"
-            android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/view_cart_line"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toRightOf="@id/imageview_cart_product"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_discountprice"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/button_cart_show"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/border_all_whitethree"
-            android:text="@string/cart_button_show"
-            android:textColor="@color/black_four"
-            android:textSize="@dimen/text_13"
-            android:visibility="@{cart.cartValidStatus.status ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/view_cart_line"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toRightOf="@id/imageview_cart_product"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_discountprice"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/button_cart_notification"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/border_all_whitethree"
-            android:text="@string/cart_button_notiffication"
-            android:textColor="@color/black_four"
-            android:textSize="@dimen/text_13"
-            android:visibility="@{!cart.cartValidStatus.status &amp;&amp; (cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eos) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eol) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_productsoldout) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_optionsoldout)) ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/view_cart_line"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toRightOf="@id/button_cart_show"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_cart_discountprice"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <View
-            android:id="@+id/view_cart_line"
+        <com.github.florent37.expansionpanel.ExpansionHeader
+            android:id="@+id/expansionheader_cart"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
-
-            android:background="@{!cart.cartValidStatus.status &amp;&amp; (cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eos) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eol) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_productsoldout) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_optionsoldout)) ? @color/white_five : @color/white_six}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageview_cart_product" />
-
-        <TextView
-            android:id="@+id/textview_cart_optiontitle"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="@string/cart_option_title"
-            android:textColor="@{cart.cartValidStatus.status ? @color/warm_grey_two : @color/white_two}"
-            android:textSize="@dimen/text_13"
-            app:layout_constraintBottom_toTopOf="@id/constraintllayout_cart_option"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/textview_cart_optioncontent"
-            app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+            app:expansion_headerIndicator="@id/imagebutton_cart_optionchange"
+            app:expansion_layout="@id/constraintllayout_cart_option"
+            app:expansion_toggleOnClick="true">
 
-        <TextView
-            android:id="@+id/textview_cart_optioncontent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="@{optionText}"
-            android:textColor="@{cart.cartValidStatus.status ? @color/warm_grey_two : @color/white_two}"
-            android:textSize="@dimen/text_13"
-            app:layout_constraintBottom_toTopOf="@id/constraintllayout_cart_option"
-            app:layout_constraintLeft_toRightOf="@id/textview_cart_optiontitle"
-            app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_cart_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/common_white"
+                android:paddingTop="30dp">
 
-        <TextView
-            android:id="@+id/textview_cart_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dp"
-            android:onClick="@{onClickShowOption}"
-            android:text="@string/cart_option_change"
-            android:textColor="@color/greyish"
-            android:textSize="@dimen/text_13"
-            android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/constraintllayout_cart_option"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintLeft_toRightOf="@id/textview_cart_optioncontent"
-            app:layout_constraintRight_toLeftOf="@id/imagebutton_cart_optionchange"
-            app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/selector_checkbox_all"
+                    android:button="@null"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0" />
 
-        <ImageButton
-            android:id="@+id/imagebutton_cart_optionchange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:onClick="@{onClickShowOption}"
-            android:src="@drawable/bag_btn_option_open"
-            android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@id/constraintllayout_cart_option"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+                <ImageView
+                    android:id="@+id/imageview_cart_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@{cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeoption) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeprice) ? @drawable/exclamation_mark : @drawable/sold_out}"
+                    android:visibility="@{cart.cartValidStatus.status ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/imageview_cart_product"
+                    app:layout_constraintLeft_toRightOf="@id/checkbox_cart"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.2" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/textview_cart_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:text="@{cart.cartValidStatus.cartErrorMessage}"
+                    android:textColor="@{cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeoption) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_changeprice) ? @color/common_blue_purple : @color/tomato}"
+                    android:textSize="@dimen/text_12"
+                    android:visibility="@{cart.cartValidStatus.status ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@+id/imageview_cart_product"
+                    app:layout_constraintLeft_toRightOf="@id/imageview_cart_status"
+                    app:layout_constraintRight_toLeftOf="@+id/imagebutton_cart_delete"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.15" />
+
+                <ImageButton
+                    android:id="@+id/imagebutton_cart_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/bag_icon_delete"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageview_cart_product"
+                    android:layout_width="91dp"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@color/white_six"
+                    app:imageUrl="@{cart.imageUrl}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/checkbox_cart" />
+
+                <TextView
+                    android:id="@+id/textview_cart_brandname"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@{cart.brandName}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_cart_product"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/checkbox_cart" />
+
+                <TextView
+                    android:id="@+id/textview_cart_productname"
+                    style="@style/TextMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="25dp"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="@{cart.season + ` ` + cart.dealName}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_cart_product"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_cart_brandname" />
+
+                <TextView
+                    android:id="@+id/textview_cart_discountprice"
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="6dp"
+                    android:text="@{@string/cart_result_price(cart.discountPrice)}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintLeft_toRightOf="@+id/imageview_cart_product"
+                    app:layout_constraintTop_toBottomOf="@id/textview_cart_productname" />
+
+                <TextView
+                    android:id="@+id/textview_cart_productprice"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="7dp"
+                    android:text="@{@string/cart_result_price(cart.sellPrice)}"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_12"
+                    android:visibility="@{cart.discountPrice == cart.sellPrice ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/button_cart_buy"
+                    app:layout_constraintLeft_toRightOf="@id/textview_cart_discountprice"
+                    app:layout_constraintTop_toBottomOf="@id/textview_cart_productname"
+                    app:layout_constraintVertical_bias="0" />
+
+                <TextView
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="25dp"
+                    android:text="@{cart.discountDiffPrice + @string/common_unit_percent}"
+                    android:textColor="@color/common_blue_purple"
+                    android:textSize="@dimen/text_14"
+                    android:visibility="@{cart.discountDiffPrice == 0 ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/button_cart_buy"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toRightOf="@id/textview_cart_productprice"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_cart_productname"
+                    app:layout_constraintVertical_bias="0" />
+
+                <Button
+                    android:id="@+id/button_cart_buy"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/border_all_purple_1dp"
+                    android:text="@string/cart_button_buy"
+                    android:textColor="@color/common_blue_purple"
+                    android:textSize="@dimen/text_13"
+                    android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@id/view_cart_line"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toRightOf="@id/imageview_cart_product"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_cart_discountprice"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <Button
+                    android:id="@+id/button_cart_show"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:text="@string/cart_button_show"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    android:visibility="@{cart.cartValidStatus.status ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toTopOf="@id/view_cart_line"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toRightOf="@id/imageview_cart_product"
+                    app:layout_constraintTop_toBottomOf="@id/textview_cart_discountprice"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <Button
+                    android:id="@+id/button_cart_notification"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:text="@string/cart_button_notiffication"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    android:visibility="@{!cart.cartValidStatus.status &amp;&amp; (cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eos) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eol) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_productsoldout) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_optionsoldout)) ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@id/view_cart_line"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toRightOf="@id/button_cart_show"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_cart_discountprice"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <View
+                    android:id="@+id/view_cart_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="20dp"
+
+                    android:background="@{!cart.cartValidStatus.status &amp;&amp; (cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eos) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eol) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_productsoldout) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_optionsoldout)) ? @color/white_five : @color/white_six}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imageview_cart_product" />
+
+                <TextView
+                    android:id="@+id/textview_cart_optiontitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="@string/cart_option_title"
+                    android:textColor="@{cart.cartValidStatus.status ? @color/warm_grey_two : @color/white_two}"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/textview_cart_optioncontent"
+                    app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+
+                <TextView
+                    android:id="@+id/textview_cart_optioncontent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{optionText}"
+                    android:textColor="@{cart.cartValidStatus.status ? @color/warm_grey_two : @color/white_two}"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/textview_cart_optiontitle"
+                    app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+
+                <TextView
+                    android:id="@+id/textview_cart_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="6dp"
+                    android:onClick="@{onClickShowOption}"
+                    android:text="@string/cart_option_change"
+                    android:textColor="@color/greyish"
+                    android:textSize="@dimen/text_13"
+                    android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintLeft_toRightOf="@id/textview_cart_optioncontent"
+                    app:layout_constraintRight_toLeftOf="@id/imagebutton_cart_optionchange"
+                    app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+
+                <ImageButton
+                    android:id="@+id/imagebutton_cart_optionchange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:onClick="@{onClickShowOption}"
+                    android:src="@drawable/bag_btn_option_open"
+                    android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_cart_line" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.github.florent37.expansionpanel.ExpansionHeader>
+
+        <com.github.florent37.expansionpanel.ExpansionLayout
             android:id="@+id/constraintllayout_cart_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/pale_grey"
-            android:paddingLeft="20dp"
-            android:paddingTop="30dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="30dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_cart_optiontitle">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_cart_option"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@color/pale_grey"
+                android:paddingLeft="20dp"
+                android:paddingTop="30dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="30dp">
 
-            <TextView
-                android:id="@+id/textview_cart_ammounttitle"
-                style="@style/TextMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="30dp"
-                android:text="@string/cart_option_amount"
-                android:textColor="@color/warm_grey_two"
-                android:textSize="@dimen/text_13"
-                app:layout_constraintBottom_toTopOf="@id/button_cart_cancel"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerview_cart_option" />
-
-
-            <LinearLayout
-                android:id="@+id/linearlayout_cart_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="54dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/border_all_whitethree"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/button_cart_cancel"
-
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintLeft_toRightOf="@id/textview_cart_ammounttitle"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerview_cart_option"
-                tools:layout_editor_absoluteX="44dp">
-
-                <ImageButton
-                    android:id="@+id/imagebutton_cart_minus"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_cart_option"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:onClick="@{onClickAmountMinus}"
-                    android:src="@drawable/bag_btn_quantity_minus_off" />
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/imageview_cart_amount"
-                    style="@style/TextBold"
+                    android:id="@+id/textview_cart_ammounttitle"
+                    style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="30dp"
+                    android:text="@string/cart_option_amount"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintBottom_toTopOf="@id/button_cart_cancel"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerview_cart_option" />
+
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_cart_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="54dp"
+                    android:layout_marginTop="15dp"
                     android:background="@drawable/border_all_whitethree"
-                    android:paddingStart="12dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="12dp"
-                    android:paddingBottom="8dp"
-                    android:text="@{String.valueOf(amount)}"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_12"
-                    app:layout_constraintLeft_toRightOf="@id/imagebutton_cart_minus" />
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/button_cart_cancel"
 
-                <ImageButton
-                    android:id="@+id/imagebutton_cart_plus"
-                    android:layout_width="wrap_content"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintLeft_toRightOf="@id/textview_cart_ammounttitle"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerview_cart_option"
+                    tools:layout_editor_absoluteX="44dp">
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_cart_minus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:onClick="@{onClickAmountMinus}"
+                        android:src="@drawable/bag_btn_quantity_minus_off" />
+
+                    <TextView
+                        android:id="@+id/imageview_cart_amount"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_all_whitethree"
+                        android:paddingStart="12dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="12dp"
+                        android:paddingBottom="8dp"
+                        android:text="@{String.valueOf(amount)}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_12"
+                        app:layout_constraintLeft_toRightOf="@id/imagebutton_cart_minus" />
+
+                    <ImageButton
+                        android:id="@+id/imagebutton_cart_plus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:onClick="@{onClickAmountPlus}"
+                        android:src="@drawable/bag_btn_quantity_plus_on"
+                        app:layout_constraintLeft_toRightOf="@id/imageview_cart_amount" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/button_cart_cancel"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:onClick="@{onClickAmountPlus}"
-                    android:src="@drawable/bag_btn_quantity_plus_on"
-                    app:layout_constraintLeft_toRightOf="@id/imageview_cart_amount" />
-            </LinearLayout>
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@color/greyish_brown_two"
+                    android:onClick="@{onClickCancel}"
+                    android:text="@string/cart_option_cancel"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/button_cart_confirm"
+                    app:layout_constraintTop_toBottomOf="@id/linearlayout_cart_amount" />
 
-            <Button
-                android:id="@+id/button_cart_cancel"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="4dp"
-                android:background="@color/greyish_brown_two"
-                android:text="@string/cart_option_cancel"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_13"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:onClick="@{onClickCancel}"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/button_cart_confirm"
-                app:layout_constraintTop_toBottomOf="@id/linearlayout_cart_amount" />
+                <Button
+                    android:id="@+id/button_cart_confirm"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/common_blue_purple"
+                    android:onClick="@{onClickConfirm}"
+                    android:text="@string/cart_option_confirm"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@id/button_cart_cancel"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearlayout_cart_amount" />
 
-            <Button
-                android:id="@+id/button_cart_confirm"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:onClick="@{onClickConfirm}"
-                android:layout_marginTop="30dp"
-                android:background="@color/common_blue_purple"
-                android:text="@string/cart_option_confirm"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_13"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@id/button_cart_cancel"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linearlayout_cart_amount" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.github.florent37.expansionpanel.ExpansionLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 </layout>
