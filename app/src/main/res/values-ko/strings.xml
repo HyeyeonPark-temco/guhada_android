@@ -618,4 +618,6 @@
     <string name="cart_message_optionsoldout">해당 옵션이 품절되었습니다.</string>
     <string name="cart_message_changeoption">해당 상품의 옵션정보가 변경되었습니다.</string>
     <string name="cart_message_changeprice">해당 상품의 가격정보가 변경되었습니다.</string>
+    <string name="cart_message_changeselectedoption">상품 옵션이 변경되었습니다.</string>
+    <string name="cart_message_notselectedoption">옵션을 선택해주세요</string>
 </resources>

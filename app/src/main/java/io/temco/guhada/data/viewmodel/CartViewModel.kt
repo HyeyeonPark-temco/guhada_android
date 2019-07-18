@@ -6,6 +6,8 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.internal.LinkedTreeMap
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.callWithToken
@@ -64,12 +66,7 @@ class CartViewModel : BaseObservableViewModel() {
         callWithToken({ accessToken ->
             OrderServer.getCart(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            cartResponse = it.data as CartResponse
-                            if (cartResponse.cartItemResponseList.isNotEmpty()) {
-                                notifyPropertyChanged(BR.cartResponse)
-                            }
-                        })
+                        successTask = { setCartItemList(it.data as CartResponse) })
             }, accessToken)
         }, { invalidTokenTask() })
     }
@@ -138,6 +135,37 @@ class CartViewModel : BaseObservableViewModel() {
         }
     }
 
+    fun updateCartItemOption(cartItemId: Long, selectDealOptionId: Int, quantity: Int) {
+        callWithToken(task = { accessToken ->
+            OrderServer.updateCartItemOption(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_changeselectedoption))
+                            setCartItemList(it.data as CartResponse)
+                        })
+            }, accessToken = accessToken, cartItemId = cartItemId, selectDealOptionId = selectDealOptionId, quantity = quantity)
+        })
+    }
+
+    fun updateCartItemQuantity(cartItemId: Long, quantity: Int) {
+        callWithToken(task = { accessToken ->
+            OrderServer.updateCartItemQuantity(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_changeselectedoption))
+                            setCartItemList(it.data as CartResponse)
+                        })
+            }, accessToken = accessToken, cartItemId = cartItemId, quantity = quantity)
+        })
+    }
+
+    private fun setCartItemList(cartResponse: CartResponse) {
+        this.cartResponse = cartResponse
+        if (cartResponse.cartItemResponseList.isNotEmpty()) {
+            notifyPropertyChanged(BR.cartResponse)
+        }
+    }
+
     //
     private fun contractDealOptionId(cartDealOption: CartDealOption, item: LinkedTreeMap<String, Any>) {
         DealOption().apply {
@@ -158,21 +186,6 @@ class CartViewModel : BaseObservableViewModel() {
 
     fun onSelectAttr(optionAttr: OptionAttr) {
         selectedOptionMap[optionAttr.label] = optionAttr.name
-    }
-
-    fun updateCartItemOption(cartItemId: Long, selectDealOptionId: Int, quantity: Int) {
-        callWithToken(task = { accessToken ->
-            OrderServer.updateCartItemOption(OnServerListener { success, o ->
-                executeByResultCode(success, o,
-                        successTask = {
-                            ToastUtil.showMessage("상품 옵션이 변경되었습니다.")
-                            cartResponse = it.data as CartResponse
-                            if (cartResponse.cartItemResponseList.isNotEmpty()) {
-                                notifyPropertyChanged(BR.cartResponse)
-                            }
-                        })
-            }, accessToken = accessToken, cartItemId = cartItemId, selectDealOptionId = selectDealOptionId, quantity = quantity)
-        })
     }
 
     /**

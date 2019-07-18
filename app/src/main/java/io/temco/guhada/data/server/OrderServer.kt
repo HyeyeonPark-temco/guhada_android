@@ -3,6 +3,7 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.RetryableCallback
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
@@ -143,16 +144,18 @@ class OrderServer {
          */
         @JvmStatic
         fun updateCartItemOption(listener: OnServerListener, accessToken: String, cartItemId: Long, selectDealOptionId: Int, quantity: Int) {
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemOption(accessToken, cartItemId, selectDealOptionId, quantity).enqueue(object : Callback<BaseModel<CartResponse>> {
-                override fun onResponse(call: Call<BaseModel<CartResponse>>, response: Response<BaseModel<CartResponse>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<CartResponse>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemOption(accessToken, cartItemId, selectDealOptionId, quantity).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
         }
-    }
 
+        /**
+         * 장바구니 상품 수량 변경 API
+         */
+        @JvmStatic
+        fun updateCartItemQuantity(listener: OnServerListener, accessToken: String, cartItemId: Long, quantity: Int) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemQuantity(accessToken, cartItemId, quantity).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+        }
+
+    }
 }

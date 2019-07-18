@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartOption
@@ -48,7 +49,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         }
     }
 
-    inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root), View.OnClickListener {
+    inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root) {
         fun bind(cart: Cart) {
             setSpacing()
             setSoldOutOverlay(cart.cartValidStatus)
@@ -74,24 +75,33 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 }
             }
             binding.setOnClickCancel {
+                // 옵션 변경 취소 클릭
                 hideOption()
                 cart.tempQuantity = cart.currentQuantity
                 binding.cart = cart
                 notifyItemChanged(adapterPosition)
             }
             binding.setOnClickConfirm {
-                // 옵션 변경 클릭
+                // 옵션 변경 클
                 val selectedOptionId = getOptionId(cart.cartItemId)
                 if (selectedOptionId != null) {
-                    mViewModel.updateCartItemOption(cartItemId = cart.cartItemId, quantity = cart.tempQuantity, selectDealOptionId = selectedOptionId)
+                    // 1. 옵션이 있는 상품
+                    if (mViewModel.selectedOptionMap.keys.size == cart.cartOptionList.size)
+                        mViewModel.updateCartItemOption(cartItemId = cart.cartItemId, quantity = cart.tempQuantity, selectDealOptionId = selectedOptionId)
+                    else
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
+                } else {
+                    // 2. 옵션이 없는 상품 (수량만 변경)
+                    if (cart.tempQuantity == cart.currentQuantity) {
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
+                    } else {
+                        mViewModel.updateCartItemQuantity(cartItemId = cart.cartItemId, quantity = cart.tempQuantity)
+                    }
                 }
             }
             binding.setOnClickShowOption {
-                if (binding.constraintllayoutCartOption.visibility == View.VISIBLE) {
-                    hideOption()
-                } else {
-                    showOption()
-                }
+                if (binding.constraintllayoutCartOption.visibility == View.VISIBLE) hideOption()
+                else showOption()
             }
             binding.cart = cart
             binding.executePendingBindings()
@@ -139,10 +149,6 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
             if (cart.cartOptionList.isNotEmpty())
                 (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
-        }
-
-        override fun onClick(v: View?) {
-
         }
 
         private fun setSpacing() {

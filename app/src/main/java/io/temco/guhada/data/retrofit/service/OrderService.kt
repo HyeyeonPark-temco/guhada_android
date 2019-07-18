@@ -49,14 +49,20 @@ interface OrderService {
     fun getCart(@Header("Authorization") accessToken: String): Call<BaseModel<CartResponse>>
 
     /**
-     * 장바구니 아이템의 옵션 리스트 조회 API
+     * 장바구니 상품의 옵션 리스트 조회 API
      */
     @GET("/cart/getCartItemOptionList")
     fun getCartItemOptionList(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long): Call<BaseModel<Any>>
 
     /**
-     * 장바구니 옵션 변경 API
+     * 장바구니 상품 옵션 변경 API
      */
     @POST("/cart/changeSelectOption")
     fun updateCartItemOption(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long, @Query("selectDealOptionId") selectDealOptionId: Int, @Query("quantity") quantity: Int): Call<BaseModel<CartResponse>>
+
+    /**
+     * 장바구니 상품 수량 변경 API
+     */
+    @POST("/cart/changeQuantity")
+    fun updateCartItemQuantity(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long, @Query("quantity") quantity: Int): Call<BaseModel<CartResponse>>
 }
