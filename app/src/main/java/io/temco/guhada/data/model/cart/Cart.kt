@@ -3,20 +3,23 @@ package io.temco.guhada.data.model.cart
 import com.google.gson.annotations.Expose
 import io.temco.guhada.data.model.option.OptionInfo
 
+/**
+ * 장바구니 상품 클래스
+ * @author Hyeyeon Park
+ */
 class Cart {
+    var dealId: Long = 0
+    var sellerId: Long = 0
+    var cartItemId: Long = 0
+
     var brandName: String = ""
-    var cartValidStatus: ValidStatus = ValidStatus()
+    var cartValidStatus: CartValidStatus = CartValidStatus()
     var dealName: String = ""
     var dealUrl: String = ""
     var imageName: String = ""
     var imageUrl: String = ""
     var season: String = ""
     var sellerName: String = ""
-
-    var dealId: Long = 0
-    var sellerId: Long = 0
-    var cartItemId: Long = 0
-
     var currentQuantity: Int = 0
     var discountDiffPrice: Int = 0
     var discountPrice: Int = 0
@@ -34,8 +37,4 @@ class Cart {
     @Expose
     var tempQuantity = 0
 
-    class ValidStatus {
-        var status = false
-        var cartErrorMessage = ""
-    }
 }

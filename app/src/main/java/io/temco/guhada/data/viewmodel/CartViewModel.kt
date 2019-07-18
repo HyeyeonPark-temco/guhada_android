@@ -13,8 +13,10 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.callWithToken
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.cart.CartDealOption
 import io.temco.guhada.data.model.cart.CartOption
 import io.temco.guhada.data.model.cart.CartResponse
+import io.temco.guhada.data.model.cart.DealOption
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -56,10 +58,13 @@ class CartViewModel : BaseObservableViewModel() {
     var selectedOptionMap: MutableMap<String, String> = mutableMapOf()
     var cartDealOptionList: MutableList<CartDealOption> = mutableListOf()
 
-
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
         notifyPropertyChanged(BR.totalDiscountVisible)
+    }
+
+    fun onSelectAttr(optionAttr: OptionAttr) {
+        selectedOptionMap[optionAttr.label] = optionAttr.name
     }
 
     fun getCart(invalidTokenTask: () -> Unit = {}) {
@@ -83,40 +88,6 @@ class CartViewModel : BaseObservableViewModel() {
                         })
             }, accessToken, cartItemId)
         })
-    }
-
-    // display option
-    private fun contractOptionAttr(cartItemId: Long, optionInfoList: List<LinkedTreeMap<String, Any>>): MutableList<CartOption> {
-        val cartDealOption = CartDealOption().apply { this.cartItemId = cartItemId }
-        val cartOptionList = mutableListOf<CartOption>()
-        val label1Option = CartOption()
-        val label2Option = CartOption()
-        val label3Option = CartOption()
-
-        for (item in optionInfoList) {
-            contractDealOptionId(cartDealOption, item)
-            getCartOption(label1Option, item, optionLabel = "label1", attribute = "attribute1", colorRgb = "rgb1")
-            getCartOption(label2Option, item, optionLabel = "label2", attribute = "attribute2", colorRgb = "rgb2")
-            getCartOption(label3Option, item, optionLabel = "label3", attribute = "attribute3", colorRgb = "rgb3")
-        }
-
-        if (label1Option.label != null && label1Option.label?.isNotBlank() == true && label1Option.label != "null") cartOptionList.add(label1Option)
-        if (label2Option.label != null && label2Option.label?.isNotBlank() == true && label2Option.label != "null") cartOptionList.add(label2Option)
-        if (label3Option.label != null && label3Option.label?.isNotBlank() == true && label3Option.label != "null") cartOptionList.add(label3Option)
-
-        cartDealOptionList.add(cartDealOption)
-        return cartOptionList
-    }
-
-    /**
-     * @return isNotExist (TRUE: not exist, FALSE: exist)
-     */
-    private fun checkIsNotExist(optionAttrList: MutableList<OptionAttr>, optionAttr: OptionAttr): Boolean {
-        for (item in optionAttrList) {
-            if (item.name == optionAttr.name && item.rgb == optionAttr.rgb)
-                return false
-        }
-        return true
     }
 
     private fun getCartOption(cartOption: CartOption, item: LinkedTreeMap<String, Any>, optionLabel: String, attribute: String, colorRgb: String): CartOption? {
@@ -166,7 +137,45 @@ class CartViewModel : BaseObservableViewModel() {
         }
     }
 
-    //
+    /**
+     * CartOption 데이터 가공
+     */
+    private fun contractOptionAttr(cartItemId: Long, optionInfoList: List<LinkedTreeMap<String, Any>>): MutableList<CartOption> {
+        val cartDealOption = CartDealOption().apply { this.cartItemId = cartItemId }
+        val cartOptionList = mutableListOf<CartOption>()
+        val label1Option = CartOption()
+        val label2Option = CartOption()
+        val label3Option = CartOption()
+
+        for (item in optionInfoList) {
+            contractDealOptionId(cartDealOption, item)
+            getCartOption(label1Option, item, optionLabel = "label1", attribute = "attribute1", colorRgb = "rgb1")
+            getCartOption(label2Option, item, optionLabel = "label2", attribute = "attribute2", colorRgb = "rgb2")
+            getCartOption(label3Option, item, optionLabel = "label3", attribute = "attribute3", colorRgb = "rgb3")
+        }
+
+        if (label1Option.label != null && label1Option.label?.isNotBlank() == true && label1Option.label != "null") cartOptionList.add(label1Option)
+        if (label2Option.label != null && label2Option.label?.isNotBlank() == true && label2Option.label != "null") cartOptionList.add(label2Option)
+        if (label3Option.label != null && label3Option.label?.isNotBlank() == true && label3Option.label != "null") cartOptionList.add(label3Option)
+
+        cartDealOptionList.add(cartDealOption)
+        return cartOptionList
+    }
+
+    /**
+     * @return isNotExist (TRUE: not exist, FALSE: exist)
+     */
+    private fun checkIsNotExist(optionAttrList: MutableList<OptionAttr>, optionAttr: OptionAttr): Boolean {
+        for (item in optionAttrList) {
+            if (item.name == optionAttr.name && item.rgb == optionAttr.rgb)
+                return false
+        }
+        return true
+    }
+
+    /**
+     * 선택 옵션의 dealOptionId 추출
+     */
     private fun contractDealOptionId(cartDealOption: CartDealOption, item: LinkedTreeMap<String, Any>) {
         DealOption().apply {
             this.dealOptionId = (item["dealOptionSelectId"] as Double).toInt()
@@ -184,20 +193,4 @@ class CartViewModel : BaseObservableViewModel() {
         }
     }
 
-    fun onSelectAttr(optionAttr: OptionAttr) {
-        selectedOptionMap[optionAttr.label] = optionAttr.name
-    }
-
-    /**
-     * 장바구니 상품 dealOptionId 조회 용 클래스
-     */
-    inner class CartDealOption {
-        var cartItemId: Long = 0
-        var dealOptionList: MutableList<DealOption> = mutableListOf()
-    }
-
-    inner class DealOption {
-        var dealOptionId = 0
-        var optionMap: MutableMap<String, String> = mutableMapOf()
-    }
 }

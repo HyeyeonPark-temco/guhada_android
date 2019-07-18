@@ -10,19 +10,16 @@ import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.databinding.ItemCartOptionBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 장바구니 상품 옵션 리스트 Adapter
+ * @author Hyeyeon Park
+ */
 class CartOptionAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartOptionAdapter.Holder>() {
     private var items: MutableList<CartOption> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = DataBindingUtil.inflate<ItemCartOptionBinding>(LayoutInflater.from(parent.context), R.layout.item_cart_option, parent, false)
-        return Holder(binding)
-    }
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_option, parent, false))
     override fun getItemCount(): Int = items.size
-
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(items[position])
-    }
+    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(items[position])
 
     fun setItems(items: MutableList<CartOption>) {
         this.items = items

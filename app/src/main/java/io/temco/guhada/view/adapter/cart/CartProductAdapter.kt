@@ -13,6 +13,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartOption
+import io.temco.guhada.data.model.cart.CartValidStatus
 import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.databinding.ItemCartProductBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
@@ -23,18 +24,10 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartProductAdapter.Holder>() {
     private var items: MutableList<Cart> = mutableListOf()
-    private lateinit var mBinding: ItemCartProductBinding
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false)
-        return Holder(mBinding)
-    }
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false))
     override fun getItemCount(): Int = items.size
-
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(items[position])
-    }
+    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(items[position])
 
     fun setItems(items: MutableList<Cart>) {
         this.items = items
@@ -61,17 +54,23 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             binding.optionText = getOptionText(cart)
             binding.checkboxCart.isEnabled = cart.cartValidStatus.status
             binding.setOnClickAmountPlus {
-                cart.tempQuantity += 1
-                binding.amount = cart.tempQuantity
-                binding.executePendingBindings()
+                if (cart.tempQuantity < cart.maxQuantity) {
+                    cart.tempQuantity += 1
+                    binding.amount = cart.tempQuantity
+                    binding.executePendingBindings()
+                } else {
+                    val message = String.format(BaseApplication.getInstance().getString(R.string.cart_message_maxquantity), cart.minQuantity)
+                    ToastUtil.showMessage(message)
+                }
             }
             binding.setOnClickAmountMinus {
-                if (cart.tempQuantity == 1) {
-                    ToastUtil.showMessage("최소 수량은 1개입니다.")
-                } else {
+                if (cart.tempQuantity > cart.minQuantity) {
                     cart.tempQuantity -= 1
                     binding.amount = cart.tempQuantity
                     binding.executePendingBindings()
+                } else {
+                    val message = String.format(BaseApplication.getInstance().getString(R.string.cart_message_minquantity), cart.minQuantity)
+                    ToastUtil.showMessage(message)
                 }
             }
             binding.setOnClickCancel {
@@ -82,7 +81,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 notifyItemChanged(adapterPosition)
             }
             binding.setOnClickConfirm {
-                // 옵션 변경 클
+                // 옵션 변경 클릭
                 val selectedOptionId = getOptionId(cart.cartItemId)
                 if (selectedOptionId != null) {
                     // 1. 옵션이 있는 상품
@@ -92,11 +91,12 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
                 } else {
                     // 2. 옵션이 없는 상품 (수량만 변경)
-                    if (cart.tempQuantity == cart.currentQuantity) {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
-                    } else {
-                        mViewModel.updateCartItemQuantity(cartItemId = cart.cartItemId, quantity = cart.tempQuantity)
-                    }
+                    mViewModel.updateCartItemQuantity(cartItemId = cart.cartItemId, quantity = cart.tempQuantity)
+//                    if (cart.tempQuantity == cart.currentQuantity) {
+//                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
+//                    } else {
+//                        mViewModel.updateCartItemQuantity(cartItemId = cart.cartItemId, quantity = cart.tempQuantity)
+//                    }
                 }
             }
             binding.setOnClickShowOption {
@@ -107,6 +107,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             binding.executePendingBindings()
         }
 
+        // 선택한 옵션 값의 dealOptionId 추출
         private fun getOptionId(cartItemId: Long): Int? {
             for (cartDealOption in mViewModel.cartDealOptionList) {
                 if (cartDealOption.cartItemId == cartItemId) {
@@ -161,7 +162,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             }
         }
 
-        private fun setSoldOutOverlay(cartValidStatus: Cart.ValidStatus) {
+        private fun setSoldOutOverlay(cartValidStatus: CartValidStatus) {
             val errorMessage = cartValidStatus.cartErrorMessage
             val resources = binding.root.resources
             val optionSoldOutMessage = resources.getString(R.string.cart_message_optionsoldout)
@@ -171,6 +172,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
             if (!cartValidStatus.status && (errorMessage == optionSoldOutMessage || errorMessage == productSoldOutMessage || errorMessage == eosMessage || errorMessage == eolMessage))
                 binding.imageviewCartProduct.setColorFilter(Color.argb(212, 255, 255, 255))
+            else binding.imageviewCartProduct.colorFilter = null
+
         }
 
         private fun addCancelLine(cart: Cart) {
