@@ -36,6 +36,7 @@ import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
+import io.temco.guhada.view.fragment.cart.AddCartResultFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -66,7 +67,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
     private fun initUtils() {
         //[2019.06.26]임시 브릿지
-        if(context != null) mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
+        if (context != null) mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
         //  if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
     }
 
@@ -144,6 +145,10 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun redirectCartActivity() {
         val intent = Intent(context, CartActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun showAddCartResult() {
+        AddCartResultFragment.getInstance().show(fragmentManager!!, "addCartResult")
     }
 
     override fun onDestroy() {

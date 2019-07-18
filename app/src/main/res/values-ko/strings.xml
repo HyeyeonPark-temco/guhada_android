@@ -623,4 +623,8 @@
 
     <string name="cart_message_minquantity">최소 구매 수량은 %d개 입니다.</string>
     <string name="cart_message_maxquantity">최대 구매 수량은 %d개 입니다.</string>
+
+    <string name="cart_addresult_title">상품이 장바구니에\n추가되었습니다.</string>
+    <string name="cart_addresult_recommend">이 상품과 함께 많이 구매한 상품</string>
+    <string name="cart_addresult_redirectcart">장바구니로 이동</string>
 </resources>

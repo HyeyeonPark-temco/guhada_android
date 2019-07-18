@@ -115,7 +115,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         notifyPropertyChanged(BR.advantageInfoExpanded)
     }
 
-    fun onClickCart() = listener?.redirectCartActivity()
+    fun onClickCart() = listener?.showAddCartResult()
 
     fun onClickPayment() {
         listener?.redirectPaymentActivity(menuVisibility.get() == View.VISIBLE)

@@ -6,6 +6,7 @@ interface OnProductDetailListener {
     fun scrollToElement(pos: Int)
     fun showMessage(message: String)
     fun showMenu()
+    fun showAddCartResult()
     fun redirectPaymentActivity(isOptionPopupSelected: Boolean)
     fun hideLoadingIndicator()
     fun closeActivity()
