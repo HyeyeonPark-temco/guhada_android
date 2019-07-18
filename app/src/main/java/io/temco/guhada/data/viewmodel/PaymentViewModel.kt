@@ -134,10 +134,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     },
                     failedTask = {
                         listener.hideLoadingIndicator()
-                        if (o != null) listener.showMessage(o as String)
+                        if (o != null) listener.showMessage((o as BaseModel<*>).message)
                         else listener.showMessage("addCartItem 오류")
                     })
-        }, accessToken = accessToken, productId = product.productId, optionId = product.dealOptionId, quantity = quantity)
+        }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
     }
 
     private fun getOrderForm(accessToken: String) {
@@ -269,7 +269,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 결제하기 버튼 클릭
     fun onClickPay() {
         val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress)
-        if (selectedShippingMessage.get()?.equals(defaultShippingMessage) ?: true || shippingMessage.isEmpty()) {
+        if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
             return
         }
@@ -309,8 +309,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     if (userId != null) saveShippingAddress(userId)
                                 }
 
-                                requestOrder("Bearer $accessToken" +
-                                        "", requestOrder)
+                                requestOrder("Bearer $accessToken" , requestOrder)
                             }
                         }
                     }

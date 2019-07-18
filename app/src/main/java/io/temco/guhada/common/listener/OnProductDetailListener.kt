@@ -13,5 +13,8 @@ interface OnProductDetailListener {
     fun showSideMenu()
     fun setBrandProductList(brand: Brand)
     fun redirectHome()
-    fun redirectCartActivity()
+    fun dismissOptionMenu()
+    fun dismissAddCartResult()
+    fun getSelectedOptionDealId() : Long?
+    fun getSelectedProductQuantity() : Int
 }

@@ -9,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnAddCartResultListener
+import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.data.viewmodel.AddCartResultViewModel
+import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.FragmentAddcartresultBinding
 import io.temco.guhada.view.activity.CartActivity
 
@@ -17,7 +19,7 @@ import io.temco.guhada.view.activity.CartActivity
  * 장바구니 담기 완료 Fragment
  * @author Hyeyeon Park
  */
-class AddCartResultFragment : BottomSheetDialogFragment(), OnAddCartResultListener {
+class AddCartResultFragment(val mListener: OnProductDetailListener) : BottomSheetDialogFragment(), OnAddCartResultListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<FragmentAddcartresultBinding>(inflater, R.layout.fragment_addcartresult, container, false)
@@ -34,13 +36,9 @@ class AddCartResultFragment : BottomSheetDialogFragment(), OnAddCartResultListen
     override fun hide() = dismiss()
 
     override fun redirectProductDetail() {
+        mListener.dismissOptionMenu()
+        dismiss()
         startActivity(Intent(context, CartActivity::class.java))
     }
-
-    companion object {
-        @JvmStatic
-        fun getInstance(): AddCartResultFragment = AddCartResultFragment()
-    }
-
 
 }

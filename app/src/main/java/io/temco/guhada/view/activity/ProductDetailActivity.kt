@@ -58,6 +58,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun getLayoutId(): Int = R.layout.activity_product_detail
     override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
 
+    override fun getSelectedProductQuantity(): Int {
+        return 0
+    }
+
+    override fun getSelectedOptionDealId(): Long? {
+        return 0
+    }
+
     override fun init() {
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ProductDetailViewModel(this)
@@ -334,13 +342,15 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     }
 
-    override fun redirectCartActivity() {
-        val intent = Intent(this@ProductDetailActivity, CartActivity::class.java)
-        startActivity(intent)
+    override fun dismissOptionMenu() {
+    }
+
+    override fun dismissAddCartResult() {
+
     }
 
     override fun showAddCartResult() {
-        AddCartResultFragment.getInstance().show(supportFragmentManager, "addCartResult")
+//        AddCartResultFragment.getInstance().show(supportFragmentManager, "addCartResult")
     }
 
     companion object {

@@ -22,7 +22,7 @@ interface OrderService {
      * 장바구니 상품 담기 API
      */
     @POST("/cart/addCartItem")
-    fun addCartItem(@Header("Authorization") accessToken: String, @Query("dealId") productId: Long, @Query("dealOptionId") optionId: Long?, @Query("quantity") quantity: Int): Call<BaseModel<Cart>>
+    fun addCartItem(@Header("Authorization") accessToken: String, @Query("dealId") dealId: Long, @Query("dealOptionId") optionId: Long?, @Query("quantity") quantity: Int): Call<BaseModel<Cart>>
 
     /**
      * 결제창(PG사 화면)을 띄우기위한 데이터 생성 API

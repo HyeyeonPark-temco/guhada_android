@@ -11,7 +11,6 @@ class ProductBridge {
         var isOpen = false
         lateinit var mainActivity: MainActivity
 
-
         fun addProductDetailView(dealId: Long) {
             if (::mainActivity.isInitialized)
                 mainActivity.addProductDetailView(dealId)

@@ -8,8 +8,8 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListener) : BaseObservableViewModel() {
@@ -40,7 +40,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
         @Bindable
         get() = field
 
-    fun getDealOptionId(): Long? = getOptionInfo(DEAL_OPTION_ID)
+    fun getDealOptionId(): Long? = getOptionInfo(DEAL_OPTION_ID)?.toLong()
 
     fun getExtraPrice() {
         extraPrice = ObservableInt(getOptionInfo(EXTRA_PRICE)?.toInt() ?: 0)
@@ -50,32 +50,32 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
         notifyPropertyChanged(BR.totalPrice)
     }
 
-    private fun getOptionInfo(flag: Int): Long? {
+    private fun getOptionInfo(flag: Int): Int? {
         val color = optionMap["COLOR"]
         val size = optionMap["SIZE"]
-        var result: Any? = 0
+        var dealOptionSelectId: Double? = 0.0
 
         if (product.optionInfos != null) {
             for (optionInfo in product.optionInfos!!) {
                 if (color != null) {
                     if (size != null && optionInfo.attribute1 == color.name && optionInfo.attribute2 == size.name) {  // 색상 O, 사이즈 O
-                        result = if (flag == EXTRA_PRICE) optionInfo.price else optionInfo.dealOptionSelectId
+                        dealOptionSelectId = if (flag == EXTRA_PRICE) optionInfo.price.toDouble() else optionInfo.dealOptionSelectId
                     } else {
                         if (optionInfo.attribute1 == color.name) { // 색상 O, 사이즈 X
-                            result = if (flag == EXTRA_PRICE) optionInfo.price else optionInfo.dealOptionSelectId
+                            dealOptionSelectId = if (flag == EXTRA_PRICE) optionInfo.price.toDouble() else optionInfo.dealOptionSelectId
                         }
                     }
                 } else {
                     if (size != null && optionInfo.attribute1 == size.name) {   // 색상 X, 사이즈 O
-                        result = if (flag == EXTRA_PRICE) optionInfo.price else optionInfo.dealOptionSelectId
+                        dealOptionSelectId = if (flag == EXTRA_PRICE) optionInfo.price.toDouble() else optionInfo.dealOptionSelectId
                     } else {  // 색상 X, 사이즈 X => 옵션 없음
-                        result = if (flag == EXTRA_PRICE) 0 else null
+                        dealOptionSelectId = if (flag == EXTRA_PRICE) 0.0 else null
                     }
                 }
             }
         }
 
-        return result.toString().toLong()
+        return dealOptionSelectId?.toInt()
     }
 
     private fun getExtraPriceOperator() {

@@ -10,6 +10,8 @@ open class BaseProduct : Serializable {
 
     var productId: Long = 0
 
+    var dealId : Long = 0
+
     var brandName: String = ""
 
     @SerializedName("name")
