@@ -5,9 +5,9 @@ import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
-import io.temco.guhada.data.model.order.RequestOrder
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -53,4 +53,10 @@ interface OrderService {
      */
     @GET("/cart/getCartItemOptionList")
     fun getCartItemOptionList(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long): Call<BaseModel<Any>>
+
+    /**
+     * 장바구니 옵션 변경 API
+     */
+    @POST("/cart/changeSelectOption")
+    fun updateCartItemOption(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long, @Query("selectDealOptionId") selectDealOptionId: Int, @Query("quantity") quantity: Int): Call<BaseModel<CartResponse>>
 }

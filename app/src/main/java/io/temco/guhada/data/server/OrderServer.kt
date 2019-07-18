@@ -8,9 +8,9 @@ import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
-import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.OrderService
 import retrofit2.Call
@@ -136,7 +136,22 @@ class OrderServer {
                     listener.onResult(false, t.message)
                 }
             })
+        }
 
+        /**
+         * 장바구니 옵션 변경 API
+         */
+        @JvmStatic
+        fun updateCartItemOption(listener: OnServerListener, accessToken: String, cartItemId: Long, selectDealOptionId: Int, quantity: Int) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemOption(accessToken, cartItemId, selectDealOptionId, quantity).enqueue(object : Callback<BaseModel<CartResponse>> {
+                override fun onResponse(call: Call<BaseModel<CartResponse>>, response: Response<BaseModel<CartResponse>>) {
+                    listener.onResult(response.isSuccessful, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<CartResponse>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
         }
     }
 

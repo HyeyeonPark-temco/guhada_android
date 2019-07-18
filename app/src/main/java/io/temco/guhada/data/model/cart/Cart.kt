@@ -31,6 +31,9 @@ class Cart {
     @Expose
     var cartOptionList: MutableList<CartOption> = mutableListOf()
 
+    @Expose
+    var tempQuantity = 0
+
     class ValidStatus {
         var status = false
         var cartErrorMessage = ""

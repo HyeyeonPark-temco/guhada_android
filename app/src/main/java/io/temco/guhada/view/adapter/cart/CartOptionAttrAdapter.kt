@@ -1,15 +1,12 @@
 package io.temco.guhada.view.adapter.cart
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.setPadding
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.RecyclerView
-import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.option.OptionAttr
@@ -68,15 +65,18 @@ class CartOptionAttrAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapte
 
             // CLICK EVENT
             binding.framelayoutProductdetailOptionattr.setOnClickListener {
-
                 prevSelectedPos = this@CartOptionAttrAdapter.selectedPos
                 this@CartOptionAttrAdapter.selectedPos = adapterPosition
 
                 notifyItemChanged(this@CartOptionAttrAdapter.selectedPos)
                 notifyItemChanged(prevSelectedPos)
+
+                mViewModel.onSelectAttr(optionAttr)
             }
 
             binding.executePendingBindings()
         }
+
     }
+
 }

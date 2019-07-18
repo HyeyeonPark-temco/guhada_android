@@ -2,13 +2,14 @@ package io.temco.guhada.view.adapter.cart
 
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartOption
 import io.temco.guhada.data.viewmodel.CartViewModel
@@ -40,8 +41,9 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
     }
 
     fun setCartItemOptionList(cartOptionList: MutableList<CartOption>) {
-        if (mViewModel.shownMenuPos > -1 && items[mViewModel.shownMenuPos].cartOptionList.isEmpty()) {
-            items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
+        if (mViewModel.shownMenuPos > -1) {
+            if (items[mViewModel.shownMenuPos].cartOptionList.isEmpty())
+                items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
             notifyItemChanged(mViewModel.shownMenuPos)
         }
     }
@@ -51,29 +53,96 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             setSpacing()
             setSoldOutOverlay(cart.cartValidStatus)
             addCancelLine(cart)
-            binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
-            if (cart.cartOptionList.isNotEmpty())
-                (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
+            setOptionAdapter(cart)
+
+            cart.tempQuantity = cart.currentQuantity
+            binding.amount = cart.tempQuantity
             binding.optionText = getOptionText(cart)
             binding.checkboxCart.isEnabled = cart.cartValidStatus.status
-
-            binding.onClickShowOption = this
+            binding.setOnClickAmountPlus {
+                cart.tempQuantity += 1
+                binding.amount = cart.tempQuantity
+                binding.executePendingBindings()
+            }
+            binding.setOnClickAmountMinus {
+                if (cart.tempQuantity == 1) {
+                    ToastUtil.showMessage("최소 수량은 1개입니다.")
+                } else {
+                    cart.tempQuantity -= 1
+                    binding.amount = cart.tempQuantity
+                    binding.executePendingBindings()
+                }
+            }
+            binding.setOnClickCancel {
+                hideOption()
+                cart.tempQuantity = cart.currentQuantity
+                binding.cart = cart
+                notifyItemChanged(adapterPosition)
+            }
+            binding.setOnClickConfirm {
+                // 옵션 변경 클릭
+                val selectedOptionId = getOptionId(cart.cartItemId)
+                if (selectedOptionId != null) {
+                    mViewModel.updateCartItemOption(cartItemId = cart.cartItemId, quantity = cart.tempQuantity, selectDealOptionId = selectedOptionId)
+                }
+            }
+            binding.setOnClickShowOption {
+                if (binding.constraintllayoutCartOption.visibility == View.VISIBLE) {
+                    hideOption()
+                } else {
+                    showOption()
+                }
+            }
             binding.cart = cart
             binding.executePendingBindings()
         }
 
-        override fun onClick(v: View?) {
-            if (binding.constraintllayoutCartOption.visibility == View.VISIBLE) {
-                binding.constraintllayoutCartOption.visibility = View.GONE
-                binding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_open)
-            } else {
-                binding.constraintllayoutCartOption.visibility = View.VISIBLE
-                binding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_close)
-                if (items[adapterPosition].cartOptionList.isEmpty()) {
-                    mViewModel.shownMenuPos = adapterPosition
-                    mViewModel.getCartItemOptionList(items[adapterPosition].cartItemId)
+        private fun getOptionId(cartItemId: Long): Int? {
+            for (cartDealOption in mViewModel.cartDealOptionList) {
+                if (cartDealOption.cartItemId == cartItemId) {
+                    for (dealOption in cartDealOption.dealOptionList) {
+
+                        for (i in 0 until dealOption.optionMap.keys.size) {
+                            val optionKey = dealOption.optionMap.keys.toMutableList()[i]
+                            if (dealOption.optionMap[optionKey] == mViewModel.selectedOptionMap[optionKey]) {
+                                if (i == dealOption.optionMap.size - 1) {
+                                    Log.e("장바구니 옵션 아이디", dealOption.dealOptionId.toString())
+                                    return dealOption.dealOptionId
+                                }
+                            } else {
+                                break
+                            }
+                        }
+                    }
                 }
             }
+
+            return null
+        }
+
+
+        private fun hideOption() {
+            binding.constraintllayoutCartOption.visibility = View.GONE
+            binding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_open)
+        }
+
+        private fun showOption() {
+            binding.constraintllayoutCartOption.visibility = View.VISIBLE
+            binding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_close)
+            if (items[adapterPosition].cartOptionList.isEmpty()) {
+                mViewModel.shownMenuPos = adapterPosition
+                mViewModel.getCartItemOptionList(items[adapterPosition].cartItemId)
+            }
+        }
+
+        private fun setOptionAdapter(cart: Cart) {
+            binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
+            if (cart.cartOptionList.isNotEmpty())
+                (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
+        }
+
+        override fun onClick(v: View?) {
+
         }
 
         private fun setSpacing() {

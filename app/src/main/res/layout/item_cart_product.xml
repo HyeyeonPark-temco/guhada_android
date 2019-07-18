@@ -16,8 +16,28 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="onClickAmountPlus"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClickAmountMinus"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClickCancel"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClickConfirm"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="optionText"
             type="String" />
+
+        <variable
+            name="amount"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -357,6 +377,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:onClick="@{onClickAmountMinus}"
                     android:src="@drawable/bag_btn_quantity_minus_off" />
 
                 <TextView
@@ -369,7 +390,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="12dp"
                     android:paddingBottom="8dp"
-                    android:text="@{String.valueOf(cart.currentQuantity)}"
+                    android:text="@{String.valueOf(amount)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintLeft_toRightOf="@id/imagebutton_cart_minus" />
@@ -379,6 +400,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:onClick="@{onClickAmountPlus}"
                     android:src="@drawable/bag_btn_quantity_plus_on"
                     app:layout_constraintLeft_toRightOf="@id/imageview_cart_amount" />
             </LinearLayout>
@@ -393,9 +415,9 @@
                 android:background="@color/greyish_brown_two"
                 android:text="@string/cart_option_cancel"
                 android:textColor="@color/common_white"
-
                 android:textSize="@dimen/text_13"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:onClick="@{onClickCancel}"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/button_cart_confirm"
@@ -407,6 +429,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:onClick="@{onClickConfirm}"
                 android:layout_marginTop="30dp"
                 android:background="@color/common_blue_purple"
                 android:text="@string/cart_option_confirm"
