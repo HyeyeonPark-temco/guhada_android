@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
@@ -17,6 +18,7 @@ import io.temco.guhada.data.model.cart.CartOption
 import io.temco.guhada.data.model.cart.CartValidStatus
 import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.databinding.ItemCartProductBinding
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -117,6 +119,14 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 val expansionLayout = binding.constraintllayoutCartOption
                 if (expansionLayout.isExpanded) expansionLayout.collapse(true)
                 else expansionLayout.expand(true)
+            }
+            binding.setOnClickDelete {
+                CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete),
+                        cancelButtonVisible = true,
+                        confirmTask = {
+                            mViewModel.deleteCartItemId.add(cart.cartItemId.toInt())
+                            mViewModel.deleteCartItem()
+                        }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = CartProductAdapter::class.java.simpleName)
             }
             binding.cart = cart
             binding.executePendingBindings()

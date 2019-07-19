@@ -96,7 +96,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
-            mLoadingIndicatorUtil.show()
+           // mLoadingIndicatorUtil.show()
             mViewModel.getDetail()
 
 //            mLoadingIndicatorUtil.execute {
@@ -303,9 +303,9 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun showMenu() {
         val optionCount = mViewModel.product.value?.options?.size
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            mMenuFragment.getSelectedOptionCount()
+            if(::mMenuFragment.isInitialized)  mMenuFragment.getSelectedOptionCount() else 0
         } else {
-            mHeaderMenuFragment.getSelectedOptionCount()
+            if(::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
         }
 
         if (selectedOptionCount == optionCount) {

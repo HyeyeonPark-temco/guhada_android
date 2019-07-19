@@ -65,4 +65,10 @@ interface OrderService {
      */
     @POST("/cart/changeQuantity")
     fun updateCartItemQuantity(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long, @Query("quantity") quantity: Int): Call<BaseModel<CartResponse>>
+
+    /**
+     * 장바구니 상품 삭제 API
+     */
+    @POST("/cart/removeCartItem")
+    fun deleteCartItem(@Header("Authorization") accessToken: String, @Query("cartItemIdList") cartItemIdList: ArrayList<Int>) : Call<BaseModel<CartResponse>>
 }

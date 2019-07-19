@@ -32,6 +32,10 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="onClickDelete"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="optionText"
             type="String" />
 
@@ -104,7 +108,8 @@
                     android:id="@+id/imagebutton_cart_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
+                    android:onClick="@{onClickDelete}"
+                    android:layout_marginEnd="20dp"
                     android:src="@drawable/bag_icon_delete"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

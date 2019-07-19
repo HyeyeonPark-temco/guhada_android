@@ -58,6 +58,9 @@ class CartViewModel : BaseObservableViewModel() {
     var selectedOptionMap: MutableMap<String, String> = mutableMapOf()
     var cartDealOptionList: MutableList<CartDealOption> = mutableListOf()
 
+    // DELETE
+    var deleteCartItemId: ArrayList<Int> = arrayListOf()
+
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
         notifyPropertyChanged(BR.totalDiscountVisible)
@@ -127,6 +130,18 @@ class CartViewModel : BaseObservableViewModel() {
                             setCartItemList(it.data as CartResponse)
                         })
             }, accessToken = accessToken, cartItemId = cartItemId, quantity = quantity)
+        })
+    }
+
+    fun deleteCartItem() {
+        callWithToken(task = { accessToken ->
+            OrderServer.deleteCartItem(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = {
+                            setCartItemList(it.data as CartResponse)
+                            deleteCartItemId = arrayListOf()
+                        })
+            }, accessToken = accessToken, cartItemIdList = deleteCartItemId)
         })
     }
 

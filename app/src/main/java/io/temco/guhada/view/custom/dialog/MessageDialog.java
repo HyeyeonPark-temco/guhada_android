@@ -8,6 +8,7 @@ import io.temco.guhada.databinding.DialogMessageBinding;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
 public class MessageDialog extends BaseDialog<DialogMessageBinding> implements View.OnClickListener {
+    private boolean cancelButtonVisible;
 
     // -------- LOCAL VALUE --------
     private String mMessage;
@@ -16,6 +17,13 @@ public class MessageDialog extends BaseDialog<DialogMessageBinding> implements V
     ////////////////////////////////////////////////
     // OVERRIDE
     ////////////////////////////////////////////////
+    public MessageDialog(boolean cancelButtonVisible) {
+        this.cancelButtonVisible = cancelButtonVisible;
+    }
+
+    public MessageDialog() {
+        this.cancelButtonVisible = false;
+    }
 
     @Override
     protected int getLayoutId() {
@@ -28,13 +36,16 @@ public class MessageDialog extends BaseDialog<DialogMessageBinding> implements V
 
         // Message
         if (!TextUtils.isEmpty(mMessage)) mBinding.textMessage.setText(mMessage);
+
+        // Set Cancel Button Visibility
+        mBinding.setCancelButtonVisible(cancelButtonVisible);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_confirm:
-                dismissAllowingStateLoss();
+                if (!cancelButtonVisible) dismissAllowingStateLoss();
                 break;
         }
     }

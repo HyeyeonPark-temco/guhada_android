@@ -620,6 +620,7 @@
     <string name="cart_message_changeprice">해당 상품의 가격 정보가 변경되었습니다.</string>
     <string name="cart_message_changeselectedoption">상품 옵션이 변경되었습니다.</string>
     <string name="cart_message_notselectedoption">옵션을 선택해주세요</string>
+    <string name="cart_message_delete">해당 상품을 삭제하시겠습니까?</string>
 
     <string name="cart_message_minquantity">최소 구매 수량은 %d개 입니다.</string>
     <string name="cart_message_maxquantity">최대 구매 수량은 %d개 입니다.</string>

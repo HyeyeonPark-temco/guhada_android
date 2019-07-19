@@ -157,5 +157,14 @@ class OrderServer {
                     ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
         }
 
+        /**
+         * 장바구니 상품 삭제 API
+         */
+        @JvmStatic
+        fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: ArrayList<Int>) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).deleteCartItem(accessToken, cartItemIdList).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+        }
+
     }
 }
