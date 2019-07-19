@@ -2,13 +2,15 @@ package io.temco.guhada.data.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
+import io.temco.guhada.data.model.option.OptionAttr
 import java.io.Serializable
 
 open class BaseProduct : Serializable {
     var season: String = ""
 
     var productId: Long = 0
+
+    var dealId : Long = 0
 
     var brandName: String = ""
 
@@ -25,7 +27,7 @@ open class BaseProduct : Serializable {
     var totalCount: Int = 0
 
     @Expose
-    var optionMap: MutableMap<String, ProductDetailOptionAdapter.OptionAttr> = mutableMapOf()
+    var optionMap: MutableMap<String, OptionAttr> = mutableMapOf()
 
     @Expose
     var dealOptionId: Long? = null

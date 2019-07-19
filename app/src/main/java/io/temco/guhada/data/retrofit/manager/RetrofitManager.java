@@ -2,10 +2,6 @@ package io.temco.guhada.data.retrofit.manager;
 
 import android.app.Application;
 import android.os.Build;
-import android.util.Log;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,13 +10,11 @@ import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.common.util.CustomLog;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -55,7 +49,6 @@ public class RetrofitManager {
                 getCache(BaseApplication.getInstance()),
                 getInterceptor(), isLogged));
     }
-
 
     ////////////////////////////////////////////////
     // PUBLIC
@@ -92,8 +85,6 @@ public class RetrofitManager {
         return instance.mManager.create(service);
     }
 
-
-
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
@@ -101,24 +92,6 @@ public class RetrofitManager {
     private Retrofit getRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(Type.Server.getUrl(mCurrentType))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build();
-    }
-
-    private static Converter.Factory createGsonConverter(java.lang.reflect.Type type, Object typeAdapter) {
-        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("HomeListRepository GetBaseModelDeserializer","createGsonConverter");
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(type, typeAdapter);
-        Gson gson = gsonBuilder.create();
-        return GsonConverterFactory.create(gson);
-    }
-
-    private Retrofit getRetrofitCommon(OkHttpClient okHttpClient, java.lang.reflect.Type type, Object typeAdapter) {
-        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("HomeListRepository GetBaseModelDeserializer","getRetrofitCommon");
-        return new Retrofit.Builder()
-                .baseUrl(Type.Server.getUrl(mCurrentType))
-                //.addConverterFactory(createGsonConverter(type, typeAdapter))
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
@@ -164,16 +137,14 @@ public class RetrofitManager {
         return chain -> {
             final Request.Builder builder = chain.request().newBuilder();
             // Common
-            builder.header("X-Guhada-accessTime", String.valueOf(System.currentTimeMillis())); // Time
-            builder.header("X-Guhada-country", CommonUtil.getSystemCountryCode()); // Country
-            builder.header("X-Guhada-language", Preferences.getLanguage()); // Language
-            builder.header("X-Guhada-platform", "AOS"); // Platform
-            builder.header("X-Guhada-version", BuildConfig.VERSION_NAME); // Version
+            builder.header("x-guhada-accesstime", String.valueOf(System.currentTimeMillis())); // Time
+            builder.header("x-guhada-country", CommonUtil.getSystemCountryCode()); // Country (KR)
+            builder.header("x-guhada-language", Preferences.getLanguage()); // Language (ko)
+            builder.header("x-guhada-platform", "AOS"); // Platform
+            builder.header("x-guhada-version", BuildConfig.VERSION_NAME); // Version
             // Mobile
-            builder.header("X-Guhada-model", Build.DEVICE); // Device Model // Build.MANUFACTURER
-            builder.header("X-Guhada-os-version", Build.VERSION.RELEASE); // Device Version
-            Log.d("Interceptor","getInterceptor "+CommonUtil.getSystemCountryCode());
-            Log.d("Interceptor","getInterceptor "+Preferences.getLanguage());
+            builder.header("x-guhada-model", Build.DEVICE); // Device Model // Build.MANUFACTURER
+            builder.header("x-guhada-os-version", Build.VERSION.RELEASE); // Device Version
             return chain.proceed(builder.build());
         };
     }

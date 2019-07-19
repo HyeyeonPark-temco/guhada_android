@@ -27,14 +27,15 @@ import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
-import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
-import io.temco.guhada.view.adapter.ProductDetailTagAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
+import io.temco.guhada.view.fragment.cart.AddCartResultFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
@@ -56,6 +57,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     override fun getBaseTag(): String = ProductDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
     override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
+
+    override fun getSelectedProductQuantity(): Int {
+        return 0
+    }
+
+    override fun getSelectedOptionDealId(): Long? {
+        return 0
+    }
 
     override fun init() {
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
@@ -118,7 +127,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initClaims() {
-        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId?:0)
+        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId ?: 0)
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
@@ -131,7 +140,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
-        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId?:0)
+        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId ?: 0)
 
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
@@ -141,7 +150,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -159,7 +168,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -261,7 +270,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             val product = mViewModel.product.value
             val brandName = product?.brandName ?: ""
             val name = product?.name ?: ""
-            val optionAttr: MutableMap<String, ProductDetailOptionAdapter.OptionAttr>
+            val optionAttr: MutableMap<String, OptionAttr>
             val price: Int
             val count: Int
 
@@ -331,6 +340,17 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     override fun redirectHome() {
 
+    }
+
+    override fun dismissOptionMenu() {
+    }
+
+    override fun dismissAddCartResult() {
+
+    }
+
+    override fun showAddCartResult() {
+//        AddCartResultFragment.getInstance().show(supportFragmentManager, "addCartResult")
     }
 
     companion object {

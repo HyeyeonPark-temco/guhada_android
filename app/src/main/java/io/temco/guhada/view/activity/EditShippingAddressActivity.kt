@@ -28,6 +28,7 @@ class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressLi
         mViewModel = EditShippingAddressViewModel(this)
         mViewModel.shippingAddress = intent.getSerializableExtra("shippingAddress") as UserShipping
 
+        mBinding.includeEditshippingaddress.addButtonVisible = false
         mBinding.includeEditshippingaddress.shippingAddress = mViewModel.shippingAddress
         mBinding.includeEditshippingaddress.setOnClickZipListener {
             redirectSearchZipWebViewActivity()

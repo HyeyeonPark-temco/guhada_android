@@ -24,12 +24,12 @@ class EditShippingAddressViewModel(val mListener: OnEditShippingAddressListener)
 
     private fun checkEmptyField(task: () -> Unit) {
         when {
-            shippingAddress.shippingName.isEmpty() -> showMessage("배송지 명을 입력해주세요")
-            shippingAddress.zip.isEmpty() -> showMessage("우편번호를 입력해주세요")
-            shippingAddress.address.isEmpty() -> showMessage("주소를 입력해주세요")
-            shippingAddress.detailAddress.isEmpty() -> showMessage("상세주소를 입력해주세요")
-            shippingAddress.recipientName.isEmpty() -> showMessage("수령인을 입력해주세요")
-            shippingAddress.recipientMobile.isEmpty() -> showMessage("연락처를 입력해주세요")
+            shippingAddress.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_shippingname))
+            shippingAddress.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_zip))
+            shippingAddress.address.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_address))
+            shippingAddress.detailAddress.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_detailaddress))
+            shippingAddress.recipientName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_recipientname))
+            shippingAddress.recipientMobile.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_recipientmobile))
             else -> task()
         }
     }
@@ -46,6 +46,4 @@ class EditShippingAddressViewModel(val mListener: OnEditShippingAddressListener)
             mListener.closeActivity(Activity.RESULT_CANCELED, false)
         }
     }
-
-    private fun showMessage(message: String) = ToastUtil.showMessage(message)
 }

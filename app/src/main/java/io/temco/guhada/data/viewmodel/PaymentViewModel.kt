@@ -6,15 +6,24 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.payment.PGAuth
+import io.temco.guhada.data.model.payment.PGResponse
+import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.server.OrderServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentActivity
 import java.text.NumberFormat
@@ -125,10 +134,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     },
                     failedTask = {
                         listener.hideLoadingIndicator()
-                        if (o != null) listener.showMessage(o as String)
+                        if (o != null) listener.showMessage((o as BaseModel<*>).message)
                         else listener.showMessage("addCartItem 오류")
                     })
-        }, accessToken = accessToken, productId = product.productId, optionId = product.dealOptionId, quantity = quantity)
+        }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
     }
 
     private fun getOrderForm(accessToken: String) {
@@ -153,7 +162,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             executeByResultCode(success, o,
                     successTask = {
                         this.pgResponse = (o as BaseModel<*>).data as PGResponse
-                        listener.redirectPayemntWebViewActivity()
+                        listener.redirectPaymentWebViewActivity()
                     })
         }, accessToken, requestOrder)
     }
@@ -198,6 +207,18 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         })
                 listener.hideLoadingIndicator()
             }, accessToken, purchaseId)
+        }
+    }
+
+    private fun saveShippingAddress(userId: Int) {
+        if (selectedShippingAddress != null) {
+            UserServer.saveUserShippingAddress(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_add_success))
+
+                        })
+            }, userId, selectedShippingAddress!!)
         }
     }
 
@@ -248,7 +269,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 결제하기 버튼 클릭
     fun onClickPay() {
         val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress)
-        if (selectedShippingMessage.get()?.equals(defaultShippingMessage) ?: true || shippingMessage.isEmpty()) {
+        if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
             return
         }
@@ -274,13 +295,21 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
                             this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?.type
                                     ?: ""
+
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!
                                 this.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
                                 this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
                                 this.parentMethodCd = selectedMethod.methodCode
                             }.let { requestOrder ->
-                                callWithToken { accessToken -> requestOrder(accessToken, requestOrder) }
+                                val accessToken = Preferences.getToken().accessToken
+                                if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+                                    // 배송지 추가
+                                    val userId = JWT(accessToken).getClaim("userId").asInt()
+                                    if (userId != null) saveShippingAddress(userId)
+                                }
+
+                                requestOrder("Bearer $accessToken" , requestOrder)
                             }
                         }
                     }

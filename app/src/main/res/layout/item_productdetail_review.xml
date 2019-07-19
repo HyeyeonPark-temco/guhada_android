@@ -6,7 +6,7 @@
 
         <variable
             name="reviewContent"
-            type="io.temco.guhada.data.model.ReviewResponseContent" />
+            type="io.temco.guhada.data.model.review.ReviewResponseContent" />
     </data>
 
     <LinearLayout

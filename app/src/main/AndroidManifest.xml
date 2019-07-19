@@ -28,8 +28,8 @@
             android:name=".view.activity.base.TestListActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
@@ -130,15 +130,22 @@
         <!-- Shipping Address -->
         <activity
             android:name=".view.activity.ShippingAddressActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing" />
 
         <activity
             android:name=".view.activity.EditShippingAddressActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleBarDialog" />
+            android:theme="@style/NoTitleBarDialog"
+            android:windowSoftInputMode="adjustNothing" />
 
         <activity
             android:name=".view.activity.SearchZipWebViewActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- Cart -->
+        <activity
+            android:name=".view.activity.CartActivity"
             android:screenOrientation="portrait" />
 
 
@@ -168,7 +175,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme"
+                <data
+                    android:scheme="@string/fb_login_protocol_scheme"
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
@@ -180,6 +188,13 @@
         <!-- //////////////////////////////// -->
         <!-- SERVICE -->
         <!-- //////////////////////////////// -->
+        <service
+            android:name=".common.fcm.FcmMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <!-- //////////////////////////////// -->
         <!-- PROVIDER -->
@@ -206,6 +221,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/fcm_channel_id" />
 
         <!-- //////////////////////////////// -->
     </application>

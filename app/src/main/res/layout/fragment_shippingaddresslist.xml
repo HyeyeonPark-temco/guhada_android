@@ -9,31 +9,76 @@
             type="io.temco.guhada.data.viewmodel.ShippingAddressViewModel" />
     </data>
 
-    <FrameLayout
-        android:background="@color/common_white"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/common_white">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_shippingaddress"
             android:layout_width="match_parent"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_height="0dp"
+            android:layout_marginLeft="20dp"
+
+
+            android:layout_marginRight="20dp"
             android:orientation="vertical"
-            android:layout_height="match_parent"
-            app:bindShippingAddress="@{viewModel.shippingAddresses}" />
+            android:overScrollMode="never"
+            app:bindShippingAddress="@{viewModel.shippingAddresses}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/button_shippingaddress_back"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_15"
-
-            android:textColor="@color/black_four"
             android:layout_gravity="center"
+            android:layout_marginBottom="60dp"
             android:text="등록된 배송지가 없습니다."
-            android:visibility="@{viewModel.emptyVisibility}"/>
-    </FrameLayout>
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_15"
+            android:visibility="@{viewModel.emptyVisibility}"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/button_shippingaddress_back"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@color/greyish_brown_two"
+            android:onClick="@{()->viewModel.onClickCancel()}"
+            android:text="@string/shippingaddress_button_back"
+            android:textColor="@color/common_white"
+            android:textSize="@dimen/text_18"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/button_shippingaddress_submit"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_shippingaddress" />
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/button_shippingaddress_submit"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@color/common_blue_purple"
+            android:onClick="@{()->viewModel.onClickUpdate()}"
+            android:text="@string/shippingaddress_button_submit"
+            android:textColor="@color/common_white"
+            android:textSize="@dimen/text_18"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/button_shippingaddress_back"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_shippingaddress" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

@@ -24,33 +24,36 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
     override fun init() {
         if (::mViewModel.isInitialized) {
             if (context != null) mLoadingIndicator = LoadingIndicatorUtil(context!!)
-            mListAdapter = ShippingAddressListAdapter(mViewModel)
-            this@ShippingAddressListFragment.getShippingAddressList()
+            getShippingAddressList()
 
-            mViewModel.shippingAddresses.observe(this, Observer { list ->
-                if (::mLoadingIndicator.isInitialized)
-                    mLoadingIndicator.hide()
+            mViewModel.shippingAddresses.observe(this, Observer {
+                mListAdapter = ShippingAddressListAdapter(mViewModel)
+                mListAdapter.setItems(it)
                 mBinding.recyclerviewShippingaddress.adapter = mListAdapter
                 mBinding.viewModel = mViewModel
                 mBinding.executePendingBindings()
+
+                if (::mLoadingIndicator.isInitialized)
+                    mLoadingIndicator.hide()
             })
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if(::mLoadingIndicator.isInitialized) mLoadingIndicator.hide()
+        if (::mLoadingIndicator.isInitialized) mLoadingIndicator.hide()
     }
 
     override fun onDestroy() {
         if (::mLoadingIndicator.isInitialized)
             mLoadingIndicator.dismiss()
+        mViewModel.shippingAddresses.removeObservers(this)
         super.onDestroy()
     }
 
     fun getShippingAddressList() {
-       if (::mLoadingIndicator.isInitialized)
-           mLoadingIndicator.show()
+        if (::mLoadingIndicator.isInitialized)
+            mLoadingIndicator.show()
         mViewModel.getUserShippingAddress()
     }
 

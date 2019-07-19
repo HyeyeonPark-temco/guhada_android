@@ -22,11 +22,12 @@
             app:layout_constraintTop_toTopOf="@+id/viewpager_shippingaddress" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tablayout_shippingaddress_claim"
+            android:id="@+id/tablayout_shippingaddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/viewpager_shippingaddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include_shippingaddress_header"
@@ -51,39 +52,43 @@
             android:id="@+id/viewpager_shippingaddress"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_shippingaddress_back"
+            app:layout_constraintBottom_toTopOf="@+id/button_addshippingaddress_cancel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tablayout_shippingaddress_claim" />
+            app:layout_constraintTop_toBottomOf="@id/tablayout_shippingaddress" />
 
         <Button
-            android:id="@+id/button_shippingaddress_back"
+            android:id="@+id/button_addshippingaddress_cancel"
             android:layout_width="0dp"
             android:layout_height="60dp"
+            android:layout_marginTop="40dp"
             android:background="@color/greyish_brown_two"
-            android:text="@string/shippingaddress_button_back"
+            android:onClick="@{()->viewModel.onClickCancel()}"
+            android:text="@{viewModel.viewpagerPos == 0 ? @string/shippingaddress_button_back : @string/addshippingaddress_button_cancel}"
             android:textColor="@color/common_white"
             android:textSize="@dimen/text_18"
-            android:onClick="@{()->viewModel.onClickCancel()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/button_shippingaddress_submit" />
+            app:layout_constraintRight_toLeftOf="@+id/button_addshippingaddress_confirm"
+            app:layout_constraintTop_toBottomOf="@+id/include_addshippingaddress"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
-            android:id="@+id/button_shippingaddress_submit"
+            android:id="@+id/button_addshippingaddress_confirm"
             android:layout_width="0dp"
             android:layout_height="60dp"
+            android:layout_marginTop="40dp"
             android:background="@color/common_blue_purple"
-            android:text="@string/shippingaddress_button_submit"
+            android:onClick="@{()-> viewModel.viewpagerPos == 0 ? viewModel.onClickUpdate() : viewModel.onClickAdd()}"
+            android:text="@{viewModel.viewpagerPos == 0 ? @string/shippingaddress_button_submit : @string/addshippingaddress_button_confirm}"
             android:textColor="@color/common_white"
             android:textSize="@dimen/text_18"
-            android:onClick="@{()->viewModel.onClickSubmit()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/button_shippingaddress_back"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintLeft_toRightOf="@+id/button_addshippingaddress_cancel"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include_addshippingaddress"
+            app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

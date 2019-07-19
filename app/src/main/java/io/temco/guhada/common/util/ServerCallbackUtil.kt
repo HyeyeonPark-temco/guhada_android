@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.data.model.base.BaseModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -100,6 +101,25 @@ class ServerCallbackUtil {
             }
         }
 
+
+        /**
+         * API 호출 시, AccessToken이 필요한 경우 호출
+         * @param task (required) AccessToken이 존재하는 경우의 실행 함수
+         * @param invalidTokenTask (optional) AccessToken이 존재하지 않는 경우의 실행 함수
+         *
+         * @description 토큰 expire 시, invalidTokenTask 수행 로직 추가 예정
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun callWithToken(task: (accessToken: String) -> Unit, invalidTokenTask: () -> Unit = { ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin)) }) {
+            Preferences.getToken().let { token ->
+                if (token != null && token.accessToken != null) task("Bearer ${token.accessToken}")
+                else invalidTokenTask()
+            }
+        }
+
+
     }
+
 
 }

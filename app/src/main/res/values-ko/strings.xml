@@ -15,6 +15,10 @@
     <string name="naver_oauth_client_id">xVqkhxmKT5JReAs5tXje</string>
     <string name="naver_oauth_client_secret">ppA_6XaKuc</string>
     <string name="naver_oauth_client_name">네이버 아이디로 로그인</string>
+    <string name="appcenter_release_secret">0cc1eaf2-b5b2-44a2-b9df-adafd5eb16b7</string>
+    <string name="appcenter_dev_secret">4a626301-2fa4-4e3b-bdce-25bb4ea8e730</string>
+    <string name="fcm_channel_id">GUHADA</string>
+    <string name="fcm_channel_name">GUHADA</string>
 
     <!-- COMMON -->
     <string name="app_name">Guhada</string>
@@ -45,7 +49,7 @@
     <string name="common_unit_board">건</string>
     <string name="common_unit_price">원</string>
     <string name="common_unit_krw"></string>
-    <string name="common_unit_prercent">%</string>
+    <string name="common_unit_percent">%</string>
     <string name="common_unit_product">개</string>
     <string name="common_unit_point">P</string>
     <string name="common_unit_score">점</string>
@@ -62,6 +66,8 @@
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
 
+    <string name="common_minus">-</string>
+    <string name="common_plus">+</string>
 
     <!-- ORDER SHIPPING -->
     <string name="order_shipping_deposit_confirm">입금확인</string>
@@ -489,12 +495,22 @@
     <string name="payment_message_confirmtemrs">이용 약관에 동의해주세요</string>
 
     <!-- SHIPPING ADDRESS -->
+    <string name="shippingaddress_title">배송지 변경</string>
     <string name="shippingaddress_list">배송지 목록</string>
     <string name="shippingaddress_add">배송지 직접 입력</string>
     <string name="shippingaddress_button_back">돌아가기</string>
     <string name="shippingaddress_button_submit">선택 완료</string>
     <string name="shippingaddress_button_edit">수정</string>
     <string name="shippingaddress_button_delete">삭제</string>
+    <string name="shippingaddress_messaeg_empty_shippingname">배송지 명을 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_address">주소를 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_detailaddress">상세주소를 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_recipientname">수령인을 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_recipientmobile">연락처를 입력해주세요</string>
+    <string name="shippingaddress_messaeg_empty_zip">우편번호를 입력해주세요</string>
+
+    <string name="shippingaddress_messaeg_delete_failed">배송지 삭제에 실패했습니다. 다시 시도해주세요</string>
+    <string name="shippingaddress_messaeg_add_success">배송지가 등록되었습니다</string>
 
     <!-- MY PAGE -->
     <string name="mypage_order_shipping">주문 배송</string>
@@ -526,6 +542,7 @@
     <!-- EDIT SHIPPING ADDRESS -->
     <string name="editshippingaddress_title">배송지 수정</string>
     <string name="editshippingaddress_set_default">기본 배송지 설정</string>
+    <string name="editshippingaddress_add">주문 완료 시 배송지 목록에 추가</string>
     <string name="editshippingaddress_button_cancel">취소</string>
     <string name="editshippingaddress_button_submit">변경</string>
     <string name="editshippingaddress_button_zip">우편번호 찾기</string>
@@ -535,6 +552,10 @@
     <string name="editshippingaddress_hint_detailaddress">상세주소를 입력해주세요</string>
     <string name="editshippingaddress_hint_recipientname">수령인을 입력해주세요</string>
     <string name="editshippingaddress_hint_recipientmobile">연락처를 입력해주세요</string>
+
+    <!-- ADD SHIPPING ADDRESS -->
+    <string name="addshippingaddress_button_cancel">입력  취소</string>
+    <string name="addshippingaddress_button_confirm">입력 완료</string>
 
     <!-- HOME FRAGMENT -->
     <string-array name="main_titles">
@@ -560,6 +581,52 @@
     <string name="productdetaininfo_review_sort1">최신순</string>
     <string name="productdetaininfo_review_sort2">전체평점</string>
 
+    <!-- SEARCH ZIP -->
+    <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>
+    <string name="searchzip_loadurl">http://hyeyeonpark.github.io/temp_upload</string>
+
+    <!-- CART -->
+    <string name="cart_title">장바구니</string>
+
+    <string name="cart_option_title">구매옵션</string>
+    <string name="cart_option_change">변경</string>
+    <string name="cart_option_amount">수량</string>
+    <string name="cart_option_cancel">취소</string>
+    <string name="cart_option_confirm">변경</string>
+
+    <string name="cart_select_count">%d개 선택</string>
+    <string name="cart_select_delete">선택 삭제</string>
+
+    <string name="cart_button_text1">총</string>
+    <string name="cart_button_text2">주문하기</string>
+    <string name="cart_button_buy">바로구매</string>
+    <string name="cart_button_show">상품 보기</string>
+    <string name="cart_button_notiffication">재입고 알림</string>
+
+    <string name="cart_result_totalamount">총 %d개 상품</string>
+    <string name="cart_result_totalproductprice">총 상품 금액</string>
+    <string name="cart_result_shippingprice">배송비</string>
+    <string name="cart_result_totaldiscount">총 할인금액</string>
+    <string name="cart_result_productdiscount">상품 할인</string>
+    <string name="cart_result_extradiscount">추가 할인</string>
+    <string name="cart_result_totalpayment">최종 결제 금액</string>
+    <string name="cart_result_price">%,2d원</string>
+
+    <string name="cart_message_eos">해당 상품이 판매종료 되었습니다.</string>
+    <string name="cart_message_eol">해당 상품이 판매중지 되었습니다.</string>
+    <string name="cart_message_productsoldout">해당 상품이 품절되었습니다.</string>
+    <string name="cart_message_optionsoldout">해당 옵션이 품절되었습니다.</string>
+    <string name="cart_message_changeoption">해당 상품의 옵션 정보가 변경되었습니다.</string>
+    <string name="cart_message_changeprice">해당 상품의 가격 정보가 변경되었습니다.</string>
+    <string name="cart_message_changeselectedoption">상품 옵션이 변경되었습니다.</string>
+    <string name="cart_message_notselectedoption">옵션을 선택해주세요</string>
+
+    <string name="cart_message_minquantity">최소 구매 수량은 %d개 입니다.</string>
+    <string name="cart_message_maxquantity">최대 구매 수량은 %d개 입니다.</string>
+
+    <string name="cart_addresult_title">상품이 장바구니에\n추가되었습니다.</string>
+    <string name="cart_addresult_recommend">이 상품과 함께 많이 구매한 상품</string>
+    <string name="cart_addresult_redirectcart">장바구니로 이동</string>
 
     <string name="mainlistsubtitle_all">전체</string>
     <string name="mainlistsubtitle_women">여성</string>

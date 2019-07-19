@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="black_overlay">#66000000</color>
+    <color name="white_overlay">#D4ffffff</color>
     <color name="toast_background">#c4000000</color>
 
     <!-- COMMON -->
@@ -67,6 +68,7 @@
 
     <color name="perrywinkle">#aa91e6</color>
     <color name="brick">#ce2525</color>
+    <color name="tomato">#d42d1e</color>
 
     <color name="transparent">#00000000</color>
 

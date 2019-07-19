@@ -48,9 +48,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
     }
 
     private void initView(Context context, @Nullable AttributeSet attributeSet) {
-        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_borderedittext, this, true, new androidx.databinding.DataBindingComponent() {
-
-        });
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_borderedittext, this, true);
 
         TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.BorderEditTextView);
         String text = typedArray.getString(R.styleable.BorderEditTextView_txt);
@@ -59,7 +57,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
         boolean readonly = typedArray.getBoolean(R.styleable.BorderEditTextView_readonly, false);
         inputType = inputType != null ? inputType : "text";
 
-        if(max > 0){
+        if (max > 0) {
             InputFilter[] inputFilters = new InputFilter[1];
             inputFilters[0] = new InputFilter.LengthFilter(max);
             binding.editText.setFilters(inputFilters);

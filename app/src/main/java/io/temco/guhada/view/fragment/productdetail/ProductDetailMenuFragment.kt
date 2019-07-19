@@ -4,10 +4,11 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.option.Option
+import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
-import io.temco.guhada.view.adapter.ProductDetailOptionAttrAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>() {
@@ -30,7 +31,7 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
     companion object {
         @JvmStatic
         @BindingAdapter("productOption")
-        fun RecyclerView.bindOption(list: List<Product.Option>?) {
+        fun RecyclerView.bindOption(list: List<Option>?) {
             if (list != null && list.isNotEmpty() && this.adapter != null) {
                 (this.adapter as ProductDetailOptionAdapter).setItems(list)
             }
@@ -38,13 +39,13 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
 
         @JvmStatic
         @BindingAdapter("productOptionAttr")
-        fun RecyclerView.bindOptionAttr(option: Product.Option?) {
+        fun RecyclerView.bindOptionAttr(option: Option?) {
             if (option != null && this.adapter != null) {
-                val attrList: MutableList<ProductDetailOptionAdapter.OptionAttr> = ArrayList()
+                val attrList: MutableList<OptionAttr> = ArrayList()
 
                 if (option.type == "COLOR") {
                     for (i in 0 until option.rgb.size) {
-                        ProductDetailOptionAdapter.OptionAttr().apply {
+                        OptionAttr().apply {
                             rgb = option.rgb[i]
                             name = option.attributes[i]
                         }.let {
@@ -53,7 +54,7 @@ class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : Ba
                     }
                 } else {
                     for (attr in option.attributes) {
-                        ProductDetailOptionAdapter.OptionAttr().apply {
+                        OptionAttr().apply {
                             name = attr
                         }.let {
                             attrList.add(it)

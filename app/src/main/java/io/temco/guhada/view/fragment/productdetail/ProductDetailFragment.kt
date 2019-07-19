@@ -10,32 +10,33 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BaseProduct
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Product
-import io.temco.guhada.data.server.UserServer
+import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
+import io.temco.guhada.view.activity.LoginActivity
 import io.temco.guhada.view.activity.PaymentActivity
 import io.temco.guhada.view.activity.ProductDetailActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
-import io.temco.guhada.view.adapter.ProductDetailInfoAdapter
-import io.temco.guhada.view.adapter.ProductDetailOptionAdapter
-import io.temco.guhada.view.adapter.ProductDetailTagAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
+import io.temco.guhada.view.fragment.cart.AddCartResultFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -49,6 +50,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     private lateinit var mMenuFragment: ProductDetailMenuFragment
     private lateinit var mHeaderMenuFragment: ProductDetailMenuFragment
     private lateinit var mReviewFragment: ProductDetailReviewFragment
+    private lateinit var mAddCartResultFragment: AddCartResultFragment
 
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
@@ -56,6 +58,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun init() {
         initUtils()
         initViewModel()
+        initTabListener()
         setDetectScrollView()
 
         mBinding.includeProductdetailHeader.viewModel = mViewModel
@@ -65,8 +68,8 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
     private fun initUtils() {
         //[2019.06.26]임시 브릿지
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(context ?: ProductBridge.mainActivity)
-        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
+        if (context != null) mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
+        //  if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
     }
 
     private fun initViewModel() {
@@ -78,7 +81,6 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
             initContentHeader()
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
 
-            // this@ProductDetailFragment.hideLoadingIndicator()
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
                 mBinding.includeProductdetailContentbody.viewModel = mViewModel
@@ -94,10 +96,27 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
-            mLoadingIndicatorUtil.execute {
-                mViewModel.getDetail()
-            }
+            mLoadingIndicatorUtil.show()
+            mViewModel.getDetail()
+
+//            mLoadingIndicatorUtil.execute {
+//                mViewModel.getDetail()
+//            }
         }
+    }
+
+    private fun initTabListener() {
+        mBinding.includeProductdetailContentbody.tablayoutProductdetail.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                this@ProductDetailFragment.scrollToElement(tab?.position ?: 0)
+            }
+        })
     }
 
     private fun initSummary() {
@@ -117,10 +136,26 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 mViewModel.notifyPropertyChanged(BR.imagePos)
             }
         })
+        this@ProductDetailFragment.hideLoadingIndicator()
     }
 
     override fun redirectHome() {
         mainListener.removeProductFragment()
+    }
+
+    override fun showAddCartResult() {
+        if (!::mAddCartResultFragment.isInitialized) mAddCartResultFragment = AddCartResultFragment(this)
+        mAddCartResultFragment.show(fragmentManager!!, "addCartResult")
+    }
+
+    override fun dismissAddCartResult() {
+        if (::mAddCartResultFragment.isInitialized)
+            mAddCartResultFragment.dismiss()
+    }
+
+    override fun dismissOptionMenu() {
+        mViewModel.menuVisibility = ObservableInt(View.GONE)
+        mViewModel.notifyPropertyChanged(BR.menuVisibility)
     }
 
     override fun onDestroy() {
@@ -166,7 +201,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -184,7 +219,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
-            override fun setColorName(optionAttr: ProductDetailOptionAdapter.OptionAttr, task: () -> Unit) = task()
+            override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
             override fun closeMenu() {
                 mViewModel.menuVisibility = ObservableInt(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
@@ -261,6 +296,10 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         mClaimFragment.refreshIsMineVisible()
     }
 
+    private fun redirectLoginActivity() {
+        startActivityForResult(Intent(context, LoginActivity::class.java), Flag.RequestCode.LOGIN)
+    }
+
     override fun showMenu() {
         val optionCount = mViewModel.product.value?.options?.size
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
@@ -270,28 +309,34 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         }
 
         if (selectedOptionCount == optionCount) {
-            ToastUtil.showMessage("장바구니 이동")
+            mViewModel.addCartItem()
         } else {
+            ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)?:BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
             mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
             mViewModel.notifyPropertyChanged(BR.menuVisibility)
         }
     }
 
     override fun redirectPaymentActivity(isOptionPopupSelected: Boolean) {
-        val optionCount = mViewModel.product.value?.options?.size
+        val optionCount = mViewModel.product.value?.options?.size ?: 0
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
             mMenuFragment.getSelectedOptionCount()
         } else {
             mHeaderMenuFragment.getSelectedOptionCount()
         }
 
+        showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
+    }
+
+    /////
+    private fun showOptionMenu(optionCount: Int, selectedOptionCount: Int, isOptionPopupSelected: Boolean) {
         if (selectedOptionCount == optionCount) {
             // 전달 데이터
             // 1.상품 대표 이미지, 2.상품 명, 3.옵션 선택 항목, 4.판매가, 5.수량
             val product = mViewModel.product.value
             val brandName = product?.brandName ?: ""
             val name = product?.name ?: ""
-            val optionAttr: MutableMap<String, ProductDetailOptionAdapter.OptionAttr>
+            val optionAttr: MutableMap<String, OptionAttr>
             val price: Int
             val count: Int
 
@@ -306,7 +351,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
             }
 
             BaseProduct().apply {
-                this.productId = mViewModel.dealId // 임시
+                this.dealId = mViewModel.dealId
                 this.profileUrl = product?.imageUrls?.get(0) ?: "" // 대표이미지 임시
                 this.name = name
                 this.brandName = brandName
@@ -316,23 +361,11 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 this.season = product?.season ?: ""
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
-                var quantity: Int = 1
-                when {
-                    mMenuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = mMenuFragment.getSelectedOptionDealId()
-                        quantity = mMenuFragment.getProductCount()
-                    }
-                    mHeaderMenuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = mHeaderMenuFragment.getSelectedOptionDealId()
-                        quantity = mHeaderMenuFragment.getProductCount()
-                    }
-                    else -> baseProduct.dealOptionId = null
-                }
-
+                baseProduct.dealOptionId = getSelectedOptionDealId()
                 mViewModel.menuVisibility.set(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
                 Intent(context, PaymentActivity::class.java).let { intent ->
-                    intent.putExtra("quantity", quantity)
+                    intent.putExtra("quantity", getSelectedProductQuantity())
                     intent.putExtra("product", baseProduct)
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
                 }
@@ -343,10 +376,25 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         }
     }
 
+    override fun getSelectedOptionDealId(): Long? {
+        return when {
+            mMenuFragment.getSelectedOptionCount() > 0 -> mMenuFragment.getSelectedOptionDealId()
+            mHeaderMenuFragment.getSelectedOptionCount() > 0 -> mHeaderMenuFragment.getSelectedOptionDealId()
+            else -> null
+        }
+    }
+
+    override fun getSelectedProductQuantity(): Int {
+        return when {
+            mMenuFragment.getSelectedOptionCount() > 0 -> mMenuFragment.getProductCount()
+            mHeaderMenuFragment.getSelectedOptionCount() > 0 -> mHeaderMenuFragment.getProductCount()
+            else -> 1
+        }
+    }
+
     override fun hideLoadingIndicator() {
         if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
     }
-
 
     override fun closeActivity() {
         ProductBridge.mainActivity.removeProductDetailFragment()

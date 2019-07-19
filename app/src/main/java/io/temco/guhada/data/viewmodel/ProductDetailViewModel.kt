@@ -15,8 +15,9 @@ import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.SellerSatisfaction
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.server.UserServer
+import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObservableViewModel() {
@@ -115,7 +116,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         notifyPropertyChanged(BR.advantageInfoExpanded)
     }
 
-    fun onClickBag() = listener?.showMenu()
+    fun onClickCart() {
+        listener?.showMenu()
+    }
 
     fun onClickPayment() {
         listener?.redirectPaymentActivity(menuVisibility.get() == View.VISIBLE)
@@ -163,5 +166,15 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                         })
             }, sellerId)
         }
+    }
+
+    // 장바구니 담기
+     fun addCartItem() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            OrderServer.addCartItm(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = { listener?.showAddCartResult() })
+            }, accessToken = accessToken, quantity = listener?.getSelectedProductQuantity()!!, dealId = dealId, dealOptionId = listener.getSelectedOptionDealId())
+        })
     }
 }

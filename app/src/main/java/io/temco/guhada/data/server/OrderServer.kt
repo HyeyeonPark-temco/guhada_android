@@ -3,8 +3,15 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.RetryableCallback
-import io.temco.guhada.data.model.*
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.cart.CartResponse
+import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.order.RequestOrder
+import io.temco.guhada.data.model.payment.PGAuth
+import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.OrderService
 import retrofit2.Call
@@ -38,8 +45,8 @@ class OrderServer {
          * @param quantity 주문 수량
          */
         @JvmStatic
-        fun addCartItm(listener: OnServerListener, accessToken: String, productId: Long, optionId: Long?, quantity: Int) {
-            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).addCartItem(accessToken, productId, optionId, quantity)
+        fun addCartItm(listener: OnServerListener, accessToken: String, dealId: Long, dealOptionId: Long?, quantity: Int) {
+            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).addCartItem(accessToken, dealId, dealOptionId, quantity)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Cart>> {
                 override fun onResponse(call: Call<BaseModel<Cart>>, response: Response<BaseModel<Cart>>) {
                     listener.onResult(response.isSuccessful, response.body())
@@ -96,7 +103,56 @@ class OrderServer {
             })
         }
 
+        /**
+         * 장바구니 조회 API
+         */
+        @JvmStatic
+        fun getCart(listener: OnServerListener, accessToken: String) {
+            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCart(accessToken)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<CartResponse>> {
+                override fun onResponse(call: Call<BaseModel<CartResponse>>, response: Response<BaseModel<CartResponse>>) {
+                    listener.onResult(response.isSuccessful, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<CartResponse>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+        /**
+         * 장바구니 아이템의 옵션 리스트 조회 API
+         */
+        @JvmStatic
+        fun getCartItemOptionList(listener: OnServerListener, accessToken: String, cartItemId: Long) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCartItemOptionList(accessToken, cartItemId).enqueue(object : Callback<BaseModel<Any>> {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    listener.onResult(response.isSuccessful, response.body())
+                }
+
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+        /**
+         * 장바구니 옵션 변경 API
+         */
+        @JvmStatic
+        fun updateCartItemOption(listener: OnServerListener, accessToken: String, cartItemId: Long, selectDealOptionId: Int, quantity: Int) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemOption(accessToken, cartItemId, selectDealOptionId, quantity).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+        }
+
+        /**
+         * 장바구니 상품 수량 변경 API
+         */
+        @JvmStatic
+        fun updateCartItemQuantity(listener: OnServerListener, accessToken: String, cartItemId: Long, quantity: Int) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemQuantity(accessToken, cartItemId, quantity).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+        }
 
     }
-
 }

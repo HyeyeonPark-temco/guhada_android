@@ -7,8 +7,8 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.data.model.ReviewResponse
-import io.temco.guhada.data.model.ReviewSummary
+import io.temco.guhada.data.model.review.ReviewResponse
+import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -36,7 +36,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 this.reviewSummary = model.data as ReviewSummary
                 notifyPropertyChanged(BR.reviewSummary)
 
-                if (::listener.isInitialized) listener.notifySummary(reviewSummary.averageReviewsRating)
+                if (::listener.isInitialized)
+                    listener.notifySummary(reviewSummary.averageReviewsRating)
             } else {
                 if (o != null) {
                     listener.showMessage(o as String)
@@ -44,6 +45,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                     listener.showMessage("PRODUCT REVIEW SUMMARY ERROR")
                 }
             }
+
         }, productId)
     }
 
@@ -74,7 +76,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 //                    }
                 }
 
-                if (::listener.isInitialized) listener.hideLoadingIndicator()
+                if (::listener.isInitialized)  listener.hideLoadingIndicator()
             }, productId, page, size)
         }
     }

@@ -216,7 +216,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="@{viewModel.order.user.name}"
                     android:textSize="@dimen/text_14"
-                    android:visibility="@{viewModel.order.user.name.isEmpty() ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{viewModel.order.user.name == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView21" />
@@ -230,7 +230,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="@{viewModel.order.user.mobile}"
                     android:textSize="@dimen/text_14"
-                    android:visibility="@{viewModel.order.user.mobile.isEmpty() ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{viewModel.order.user.mobile == null ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textview_payment_buyername" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -309,7 +309,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{viewModel.order.shippingAddress.shippingName}"
                         android:textSize="@dimen/text_14"
-                        android:visibility="@{viewModel.order.shippingAddress != null || viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewModel.order.shippingAddress != null ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -320,7 +320,7 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
                         android:src="@drawable/payment_icon_basic_delivery"
-                        android:visibility="@{viewModel.order.shippingAddress != null || viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{viewModel.order.shippingAddress != null &amp;&amp; viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/textView23"

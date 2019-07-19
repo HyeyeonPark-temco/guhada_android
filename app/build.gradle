@@ -122,7 +122,12 @@ dependencies {
     }
 
     // FCM
-    implementation libraryDependencies.fcm
+    implementation libraryDependencies.firebaseAnalytics
+    implementation libraryDependencies.firebaseMessaging
+
+    // APP CENTER
+    implementation libraryDependencies.appCenterAnalytics
+    implementation libraryDependencies.appCenterCrashes
 
 
     // ----------------------------------------------------------
