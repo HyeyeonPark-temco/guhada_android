@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ProductDetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include_productdetail_header"
+            layout="@layout/header_productdetail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollview_productdetail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include_productdetail_header">
+            <!--app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"-->
+            <LinearLayout
+                android:id="@+id/linearlayout_productdetail_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pale_grey"
+                android:orientation="vertical"
+                android:paddingBottom="60dp">
+
+                <include
+                    android:id="@+id/include_productdetail_contentheader"
+                    layout="@layout/layout_productdetail_header" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_productdetail_bodycontainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/include_productdetail_contentsummary"
+                        layout="@layout/layout_productdetail_summary" />
+
+                    <View
+                        android:id="@+id/productdetail_scrollflag_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <include
+                        android:id="@+id/include_productdetail_contentbody"
+                        layout="@layout/layout_productdetail_content" />
+
+                    <include
+                        android:id="@+id/include_productdetail_contentinfo"
+                        layout="@layout/layout_productdetail_info" />
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <View
+                        android:id="@+id/productdetail_scrollflag_qna"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_claim"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/include_productdetail_contentshipping"
+                        layout="@layout/layout_productdetail_shipping" />
+
+                    <include
+                        android:id="@+id/include_productdetail_contentnotifies"
+                        layout="@layout/layout_productdetail_productnotifies" />
+
+                    <View
+                        android:id="@+id/productdetail_scrollflag_store"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:visibility="gone" />
+
+                    <include
+                        android:id="@+id/include_productdetail_contentstore"
+                        layout="@layout/layout_productdetail_store"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- 메뉴 -->
+        <View
+            android:id="@+id/view_productdetail_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_overlay"
+            android:onClick="@{()->viewModel.onClickCloseMenu()}"
+            android:visibility="@{viewModel.menuVisibility}"
+            app:layout_constraintBottom_toBottomOf="@+id/button_productdetail_bag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail"
+            app:layout_constraintTop_toTopOf="@+id/include_productdetail_header" />
+
+        <FrameLayout
+            android:id="@+id/framelayout_productdetail_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.menuVisibility,default = visible}"
+            app:layout_constraintBottom_toTopOf="@+id/button_productdetail_bag"
+            app:layout_constraintEnd_toEndOf="@+id/scrollview_productdetail"
+            app:layout_constraintStart_toStartOf="@+id/scrollview_productdetail" />
+
+        <Button
+            android:id="@+id/button_productdetail_bag"
+            style="@style/InactivatedButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@color/greyish_brown_two"
+            android:fontFamily="sans-serif-medium"
+            android:onClick="@{()->viewModel.onClickBag()}"
+            android:text="@string/productdetail_button_bag"
+            android:textSize="@dimen/text_18"
+            android:visibility="@{viewModel.bottomBtnVisibility}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/button_productdetail_payment" />
+
+        <Button
+            android:id="@+id/button_productdetail_payment"
+            style="@style/ActivatedButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:onClick="@{()->viewModel.onClickPayment()}"
+            android:text="@string/productdetail_button_buy"
+            android:textSize="@dimen/text_18"
+            android:visibility="@{viewModel.bottomBtnVisibility}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/button_productdetail_bag"
+            app:layout_constraintRight_toRightOf="parent" />
+        <!--</LinearLayout>-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
