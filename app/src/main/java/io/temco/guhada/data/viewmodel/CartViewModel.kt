@@ -84,7 +84,7 @@ class CartViewModel : BaseObservableViewModel() {
             OrderServer.getCartItemOptionList(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            cartOptionList.postValue(contractOptionAttr(cartItemId, it.data as List<LinkedTreeMap<String, Any>>))
+                            cartOptionList.postValue(contractOptionAttr(cartItemId, it.list as List<LinkedTreeMap<String, Any>>))
                         })
             }, accessToken, cartItemId)
         })

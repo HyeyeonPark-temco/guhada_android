@@ -2,23 +2,19 @@ package io.temco.guhada.view.adapter.main
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
-import io.temco.guhada.common.Flag
+import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductListListener
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.Deal
@@ -31,8 +27,6 @@ import io.temco.guhada.data.viewmodel.HomeListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainItemMaineventBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemPaddingBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemSubtitlelistBinding
-import io.temco.guhada.view.activity.MainActivity
-import io.temco.guhada.view.activity.ProductDetailTempActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
@@ -45,6 +39,11 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
 class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
 
+    private var mProductListener: OnProductListListener? = null
+
+    fun setOnProductListListener(listener: OnProductListListener) {
+        mProductListener = listener
+    }
     /**
      * HomeType 에 따른 item view
      */
@@ -209,13 +208,10 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                     }
                     if(data != null){
                         itemlayout[i].tag = data.dealId.toString()
-                        itemlayout[i].setOnClickListener(View.OnClickListener {
+                        itemlayout[i].setOnClickListener{
                             var id = it.tag.toString().toLong()
-                            Intent((containerView.context as MainActivity), ProductDetailTempActivity::class.java).let { intent ->
-                                intent.putExtra("dealId", id)
-                                (containerView.context as MainActivity).startActivity(intent)
-                            }
-                        })
+                            ProductBridge.mainActivity.addProductDetailView(id)
+                        }
                         itemlayout[i].visibility = View.VISIBLE
                         ImageUtil.loadImage(Glide.with(containerView.context as Activity), imageThumb[i], data.productImage.url)
 
@@ -241,7 +237,6 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                                     Type.ProductOption.RGB -> addColor((containerView.context as Activity), layoutColor[i], 5, o.attributes) // 5 Units
                                     Type.ProductOption.TEXT -> addText((containerView.context as Activity), o.attributes)
                                 }
-                                //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","o.type",o.type.toString())
                             }
                         }
                         R.layout.layout_tab_innercategory

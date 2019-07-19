@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.main.MainBaseModel
 import io.temco.guhada.data.viewmodel.HomeListViewModel
@@ -14,7 +15,8 @@ import io.temco.guhada.databinding.CustomlayoutMainHomelistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import kotlinx.android.synthetic.main.customlayout_main_homelist.view.*
-
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeListLayout constructor(

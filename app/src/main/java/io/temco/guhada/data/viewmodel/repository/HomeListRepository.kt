@@ -6,7 +6,6 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
-import io.temco.guhada.data.model.ItemOptionResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeType
 import io.temco.guhada.data.model.main.MainBaseModel
