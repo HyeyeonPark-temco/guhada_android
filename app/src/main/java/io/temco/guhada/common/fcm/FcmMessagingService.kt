@@ -26,7 +26,7 @@ class FcmMessagingService : FirebaseMessagingService() {
 
         // CHECK DATA PAYLOAD
         remoteMessage?.data?.isNotEmpty().let {
-
+            showNotification("Notification title", "Notification content")
         }
 
         // CHECK NOTIFICATION PAYLOAD

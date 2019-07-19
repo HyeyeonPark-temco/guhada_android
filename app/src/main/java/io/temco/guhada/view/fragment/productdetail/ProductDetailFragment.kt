@@ -296,7 +296,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         mClaimFragment.refreshIsMineVisible()
     }
 
-    private fun redirectLoginActivity() {
+    override fun redirectLoginActivity() {
         startActivityForResult(Intent(context, LoginActivity::class.java), Flag.RequestCode.LOGIN)
     }
 
@@ -311,10 +311,16 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         if (selectedOptionCount == optionCount) {
             mViewModel.addCartItem()
         } else {
-            ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)?:BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
-            mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
-            mViewModel.notifyPropertyChanged(BR.menuVisibility)
+            setMenuVisibie()
         }
+    }
+
+    // 수정 예정 ( BottomSheetFragment로 변경 예정)
+    private fun setMenuVisibie() {
+        ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)
+                ?: BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
+        mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
+        mViewModel.notifyPropertyChanged(BR.menuVisibility)
     }
 
     override fun redirectPaymentActivity(isOptionPopupSelected: Boolean) {
@@ -327,6 +333,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
         showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
     }
+
 
     /////
     private fun showOptionMenu(optionCount: Int, selectedOptionCount: Int, isOptionPopupSelected: Boolean) {

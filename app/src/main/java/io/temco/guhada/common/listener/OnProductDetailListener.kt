@@ -8,6 +8,7 @@ interface OnProductDetailListener {
     fun showMenu()
     fun showAddCartResult()
     fun redirectPaymentActivity(isOptionPopupSelected: Boolean)
+    fun redirectLoginActivity()
     fun hideLoadingIndicator()
     fun closeActivity()
     fun showSideMenu()

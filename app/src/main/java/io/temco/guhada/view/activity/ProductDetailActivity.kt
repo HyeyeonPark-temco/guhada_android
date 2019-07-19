@@ -66,6 +66,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         return 0
     }
 
+    override fun redirectLoginActivity() {
+
+    }
+
     override fun init() {
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = ProductDetailViewModel(this)
