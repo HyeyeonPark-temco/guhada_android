@@ -76,10 +76,14 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                         var vw : View
                         when(position){
                             0->{vw = HomeListLayout(it)}
-                            1->{vw = WomenListLayout(it)}
-                            2->{vw = MenListLayout(it)}
-                            3->{vw = KidsListLayout(it)}
-                            else->{vw = WomenListLayout(it)}
+                            1->{vw = HomeListLayout(it)}
+                            2->{vw = HomeListLayout(it)}
+                            3->{vw = HomeListLayout(it)}
+                            4->{vw = HomeListLayout(it)}
+                            5->{vw = HomeListLayout(it)}
+                            6->{vw = HomeListLayout(it)}
+                            else->{vw = HomeListLayout(it)}
+                            // WomenListLayout,KidsListLayout,MenListLayout
                         }
                         if(vw is BaseListLayout<*,*>) lifecycle.addObserver(vw)
                         return vw

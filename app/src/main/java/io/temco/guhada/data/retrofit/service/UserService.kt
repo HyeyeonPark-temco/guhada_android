@@ -144,7 +144,7 @@ interface UserService {
      * @return success: List<UserShipping>  failed: Object(result, data, resultCode)
      */
     @GET("/users/{userId}/shipping-addresses")
-    fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<MutableList<UserShipping>>>
+    fun findShippingAddress(@Path("userId") userId: Int): Call<BaseModel<UserShipping>>
 
     /**
      * 회원 배송지 삭제 API

@@ -1,4 +1,4 @@
-package io.temco.guhada.data.model.main.home
+package io.temco.guhada.data.model.main
 
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.common.util.CustomLog

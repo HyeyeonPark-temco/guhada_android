@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_marginRight="12dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:paddingTop="4dp"
             android:paddingBottom="14dp"
             android:tag="0"
@@ -252,7 +252,7 @@
                             android:id="@+id/image_thumb_0"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitCenter" />
+                            android:scaleType="fitXY" />
 
                         <!-- SHIP -->
                         <TextView
@@ -406,7 +406,7 @@
                             android:id="@+id/image_thumb_1"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitCenter" />
+                            android:scaleType="fitXY" />
 
                         <!-- SHIP -->
                         <TextView
@@ -571,7 +571,7 @@
                             android:id="@+id/image_thumb_2"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitCenter" />
+                            android:scaleType="fitXY" />
 
                         <!-- SHIP -->
                         <TextView
@@ -723,7 +723,7 @@
                             android:id="@+id/image_thumb_3"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitCenter" />
+                            android:scaleType="fitXY" />
 
                         <!-- SHIP -->
                         <TextView
@@ -888,7 +888,7 @@
                             android:id="@+id/image_thumb_4"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitCenter" />
+                            android:scaleType="fitXY" />
 
                         <!-- SHIP -->
                         <TextView
@@ -1040,7 +1040,7 @@
                             android:id="@+id/image_thumb_5"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="fitCenter" />
+                            android:scaleType="fitXY" />
 
                         <!-- SHIP -->
                         <TextView

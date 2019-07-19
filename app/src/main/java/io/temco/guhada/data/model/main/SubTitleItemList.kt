@@ -1,9 +1,7 @@
-package io.temco.guhada.data.model.main.home
+package io.temco.guhada.data.model.main
 
 
 import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.data.model.main.HomeType
-import io.temco.guhada.data.model.main.MainBaseModel
 import java.util.*
 
 /**

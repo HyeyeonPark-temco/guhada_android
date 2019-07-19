@@ -11,6 +11,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
@@ -38,12 +39,14 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
 
     /**
      * @exception IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 36 path $.data
+     *
+     * TODO 결과 값이 서로 달라 확인 필요 - 배송지 목록 관련 확인
      */
     fun getUserShippingAddress() {
         UserServer.getUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = { model ->
-                        this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
+                        this.shippingAddresses.postValue(model.list as MutableList<UserShipping>)
                         emptyVisibility = ObservableInt(View.GONE)
                         notifyPropertyChanged(BR.shippingAddresses)
                         notifyPropertyChanged(BR.emptyVisibility)

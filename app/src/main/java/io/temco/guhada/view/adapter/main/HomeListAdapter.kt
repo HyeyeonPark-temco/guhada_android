@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter.main
 
 import android.app.Activity
 import android.content.Context
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +21,12 @@ import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.HomeType
 import io.temco.guhada.data.model.main.MainBaseModel
-import io.temco.guhada.data.model.main.home.EventData
-import io.temco.guhada.data.model.main.home.MainEvent
-import io.temco.guhada.data.model.main.home.SubTitleItemList
+import io.temco.guhada.data.model.main.DummyImage
+import io.temco.guhada.data.model.main.EventData
+import io.temco.guhada.data.model.main.MainEvent
+import io.temco.guhada.data.model.main.SubTitleItemList
 import io.temco.guhada.data.viewmodel.HomeListViewModel
+import io.temco.guhada.databinding.CustomlayoutMainItemDummyBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemMaineventBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemPaddingBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemSubtitlelistBinding
@@ -51,6 +54,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         when(items[position].type){
             HomeType.MainEvent->return R.layout.customlayout_main_item_mainevent
             HomeType.SubTitleList->return R.layout.customlayout_main_item_subtitlelist
+            HomeType.Dummy->return R.layout.customlayout_main_item_dummy
             else ->return R.layout.customlayout_main_item_padding
         }
     }
@@ -69,6 +73,10 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
             HomeType.SubTitleList->{
                 val binding : CustomlayoutMainItemSubtitlelistBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return SubTitleViewHolder(binding.root, binding)
+            }
+            HomeType.Dummy->{
+                val binding : CustomlayoutMainItemDummyBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return DummyViewHolder(binding.root, binding)
             }
             else ->{
                 val binding : CustomlayoutMainItemPaddingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
@@ -278,7 +286,24 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                 }*/
             }
         }
+    }
 
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class DummyViewHolder(private val containerView: View, val binding: CustomlayoutMainItemDummyBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+            if(item is DummyImage){
+                var metrics = DisplayMetrics()
+                (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
+                binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
+                binding.heightLayout.setmWidth((360 * metrics.density).toInt())
+                binding.heightLayout.setBackgroundResource(item.imageRes)
+
+            }
+        }
     }
 
 

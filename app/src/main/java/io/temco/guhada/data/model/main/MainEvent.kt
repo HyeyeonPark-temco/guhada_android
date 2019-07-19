@@ -1,7 +1,4 @@
-package io.temco.guhada.data.model.main.home
-
-import io.temco.guhada.data.model.main.HomeType
-import io.temco.guhada.data.model.main.MainBaseModel
+package io.temco.guhada.data.model.main
 
 /**
  * @author park jungho

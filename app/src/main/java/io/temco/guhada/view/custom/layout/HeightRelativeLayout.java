@@ -10,8 +10,8 @@ import io.temco.guhada.R;
 public class HeightRelativeLayout extends RelativeLayout {
 
     // -------- LOCAL VALUE --------
-    private int mWidth;
-    private int mHeight;
+    private int mWidth = 0;
+    private int mHeight = 0;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -36,6 +36,14 @@ public class HeightRelativeLayout extends RelativeLayout {
     public HeightRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initSize(context, attrs);
+    }
+
+    public void setmWidth(int mWidth) {
+        this.mWidth = mWidth;
+    }
+
+    public void setmHeight(int mHeight) {
+        this.mHeight = mHeight;
     }
 
     ////////////////////////////////////////////////

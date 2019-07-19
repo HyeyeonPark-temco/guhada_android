@@ -7,13 +7,7 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.main.HomeType
-import io.temco.guhada.data.model.main.MainBaseModel
-import io.temco.guhada.data.model.main.home.EventData
-import io.temco.guhada.data.model.main.home.HomeDeal
-import io.temco.guhada.data.model.main.home.MainEvent
-import io.temco.guhada.data.model.main.home.SubTitleItemList
-import io.temco.guhada.data.server.OrderServer
+import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.ProductServer
 /**
  * @author park jungho
@@ -62,9 +56,10 @@ class HomeListRepository(val context : Context){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size,HomeType.SubTitleList,
-                                "NEW ARRIVALS", arrayOf(newArrival.allList!!.size,newArrival.womenList!!.size,newArrival.menList!!.size,newArrival.kidsList!!.size),0, newArrival)
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "NEW ARRIVALS", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
                         list.value!!.add(subTitle)
+                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.focuson04, 556))
                         if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
                         getNewArrivalsDummy()
                     },
@@ -87,8 +82,8 @@ class HomeListRepository(val context : Context){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size,HomeType.SubTitleList,
-                                "PLUS ITEM", arrayOf(newArrival.allList!!.size,newArrival.womenList!!.size,newArrival.menList!!.size,newArrival.kidsList!!.size),3, newArrival)
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem","",list.value!!.size)
@@ -112,12 +107,13 @@ class HomeListRepository(val context : Context){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size,HomeType.SubTitleList,
-                                "PLUS ITEM", arrayOf(newArrival.allList!!.size,newArrival.womenList!!.size,newArrival.menList!!.size,newArrival.kidsList!!.size),3, newArrival)
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem","",list.value!!.size)
                         getNewArrivalsDummy1()
+                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.hotkeyword05, 341))
                     },
                     dataNotFoundTask = {
 
@@ -137,12 +133,13 @@ class HomeListRepository(val context : Context){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size,HomeType.SubTitleList,
-                                "PLUS ITEM TEST1", arrayOf(newArrival.allList!!.size,newArrival.womenList!!.size,newArrival.menList!!.size,newArrival.kidsList!!.size),1, newArrival)
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "PLUS ITEM TEST1", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem1","",list.value!!.size)
                         getNewArrivalsDummy2()
+                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_15, 120))
                     },
                     dataNotFoundTask = {
 
@@ -162,12 +159,13 @@ class HomeListRepository(val context : Context){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size,HomeType.SubTitleList,
-                                "PLUS ITEM  TEST2", arrayOf(newArrival.allList!!.size,newArrival.womenList!!.size,newArrival.menList!!.size,newArrival.kidsList!!.size),2, newArrival)
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "PLUS ITEM  TEST2", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem2","",list.value!!.size)
                         getNewArrivalsDummy3()
+                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner09, 230))
                     },
                     dataNotFoundTask = {
 
@@ -187,10 +185,11 @@ class HomeListRepository(val context : Context){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size,HomeType.SubTitleList,
-                                "PLUS ITEM TEST3", arrayOf(newArrival.allList!!.size,newArrival.womenList!!.size,newArrival.menList!!.size,newArrival.kidsList!!.size),0, newArrival)
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "PLUS ITEM TEST3", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
+                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_13, 120))
                         if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem3","",list.value!!.size)
                     },
                     dataNotFoundTask = {

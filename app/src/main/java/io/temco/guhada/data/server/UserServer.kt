@@ -210,7 +210,7 @@ class UserServer {
          */
         @JvmStatic
         fun getUserShippingAddress(listener: OnServerListener, userId: Int) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).findShippingAddress(userId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<UserShipping>>> { successResponse -> listener.onResult(true, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true).findShippingAddress(userId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<UserShipping>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 회원 배송지 삭제 API

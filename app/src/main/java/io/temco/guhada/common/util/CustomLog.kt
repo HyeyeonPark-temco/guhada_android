@@ -11,7 +11,7 @@ object CustomLog {
 
     var num = 0
     var err = 0
-    val flag = true
+    val flag = false
     val maxLogStringSize = 1000
 
     fun E(e: Exception) {

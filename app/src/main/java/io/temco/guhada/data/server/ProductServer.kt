@@ -9,7 +9,7 @@ import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.main.home.HomeDeal
+import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ProductService
 import retrofit2.Call
