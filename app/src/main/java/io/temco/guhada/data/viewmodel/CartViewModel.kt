@@ -60,6 +60,8 @@ class CartViewModel : BaseObservableViewModel() {
 
     // DELETE
     var deleteCartItemId: ArrayList<Int> = arrayListOf()
+        @Bindable
+        get() = field
 
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
@@ -140,6 +142,7 @@ class CartViewModel : BaseObservableViewModel() {
                         successTask = {
                             setCartItemList(it.data as CartResponse)
                             deleteCartItemId = arrayListOf()
+                            notifyPropertyChanged(BR.deleteCartItemId)
                         })
             }, accessToken = accessToken, cartItemIdList = deleteCartItemId)
         })

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.ToastUtil
@@ -50,6 +51,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
     inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root) {
         fun bind(cart: Cart) {
+            binding.checkboxCart.isChecked = false
             binding.constraintllayoutCartOption.addListener { expansionLayout, expanded ->
                 if (expanded) {
                     if (items[adapterPosition].cartOptionList.isEmpty()) {
@@ -124,9 +126,17 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete),
                         cancelButtonVisible = true,
                         confirmTask = {
-                            mViewModel.deleteCartItemId.add(cart.cartItemId.toInt())
+                            mViewModel.deleteCartItemId = arrayListOf(cart.cartItemId.toInt())
                             mViewModel.deleteCartItem()
                         }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = CartProductAdapter::class.java.simpleName)
+            }
+            binding.checkboxCart.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    mViewModel.deleteCartItemId.add(cart.cartItemId.toInt())
+                } else {
+                    mViewModel.deleteCartItemId.remove(cart.cartItemId.toInt())
+                }
+                mViewModel.notifyPropertyChanged(BR.deleteCartItemId)
             }
             binding.cart = cart
             binding.executePendingBindings()
