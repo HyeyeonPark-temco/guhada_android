@@ -4,7 +4,7 @@ import io.temco.guhada.view.activity.MainActivity
 
 /**
  * 메인과 상품 상세 페이지 연결을 위한 임시 클래스
- * @author Hyeyeon Park
+ * @Author Hyeyeon Park
  */
 class ProductBridge {
     companion object {

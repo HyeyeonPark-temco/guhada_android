@@ -1,5 +1,6 @@
 package io.temco.guhada.common.util
 
+import com.google.gson.Gson
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
@@ -65,6 +66,10 @@ class ServerCallbackUtil {
         /**
          * Retrofit2 resultCode 별 task 분기
          * @author Hyeyeon Park
+         *
+         * 19.07.18
+         * @author park jungho
+         * 에러 처리 관련 수정
          */
         fun executeByResultCode(success: Boolean, o: Any,
                                 successTask: (BaseModel<*>) -> Unit,
@@ -80,9 +85,21 @@ class ServerCallbackUtil {
                     Flag.ResultCode.DATA_NOT_FOUND -> dataNotFoundTask()
                 }
             } else {
-                failedTask(o as BaseModel<*>)
+                // modify ------------------------------------
+                if(o is String){
+                    var gson  = Gson()
+                    if(CustomLog.flag)CustomLog.L("executeByResultCode",o)
+                    var base = gson.fromJson<BaseModel<*>>(o, BaseModel::class.java)
+                    failedTask(base)
+                }else{
+                    var base = BaseModel<Any>()
+                    base.error = ""
+                    failedTask(base)
+                }
+                //  -------------------------------------------
             }
         }
+
     }
 
 }

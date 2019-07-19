@@ -43,6 +43,12 @@
     <dimen name="view_fast_scroll_brand_thumb">60dp</dimen>
     <dimen name="view_fast_scroll_brand_header_row">42dp</dimen>
     <dimen name="view_fast_scroll_brand_contents_row">37dp</dimen>
+    <dimen name="view_main_home_deal_list_layout_height">360dp</dimen>
+    <dimen name="view_main_home_deal_list_image_height">220dp</dimen>
+    <dimen name="view_main_home_deal_list_text_producttitle_height">32dp</dimen>
+    24dp
+
+    220dp
 
     <!-- PADDING -->
     <dimen name="padding_fast_scroll_brand_top">11dp</dimen>
@@ -50,4 +56,9 @@
     <dimen name="padding_detail_search_filter">10dp</dimen>
     <dimen name="padding_detail_search_filter_row">15dp</dimen>
     <dimen name="padding_detail_search_filter_column">24dp</dimen>
+    <dimen name="padding_main_home_deal_item_bottom">6dp</dimen>
+    <dimen name="padding_main_home_deal_item_right">4dp</dimen>
+    <dimen name="padding_main_home_deal_item_layout_leftright">6dp</dimen>
+
+
 </resources>

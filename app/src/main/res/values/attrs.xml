@@ -21,4 +21,6 @@
     <declare-styleable name="CustomSpinnerView">
         <attr name="list" format="reference"/>
     </declare-styleable>
+
+
 </resources>

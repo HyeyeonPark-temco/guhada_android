@@ -560,4 +560,17 @@
     <string name="productdetaininfo_review_sort1">최신순</string>
     <string name="productdetaininfo_review_sort2">전체평점</string>
 
+
+    <string name="mainlistsubtitle_all">전체</string>
+    <string name="mainlistsubtitle_women">여성</string>
+    <string name="mainlistsubtitle_men">남성</string>
+    <string name="mainlistsubtitle_kids">키즈</string>
+
+    <string-array name="main_sub__titles">
+        <item>전체</item>
+        <item>여성</item>
+        <item>남성</item>
+        <item>키즈</item>
+    </string-array>
+
 </resources>

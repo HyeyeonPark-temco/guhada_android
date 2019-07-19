@@ -1,6 +1,7 @@
 package io.temco.guhada.common;
 
-import android.app.Application;
+
+import androidx.multidex.MultiDexApplication;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -8,7 +9,10 @@ import com.kakao.auth.KakaoSDK;
 
 import io.temco.guhada.common.sns.kakao.KakaoSDKAdapter;
 
-public class BaseApplication extends Application {
+/*
+    MultiDexApplication 변경
+ */
+public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication mApplication;
 

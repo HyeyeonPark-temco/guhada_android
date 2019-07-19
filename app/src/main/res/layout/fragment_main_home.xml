@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.HomeListViewModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -52,8 +58,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@+id/view_line"
-                    />
+                    app:layout_constraintBottom_toBottomOf="@+id/view_line" />
+
                 <View
                     android:id="@+id/view_line"
                     android:layout_width="match_parent"
@@ -71,8 +77,14 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
+
             <!-- DUMMY -->
-            <androidx.core.widget.NestedScrollView
+            <!--<androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never">
@@ -188,12 +200,12 @@
                         android:background="@drawable/banner_15"
                         app:height="120dp"
                         app:width="360dp" />
-                    <!-- INFORMATION -->
+                    &lt;!&ndash; INFORMATION &ndash;&gt;
                     <include
                         android:id="@+id/layout_information"
                         layout="@layout/layout_information" />
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>-->
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

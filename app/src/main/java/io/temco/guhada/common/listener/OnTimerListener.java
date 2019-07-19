@@ -2,7 +2,7 @@ package io.temco.guhada.common.listener;
 
 /**
  * Timer Listener
- * @author Hyeyeon Park
+ * @Author Hyeyeon Park
  */
 public interface OnTimerListener {
     void changeSecond(String second);

@@ -35,4 +35,7 @@ interface OrderService {
      */
     @GET("/order/order-complete/{purchaseId}")
     fun setOrderCompleted(@Header("Authorization") accessToken: String, @Path("purchaseId") purchaseId: Double) : Call<BaseModel<PurchaseOrderResponse>>
+
+
+
 }

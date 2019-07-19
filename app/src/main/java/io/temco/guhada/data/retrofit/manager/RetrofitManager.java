@@ -2,6 +2,10 @@ package io.temco.guhada.data.retrofit.manager;
 
 import android.app.Application;
 import android.os.Build;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,11 +14,13 @@ import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,6 +55,7 @@ public class RetrofitManager {
                 getCache(BaseApplication.getInstance()),
                 getInterceptor(), isLogged));
     }
+
 
     ////////////////////////////////////////////////
     // PUBLIC
@@ -85,6 +92,8 @@ public class RetrofitManager {
         return instance.mManager.create(service);
     }
 
+
+
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
@@ -97,17 +106,53 @@ public class RetrofitManager {
                 .build();
     }
 
+    private static Converter.Factory createGsonConverter(java.lang.reflect.Type type, Object typeAdapter) {
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("HomeListRepository GetBaseModelDeserializer","createGsonConverter");
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(type, typeAdapter);
+        Gson gson = gsonBuilder.create();
+        return GsonConverterFactory.create(gson);
+    }
+
+    private Retrofit getRetrofitCommon(OkHttpClient okHttpClient, java.lang.reflect.Type type, Object typeAdapter) {
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("HomeListRepository GetBaseModelDeserializer","getRetrofitCommon");
+        return new Retrofit.Builder()
+                .baseUrl(Type.Server.getUrl(mCurrentType))
+                //.addConverterFactory(createGsonConverter(type, typeAdapter))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+    }
+
+    /**
+     * @author park jungho
+     * BaseResponseInterceptor 추가
+     */
     // Client
     private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging) {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.cache(cache);
+        builder.connectTimeout(5, TimeUnit.SECONDS);
+        // builder.writeTimeout(15, TimeUnit.SECONDS)
+        // builder.readTimeout(15, TimeUnit.SECONDS)
+        builder.addInterceptor(interceptor);
+        builder.addInterceptor(new BaseResponseInterceptor());
+        if (isLogging) builder.addInterceptor(getLoggingInterceptor());
+        return builder.build();
+    }
+
+    /*// Client
+    private OkHttpClient getClientCommon(Cache cache, Interceptor interceptor, boolean isLogging) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
          builder.cache(cache);
          builder.connectTimeout(5, TimeUnit.SECONDS);
         // builder.writeTimeout(15, TimeUnit.SECONDS)
         // builder.readTimeout(15, TimeUnit.SECONDS)
         builder.addInterceptor(interceptor);
+        builder.addInterceptor(new BaseResponseInterceptor(true));
         if (isLogging) builder.addInterceptor(getLoggingInterceptor());
         return builder.build();
-    }
+    }*/
 
     // Cache
     private Cache getCache(Application application) {
@@ -127,6 +172,8 @@ public class RetrofitManager {
             // Mobile
             builder.header("X-Guhada-model", Build.DEVICE); // Device Model // Build.MANUFACTURER
             builder.header("X-Guhada-os-version", Build.VERSION.RELEASE); // Device Version
+            Log.d("Interceptor","getInterceptor "+CommonUtil.getSystemCountryCode());
+            Log.d("Interceptor","getInterceptor "+Preferences.getLanguage());
             return chain.proceed(builder.build());
         };
     }

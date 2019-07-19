@@ -11,6 +11,8 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "0.0.1"
+
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -28,6 +30,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.RELEASE"
         }
+    }
+    /**
+     * @Author park jungho
+     * dexOptions 추가
+     */
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4096M"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -53,6 +63,8 @@ dependencies {
     implementation androidDependencies.supportConstraintLayout
     implementation androidDependencies.supportCoreUtils
     implementation androidDependencies.supportCustomTabs
+
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
 
 //    implementation 'androidx.appcompat:appcompat:1.0.2'
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -94,7 +106,7 @@ dependencies {
     implementation libraryDependencies.kotlinJdk7
     kapt androidDependencies.dataBindingCompiler
 
-    // LOGGING INTERCEPTOR
+    // OKHTTP LOGGING INTERCEPTOR
     implementation libraryDependencies.loggingInterceptor
 
     // JWT DECODE
@@ -113,6 +125,21 @@ dependencies {
     implementation libraryDependencies.fcm
 
 
+    // ----------------------------------------------------------
+    /**
+     * @Author park jungho
+     * 19.07.18
+     * 추가
+     */
+    // MULTIDEX
+    implementation 'androidx.multidex:multidex:2.0.1'
+    // ROOM
+    kapt 'androidx.room:room-compiler:2.1.0-alpha03'
+    implementation 'androidx.room:room-runtime:2.1.0-alpha03'
+    implementation 'androidx.room:room-rxjava2:2.1.0-alpha03'
+    // ----------------------------------------------------------
+
+
     ////////////////////////////////////////////////
 }
 
@@ -126,4 +153,9 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
+// @Author park jungho
+androidExtensions {
+    // kolin LayoutContainer
+    experimental = true
+}
 apply plugin: 'com.google.gms.google-services'

@@ -2,6 +2,7 @@ package io.temco.guhada.common.util
 
 import android.util.Log
 import io.temco.guhada.common.Preferences
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
@@ -31,6 +32,11 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     }
 
 
+    /**
+     * 에러 처리 관련 코드 수정
+     * 19.07.18
+     * @author park jungho
+     */
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (!APIHelper.isCallSuccess(response = response)) {
             if (response.code() == 401 || response.code() == 403) {
@@ -44,7 +50,16 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     }
                 }
             } else {
-                this@RetryableCallback.onFinalResponse(call, response)
+                // modify 19.07.18 --------------------
+                if(CustomLog.flag)CustomLog.L("HomeListRepository GetBaseModelDeserializer onResponse","response code",response.code() )
+                if(response.code() in 200..400) this@RetryableCallback.onFinalResponse(call, response)
+                else {
+                    val body : ResponseBody = response.errorBody()!!
+                    val bodyString = body.string()
+                    if(CustomLog.flag)CustomLog.L("HomeListRepository GetBaseModelDeserializer onResponse","jsonData",bodyString)
+                    this@RetryableCallback.onFinalFailure(call, Throwable(bodyString))
+                }
+                // ------------------------------------
             }
         } else {
             this@RetryableCallback.onFinalResponse(call, response)
@@ -97,8 +112,12 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
             @JvmStatic
             fun <T> enqueueWithRetry(call: Call<T>, retryCount: Int, callback: Callback<T>) {
                 call.enqueue(object : RetryableCallback<T>(call, retryCount) {
-                    override fun onFinalResponse(call: Call<T>, response: Response<T>) = callback.onResponse(call, response)
-                    override fun onFinalFailure(call: Call<T>, t: Throwable) = callback.onFailure(call, t)
+                    override fun onFinalResponse(call: Call<T>, response: Response<T>) {
+                        callback.onResponse(call, response)
+                    }
+                    override fun onFinalFailure(call: Call<T>, t: Throwable){
+                        callback.onFailure(call, t)
+                    }
                 })
             }
 
@@ -109,7 +128,6 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     override fun onFinalFailure(call: Call<T>, t: Throwable) = callback.onFailure(call, t)
                 })
             }
-
 
             @JvmStatic
             fun <T> enqueueWithRetry(call: Call<T>, callback: Callback<T>) = enqueueWithRetry(call, DEFAULT_RETRIES, callback)

@@ -3,7 +3,10 @@ package io.temco.guhada.data.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
+
+import io.temco.guhada.common.util.CustomLog;
 
 public class Deal {
 
@@ -64,6 +67,14 @@ public class Deal {
     @SerializedName("freeShipping")
     public boolean freeShipping;
 
+    @SerializedName("shipExpenseType")
+    public String shipExpenseType;
+
+    public boolean isFreeShipping() {
+        if(shipExpenseType!=null && !"".equals(shipExpenseType)) return "FREE".equals(shipExpenseType);
+        return freeShipping;
+    }
+
     public class Option {
 
         @SerializedName("type")
@@ -71,5 +82,38 @@ public class Deal {
 
         @SerializedName("attributes")
         public String[] attributes;
+
+        @Override
+        public String toString() {
+            return "Option{" +
+                    "type='" + type + '\'' +
+                    ", attributes=" + Arrays.toString(attributes) +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        if(CustomLog.INSTANCE.getFlag())return "Deal{" +
+                "brandId=" + brandId +
+                ", brandName='" + brandName + '\'' +
+                ", sellerId=" + sellerId +
+                ", sellerName='" + sellerName + '\'' +
+                ", productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productSeason='" + productSeason + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", productImage=" + productImage +
+                ", dealId=" + dealId +
+                ", dealName='" + dealName + '\'' +
+                ", sellPrice=" + sellPrice +
+                ", discountPrice=" + discountPrice +
+                ", setDiscount=" + setDiscount +
+                ", categoryId=" + categoryId +
+                ", options=" + options +
+                ", discountRate=" + discountRate +
+                ", freeShipping=" + freeShipping +
+                '}';
+        else return "";
     }
 }

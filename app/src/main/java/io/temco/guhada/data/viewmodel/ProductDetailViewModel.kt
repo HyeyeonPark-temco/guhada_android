@@ -63,7 +63,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         get() = field
 
     fun getDetail() {
-        ProductServer.getProductDetail({ success, o ->
+        ProductServer.getProductDetail(OnServerListener{ success, o ->
             if (success) {
                 (o as BaseModel<Product>).let {
                     tags = it.data.tag.split("/")

@@ -15,4 +15,6 @@ class ItemOptionResponse : Serializable {
     var price = 0 // 옵션의 가격(상품의 기본가격에서 해당금액만큼 더해준다. 음수값이 들어올 수도 있다.)
     var stock = 0 // 해당 상품의 재고
     var viewType = "" // 옵션 뷰 타입 ("SEPARATED", "INTEGRATED")
+
+
 }

@@ -44,7 +44,9 @@ import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
 /**
- * 상품 리스트
+ * TODO 변경해야함!! @junghoPark
+ *
+ * 상품 리스트 ( 카테고리)
  */
 public class ProductListFragment extends BaseFragment<FragmentProductListBinding> implements OnStateFragmentListener, View.OnClickListener {
 

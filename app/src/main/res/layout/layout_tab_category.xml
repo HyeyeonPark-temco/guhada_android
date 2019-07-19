@@ -11,6 +11,7 @@
         android:layout_height="10dp">
 
         <ImageView
+            android:id="@+id/img_idc"
             android:layout_width="4dp"
             android:layout_height="4dp"
             android:layout_centerInParent="true"

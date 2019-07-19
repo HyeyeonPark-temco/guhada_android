@@ -11,11 +11,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
-import io.temco.guhada.databinding.ViewCustomspinnerBinding
+//import io.temco.guhada.databinding.ViewCustomspinnerBinding
 
 open class CustomSpinnerView : ConstraintLayout {
     private lateinit var mViewModel: CustomSpinnerViewModel
-    private lateinit var mBinding: ViewCustomspinnerBinding
+    //private lateinit var mBinding: ViewCustomspinnerBinding
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -31,7 +31,7 @@ open class CustomSpinnerView : ConstraintLayout {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initView(context: Context, attrs: AttributeSet?) {
-        mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_customspinner, this, true)
+        /*mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_customspinner, this, true)
         mViewModel = CustomSpinnerViewModel(object : OnCustomSpinnerListener{
             override fun closeSpinner() {
                 mBinding.framelayoutCustomspinnerSelected.bringToFront()
@@ -42,7 +42,7 @@ open class CustomSpinnerView : ConstraintLayout {
                 }
             }
         })
-        mBinding.framelayoutCustomspinnerSelected.bringToFront()
+        mBinding.framelayoutCustomspinnerSelected.bringToFront()*/
 
 
 
@@ -58,9 +58,9 @@ open class CustomSpinnerView : ConstraintLayout {
 //
 //            return@setOnTouchListener true
 //        }
-        mBinding.viewModel = mViewModel
+        /*mBinding.viewModel = mViewModel
         mBinding.spinnerCustomspinner.adapter = CustomSpinnerAdapter(context, mViewModel, R.layout.item_payment_spinner, listOf())
-        mBinding.executePendingBindings()
+        mBinding.executePendingBindings()*/
     }
 
     companion object {
@@ -68,10 +68,10 @@ open class CustomSpinnerView : ConstraintLayout {
         @BindingAdapter(value = ["spinnerList", "emptyMessage"])
         fun bindShippingMemo(view: View?, list: MutableList<String>, emptyMessage: String) {
             if (view != null) {
-                val spinnerView = (view as CustomSpinnerView).mBinding.spinnerCustomspinner
+               /* val spinnerView = (view as CustomSpinnerView).mBinding.spinnerCustomspinner
                 list.add(emptyMessage)
                 (spinnerView.adapter as CustomSpinnerAdapter).setItems(list)
-                spinnerView.setSelection(list.size - 1)
+                spinnerView.setSelection(list.size - 1)*/
             }
         }
     }

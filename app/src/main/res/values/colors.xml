@@ -68,5 +68,6 @@
     <color name="perrywinkle">#aa91e6</color>
     <color name="brick">#ce2525</color>
 
+    <color name="transparent">#00000000</color>
 
 </resources>

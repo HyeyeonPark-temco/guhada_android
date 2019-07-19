@@ -560,4 +560,18 @@
     <string name="productdetaininfo_review_sort1">Newly Listed</string>
     <string name="productdetaininfo_review_sort2">Rating</string>
 
+
+    <string name="mainlistsubtitle_all">ALL</string>
+    <string name="mainlistsubtitle_women">Women</string>
+    <string name="mainlistsubtitle_men">Men</string>
+    <string name="mainlistsubtitle_kids">Kids</string>
+
+    <string-array name="main_sub__titles">
+        <item>ALL</item>
+        <item>Women</item>
+        <item>Men</item>
+        <item>Kids</item>
+    </string-array>
+
+
 </resources>

@@ -34,42 +34,51 @@
     <!-- TEXTVIEW -->
     <style name="TextRegular">
         <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextBold">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextThin">
         <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextLight">
         <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextBlack">
         <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextRegularSingleLine" parent="TextRegular">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextMediumSingleLine" parent="TextMedium">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="TextTabStyle" parent="TextMedium">
         <item name="android:textSize">@dimen/text_10</item>
         <item name="android:textColor">@drawable/selector_text_tab_main</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <!-- DIALOG -->
@@ -215,6 +224,25 @@
     <style name="PaymentResultContentGreyTextStyle" parent="@style/TextMedium">
         <item name="android:textSize">@dimen/text_14</item>
         <item name="android:textColor">@color/warm_grey_two</item>
+    </style>
+
+
+    <style name="MainHomeListProductItemSellerRateTextStyle" parent="@style/TextBold">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:textColor">@color/text_3</item>
+        <item name="android:textSize">@dimen/text_8</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/round_backgroud</item>
+    </style>
+
+
+    <style name="MainHomeListProductItemSellerNameTextStyle" parent="@style/TextThin">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:textColor">@color/greyish_brown_two</item>
+        <item name="android:textSize">@dimen/text_10</item>
+        <item name="android:layout_marginLeft">6dp</item>
     </style>
 
 </resources>

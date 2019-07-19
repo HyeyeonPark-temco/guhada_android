@@ -387,6 +387,7 @@ public class Type {
         NONE(""),
         COLOR("RGB_BUTTON"),
         TEXT_BUTTON("TEXT_BUTTON"),
+        RGB("RGB"),
         TEXT("TEXT");
 
         private String type;
@@ -403,18 +404,29 @@ public class Type {
                     return TEXT_BUTTON.type;
                 case TEXT:
                     return TEXT.type;
+                case RGB:
+                    return RGB.type;
                 default:
                     return NONE.type;
             }
         }
 
+        /**
+         *
+         * @Author park jungho
+         * 19.07.18
+         * RGB 값추가 - 메인 홈에서 deal에 사용
+         *
+         */
         public static ProductOption getType(String type) {
-            if (type.equals(COLOR.type)) {
+            if (type.equalsIgnoreCase(COLOR.type)) {
                 return COLOR;
-            } else if (type.equals(TEXT_BUTTON.type)) {
+            } else if (type.equalsIgnoreCase(TEXT_BUTTON.type)) {
                 return TEXT_BUTTON;
-            } else if (type.equals(TEXT.type)) {
+            } else if (type.equalsIgnoreCase(TEXT.type)) {
                 return TEXT;
+            } else if (type.equalsIgnoreCase(RGB.type)) {
+                return RGB;
             } else {
                 return NONE;
             }
