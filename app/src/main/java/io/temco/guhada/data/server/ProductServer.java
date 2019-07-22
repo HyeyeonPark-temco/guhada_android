@@ -6,7 +6,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
-import io.temco.guhada.data.model.Product;
+import io.temco.guhada.data.model.product.Product;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.base.BaseListModel;
 import io.temco.guhada.data.model.base.BaseModel;

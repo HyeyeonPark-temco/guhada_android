@@ -22,9 +22,9 @@ import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.BaseProduct
+import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
@@ -311,12 +311,12 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         if (selectedOptionCount == optionCount) {
             mViewModel.addCartItem()
         } else {
-            setMenuVisibie()
+            setMenuVisible()
         }
     }
 
-    // 수정 예정 ( BottomSheetFragment로 변경 예정)
-    private fun setMenuVisibie() {
+    // 수정 예정 (BottomSheetFragment로 변경 예정)
+    private fun setMenuVisible() {
         ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)
                 ?: BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
         mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
@@ -377,7 +377,6 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
                 }
             }
-
         } else {
             ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
         }

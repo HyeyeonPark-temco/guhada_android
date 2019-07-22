@@ -24,9 +24,9 @@ import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.BaseProduct
+import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
@@ -35,7 +35,6 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
-import io.temco.guhada.view.fragment.cart.AddCartResultFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment
 import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment

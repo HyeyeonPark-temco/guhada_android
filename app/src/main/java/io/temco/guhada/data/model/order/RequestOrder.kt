@@ -7,7 +7,7 @@ import io.temco.guhada.data.model.UserShipping
 class RequestOrder {
     var user: User = User()
     var addShippingAddress = false
-    var cartItemIdList: Array<Long> = arrayOf()
+    var cartItemIdList: Array<Long?> = arrayOf()
     var parentMethodCd: String = ""
     var shippingAddress: UserShipping = UserShipping()
 

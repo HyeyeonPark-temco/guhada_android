@@ -131,6 +131,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 mViewModel.notNotifyAllChecked = false
 
                 if (isChecked) {
+                    mViewModel.selectedCartItem.add(cart)
                     mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
 
                     // allChecked notify 가능하도록 변경
@@ -140,6 +141,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                     // 상품 가격 추가
                     setTotalPrices(cart = cart, isAdd = true)
                 } else {
+                    mViewModel.selectedCartItem.remove(cart)
                     mViewModel.selectCartItemId.remove(cart.cartItemId.toInt())
 
                     // notify..(BR.selectCartItemId) 시 allChecked 변경 방지

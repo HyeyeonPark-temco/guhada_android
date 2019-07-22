@@ -1,4 +1,4 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.product
 
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.option.Option

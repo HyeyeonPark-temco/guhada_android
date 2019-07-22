@@ -24,6 +24,10 @@ import io.temco.guhada.view.adapter.cart.CartOptionAdapter
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
 import io.temco.guhada.view.fragment.cart.EmptyCartFragment
 
+/**
+ * 장바구니 Activity
+ * @author Hyeyeon Park
+ */
 class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBinding>() {
     private lateinit var mViewModel: CartViewModel
     private lateinit var mCartProductAdapter: CartProductAdapter
@@ -37,6 +41,12 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mBinding.includeCartHeader.title = resources.getString(R.string.cart_title)
 
         mViewModel = CartViewModel()
+        mViewModel.clickPaymentListener = {
+            val intent = Intent(this@CartActivity, PaymentActivity::class.java)
+            intent.putExtra("productList", it)
+            intent.putExtra("cartIdList", mViewModel.selectCartItemId.toTypedArray())
+            startActivity(intent)
+        }
         mViewModel.cartResponse.observe(this, Observer {
             mBinding.checkboxCartAll.isChecked = false
             if (it.cartItemResponseList.isEmpty()) {

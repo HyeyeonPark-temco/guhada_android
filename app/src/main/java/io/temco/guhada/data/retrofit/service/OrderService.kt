@@ -16,7 +16,7 @@ interface OrderService {
      * 주문서 조회 API
      */
     @GET("/order/orderForm")
-    fun getOrderForm(@Header("Authorization") accessToken: String, @Query("cartItemIdList") itemIdList: Array<Long>): Call<BaseModel<Order>>
+    fun getOrderForm(@Header("Authorization") accessToken: String, @Query("cartItemIdList") itemIdList: IntArray): Call<BaseModel<Order>>
 
     /**
      * 장바구니 상품 담기 API
@@ -70,5 +70,5 @@ interface OrderService {
      * 장바구니 상품 삭제 API
      */
     @POST("/cart/removeCartItem")
-    fun deleteCartItem(@Header("Authorization") accessToken: String, @Query("cartItemIdList") cartItemIdList: ArrayList<Int>) : Call<BaseModel<CartResponse>>
+    fun deleteCartItem(@Header("Authorization") accessToken: String, @Query("cartItemIdList") cartItemIdList: IntArray) : Call<BaseModel<CartResponse>>
 }

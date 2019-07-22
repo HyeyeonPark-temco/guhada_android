@@ -14,7 +14,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.SellerSatisfaction
 import io.temco.guhada.data.model.base.BaseModel
@@ -123,6 +123,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         listener?.showMenu()
     }
 
+    // 바로 구매 클릭
     fun onClickPayment() {
         listener?.redirectPaymentActivity(menuVisibility.get() == View.VISIBLE)
     }

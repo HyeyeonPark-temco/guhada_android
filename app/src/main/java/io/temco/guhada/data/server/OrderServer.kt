@@ -28,7 +28,7 @@ class OrderServer {
          * @param cartIdList 장바구니 id
          */
         @JvmStatic
-        fun getOrderForm(listener: OnServerListener, accessToken: String, cartIdList: Array<Long>) {
+        fun getOrderForm(listener: OnServerListener, accessToken: String, cartIdList: IntArray) {
             val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrderForm(accessToken, cartIdList)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Order>> {
                 override fun onFailure(call: Call<BaseModel<Order>>, t: Throwable) {
@@ -161,7 +161,7 @@ class OrderServer {
          * 장바구니 상품 삭제 API
          */
         @JvmStatic
-        fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: ArrayList<Int>) {
+        fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: IntArray) {
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).deleteCartItem(accessToken, cartItemIdList).enqueue(
                     ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
         }

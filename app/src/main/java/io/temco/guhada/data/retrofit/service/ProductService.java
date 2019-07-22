@@ -2,7 +2,7 @@ package io.temco.guhada.data.retrofit.service;
 
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
-import io.temco.guhada.data.model.Product;
+import io.temco.guhada.data.model.product.Product;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.base.BaseListModel;
 import io.temco.guhada.data.model.base.BaseModel;

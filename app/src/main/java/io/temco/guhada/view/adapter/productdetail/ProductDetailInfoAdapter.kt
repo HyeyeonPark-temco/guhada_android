@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.databinding.ItemProductdetailInfoBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
