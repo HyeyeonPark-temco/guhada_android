@@ -5,9 +5,11 @@ import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
@@ -15,6 +17,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.cart.CartOptionAdapter
@@ -62,6 +65,15 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mBinding.viewModel = mViewModel
 
         mBinding.executePendingBindings()
+    }
+
+    private fun setTotalPrice(cartResponse: CartResponse) {
+        mViewModel.totalProductPrice = ObservableInt(cartResponse.totalPaymentPrice)
+        mViewModel.totalDiscountPrice = ObservableInt(cartResponse.totalDiscountDiffPrice)
+        mViewModel.totalPaymentPrice = ObservableInt(cartResponse.totalPaymentPrice)
+        mViewModel.notifyPropertyChanged(BR.totalProductPrice)
+        mViewModel.notifyPropertyChanged(BR.totalDiscountPrice)
+        mViewModel.notifyPropertyChanged(BR.totalPaymentPrice)
     }
 
     private fun showEmptyView() {

@@ -25,12 +25,6 @@ class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>()
     override fun getViewType(): Type.View = Type.View.SEARCH_ZIP_WEBVIEW
 
     override fun init() {
-        initHeader()
-        initWebView()
-        handler = android.os.Handler()
-    }
-
-    private fun initHeader() {
         mBinding.includeSearchzipwebviewHeader.title = ""
         mBinding.includeSearchzipwebviewHeader.setOnClickBackButton {
             setResult(Activity.RESULT_CANCELED)

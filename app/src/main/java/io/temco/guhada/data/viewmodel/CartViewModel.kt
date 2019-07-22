@@ -30,10 +30,6 @@ class CartViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
-    var selectedCount = ObservableInt(0)
-        @Bindable
-        get() = field
-
     var totalProductPrice = ObservableInt(0)
         @Bindable
         get() = field
@@ -59,7 +55,7 @@ class CartViewModel : BaseObservableViewModel() {
     var cartDealOptionList: MutableList<CartDealOption> = mutableListOf()
 
     // DELETE
-    var deleteCartItemId: ArrayList<Int> = arrayListOf()
+    var selectCartItemId: ArrayList<Int> = arrayListOf()
         @Bindable
         get() = field
 
@@ -149,18 +145,18 @@ class CartViewModel : BaseObservableViewModel() {
     }
 
     fun deleteCartItem() {
-        if (deleteCartItemId.isEmpty()) {
+        if (selectCartItemId.isEmpty()) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_deleteempty))
         } else {
             callWithToken(task = { accessToken ->
                 OrderServer.deleteCartItem(OnServerListener { success, o ->
                     executeByResultCode(success, o,
                             successTask = {
-                                deleteCartItemId = arrayListOf()
-                                notifyPropertyChanged(BR.deleteCartItemId)
+                                selectCartItemId = arrayListOf()
+                                notifyPropertyChanged(BR.selectCartItemId)
                                 this.cartResponse.postValue(it.data as CartResponse)
                             })
-                }, accessToken = accessToken, cartItemIdList = deleteCartItemId)
+                }, accessToken = accessToken, cartItemIdList = selectCartItemId)
             })
         }
     }
