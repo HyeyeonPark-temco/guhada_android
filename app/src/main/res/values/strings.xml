@@ -602,6 +602,8 @@
     <string name="cart_button_buy">바로구매</string>
     <string name="cart_button_show">상품 보기</string>
     <string name="cart_button_notiffication">재입고 알림</string>
+    <string name="cart_button_continue">쇼핑 계속하기</string>
+    <string name="cart_button_like">찜한 상품 보기</string>
 
     <string name="cart_result_totalamount">총 %d개 상품</string>
     <string name="cart_result_totalproductprice">총 상품 금액</string>
@@ -629,4 +631,7 @@
     <string name="cart_addresult_title">상품이 장바구니에\n추가되었습니다.</string>
     <string name="cart_addresult_recommend">이 상품과 함께 많이 구매한 상품</string>
     <string name="cart_addresult_redirectcart">장바구니로 이동</string>
+
+    <string name="cart_empty_title">장바구니에\n담긴 상품이 없습니다.</string>
+    <string name="cart_empty_recommend">실시간 인기상품</string>
 </resources>

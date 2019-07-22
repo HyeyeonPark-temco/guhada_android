@@ -8,7 +8,6 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
@@ -20,10 +19,12 @@ import io.temco.guhada.data.viewmodel.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.cart.CartOptionAdapter
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
+import io.temco.guhada.view.fragment.cart.EmptyCartFragment
 
 class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBinding>() {
     private lateinit var mViewModel: CartViewModel
     private lateinit var mCartProductAdapter: CartProductAdapter
+    private lateinit var mEmptyCartFragment: EmptyCartFragment
 
     override fun getBaseTag(): String = CartActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_cart
@@ -33,6 +34,21 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mBinding.includeCartHeader.title = resources.getString(R.string.cart_title)
 
         mViewModel = CartViewModel()
+        mViewModel.cartResponse.observe(this, Observer {
+            if (it.cartItemResponseList.isEmpty()) {
+                if (!::mEmptyCartFragment.isInitialized)
+                    mEmptyCartFragment = EmptyCartFragment()
+                supportFragmentManager.beginTransaction().let { fragmentTransaction ->
+                    fragmentTransaction.add(mBinding.framelayoutCartEmpty.id, mEmptyCartFragment)
+                    fragmentTransaction.commitAllowingStateLoss()
+                    mBinding.framelayoutCartEmpty.bringToFront()
+                }
+            } else {
+                if (mBinding.recyclerviewCartProduct.adapter != null)
+                    (mBinding.recyclerviewCartProduct.adapter as CartProductAdapter).setItems(it.cartItemResponseList)
+            }
+            mBinding.executePendingBindings()
+        })
         mViewModel.cartOptionList.observe(this, Observer {
             val holder = mBinding.recyclerviewCartProduct.findViewHolderForAdapterPosition(mViewModel.shownMenuPos) as CartProductAdapter.Holder
             mCartProductAdapter.setCartItemOptionList(it)
@@ -81,9 +97,9 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         @JvmStatic
         @BindingAdapter("cart")
         fun RecyclerView.setCartItems(list: MutableList<Cart>) {
-            if (this.adapter != null) {
-                (this.adapter as CartProductAdapter).setItems(list)
-            }
+//            if (this.adapter != null) {
+//                (this.adapter as CartProductAdapter).setItems(list)
+//            }
         }
     }
 }

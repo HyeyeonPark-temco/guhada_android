@@ -22,7 +22,7 @@ import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class CartViewModel : BaseObservableViewModel() {
-    var cartResponse: CartResponse = CartResponse()
+    var cartResponse: MutableLiveData<CartResponse> = MutableLiveData()
         @Bindable
         get() = field
 
@@ -67,7 +67,7 @@ class CartViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
-    var notNotifyAllChecked = false
+    var notNotifyAllChecked = false // allChecked 필드 notify flag
 
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
@@ -156,9 +156,9 @@ class CartViewModel : BaseObservableViewModel() {
                 OrderServer.deleteCartItem(OnServerListener { success, o ->
                     executeByResultCode(success, o,
                             successTask = {
-                                setCartItemList(it.data as CartResponse)
                                 deleteCartItemId = arrayListOf()
                                 notifyPropertyChanged(BR.deleteCartItemId)
+                                this.cartResponse.postValue(it.data as CartResponse)
                             })
                 }, accessToken = accessToken, cartItemIdList = deleteCartItemId)
             })
@@ -166,10 +166,10 @@ class CartViewModel : BaseObservableViewModel() {
     }
 
     private fun setCartItemList(cartResponse: CartResponse) {
-        this.cartResponse = cartResponse
-        if (cartResponse.cartItemResponseList.isNotEmpty()) {
-            notifyPropertyChanged(BR.cartResponse)
-        }
+        this.cartResponse.postValue(cartResponse)
+//        if (cartResponse.cartItemResponseList.isNotEmpty()) {
+//            notifyPropertyChanged(BR.cartResponse)
+//        }
     }
 
     /**
