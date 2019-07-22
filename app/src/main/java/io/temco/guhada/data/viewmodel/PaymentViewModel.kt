@@ -125,7 +125,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var termsChecked = false
 
     fun addCartItem(accessToken: String) {
-        OrderServer.addCartItm(OnServerListener { success, o ->
+        OrderServer.addCartItem(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = {
                         this.cart = (o as BaseModel<*>).data as Cart

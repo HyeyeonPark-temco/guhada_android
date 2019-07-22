@@ -48,7 +48,7 @@ class OrderServer {
          * @param quantity 주문 수량
          */
         @JvmStatic
-        fun addCartItm(listener: OnServerListener, accessToken: String, dealId: Long, dealOptionId: Long?, quantity: Int) {
+        fun addCartItem(listener: OnServerListener, accessToken: String, dealId: Long, dealOptionId: Long?, quantity: Int) {
             val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).addCartItem(accessToken, dealId, dealOptionId, quantity)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Cart>> {
                 override fun onResponse(call: Call<BaseModel<Cart>>, response: Response<BaseModel<Cart>>) {

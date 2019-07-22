@@ -174,7 +174,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     // 장바구니 담기
     fun addCartItem() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
-            OrderServer.addCartItm(OnServerListener { success, o ->
+            OrderServer.addCartItem(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = { listener?.showAddCartResult() })
             }, accessToken = accessToken, quantity = listener?.getSelectedProductQuantity()!!, dealId = dealId, dealOptionId = listener.getSelectedOptionDealId())
