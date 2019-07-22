@@ -104,7 +104,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 //            if (editedShippingAddress != null) editedShippingAddress = editedShippingAddress as UserShipping
 
             when (requestCode) {
-                EDIT_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList()// REFRESH
+                EDIT_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList() // REFRESH
                 SEARCH_ZIP -> mAddShippingAddressFragment.updateSearchZipResult(data?.getStringExtra("zip")
                         ?: "", data?.getStringExtra("address") ?: "")
             }
