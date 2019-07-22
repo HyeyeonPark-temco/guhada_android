@@ -165,12 +165,7 @@ class CartViewModel : BaseObservableViewModel() {
         }
     }
 
-    private fun setCartItemList(cartResponse: CartResponse) {
-        this.cartResponse.postValue(cartResponse)
-//        if (cartResponse.cartItemResponseList.isNotEmpty()) {
-//            notifyPropertyChanged(BR.cartResponse)
-//        }
-    }
+    private fun setCartItemList(cartResponse: CartResponse) = this.cartResponse.postValue(cartResponse)
 
     /**
      * CartOption 데이터 가공

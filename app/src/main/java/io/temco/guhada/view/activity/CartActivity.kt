@@ -35,18 +35,14 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
 
         mViewModel = CartViewModel()
         mViewModel.cartResponse.observe(this, Observer {
+            mBinding.checkboxCartAll.isChecked = false
             if (it.cartItemResponseList.isEmpty()) {
-                if (!::mEmptyCartFragment.isInitialized)
-                    mEmptyCartFragment = EmptyCartFragment()
-                supportFragmentManager.beginTransaction().let { fragmentTransaction ->
-                    fragmentTransaction.add(mBinding.framelayoutCartEmpty.id, mEmptyCartFragment)
-                    fragmentTransaction.commitAllowingStateLoss()
-                    mBinding.framelayoutCartEmpty.bringToFront()
-                }
+                showEmptyView()
             } else {
                 if (mBinding.recyclerviewCartProduct.adapter != null)
                     (mBinding.recyclerviewCartProduct.adapter as CartProductAdapter).setItems(it.cartItemResponseList)
             }
+
             mBinding.executePendingBindings()
         })
         mViewModel.cartOptionList.observe(this, Observer {
@@ -66,6 +62,16 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mBinding.viewModel = mViewModel
 
         mBinding.executePendingBindings()
+    }
+
+    private fun showEmptyView() {
+        if (!::mEmptyCartFragment.isInitialized) mEmptyCartFragment = EmptyCartFragment()
+        supportFragmentManager.beginTransaction().let { fragmentTransaction ->
+            mBinding.constraintlayoutCartContent.visibility = View.GONE
+            fragmentTransaction.add(mBinding.framelayoutCartEmpty.id, mEmptyCartFragment)
+            fragmentTransaction.commitAllowingStateLoss()
+            mBinding.framelayoutCartEmpty.bringToFront()
+        }
     }
 
     private fun redirectLoginActivity() {
