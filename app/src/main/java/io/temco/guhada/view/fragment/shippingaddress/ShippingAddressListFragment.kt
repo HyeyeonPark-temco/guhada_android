@@ -29,13 +29,18 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
             mViewModel.shippingAddresses.observe(this, Observer {
                 mListAdapter = ShippingAddressListAdapter(mViewModel)
                 mListAdapter.setItems(it)
-                mBinding.recyclerviewShippingaddress.adapter = mListAdapter
-                mBinding.viewModel = mViewModel
-                mBinding.executePendingBindings()
+                if (mBinding.recyclerviewShippingaddress.adapter == null) {
+                    mBinding.recyclerviewShippingaddress.adapter = mListAdapter
+                } else {
+                    (mBinding.recyclerviewShippingaddress.adapter as ShippingAddressListAdapter).setItems(it)
+                }
 
                 if (::mLoadingIndicator.isInitialized)
                     mLoadingIndicator.hide()
             })
+
+            mBinding.viewModel = mViewModel
+            mBinding.executePendingBindings()
         }
     }
 

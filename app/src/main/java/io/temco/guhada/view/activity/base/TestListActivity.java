@@ -15,6 +15,7 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
+import io.temco.guhada.view.activity.CartActivity;
 import io.temco.guhada.view.activity.CategorySubActivity;
 import io.temco.guhada.view.activity.CustomViewActivity;
 import io.temco.guhada.view.activity.FindAccountActivity;
@@ -57,7 +58,7 @@ public class TestListActivity extends AppCompatActivity {
         adapter.setOnTestItemListener(position -> {
             switch (position) {
                 case 0: // Custom View
-                     startActivity(CustomViewActivity.class);
+                    startActivity(CustomViewActivity.class);
                     break;
 
                 case 1: // Splash
@@ -122,8 +123,12 @@ public class TestListActivity extends AppCompatActivity {
                     startActivity(new Intent(this, TestNfcActivity.class).putExtra("isRead", false));
                     break;
 
-                case 16 : // Search Zip WebView
+                case 16: // Search Zip WebView
                     startActivity(SearchZipWebViewActivity.class);
+                    break;
+
+                case 17:
+                    startActivity(CartActivity.class);
                     break;
             }
         });
@@ -154,7 +159,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("Test Read NFC "); // 14
         list.add("Test Write NFC "); // 15
         list.add("SEARCH_ZIP_WEBVIEW"); // 16
-        list.add(""); // 17
+        list.add("Cart"); // 17
         list.add(""); // 18
         return list;
     }

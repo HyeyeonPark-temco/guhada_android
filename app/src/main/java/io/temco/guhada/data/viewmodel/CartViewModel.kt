@@ -63,6 +63,12 @@ class CartViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
+    var allChecked = ObservableBoolean(false)
+        @Bindable
+        get() = field
+
+    var notNotifyAllChecked = false
+
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
         notifyPropertyChanged(BR.totalDiscountVisible)
@@ -70,6 +76,13 @@ class CartViewModel : BaseObservableViewModel() {
 
     fun onSelectAttr(optionAttr: OptionAttr) {
         selectedOptionMap[optionAttr.label] = optionAttr.name
+    }
+
+    fun onCheckedAll(checked: Boolean) {
+        if (!notNotifyAllChecked) {
+            allChecked = ObservableBoolean(checked)
+            notifyPropertyChanged(BR.allChecked)
+        }
     }
 
     fun getCart(invalidTokenTask: () -> Unit = {}) {
@@ -136,16 +149,20 @@ class CartViewModel : BaseObservableViewModel() {
     }
 
     fun deleteCartItem() {
-        callWithToken(task = { accessToken ->
-            OrderServer.deleteCartItem(OnServerListener { success, o ->
-                executeByResultCode(success, o,
-                        successTask = {
-                            setCartItemList(it.data as CartResponse)
-                            deleteCartItemId = arrayListOf()
-                            notifyPropertyChanged(BR.deleteCartItemId)
-                        })
-            }, accessToken = accessToken, cartItemIdList = deleteCartItemId)
-        })
+        if (deleteCartItemId.isEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_deleteempty))
+        } else {
+            callWithToken(task = { accessToken ->
+                OrderServer.deleteCartItem(OnServerListener { success, o ->
+                    executeByResultCode(success, o,
+                            successTask = {
+                                setCartItemList(it.data as CartResponse)
+                                deleteCartItemId = arrayListOf()
+                                notifyPropertyChanged(BR.deleteCartItemId)
+                            })
+                }, accessToken = accessToken, cartItemIdList = deleteCartItemId)
+            })
+        }
     }
 
     private fun setCartItemList(cartResponse: CartResponse) {

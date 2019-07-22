@@ -48,8 +48,9 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/selector_checkbox_all"
                     android:button="@null"
-                    android:checked="false"
+                    android:checked="@{viewModel.notNotifyAllChecked == false &amp;&amp; viewModel.deleteCartItemId.size() == viewModel.cartResponse.cartItemResponseList.size()}"
                     android:enabled="true"
+                    android:onCheckedChanged="@{(v, checked) -> viewModel.onCheckedAll(checked)}"
                     app:layout_constraintBottom_toTopOf="@id/recyclerview_cart_product"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

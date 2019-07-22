@@ -100,8 +100,8 @@ public class RetrofitManager {
     // Client
     private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-         builder.cache(cache);
-         builder.connectTimeout(5, TimeUnit.SECONDS);
+        builder.cache(cache);
+        builder.connectTimeout(20, TimeUnit.SECONDS);
         // builder.writeTimeout(15, TimeUnit.SECONDS)
         // builder.readTimeout(15, TimeUnit.SECONDS)
         builder.addInterceptor(interceptor);

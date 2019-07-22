@@ -4,10 +4,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableBoolean
 import androidx.recyclerview.widget.RecyclerView
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
 import io.temco.guhada.BR
@@ -24,6 +24,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
  * 장바구니 상품 리스트 Adapter
+ * #### 코드 정리 필요 ####
  * @author Hyeyeon Park
  */
 class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartProductAdapter.Holder>() {
@@ -51,7 +52,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
     inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root) {
         fun bind(cart: Cart) {
-            binding.checkboxCart.isChecked = false
+            binding.viewModel = mViewModel
             binding.constraintllayoutCartOption.addListener { expansionLayout, expanded ->
                 if (expanded) {
                     if (items[adapterPosition].cartOptionList.isEmpty()) {
@@ -133,15 +134,26 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             binding.checkboxCart.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
                     mViewModel.deleteCartItemId.add(cart.cartItemId.toInt())
+                    if (mViewModel.notNotifyAllChecked)
+                        mViewModel.notNotifyAllChecked = false
+                    mViewModel.notifyPropertyChanged(BR.deleteCartItemId)
                 } else {
                     mViewModel.deleteCartItemId.remove(cart.cartItemId.toInt())
+
+                    if (!mViewModel.notNotifyAllChecked)
+                        mViewModel.notNotifyAllChecked = true
+                    mViewModel.notifyPropertyChanged(BR.deleteCartItemId)
+
+                    if (mViewModel.allChecked.get()) {
+                        mViewModel.allChecked = ObservableBoolean(false)
+                    } else {
+                        mViewModel.notNotifyAllChecked = false
+                    }
                 }
-                mViewModel.notifyPropertyChanged(BR.deleteCartItemId)
             }
             binding.cart = cart
             binding.executePendingBindings()
         }
-
 
         // 선택한 옵션 값의 dealOptionId 추출
         private fun getOptionId(cartItemId: Long): Int? {
@@ -165,21 +177,6 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             }
 
             return null
-        }
-
-
-        private fun hideOption() {
-            binding.constraintllayoutCartOption.visibility = View.GONE
-            binding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_open)
-        }
-
-        private fun showOption() {
-            binding.constraintllayoutCartOption.visibility = View.VISIBLE
-            binding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_close)
-            if (items[adapterPosition].cartOptionList.isEmpty()) {
-                mViewModel.shownMenuPos = adapterPosition
-                mViewModel.getCartItemOptionList(items[adapterPosition].cartItemId)
-            }
         }
 
         private fun setOptionAdapter(cart: Cart) {
