@@ -1,6 +1,7 @@
 package io.temco.guhada.view.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
@@ -24,8 +25,17 @@ class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>()
     override fun getViewType(): Type.View = Type.View.SEARCH_ZIP_WEBVIEW
 
     override fun init() {
+        initHeader()
         initWebView()
         handler = android.os.Handler()
+    }
+
+    private fun initHeader() {
+        mBinding.includeSearchzipwebviewHeader.title = ""
+        mBinding.includeSearchzipwebviewHeader.setOnClickBackButton {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
