@@ -34,6 +34,7 @@ public class Flag {
         public static final int INVALID_VERIFICATION_NUMBER = 6007;
         public static final int USER_NOT_FOUND = 6016;
         public static final int NEED_TO_LOGIN = 6017;
+        public static final int PRODUCT_RESOURCE_NOT_FOUND = 8404;
 
     }
 }

@@ -194,6 +194,7 @@ class CartViewModel : BaseObservableViewModel() {
                 OrderServer.deleteCartItem(OnServerListener { success, o ->
                     executeByResultCode(success, o,
                             successTask = {
+                                selectedCartItem = mutableListOf()
                                 selectCartItemId = mutableListOf()
                                 notifyPropertyChanged(BR.selectCartItemId)
                                 this.cartResponse.postValue(it.data as CartResponse)

@@ -78,21 +78,23 @@ class ServerCallbackUtil {
                                     CommonUtil.debug(o as String)
                                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
                                 },
-                                dataNotFoundTask: () -> Unit = {}) {
+                                dataNotFoundTask: () -> Unit = {},
+                                productNotFoundTask: (BaseModel<*>) -> Unit = {}) {
             if (success) {
                 val model = o as BaseModel<*>
                 when (model.resultCode) {
                     Flag.ResultCode.SUCCESS -> successTask(model)
                     Flag.ResultCode.DATA_NOT_FOUND -> dataNotFoundTask()
+                    Flag.ResultCode.PRODUCT_RESOURCE_NOT_FOUND -> productNotFoundTask(model)
                 }
             } else {
                 // modify ------------------------------------
-                if(o is String){
-                    var gson  = Gson()
-                    if(CustomLog.flag)CustomLog.L("executeByResultCode",o)
+                if (o is String) {
+                    var gson = Gson()
+                    if (CustomLog.flag) CustomLog.L("executeByResultCode", o)
                     var base = gson.fromJson<BaseModel<*>>(o, BaseModel::class.java)
                     failedTask(base)
-                }else{
+                } else {
                     var base = BaseModel<Any>()
                     base.error = ""
                     failedTask(base)
