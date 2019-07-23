@@ -35,14 +35,20 @@ class EditShippingAddressViewModel(val mListener: OnEditShippingAddressListener)
     }
 
     private fun updateShippingMessage() {
-        val userId = JWT(Preferences.getToken().accessToken).getClaim("userId").asInt()
-        if (userId != null) {
-            UserServer.updateUserShippingAddress(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = { mListener.closeActivity(Activity.RESULT_OK, true) })
-            }, userId, shippingAddress.id, shippingAddress)
+        val accessToken = Preferences.getToken().accessToken
+        if (accessToken != null) {
+            val userId = JWT(accessToken).getClaim("userId").asInt()
+            if (userId != null) {
+                UserServer.updateUserShippingAddress(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = { mListener.closeActivity(Activity.RESULT_OK, true) })
+                }, userId, shippingAddress.id, shippingAddress)
+            } else {
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                mListener.closeActivity(Activity.RESULT_CANCELED, false)
+            }
         } else {
-            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
             mListener.closeActivity(Activity.RESULT_CANCELED, false)
         }
     }

@@ -2,12 +2,11 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import com.auth0.android.jwt.JWT
 import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Flag.RequestCode.*
-import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.Flag.RequestCode.EDIT_SHIPPING_ADDRESS
+import io.temco.guhada.common.Flag.RequestCode.SEARCH_ZIP
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.data.model.UserShipping
@@ -50,7 +49,6 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 
     private fun initViewModel() {
         mViewModel = ShippingAddressViewModel(this)
-        mViewModel.userId = JWT(Preferences.getToken().accessToken).getClaim("userId").asInt() ?: 0
 
         // 배송지 있는 경우 Type Casting
         val shippingAddress = intent.getSerializableExtra("shippingAddress")
@@ -109,7 +107,13 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 //            if (editedShippingAddress != null) editedShippingAddress = editedShippingAddress as UserShipping
 
             when (requestCode) {
-                EDIT_SHIPPING_ADDRESS -> mShippingAddressListFragment.getShippingAddressList() // REFRESH
+                EDIT_SHIPPING_ADDRESS -> {
+                    val shippingAddress = data?.getSerializableExtra("shippingAddress")
+                    if(shippingAddress != null){
+                        mViewModel.selectedItem = shippingAddress as UserShipping
+                    }
+                    mShippingAddressListFragment.getShippingAddressList() // REFRESH
+                }
                 SEARCH_ZIP -> mAddShippingAddressFragment.updateSearchZipResult(data?.getStringExtra("zip")
                         ?: "", data?.getStringExtra("address") ?: "")
             }
