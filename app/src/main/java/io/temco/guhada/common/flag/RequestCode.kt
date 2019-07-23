@@ -1,5 +1,11 @@
 package io.temco.guhada.common.flag
 
+/**
+ * RequestCode enum clsss
+ * 기존 Flag.class에서 RequestCode를 분리
+ * @see io.temco.guhada.common.Flag
+ * @author Hyeyeon Park
+ */
 enum class RequestCode(val flag: Int) {
     VERIFY_PHONE(10001),
     KAKAO_LOGIN(10002),

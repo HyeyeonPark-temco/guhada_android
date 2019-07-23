@@ -1,5 +1,11 @@
 package io.temco.guhada.common.flag
 
+/**
+ * ResultCode enum clsss
+ * 기존 Flag.class에서 ResultCode를 분리
+ * @see io.temco.guhada.common.Flag
+ * @author Hyeyeon Park
+ */
 enum class ResultCode(val flag: Int) {
     SUCCESS(200),
     ORDER_NOT_VALID_ERROR(1001),
