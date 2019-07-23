@@ -3,8 +3,8 @@ package io.temco.guhada.common.util
 import com.google.gson.Gson
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.flag.ResultCode
 import io.temco.guhada.data.model.base.BaseModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -83,9 +83,9 @@ class ServerCallbackUtil {
             if (success) {
                 val model = o as BaseModel<*>
                 when (model.resultCode) {
-                    Flag.ResultCode.SUCCESS -> successTask(model)
-                    Flag.ResultCode.DATA_NOT_FOUND -> dataNotFoundTask()
-                    Flag.ResultCode.PRODUCT_RESOURCE_NOT_FOUND -> productNotFoundTask(model)
+                    ResultCode.SUCCESS.flag -> successTask(model)
+                    ResultCode.DATA_NOT_FOUND.flag -> dataNotFoundTask()
+                    ResultCode.PRODUCT_RESOURCE_NOT_FOUND.flag -> productNotFoundTask(model)
                 }
             } else {
                 // modify ------------------------------------
