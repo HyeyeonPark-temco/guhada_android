@@ -44,8 +44,13 @@ class BaseResponseInterceptor() : Interceptor {
                     if(jsonObject.get("data").isJsonArray){
                         model.add("data",JsonObject())
                         model.add("list", if(jsonObject.has("data")) jsonObject.get("data").asJsonArray else JsonArray())
-                    }else {
+                    }else if(jsonObject.get("data").isJsonObject){
                         model.add("data", if (jsonObject.has("data")) jsonObject.get("data").asJsonObject else JsonObject())
+                        model.add("list", JsonArray())
+                    }else {
+                        var newData = JsonObject()
+                        newData.add("data",jsonObject.get("data"))
+                        model.add("data",newData)
                         model.add("list", JsonArray())
                     }
                 }

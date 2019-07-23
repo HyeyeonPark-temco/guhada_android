@@ -102,16 +102,20 @@ public class RetrofitManager {
      * BaseResponseInterceptor 추가
      */
     // Client
-    private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging) {
+    private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging, boolean isParseJson) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.cache(cache);
         builder.connectTimeout(20, TimeUnit.SECONDS);
         // builder.writeTimeout(15, TimeUnit.SECONDS)
         // builder.readTimeout(15, TimeUnit.SECONDS)
         builder.addInterceptor(interceptor);
-        builder.addInterceptor(new BaseResponseInterceptor());
+        if(isParseJson)builder.addInterceptor(new BaseResponseInterceptor());
         if (isLogging) builder.addInterceptor(getLoggingInterceptor());
         return builder.build();
+    }
+
+    private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging) {
+        return getClient(cache,interceptor,isLogging,true);
     }
 
     /*// Client
