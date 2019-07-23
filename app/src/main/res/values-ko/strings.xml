@@ -633,11 +633,28 @@
     <string name="mainlistsubtitle_men">남성</string>
     <string name="mainlistsubtitle_kids">키즈</string>
 
-    <string-array name="main_sub__titles">
+    <string-array name="main_sub_titles">
         <item>전체</item>
         <item>여성</item>
         <item>남성</item>
         <item>키즈</item>
+    </string-array>
+
+    <!-- MyPage FRAGMENT -->
+    <string-array name="mypage_titles">
+        <item>메인</item>
+        <item>주문배송</item>
+        <item>취소・교환・반품</item>
+        <item>포인트</item>
+        <item>쿠폰</item>
+        <item>찜한 상품</item>
+        <item>팔로우한 스토어</item>
+        <item>최근 본 상품</item>
+        <item>상품 리뷰</item>
+        <item>상품 문의</item>
+        <item>배송지 관리</item>
+        <item>회원등급</item>
+        <item>회원정보</item>
     </string-array>
 
 </resources>

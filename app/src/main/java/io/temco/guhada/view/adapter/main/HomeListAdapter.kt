@@ -25,7 +25,7 @@ import io.temco.guhada.data.model.main.DummyImage
 import io.temco.guhada.data.model.main.EventData
 import io.temco.guhada.data.model.main.MainEvent
 import io.temco.guhada.data.model.main.SubTitleItemList
-import io.temco.guhada.data.viewmodel.HomeListViewModel
+import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainItemDummyBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemMaineventBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemPaddingBinding

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f9f9fa"
+        android:orientation="vertical">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- //////////////////////////////////////////////// -->
+                <!-- TOP -->
+                <!-- //////////////////////////////////////////////// -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#f9f9fa"
+                    android:padding="20dp">
+
+                    <include
+                        android:id="@+id/layout_calendar"
+                        layout="@layout/layout_calendar" />
+                </LinearLayout>
+
+                <!-- //////////////////////////////////////////////// -->
+                <!-- CONTENTS-->
+                <!-- //////////////////////////////////////////////// -->
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:orientation="vertical"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="10dp"
+                            android:paddingRight="20dp">
+
+                            <include
+                                layout="@layout/layout_order_ship_process"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- LINE -->
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/line_3" />
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/list_contents"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp" />
+
+                        <!-- INFORMATION -->
+                        <include
+                            android:id="@+id/layout_information"
+                            layout="@layout/layout_information" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <!-- //////////////////////////////////////////////// -->
+
+            </LinearLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+</layout>

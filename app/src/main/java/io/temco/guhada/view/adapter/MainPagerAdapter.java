@@ -11,6 +11,7 @@ import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.view.fragment.mypage.MyPageMainFragment;
 import io.temco.guhada.view.fragment.product.ProductFragment;
 import io.temco.guhada.view.fragment.main.CommunityFragment;
 import io.temco.guhada.view.fragment.main.HomeFragment;
@@ -25,7 +26,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private OnDrawerLayoutListener mDrawerListener;
     private HomeFragment mHomeFragment;
     private CommunityFragment mCommunityFragment;
-    private MyPageFragment mMyPageFragment;
+    private MyPageMainFragment mMyPageFragment;
     private ProductFragment mProductFragment;
     // -----------------------------
 
@@ -67,7 +68,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
             case 2: // My Page
                 if (mMyPageFragment == null) {
-                    mMyPageFragment = new MyPageFragment();
+                    mMyPageFragment = new MyPageMainFragment();
                     mMyPageFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mMyPageFragment;

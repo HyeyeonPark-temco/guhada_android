@@ -12,6 +12,7 @@ import io.temco.guhada.data.server.ProductServer
 /**
  * @author park jungho
  * 19.07.18
+ *
  * 메인 홈 리스트 server data 연동 Repository
  */
 class HomeListRepository(val context : Context){

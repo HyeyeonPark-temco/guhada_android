@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.HomeListViewModel" />
+            type="io.temco.guhada.data.viewmodel.main.HomeListViewModel" />
     </data>
 
     <io.temco.guhada.view.custom.layout.HeightRelativeLayout
