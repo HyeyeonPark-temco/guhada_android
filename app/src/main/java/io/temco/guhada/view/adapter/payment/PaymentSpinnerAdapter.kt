@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import io.temco.guhada.data.model.ShippingMessage
+import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.databinding.ItemPaymentSpinnerBinding
 
 class PaymentSpinnerAdapter(context: Context, val layout: Int, var list: List<ShippingMessage> = ArrayList()) : ArrayAdapter<ShippingMessage>(context, layout, list) {

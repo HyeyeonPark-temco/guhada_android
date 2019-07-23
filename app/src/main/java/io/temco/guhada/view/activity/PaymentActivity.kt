@@ -20,9 +20,10 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.ShippingMessage
+import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.PaymentViewModel
@@ -276,7 +277,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         @JvmStatic
         @BindingAdapter("paymentWay")
-        fun RecyclerView.bindPaymentWay(list: MutableList<Order.PaymentMethod>?) {
+        fun RecyclerView.bindPaymentWay(list: MutableList<PaymentMethod>?) {
             if (this.adapter != null && list != null) {
                 (this.adapter as PaymentWayAdapter).setItems(list)
             }

@@ -1,9 +1,14 @@
 package io.temco.guhada.data.model.order
 
-import io.temco.guhada.data.model.ShippingAddress
+import io.temco.guhada.data.model.shippingaddress.ShippingAddress
 import io.temco.guhada.data.model.payment.Payment
 import java.io.Serializable
 
+/**
+ * 주문 정보 클래스
+ * 주문 완료 화면에서 사용
+ * @author Hyeyeon Park
+ */
 class PurchaseOrderResponse : Serializable{
     var defaultAddress = false
     var orderList: MutableList<PurchaseOrder> = ArrayList()

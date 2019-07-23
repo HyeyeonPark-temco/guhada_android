@@ -1,7 +1,11 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.shippingaddress
 
 import java.io.Serializable
 
+/**
+ * 배송지 정보 클래스
+ * @author Hyeyeon Park
+ */
 class ShippingAddress : Serializable {
     var id : Long = 0
     var add = false

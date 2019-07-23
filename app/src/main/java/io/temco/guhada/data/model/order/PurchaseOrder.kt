@@ -4,6 +4,11 @@ import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.order.OrderItemResponse
 import java.io.Serializable
 
+/**
+ * 주문 정보 클래스
+ * @see PurchaseOrderResponse
+ * @author Hyeyeon Park
+ */
 class PurchaseOrder : OrderItemResponse(), Serializable {
     var expireDate = ""
     var optionAttribute1: String? = ""

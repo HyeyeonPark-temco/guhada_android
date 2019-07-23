@@ -2,6 +2,11 @@ package io.temco.guhada.data.model.option
 
 import java.io.Serializable
 
+/**
+ * 상품 옵션 정보 클래스
+ * 웹에서 사용되는 형태로 생성되어 앱에서는 가공하여 사용해야 함
+ * @author Hyeyeon Park
+ */
 class OptionInfo : Serializable {
     var attribute1: String? = "" // 첫번째 옵션의 속성값
     var attribute2: String? = "" // 두번째 옵션의 속성값

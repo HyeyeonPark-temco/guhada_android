@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.option.OptionAttr
 import java.io.Serializable
 
+/**
+ * 상품의 기본 정보 클래스
+ * @see Product
+ * @author Hyeyeon Park
+ */
 open class BaseProduct : Serializable {
     var season: String = ""
 

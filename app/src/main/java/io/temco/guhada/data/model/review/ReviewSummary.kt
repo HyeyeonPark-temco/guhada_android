@@ -2,6 +2,11 @@ package io.temco.guhada.data.model.review
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * 상품 리뷰 정보 클래스
+ * 만족도 그래프, 총 리뷰 수, 평점 포함
+ * @author Hyeyeon Park
+ */
 class ReviewSummary {
     @SerializedName("satisfactionSummary ")
     var satisfaction: Satisfaction = Satisfaction()

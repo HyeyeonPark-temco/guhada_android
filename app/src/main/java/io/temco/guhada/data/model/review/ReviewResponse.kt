@@ -4,6 +4,11 @@ import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.Paging
 import io.temco.guhada.data.model.Sort
 
+/**
+ * 상품 리뷰 정보 클래스
+ * ReviewResponse > ReviewResponseContent > Review
+ * @author Hyeyeon Park
+ */
 class ReviewResponse {
     var content: MutableList<ReviewResponseContent> = mutableListOf()
     var sort: Sort = Sort()

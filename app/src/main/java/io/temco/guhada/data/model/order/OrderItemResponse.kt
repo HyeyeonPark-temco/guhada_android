@@ -3,6 +3,11 @@ package io.temco.guhada.data.model.order
 import io.temco.guhada.data.model.option.OptionInfo
 import java.io.Serializable
 
+/**
+ * @see Order
+ * @see PurchaseOrder
+ * @author Hyeyeon Park
+ */
 open class OrderItemResponse : Serializable {
     var cartItemId = 0
 

@@ -3,6 +3,10 @@ package io.temco.guhada.data.model.payment
 import com.google.gson.annotations.Expose
 import java.io.Serializable
 
+/**
+ * @see io.temco.guhada.data.model.order.PurchaseOrderResponse
+ * @author Hyeyeon Park
+ */
 class Payment : Serializable {
     var amount = 0
     var cardQuota = ""

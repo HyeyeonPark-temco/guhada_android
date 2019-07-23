@@ -1,9 +1,13 @@
-package io.temco.guhada.data.model;
+package io.temco.guhada.data.model.user;
 
 import com.google.gson.annotations.Expose;
 
 import java.util.Observable;
 
+/**
+ * 유저 정보 클래스
+ * @author Hyeyeon Park
+ */
 public class User extends Observable {
     // ESSENTIAL TERMS
     private Boolean agreeCollectPersonalInfoTos = false;
@@ -21,12 +25,12 @@ public class User extends Observable {
     private String mobile = "";
     private String phoneNumber = "";
     private String joinAt = "", withdrawalAt = "";
-    private int gender = -1; // 1: MALE; 2: FEMALE;
     private String birth = "";
-    private int mobileCarriers = -1; // 1: SKT; 2: KT; 3: LG
-    private int nationality = -1; // 1: INTERNAL; 2: FOREIGNER
     private String address = "", roadAddress = "", detailAddress = "", zip;
     private Boolean emailVerify = false;
+    private int gender = -1; // 1: MALE; 2: FEMALE;
+    private int mobileCarriers = -1; // 1: SKT; 2: KT; 3: LG
+    private int nationality = -1; // 1: INTERNAL; 2: FOREIGNER
 
     @Expose
     private String confirmPassword = "";

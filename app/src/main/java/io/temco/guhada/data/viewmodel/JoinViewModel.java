@@ -11,7 +11,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.data.model.User;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;

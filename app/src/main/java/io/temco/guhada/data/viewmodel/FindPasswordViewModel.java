@@ -16,7 +16,7 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
-import io.temco.guhada.data.model.User;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
