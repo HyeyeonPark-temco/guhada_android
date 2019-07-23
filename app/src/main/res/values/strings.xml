@@ -62,6 +62,7 @@
     <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_ing">Under Development</string>
+    <string name="common_message_expiretoken">토큰이 만료되었습니다. 다시 로그인해주세요.</string><!-- 임시 -->
 
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>

@@ -9,7 +9,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.data.model.ClaimResponse
+import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel

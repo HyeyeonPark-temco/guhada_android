@@ -8,32 +8,41 @@ import io.temco.guhada.data.model.option.OptionInfo
  * @author Hyeyeon Park
  */
 class Cart {
+    // ID
     var dealId: Long = 0
     var sellerId: Long = 0
     var cartItemId: Long = 0
 
-    var brandName: String = ""
-    var cartValidStatus: CartValidStatus = CartValidStatus()
-    var dealName: String = ""
-    var dealUrl: String = ""
+    // IMAGE
     var imageName: String = ""
     var imageUrl: String = ""
-    var season: String = ""
-    var sellerName: String = ""
-    var currentQuantity: Int = 0
+
+    // PRICE
+    var sellPrice: Int = 0
     var discountDiffPrice: Int = 0
     var discountPrice: Int = 0
+    var shipExpense: Int = 0
+
+    // QUANTITY
+    var currentQuantity: Int = 0
     var maxQuantity: Int = 0
     var minQuantity: Int = 0
-    var priority: Int = 0
+
+    // PRODUCT
+    var brandName: String = ""
+    var dealName: String = ""
+    var season: String = ""
+    var cartValidStatus: CartValidStatus = CartValidStatus()
     var selectedCartOption: OptionInfo? = OptionInfo()
-    var sellPrice: Int = 0
-    var shipExpense: Int = 0
+    var dealUrl: String = ""
+    var sellerName: String = ""
+    var priority: Int = 0
     var totalStock: Int = 0
 
     @Expose
     var cartOptionList: MutableList<CartOption> = mutableListOf()
 
+    // 상품 수량 변경시 사용되는 더미 필드
     @Expose
     var tempQuantity = 0
 

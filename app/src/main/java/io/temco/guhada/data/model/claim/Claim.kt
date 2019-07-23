@@ -1,4 +1,4 @@
-package io.temco.guhada.data.model.review
+package io.temco.guhada.data.model.claim
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -6,45 +6,29 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 
 /**
- * 상품 리뷰 정보 클래스
- * ReviewResponse > ReviewResponseContent > Review
+ * 상품 문의 클래스
+ * @see ClaimResponse
  * @author Hyeyeon Park
  */
-class Review {
-    // ID
-    var id: Long = 0
-    var userId: Long = 0
-    var orderProductGroupId: Long = 0
-    var productId: Long = 0
+class Claim {
+    var id: Int = 0
+    var productId: Int = 0
+    var inquirer: Int = 0
+    var replier: Int = 0
 
-    // SATISFACTION
-    var sizeSatisfaction = ""
-    var colorSatisfaction = ""
-    var lengthSatisfaction = ""
+    var replyUpdated: Boolean = false
+    var enable: Boolean = false
+    var private: Boolean = false
 
-    // REVIEW
-    var photoCount = 0
-    var likeCount = 0
-    var userNickname = ""
-    var productRating = ""
-    var profileImageUrl = ""
-    var textReview = ""
-    var createdAt = ""
-        get() = convertDateTimeFormat(field)
+    var status: String = ""
+    var inquiry: String = ""
+    var nickname: String = ""
+    var reply: String? = null
 
-    fun getRating(): Float = when (productRating) {
-        "HALF" -> 0.5f
-        "ONE" -> 1.0f
-        "ONE_HALF" -> 1.5f
-        "TWO" -> 2.0f
-        "TWO_HALF" -> 2.5f
-        "THREE" -> 3.0f
-        "THREE_HALF" -> 3.5f
-        "FOUR" -> 4.0f
-        "FOUR_HALF" -> 4.5f
-        "FIVE" -> 5.0f
-        else -> 0.0f
-    }
+    // DATE TIME
+    var replyAt: ArrayList<Int> = arrayListOf()
+    var createdAt: ArrayList<Int> = arrayListOf()
+    var updatedAt: ArrayList<Int> = arrayListOf()
 
     /// 추후 Util로 분리 예정
     @SuppressLint("SimpleDateFormat")
@@ -76,6 +60,4 @@ class Review {
     } else {
         number.toString()
     }
-
 }
-

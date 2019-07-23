@@ -29,7 +29,7 @@
 
         <variable
             name="claim"
-            type="io.temco.guhada.data.model.ClaimResponse.Claim" />
+            type="io.temco.guhada.data.model.claim.Claim" />
     </data>
 
     <LinearLayout

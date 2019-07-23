@@ -14,7 +14,6 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import java.util.Arrays;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
@@ -24,7 +23,7 @@ import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.ToastUtil;
-import io.temco.guhada.data.model.NaverUser;
+import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.viewmodel.LoginViewModel;

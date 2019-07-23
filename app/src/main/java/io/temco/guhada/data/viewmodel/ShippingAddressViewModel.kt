@@ -5,9 +5,11 @@ import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.common.util.CommonUtil
@@ -43,6 +45,11 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
      * TODO 결과 값이 서로 달라 확인 필요 - 배송지 목록 관련 확인
      */
     fun getUserShippingAddress() {
+        val accessToken = Preferences.getToken().accessToken
+        if(accessToken != null){
+            userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
+        }
+
         UserServer.getUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = { model ->
@@ -64,6 +71,11 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
     }
 
     fun deleteShippingAddress(shippingAddressId: Int) {
+        val accessToken = Preferences.getToken().accessToken
+        if(accessToken != null){
+            userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
+        }
+
         UserServer.deleteUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = {

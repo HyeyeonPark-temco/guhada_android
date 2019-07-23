@@ -7,14 +7,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.data.model.ClaimResponse
+import io.temco.guhada.data.model.claim.Claim
+import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.databinding.ItemProductdetailClaimBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
     private lateinit var context: Context
     private lateinit var parent: ViewGroup
-    private var list: MutableList<ClaimResponse.Claim> = ArrayList()
+    private var list: MutableList<Claim> = ArrayList()
     lateinit var mBinding: ItemProductdetailClaimBinding
     lateinit var holder: Holder
 
@@ -32,7 +33,7 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
         holder.bind(list[position])
     }
 
-    fun setItems(list: MutableList<ClaimResponse.Claim>) {
+    fun setItems(list: MutableList<Claim>) {
         this.list = list
         if (list.isEmpty()) {
             notifyDataSetChanged()
@@ -41,7 +42,7 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
         }
     }
 
-    fun addItems(list: MutableList<ClaimResponse.Claim>) {
+    fun addItems(list: MutableList<Claim>) {
         val rangeStart = this.list.size
         this.list.addAll(list)
         notifyItemRangeChanged(rangeStart - 1, this.list.size)
@@ -52,7 +53,7 @@ class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
     }
 
     inner class Holder(val binding: ItemProductdetailClaimBinding) : BaseViewHolder<ItemProductdetailClaimBinding>(binding.root) {
-        fun bind(item: ClaimResponse.Claim) {
+        fun bind(item: Claim) {
             binding.isLastItem = adapterPosition == list.size - 1
             binding.claim = item
             binding.isReplyClosed = true

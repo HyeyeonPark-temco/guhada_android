@@ -21,7 +21,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
-import io.temco.guhada.data.model.User;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.FindAccountViewModel;

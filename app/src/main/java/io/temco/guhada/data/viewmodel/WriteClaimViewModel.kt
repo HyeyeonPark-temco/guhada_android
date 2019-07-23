@@ -2,15 +2,15 @@ package io.temco.guhada.data.viewmodel
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
-import android.app.backup.BackupAgent
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag.ResultCode.NEED_TO_LOGIN
 import io.temco.guhada.common.Flag.ResultCode.SUCCESS
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.data.model.ClaimResponse
+import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.InquiryRequest
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.WriteClaimActivity
@@ -33,11 +33,11 @@ class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener)
         }else {
             ClaimServer.saveClaim(OnServerListener { success, o ->
                 if (success) {
-                    val model = o as BaseModel<ClaimResponse.Claim>
+                    val model = o as BaseModel<Claim>
                     when (model.resultCode) {
                         SUCCESS -> {
                             // 문의 리스트 REFRESH
-                            val claim = model.data as ClaimResponse.Claim
+                            val claim = model.data as Claim
                             listener.showMessage("[${claim.id}] 문의가 등록되었습니다.")
                             listener.closeActivity(RESULT_OK)
                         }

@@ -2,6 +2,11 @@ package io.temco.guhada.data.model.review
 
 import io.temco.guhada.data.model.product.ProductOption
 
+/**
+ * 상품 리뷰 정보 클래스
+ * ReviewResponse > ReviewResponseContent > Review
+ * @author Hyeyeon Park
+ */
 class ReviewResponseContent {
     var review: Review = Review()
     var order: Any? = null    // 확인 필요

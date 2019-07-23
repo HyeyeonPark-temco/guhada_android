@@ -15,7 +15,8 @@ import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.ClaimResponse
+import io.temco.guhada.data.model.claim.Claim
+import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.viewmodel.ProductDetailClaimViewModel
 import io.temco.guhada.databinding.LayoutProductdetailClaimBinding
 import io.temco.guhada.view.activity.LoginActivity
@@ -96,7 +97,7 @@ class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<Lay
     companion object {
         @JvmStatic
         @BindingAdapter("productClaims")
-        fun RecyclerView.bindClaims(list: MutableList<ClaimResponse.Claim>?) {
+        fun RecyclerView.bindClaims(list: MutableList<Claim>?) {
             if (list != null) {
                 if (this.adapter == null) {
                     this.adapter = ClaimAdapter()

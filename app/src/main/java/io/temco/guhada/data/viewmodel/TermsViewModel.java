@@ -10,7 +10,7 @@ import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.listener.OnTermsListener;
-import io.temco.guhada.data.model.User;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
 import static android.app.Activity.RESULT_OK;

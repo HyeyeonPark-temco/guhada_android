@@ -6,10 +6,10 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.RetryableCallback
-import io.temco.guhada.data.model.ClaimResponse
+import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.InquiryRequest
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ClaimService
 import retrofit2.Call
@@ -53,17 +53,15 @@ open class ClaimServer {
                 // 로그인 팝업 노출
                 Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
             } else {
-                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<ClaimResponse.Claim>> {
-                    override fun onResponse(call: Call<BaseModel<ClaimResponse.Claim>>, response: Response<BaseModel<ClaimResponse.Claim>>) {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
+                    override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
 
-                    override fun onFailure(call: Call<BaseModel<ClaimResponse.Claim>>, t: Throwable) {
+                    override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
-
                 })
-
             }
         }
 

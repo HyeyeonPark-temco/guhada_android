@@ -44,9 +44,9 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.data.model.NaverUser;
-import io.temco.guhada.data.model.SnsUser;
-import io.temco.guhada.data.model.UserProfile;
+import io.temco.guhada.data.model.naver.NaverUser;
+import io.temco.guhada.data.model.user.SnsUser;
+import io.temco.guhada.data.model.user.UserProfile;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
 
@@ -82,7 +82,6 @@ public class SnsLoginModule {
                     OnServerListener listener = (successGetProfile, o) -> {
                         if (successGetProfile) {
                             NaverUser naverUser = (NaverUser) o;
-
                             UserServer.checkExistSnsUser((successCheckExist, obj) -> {
                                 if (successCheckExist) {
                                     BaseModel model = (BaseModel) obj;

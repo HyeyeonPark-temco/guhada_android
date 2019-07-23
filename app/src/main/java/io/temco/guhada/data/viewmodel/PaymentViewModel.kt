@@ -15,12 +15,13 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.ShippingMessage
-import io.temco.guhada.data.model.User
+import io.temco.guhada.data.model.shippingaddress.ShippingMessage
+import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
@@ -50,7 +51,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
-    var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
+    var selectedMethod: PaymentMethod = PaymentMethod()
     var selectedShippingAddress: UserShipping? = UserShipping()
     var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 스피너 표시 메세지
         @Bindable
@@ -328,8 +329,13 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                 val accessToken = Preferences.getToken().accessToken
                                 if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
                                     // 배송지 추가
-                                    val userId = JWT(accessToken).getClaim("userId").asInt()
-                                    if (userId != null) saveShippingAddress(userId)
+                                    if(accessToken != null){
+                                        val userId = JWT(accessToken).getClaim("userId").asInt()
+                                        if (userId != null) saveShippingAddress(userId)
+                                    }else {
+                                        // [임시] 토큰 없는 경우
+                                        ToastUtil.showMessage("토큰이 만료되었습니다. 다시 로그인해주세요.")
+                                    }
                                 }
 
                                 requestOrder("Bearer $accessToken", requestOrder)

@@ -5,7 +5,7 @@
 
         <variable
             name="paymentMethod"
-            type="io.temco.guhada.data.model.order.Order.PaymentMethod" />
+            type="io.temco.guhada.data.model.order.PaymentMethod" />
 
         <variable
             name="viewModel"
