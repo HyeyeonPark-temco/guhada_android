@@ -69,6 +69,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="25dp"
                 android:orientation="vertical"
+                android:overScrollMode="never"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -312,20 +313,20 @@
                         android:text="@{viewModel.paymentMethod}" />
 
                     <TextView
-                        android:layout_marginTop="4dp"
                         android:id="@+id/textview_paymentresult_method"
                         style="@style/PaymentResultContentGreyTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@{viewModel.methodName}"
                         android:visibility="@{viewModel.methodName.isEmpty() ? View.GONE : View.VISIBLE}" />
 
                     <TextView
-                        android:layout_marginTop="4dp"
                         android:id="@+id/textview_paymentresult_completeAt"
                         style="@style/PaymentResultContentGreyTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@{viewModel.completeAtText}" />
                 </LinearLayout>
 

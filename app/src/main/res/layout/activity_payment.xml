@@ -11,7 +11,7 @@
             type="io.temco.guhada.data.viewmodel.PaymentViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:overScrollMode="never"
@@ -32,6 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:nestedScrollingEnabled="false"
+                android:descendantFocusability="blocksDescendants"
                 android:background="@color/common_white"
                 android:orientation="vertical">
 
@@ -88,6 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
+                    android:overScrollMode="never"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:paymentProduct="@{viewModel.productList}"
@@ -377,5 +380,5 @@
                 android:onClick="@{()->viewModel.onClickPay()}"
                 android:text="@string/payment_button_submit" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

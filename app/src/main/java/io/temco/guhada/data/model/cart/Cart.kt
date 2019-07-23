@@ -37,4 +37,24 @@ class Cart {
     @Expose
     var tempQuantity = 0
 
+    fun getOptionStr(): String {
+        var result = ""
+        if (selectedCartOption?.attribute1 != null) {
+            result = "$result${selectedCartOption?.attribute1}"
+        }
+
+        if (selectedCartOption?.attribute2 != null) {
+            result = ", $result${selectedCartOption?.attribute2}"
+        }
+
+        if (selectedCartOption?.attribute3 != null) {
+            result = ", $result${selectedCartOption?.attribute3}"
+        }
+
+        result = if(result.isEmpty()) "${currentQuantity}개"
+        else "$result, ${currentQuantity}개"
+
+        return result
+    }
+
 }

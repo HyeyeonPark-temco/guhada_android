@@ -181,16 +181,18 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                             CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid")
 
                             PGAuth().apply {
-                                this.pgTid = pgTid
                                 this.resultCode = resultCode
                                 this.resultMsg = resultMsg
                                 this.pgKind = pgKind
+
+                                this.pgTid = pgTid
                                 this.pgMid = pgMid
-                                this.pgAmount = pgAmount
                                 this.pgOid = pgOid
-                                this.pgTidSample = pgTidSample
-                                this.cardQuota = mViewModel.pgResponse.cardQuota
-                                this.cardNo = mViewModel.pgResponse.cardCd ?: ""
+                                this.pgAmount = pgAmount
+
+                                  this.pgTidSample = pgTidSample
+                                // this.cardQuota = mViewModel.pgResponse.cardQuota
+                                //  this.cardNo = mViewModel.pgResponse.cardCd ?: ""
                                 this.returnUrl = mViewModel.pgResponse.returnUrl
 
                                 this.authToken = authToken

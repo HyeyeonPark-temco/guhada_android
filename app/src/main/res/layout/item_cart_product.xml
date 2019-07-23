@@ -40,6 +40,10 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="onClickBuyItem"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="optionText"
             type="String" />
 
@@ -225,6 +229,7 @@
                     android:background="@drawable/border_all_purple_1dp"
                     android:text="@string/cart_button_buy"
                     android:textColor="@color/common_blue_purple"
+                    android:onClick="@{onClickBuyItem}"
                     android:textSize="@dimen/text_13"
                     android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toTopOf="@id/view_cart_line"
