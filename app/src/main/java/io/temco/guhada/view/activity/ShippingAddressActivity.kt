@@ -51,8 +51,13 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     private fun initViewModel() {
         mViewModel = ShippingAddressViewModel(this)
         mViewModel.userId = JWT(Preferences.getToken().accessToken).getClaim("userId").asInt() ?: 0
-        mViewModel.prevSelectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
-        mViewModel.selectedItem = intent.getSerializableExtra("shippingAddress") as UserShipping
+
+        // 배송지 있는 경우 Type Casting
+        val shippingAddress = intent.getSerializableExtra("shippingAddress")
+        if (shippingAddress != null) {
+            mViewModel.prevSelectedItem = shippingAddress as UserShipping
+            mViewModel.selectedItem = shippingAddress
+        }
     }
 
     private fun initFragmentPager() {

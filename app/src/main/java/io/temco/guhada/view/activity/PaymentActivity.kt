@@ -118,15 +118,18 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 finish()
             }
         })
+
         intent.getSerializableExtra("product").let { product ->
-            if (product != null) {
-                // [바로구매]에서 진입
-                mViewModel.product = product as BaseProduct
-                mViewModel.productList = arrayListOf(product)
-                mViewModel.totalCount = ObservableInt(product.totalCount)
-            } else {
-                // [장바구니]에서 진입
-                mViewModel.callWithToken { mViewModel.getOrderForm(it) }
+            if (::mViewModel.isInitialized) {
+                if (product != null) {
+                    // [바로구매]에서 진입
+                    mViewModel.product = product as BaseProduct
+                    mViewModel.productList = arrayListOf(product)
+                    mViewModel.totalCount = ObservableInt(product.totalCount)
+                } else {
+                    // [장바구니]에서 진입
+                    mViewModel.callWithToken { accessToken -> mViewModel.getOrderForm(accessToken) }
+                }
             }
         }
 

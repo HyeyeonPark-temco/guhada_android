@@ -52,7 +52,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     var selectedMethod: Order.PaymentMethod = Order.PaymentMethod()
     var selectedShippingAddress: UserShipping? = UserShipping()
-    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress) }) // 스피너 표시 메세지
+    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 스피너 표시 메세지
         @Bindable
         get() = field
     var selectedDiscountCoupon = ObservableField<String>(BaseApplication.getInstance().getString(R.string.payment_hint_coupon))
@@ -282,7 +282,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 결제하기 버튼 클릭
     fun onClickPay() {
-        val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress)
+        val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo)
         if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
             return

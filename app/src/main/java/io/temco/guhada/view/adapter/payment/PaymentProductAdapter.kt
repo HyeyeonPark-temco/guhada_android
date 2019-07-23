@@ -42,7 +42,5 @@ class PaymentProductAdapter : RecyclerView.Adapter<PaymentProductAdapter.Holder>
                 }
             }
         }
-
-
     }
 }

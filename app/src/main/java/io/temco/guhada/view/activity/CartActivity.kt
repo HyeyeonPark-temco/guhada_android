@@ -41,10 +41,10 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mBinding.includeCartHeader.title = resources.getString(R.string.cart_title)
 
         mViewModel = CartViewModel()
-        mViewModel.clickPaymentListener = {
+        mViewModel.clickPaymentListener = { productList, cartIdList ->
             val intent = Intent(this@CartActivity, PaymentActivity::class.java)
-            intent.putExtra("productList", it)
-            intent.putExtra("cartIdList", mViewModel.selectCartItemId.toTypedArray())
+            intent.putExtra("productList", productList)
+            intent.putExtra("cartIdList", cartIdList)
             startActivity(intent)
         }
         mViewModel.cartResponse.observe(this, Observer {

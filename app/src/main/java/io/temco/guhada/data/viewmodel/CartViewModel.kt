@@ -64,7 +64,7 @@ class CartViewModel : BaseObservableViewModel() {
 
     var notNotifyAllChecked = false // allChecked 필드 notify flag
 
-    lateinit var clickPaymentListener: (productList: ArrayList<BaseProduct>) -> Unit
+    lateinit var clickPaymentListener: (productList: ArrayList<BaseProduct>, cartIdList: Array<Int>) -> Unit
 
     // CLICK EVENT
     fun onClickDiscountContent() {
@@ -84,27 +84,44 @@ class CartViewModel : BaseObservableViewModel() {
     }
 
     // 주문하기 버튼 클릭
-    fun onClickPayment() {
+    fun onClickPayment() = getPaymentProducts(item = selectedCartItem)
+
+    // 바로구매 버튼 클릭
+    fun onClickItemPayment(cart: Cart) = getPaymentProducts(item = cart)
+
+    private fun getPaymentProducts(item: Any) {
         val list = arrayListOf<BaseProduct>()
-        for (cart in selectedCartItem) {
+        val productList: MutableList<Cart>
+        val cartIdList: Array<Int>
+        if (item is Cart) {
+            productList = arrayListOf(item)
+            cartIdList = arrayOf(item.cartItemId.toInt())
+        } else {
+            productList = item as MutableList<Cart>
+            cartIdList = selectCartItemId.toTypedArray()
+
+            if (cartIdList.isEmpty()) {
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_paymentempty))
+                return
+            }
+        }
+
+        for (cart in productList) {
             BaseProduct().apply {
                 this.brandName = cart.brandName
                 this.season = cart.season
                 this.name = cart.dealName
                 this.totalPrice = cart.sellPrice
                 this.profileUrl = cart.imageUrl
+                this.optionStr = cart.getOptionStr()
             }.let {
-                var optionStr = cart.selectedCartOption?.getOptionStr() ?: ""
-                optionStr = if (optionStr.isEmpty()) "${cart.currentQuantity}개"
-                else "$optionStr, ${cart.currentQuantity}개"
-                it.optionStr = optionStr
                 list.add(it)
             }
         }
-
-        if (::clickPaymentListener.isInitialized) clickPaymentListener(list)
-
+        if (::clickPaymentListener.isInitialized)
+            clickPaymentListener(list, cartIdList)
     }
+
 
     fun getCart(invalidTokenTask: () -> Unit = {}) {
         callWithToken({ accessToken ->
