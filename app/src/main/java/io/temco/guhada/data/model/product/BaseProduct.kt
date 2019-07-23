@@ -1,4 +1,4 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.product
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -10,15 +10,16 @@ open class BaseProduct : Serializable {
 
     var productId: Long = 0
 
-    var dealId : Long = 0
+    var dealId: Long = 0
 
     var brandName: String = ""
 
     @SerializedName("name")
     var name: String = ""
 
-    @Expose
     var profileUrl: String = ""
+
+    var optionStr: String = ""
 
     @Expose
     var totalPrice: Int = 0

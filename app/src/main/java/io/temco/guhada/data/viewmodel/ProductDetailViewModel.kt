@@ -6,12 +6,15 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.SellerSatisfaction
 import io.temco.guhada.data.model.base.BaseModel
@@ -120,6 +123,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         listener?.showMenu()
     }
 
+    // 바로 구매 클릭
     fun onClickPayment() {
         listener?.redirectPaymentActivity(menuVisibility.get() == View.VISIBLE)
     }
@@ -169,12 +173,15 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
     // 장바구니 담기
-     fun addCartItem() {
+    fun addCartItem() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
-            OrderServer.addCartItm(OnServerListener { success, o ->
+            OrderServer.addCartItem(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = { listener?.showAddCartResult() })
             }, accessToken = accessToken, quantity = listener?.getSelectedProductQuantity()!!, dealId = dealId, dealOptionId = listener.getSelectedOptionDealId())
+        }, invalidTokenTask = {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+            listener?.redirectLoginActivity()
         })
     }
 }

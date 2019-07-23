@@ -602,6 +602,8 @@
     <string name="cart_button_buy">바로구매</string>
     <string name="cart_button_show">상품 보기</string>
     <string name="cart_button_notiffication">재입고 알림</string>
+    <string name="cart_button_continue">쇼핑 계속하기</string>
+    <string name="cart_button_like">찜한 상품 보기</string>
 
     <string name="cart_result_totalamount">총 %d개 상품</string>
     <string name="cart_result_totalproductprice">총 상품 금액</string>
@@ -620,6 +622,8 @@
     <string name="cart_message_changeprice">해당 상품의 가격 정보가 변경되었습니다.</string>
     <string name="cart_message_changeselectedoption">상품 옵션이 변경되었습니다.</string>
     <string name="cart_message_notselectedoption">옵션을 선택해주세요</string>
+    <string name="cart_message_delete">해당 상품을 삭제하시겠습니까?</string>
+    <string name="cart_message_deleteempty">삭제할 상품을 선택해주세요</string>
 
     <string name="cart_message_minquantity">최소 구매 수량은 %d개 입니다.</string>
     <string name="cart_message_maxquantity">최대 구매 수량은 %d개 입니다.</string>
@@ -660,4 +664,7 @@
 
 
 
+
+    <string name="cart_empty_title">장바구니에\n담긴 상품이 없습니다.</string>
+    <string name="cart_empty_recommend">실시간 인기상품</string>
 </resources>

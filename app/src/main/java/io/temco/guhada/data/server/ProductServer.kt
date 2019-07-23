@@ -6,10 +6,10 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
-import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ProductService
 import retrofit2.Call

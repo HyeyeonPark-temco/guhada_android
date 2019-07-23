@@ -25,7 +25,7 @@ class OrderServer {
          * @param cartIdList 장바구니 id
          */
         @JvmStatic
-        fun getOrderForm(listener: OnServerListener, accessToken: String, cartIdList: Array<Long>) {
+        fun getOrderForm(listener: OnServerListener, accessToken: String, cartIdList: IntArray) {
             val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrderForm(accessToken, cartIdList)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Order>> {
                 override fun onFailure(call: Call<BaseModel<Order>>, t: Throwable) {
@@ -45,7 +45,7 @@ class OrderServer {
          * @param quantity 주문 수량
          */
         @JvmStatic
-        fun addCartItm(listener: OnServerListener, accessToken: String, dealId: Long, dealOptionId: Long?, quantity: Int) {
+        fun addCartItem(listener: OnServerListener, accessToken: String, dealId: Long, dealOptionId: Long?, quantity: Int) {
             val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).addCartItem(accessToken, dealId, dealOptionId, quantity)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Cart>> {
                 override fun onResponse(call: Call<BaseModel<Cart>>, response: Response<BaseModel<Cart>>) {
@@ -151,6 +151,15 @@ class OrderServer {
         @JvmStatic
         fun updateCartItemQuantity(listener: OnServerListener, accessToken: String, cartItemId: Long, quantity: Int) {
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemQuantity(accessToken, cartItemId, quantity).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+        }
+
+        /**
+         * 장바구니 상품 삭제 API
+         */
+        @JvmStatic
+        fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: IntArray) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).deleteCartItem(accessToken, cartItemIdList).enqueue(
                     ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
         }
 

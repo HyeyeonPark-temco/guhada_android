@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
@@ -19,12 +20,15 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.ShippingMessage
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.payment.PGAuth
+import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.adapter.payment.PaymentProductAdapter
 import io.temco.guhada.view.adapter.payment.PaymentSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 
@@ -91,6 +95,17 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mLoadingIndicatorUtil.hide()
             }
         })
+
+        // [장바구니]에서 진입
+        if (intent.getSerializableExtra("productList") != null) {
+            mViewModel.productList = intent.getSerializableExtra("productList") as ArrayList<BaseProduct>
+        }
+        if (intent.getSerializableExtra("cartIdList") != null) {
+            mViewModel.cartIdList = (intent.getSerializableExtra("cartIdList") as Array<Int>).toMutableList()
+            mViewModel.totalCount = ObservableInt(mViewModel.cartIdList.size)
+        }
+
+        // [바로구매]에서 진입
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
@@ -105,33 +120,41 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         })
         intent.getSerializableExtra("product").let { product ->
             if (product != null) {
+                // [바로구매]에서 진입
                 mViewModel.product = product as BaseProduct
+                mViewModel.productList = arrayListOf(product)
+                mViewModel.totalCount = ObservableInt(product.totalCount)
+            } else {
+                // [장바구니]에서 진입
+                mViewModel.callWithToken { mViewModel.getOrderForm(it) }
             }
         }
 
-        if (::mViewModel.isInitialized) {
-            mBinding.includePaymentHeader.title = BaseApplication.getInstance().getString(R.string.payment_title_header)
-            mBinding.includePaymentHeader.setOnClickBackButton {
-                setResult(Activity.RESULT_CANCELED)
-                this.finish()
-            }
-
-            initDiscountView()
-
-            mBinding.includePaymentDiscount.viewModel = mViewModel
-            mBinding.includePaymentDiscountresult.viewModel = mViewModel
-            mBinding.includePaymentPaymentway.viewModel = mViewModel
-
-            // 결제수단
-            PaymentWayAdapter().let {
-                it.mViewModel = mViewModel
-                it.setItems(mViewModel.order.paymentsMethod)
-                mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter = it
-            }
-
-            mBinding.viewModel = mViewModel
-            mBinding.executePendingBindings()
+        mBinding.includePaymentHeader.title = BaseApplication.getInstance().getString(R.string.payment_title_header)
+        mBinding.includePaymentHeader.setOnClickBackButton {
+            setResult(Activity.RESULT_CANCELED)
+            this.finish()
         }
+
+        initDiscountCouponView()
+        initDiscountPointView()
+
+        mBinding.includePaymentDiscount.viewModel = mViewModel
+        mBinding.includePaymentDiscountresult.viewModel = mViewModel
+        mBinding.includePaymentPaymentway.viewModel = mViewModel
+
+        // 결제수단
+        PaymentWayAdapter().let {
+            it.mViewModel = mViewModel
+            it.setItems(mViewModel.order.paymentsMethod)
+            mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter = it
+        }
+
+        // 상품 리스트
+        mBinding.recyclerviewPaymentProduct.adapter = PaymentProductAdapter()
+
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
     }
 
     override fun onPause() {
@@ -144,8 +167,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mLoadingIndicatorUtil.dismiss()
     }
 
-    private fun initDiscountView() {
-        // POINT
+    private fun initDiscountPointView() {
         val editText = mBinding.includePaymentDiscount.edittextPaymentDiscountpoint
         editText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
@@ -171,7 +193,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 }
             }
         })
+    }
 
+    private fun initDiscountCouponView() {
         // COUPON
         val emptyMessage = resources.getString(R.string.payment_hint_coupon)
         //  val items = listOf<String>("장바구니 3,000원 할인쿠폰", "선착순 5% 할인쿠폰", "웰컴 5,000원 할인쿠폰", emptyMessage)
@@ -252,6 +276,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun RecyclerView.bindPaymentWay(list: MutableList<Order.PaymentMethod>?) {
             if (this.adapter != null && list != null) {
                 (this.adapter as PaymentWayAdapter).setItems(list)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("paymentProduct")
+        fun RecyclerView.bindPaymentProduct(list: ArrayList<BaseProduct>?) {
+            if (this.adapter != null && list != null) {
+                (this.adapter as PaymentProductAdapter).setItems(list)
             }
         }
     }

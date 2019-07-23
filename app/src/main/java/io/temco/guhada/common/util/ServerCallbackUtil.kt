@@ -111,7 +111,9 @@ class ServerCallbackUtil {
          * @author Hyeyeon Park
          */
         @JvmStatic
-        fun callWithToken(task: (accessToken: String) -> Unit, invalidTokenTask: () -> Unit = { ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin)) }) {
+        fun callWithToken(task: (accessToken: String) -> Unit, invalidTokenTask: () -> Unit = {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+        }) {
             Preferences.getToken().let { token ->
                 if (token != null && token.accessToken != null) task("Bearer ${token.accessToken}")
                 else invalidTokenTask()

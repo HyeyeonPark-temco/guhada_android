@@ -2,10 +2,10 @@ package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
-import io.temco.guhada.data.model.Product
 import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.product.Product
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

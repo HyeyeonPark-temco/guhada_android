@@ -22,9 +22,9 @@ import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.BaseProduct
+import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Product
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
@@ -96,7 +96,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
-            mLoadingIndicatorUtil.show()
+           // mLoadingIndicatorUtil.show()
             mViewModel.getDetail()
 
 //            mLoadingIndicatorUtil.execute {
@@ -296,25 +296,31 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         mClaimFragment.refreshIsMineVisible()
     }
 
-    private fun redirectLoginActivity() {
+    override fun redirectLoginActivity() {
         startActivityForResult(Intent(context, LoginActivity::class.java), Flag.RequestCode.LOGIN)
     }
 
     override fun showMenu() {
         val optionCount = mViewModel.product.value?.options?.size
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            mMenuFragment.getSelectedOptionCount()
+            if(::mMenuFragment.isInitialized)  mMenuFragment.getSelectedOptionCount() else 0
         } else {
-            mHeaderMenuFragment.getSelectedOptionCount()
+            if(::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
         }
 
         if (selectedOptionCount == optionCount) {
             mViewModel.addCartItem()
         } else {
-            ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)?:BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
-            mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
-            mViewModel.notifyPropertyChanged(BR.menuVisibility)
+            setMenuVisible()
         }
+    }
+
+    // 수정 예정 (BottomSheetFragment로 변경 예정)
+    private fun setMenuVisible() {
+        ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)
+                ?: BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
+        mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
+        mViewModel.notifyPropertyChanged(BR.menuVisibility)
     }
 
     override fun redirectPaymentActivity(isOptionPopupSelected: Boolean) {
@@ -327,6 +333,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
         showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
     }
+
 
     /////
     private fun showOptionMenu(optionCount: Int, selectedOptionCount: Int, isOptionPopupSelected: Boolean) {
@@ -370,7 +377,6 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
                 }
             }
-
         } else {
             ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
         }

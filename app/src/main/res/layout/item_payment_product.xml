@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app = "http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="product"
-            type="io.temco.guhada.data.model.BaseProduct" />
+            type="io.temco.guhada.data.model.product.BaseProduct" />
 
-        <variable
-            name="optionStr"
-            type="String" />
     </data>
 
     <LinearLayout
+        android:id="@+id/linearlayout_paymentproduct_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -20,7 +19,8 @@
         <ImageView
             android:layout_width="90dp"
             android:layout_height="115dp"
-            android:background="@color/greyish" />
+            app:imageUrl="@{product.profileUrl}"
+            android:background="@color/common_white" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="@{product.name}" />
+                android:text="@{product.season + ` ` + product.name}" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@{optionStr}" />
+                    android:text="@{product.optionStr}" />
             </LinearLayout>
         </LinearLayout>
 

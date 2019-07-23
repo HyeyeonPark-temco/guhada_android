@@ -13,24 +13,18 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.callWithToken
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.cart.CartDealOption
-import io.temco.guhada.data.model.cart.CartOption
-import io.temco.guhada.data.model.cart.CartResponse
-import io.temco.guhada.data.model.cart.DealOption
+import io.temco.guhada.data.model.cart.*
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class CartViewModel : BaseObservableViewModel() {
-    var cartResponse: CartResponse = CartResponse()
+    var cartResponse: MutableLiveData<CartResponse> = MutableLiveData()
         @Bindable
         get() = field
 
     var totalDiscountVisible = ObservableBoolean(false)
-        @Bindable
-        get() = field
-
-    var selectedCount = ObservableInt(0)
         @Bindable
         get() = field
 
@@ -58,6 +52,21 @@ class CartViewModel : BaseObservableViewModel() {
     var selectedOptionMap: MutableMap<String, String> = mutableMapOf()
     var cartDealOptionList: MutableList<CartDealOption> = mutableListOf()
 
+    // DELETE
+    var selectedCartItem: MutableList<Cart> = mutableListOf() // 결제하기 클릭 시 전달 데이터
+    var selectCartItemId: MutableList<Int> = mutableListOf() // 장바구니 상품 삭제 시 사용 데이터
+        @Bindable
+        get() = field
+
+    var allChecked = ObservableBoolean(false)
+        @Bindable
+        get() = field
+
+    var notNotifyAllChecked = false // allChecked 필드 notify flag
+
+    lateinit var clickPaymentListener: (productList: ArrayList<BaseProduct>) -> Unit
+
+    // CLICK EVENT
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
         notifyPropertyChanged(BR.totalDiscountVisible)
@@ -65,6 +74,36 @@ class CartViewModel : BaseObservableViewModel() {
 
     fun onSelectAttr(optionAttr: OptionAttr) {
         selectedOptionMap[optionAttr.label] = optionAttr.name
+    }
+
+    fun onCheckedAll(checked: Boolean) {
+        if (!notNotifyAllChecked) {
+            allChecked = ObservableBoolean(checked)
+            notifyPropertyChanged(BR.allChecked)
+        }
+    }
+
+    // 주문하기 버튼 클릭
+    fun onClickPayment() {
+        val list = arrayListOf<BaseProduct>()
+        for (cart in selectedCartItem) {
+            BaseProduct().apply {
+                this.brandName = cart.brandName
+                this.season = cart.season
+                this.name = cart.dealName
+                this.totalPrice = cart.sellPrice
+                this.profileUrl = cart.imageUrl
+            }.let {
+                var optionStr = cart.selectedCartOption?.getOptionStr() ?: ""
+                optionStr = if (optionStr.isEmpty()) "${cart.currentQuantity}개"
+                else "$optionStr, ${cart.currentQuantity}개"
+                it.optionStr = optionStr
+                list.add(it)
+            }
+        }
+
+        if (::clickPaymentListener.isInitialized) clickPaymentListener(list)
+
     }
 
     fun getCart(invalidTokenTask: () -> Unit = {}) {
@@ -130,12 +169,24 @@ class CartViewModel : BaseObservableViewModel() {
         })
     }
 
-    private fun setCartItemList(cartResponse: CartResponse) {
-        this.cartResponse = cartResponse
-        if (cartResponse.cartItemResponseList.isNotEmpty()) {
-            notifyPropertyChanged(BR.cartResponse)
+    fun deleteCartItem() {
+        if (selectCartItemId.isEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_deleteempty))
+        } else {
+            callWithToken(task = { accessToken ->
+                OrderServer.deleteCartItem(OnServerListener { success, o ->
+                    executeByResultCode(success, o,
+                            successTask = {
+                                selectCartItemId = mutableListOf()
+                                notifyPropertyChanged(BR.selectCartItemId)
+                                this.cartResponse.postValue(it.data as CartResponse)
+                            })
+                }, accessToken = accessToken, cartItemIdList = selectCartItemId.toIntArray())
+            })
         }
     }
+
+    private fun setCartItemList(cartResponse: CartResponse) = this.cartResponse.postValue(cartResponse)
 
     /**
      * CartOption 데이터 가공

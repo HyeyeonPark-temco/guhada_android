@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.EmptyCartViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_white">
+
+        <TextView
+            android:id="@+id/textview_emptycart_title"
+            style="@style/TextLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="47dp"
+            android:text="@string/cart_empty_title"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_22"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button_emptycart_continue"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="4dp"
+            android:background="@color/greyish_brown"
+            android:text="@string/cart_button_continue"
+            android:textColor="@color/common_white"
+            android:onClick="@{()->viewModel.onClickContinue()}"
+            android:textSize="@dimen/text_14"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/button_emptycart_like"
+            app:layout_constraintTop_toBottomOf="@+id/textview_emptycart_title" />
+
+        <Button
+            android:id="@+id/button_emptycart_like"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/common_blue_purple"
+            android:text="@string/cart_button_like"
+            android:textColor="@color/common_white"
+            android:textSize="@dimen/text_14"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@+id/button_emptycart_continue"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_emptycart_title" />
+
+        <TextView
+            android:id="@+id/textview_emptycart_recommend"
+            style="@style/TextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="38dp"
+            android:text="@string/cart_empty_recommend"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_16"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_emptycart_continue" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_cart_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_emptycart_recommend"
+            app:layout_constraintVertical_bias="0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

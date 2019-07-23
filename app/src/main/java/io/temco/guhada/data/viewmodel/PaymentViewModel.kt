@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
@@ -14,14 +15,17 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.ShippingMessage
+import io.temco.guhada.data.model.User
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
-import io.temco.guhada.data.model.order.RequestOrder
+import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -67,6 +71,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 addCartItem(accessToken)
             }
         }
+    var totalCount = ObservableInt(0)
+        @Bindable
+        get() = field
+    var productList = arrayListOf<BaseProduct>() // 상품 리스트 노출
     lateinit var pgResponse: PGResponse
     var pgAuth = PGAuth()
 
@@ -124,8 +132,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     var termsChecked = false
 
+    // 상품 리스트
+    var cartIdList: MutableList<Int> = mutableListOf()
+
     fun addCartItem(accessToken: String) {
-        OrderServer.addCartItm(OnServerListener { success, o ->
+        OrderServer.addCartItem(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = {
                         this.cart = (o as BaseModel<*>).data as Cart
@@ -140,7 +151,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
     }
 
-    private fun getOrderForm(accessToken: String) {
+    fun getOrderForm(accessToken: String) {
+        if (cartIdList.isEmpty()) {
+            cartIdList = mutableListOf(cart.cartItemId.toInt())
+        }
         OrderServer.getOrderForm(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = {
@@ -154,7 +168,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         else listener.showMessage("orderForm 오류")
                     })
             listener.hideLoadingIndicator()
-        }, accessToken, arrayOf(cart.cartItemId))
+        }, accessToken = accessToken, cartIdList = cartIdList.toIntArray())
     }
 
     private fun requestOrder(accessToken: String, requestOrder: RequestOrder) {
@@ -299,9 +313,18 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!
                                 this.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
-                                this.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
                                 this.parentMethodCd = selectedMethod.methodCode
                             }.let { requestOrder ->
+                                if (::cart.isInitialized) {
+                                    requestOrder.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
+                                } else {
+                                    val array = arrayOfNulls<Long>(cartIdList.size)
+                                    for (i in 0 until cartIdList.size) {
+                                        array[i] = cartIdList[i].toLong()
+                                    }
+                                    requestOrder.cartItemIdList = array
+                                }
+
                                 val accessToken = Preferences.getToken().accessToken
                                 if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
                                     // 배송지 추가
@@ -309,7 +332,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     if (userId != null) saveShippingAddress(userId)
                                 }
 
-                                requestOrder("Bearer $accessToken" , requestOrder)
+                                requestOrder("Bearer $accessToken", requestOrder)
                             }
                         }
                     }
