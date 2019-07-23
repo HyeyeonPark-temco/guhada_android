@@ -22,6 +22,7 @@ public class RetrofitManager {
 
     // -------- LOCAL VALUE --------
     private static RetrofitManager instance;
+    private static RetrofitManager parseJsonInstance;
     private Retrofit mManager;
     private Type.Server mCurrentType;
     // -----------------------------
@@ -36,6 +37,14 @@ public class RetrofitManager {
                 getCache(BaseApplication.getInstance()),
                 getInterceptor(), false));
     }
+
+    private RetrofitManager(Type.Server type, boolean isLogged, boolean isParseJson) {
+        mCurrentType = type;
+        mManager = getRetrofit(getClient(
+                getCache(BaseApplication.getInstance()),
+                getInterceptor(), isLogged, isParseJson));
+    }
+
 
     /**
      * RetrofitManager constructor
@@ -83,6 +92,27 @@ public class RetrofitManager {
             }
         }
         return instance.mManager.create(service);
+    }
+
+    /**
+     * createService method
+     *
+     * @param type
+     * @param service
+     * @param isLogged 로그 여부
+     * @param isParseJson BaseResponseInterceptor 추가 여부
+     * @param <S>
+     * @return
+     */
+    public static <S> S createService(Type.Server type, Class<S> service, boolean isLogged, boolean isParseJson) {
+        if (parseJsonInstance == null) {
+            parseJsonInstance = new RetrofitManager(type, isLogged, isParseJson);
+        } else {
+            if (type != parseJsonInstance.mCurrentType) {
+                parseJsonInstance = new RetrofitManager(type, isLogged, isParseJson);
+            }
+        }
+        return parseJsonInstance.mManager.create(service);
     }
 
     ////////////////////////////////////////////////

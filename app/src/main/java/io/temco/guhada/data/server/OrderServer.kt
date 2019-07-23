@@ -77,7 +77,7 @@ class OrderServer {
 
         @JvmStatic
         fun setOrderApproval(listener: OnServerListener, accessToken: String, pgAuth: PGAuth) {
-            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).setOrderApproval(accessToken, pgAuth)
+            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true, false).setOrderApproval(accessToken, pgAuth)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     listener.onResult(response.isSuccessful, response.body())
