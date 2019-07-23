@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.main.MainBaseModel
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.data.viewmodel.repository.HomeListRepository
+import io.temco.guhada.data.viewmodel.main.repository.HomeListRepository
 import io.temco.guhada.view.adapter.main.HomeListAdapter
 
 /**

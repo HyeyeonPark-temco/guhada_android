@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel.repository
+package io.temco.guhada.data.viewmodel.main.repository
 
 import android.content.Context
 import io.temco.guhada.R
