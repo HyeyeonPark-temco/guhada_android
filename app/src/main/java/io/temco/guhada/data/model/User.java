@@ -14,7 +14,7 @@ public class User extends Observable {
     private Boolean agreeSmsReception = false;
     private Boolean agreeEmailReception = false;
 
-    // USER INFO
+    // USER INFO 
     private String name = "";
     private String email = "";
     private String password = "";
