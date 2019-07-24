@@ -103,7 +103,7 @@ class ProductServer {
         @JvmStatic
         fun getProductByList(id: String, listener: OnServerListener?) {
             if (listener != null) {
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java)
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false)
                         .getProductByList(id)
                         .enqueue(object : Callback<BaseModel<ProductByList>> {
                             override fun onResponse(call: Call<BaseModel<ProductByList>>, response: Response<BaseModel<ProductByList>>) {
