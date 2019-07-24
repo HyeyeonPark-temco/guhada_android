@@ -588,7 +588,6 @@
 
     <!-- CART -->
     <string name="cart_title">장바구니</string>
-
     <string name="cart_option_title">구매옵션</string>
     <string name="cart_option_change">변경</string>
     <string name="cart_option_amount">수량</string>
@@ -633,7 +632,14 @@
     <string name="cart_addresult_title">상품이 장바구니에\n추가되었습니다.</string>
     <string name="cart_addresult_recommend">이 상품과 함께 많이 구매한 상품</string>
     <string name="cart_addresult_redirectcart">장바구니로 이동</string>
+    <string name="cart_empty_title">장바구니에\n담긴 상품이 없습니다.</string>
+    <string name="cart_empty_recommend">실시간 인기상품</string>
 
+    <!-- MYPAGE -->
+    <string name="mypage_shippingaddress_add">신규배송지 등록</string>
+    <string name="mypage_shippingaddress_default">기본 배송지 설정</string>
+
+    <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">전체</string>
     <string name="mainlistsubtitle_women">여성</string>
     <string name="mainlistsubtitle_men">남성</string>
@@ -664,6 +670,5 @@
     </string-array>
 
 
-    <string name="cart_empty_title">장바구니에\n담긴 상품이 없습니다.</string>
-    <string name="cart_empty_recommend">실시간 인기상품</string>
+
 </resources>

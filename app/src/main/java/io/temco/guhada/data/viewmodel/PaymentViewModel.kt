@@ -308,8 +308,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     ?: ""
                             else shippingMessage
 
-                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?.type
-                                    ?: ""
+                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?:ShippingMessage()
 
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!

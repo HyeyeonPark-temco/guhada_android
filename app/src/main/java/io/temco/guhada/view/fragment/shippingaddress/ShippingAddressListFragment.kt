@@ -51,14 +51,16 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
     override fun onDestroy() {
         if (::mLoadingIndicator.isInitialized)
             mLoadingIndicator.dismiss()
-        mViewModel.shippingAddresses.removeObservers(this)
+        if (::mViewModel.isInitialized)
+            mViewModel.shippingAddresses.removeObservers(this)
         super.onDestroy()
     }
 
     fun getShippingAddressList() {
         if (::mLoadingIndicator.isInitialized)
             mLoadingIndicator.show()
-        mViewModel.getUserShippingAddress()
+        if (::mViewModel.isInitialized)
+            mViewModel.getUserShippingAddress()
     }
 
     companion object {

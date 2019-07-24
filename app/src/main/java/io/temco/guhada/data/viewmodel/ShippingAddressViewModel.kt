@@ -20,7 +20,7 @@ import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
-class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseObservableViewModel() {
+open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseObservableViewModel() {
     var userId: Int = -1
     var prevSelectedItem: UserShipping = UserShipping()
     var selectedItem: UserShipping = UserShipping()
@@ -53,7 +53,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
         UserServer.getUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = { model ->
-                        this.shippingAddresses.postValue(model.list as MutableList<UserShipping>)
+                        this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
                         emptyVisibility = ObservableInt(View.GONE)
                         notifyPropertyChanged(BR.shippingAddresses)
                         notifyPropertyChanged(BR.emptyVisibility)

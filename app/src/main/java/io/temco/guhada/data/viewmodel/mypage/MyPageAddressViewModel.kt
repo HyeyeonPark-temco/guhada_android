@@ -1,6 +1,8 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import io.temco.guhada.common.listener.OnShippingAddressListener
+import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 /**
@@ -14,8 +16,6 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
         ○ 배송지 관리는 주문, 장바구니에서 사용하는 API를 다시 사용하면됨
  *
  */
-class MyPageAddressViewModel (val context : Context) : BaseObservableViewModel() {
-
-
+class MyPageAddressViewModel (val context : Context, val listener: OnShippingAddressListener) : ShippingAddressViewModel(listener){
 
 }
