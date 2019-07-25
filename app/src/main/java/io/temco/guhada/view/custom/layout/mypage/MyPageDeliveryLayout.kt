@@ -270,5 +270,7 @@ class MyPageDeliveryLayout constructor(
     }
 
     ////////////////////////////////////////////////
+    override fun onDestroy() {
 
+    }
 }

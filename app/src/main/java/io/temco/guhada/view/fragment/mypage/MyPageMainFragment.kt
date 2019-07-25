@@ -4,14 +4,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.material.tabs.TabLayout
+import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnDrawerLayoutListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.FragmentMainMypagehomeBinding
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.custom.layout.mypage.*
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
+import java.util.*
 
 /**
  * 19.07.22
@@ -31,7 +34,10 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     // -------- LOCAL VALUE --------
     private var mDrawerListener: OnDrawerLayoutListener? = null
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
-    private var currentPagerIndex : Int = 0
+    private var currentPagerIndex : Int = 10
+
+    var mDisposable : CompositeDisposable = CompositeDisposable()
+    var customLayoutMap : WeakHashMap<Int,BaseListLayout<*, *>> = WeakHashMap()
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -42,6 +48,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun getLayoutId() = R.layout.fragment_main_mypagehome
     override fun init() {
         initHeader()
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout MyPageMainFragment", "init -----")
     }
 
     override fun onClick(v: View) {
@@ -75,6 +82,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     }
 
     private fun setViewPager(){
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "setViewPager ", "init -----")
         if(viewPagerAdapter == null){
             context?.let {
                 var tabtitle = resources.getStringArray(R.array.mypage_titles)
@@ -98,6 +106,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
                             else->{vw = MyPageMainLayout(it)}
                         }
                         if(vw is BaseListLayout<*, *>) lifecycle.addObserver(vw)
+                        customLayoutMap.put(position,vw as BaseListLayout<*, *>)
                         return vw
                     }
                 }
@@ -105,7 +114,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
         }
         mBinding.viewpager.adapter = viewPagerAdapter
         mBinding.viewpager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutTab))
-        mBinding.viewpager.offscreenPageLimit = 4
+        mBinding.viewpager.offscreenPageLimit = 1
         mBinding.viewpager.currentItem = currentPagerIndex
         mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager){
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -141,4 +150,14 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
 
     ////////////////////////////////////////////////
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mDisposable.dispose()
+        if(customLayoutMap.isNotEmpty()){
+            for (v in customLayoutMap){
+                v.value.onDestroy()
+            }
+        }
+    }
 }

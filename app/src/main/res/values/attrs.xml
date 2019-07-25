@@ -22,5 +22,9 @@
         <attr name="list" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="HtmlTextView">
+        <attr name="isHtml" format="boolean"/>
+        <attr name="android:text" />
+    </declare-styleable>
 
 </resources>

@@ -47,9 +47,12 @@ class HomeListLayout constructor(
                 androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {
                     if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 1----------------",it.size)
                     mViewModel.getListAdapter().notifyDataSetChanged()
+                    if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 2----------------",mViewModel.getListAdapter().items.size)
                 }
         )
     }
 
+    override fun onDestroy() {
 
+    }
 }

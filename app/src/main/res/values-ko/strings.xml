@@ -666,4 +666,7 @@
 
     <string name="cart_empty_title">장바구니에\n담긴 상품이 없습니다.</string>
     <string name="cart_empty_recommend">실시간 인기상품</string>
+
+
+    <string name="mypage_userinfo_passwaord_desc">안전한 회원정보 변경을 위해&lt;br&gt;&lt;/font&gt;&lt;font color="#5d2ed1"&gt;비밀번호&lt;/font&gt;를 다시 한번 입력해 주세요.</string>
 </resources>

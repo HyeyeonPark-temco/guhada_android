@@ -25,5 +25,7 @@ class MyPageClaimLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

@@ -27,7 +27,7 @@ abstract class GuhadaDB : RoomDatabase(){
             if(INSTANCE == null){
                 synchronized(GuhadaDB::class){
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
-                            GuhadaDB::class.java, "lottoDB")
+                            GuhadaDB::class.java, "guhada_DB")
                             .fallbackToDestructiveMigration()
                             //.addCallback(sRoomDatabaseCallback)
                             .build()

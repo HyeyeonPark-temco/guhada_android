@@ -26,5 +26,7 @@ class MyPageCouponLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

@@ -26,5 +26,7 @@ class MyPageDeliveryCerLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

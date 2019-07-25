@@ -8,24 +8,26 @@
             type="io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel" />
     </data>
 
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_2"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:background="@color/common_white"
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <io.temco.guhada.view.custom.HtmlTextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/background_2"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_four"
+                android:gravity="center"
+                android:text="@string/mypage_userinfo_passwaord_desc"
+                android:textSize="16dp"
+                app:isHtml="true" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

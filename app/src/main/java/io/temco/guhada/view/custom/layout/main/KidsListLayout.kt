@@ -19,5 +19,7 @@ class KidsListLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

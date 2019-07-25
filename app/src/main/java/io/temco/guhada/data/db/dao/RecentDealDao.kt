@@ -13,17 +13,17 @@ import io.temco.guhada.data.db.entity.RecentDealEntity
 @Dao
 interface RecentDealDao {
 
-    @Query("SELECT * FROM recentdeal ORDER By idx DESC")
+    @Query("SELECT * FROM recent_deal ORDER By insert_date DESC LIMIT 20")
     fun getAll() : List<RecentDealEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(deal : RecentDealEntity)
 
-    @Query("DELETE from recentdeal")
+    @Query("DELETE from recent_deal")
     fun deleteAll()
 
-    @Query("DELETE from recentdeal WHERE idx == :num_list")
-    fun delete(num_list : String)
+    @Query("DELETE from recent_deal WHERE idx == :dealId")
+    fun delete(dealId : Long)
 
     @Delete
     fun delete(deal : RecentDealEntity)

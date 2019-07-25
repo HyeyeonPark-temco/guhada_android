@@ -26,5 +26,7 @@ class MyPageGradeLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

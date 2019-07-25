@@ -26,5 +26,7 @@ class MyPageUserInfoLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

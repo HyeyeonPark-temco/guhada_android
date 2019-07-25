@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -11,6 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -20,12 +25,15 @@ import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.product.BaseProduct
+import io.temco.guhada.data.db.GuhadaDB
+import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.product.BaseProduct
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
@@ -39,6 +47,8 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainListener) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
@@ -54,6 +64,11 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
+
+    // room database init
+    private val db : GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
+    // rx Init
+    private var mDisposable : CompositeDisposable = CompositeDisposable()
 
     override fun init() {
         initUtils()
@@ -92,6 +107,20 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 initOptionMenu()
                 initClaims()
                 initReview()
+            }
+            /**
+             * @author park jungho
+             * 19.07.25
+             * 최근본상품의 상품 DB에 추가
+             */
+            if(product.productId > 0L){
+                mDisposable.add(Observable.just(product).subscribeOn(Schedulers.io()).subscribe {
+                    db.recentDealDao().delete(dealId)
+                    var recentDealEntity = RecentDealEntity()
+                    recentDealEntity.initData(Calendar.getInstance().timeInMillis,dealId,Gson().toJson(it))
+                    if(CustomLog.flag)CustomLog.L("initViewModel",recentDealEntity.toString())
+                    db.recentDealDao().insert(recentDealEntity)
+                })
             }
         })
 
@@ -167,6 +196,14 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         if (::mReviewFragment.isInitialized) mReviewFragment.onDestroy()
 
         (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
+
+        try{
+            GuhadaDB.destroyInstance()
+            // rx release
+            mDisposable.dispose()
+        }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
     }
 
     /**

@@ -19,5 +19,7 @@ class WomenListLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

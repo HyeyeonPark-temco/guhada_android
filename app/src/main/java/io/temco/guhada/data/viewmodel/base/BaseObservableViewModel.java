@@ -37,4 +37,8 @@ public class BaseObservableViewModel extends ViewModel implements Observable {
         }
         registry.notifyCallbacks(this, id, null);
     }
+
+    public void destroyModel(){
+
+    }
 }

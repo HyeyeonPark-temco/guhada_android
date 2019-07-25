@@ -26,5 +26,7 @@ class MyPageReviewLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

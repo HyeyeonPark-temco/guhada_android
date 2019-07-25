@@ -31,6 +31,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.listener.OnMainListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;
@@ -539,6 +540,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         try {
             for (NdefRecord r : msg.getRecords()) {
                 JSONObject p = new JSONObject(new String(r.getPayload()));  // (*) 중요!
+                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("showBlockChainProduct",p.toString());
                 if (p.getString(TAG_COMPANY).equals(COMPANY_NAME)) {
                     String id = p.getString(TAG_ID); // get productId
                     getProductData(id);

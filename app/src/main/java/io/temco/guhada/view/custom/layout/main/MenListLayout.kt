@@ -19,5 +19,7 @@ class MenListLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

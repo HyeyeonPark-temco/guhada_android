@@ -26,5 +26,7 @@ class MyPageBookMarkLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

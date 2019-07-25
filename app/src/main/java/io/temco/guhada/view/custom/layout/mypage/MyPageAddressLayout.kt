@@ -32,4 +32,8 @@ class MyPageAddressLayout constructor(
     override fun onRefresh() {
         mBinding.swipeRefreshLayout.isRefreshing = false
     }
+
+    override fun onDestroy() {
+
+    }
 }

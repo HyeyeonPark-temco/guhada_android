@@ -5,25 +5,25 @@
     <data>
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.mypage.MyPageMainViewModel" />
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageRecentViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/text_3"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+            android:id="@+id/swiperefreshlayout_mypagerecentlayout_reload"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/recyclerview_mypagemainlayout_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/text_3"/>
+                android:background="@color/common_white"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

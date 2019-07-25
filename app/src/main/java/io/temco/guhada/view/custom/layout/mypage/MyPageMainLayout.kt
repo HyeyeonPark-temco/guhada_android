@@ -26,5 +26,7 @@ class MyPageMainLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }

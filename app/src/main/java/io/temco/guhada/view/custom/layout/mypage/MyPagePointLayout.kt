@@ -26,5 +26,7 @@ class MyPagePointLayout constructor(
 
     }
 
+    override fun onDestroy() {
 
+    }
 }
