@@ -50,7 +50,7 @@ class ServerCallbackUtil {
         override fun onFailure(call: Call<T>, t: Throwable) {
             CommonUtil.debug(t.message ?: failedMessage)
             if (::failedTask.isInitialized) failedTask(t)
-            else ToastUtil.showMessage(t.message ?: failedMessage)
+         //   else ToastUtil.showMessage(t.message ?: failedMessage)
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {

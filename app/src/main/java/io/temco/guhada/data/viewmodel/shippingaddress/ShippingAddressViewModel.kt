@@ -44,29 +44,31 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
      * TODO 결과 값이 서로 달라 확인 필요 - 배송지 목록 관련 확인
      */
     fun getUserShippingAddress() {
-        val accessToken = Preferences.getToken().accessToken
-        if(accessToken != null){
-            userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
-        }
+        if(Preferences.getToken() != null){
+            val accessToken = Preferences.getToken().accessToken
+            if(accessToken != null){
+                userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
+            }
 
-        UserServer.getUserShippingAddress(OnServerListener { success, o ->
-            executeByResultCode(success, o,
-                    successTask = { model ->
-                        this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
-                        emptyVisibility = ObservableInt(View.GONE)
-                        notifyPropertyChanged(BR.shippingAddresses)
-                        notifyPropertyChanged(BR.emptyVisibility)
-                    },
-                    failedTask = {
-                        emptyVisibility = ObservableInt(View.VISIBLE)
-                        notifyPropertyChanged(BR.emptyVisibility)
-                        CommonUtil.debug(o as String)
-                    },
-                    dataNotFoundTask = {
-                        emptyVisibility = ObservableInt(View.VISIBLE)
-                        notifyPropertyChanged(BR.emptyVisibility)
-                    })
-        }, userId)
+            UserServer.getUserShippingAddress(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = { model ->
+                            this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
+                            emptyVisibility = ObservableInt(View.GONE)
+                            notifyPropertyChanged(BR.shippingAddresses)
+                            notifyPropertyChanged(BR.emptyVisibility)
+                        },
+                        failedTask = {
+                            emptyVisibility = ObservableInt(View.VISIBLE)
+                            notifyPropertyChanged(BR.emptyVisibility)
+                            CommonUtil.debug(o as String)
+                        },
+                        dataNotFoundTask = {
+                            emptyVisibility = ObservableInt(View.VISIBLE)
+                            notifyPropertyChanged(BR.emptyVisibility)
+                        })
+            }, userId)
+        }
     }
 
     fun deleteShippingAddress(shippingAddressId: Int) {
