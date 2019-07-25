@@ -84,6 +84,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     },
                     productNotFoundTask = {
                         listener?.closeActivity()
+                        listener?.hideLoadingIndicator()
                         ToastUtil.showMessage(it.message)
                     })
         }, dealId)
@@ -101,20 +102,29 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         }
     }
 
-    // API 수정 -> 미사용
-    fun getSellerFollowers() {
-        if (product.value?.sellerId != null)
+    /**
+     * 셀러 팔로잉
+     */
+    fun getLike(target: String) {
+        if (product.value?.sellerId != null) {
             ServerCallbackUtil.callWithToken(
-                    task = { accessToken ->
-                        UserServer.getSellerFollowers(OnServerListener { success, o ->
+                    task = {
+                        UserServer.getLike(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
-                                        this.sellerFollower = it.data as SellerFollower
+                                        this.sellerFollower.isFollower = true
                                         notifyPropertyChanged(BR.sellerFollower)
-                                    })
-                        }, accessToken, product.value?.sellerId!!)
-                    },
-                    invalidTokenTask = { })
+                                    },
+                                    userLikeNotFoundTask = {
+                                        this.sellerFollower.isFollower = false
+                                        notifyPropertyChanged(BR.sellerFollower)
+                                    }
+                            )
+                        }, accessToken = it, target = target, userId = product.value?.sellerId as Long)
+                    }
+            )
+
+        }
     }
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]

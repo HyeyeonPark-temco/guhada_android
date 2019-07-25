@@ -104,6 +104,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
 
+                mViewModel.getLike("SELLER")
                 mViewModel.getSellerInfo()
                 initOptionMenu()
                 initClaims()

@@ -281,6 +281,14 @@ class UserServer {
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerFollower>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
+         * 회원 좋아요 정보 조회 API
+         */
+        @JvmStatic
+        fun getLike(listener: OnServerListener, accessToken: String, target: String, userId: Long) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getLike(accessToken, userId, target).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
          * 상품 리뷰 평점 조회 API
          */
         @JvmStatic

@@ -211,6 +211,6 @@ interface UserService {
      * 좋아요 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
      */
-//    @GET("/users/{userId}/likes")
-//    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId : Int) : Callback<BaseModel<>>
+    @GET("/users/{userId}/likes")
+    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId : Long, @Query("target") target :String) : Call<BaseModel<Any>>
 }
