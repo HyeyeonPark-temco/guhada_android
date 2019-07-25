@@ -411,6 +411,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 }
             }
         } else {
+            setMenuVisible()
             ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
         }
     }
