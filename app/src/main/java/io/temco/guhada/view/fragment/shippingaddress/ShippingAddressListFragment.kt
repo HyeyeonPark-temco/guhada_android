@@ -26,7 +26,9 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
             getShippingAddressList()
 
             mViewModel.shippingAddresses.observe(this, Observer {
-                mListAdapter = ShippingAddressListAdapter(mViewModel)
+                if (!::mListAdapter.isInitialized)
+                    mListAdapter = ShippingAddressListAdapter(mViewModel)
+
                 mListAdapter.setItems(it)
                 if (mBinding.recyclerviewShippingaddress.adapter == null) {
                     mBinding.recyclerviewShippingaddress.adapter = mListAdapter

@@ -12,6 +12,7 @@ import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.flag.RequestCode
 import io.temco.guhada.common.listener.OnShippingAddressListener
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.mypage.MyPageAddressViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageAddressBinding
@@ -72,7 +73,16 @@ class MyPageAddressLayout constructor(
         }
     }
 
-    override fun notifyDeleteItem() = mShippingAddressListFragment.mListAdapter.deleteItem()
+    override fun notifyDeleteItem() {
+//        mShippingAddressListFragment.mListAdapter.deleteItem()
+        val deletePos = mShippingAddressListFragment.mListAdapter.deletePos
+        if (deletePos > -1) {
+            mShippingAddressListFragment.mListAdapter.list.removeAt(deletePos)
+            if (mShippingAddressListFragment.mListAdapter.itemCount == 1) mShippingAddressListFragment.mListAdapter.currentPos = 0 // 배송지 1개 남았을 경우
+            mShippingAddressListFragment.mListAdapter.notifyDataSetChanged()
+            ToastUtil.showMessage("선택하신 배송지가 삭제되었습니다.")
+        }
+    }
 
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {
         Intent(context, EditShippingAddressActivity::class.java).let {
@@ -85,7 +95,7 @@ class MyPageAddressLayout constructor(
         // NONE
     }
 
-    override fun redirectAddShippingAddressActivity(){
+    override fun redirectAddShippingAddressActivity() {
         Intent(context, AddShippingAddressActivity::class.java).let {
             (context as AppCompatActivity).startActivityForResult(it, Flag.RequestCode.ADD_SHIPPING_ADDRESS)
         }
