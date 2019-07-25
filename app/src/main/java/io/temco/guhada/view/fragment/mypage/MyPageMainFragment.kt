@@ -34,7 +34,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     // -------- LOCAL VALUE --------
     private var mDrawerListener: OnDrawerLayoutListener? = null
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
-    private var currentPagerIndex : Int = 10
+    private var currentPagerIndex : Int = 0
 
     var mDisposable : CompositeDisposable = CompositeDisposable()
     var customLayoutMap : WeakHashMap<Int,BaseListLayout<*, *>> = WeakHashMap()
