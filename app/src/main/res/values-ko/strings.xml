@@ -323,6 +323,7 @@
     <string name="productdetail_button_detail">상세정보</string>
     <string name="productdetail_button_qna">상품문의</string>
     <string name="productdetail_button_follow">팔로우</string>
+    <string name="productdetail_button_following">팔로잉</string>
     <string name="productdetail_button_store">셀러스토어</string>
 
     <string name="productdetail_shipping_title">배송/반품/교환정보</string>
@@ -587,7 +588,7 @@
 
     <!-- SEARCH ZIP -->
     <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>
-    <string name="searchzip_loadurl">hhttp://dev.guhada.com/webview/daum-address-search</string>
+    <string name="searchzip_loadurl">http://dev.guhada.com/webview/daum-address-search</string>
 
     <!-- CART -->
     <string name="cart_title">장바구니</string>

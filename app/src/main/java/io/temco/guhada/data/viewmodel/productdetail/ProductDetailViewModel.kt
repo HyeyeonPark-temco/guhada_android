@@ -14,10 +14,10 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Seller
-import io.temco.guhada.data.model.SellerSatisfaction
-import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.product.Product
+import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerFollower
+import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
@@ -27,6 +27,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var seller: Seller = Seller()
         @Bindable
         get() = field
+    var sellerFollower = SellerFollower()
+        @Bindable
+        get() = field
+
     var sellerSatisfaction = SellerSatisfaction()
         @Bindable
         get() = field
@@ -88,16 +92,29 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     fun getSellerInfo() {
         if (product.value?.sellerId != null) {
             UserServer.getSellerById(OnServerListener { success, o ->
-                if (success) {
-                    (o as BaseModel<Seller>).let {
-                        this.seller = it.data
-                        notifyPropertyChanged(BR.seller)
-                    }
-                } else {
-                    CommonUtil.debug(o?.toString())
-                }
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            this.seller = it.data as Seller
+                            notifyPropertyChanged(BR.seller)
+                        })
             }, product.value?.sellerId!!)
         }
+    }
+
+    // API 수정 -> 미사용
+    fun getSellerFollowers() {
+        if (product.value?.sellerId != null)
+            ServerCallbackUtil.callWithToken(
+                    task = { accessToken ->
+                        UserServer.getSellerFollowers(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        this.sellerFollower = it.data as SellerFollower
+                                        notifyPropertyChanged(BR.sellerFollower)
+                                    })
+                        }, accessToken, product.value?.sellerId!!)
+                    },
+                    invalidTokenTask = { })
     }
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]

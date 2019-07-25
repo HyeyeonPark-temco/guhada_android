@@ -13,6 +13,7 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
@@ -51,7 +52,7 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
             }
 
             UserServer.getUserShippingAddress(OnServerListener { success, o ->
-                executeByResultCode(success, o,
+                ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = { model ->
                             this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
                             emptyVisibility = ObservableInt(View.GONE)
@@ -61,7 +62,6 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
                         failedTask = {
                             emptyVisibility = ObservableInt(View.VISIBLE)
                             notifyPropertyChanged(BR.emptyVisibility)
-                            CommonUtil.debug(o as String)
                         },
                         dataNotFoundTask = {
                             emptyVisibility = ObservableInt(View.VISIBLE)

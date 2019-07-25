@@ -11,7 +11,6 @@
             name="averageReviewsRating"
             type="Float" />
 
-
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel" />
@@ -201,9 +200,9 @@
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@color/colorPrimary"
-                        android:text="@string/productdetail_button_follow"
-                        android:textColor="@color/common_white"
+                        android:background="@{viewModel.sellerFollower.isFollower ? @drawable/background_color_purple : @drawable/border_all_purple_1dp}"
+                        android:text="@{viewModel.sellerFollower.isFollower ?  @string/productdetail_button_following : @string/productdetail_button_follow}"
+                        android:textColor="@{viewModel.sellerFollower.isFollower ? @color/common_white : @color/common_blue_purple}"
                         android:textSize="@dimen/text_13"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/button4"
@@ -227,8 +226,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:weightSum="4"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="4">
 
                     <LinearLayout
                         android:layout_width="0dp"

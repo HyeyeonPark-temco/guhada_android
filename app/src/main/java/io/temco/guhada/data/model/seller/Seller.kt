@@ -1,4 +1,4 @@
-package io.temco.guhada.data.model
+package io.temco.guhada.data.model.seller
 
 class Seller {
     var id: Long = 0

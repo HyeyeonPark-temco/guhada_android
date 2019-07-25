@@ -10,6 +10,9 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
+import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerFollower
+import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
@@ -213,7 +216,7 @@ class UserServer {
          */
         @JvmStatic
         fun getUserShippingAddress(listener: OnServerListener, userId: Int) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true, false).findShippingAddress(userId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<UserShipping>>> { successResponse -> listener.onResult(true, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).findShippingAddress(userId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<UserShipping>>>(successTask = { successResponse -> listener.onResult(true, successResponse.body()) }, failedTask = { t -> listener.onResult(false, t) }))
 
         /**
          * 회원 배송지 삭제 API
@@ -236,6 +239,15 @@ class UserServer {
         fun saveUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddress: UserShipping) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).saveShippingAddress(userId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
+         * 임시회원 배송지 등록 API
+         * shippingMessageType String
+         * @since 2019.07.25
+         */
+        @JvmStatic
+        fun tempSaveUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddress: TempUserShipping) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).tempSaveShippingAddress(userId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+
+        /**
          * 셀러 정보 가져오기 API
          */
         @JvmStatic
@@ -252,6 +264,25 @@ class UserServer {
             })
         }
 
+        /**
+         * 셀러 만족도 조회 API
+         */
+        @JvmStatic
+        fun getSellerSatisfaction(listener: OnServerListener, sellerId: Long) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).getSellerSatisfaction(sellerId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerSatisfaction>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
+         * 셀러 팔로우 여부 조회 API
+         * (좋아요 API 사용 -> /followers 미사용)
+         */
+        @JvmStatic
+        fun getSellerFollowers(listener: OnServerListener, accessToken: String, sellerId: Long) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).getSellerFollowers(accessToken, sellerId).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerFollower>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
+         * 상품 리뷰 평점 조회 API
+         */
         @JvmStatic
         fun getProductReviewSummary(listener: OnServerListener, productId: Long) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewSummary(productId).enqueue(object : Callback<BaseModel<ReviewSummary>> {
@@ -265,6 +296,9 @@ class UserServer {
             })
         }
 
+        /**
+         * 상품 리뷰 리스트 조회 API
+         */
         @JvmStatic
         fun getProductReview(listener: OnServerListener, productId: Long, page: Int, size: Int) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size).enqueue(object : Callback<BaseModel<ReviewResponse>> {
@@ -278,11 +312,5 @@ class UserServer {
             })
         }
 
-        /**
-         * 셀러 만족도 조회 API
-         */
-        @JvmStatic
-        fun getSellerSatisfaction(listener: OnServerListener, sellerId: Long) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).getSellerSatisfaction(sellerId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerSatisfaction>> { successResponse -> listener.onResult(true, successResponse.body()) })
     }
 }

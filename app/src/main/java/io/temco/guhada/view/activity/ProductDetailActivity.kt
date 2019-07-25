@@ -105,6 +105,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
 
+
                 mViewModel.getSellerInfo()
                 initOptionMenu()
                 initClaims()

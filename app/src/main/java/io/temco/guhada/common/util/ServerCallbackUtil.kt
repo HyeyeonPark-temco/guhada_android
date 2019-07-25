@@ -54,6 +54,8 @@ class ServerCallbackUtil {
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
+
+
             if (response.isSuccessful) {
                 successTask(response)
             } else {
