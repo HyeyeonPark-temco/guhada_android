@@ -5,8 +5,11 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ObservableInt
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
@@ -74,13 +77,12 @@ class MyPageAddressLayout constructor(
     }
 
     override fun notifyDeleteItem() {
-//        mShippingAddressListFragment.mListAdapter.deleteItem()
-        val deletePos = mShippingAddressListFragment.mListAdapter.deletePos
-        if (deletePos > -1) {
-            mShippingAddressListFragment.mListAdapter.list.removeAt(deletePos)
-            if (mShippingAddressListFragment.mListAdapter.itemCount == 1) mShippingAddressListFragment.mListAdapter.currentPos = 0 // 배송지 1개 남았을 경우
-            mShippingAddressListFragment.mListAdapter.notifyDataSetChanged()
-            ToastUtil.showMessage("선택하신 배송지가 삭제되었습니다.")
+        mShippingAddressListFragment.mListAdapter.deleteItem()
+        mShippingAddressListFragment.mListAdapter.currentPos = -1
+
+        if (mShippingAddressListFragment.mListAdapter.itemCount == 0) {
+            mViewModel.emptyVisibility = ObservableInt(View.VISIBLE)
+            mViewModel.notifyPropertyChanged(BR.emptyVisibility)
         }
     }
 
