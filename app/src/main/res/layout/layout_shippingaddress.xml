@@ -30,8 +30,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:padding="20dp">
 
         <io.temco.guhada.view.custom.BorderEditTextView
             android:id="@+id/edittext_shippingaddress_addressname"
@@ -154,7 +153,6 @@
             android:background="@drawable/selector_checkbox_all"
             android:button="@null"
             android:checked="@={shippingAddress.defaultAddress,default = false}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/textview_shippingaddress_default"
             app:layout_constraintTop_toBottomOf="@+id/checkbox_shippingadress_add" />
@@ -170,7 +168,6 @@
             android:text="@string/editshippingaddress_set_default"
             android:textColor="@color/greyish_brown_two"
             android:textSize="@dimen/text_14"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/checkbox_shippingadress_default"
             app:layout_constraintTop_toBottomOf="@+id/textview_shippingaddress_add" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package io.temco.guhada.view.fragment.findaccount;
 
 import io.temco.guhada.R;
-import io.temco.guhada.data.viewmodel.FindAccountViewModel;
+import io.temco.guhada.data.viewmodel.account.FindAccountViewModel;
 import io.temco.guhada.databinding.FragmentFindidBinding;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 

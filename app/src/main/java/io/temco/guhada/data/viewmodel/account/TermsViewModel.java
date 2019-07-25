@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel;
+package io.temco.guhada.data.viewmodel.account;
 
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableBoolean;

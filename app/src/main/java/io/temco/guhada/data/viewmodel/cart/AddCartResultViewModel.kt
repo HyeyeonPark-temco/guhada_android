@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.cart
 
 import io.temco.guhada.common.listener.OnAddCartResultListener
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel

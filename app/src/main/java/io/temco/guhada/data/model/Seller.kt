@@ -19,5 +19,6 @@ class Seller {
     var createdAt = ""
     var updatedAt: String? = ""
     var updatedBy: String? = ""
-    var userId : Long =0
+//    var userId : Long =0
 }
+

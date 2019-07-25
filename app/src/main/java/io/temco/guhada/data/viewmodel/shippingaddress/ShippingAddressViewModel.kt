@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.shippingaddress
 
 import android.app.Activity
 import android.view.View
@@ -13,7 +13,6 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
@@ -94,7 +93,7 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
         }
     }
 
-    private fun checkEmptyField(task: () -> Unit) {
+     fun checkEmptyField(task: () -> Unit) {
         when {
             newItem.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_shippingname))
             newItem.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_zip))

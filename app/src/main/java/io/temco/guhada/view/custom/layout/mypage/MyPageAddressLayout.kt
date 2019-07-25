@@ -1,16 +1,21 @@
 package io.temco.guhada.view.custom.layout.mypage
 
+import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.flag.RequestCode
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.mypage.MyPageAddressViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageAddressBinding
+import io.temco.guhada.view.activity.AddShippingAddressActivity
 import io.temco.guhada.view.activity.EditShippingAddressActivity
 import io.temco.guhada.view.custom.layout.common.BaseConstraintLayout
 import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressListFragment
@@ -31,10 +36,22 @@ class MyPageAddressLayout constructor(
     private lateinit var mShippingAddressListFragment: ShippingAddressListFragment
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_address
+
+    @SuppressLint("CheckResult")
     override fun init() {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         mViewModel = MyPageAddressViewModel(context, this)
         setShippingAddressListFragment()
+
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode) {
+                RequestCode.EDIT_SHIPPING_ADDRESS.flag -> mViewModel.getUserShippingAddress()
+                RequestCode.ADD_SHIPPING_ADDRESS.flag -> mViewModel.getUserShippingAddress()
+            }
+        }
+
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
     }
 
     override fun onRefresh() {
@@ -49,7 +66,10 @@ class MyPageAddressLayout constructor(
 
     // OnShippingAddressListener
     override fun closeActivity(resultCode: Int, shippingAddress: UserShipping?) {
-        // NONE
+        // 배송지 등록 완료 시, 여기로 들어어옴
+        if (resultCode == RESULT_OK) {
+            mViewModel.getUserShippingAddress()
+        }
     }
 
     override fun notifyDeleteItem() = mShippingAddressListFragment.mListAdapter.deleteItem()
@@ -65,5 +85,9 @@ class MyPageAddressLayout constructor(
         // NONE
     }
 
-
+    override fun redirectAddShippingAddressActivity(){
+        Intent(context, AddShippingAddressActivity::class.java).let {
+            (context as AppCompatActivity).startActivityForResult(it, Flag.RequestCode.ADD_SHIPPING_ADDRESS)
+        }
+    }
 }

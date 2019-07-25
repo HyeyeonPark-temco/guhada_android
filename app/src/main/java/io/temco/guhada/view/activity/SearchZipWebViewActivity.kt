@@ -12,7 +12,10 @@ import io.temco.guhada.databinding.ActivitySearchzipwebviewBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import kotlinx.android.synthetic.main.activity_searchzipwebview.*
 
-
+/**
+ * 우편번호 검색 Activity
+ * @author Hyeyeon Park
+ */
 class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>() {
     private val JS_INTERFACE_NAME = "Android"
 
@@ -25,6 +28,7 @@ class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>()
     override fun getViewType(): Type.View = Type.View.SEARCH_ZIP_WEBVIEW
 
     override fun init() {
+        initWebView()
         mBinding.includeSearchzipwebviewHeader.title = ""
         mBinding.includeSearchzipwebviewHeader.setOnClickBackButton {
             setResult(Activity.RESULT_CANCELED)

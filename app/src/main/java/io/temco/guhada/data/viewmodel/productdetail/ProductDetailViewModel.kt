@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.productdetail
 
 import android.view.View
 import androidx.databinding.Bindable
@@ -17,7 +17,6 @@ import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.SellerSatisfaction
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer

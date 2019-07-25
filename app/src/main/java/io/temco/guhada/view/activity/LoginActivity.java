@@ -26,7 +26,7 @@ import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.viewmodel.LoginViewModel;
+import io.temco.guhada.data.viewmodel.account.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 

@@ -17,7 +17,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
-import io.temco.guhada.data.viewmodel.PaymentWebViewViewModel
+import io.temco.guhada.data.viewmodel.payment.PaymentWebViewViewModel
 import io.temco.guhada.databinding.ActivityPaymentwebviewBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import org.apache.commons.text.StringEscapeUtils

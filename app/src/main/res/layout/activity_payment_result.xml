@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.PaymentResultViewModel" />
+            type="io.temco.guhada.data.viewmodel.payment.PaymentResultViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

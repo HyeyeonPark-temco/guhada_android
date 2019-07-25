@@ -10,8 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnAddCartResultListener
 import io.temco.guhada.common.listener.OnProductDetailListener
-import io.temco.guhada.data.viewmodel.AddCartResultViewModel
-import io.temco.guhada.data.viewmodel.ProductDetailViewModel
+import io.temco.guhada.data.viewmodel.cart.AddCartResultViewModel
 import io.temco.guhada.databinding.FragmentAddcartresultBinding
 import io.temco.guhada.view.activity.CartActivity
 

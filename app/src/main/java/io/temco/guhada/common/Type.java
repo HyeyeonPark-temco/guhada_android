@@ -35,6 +35,7 @@ public class Type {
         PAYMENT_RESULT,
         PAYMENT_WEBVIEW,
         SHIPPING_ADDRESS,
+        ADD_SHIPPING_ADDRESS,
         TEMP_LOGOUT,
         BLOCKCHAIN,
         SEARCH_ZIP_WEBVIEW,

@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.ProductDetailViewModel" />
+            type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel" />
     </data>
 
     <ScrollView

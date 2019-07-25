@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
-import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
+import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment

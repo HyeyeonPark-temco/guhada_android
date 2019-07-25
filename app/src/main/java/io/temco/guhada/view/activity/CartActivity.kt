@@ -18,7 +18,7 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
-import io.temco.guhada.data.viewmodel.CartViewModel
+import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.cart.CartOptionAdapter
 import io.temco.guhada.view.adapter.cart.CartProductAdapter

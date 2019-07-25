@@ -10,10 +10,10 @@ import io.temco.guhada.common.Flag.RequestCode.SEARCH_ZIP
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
+import io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.base.BaseFragmentPagerAdapter
-import io.temco.guhada.view.fragment.shippingaddress.AddShippingAddressFragment
+import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressFormFragment
 import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressListFragment
 
 /**
@@ -24,7 +24,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     private lateinit var mFragmentPagerAdapter: BaseFragmentPagerAdapter
     private lateinit var mViewModel: ShippingAddressViewModel
     private lateinit var mShippingAddressListFragment: ShippingAddressListFragment
-    private lateinit var mAddShippingAddressFragment: AddShippingAddressFragment
+    private lateinit var mShippingAddressFormFragment: ShippingAddressFormFragment
 
     override fun getBaseTag(): String = ShippingAddressActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_shippingaddress
@@ -61,9 +61,9 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     private fun initFragmentPager() {
         mFragmentPagerAdapter = BaseFragmentPagerAdapter(supportFragmentManager)
         mShippingAddressListFragment = ShippingAddressListFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
-        mAddShippingAddressFragment = AddShippingAddressFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
+        mShippingAddressFormFragment = ShippingAddressFormFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
         mFragmentPagerAdapter.addFragment(mShippingAddressListFragment)
-        mFragmentPagerAdapter.addFragment(mAddShippingAddressFragment)
+        mFragmentPagerAdapter.addFragment(mShippingAddressFormFragment)
 
         mBinding.viewpagerShippingaddress.adapter = mFragmentPagerAdapter
         mBinding.viewpagerShippingaddress.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mBinding.tablayoutShippingaddress))
@@ -100,6 +100,10 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
         startActivityForResult(Intent(this@ShippingAddressActivity, SearchZipWebViewActivity::class.java), Flag.RequestCode.SEARCH_ZIP)
     }
 
+    override fun redirectAddShippingAddressActivity() {
+        // NONE
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -114,7 +118,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
                     }
                     mShippingAddressListFragment.getShippingAddressList() // REFRESH
                 }
-                SEARCH_ZIP -> mAddShippingAddressFragment.updateSearchZipResult(data?.getStringExtra("zip")
+                SEARCH_ZIP -> mShippingAddressFormFragment.updateSearchZipResult(data?.getStringExtra("zip")
                         ?: "", data?.getStringExtra("address") ?: "")
             }
         } else {

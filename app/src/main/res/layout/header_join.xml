@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.JoinViewModel" />
+            type="io.temco.guhada.data.viewmodel.account.JoinViewModel" />
     </data>
 
     <androidx.appcompat.widget.Toolbar

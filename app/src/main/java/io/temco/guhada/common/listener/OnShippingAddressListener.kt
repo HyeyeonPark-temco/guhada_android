@@ -7,5 +7,5 @@ interface OnShippingAddressListener {
     fun notifyDeleteItem()
     fun redirectEditShippingAddressActivity(shippingAddress: UserShipping)
     fun redirectSearchZipActivity()
-
+    fun redirectAddShippingAddressActivity()
 }

@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.ProductDetailReviewViewModel" />
+            type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

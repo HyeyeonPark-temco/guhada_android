@@ -136,6 +136,12 @@
             android:windowSoftInputMode="adjustNothing" />
 
         <activity
+            android:name=".view.activity.AddShippingAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleBarDialog"
+            android:windowSoftInputMode="adjustNothing" />
+
+        <activity
             android:name=".view.activity.SearchZipWebViewActivity"
             android:screenOrientation="portrait" />
 

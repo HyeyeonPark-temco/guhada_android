@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.ProductDetailClaimViewModel" />
+            type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailClaimViewModel" />
     </data>
 
     <LinearLayout

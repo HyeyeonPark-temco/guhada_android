@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.cart.CartOption
-import io.temco.guhada.data.viewmodel.CartViewModel
+import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.databinding.ItemCartOptionBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 

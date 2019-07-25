@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.payment
 
 import android.view.View
 import androidx.databinding.Bindable

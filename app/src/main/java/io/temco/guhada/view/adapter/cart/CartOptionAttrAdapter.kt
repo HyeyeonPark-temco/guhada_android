@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.option.OptionAttr
-import io.temco.guhada.data.viewmodel.CartViewModel
+import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionattrBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 

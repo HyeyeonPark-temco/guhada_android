@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
+import io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel
 import io.temco.guhada.databinding.ItemShippingaddressListBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 

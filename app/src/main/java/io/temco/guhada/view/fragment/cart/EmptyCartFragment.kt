@@ -1,7 +1,7 @@
 package io.temco.guhada.view.fragment.cart
 
 import io.temco.guhada.R
-import io.temco.guhada.data.viewmodel.EmptyCartViewModel
+import io.temco.guhada.data.viewmodel.cart.EmptyCartViewModel
 import io.temco.guhada.databinding.FragmentEmptycartBinding
 import io.temco.guhada.view.fragment.base.BaseFragment
 
