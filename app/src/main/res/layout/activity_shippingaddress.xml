@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.ShippingAddressViewModel" />
+            type="io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -9,7 +9,7 @@ import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.Type
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
-import io.temco.guhada.data.viewmodel.PaymentResultViewModel
+import io.temco.guhada.data.viewmodel.payment.PaymentResultViewModel
 import io.temco.guhada.databinding.ActivityPaymentResultBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.payment.PaymentResultOrderAdapter

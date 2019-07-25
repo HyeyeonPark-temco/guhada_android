@@ -74,6 +74,11 @@ abstract class BaseListLayout<B : ViewDataBinding,T : BaseObservableViewModel> :
     // PUBLIC
     ////////////////////////////////////////////////
 
+    abstract fun onStart()
+    abstract fun onResume()
+    abstract fun onPause()
+    abstract fun onStop()
+
     ////////////////////////////////////////////////
 
 }

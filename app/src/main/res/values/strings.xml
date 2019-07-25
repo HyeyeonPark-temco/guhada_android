@@ -555,8 +555,12 @@
     <string name="editshippingaddress_hint_recipientmobile">연락처를 입력해주세요</string>
 
     <!-- ADD SHIPPING ADDRESS -->
+    <string name="addshippingaddress_title">배송지 등록</string>
     <string name="addshippingaddress_button_cancel">입력  취소</string>
     <string name="addshippingaddress_button_confirm">입력 완료</string>
+    <string name="addshippingaddress_button_close">닫기</string>
+    <string name="addshippingaddress_button_save">저장</string>
+
 
     <!-- HOME FRAGMENT -->
     <string-array name="main_titles">
@@ -584,7 +588,7 @@
 
     <!-- SEARCH ZIP -->
     <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>
-    <string name="searchzip_loadurl">http://hyeyeonpark.github.io/temp_upload</string>
+    <string name="searchzip_loadurl">http://dev.guhada.com/webview/daum-address-search</string>
 
     <!-- CART -->
     <string name="cart_title">장바구니</string>
@@ -633,7 +637,14 @@
     <string name="cart_addresult_title">상품이 장바구니에\n추가되었습니다.</string>
     <string name="cart_addresult_recommend">이 상품과 함께 많이 구매한 상품</string>
     <string name="cart_addresult_redirectcart">장바구니로 이동</string>
+    <string name="cart_empty_title">장바구니에\n담긴 상품이 없습니다.</string>
+    <string name="cart_empty_recommend">실시간 인기상품</string>
 
+    <!-- MYPAGE -->
+    <string name="mypage_shippingaddress_add">신규배송지 등록</string>
+    <string name="mypage_shippingaddress_default">기본 배송지 설정</string>
+
+    <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">ALL</string>
     <string name="mainlistsubtitle_women">Women</string>
     <string name="mainlistsubtitle_men">Men</string>
@@ -664,13 +675,6 @@
         <item>회원정보</item>
     </string-array>
 
-
-
-
-    <string name="cart_empty_title">장바구니에\n담긴 상품이 없습니다.</string>
-    <string name="cart_empty_recommend">실시간 인기상품</string>
-
-
-    <string name="mypage_userinfo_passwaord_desc">안전한 회원정보 변경을 위해&lt;br&gt;&lt;/font&gt;&lt;font color="#5d2ed1"&gt;비밀번호&lt;/font&gt;를 다시 한번 입력해 주세요.</string>
+    <string name="mypage_userinfo_passwaord_desc"><![CDATA[안전한 회원정보 변경을 위해<br><font color="#5d2ed1">비밀번호</font>를 다시 한번 입력해 주세요.]]></string>
 
 </resources>

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.EditShippingAddressViewModel" />
+            type="io.temco.guhada.data.viewmodel.shippingaddress.EditShippingAddressViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

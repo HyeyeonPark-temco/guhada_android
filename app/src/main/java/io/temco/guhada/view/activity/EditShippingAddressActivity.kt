@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag.RequestCode.SEARCH_ZIP
 import io.temco.guhada.common.listener.OnEditShippingAddressListener
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.viewmodel.EditShippingAddressViewModel
+import io.temco.guhada.data.viewmodel.shippingaddress.EditShippingAddressViewModel
 import io.temco.guhada.databinding.DialogEditshippingaddressBinding
 
 class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressListener {

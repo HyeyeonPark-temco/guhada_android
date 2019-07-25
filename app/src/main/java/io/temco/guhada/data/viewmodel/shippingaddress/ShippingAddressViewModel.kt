@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.shippingaddress
 
 import android.app.Activity
 import android.view.View
@@ -13,14 +13,13 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
-class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseObservableViewModel() {
+open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseObservableViewModel() {
     var userId: Int = -1
     var prevSelectedItem: UserShipping = UserShipping()
     var selectedItem: UserShipping = UserShipping()
@@ -53,7 +52,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
         UserServer.getUserShippingAddress(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = { model ->
-                        this.shippingAddresses.postValue(model.list as MutableList<UserShipping>)
+                        this.shippingAddresses.postValue(model.data as MutableList<UserShipping>)
                         emptyVisibility = ObservableInt(View.GONE)
                         notifyPropertyChanged(BR.shippingAddresses)
                         notifyPropertyChanged(BR.emptyVisibility)
@@ -94,7 +93,7 @@ class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : BaseO
         }
     }
 
-    private fun checkEmptyField(task: () -> Unit) {
+     fun checkEmptyField(task: () -> Unit) {
         when {
             newItem.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_shippingname))
             newItem.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_zip))

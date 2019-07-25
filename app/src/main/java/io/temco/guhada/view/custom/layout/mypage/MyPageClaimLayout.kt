@@ -25,6 +25,23 @@ class MyPageClaimLayout constructor(
 
     }
 
+
+    override fun onStart() {
+
+    }
+
+    override fun onResume() {
+
+    }
+
+    override fun onPause() {
+
+    }
+
+    override fun onStop() {
+
+    }
+
     override fun onDestroy() {
 
     }

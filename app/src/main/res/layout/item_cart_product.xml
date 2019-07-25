@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.CartViewModel" />
+            type="io.temco.guhada.data.viewmodel.cart.CartViewModel" />
 
         <variable
             name="cart"

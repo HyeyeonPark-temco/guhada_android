@@ -22,11 +22,10 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.product.BaseProduct
-import io.temco.guhada.data.viewmodel.PaymentViewModel
+import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.payment.PaymentProductAdapter

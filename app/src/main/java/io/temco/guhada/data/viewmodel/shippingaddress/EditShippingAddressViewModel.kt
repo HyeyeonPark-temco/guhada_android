@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.shippingaddress
 
 import android.app.Activity
 import androidx.databinding.Bindable

@@ -5,7 +5,7 @@ import android.widget.Toast;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnTermsListener;
-import io.temco.guhada.data.viewmodel.TermsViewModel;
+import io.temco.guhada.data.viewmodel.account.TermsViewModel;
 import io.temco.guhada.databinding.ActivityTermsBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 

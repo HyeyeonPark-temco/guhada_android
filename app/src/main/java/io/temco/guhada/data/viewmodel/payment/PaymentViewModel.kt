@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.payment
 
 import android.util.Log
 import android.view.View
@@ -308,8 +308,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     ?: ""
                             else shippingMessage
 
-                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?.type
-                                    ?: ""
+                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?:ShippingMessage()
 
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!
@@ -329,12 +328,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                 val accessToken = Preferences.getToken().accessToken
                                 if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
                                     // 배송지 추가
-                                    if(accessToken != null){
+                                    if (accessToken != null) {
                                         val userId = JWT(accessToken).getClaim("userId").asInt()
                                         if (userId != null) saveShippingAddress(userId)
-                                    }else {
+                                    } else {
                                         // [임시] 토큰 없는 경우
-                                        ToastUtil.showMessage("토큰이 만료되었습니다. 다시 로그인해주세요.")
+                                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
                                     }
                                 }
 

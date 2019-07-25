@@ -17,7 +17,7 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
-import io.temco.guhada.data.viewmodel.ProductDetailClaimViewModel
+import io.temco.guhada.data.viewmodel.productdetail.ProductDetailClaimViewModel
 import io.temco.guhada.databinding.LayoutProductdetailClaimBinding
 import io.temco.guhada.view.activity.LoginActivity
 import io.temco.guhada.view.activity.WriteClaimActivity

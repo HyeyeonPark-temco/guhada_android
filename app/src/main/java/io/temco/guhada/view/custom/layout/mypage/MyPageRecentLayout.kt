@@ -49,8 +49,33 @@ class MyPageRecentLayout constructor(
         )
     }
 
+
+
+
+    override fun onStart() {
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onStart ", "init -----")
+
+    }
+
+    override fun onResume() {
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onResume ", "init -----")
+
+    }
+
+    override fun onPause() {
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onPause ", "init -----")
+
+    }
+
+    override fun onStop() {
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onStop ", "init -----")
+
+    }
+
     override fun onDestroy() {
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onDestroy ", "init -----")
         mBinding.viewModel?.destroyModel()
+
     }
+
 }

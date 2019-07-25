@@ -151,6 +151,42 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
     ////////////////////////////////////////////////
 
+    override fun onStart() {
+        super.onStart()
+        if(customLayoutMap.isNotEmpty()){
+            for (v in customLayoutMap){
+                v.value.onStart()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(customLayoutMap.isNotEmpty()){
+            for (v in customLayoutMap){
+                v.value.onResume()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if(customLayoutMap.isNotEmpty()){
+            for (v in customLayoutMap){
+                v.value.onPause()
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if(customLayoutMap.isNotEmpty()){
+            for (v in customLayoutMap){
+                v.value.onStop()
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mDisposable.dispose()
@@ -160,4 +196,5 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
             }
         }
     }
+
 }

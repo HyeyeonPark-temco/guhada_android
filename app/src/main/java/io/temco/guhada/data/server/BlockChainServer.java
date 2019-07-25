@@ -16,7 +16,7 @@ public class BlockChainServer {
 
     public static void getTransactionData(int id, OnServerListener listener) {
         if (listener != null) {
-            RetrofitManager.createService(Type.Server.BLOCKCHAIN, BlockChainService.class,false,false)
+            RetrofitManager.createService(Type.Server.BLOCKCHAIN, BlockChainService.class, false ,false)
                     .getTransactionData(id)
                     .enqueue(new Callback<List<BlockChain>>() {
                         @Override

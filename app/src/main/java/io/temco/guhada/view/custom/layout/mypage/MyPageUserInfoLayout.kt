@@ -3,6 +3,7 @@ package io.temco.guhada.view.custom.layout.mypage
 import android.content.Context
 import android.util.AttributeSet
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageUserinfoBinding
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
@@ -26,7 +27,30 @@ class MyPageUserInfoLayout constructor(
 
     }
 
+
+
+    override fun onStart() {
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "onStart ", "init -----")
+
+    }
+
+    override fun onResume() {
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "onResume ", "init -----")
+
+    }
+
+    override fun onPause() {
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "onPause ", "init -----")
+
+    }
+
+    override fun onStop() {
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "onStop ", "init -----")
+
+    }
+
     override fun onDestroy() {
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "onDestroy ", "init -----")
 
     }
 }

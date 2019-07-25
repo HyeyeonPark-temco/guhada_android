@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.productdetail
 
 import android.view.View
 import androidx.databinding.Bindable
@@ -7,9 +7,10 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
-import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
@@ -31,21 +32,20 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 
     fun getProductReviewSummary() {
         UserServer.getProductReviewSummary(OnServerListener { success, o ->
-            if (success) {
-                val model = o as BaseModel<*>
-                this.reviewSummary = model.data as ReviewSummary
-                notifyPropertyChanged(BR.reviewSummary)
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        this.reviewSummary = it.data as ReviewSummary
+                        notifyPropertyChanged(BR.reviewSummary)
 
-                if (::listener.isInitialized)
-                    listener.notifySummary(reviewSummary.averageReviewsRating)
-            } else {
-                if (o != null) {
-                    listener.showMessage(o as String)
-                } else {
-                    listener.showMessage("PRODUCT REVIEW SUMMARY ERROR")
-                }
-            }
+                        if (::listener.isInitialized)
+                            listener.notifySummary(reviewSummary.averageReviewsRating)
+                    },
+                    failedTask = {
+                        listener.showMessage(it.message)
+                    },
+                    dataNotFoundTask = {
 
+                    })
         }, productId)
     }
 
@@ -76,7 +76,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 //                    }
                 }
 
-                if (::listener.isInitialized)  listener.hideLoadingIndicator()
+                if (::listener.isInitialized) listener.hideLoadingIndicator()
             }, productId, page, size)
         }
     }

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.AddCartResultViewModel" />
+            type="io.temco.guhada.data.viewmodel.cart.AddCartResultViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.viewmodel.ShippingAddressViewModel
+import io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel
 import io.temco.guhada.databinding.FragmentShippingaddresslistBinding
 import io.temco.guhada.view.adapter.ShippingAddressListAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -51,14 +51,16 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
     override fun onDestroy() {
         if (::mLoadingIndicator.isInitialized)
             mLoadingIndicator.dismiss()
-        mViewModel.shippingAddresses.removeObservers(this)
+        if (::mViewModel.isInitialized)
+            mViewModel.shippingAddresses.removeObservers(this)
         super.onDestroy()
     }
 
     fun getShippingAddressList() {
         if (::mLoadingIndicator.isInitialized)
             mLoadingIndicator.show()
-        mViewModel.getUserShippingAddress()
+        if (::mViewModel.isInitialized)
+            mViewModel.getUserShippingAddress()
     }
 
     companion object {

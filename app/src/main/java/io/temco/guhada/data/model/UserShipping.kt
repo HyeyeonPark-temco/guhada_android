@@ -2,6 +2,7 @@ package io.temco.guhada.data.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import java.io.Serializable
 
 /**
@@ -20,7 +21,7 @@ class UserShipping : Serializable {
     var zip = ""
     var roadAddress = ""
     var detailAddress = ""
-    var shippingMessageType = ""
+    var shippingMessageType = ShippingMessage()
     var shippingMessage = ""
 
     @SerializedName(value = "recipientName", alternate = ["recepientName"])

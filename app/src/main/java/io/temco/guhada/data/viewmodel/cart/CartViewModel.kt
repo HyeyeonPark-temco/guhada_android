@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.cart
 
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
@@ -194,6 +194,7 @@ class CartViewModel : BaseObservableViewModel() {
                 OrderServer.deleteCartItem(OnServerListener { success, o ->
                     executeByResultCode(success, o,
                             successTask = {
+                                selectedCartItem = mutableListOf()
                                 selectCartItemId = mutableListOf()
                                 notifyPropertyChanged(BR.selectCartItemId)
                                 this.cartResponse.postValue(it.data as CartResponse)

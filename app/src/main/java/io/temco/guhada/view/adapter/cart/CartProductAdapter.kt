@@ -1,6 +1,5 @@
 package io.temco.guhada.view.adapter.cart
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
@@ -19,10 +18,8 @@ import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartOption
 import io.temco.guhada.data.model.cart.CartValidStatus
-import io.temco.guhada.data.model.product.BaseProduct
-import io.temco.guhada.data.viewmodel.CartViewModel
+import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.databinding.ItemCartProductBinding
-import io.temco.guhada.view.activity.PaymentActivity
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 

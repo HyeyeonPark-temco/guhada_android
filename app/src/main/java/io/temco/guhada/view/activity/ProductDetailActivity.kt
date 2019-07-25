@@ -28,8 +28,8 @@ import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.option.OptionAttr
-import io.temco.guhada.data.viewmodel.ProductDetailMenuViewModel
-import io.temco.guhada.data.viewmodel.ProductDetailViewModel
+import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
+import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter

@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.productdetail
 
 import android.view.View
 import androidx.databinding.Bindable
@@ -14,10 +14,10 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.Seller
 import io.temco.guhada.data.model.SellerSatisfaction
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
@@ -67,17 +67,21 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         get() = field
 
     fun getDetail() {
-        ProductServer.getProductDetail(OnServerListener{ success, o ->
-            if (success) {
-                (o as BaseModel<Product>).let {
-                    tags = it.data.tag.split("/")
-                    product.postValue(it.data)
-
-                }
-            } else {
-                CommonUtil.debug(o?.toString())
-                listener?.hideLoadingIndicator()
-            }
+        ProductServer.getProductDetail(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        val data = it.data as Product
+                        tags = data.tag.split("/")
+                        product.postValue(data)
+                    },
+                    failedTask = {
+                        CommonUtil.debug(o?.toString())
+                        listener?.hideLoadingIndicator()
+                    },
+                    productNotFoundTask = {
+                        listener?.closeActivity()
+                        ToastUtil.showMessage(it.message)
+                    })
         }, dealId)
     }
 
