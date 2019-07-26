@@ -87,7 +87,6 @@ class HomeListRepository(val context : Context){
                                 "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem","",list.value!!.size)
                         getNewArrivalsDummy1()
                     },
                     dataNotFoundTask = {
@@ -112,7 +111,6 @@ class HomeListRepository(val context : Context){
                                 "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem","",list.value!!.size)
                         getNewArrivalsDummy1()
                         list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.hotkeyword05, 341))
                     },
@@ -138,7 +136,6 @@ class HomeListRepository(val context : Context){
                                 "PLUS ITEM TEST1", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem1","",list.value!!.size)
                         getNewArrivalsDummy2()
                         list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_15, 120))
                     },
@@ -164,7 +161,6 @@ class HomeListRepository(val context : Context){
                                 "PLUS ITEM  TEST2", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem2","",list.value!!.size)
                         getNewArrivalsDummy3()
                         list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner09, 230))
                     },
@@ -191,7 +187,6 @@ class HomeListRepository(val context : Context){
                         list.value!!.add(subTitle)
                         list.value = list.value
                         list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_13, 120))
-                        if(CustomLog.flag)CustomLog.L("HomeListRepository getPlusItem3","",list.value!!.size)
                     },
                     dataNotFoundTask = {
 

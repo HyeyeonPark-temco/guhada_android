@@ -28,6 +28,9 @@ class MyPageUserInfoLayout constructor(
     }
 
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
         if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "onStart ", "init -----")

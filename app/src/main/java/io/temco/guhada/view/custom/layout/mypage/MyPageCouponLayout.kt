@@ -26,6 +26,9 @@ class MyPageCouponLayout constructor(
 
     }
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
 

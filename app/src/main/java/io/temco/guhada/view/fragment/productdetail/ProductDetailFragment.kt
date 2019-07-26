@@ -120,6 +120,10 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                     recentDealEntity.initData(Calendar.getInstance().timeInMillis,dealId,Gson().toJson(it))
                     if(CustomLog.flag)CustomLog.L("initViewModel",recentDealEntity.toString())
                     db.recentDealDao().insert(recentDealEntity)
+                    var list = db.recentDealDao().getAll(21)
+                    if(list.size >= 21){
+                        db.recentDealDao().delete(list[list.size-1])
+                    }
                 })
             }
         })

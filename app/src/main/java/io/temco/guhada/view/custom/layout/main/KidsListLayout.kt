@@ -19,6 +19,10 @@ class KidsListLayout constructor(
 
     }
 
+    override fun onFocusView() {
+
+    }
+
     override fun onStart() {
 
     }

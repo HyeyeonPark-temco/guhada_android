@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.*
+import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 /**
@@ -21,6 +22,7 @@ abstract class BaseListLayout<B : ViewDataBinding,T : BaseObservableViewModel> :
     protected lateinit var mBinding: B
     protected lateinit var mViewModel: T
     protected lateinit var view : View
+    protected lateinit var disposable : CompositeDisposable
 
     private val lifecycleRegistry = LifecycleRegistry(this)
     // -----------------------------
@@ -29,12 +31,16 @@ abstract class BaseListLayout<B : ViewDataBinding,T : BaseObservableViewModel> :
         initBinding()
         init()
     }
-
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
         initBinding()
         init()
     }
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        initBinding()
+        init()
+    }
+    constructor(context: Context?, disposable : CompositeDisposable, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        this.disposable = disposable
         initBinding()
         init()
     }
@@ -49,6 +55,22 @@ abstract class BaseListLayout<B : ViewDataBinding,T : BaseObservableViewModel> :
 
     protected abstract fun init()
 
+    // viewpager에 의해 현재 페이지로 선택이 되었을때 호출
+    abstract fun onFocusView()
+
+    // fragment 의 onStart
+    abstract fun onStart()
+
+    // fragment 의 onResume
+    abstract fun onResume()
+
+    // fragment 의 onPause
+    abstract fun onPause()
+
+    // fragment 의 onStop
+    abstract fun onStop()
+
+    // fragment 의 onDestroy
     abstract fun onDestroy()
 
     protected fun initBinding(){
@@ -74,10 +96,6 @@ abstract class BaseListLayout<B : ViewDataBinding,T : BaseObservableViewModel> :
     // PUBLIC
     ////////////////////////////////////////////////
 
-    abstract fun onStart()
-    abstract fun onResume()
-    abstract fun onPause()
-    abstract fun onStop()
 
     ////////////////////////////////////////////////
 

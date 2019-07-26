@@ -28,6 +28,9 @@ class MyPageGradeLayout constructor(
     }
 
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
         if (CustomLog.flag) CustomLog.L("MyPageGradeLayout", "onStart ", "init -----")

@@ -27,6 +27,9 @@ class MyPageFollowLayout constructor(
     }
 
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
 

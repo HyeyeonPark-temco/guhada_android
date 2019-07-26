@@ -7,14 +7,14 @@ import io.temco.guhada.data.db.entity.RecentDealEntity
  * @author park jungho
  * 19.07.22
  *
- * 최근본 상품 DAO - 임시
+ * 최근본 상품 DAO
  *
  */
 @Dao
 interface RecentDealDao {
 
-    @Query("SELECT * FROM recent_deal ORDER By insert_date DESC LIMIT 20")
-    fun getAll() : List<RecentDealEntity>
+    @Query("SELECT * FROM recent_deal ORDER By insert_date DESC LIMIT :limitNum")
+    fun getAll(limitNum : Int) : List<RecentDealEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(deal : RecentDealEntity)
@@ -22,7 +22,7 @@ interface RecentDealDao {
     @Query("DELETE from recent_deal")
     fun deleteAll()
 
-    @Query("DELETE from recent_deal WHERE idx == :dealId")
+    @Query("DELETE from recent_deal WHERE dealId == :dealId")
     fun delete(dealId : Long)
 
     @Delete

@@ -27,6 +27,9 @@ class MyPageMainLayout constructor(
     }
 
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
 

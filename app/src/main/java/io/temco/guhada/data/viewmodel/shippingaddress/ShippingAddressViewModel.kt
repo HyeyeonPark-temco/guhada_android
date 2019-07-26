@@ -44,7 +44,7 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
      * TODO 결과 값이 서로 달라 확인 필요 - 배송지 목록 관련 확인
      */
     fun getUserShippingAddress() {
-        val accessToken = Preferences.getToken().accessToken
+        /*val accessToken = Preferences.getToken().accessToken
         if(accessToken != null){
             userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
         }
@@ -66,7 +66,7 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
                         emptyVisibility = ObservableInt(View.VISIBLE)
                         notifyPropertyChanged(BR.emptyVisibility)
                     })
-        }, userId)
+        }, userId)*/
     }
 
     fun deleteShippingAddress(shippingAddressId: Int) {

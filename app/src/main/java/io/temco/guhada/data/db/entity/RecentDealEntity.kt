@@ -9,7 +9,9 @@ import java.io.Serializable
  * @author park jungho
  * 19.07.22
  *
- * 최근본 상품 Entity - 임시
+ * 최근본 상품 Entity
+ *
+ * data = product JsonObject String
  *
  */
 @Entity(tableName = "recent_deal")

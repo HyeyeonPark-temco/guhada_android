@@ -72,4 +72,8 @@
 
     <color name="transparent">#00000000</color>
 
+    <color name="disable_border">#ebebeb</color>
+    <color name="color_dbdbdb">#dbdbdb</color>
+
+
 </resources>

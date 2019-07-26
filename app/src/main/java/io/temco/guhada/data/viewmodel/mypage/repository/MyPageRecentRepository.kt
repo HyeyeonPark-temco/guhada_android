@@ -1,37 +1,48 @@
 package io.temco.guhada.data.viewmodel.mypage.repository
 
-import android.app.Activity
 import android.content.Context
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.db.GuhadaDB
-import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.model.product.Product
-import java.util.*
-import kotlin.collections.ArrayList
 
-class MyPageRecentRepository(val context : Context, val disposable : CompositeDisposable ){
-    private val db : GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
+/**
+ * @author park jungho
+ * 19.07.26
+ *
+ * 마이페이지 최근본상품
+ */
+class MyPageRecentRepository(val context : Context, var disposable : CompositeDisposable, val db : GuhadaDB ){
 
     // 메인 홈 list data
     private var list = SingleLiveEvent<ArrayList<Product>>()
+    private var itemSize = SingleLiveEvent<Int>()
 
     fun getList() : SingleLiveEvent<ArrayList<Product>> {
         if (list.value.isNullOrEmpty()){
             list.value = ArrayList()
-            setInitData()
+            setInitData(null)
         }
         return list
     }
 
-    fun setInitData(){
+    fun getItemSize() : SingleLiveEvent<Int> {
+        if (!list.value.isNullOrEmpty()){
+            itemSize.value = list.value!!.size
+        }
+        return itemSize
+    }
+
+
+    fun setInitData(listener : OnSwipeRefreshResultListener?){
         disposable.add(Observable.fromCallable<List<Product>> {
-            var allList = db.recentDealDao().getAll()
+            var allList = db.recentDealDao().getAll(20)
             var list = arrayListOf<Product>()
             if(!allList.isNullOrEmpty()){
                 for(value in allList){
@@ -45,15 +56,10 @@ class MyPageRecentRepository(val context : Context, val disposable : CompositeDi
         .subscribe { result ->
             list.value!!.addAll(result)
             list.value = list.value
+            itemSize.value = list.value!!.size
+            listener?.run { onResultCallback() }
+            if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "setInitData ", "init -----")
         })
     }
 
-
-    fun destroy(){
-        try{
-            GuhadaDB.destroyInstance()
-        }catch (e : Exception){
-            if(CustomLog.flag)CustomLog.E(e)
-        }
-    }
 }

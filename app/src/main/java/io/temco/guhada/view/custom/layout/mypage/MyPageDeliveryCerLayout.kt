@@ -26,6 +26,9 @@ class MyPageDeliveryCerLayout constructor(
 
     }
 
+    override fun onFocusView() {
+
+    }
 
 
     override fun onStart() {

@@ -21,12 +21,15 @@ class MyPageReviewLayout constructor(
 ) : BaseListLayout<CustomlayoutMypageReviewBinding, MyPageReviewViewModel>(context, attrs, defStyleAttr) {
 
     override fun getBaseTag() = this::class.simpleName.toString()
-    override fun getLayoutId() = R.layout.customlayout_mypage_recent
+    override fun getLayoutId() = R.layout.customlayout_mypage_review
     override fun init() {
 
     }
 
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
 

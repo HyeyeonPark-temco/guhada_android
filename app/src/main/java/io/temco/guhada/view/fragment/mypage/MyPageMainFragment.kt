@@ -3,6 +3,7 @@ package io.temco.guhada.view.fragment.mypage
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
@@ -34,9 +35,9 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     // -------- LOCAL VALUE --------
     private var mDrawerListener: OnDrawerLayoutListener? = null
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
-    private var currentPagerIndex : Int = 10
+    private var currentPagerIndex : Int = 0
 
-    var mDisposable : CompositeDisposable = CompositeDisposable()
+    val mDisposable : CompositeDisposable = CompositeDisposable()
     var customLayoutMap : WeakHashMap<Int,BaseListLayout<*, *>> = WeakHashMap()
     // -----------------------------
 
@@ -48,7 +49,6 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun getLayoutId() = R.layout.fragment_main_mypagehome
     override fun init() {
         initHeader()
-        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout MyPageMainFragment", "init -----")
     }
 
     override fun onClick(v: View) {
@@ -82,7 +82,6 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     }
 
     private fun setViewPager(){
-        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "setViewPager ", "init -----")
         if(viewPagerAdapter == null){
             context?.let {
                 var tabtitle = resources.getStringArray(R.array.mypage_titles)
@@ -97,7 +96,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
                             4->{vw = MyPageCouponLayout(it)}
                             5->{vw = MyPageFollowLayout(it)}
                             6->{vw = MyPageBookMarkLayout(it)}
-                            7->{vw = MyPageRecentLayout(it)}
+                            7->{vw = MyPageRecentLayout(it,mDisposable)}
                             8->{vw = MyPageReviewLayout(it)}
                             9->{vw = MyPageClaimLayout(it)}
                             10->{vw = MyPageAddressLayout(it)}
@@ -114,6 +113,13 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
         }
         mBinding.viewpager.adapter = viewPagerAdapter
         mBinding.viewpager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutTab))
+        mBinding.viewpager.addOnPageChangeListener(object  : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {  }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {  }
+            override fun onPageSelected(position: Int) {
+                if(customLayoutMap.containsKey(currentPagerIndex))customLayoutMap.get(currentPagerIndex)!!.onFocusView()
+            }
+        })
         mBinding.viewpager.offscreenPageLimit = 1
         mBinding.viewpager.currentItem = currentPagerIndex
         mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager){

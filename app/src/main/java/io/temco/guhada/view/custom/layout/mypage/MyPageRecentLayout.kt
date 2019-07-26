@@ -3,9 +3,13 @@ package io.temco.guhada.view.custom.layout.mypage
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
+import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.mypage.MyPageRecentViewModel
@@ -23,16 +27,16 @@ import kotlinx.android.synthetic.main.customlayout_mypage_recent.view.*
  */
 class MyPageRecentLayout constructor(
         context: Context,
+        disposable : CompositeDisposable,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMypageRecentBinding, MyPageRecentViewModel>(context, attrs, defStyleAttr) {
+) : BaseListLayout<CustomlayoutMypageRecentBinding, MyPageRecentViewModel>(context, disposable, attrs, defStyleAttr) , SwipeRefreshLayout.OnRefreshListener{
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_recent
     override fun init() {
-        mViewModel = MyPageRecentViewModel(context)
+        mViewModel = MyPageRecentViewModel(context, disposable)
         mBinding.viewModel = mViewModel
-        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "MyPageRecentViewModel ", "init -----")
 
         recyclerview_mypagerecentlayout_list.layoutManager = WrapGridLayoutManager(context as Activity, 2, LinearLayoutManager.VERTICAL, false)
         recyclerview_mypagerecentlayout_list.setHasFixedSize(true)
@@ -42,15 +46,39 @@ class MyPageRecentLayout constructor(
 
         mViewModel.listData.observe(this,
                 androidx.lifecycle.Observer<ArrayList<Product>> {
-                    if (CustomLog.flag) CustomLog.L("MyPageRecentLayout LIFECYCLE", "onViewCreated listData.size 1----------------", it.toString())
                     mViewModel.getListAdapter().notifyDataSetChanged()
-                    if (CustomLog.flag) CustomLog.L("MyPageRecentLayout LIFECYCLE", "onViewCreated listData.size 1----------------", mViewModel.getListAdapter().items.size)
                 }
         )
+        mViewModel.totalItemSize.observe(this,androidx.lifecycle.Observer<Int> {
+            var sizeTxt = " " + it.toString()
+            mBinding.textMypagerecentTotal.setText(sizeTxt)
+            if(it > 0){
+                mBinding.recyclerviewMypagerecentlayoutList.visibility = View.VISIBLE
+                mBinding.linearlayoutMypagerecentlayoutNoitem.visibility = View.GONE
+            }else{
+                mBinding.recyclerviewMypagerecentlayoutList.visibility = View.GONE
+                mBinding.linearlayoutMypagerecentlayoutNoitem.visibility = View.VISIBLE
+            }
+        })
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this)
     }
 
+    override fun onRefresh() {
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onRefresh ", "init -----")
+        mViewModel.reloadRecyclerView(object : OnSwipeRefreshResultListener{
+            override fun onResultCallback() {
+                if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onResultCallback ", "init -----")
+                this@MyPageRecentLayout.handler.postDelayed({
+                    mBinding.swipeRefreshLayout.isRefreshing = false
+                },200)
+            }
+        })
+    }
 
+    override fun onFocusView() {
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onFocusView ", "init -----")
 
+    }
 
     override fun onStart() {
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onStart ", "init -----")

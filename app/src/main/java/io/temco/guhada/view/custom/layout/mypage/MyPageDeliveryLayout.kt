@@ -271,6 +271,10 @@ class MyPageDeliveryLayout constructor(
 
     ////////////////////////////////////////////////
 
+    override fun onFocusView() {
+
+    }
+
 
     override fun onStart() {
 

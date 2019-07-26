@@ -25,6 +25,9 @@ class MyPageClaimLayout constructor(
 
     }
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
 

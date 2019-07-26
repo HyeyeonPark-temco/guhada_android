@@ -676,5 +676,65 @@
     </string-array>
 
     <string name="mypage_userinfo_passwaord_desc"><![CDATA[안전한 회원정보 변경을 위해<br><font color="#5d2ed1">비밀번호</font>를 다시 한번 입력해 주세요.]]></string>
+    <string name="mypage_userinfo_passwaord_desc1">(이메일 가입자가 아닌 경우, 가입한 SNS 로그인으로 진행해주세요.)</string>
+    <string name="mypage_userinfo_passwaord_hint">비밀번호를 입력해 주세요</string>
+    <string name="mypage_userinfo_passwaord_desc2">또는</string>
+
+    <string name="mypage_userinfo_passwaord_login_naver">네이버 로그인</string>
+    <string name="mypage_userinfo_passwaord_login_google">구글 로그인</string>
+    <string name="mypage_userinfo_passwaord_login_kakao">카카오톡 로그인</string>
+    <string name="mypage_userinfo_passwaord_login_facebook">페이스북 로그인</string>
+    <string name="mypage_userinfo_passwaord_infotitle1">회원정보</string>
+    <string name="mypage_userinfo_passwaord_infotitle2">이름</string>
+    <string name="mypage_userinfo_passwaord_infotitle3">닉네임</string>
+    <string name="mypage_userinfo_passwaord_infotitle4">아이디 (이메일)</string>
+    <string name="mypage_userinfo_passwaord_infotitle5">휴대폰 번호</string>
+    <string name="mypage_userinfo_passwaord_infotitle6">비밀번호</string>
+    <string name="mypage_userinfo_passwaord_infodesc1">・ 영문, 숫자, 특수문자로 8~15자 사이에서만 생성할 수 있습니다.</string>
+    <string name="mypage_userinfo_passwaord_infotitle7">연결된 계정</string>
+    <string name="mypage_userinfo_passwaord_infotitle8">네이버</string>
+    <string name="mypage_userinfo_passwaord_infotitle9">카카오톡</string>
+    <string name="mypage_userinfo_passwaord_infotitle10">페이스북</string>
+    <string name="mypage_userinfo_passwaord_infotitle11">구글</string>
+    <string name="mypage_userinfo_passwaord_infotitle12">배송지</string>
+    <string name="mypage_userinfo_passwaord_infodesc2"><![CDATA[배송지 정보는 <font color="#5d2ed1">배송지 관리</font>에서 수정 및 등록 가능합니다.]]></string>
+    <string name="mypage_userinfo_passwaord_infotitle13">쇼핑혜택 ・ 이벤트</string>
+    <string name="mypage_userinfo_passwaord_infodesc3">SMS 수신동의</string>
+    <string name="mypage_userinfo_passwaord_infodesc4">이메일 수신동의</string>
+    <string name="mypage_userinfo_passwaord_infodesc5">홍보 마케팅 목적 개인정보 수집 및 이용 동의 [선택]</string>
+    <string name="mypage_userinfo_passwaord_infotitle15">정보성 알림 수신방법</string>
+    <string name="mypage_userinfo_passwaord_infotitle16">카카오톡</string>
+    <string name="mypage_userinfo_passwaord_infotitle17">문자</string>
+    <string name="mypage_userinfo_passwaord_infotitle18">이메일</string>
+    <string name="mypage_userinfo_passwaord_infotitle19">추가정보</string>
+    <string name="mypage_userinfo_passwaord_infotitle20">내 사이즈</string>
+    <string name="mypage_userinfo_passwaord_infotitle21">사이즈 등록</string>
+    <string name="mypage_userinfo_passwaord_infodesc6">・</string>
+    <string name="mypage_userinfo_passwaord_infodesc7"><![CDATA[키, 몸무게, 허리, 체형을 모두 입력하시면 1회에 한해 <font color="#5d2ed1">500</font> 포인트를 드립니다.]]></string>
+    <string name="mypage_userinfo_passwaord_infodesc8"><![CDATA[입력하신 사이즈는 통계 자료로 활용되며, 사이즈 추천받기 및 상품 리뷰에 사용됩니다.]]></string>
+    <string name="mypage_userinfo_passwaord_infotitle22">생년월일</string>
+    <string name="mypage_userinfo_passwaord_infotitle23">년도</string>
+    <string name="mypage_userinfo_passwaord_infotitle24">월</string>
+    <string name="mypage_userinfo_passwaord_infotitle25">일</string>
+    <string name="mypage_userinfo_passwaord_infotitle26">성별</string>
+    <string name="mypage_userinfo_passwaord_infotitle27">남성</string>
+    <string name="mypage_userinfo_passwaord_infotitle28">여성</string>
+    <string name="mypage_userinfo_passwaord_infotitle29">회원탈퇴</string>
+    <string name="mypage_userinfo_passwaord_infotitle30">취소</string>
+    <string name="mypage_userinfo_passwaord_infotitle31">수정</string>
+    <string name="mypage_userinfo_passwaord_infotitle32">키</string>
+    <string name="mypage_userinfo_passwaord_infotitle33">상의 사이즈</string>
+    <string name="mypage_userinfo_passwaord_infotitle34">몸무게</string>
+    <string name="mypage_userinfo_passwaord_infotitle35">하의 사이즈</string>
+    <string name="mypage_userinfo_passwaord_infotitle36">신발 사이즈</string>
+    <string name="mypage_userinfo_passwaord_infotitle37">사이즈 수정</string>
+
+
+    <string name="mypage_recentlayout_totalsize1">총 </string>
+    <string name="mypage_recentlayout_totalsize2">개</string>
+    <string name="btn_delete_all">전체 삭제</string>
+
+    <string name="no_list_item_desc">최근 본 상품이 없습니다.</string>
+
 
 </resources>

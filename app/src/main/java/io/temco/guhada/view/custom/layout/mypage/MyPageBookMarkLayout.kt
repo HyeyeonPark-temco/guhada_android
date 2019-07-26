@@ -26,6 +26,9 @@ class MyPageBookMarkLayout constructor(
 
     }
 
+    override fun onFocusView() {
+
+    }
 
     override fun onStart() {
 

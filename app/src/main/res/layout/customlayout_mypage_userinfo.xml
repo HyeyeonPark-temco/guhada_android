@@ -9,25 +9,1336 @@
     </data>
 
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/common_white"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <io.temco.guhada.view.custom.HtmlTextView
+            <!-- 회원정보수정 - 로그인 인증화면 시작 -->
+            <LinearLayout
+                android:id="@+id/linearlayout_mypageuserinfo_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black_four"
-                android:gravity="center"
-                android:text="@string/mypage_userinfo_passwaord_desc"
-                android:textSize="16dp"
-                app:isHtml="true" />
+                android:layout_height="match_parent"
+                android:background="@color/common_white"
+                android:visibility="gone"
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </RelativeLayout>
+                <io.temco.guhada.view.custom.HtmlTextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="78dp"
+                    android:textColor="@color/black_four"
+                    android:gravity="center"
+                    android:text="@string/mypage_userinfo_passwaord_desc"
+                    android:textSize="@dimen/text_16"
+                    app:isHtml="true" />
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/warm_grey_two"
+                    android:text="@string/mypage_userinfo_passwaord_desc1"
+                    android:textSize="@dimen/text_11"/>
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    style="@style/TextMedium"
+                    android:id="@+id/edittext_mypageuserinfo_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="32dp"
+                    app:hint="@string/mypage_userinfo_passwaord_hint"
+                    app:type="password" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/button_mypageuserinfo_cancle"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:background="@color/greyish_brown_two"
+                        android:text="@string/common_cancel"
+                        android:textColor="@color/common_white"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/text_13"/>
+
+                    <Button
+                        android:id="@+id/button_mypageuserinfo_submit"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:background="@color/common_blue_purple"
+                        android:text="@string/common_confirm"
+                        android:textColor="@color/common_white"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/text_13"/>
+                </LinearLayout>
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
+                    android:textColor="@color/warm_grey_two"
+                    android:text="@string/mypage_userinfo_passwaord_desc2"
+                    android:textSize="@dimen/text_11"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypageuserinfo_naver"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/member_btn_naver_off" />
+
+                            <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
+                                android:id="@+id/button_login_naver"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_login_naver"
+                            android:textColor="@color/greyish"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypageuserinfo_kakako"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/member_btn_kakao_on" />
+
+                            <com.kakao.usermgmt.LoginButton
+                                android:id="@+id/button_login_kakao"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_login_kakao"
+                            android:textColor="@color/greyish_brown_two"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypageuserinfo_facebook"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/member_btn_facebook_off" />
+
+                            <com.facebook.login.widget.LoginButton
+                                android:id="@+id/button_login_facebook"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_login_facebook"
+                            android:textColor="@color/greyish"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypageuserinfo_google"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/member_btn_google_off" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_login_google"
+                            android:textColor="@color/greyish"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- 회원정보수정 - 로그인 인증화면 끝 -->
+
+
+            <!-- 회원정보수정 - 회원정보 화면 시작 -->
+            <LinearLayout
+                android:id="@+id/linearlayout_mypageuserinfo_userinfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/common_white"
+                android:orientation="vertical">
+
+                <!-- 회원정보수정 - 회원정보 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle1"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_15"/>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 이름 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle2"
+                    android:textSize="@dimen/text_14"/>
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:paddingLeft="15dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:background="@drawable/drawable_disable_inputform"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle2"
+                    android:textSize="@dimen/text_13"/>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 닉네임 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle3"
+                    android:textSize="@dimen/text_14"/>
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:txt="@string/mypage_userinfo_passwaord_infotitle3"
+                    app:type="text"/>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 아이디 (이메일) -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle4"
+                    android:textSize="@dimen/text_14"/>
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:txt="@string/mypage_userinfo_passwaord_infotitle4"
+                    app:type="email"/>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 휴대폰 번호 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle5"
+                    android:textSize="@dimen/text_14"/>
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:txt="01049115559"
+                    app:type="number"/>
+                <!-- ====================================================================== -->
+
+
+
+                <!-- 회원정보수정 - 비밀번호 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle6"
+                    android:textSize="@dimen/text_14"/>
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:hint="@string/findpwd_hint_newpwd"
+                    app:type="password"/>
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:hint="@string/findpwd_hint_newpwdconfirm"
+                    app:type="password"/>
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="28dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/warm_grey"
+                    android:text="@string/mypage_userinfo_passwaord_infodesc1"
+                    android:textSize="@dimen/text_12"/>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 연결된 계정 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle7"
+                    android:textSize="@dimen/text_14"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_gravity="center_horizontal"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+
+                    <!-- 회원정보수정 - 배송지 - 네이버 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/member_btn_naver_off" />
+
+                            <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle8"
+                            android:textColor="@color/greyish"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                    <!-- ====================================================================== -->
+
+
+                    <!-- 회원정보수정 - 배송지 - 카카오톡 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/member_btn_kakao_on" />
+
+                            <com.kakao.usermgmt.LoginButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle9"
+                            android:textColor="@color/greyish_brown_two"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                    <!-- ====================================================================== -->
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+
+                    <!-- 회원정보수정 - 배송지 - 페이스북 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/member_btn_facebook_off" />
+
+                            <com.facebook.login.widget.LoginButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle10"
+                            android:textColor="@color/greyish"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                    <!-- ====================================================================== -->
+
+                    <!-- 회원정보수정 - 배송지 - 구글 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/member_btn_google_off" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_marginLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle11"
+                            android:textColor="@color/greyish"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 배송지 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="13dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle12"
+                    android:textSize="@dimen/text_14"/>
+
+                <io.temco.guhada.view.custom.HtmlTextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="28dp"
+                    android:textColor="@color/greyish_brown"
+                    android:text="@string/mypage_userinfo_passwaord_infodesc2"
+                    android:textSize="@dimen/text_13"
+                    app:isHtml="true" />
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 쇼핑혜택 ・ 이벤트 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="13dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle13"
+                    android:textSize="@dimen/text_14"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1">
+
+                        <CheckBox
+                            android:id="@+id/checkbox_mypageuserinfo_sms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_checkbox_all"
+                            android:button="@null"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:id="@+id/textview_mypageuserinfo_sms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@string/mypage_userinfo_passwaord_infodesc3"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1">
+
+                        <CheckBox
+                            android:id="@+id/checkbox_mypageuserinfo_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_checkbox_all"
+                            android:button="@null" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:id="@+id/textview_mypageuserinfo_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@string/mypage_userinfo_passwaord_infodesc4"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_mypageuserinfo_marketing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/selector_checkbox_all"
+                        android:button="@null"/>
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:id="@+id/textview_mypageuserinfo_marketing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="11dp"
+                        android:text="@string/mypage_userinfo_passwaord_infodesc5"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+                <!-- ====================================================================== -->
+
+                <!-- 회원정보수정 - 정보성 알림 수신방법 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginBottom="13dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle15"
+                    android:textSize="@dimen/text_14"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1">
+
+                        <CheckBox
+                            android:id="@+id/checkbox_mypageuserinfo_notikakao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_checkbox_all"
+                            android:button="@null"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:id="@+id/textview_mypageuserinfo_notikakao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle16"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1">
+
+                        <CheckBox
+                            android:id="@+id/checkbox_mypageuserinfo_notisms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_checkbox_all"
+                            android:button="@null" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:id="@+id/textview_mypageuserinfo_notisms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle17"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="40dp"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkbox_mypageuserinfo_notiemail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/selector_checkbox_all"
+                        android:button="@null"/>
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:id="@+id/textview_mypageuserinfo_notiemail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="11dp"
+                        android:text="@string/mypage_userinfo_passwaord_infotitle18"
+                        android:textColor="@color/greyish_brown"
+                        android:textSize="@dimen/text_13" />
+
+                </LinearLayout>
+                <!-- ====================================================================== -->
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:background="@color/pale_grey"/>
+
+
+                <!-- 회원정보수정 - 추가정보 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle19"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_15"/>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 내 사이즈 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle20"
+                    android:textSize="@dimen/text_14"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp"
+                    android:background="@drawable/drawable_border_esix"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:weightSum="16">
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/warm_grey_two"
+                            android:paddingLeft="20dp"
+                            android:layout_weight="4"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle32"
+                            android:textSize="@dimen/text_13"/>
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/greyish_brown_two"
+                            android:layout_weight="4"
+                            android:text="163~165cm"
+                            android:textSize="@dimen/text_13"/>
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/warm_grey_two"
+                            android:paddingLeft="10dp"
+                            android:layout_weight="4"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle33"
+                            android:textSize="@dimen/text_13"/>
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/greyish_brown_two"
+                            android:layout_weight="3"
+                            android:text="XS"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:weightSum="16">
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/warm_grey_two"
+                            android:paddingLeft="20dp"
+                            android:layout_weight="4"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle34"
+                            android:textSize="@dimen/text_13"/>
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/greyish_brown_two"
+                            android:layout_weight="4"
+                            android:text="60kg"
+                            android:textSize="@dimen/text_13"/>
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/warm_grey_two"
+                            android:paddingLeft="10dp"
+                            android:layout_weight="4"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle35"
+                            android:textSize="@dimen/text_13"/>
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/greyish_brown_two"
+                            android:layout_weight="3"
+                            android:text="28"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:weightSum="16">
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/warm_grey_two"
+                            android:paddingLeft="20dp"
+                            android:layout_weight="4"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle36"
+                            android:textSize="@dimen/text_13"/>
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/greyish_brown_two"
+                            android:layout_weight="12"
+                            android:text="240mm"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/button_mypageuserinfo_sizeinsert"
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/common_blue_purple"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle21"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_13" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="30dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mypage_userinfo_passwaord_infodesc6"
+                            android:textColor="@color/warm_grey_two" />
+
+                        <io.temco.guhada.view.custom.HtmlTextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/warm_grey_two"
+                            android:layout_weight="1"
+                            android:text="@string/mypage_userinfo_passwaord_infodesc7"
+                            android:textSize="@dimen/text_12"
+                            app:isHtml="true"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mypage_userinfo_passwaord_infodesc6"
+                            android:textColor="@color/warm_grey_two" />
+
+                        <io.temco.guhada.view.custom.HtmlTextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/warm_grey_two"
+                            android:layout_weight="1"
+                            android:text="@string/mypage_userinfo_passwaord_infodesc8"
+                            android:textSize="@dimen/text_12"
+                            app:isHtml="true"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                    <!-- 회원정보수정 - 사이즈수정 -->
+                <TextView
+                    android:id="@+id/button_mypageuserinfo_sizemodify"
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/drawable_border_dsix"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle37"
+                    android:gravity="center"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 생년월일 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle22"
+                    android:textSize="@dimen/text_14"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:orientation="horizontal"
+                    android:weightSum="14">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:background="@drawable/drawable_border_esix"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            android:id="@+id/textview_payment_discountcoupon"
+                            style="@style/PaymentContentGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle23"
+                            android:textSize="@dimen/text_13" />
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/drawable_border_esix"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            style="@style/PaymentContentGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle24"
+                            android:textSize="@dimen/text_13" />
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/drawable_border_esix"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            style="@style/PaymentContentGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle25"
+                            android:textSize="@dimen/text_13" />
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 성별 -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle26"
+                    android:textSize="@dimen/text_14"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:background="@drawable/selector_ovalradiobutton_all"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle27"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@null"
+                            android:background="@drawable/selector_ovalradiobutton_all"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle28"
+                            android:textColor="@color/greyish_brown"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 회원탈퇴 -->
+                <TextView
+                    android:id="@+id/button_mypageuserinfo_userwithdrawal"
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="60dp"
+                    android:gravity="center"
+                    android:background="@drawable/drawable_border_esix"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle29"
+                    android:textColor="@color/color_dbdbdb"
+                    android:textSize="@dimen/text_13" />
+                <!-- ====================================================================== -->
+
+
+                <!-- 회원정보수정 - 취소,수정 버튼 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/button_mypageuserinfo_modifycancle"
+                        style="@style/TextMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/greyish_brown_two"
+                        android:text="@string/mypage_userinfo_passwaord_infotitle30"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_13" />
+
+                    <Button
+                        android:id="@+id/button_mypageuserinfo_modifyok"
+                        style="@style/TextMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/blue_purple"
+                        android:text="@string/mypage_userinfo_passwaord_infotitle31"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <!-- ====================================================================== -->
+            <!-- 회원정보수정 - 회원정보 화면 끝 -->
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
