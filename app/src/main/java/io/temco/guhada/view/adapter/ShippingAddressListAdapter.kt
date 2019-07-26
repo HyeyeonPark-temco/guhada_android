@@ -12,10 +12,10 @@ import io.temco.guhada.databinding.ItemShippingaddressListBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : RecyclerView.Adapter<ShippingAddressListAdapter.Holder>() {
-    private var prevPos = -1
-     var currentPos = -1
-     var deletePos = -1
-     var list: MutableList<UserShipping> = mutableListOf()
+    var prevPos = -1
+    var currentPos = -1
+    var deletePos = -1
+    var list: MutableList<UserShipping> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = DataBindingUtil.inflate<ItemShippingaddressListBinding>(LayoutInflater.from(parent.context), R.layout.item_shippingaddress_list, parent, false)
@@ -42,11 +42,17 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
         }
     }
 
+    fun initPoses(){
+        currentPos = -1
+        prevPos = -1
+        deletePos = -1
+    }
+
     inner class Holder(val binding: ItemShippingaddressListBinding) : BaseViewHolder<ItemShippingaddressListBinding>(binding.root) {
         fun bind(shipping: UserShipping) {
             if (mViewModel.selectedItem.id == shipping.id) currentPos = adapterPosition
             binding.radiobuttonShippingaddresslist.setOnCheckedChangeListener(null)
-            binding.radiobuttonShippingaddresslist.isChecked = (currentPos == adapterPosition || mViewModel.selectedItem.id == shipping.id)
+            binding.radiobuttonShippingaddresslist.isChecked = currentPos == adapterPosition || mViewModel.selectedItem.id == shipping.id
             binding.viewModel = mViewModel
             binding.shipping = shipping
             binding.radiobuttonShippingaddresslist.setOnCheckedChangeListener { buttonView, isChecked ->

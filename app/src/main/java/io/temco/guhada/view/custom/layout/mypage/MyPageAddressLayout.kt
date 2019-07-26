@@ -59,6 +59,7 @@ class MyPageAddressLayout constructor(
     }
 
     override fun onRefresh() {
+        mShippingAddressListFragment.mListAdapter.initPoses()
         mViewModel.getUserShippingAddress()
         mBinding.swipeRefreshLayout.isRefreshing = false
     }

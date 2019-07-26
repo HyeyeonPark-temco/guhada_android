@@ -24,15 +24,15 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
         if (::mViewModel.isInitialized) {
             if (context != null) mLoadingIndicator = LoadingIndicatorUtil(context!!)
             getShippingAddressList()
-
             mViewModel.shippingAddresses.observe(this, Observer {
                 if (!::mListAdapter.isInitialized)
                     mListAdapter = ShippingAddressListAdapter(mViewModel)
 
-                mListAdapter.setItems(it)
                 if (mBinding.recyclerviewShippingaddress.adapter == null) {
+                    mListAdapter.setItems(it)
                     mBinding.recyclerviewShippingaddress.adapter = mListAdapter
                 } else {
+                    (mBinding.recyclerviewShippingaddress.adapter as ShippingAddressListAdapter).initPoses()
                     (mBinding.recyclerviewShippingaddress.adapter as ShippingAddressListAdapter).setItems(it)
                 }
 
