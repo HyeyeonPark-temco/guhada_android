@@ -8,6 +8,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.order.OrderHistoryResponse
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
@@ -161,6 +162,16 @@ class OrderServer {
         fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: IntArray) {
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).deleteCartItem(accessToken, cartItemIdList).enqueue(
                     ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+        }
+
+        /**
+         * 주문 상품 조회 API
+         */
+        @JvmStatic
+        fun getOrders(listener: OnServerListener, accessToken: String, startDate: String, endDate : String, page: Int){
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrders(accessToken, startDate, endDate, page).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderHistoryResponse>>{ successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body())}
+            )
         }
 
     }

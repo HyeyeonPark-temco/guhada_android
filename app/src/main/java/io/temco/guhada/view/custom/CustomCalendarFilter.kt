@@ -81,8 +81,10 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
             val format = SimpleDateFormat("yyyy.MM.dd")
             val start = format.parse(startDate)
             val end = format.parse(endDate)
-            if (start <= end) // earlier
+            if (start <= end) task()
             else ToastUtil.showMessage("종료 날짜는 시작날짜보다 늦어야 합니다.")
+        } else {
+            ToastUtil.showMessage("날짜를 선택해주세요.")
         }
     }
 

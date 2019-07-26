@@ -46,12 +46,17 @@ class MyPageDeliveryLayout constructor(
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_delivery
     override fun init() {
+        mViewModel = MyPageDeliveryViewModel(context)
         mBinding.calendarfilterMypageDeliver.mListener = this
+        mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
+            val list = it.orderItemList
+
+        })
 
         mRequestManager = Glide.with(this)
         //
         initList()
-        initCalendar()
+        //    initCalendar()
         setLinkText()
     }
 
@@ -73,7 +78,9 @@ class MyPageDeliveryLayout constructor(
     }
 
     override fun onClickCheck() {
-
+        mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startDate
+        mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endDate
+        mViewModel.getOrders()
     }
 
     ////////////////////////////////////////////////

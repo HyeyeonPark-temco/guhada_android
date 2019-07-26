@@ -10,11 +10,18 @@ import java.io.Serializable
  * @author Hyeyeon Park
  */
 class PurchaseOrder : OrderItemResponse(), Serializable {
+    var purchaseId: Long = 0
+
     var expireDate = ""
+    var expireTimestamp: Long = 0
+
+    var orderDate = intArrayOf() // 2019,5,14
+    var orderTimestamp: Long = 0
+
     var optionAttribute1: String? = ""
     var optionAttribute2: String? = ""
     var optionAttribute3: String? = ""
-    var orderDate = intArrayOf() // 2019,5,14
+
     var orderPrice = 0
     var orderProdGroupId: Long = 0
     var orderProdId: Long = 0
@@ -24,10 +31,10 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var productName = ""
 
     var purchaseConfirm = false
-    var purchaseId: Long = 0
-    var purchaseStatus = ""
+    var purchaseStatusText = ""
+
     var shipCompleteDate = "" // 2019-05-10
     var shipPrice = 0
-    var statusMessage = "" // 주문 완료 메세지
 
+    var statusMessage = "" // 주문 완료 메세지
 }
