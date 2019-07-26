@@ -14,7 +14,7 @@ import io.temco.guhada.data.db.entity.RecentDealEntity
  * 내부 DataBase ROOM
  *
  */
-@Database(entities = arrayOf(RecentDealEntity::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(RecentDealEntity::class), version = 4, exportSchema = false)
 abstract class GuhadaDB : RoomDatabase(){
 
     abstract fun recentDealDao() : RecentDealDao
