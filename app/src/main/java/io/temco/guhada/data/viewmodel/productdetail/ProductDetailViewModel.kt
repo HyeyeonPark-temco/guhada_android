@@ -121,9 +121,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                     }
                             )
                         }, accessToken = it, target = target, userId = product.value?.sellerId as Long)
-                    }
-            )
-
+                    }, invalidTokenTask = {
+                this.sellerFollower.isFollower = false
+                notifyPropertyChanged(BR.sellerFollower)
+            })
         }
     }
 
