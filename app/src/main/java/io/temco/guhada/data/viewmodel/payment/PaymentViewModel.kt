@@ -308,7 +308,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     ?: ""
                             else shippingMessage
 
-                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()?:ShippingMessage()
+                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()
+                                    ?: ShippingMessage()
 
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!
@@ -326,17 +327,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                 }
 
                                 val accessToken = Preferences.getToken().accessToken
-                                if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
-                                    // 배송지 추가
-                                    if (accessToken != null) {
-                                        val userId = JWT(accessToken).getClaim("userId").asInt()
-                                        if (userId != null) saveShippingAddress(userId)
-                                    } else {
-                                        // [임시] 토큰 없는 경우
-                                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
-                                    }
-                                }
-
+                                addShippingAddress(accessToken)
                                 requestOrder("Bearer $accessToken", requestOrder)
                             }
                         }
@@ -347,6 +338,19 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             }
         } else {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
+        }
+    }
+
+    private fun addShippingAddress(accessToken: String?) {
+        if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+            // 배송지 추가
+            if (accessToken != null) {
+                val userId = JWT(accessToken).getClaim("userId").asInt()
+                if (userId != null) saveShippingAddress(userId)
+            } else {
+                // [임시] 토큰 없는 경우
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
+            }
         }
     }
 
