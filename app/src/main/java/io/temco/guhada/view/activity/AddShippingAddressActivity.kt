@@ -76,6 +76,8 @@ class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListene
 
     // NOT USED
     override fun notifyDeleteItem() {}
+
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {}
     override fun redirectAddShippingAddressActivity() {}
+    override fun getSelectedPos(): Int = 0
 }

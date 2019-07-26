@@ -60,6 +60,7 @@
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_16"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    android:onClick="@{()->viewModel.onClickDefault()}"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toRightOf="@+id/button_mypageaddress_add"
                     app:layout_constraintRight_toRightOf="parent" />

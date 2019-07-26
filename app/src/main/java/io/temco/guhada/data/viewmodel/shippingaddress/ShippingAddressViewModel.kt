@@ -102,6 +102,9 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
         }
     }
 
+
+
+
     fun checkEmptyField(task: () -> Unit) {
         when {
             newItem.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_shippingname))
