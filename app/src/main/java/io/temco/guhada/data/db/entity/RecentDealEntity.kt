@@ -18,18 +18,20 @@ import java.io.Serializable
 data class RecentDealEntity (@PrimaryKey(autoGenerate = true) val idx : Int,
                              @ColumnInfo(name = "insert_date") var date : Long,
                              @ColumnInfo(name = "dealId") var dealId : Long,
-                             @ColumnInfo(name = "dealData") var data : String) : Serializable{
+                             @ColumnInfo(name = "dealData") var data : String,
+                             @ColumnInfo(name = "user_data") var userData : String) : Serializable{
 
-    constructor():this(0,0L,0L,"")
+    constructor():this(0,0L,0L,"","")
 
-    fun initData(date:Long, dealId: Long, data: String):RecentDealEntity{
+    fun initData(date:Long, dealId: Long, data: String, userData: String):RecentDealEntity{
         this.date = date
         this.dealId = dealId
         this.data = data
+        this.userData = userData
         return this
     }
 
     override fun toString(): String {
-        return "RecentDealEntity(idx=$idx, date=$date, dealId=$dealId, data='$data')"
+        return "RecentDealEntity(idx=$idx, date=$date, dealId=$dealId, data='$data, userData='$userData')"
     }
 }

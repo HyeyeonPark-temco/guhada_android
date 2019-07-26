@@ -119,7 +119,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 mDisposable.add(Observable.just(product).subscribeOn(Schedulers.io()).subscribe {
                     db.recentDealDao().delete(dealId)
                     var recentDealEntity = RecentDealEntity()
-                    recentDealEntity.initData(Calendar.getInstance().timeInMillis,dealId,Gson().toJson(it))
+                    recentDealEntity.initData(Calendar.getInstance().timeInMillis,dealId,Gson().toJson(it),"")
                     if(CustomLog.flag)CustomLog.L("initViewModel",recentDealEntity.toString())
                     db.recentDealDao().insert(recentDealEntity)
                     var list = db.recentDealDao().getAll(21)
