@@ -45,9 +45,9 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
      * TODO 결과 값이 서로 달라 확인 필요 - 배송지 목록 관련 확인
      */
     fun getUserShippingAddress() {
-        if(Preferences.getToken() != null){
+        if (Preferences.getToken() != null) {
             val accessToken = Preferences.getToken().accessToken
-            if(accessToken != null){
+            if (accessToken != null) {
                 userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
             }
 
@@ -68,24 +68,31 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
                             notifyPropertyChanged(BR.emptyVisibility)
                         })
             }, userId)
+        }else {
+            this.shippingAddresses.postValue(mutableListOf())
+            emptyVisibility = ObservableInt(View.VISIBLE)
+            notifyPropertyChanged(BR.emptyVisibility)
         }
     }
 
     fun deleteShippingAddress(shippingAddressId: Int) {
-        val accessToken = Preferences.getToken().accessToken
-        if(accessToken != null){
-            userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
-        }
+        val token = Preferences.getToken()
+        if (token != null) {
+            val accessToken = Preferences.getToken().accessToken
+            if (accessToken != null) {
+                userId = JWT(accessToken).getClaim("userId").asInt() ?: -1
+            }
 
-        UserServer.deleteUserShippingAddress(OnServerListener { success, o ->
-            executeByResultCode(success, o,
-                    successTask = {
-                        mListener.notifyDeleteItem()
-                    },
-                    failedTask = {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_delete_failed))
-                    })
-        }, userId, shippingAddressId)
+            UserServer.deleteUserShippingAddress(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = {
+                            mListener.notifyDeleteItem()
+                        },
+                        failedTask = {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_delete_failed))
+                        })
+            }, userId, shippingAddressId)
+        }
     }
 
     fun editShippingAddress(position: Int) {
@@ -95,7 +102,7 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
         }
     }
 
-     fun checkEmptyField(task: () -> Unit) {
+    fun checkEmptyField(task: () -> Unit) {
         when {
             newItem.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_shippingname))
             newItem.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_zip))

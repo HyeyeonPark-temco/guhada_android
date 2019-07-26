@@ -1,7 +1,10 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import io.temco.guhada.R
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnShippingAddressListener
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel
 
 /**
@@ -18,6 +21,9 @@ import io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel
 class MyPageAddressViewModel(val context: Context, val listener: OnShippingAddressListener) : ShippingAddressViewModel(listener) {
 
     fun onClickAddNew() {
-        listener.redirectAddShippingAddressActivity()
+        if(Preferences.getToken() != null)
+            listener.redirectAddShippingAddressActivity()
+        else
+            ToastUtil.showMessage(context.getString(R.string.login_message_requiredlogin))
     }
 }

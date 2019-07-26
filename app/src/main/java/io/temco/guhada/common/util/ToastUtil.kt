@@ -22,7 +22,8 @@ object ToastUtil : FrameLayout(BaseApplication.getInstance().applicationContext)
 
     @JvmStatic
     fun showMessage(message: String) {
-        Looper.prepare()
+        if (Looper.myLooper() == null)
+            Looper.prepare()
 
         if (!::mBinding.isInitialized) {
             mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_toast, this, false)
@@ -38,6 +39,6 @@ object ToastUtil : FrameLayout(BaseApplication.getInstance().applicationContext)
                 .let {
                     it.show()
                 }
-        Looper.loop()
+//        Looper.loop()
     }
 }
