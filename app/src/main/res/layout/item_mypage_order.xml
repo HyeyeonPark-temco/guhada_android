@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.order.PurchaseOrder" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_default"
+        android:orientation="vertical">
+
+        <!-- ORDER TITLE -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- ORDER NUMBER -->
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mypage_order_number"
+                android:textColor="@color/text_5"
+                android:textSize="@dimen/text_12" />
+
+            <TextView
+                android:id="@+id/text_order_number"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:textColor="@color/text_5"
+                android:textSize="@dimen/text_12" />
+
+            <!-- VERTICAL BAR -->
+            <View
+                android:layout_width="1dp"
+                android:layout_height="9dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@color/line_6" />
+
+            <TextView
+                android:id="@+id/text_date"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_5"
+                android:textSize="@dimen/text_12" />
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/arrow_more" />
+        </LinearLayout>
+
+        <!-- CONTENTS -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <!-- THUMBNAIL -->
+            <ImageView
+                android:id="@+id/image_thumb"
+                android:layout_width="90dp"
+                android:layout_height="120dp"
+                android:background="@color/pale_grey"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_brand"
+                    style="@style/TextMediumSingleLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/text_product"
+                    style="@style/TextRegularSingleLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/text_option"
+                    style="@style/TextRegularSingleLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/text_5"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/text_price"
+                    style="@style/TextBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/text_status"
+                    style="@style/TextRegularSingleLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:textColor="@color/common_blue_purple"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- BUTTON -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <!-- CANCEL -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_order_deselect"
+                    android:gravity="center"
+                    android:text="@string/mypage_order_list"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_13" />
+
+                <Space
+                    android:layout_width="8dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0" />
+
+                <!-- CHANGE SHIPPING -->
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_order_deselect"
+                    android:gravity="center"
+                    android:text="@string/mypage_order_as"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextMedium"
+                android:id="@+id/textview_certification_result"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/mypage_order_message_counterfeit"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_13" />
+
+            <!-- Q&A -->
+            <!--<TextView-->
+                <!--style="@style/TextMedium"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@color/pale_grey"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/mypage_order_qna"-->
+                <!--android:textColor="@color/text_3"-->
+                <!--android:textSize="@dimen/text_13" />-->
+
+            <!-- REVIEW -->
+            <TextView
+                android:id="@+id/text_review"
+                style="@style/TextMedium"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/selector_background_order"
+                android:gravity="center"
+                android:text="@string/mypage_order_reward"
+                android:textColor="@drawable/selector_text_order"
+                android:textSize="@dimen/text_13" />
+        </LinearLayout>
+
+        <!-- LINE -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/line_2" />
+    </LinearLayout>
+</layout>

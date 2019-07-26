@@ -4,6 +4,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.order.Order
+import io.temco.guhada.data.model.order.OrderHistoryResponse
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
@@ -70,5 +71,11 @@ interface OrderService {
      * 장바구니 상품 삭제 API
      */
     @POST("/cart/removeCartItem")
-    fun deleteCartItem(@Header("Authorization") accessToken: String, @Query("cartItemIdList") cartItemIdList: IntArray) : Call<BaseModel<CartResponse>>
+    fun deleteCartItem(@Header("Authorization") accessToken: String, @Query("cartItemIdList") cartItemIdList: IntArray): Call<BaseModel<CartResponse>>
+
+    /**
+     * 주문 리스트 조회 API
+     */
+    @GET("/order/my-orders/{startDt}/{endDt}/{page}")
+    fun getOrders(@Header("Authorization") accessToken: String, @Path("startDt") startDate: String, @Path("endDt") endDate: String, @Path("page") page: Int): Call<BaseModel<OrderHistoryResponse>>
 }
