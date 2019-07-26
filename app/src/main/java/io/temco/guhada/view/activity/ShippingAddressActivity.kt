@@ -61,7 +61,10 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
     private fun initFragmentPager() {
         mFragmentPagerAdapter = BaseFragmentPagerAdapter(supportFragmentManager)
         mShippingAddressListFragment = ShippingAddressListFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
-        mShippingAddressFormFragment = ShippingAddressFormFragment().apply { mViewModel = this@ShippingAddressActivity.mViewModel }
+        mShippingAddressFormFragment = ShippingAddressFormFragment().apply {
+            mViewModel = this@ShippingAddressActivity.mViewModel
+            addButtonVisible = true
+        }
         mFragmentPagerAdapter.addFragment(mShippingAddressListFragment)
         mFragmentPagerAdapter.addFragment(mShippingAddressFormFragment)
 
@@ -113,7 +116,7 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
             when (requestCode) {
                 EDIT_SHIPPING_ADDRESS -> {
                     val shippingAddress = data?.getSerializableExtra("shippingAddress")
-                    if(shippingAddress != null){
+                    if (shippingAddress != null) {
                         mViewModel.selectedItem = shippingAddress as UserShipping
                     }
                     mShippingAddressListFragment.getShippingAddressList() // REFRESH

@@ -54,6 +54,8 @@ class ServerCallbackUtil {
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
+
+
             if (response.isSuccessful) {
                 successTask(response)
             } else {
@@ -79,13 +81,15 @@ class ServerCallbackUtil {
                                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
                                 },
                                 dataNotFoundTask: () -> Unit = {},
-                                productNotFoundTask: (BaseModel<*>) -> Unit = {}) {
+                                productNotFoundTask: (BaseModel<*>) -> Unit = {},
+                                userLikeNotFoundTask: () -> Unit = {}) {
             if (success) {
                 val model = o as BaseModel<*>
                 when (model.resultCode) {
                     ResultCode.SUCCESS.flag -> successTask(model)
                     ResultCode.DATA_NOT_FOUND.flag -> dataNotFoundTask()
                     ResultCode.PRODUCT_RESOURCE_NOT_FOUND.flag -> productNotFoundTask(model)
+                    ResultCode.USER_LIKE_NOT_FOUND.flag -> userLikeNotFoundTask()
                 }
             } else {
                 // modify ------------------------------------

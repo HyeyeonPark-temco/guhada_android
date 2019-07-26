@@ -5,13 +5,17 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ObservableInt
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.flag.RequestCode
 import io.temco.guhada.common.listener.OnShippingAddressListener
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.mypage.MyPageAddressViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageAddressBinding
@@ -72,7 +76,15 @@ class MyPageAddressLayout constructor(
         }
     }
 
-    override fun notifyDeleteItem() = mShippingAddressListFragment.mListAdapter.deleteItem()
+    override fun notifyDeleteItem() {
+        mShippingAddressListFragment.mListAdapter.deleteItem()
+        mShippingAddressListFragment.mListAdapter.currentPos = -1
+
+        if (mShippingAddressListFragment.mListAdapter.itemCount == 0) {
+            mViewModel.emptyVisibility = ObservableInt(View.VISIBLE)
+            mViewModel.notifyPropertyChanged(BR.emptyVisibility)
+        }
+    }
 
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {
         Intent(context, EditShippingAddressActivity::class.java).let {
@@ -85,7 +97,7 @@ class MyPageAddressLayout constructor(
         // NONE
     }
 
-    override fun redirectAddShippingAddressActivity(){
+    override fun redirectAddShippingAddressActivity() {
         Intent(context, AddShippingAddressActivity::class.java).let {
             (context as AppCompatActivity).startActivityForResult(it, Flag.RequestCode.ADD_SHIPPING_ADDRESS)
         }

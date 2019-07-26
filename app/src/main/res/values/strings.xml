@@ -323,6 +323,7 @@
     <string name="productdetail_button_detail">Detail</string>
     <string name="productdetail_button_qna"><![CDATA[Q&A]]></string>
     <string name="productdetail_button_follow">Follow</string>
+    <string name="productdetail_button_following">팔로잉</string>
     <string name="productdetail_button_store">Store</string>
 
     <string name="productdetail_shipping_title">Shipping/Return/Exchange</string>

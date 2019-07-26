@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -11,7 +10,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginBottom="56dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_1"
@@ -21,45 +19,53 @@
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/button_mypageaddress_add"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <FrameLayout
-                android:id="@+id/framelayout_mypage_address"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/framelayout_mypage_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/button_mypageaddress_add"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/button_mypageaddress_add"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@color/greyish_brown_two"
+                    android:onClick="@{()->viewModel.onClickAddNew()}"
+                    android:text="@string/mypage_shippingaddress_add"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_16"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/button_mypageaddress_default"/>
+
+                <Button
+                    android:id="@+id/button_mypageaddress_default"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@color/common_blue_purple"
+                    android:text="@string/mypage_shippingaddress_default"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_16"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@+id/button_mypageaddress_add"
+                    app:layout_constraintRight_toRightOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <Button
-            android:id="@+id/button_mypageaddress_add"
-            android:layout_width="0dp"
-            android:background="@color/greyish_brown_two"
-            android:layout_height="60dp"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/common_white"
-            android:onClick="@{()->viewModel.onClickAddNew()}"
-            android:text="@string/mypage_shippingaddress_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swipeRefreshLayout"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/button_mypageaddress_default" />
-
-        <Button
-            android:id="@+id/button_mypageaddress_default"
-            android:layout_width="0dp"
-            android:textSize="@dimen/text_16"
-            android:textColor="@color/common_white"
-            android:background="@color/common_blue_purple"
-            android:layout_height="60dp"
-            app:layout_constraintTop_toBottomOf="@+id/swipeRefreshLayout"
-            android:text="@string/mypage_shippingaddress_default"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@+id/button_mypageaddress_add"
-            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

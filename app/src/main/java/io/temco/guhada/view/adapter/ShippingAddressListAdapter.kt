@@ -13,9 +13,9 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : RecyclerView.Adapter<ShippingAddressListAdapter.Holder>() {
     private var prevPos = -1
-    private var currentPos = -1
-    private var deletePos = -1
-    private var list: MutableList<UserShipping> = mutableListOf()
+     var currentPos = -1
+     var deletePos = -1
+     var list: MutableList<UserShipping> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = DataBindingUtil.inflate<ItemShippingaddressListBinding>(LayoutInflater.from(parent.context), R.layout.item_shippingaddress_list, parent, false)

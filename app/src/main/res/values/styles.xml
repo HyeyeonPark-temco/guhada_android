@@ -31,6 +31,13 @@
         <item name="imageButtonStyle">@style/DefaultImageButtonStyle</item>
     </style>
 
+    <style name="CalendarDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="colorAccent">@color/common_blue_purple</item>
+        <item name="android:colorAccent">@color/common_blue_purple</item>
+        <item name="android:colorPrimaryDark">@color/common_blue_purple</item>
+        <item name="android:colorPrimary">@color/common_blue_purple</item>
+    </style>
+
     <!-- TEXTVIEW -->
     <style name="TextRegular">
         <item name="android:fontFamily">sans-serif</item>

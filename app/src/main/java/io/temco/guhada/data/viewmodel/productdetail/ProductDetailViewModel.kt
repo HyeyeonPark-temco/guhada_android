@@ -14,10 +14,10 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Seller
-import io.temco.guhada.data.model.SellerSatisfaction
-import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.product.Product
+import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerFollower
+import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
@@ -27,6 +27,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var seller: Seller = Seller()
         @Bindable
         get() = field
+    var sellerFollower = SellerFollower()
+        @Bindable
+        get() = field
+
     var sellerSatisfaction = SellerSatisfaction()
         @Bindable
         get() = field
@@ -80,6 +84,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     },
                     productNotFoundTask = {
                         listener?.closeActivity()
+                        listener?.hideLoadingIndicator()
                         ToastUtil.showMessage(it.message)
                     })
         }, dealId)
@@ -88,15 +93,37 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     fun getSellerInfo() {
         if (product.value?.sellerId != null) {
             UserServer.getSellerById(OnServerListener { success, o ->
-                if (success) {
-                    (o as BaseModel<Seller>).let {
-                        this.seller = it.data
-                        notifyPropertyChanged(BR.seller)
-                    }
-                } else {
-                    CommonUtil.debug(o?.toString())
-                }
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            this.seller = it.data as Seller
+                            notifyPropertyChanged(BR.seller)
+                        })
             }, product.value?.sellerId!!)
+        }
+    }
+
+    /**
+     * 셀러 팔로잉
+     */
+    fun getLike(target: String) {
+        if (product.value?.sellerId != null) {
+            ServerCallbackUtil.callWithToken(
+                    task = {
+                        UserServer.getLike(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        this.sellerFollower.isFollower = true
+                                        notifyPropertyChanged(BR.sellerFollower)
+                                    },
+                                    userLikeNotFoundTask = {
+                                        this.sellerFollower.isFollower = false
+                                        notifyPropertyChanged(BR.sellerFollower)
+                                    }
+                            )
+                        }, accessToken = it, target = target, userId = product.value?.sellerId as Long)
+                    }
+            )
+
         }
     }
 

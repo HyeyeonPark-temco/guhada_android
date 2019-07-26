@@ -3,7 +3,6 @@ package io.temco.guhada.view.custom.layout.mypage
 import android.content.Context
 import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
-import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -13,68 +12,68 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnOrderShipListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.DateUtil
 import io.temco.guhada.common.util.TextUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.MyOrderItem
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryBinding
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.adapter.mypage.OrderShipListAdapter
+import io.temco.guhada.view.custom.CustomCalendarFilter
 import io.temco.guhada.view.custom.dialog.MessageDialog
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
-import io.temco.guhada.view.fragment.mypage.MyPageMainFragment
 import java.math.BigDecimal
-import java.util.ArrayList
+import java.util.*
 
 /**
- * 19.07.22
+ * created 19.07.22
  * @author park jungho
  *
  * 마이페이지 - 주문배송 화면
+ * @author Hyeyeon Park
+ * @since 2019.07.26
  *
  */
 class MyPageDeliveryLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMypageDeliveryBinding, MyPageDeliveryViewModel>(context, attrs, defStyleAttr) , View.OnClickListener , SwipeRefreshLayout.OnRefreshListener {
-
+) : BaseListLayout<CustomlayoutMypageDeliveryBinding, MyPageDeliveryViewModel>(context, attrs, defStyleAttr), SwipeRefreshLayout.OnRefreshListener, CustomCalendarFilter.CustomCalendarListener {
     // -------- LOCAL VALUE --------
     private var mRequestManager: RequestManager? = null
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_delivery
     override fun init() {
+        mBinding.calendarfilterMypageDeliver.mListener = this
+
         mRequestManager = Glide.with(this)
-        mBinding.layoutCalendar.setClickListener(this)
         //
         initList()
         initCalendar()
         setLinkText()
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
+    // CustomCalendarListener
+    override fun onClickWeek() {
+        ToastUtil.showMessage("week")
+    }
 
-            ////////////////////////////////////////////////
-            // Period
-            R.id.text_week -> setPeriod(0)
+    override fun onClickMonth() {
+        ToastUtil.showMessage("month")
+    }
 
-            R.id.text_month -> setPeriod(1)
+    override fun onClickThreeMonth() {
+        ToastUtil.showMessage("3 month")
+    }
 
-            R.id.text_month_three -> setPeriod(2)
+    override fun onClickYear() {
+        ToastUtil.showMessage("year")
+    }
 
-            R.id.text_year -> setPeriod(3)
+    override fun onClickCheck() {
 
-            ////////////////////////////////////////////////
-            // Calendar
-            R.id.layout_date_from -> CommonUtil.debug("Date_From")
-
-            R.id.layout_date_to -> CommonUtil.debug("Date_To")
-
-            R.id.text_check -> CommonUtil.debug("Check")
-        }////////////////////////////////////////////////
     }
 
     ////////////////////////////////////////////////
@@ -266,7 +265,7 @@ class MyPageDeliveryLayout constructor(
     override fun onRefresh() {
         this@MyPageDeliveryLayout.handler.postDelayed({
             mBinding.swipeRefreshLayout.isRefreshing = false
-        },1000)
+        }, 1000)
     }
 
     ////////////////////////////////////////////////

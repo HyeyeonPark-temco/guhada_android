@@ -5,9 +5,13 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
+import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerFollower
+import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.*
 
 /**
@@ -172,6 +176,14 @@ interface UserService {
     fun saveShippingAddress(@Path("userId") userId: Int, @Body shippingAddress: UserShipping): Call<BaseModel<Any>>
 
     /**
+     * 임시 회원 배송지 추가 API
+     * @param userId
+     * @since 2019.07.25
+     */
+    @POST("/users/{userId}/shipping-addresses")
+    fun tempSaveShippingAddress(@Path("userId") userId: Int, @Body shippingAddress: TempUserShipping): Call<BaseModel<Any>>
+
+    /**
      * 상품 리뷰 평점 및 그래프 정보 조회 API
      */
     @GET("/products/{productId}/reviews/summary")
@@ -188,4 +200,17 @@ interface UserService {
      */
     @GET("/sellers/{sellerId}/purchase-satisfaction")
     fun getSellerSatisfaction(@Path("sellerId") sellerId: Long): Call<BaseModel<SellerSatisfaction>>
+
+    /**
+     * 셀러 팔로우 조회 API
+     */
+    @GET("/sellers/{sellerId}/followers")
+    fun getSellerFollowers(@Header("Authorization") accessToken: String, @Path("sellerId") sellerId: Long) : Call<BaseModel<SellerFollower>>
+
+    /**
+     * 좋아요 정보 조회 API
+     * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
+     */
+    @GET("/users/{userId}/likes")
+    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId : Long, @Query("target") target :String) : Call<BaseModel<Any>>
 }

@@ -84,7 +84,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     private fun initUtils() {
         //[2019.06.26]임시 브릿지
         if (context != null) mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
-        //  if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
+        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
     }
 
     private fun initViewModel() {
@@ -95,6 +95,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
             initSummary()
             initContentHeader()
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
+            hideLoadingIndicator()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
@@ -103,6 +104,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
 
+                mViewModel.getLike("SELLER")
                 mViewModel.getSellerInfo()
                 initOptionMenu()
                 initClaims()
@@ -129,12 +131,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
-           // mLoadingIndicatorUtil.show()
             mViewModel.getDetail()
-
-//            mLoadingIndicatorUtil.execute {
-//                mViewModel.getDetail()
-//            }
         }
     }
 
@@ -344,9 +341,9 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun showMenu() {
         val optionCount = mViewModel.product.value?.options?.size
         val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            if(::mMenuFragment.isInitialized)  mMenuFragment.getSelectedOptionCount() else 0
+            if (::mMenuFragment.isInitialized) mMenuFragment.getSelectedOptionCount() else 0
         } else {
-            if(::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
+            if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
         }
 
         if (selectedOptionCount == optionCount) {
@@ -419,6 +416,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
                 }
             }
         } else {
+            setMenuVisible()
             ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
         }
     }
@@ -440,7 +438,7 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     }
 
     override fun hideLoadingIndicator() {
-        if (mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+        if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
     }
 
     override fun closeActivity() {
