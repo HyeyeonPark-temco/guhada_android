@@ -58,6 +58,7 @@ class MyPageAddressLayout constructor(
     }
 
     override fun onRefresh() {
+        mShippingAddressListFragment.mListAdapter.initPoses()
         mViewModel.getUserShippingAddress()
         mBinding.swipeRefreshLayout.isRefreshing = false
     }
@@ -84,6 +85,8 @@ class MyPageAddressLayout constructor(
             mViewModel.notifyPropertyChanged(BR.emptyVisibility)
         }
     }
+
+    override fun getSelectedPos(): Int = mShippingAddressListFragment.mListAdapter.currentPos
 
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {
         Intent(context, EditShippingAddressActivity::class.java).let {

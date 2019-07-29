@@ -103,10 +103,6 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
         startActivityForResult(Intent(this@ShippingAddressActivity, SearchZipWebViewActivity::class.java), Flag.RequestCode.SEARCH_ZIP)
     }
 
-    override fun redirectAddShippingAddressActivity() {
-        // NONE
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -128,4 +124,9 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
 
         }
     }
+
+    // NOT USED
+    override fun redirectAddShippingAddressActivity() {}
+    override fun getSelectedPos(): Int = 0
+
 }

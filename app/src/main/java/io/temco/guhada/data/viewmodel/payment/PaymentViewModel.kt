@@ -304,12 +304,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         if (this@PaymentViewModel.selectedShippingAddress == null) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
-                            this@PaymentViewModel.selectedShippingAddress?.shippingMessage = if (shippingMessage.isEmpty()) selectedShippingMessage.get()?.message
-                                    ?: ""
-                            else shippingMessage
-
-                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()
-                                    ?: ShippingMessage()
+//                            this@PaymentViewModel.selectedShippingAddress?.shippingMessage = if (shippingMessage.isEmpty()) selectedShippingMessage.get()?.message
+//                                    ?: ""
+//                            else shippingMessage
+//                            this@PaymentViewModel.selectedShippingAddress?.shippingMessageType = selectedShippingMessage.get()
+//                                    ?: ShippingMessage()
 
                             RequestOrder().apply {
                                 this.user = this@PaymentViewModel.user.get()!!
