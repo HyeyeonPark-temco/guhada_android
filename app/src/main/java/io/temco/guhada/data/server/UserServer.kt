@@ -5,7 +5,10 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.TempUserShipping
+import io.temco.guhada.data.model.Token
+import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.ReviewResponse
@@ -168,8 +171,8 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
 
         @JvmStatic
-        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String, email: String) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId, email).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String,  email: String?) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId, email ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 개별 유저 정보 조회 API

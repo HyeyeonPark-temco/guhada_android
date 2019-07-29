@@ -41,47 +41,20 @@ public class KakaoSessionCallback implements ISessionCallback {
 
             @Override
             public void onSuccess(UserProfile result) {
-                CommonUtil.debug("[KAKAO] id: " + result.getId() + "  email: " + result.getEmail());
-                if (result.getEmail() == null) {
-                    userManagement.requestLogout(new LogoutResponseCallback() {
-                        @Override
-                        public void onCompleteLogout() {
-
-                        }
-                    });
-                    userManagement.requestUnlink(new UnLinkResponseCallback() {
-                        @Override
-                        public void onSessionClosed(ErrorResult errorResult) {
-
-                        }
-
-                        @Override
-                        public void onNotSignedUp() {
-
-                        }
-
-                        @Override
-                        public void onSuccess(Long result) {
-
-                        }
-                    });
-                    mListener.showMessage("회원가입을 위해 이메일 제공 동의가 필요합니다");
-                } else {
-                    UserServer.checkExistSnsUser((success, o) -> {
-                        if (success) {
-                            BaseModel model = (BaseModel) o;
-                            if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                                mListener.kakaoLogin(result);
-                            } else {
-                                mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result);
-                            }
+                CommonUtil.debug("[KAKAO] id: " + result.getId());
+                UserServer.checkExistSnsUser((success, o) -> {
+                    if (success) {
+                        BaseModel model = (BaseModel) o;
+                        if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                            mListener.kakaoLogin(result);
                         } else {
-                            String message = (String) o;
-                            Toast.makeText(BaseApplication.getInstance().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                            mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result);
                         }
-                    }, "KAKAO", String.valueOf(result.getId()), result.getEmail());
-                }
-
+                    } else {
+                        String message = (String) o;
+                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                    }
+                }, "KAKAO", String.valueOf(result.getId()), result.getEmail());
             }
         });
     }

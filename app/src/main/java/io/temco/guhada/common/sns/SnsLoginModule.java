@@ -216,7 +216,7 @@ public class SnsLoginModule {
         }
     }
 
-    public static void kakaoJoin(com.kakao.usermgmt.response.model.UserProfile result, OnServerListener serverListener) {
+    public static void kakaoLogin(com.kakao.usermgmt.response.model.UserProfile result, OnServerListener serverListener) {
         SnsUser user = createSnsUser(result.getEmail(), String.valueOf(result.getId()), "KAKAO", result.getNickname(), result.getProfileImagePath());
         UserServer.kakaoLogin(user, serverListener);
     }

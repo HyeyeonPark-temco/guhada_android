@@ -61,7 +61,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mLoginListener = new OnSnsLoginListener() {
             @Override
             public void kakaoLogin(UserProfile result) {
-                SnsLoginModule.kakaoJoin(result, getSnsLoginServerListener());
+                SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener());
             }
 
             @Override
@@ -182,7 +182,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             switch (requestCode) {
                 case Flag.RequestCode.KAKAO_LOGIN:
                     mViewModel.getTempSnsUser().setSnsType("KAKAO");
-                    SnsLoginModule.kakaoJoin((UserProfile) mViewModel.getSnsUser(), getSnsLoginServerListener());
+                    SnsLoginModule.kakaoLogin((UserProfile) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
                     mViewModel.getTempSnsUser().setSnsType("NAVER");
@@ -190,7 +190,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     mViewModel.getTempSnsUser().setSnsType("GOOGLE");
-//                    SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener, getSnsLoginServerListener());
                     SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
@@ -223,14 +222,10 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                             if (success1) {
                                 BaseModel<Token> m = (BaseModel<Token>) o1;
                                 if (m.resultCode == Flag.ResultCode.SUCCESS) {
-//                                    LinkedTreeMap<String, String> map = (LinkedTreeMap<String, String>) m.data;
                                     Token t = new Token();
                                     t.setAccessToken(m.data.getAccessToken());
                                     t.setRefreshToken(m.data.getRefreshToken());
                                     t.setExpiresIn(m.data.getExpiresIn());
-//                                    t.setAccessToken(map.get("accessToken"));
-//                                    t.setRefreshToken(map.get("refreshToken"));
-//                                    t.setExpiresIn(map.get("expiresIn"));
                                     Log.e("TOKEN", t.getAccessToken());
 
                                     Preferences.setToken(t);
