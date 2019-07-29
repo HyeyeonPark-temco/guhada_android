@@ -151,6 +151,7 @@ public class ImageUtil {
             // options.skipMemoryCache(true) // Memory Cache
             manager.load(url)
                     .apply(options)
+                    .thumbnail(0.9f)
                     .into(view);
         }
     }
