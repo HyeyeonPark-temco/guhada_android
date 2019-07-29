@@ -191,14 +191,6 @@ interface UserService {
     fun saveShippingAddress(@Path("userId") userId: Int, @Body shippingAddress: UserShipping): Call<BaseModel<Any>>
 
     /**
-     * 임시 회원 배송지 추가 API
-     * @param userId
-     * @since 2019.07.25
-     */
-    @POST("/users/{userId}/shipping-addresses")
-    fun tempSaveShippingAddress(@Path("userId") userId: Int, @Body shippingAddress: TempUserShipping): Call<BaseModel<Any>>
-
-    /**
      * 상품 리뷰 평점 및 그래프 정보 조회 API
      */
     @GET("/products/{productId}/reviews/summary")

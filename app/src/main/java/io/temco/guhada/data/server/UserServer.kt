@@ -5,7 +5,6 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.TempUserShipping
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.Verification
@@ -249,15 +248,6 @@ class UserServer {
          */
         @JvmStatic
         fun saveUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddress: UserShipping) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).saveShippingAddress(userId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
-
-        /**
-         * 임시회원 배송지 등록 API
-         * shippingMessageType String
-         * @since 2019.07.25
-         */
-        @JvmStatic
-        fun tempSaveUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddress: TempUserShipping) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).tempSaveShippingAddress(userId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
-
 
         /**
          * 셀러 정보 가져오기 API
