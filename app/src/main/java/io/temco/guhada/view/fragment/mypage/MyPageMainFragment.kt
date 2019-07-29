@@ -9,7 +9,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnDrawerLayoutListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.FragmentMainMypagehomeBinding
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.custom.layout.mypage.*
@@ -117,7 +116,13 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
             override fun onPageScrollStateChanged(state: Int) {  }
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {  }
             override fun onPageSelected(position: Int) {
+                currentPagerIndex = position
                 if(customLayoutMap.containsKey(currentPagerIndex))customLayoutMap.get(currentPagerIndex)!!.onFocusView()
+                if(currentPagerIndex == 10){
+                    mBinding.testLayout.visibility = View.VISIBLE
+                }else{
+                    mBinding.testLayout.visibility = View.GONE
+                }
             }
         })
         mBinding.viewpager.offscreenPageLimit = 1
