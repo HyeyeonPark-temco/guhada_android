@@ -44,6 +44,8 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.ServerCallbackUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.user.SnsUser;
 import io.temco.guhada.data.model.user.UserProfile;
@@ -93,7 +95,7 @@ public class SnsLoginModule {
                                 } else {
                                     Toast.makeText(context, (String) obj, Toast.LENGTH_SHORT).show();
                                 }
-                            }, "NAVER", ((NaverUser) o).getId());
+                            }, "NAVER", ((NaverUser) o).getId(), naverUser.getEmail());
                         } else {
                             CommonUtil.debug("[NAVER] PROFILE-FAILED: " + o.toString());
                         }
@@ -104,7 +106,7 @@ public class SnsLoginModule {
                     String errorCode = mNaverLoginModule.getLastErrorCode(context).getCode();
                     String errorDesc = mNaverLoginModule.getLastErrorDesc(context);
                     CommonUtil.debug("[NAVER] LOGIN-FAILED: " + "errorCode:" + errorCode + ", errorDesc:" + errorDesc);
-            }
+                }
             }
         });
     }
@@ -173,21 +175,25 @@ public class SnsLoginModule {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                if (account != null && account.getId() != null) {
+                if (account != null && account.getId() != null && account.getEmail() != null) {
                     UserServer.checkExistSnsUser((success, o) -> {
                         if (success) {
                             BaseModel model = (BaseModel) o;
-                            if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                                googleLogin(account, serverListener);
-                            } else {
-                                loginListener.redirectTermsActivity(requestCode, account);
+                            switch (model.resultCode){
+                                case Flag.ResultCode.SUCCESS :
+                                    googleLogin(account, serverListener);
+                                    break;
+                                case Flag.ResultCode.DATA_NOT_FOUND :
+                                    loginListener.redirectTermsActivity(requestCode, account);
+                                    break;
                             }
                         } else {
                             Toast.makeText(BaseApplication.getInstance(), (String) o, Toast.LENGTH_SHORT).show();
                         }
-                    }, "GOOGLE", account.getId());
+                    }, "GOOGLE", account.getId(), account.getEmail());
+                } else {
+                    ToastUtil.showMessage("로그인 정보가 부족합니다.");
                 }
-
             } catch (ApiException e) {
                 CommonUtil.debug("[GOOGLE] " + e.getStatusCode() + "-" + e.getMessage());
             }
@@ -244,7 +250,7 @@ public class SnsLoginModule {
         SnsUser user = new SnsUser();
         user.setEmail(email);
         user.setSnsId(snsId);
-        user.setType(snsType);
+        user.setSnsType(snsType);
 
         UserProfile profile = new UserProfile();
         profile.setSnsId(snsId);

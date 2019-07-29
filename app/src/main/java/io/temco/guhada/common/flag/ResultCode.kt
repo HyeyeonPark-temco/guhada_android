@@ -9,6 +9,7 @@ package io.temco.guhada.common.flag
 enum class ResultCode(val flag: Int) {
     SUCCESS(200),
     ORDER_NOT_VALID_ERROR(1001),
+    RUNTIME_EXCEPTION_ERROR(5002),
     DATA_NOT_FOUND(5004),
     NOT_FOUND_VERIFY_INFO(5400),
     ALREADY_EXIST_EMAIL(6001),
@@ -19,6 +20,7 @@ enum class ResultCode(val flag: Int) {
     INVALID_VERIFICATION_NUMBER(6007),
     USER_NOT_FOUND(6016),
     NEED_TO_LOGIN(6017),
+    SERVER_LOGIN_FAILED(6500),
     PRODUCT_RESOURCE_NOT_FOUND(8404),
     USER_LIKE_NOT_FOUND(6015)
 }

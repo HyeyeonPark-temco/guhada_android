@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.order.PurchaseOrder" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view_delivery_topline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_6"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintlayout_delivery_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_delivery_topline">
+
+            <TextView
+                android:id="@+id/textview_delivery_date"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2019.06.03"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view_delivery_line"
+                android:layout_width="1dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="4dp"
+                android:background="@color/line_6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/textview_delivery_date"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_delivery_ordernumber"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="주문번호 TEMP"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/view_delivery_line"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--android:text="@{`주문번호` + `주문 번호 TEM1230403GUHADA`}"-->
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:src="@drawable/mypages_number_arrow_s"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/textview_delivery_ordernumber"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/imageview_delivery_profile"
+            android:layout_marginTop="21dp"
+            app:imageUrl="@{item.imageUrl}"
+            android:layout_width="90dp"
+            android:layout_height="120dp"
+            android:background="@color/white_six"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintlayout_delivery_top" />
+
+        <TextView
+            android:id="@+id/textview_delivery_brandname"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="21dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
+            app:layout_constraintTop_toBottomOf="@+id/constraintlayout_delivery_top" />
+
+        <TextView
+            android:id="@+id/textview_delivery_productname"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="25dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:singleLine="true"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@+id/imageview_delivery_profile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_delivery_brandname" />
+        <!--android:text="@{cart.season + ` ` + cart.dealName}"-->
+
+        <TextView
+            android:id="@+id/textview_delivery_option"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/warm_grey"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
+            app:layout_constraintTop_toBottomOf="@+id/textview_delivery_productname" />
+
+        <TextView
+            android:id="@+id/textview_delivery_price"
+            style="@style/TextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
+            app:layout_constraintTop_toBottomOf="@+id/textview_delivery_option" />
+
+        <TextView
+            android:id="@+id/textview_delivery_status"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="16dp"
+            android:text="입금확인중"
+            android:textColor="@color/common_blue_purple"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
+            app:layout_constraintTop_toBottomOf="@id/textview_delivery_price" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_delivery_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_delivery_status"
+            app:spanCount="2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

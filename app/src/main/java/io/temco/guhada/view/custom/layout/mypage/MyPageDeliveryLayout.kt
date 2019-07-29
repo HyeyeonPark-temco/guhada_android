@@ -19,6 +19,7 @@ import io.temco.guhada.data.model.MyOrderItem
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryBinding
 import io.temco.guhada.view.activity.MainActivity
+import io.temco.guhada.view.adapter.mypage.MyPageDeliveryAdapter
 import io.temco.guhada.view.adapter.mypage.OrderShipListAdapter
 import io.temco.guhada.view.custom.CustomCalendarFilter
 import io.temco.guhada.view.custom.dialog.MessageDialog
@@ -50,12 +51,13 @@ class MyPageDeliveryLayout constructor(
         mBinding.calendarfilterMypageDeliver.mListener = this
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
             val list = it.orderItemList
-
+            mBinding.listContents.adapter = MyPageDeliveryAdapter().apply { this.list = list }
+            mBinding.executePendingBindings()
         })
 
         mRequestManager = Glide.with(this)
         //
-        initList()
+        //     initList()
         //    initCalendar()
         setLinkText()
     }

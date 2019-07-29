@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel" />
@@ -29,21 +30,21 @@
                 <!-- //////////////////////////////////////////////// -->
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#f9f9fa"
+                    android:orientation="vertical"
                     android:padding="20dp">
 
                     <io.temco.guhada.view.custom.CustomCalendarFilter
                         android:id="@+id/calendarfilter_mypage_deliver"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
 
                     <include
-                        android:visibility="gone"
                         android:id="@+id/layout_calendar"
-                        layout="@layout/layout_calendar" />
+                        layout="@layout/layout_calendar"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <!-- //////////////////////////////////////////////// -->
@@ -89,9 +90,11 @@
                             android:id="@+id/list_contents"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:orientation="vertical"
                             android:overScrollMode="never"
                             android:paddingLeft="20dp"
-                            android:paddingRight="20dp" />
+                            android:paddingRight="20dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                         <!-- INFORMATION -->
                         <include

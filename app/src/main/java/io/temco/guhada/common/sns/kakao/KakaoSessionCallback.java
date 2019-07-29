@@ -79,7 +79,7 @@ public class KakaoSessionCallback implements ISessionCallback {
                             String message = (String) o;
                             Toast.makeText(BaseApplication.getInstance().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                         }
-                    }, "KAKAO", String.valueOf(result.getId()));
+                    }, "KAKAO", String.valueOf(result.getId()), result.getEmail());
                 }
 
             }

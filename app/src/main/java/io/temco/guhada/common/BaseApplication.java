@@ -11,6 +11,7 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.sns.kakao.KakaoSDKAdapter;
 import io.temco.guhada.common.util.CommonUtil;
@@ -40,6 +41,9 @@ public class BaseApplication extends MultiDexApplication {
         // FACEBOOK
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        // JODA
+//        JodaTimeAndroid.init(this);
     }
 
     public static BaseApplication getInstance() {

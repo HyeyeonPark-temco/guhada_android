@@ -131,6 +131,15 @@ class UserServer {
         }
 
         /**
+         * SNS 유저 회원가입 API
+         */
+        @JvmStatic
+        fun joinSnsUser(listener: OnServerListener, user: SnsUser) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java).joinSnsUser(user).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>> { successResponse -> listener.onResult(true, successResponse.body()) })
+        }
+
+        /**
          * 구글 로그인 API
          */
         @JvmStatic
@@ -159,8 +168,8 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
 
         @JvmStatic
-        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "중복 SNS 유저 체크 오류"))
+        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String, email: String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId, email).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 개별 유저 정보 조회 API

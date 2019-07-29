@@ -108,35 +108,50 @@ interface UserService {
     fun checkPhone(@Path("mobile") mobile: String): Call<BaseModel<Any>>
 
     /**
-     * 존재하는 SNS 계정인지 검증 API
+     * 존재하는 SNS 계정인지 검증 API (deprecated)
      * @param snsType GOOGLE/FACEBOOK/NAVER/KAKAO
      * @param snsId
      */
-    @GET("/sns/{snsType}/sns-ids/{snsId}")
-    fun checkExistSnsUser(@Path("snsType") snsType: String, @Path("snsId") snsId: String): Call<BaseModel<Any>>
+//    @GET("/sns/{snsType}/sns-ids/{snsId}")
+//    fun checkExistSnsUser(@Path("snsType") snsType: String, @Path("snsId") snsId: String): Call<BaseModel<Any>>
+
+    /**
+     * 존재하는 SNS 계정인지 검증 API
+     * @param snsType GOOGLE/FACEBOOK/NAVER/KAKAO
+     * @param snsId
+     * @param email
+     */
+    @GET("/users/sns")
+    fun checkExistSnsUser(@Query("sns-type") snsType: String, @Query("uid") snsId: String, @Query("email") email: String): Call<BaseModel<Any>>
+
+    /**
+     * SNS 회원가입 API
+     */
+    @POST("/sns-users")
+    fun joinSnsUser(@Body user: SnsUser): Call<BaseModel<Token>>
 
     /**
      * 페이스북 로그인 API
      */
-    @POST("/facebookLogin")
+    @POST("/sns-users/facebookLogin")
     fun facebookLogin(@Body user: SnsUser): Call<BaseModel<Token>>
 
     /**
      * 구글 로그인 API
      */
-    @POST("/googleLogin")
+    @POST("/sns-users/googleLogin")
     fun googleLogin(@Body user: SnsUser): Call<BaseModel<Token>>
 
     /**
      * 카카오톡 로그인 API
      */
-    @POST("/kakaoLogin")
+    @POST("/sns-users/kakaoLogin")
     fun kakaoLogin(@Body user: SnsUser): Call<BaseModel<Token>>
 
     /**
      * 네이버 로그인 API
      */
-    @POST("/naverLogin")
+    @POST("/sns-users/naverLogin")
     fun naverLogin(@Body user: SnsUser): Call<BaseModel<Token>>
 
     /**
@@ -205,12 +220,12 @@ interface UserService {
      * 셀러 팔로우 조회 API
      */
     @GET("/sellers/{sellerId}/followers")
-    fun getSellerFollowers(@Header("Authorization") accessToken: String, @Path("sellerId") sellerId: Long) : Call<BaseModel<SellerFollower>>
+    fun getSellerFollowers(@Header("Authorization") accessToken: String, @Path("sellerId") sellerId: Long): Call<BaseModel<SellerFollower>>
 
     /**
      * 좋아요 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
      */
     @GET("/users/{userId}/likes")
-    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId : Long, @Query("target") target :String) : Call<BaseModel<Any>>
+    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("target") target: String): Call<BaseModel<Any>>
 }

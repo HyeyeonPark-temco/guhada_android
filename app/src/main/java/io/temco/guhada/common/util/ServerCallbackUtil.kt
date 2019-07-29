@@ -54,8 +54,6 @@ class ServerCallbackUtil {
         }
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
-
-
             if (response.isSuccessful) {
                 successTask(response)
             } else {
@@ -77,9 +75,14 @@ class ServerCallbackUtil {
         fun executeByResultCode(success: Boolean, o: Any,
                                 successTask: (BaseModel<*>) -> Unit,
                                 failedTask: (BaseModel<*>) -> Unit = {
-                                    CommonUtil.debug(o as String)
+                                    CommonUtil.debug(it.message)
                                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
                                 },
+                                serverRuntimeErrorTask: (BaseModel<*>) -> Unit = {
+                                    CommonUtil.debug(it.message)
+                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                                },
+                                serverLoginErrorTask: (BaseModel<*>) -> Unit = {},
                                 dataNotFoundTask: () -> Unit = {},
                                 productNotFoundTask: (BaseModel<*>) -> Unit = {},
                                 userLikeNotFoundTask: () -> Unit = {}) {
@@ -90,6 +93,8 @@ class ServerCallbackUtil {
                     ResultCode.DATA_NOT_FOUND.flag -> dataNotFoundTask()
                     ResultCode.PRODUCT_RESOURCE_NOT_FOUND.flag -> productNotFoundTask(model)
                     ResultCode.USER_LIKE_NOT_FOUND.flag -> userLikeNotFoundTask()
+                    ResultCode.RUNTIME_EXCEPTION_ERROR.flag -> serverRuntimeErrorTask(model)
+                    ResultCode.SERVER_LOGIN_FAILED.flag -> serverLoginErrorTask(model)
                 }
             } else {
                 // modify ------------------------------------
