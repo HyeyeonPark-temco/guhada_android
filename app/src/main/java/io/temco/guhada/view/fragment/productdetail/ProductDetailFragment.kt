@@ -50,8 +50,9 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainListener) : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
+class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
+    var dealId: Long = 0
+    lateinit var mainListener: OnMainListener
     private val INVALID_DEAL_ID = -1
     private var animFlag = true
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
@@ -66,9 +67,9 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
     override fun getLayoutId(): Int = R.layout.activity_product_detail
 
     // room database init
-    private val db : GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
+    private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
     // rx Init
-    private var mDisposable : CompositeDisposable = CompositeDisposable()
+    private var mDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun init() {
         initUtils()
@@ -115,16 +116,16 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
              * 19.07.25
              * 최근본상품의 상품 DB에 추가
              */
-            if(product.productId > 0L){
+            if (product.productId > 0L) {
                 mDisposable.add(Observable.just(product).subscribeOn(Schedulers.io()).subscribe {
                     db.recentDealDao().delete(dealId)
                     var recentDealEntity = RecentDealEntity()
-                    recentDealEntity.initData(Calendar.getInstance().timeInMillis,dealId,Gson().toJson(it),"")
-                    if(CustomLog.flag)CustomLog.L("initViewModel",recentDealEntity.toString())
+                    recentDealEntity.initData(Calendar.getInstance().timeInMillis, dealId, Gson().toJson(it), "")
+                    if (CustomLog.flag) CustomLog.L("initViewModel", recentDealEntity.toString())
                     db.recentDealDao().insert(recentDealEntity)
                     var list = db.recentDealDao().getAll(21)
-                    if(list.size >= 21){
-                        db.recentDealDao().delete(list[list.size-1])
+                    if (list.size >= 21) {
+                        db.recentDealDao().delete(list[list.size - 1])
                     }
                 })
             }
@@ -198,12 +199,12 @@ class ProductDetailFragment(val dealId: Long, private val mainListener: OnMainLi
 
         (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
 
-        try{
+        try {
             GuhadaDB.destroyInstance()
             // rx release
             mDisposable.dispose()
-        }catch (e : Exception){
-            if(CustomLog.flag)CustomLog.E(e)
+        } catch (e: Exception) {
+            if (CustomLog.flag) CustomLog.E(e)
         }
     }
 
