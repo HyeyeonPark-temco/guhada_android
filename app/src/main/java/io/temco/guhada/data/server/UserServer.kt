@@ -40,7 +40,7 @@ class UserServer {
                     if (response.isSuccessful) {
                         val naverResponse = response.body()
                         if (naverResponse != null && naverResponse.resultCode != null) {
-                            if (naverResponse.resultCode == NAVER_API_SUCCESS) {
+                            if (naverResponse.resultCode == NAVER_API_SUCCESS || naverResponse.message == "success") {
                                 listener.onResult(true, naverResponse.user)
                             }
                         } else {
