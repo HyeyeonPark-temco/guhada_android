@@ -98,86 +98,8 @@ class MyPageClaimAdapter (private val model : ViewModel, list : ArrayList<MyPage
                         "."+String.format("%02d",data.inquiry.replyAt[2])+
                         " "+String.format("%02d",data.inquiry.replyAt[3])+
                         ":"+String.format("%02d",data.inquiry.replyAt[4])
-                binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener {
-                    var flag = it.tag as Boolean
-                    if(!flag){
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.GONE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.VISIBLE
-                        when{
-                            position == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                            position == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                        }
-                    }else{
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
-                        when{
-                            position == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                            position == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                        }
-                    }
-                    binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
-                }
-                binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener {
-                    var flag = binding.linearlayoutMypageclaimlistAnswer1.tag as Boolean
-                    if(!flag){
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.GONE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.VISIBLE
-
-                        when{
-                            position == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                            position == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                        }
-                    }else{
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
-
-                        when{
-                            position == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                            position == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                        }
-                    }
-                    binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
-                }
+                binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener(clickListener)
+                binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener(clickListener)
             }else{
                 binding.buttonMypageclaimlistModify.visibility = View.VISIBLE
                 binding.textviewMypageclaimlistStatus.setBackgroundResource(R.drawable.drawable_border_dsix)
@@ -195,7 +117,48 @@ class MyPageClaimAdapter (private val model : ViewModel, list : ArrayList<MyPage
                     binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
                 }
             }
+        }
 
+        var clickListener = View.OnClickListener {
+            var flag = binding.linearlayoutMypageclaimlistAnswer1.tag as Boolean
+            if(!flag){
+                binding.linearlayoutMypageclaimlistAnswer1.visibility = View.GONE
+                binding.linearlayoutMypageclaimlistAnswer2.visibility = View.VISIBLE
+
+                when{
+                    position == 0 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
+                    }
+                    position == this@MyPageClaimAdapter.itemCount-1 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
+                    }
+                }
+            }else{
+                binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
+                binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
+
+                when{
+                    position == 0 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
+                    }
+                    position == this@MyPageClaimAdapter.itemCount-1 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
+                    }
+                }
+            }
+            binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
         }
     }
 

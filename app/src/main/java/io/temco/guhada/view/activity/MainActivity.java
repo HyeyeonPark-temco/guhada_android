@@ -221,6 +221,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                 case Flag.RequestCode.ADD_SHIPPING_ADDRESS:
                     EventBusHelper.INSTANCE.sendEvent(Flag.RequestCode.ADD_SHIPPING_ADDRESS);
                     break;
+
+                case Flag.RequestCode.MODIFY_CLAIM:
+                    EventBusHelper.INSTANCE.sendEvent(Flag.RequestCode.MODIFY_CLAIM);
+                    break;
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

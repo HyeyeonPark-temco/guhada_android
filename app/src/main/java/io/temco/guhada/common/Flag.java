@@ -18,6 +18,7 @@ public class Flag {
         public static final int EDIT_SHIPPING_ADDRESS = 10012;
         public static final int ADD_SHIPPING_ADDRESS = 10013;
         public static final int SEARCH_ZIP = 10014;
+        public static final int MODIFY_CLAIM = 10015;
     }
 
     public static class ResultCode {

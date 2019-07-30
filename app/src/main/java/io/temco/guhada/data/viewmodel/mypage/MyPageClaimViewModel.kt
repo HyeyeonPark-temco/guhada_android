@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.model.main.MainBaseModel
@@ -34,6 +36,13 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
 
     fun getListAdapter() = adapter
 
+
+    fun reloadRecyclerView(listener : OnSwipeRefreshResultListener){
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "reloadRecyclerView ", "init -----")
+        adapter.items?.run{ clear() }
+        repository.setInitData(listener)
+    }
+
     var claimMessages: MutableList<String> = mutableListOf("답변상태 : 전체","답변상태 : 미답변","답변상태 : 완료")
         @Bindable
         get() = field
@@ -49,6 +58,7 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
             notifyPropertyChanged(BR.selectedStatusMessage)
         }
     }
+
 
 
 }
