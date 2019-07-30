@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
-import io.temco.guhada.common.flag.ResultCode
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.data.model.base.BaseModel
 import retrofit2.Call
 import retrofit2.Callback

@@ -258,4 +258,10 @@
         <item name="android:layout_marginLeft">6dp</item>
     </style>
 
+    <!-- Mypage -->
+    <style name="MypageDeliveryButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@color/pale_grey</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
 </resources>

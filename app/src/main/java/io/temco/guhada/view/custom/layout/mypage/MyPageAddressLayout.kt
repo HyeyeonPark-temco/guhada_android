@@ -13,7 +13,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.flag.RequestCode
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnShippingAddressListener
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.mypage.MyPageAddressViewModel
