@@ -4,7 +4,12 @@ import androidx.annotation.Nullable;
 import androidx.databinding.Bindable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kakao.usermgmt.response.model.UserProfile;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
@@ -201,7 +206,7 @@ public class LoginViewModel extends BaseObservableViewModel {
                             ((NaverUser) snsUser).getName());
                     break;
                 case "GOOGLE":
-                    if(snsUser != null){
+                    if (snsUser != null) {
                         createSnsUser(((GoogleSignInAccount) snsUser).getId(),
                                 ((GoogleSignInAccount) snsUser).getEmail(),
                                 ((GoogleSignInAccount) snsUser).getPhotoUrl() != null ? ((GoogleSignInAccount) snsUser).getPhotoUrl().toString() : null,
@@ -223,12 +228,45 @@ public class LoginViewModel extends BaseObservableViewModel {
         tempSnsUser.setSnsId(id);
         tempSnsUser.setEmail(email);
 
-        if(tempSnsUser.getUserProfile() == null)
+        if (tempSnsUser.getUserProfile() == null)
             tempSnsUser.setUserProfile(new io.temco.guhada.data.model.user.UserProfile());
 
         tempSnsUser.getUserProfile().setName(name);
         if (imageUrl != null) tempSnsUser.getUserProfile().setImageUrl(imageUrl);
         tempSnsUser.getUserProfile().setSnsId(id);
         tempSnsUser.getUserProfile().setEmail(email);
+    }
+
+    public void facebookLogin(JSONObject object, OnServerListener serverListener) {
+        try {
+            String email = object.getString("email");
+            String name = object.getString("name");
+
+            // imageUrl
+            JsonParser parser = new JsonParser();
+            Object o = parser.parse(object.getString("picture"));
+            JsonObject jsonObject = (JsonObject) o;
+            JsonObject jsonObject1 = (JsonObject) parser.parse(jsonObject.get("data").toString());
+            String imageUrl = jsonObject1.get("url").toString();
+            String snsId = object.getString("id");
+
+            // create SnsUser
+            SnsUser user = new SnsUser();
+            user.setEmail(email);
+            user.setSnsId(snsId);
+            user.setSnsType("FACEBOOK");
+
+            io.temco.guhada.data.model.user.UserProfile profile = new io.temco.guhada.data.model.user.UserProfile();
+            profile.setSnsId(snsId);
+            profile.setEmail(email);
+            profile.setName(name);
+            profile.setImageUrl(imageUrl);
+            user.setUserProfile(profile);
+
+            this.tempSnsUser = user;
+            UserServer.facebookLogin(serverListener, user);
+        } catch (JSONException e) {
+            CommonUtil.debug("[FACEBOOK] EXCEPTION: " + e.getMessage());
+        }
     }
 }
