@@ -9,6 +9,11 @@ import io.temco.guhada.data.model.UserShipping
  * @author Hyeyeon Park
  */
 class RequestOrder {
+    /**
+     * 주문 User 정보 deprecated 처리
+     * @since 2019.07.30
+     * @author Hyeyeon Park
+     */
     var user: User = User()
     var addShippingAddress = false
     var cartItemIdList: Array<Long?> = arrayOf()
