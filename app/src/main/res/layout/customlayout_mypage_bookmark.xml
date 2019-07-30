@@ -19,11 +19,99 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background_2"/>
+                android:weightSum="1"
+                android:background="@color/common_white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:gravity="center_vertical"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:gravity="center"
+                        android:textColor="@color/black_four"
+                        android:text="@string/mypage_recentlayout_totalsize1"
+                        android:textSize="@dimen/text_13" />
+
+                    <TextView
+                        android:id="@+id/text_mypagerecent_total"
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/blue_purple"
+                        android:textSize="@dimen/text_13" />
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:text="@string/mypage_recentlayout_totalsize2"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <TextView
+                        android:id="@+id/text_mypagebookmark_deleteall"
+                        style="@style/TextMedium"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:background="@drawable/drawable_border_dsix"
+                        android:text="@string/btn_delete_all"
+                        android:gravity="center"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13"
+                        android:onClick="@{()->viewModel.onClickDeleteAll()}"
+                        />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_mypagebookmark_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_white"
+                    android:layout_weight="1"
+                    app:setAdapter="@{viewModel.getListAdapter()}"/>
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_mypagebookmark_noitem"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@color/common_white"
+                    android:paddingBottom="60dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/icon_no_data"/>
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/no_list_item_desc"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+            </LinearLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

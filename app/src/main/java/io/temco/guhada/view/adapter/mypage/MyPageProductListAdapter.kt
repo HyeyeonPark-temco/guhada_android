@@ -10,44 +10,55 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.TextUtil
-import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.product.Product
+import io.temco.guhada.data.viewmodel.mypage.MyPageBookMarkViewModel
 import io.temco.guhada.data.viewmodel.mypage.MyPageRecentViewModel
+import io.temco.guhada.databinding.ItemMoreListBinding
 import io.temco.guhada.databinding.ItemMypageProductListTwoBinding
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
+
 /**
  * @author park jungho
  * 19.07.26
  *
- * 마이페이지 최근본상품 list adapter
+ * 마이페이지 최근본상품, 찜한상품 list adapter
  */
 class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<Product>) :
-        CommonRecyclerAdapter<Product, MyPageProductListAdapter.MyPageProductListViewHolder>(list) {
+        CommonRecyclerAdapter<Product, MyPageProductListAdapter.ListViewHolder>(list) {
 
     override fun getItemViewType(position: Int): Int {
-        return position
+        return items.let {
+            if(items.isNullOrEmpty()) 0
+            else if(items[position].sellerId < 0) -1
+            else 0
+        }
     }
 
-    override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): MyPageProductListViewHolder {
+    override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding : ItemMypageProductListTwoBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_mypage_product_list_two, parent, false)
-        return MyPageProductListViewHolder(binding.root, binding)
+        if(viewType == 0){
+            var res = R.layout.item_mypage_product_list_two
+            val binding : ItemMypageProductListTwoBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+            return MyPageProductListViewHolder(binding.root, binding)
+        }else{
+            var res = R.layout.item_more_list
+            val binding : ItemMoreListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+            return MyPageMoreListViewHolder(binding.root, binding)
+        }
     }
 
-    override fun setOnBindViewHolder(viewHolder: MyPageProductListViewHolder, item: Product, position: Int) {
-        viewHolder.bind(model as MyPageRecentViewModel, position, item)
+    override fun setOnBindViewHolder(viewHolder: ListViewHolder, item: Product, position: Int) {
+        viewHolder.bind(model, position, item)
     }
 
     override fun isFooter(position: Int) = false
@@ -56,9 +67,16 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
     /**
      * 메인 리스트에 사용할 base view holder
      */
-    inner class MyPageProductListViewHolder(val containerView: View, val binding: ItemMypageProductListTwoBinding) : BaseProductViewHolder<ViewDataBinding>(containerView){
+    open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseProductViewHolder<ViewDataBinding>(containerView){
+        abstract fun bind(viewModel : ViewModel, position : Int, data : Product)
+    }
+
+    /**
+     * 메인 리스트에 사용할 base view holder
+     */
+    inner class MyPageProductListViewHolder(val containerView: View, val binding: ItemMypageProductListTwoBinding) : ListViewHolder(containerView,binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
-        fun bind(model : MyPageRecentViewModel, position : Int, data : Product){
+        override fun bind(model : ViewModel, position : Int, data : Product){
             // Thumbnail
             if(data != null){
                 binding.linearlayoutMypageproductlistadapterItemlayout.tag = data.dealId.toString()
@@ -108,21 +126,32 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 binding.btnDelete.setOnClickListener {
                     var id = it.tag.toString().toLong()
                     var position = it.contentDescription.toString().toInt()
-                    model.getListAdapter().items.removeAt(position)
-                    model.mDisposable.add(Observable.fromCallable {
+                    if(model is MyPageRecentViewModel){
+                        model.getListAdapter().items.removeAt(position)
+                        model.mDisposable.add(Observable.fromCallable {
                             model.db.recentDealDao().delete(id)
                         }.subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { result ->
-                                model.totalItemSize.value = model.getListAdapter().itemCount
-                                model.getListAdapter().notifyDataSetChanged()
-                            }
-                    )
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe { result ->
+                                    model.totalItemSize.value = model.getListAdapter().itemCount
+                                    model.getListAdapter().notifyDataSetChanged()
+                                }
+                        )
+                    }else if(model is MyPageBookMarkViewModel){
+
+                    }
                 }
             }else{
                 binding.linearlayoutMypageproductlistadapterItemlayout.visibility = View.INVISIBLE
                 binding.linearlayoutMypageproductlistadapterItemlayout.setOnClickListener(null)
             }
+
+        }
+    }
+
+    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?) {  }
+        override fun bind(model : ViewModel, position : Int, data : Product){
 
         }
     }

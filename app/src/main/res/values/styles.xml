@@ -258,4 +258,8 @@
         <item name="android:layout_marginLeft">6dp</item>
     </style>
 
+    <style name="ProductImageType">
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
 </resources>

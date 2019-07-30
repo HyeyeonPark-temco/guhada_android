@@ -1,10 +1,21 @@
 package io.temco.guhada.view.custom.layout.mypage
 
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
+import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.mypage.MyPageBookMarkViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageBookmarkBinding
+import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -16,37 +27,93 @@ import io.temco.guhada.view.custom.layout.common.BaseListLayout
  */
 class MyPageBookMarkLayout constructor(
         context: Context,
+        disposable : CompositeDisposable,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMypageBookmarkBinding, MyPageBookMarkViewModel>(context, attrs, defStyleAttr) {
+) : BaseListLayout<CustomlayoutMypageBookmarkBinding, MyPageBookMarkViewModel>(context, disposable, attrs, defStyleAttr) , SwipeRefreshLayout.OnRefreshListener{
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_bookmark
     override fun init() {
+        mViewModel = MyPageBookMarkViewModel(context, disposable)
+        mBinding.viewModel = mViewModel
 
+        mBinding.recyclerviewMypagebookmarkList.layoutManager = WrapGridLayoutManager(context as Activity, 2, LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerviewMypagebookmarkList.setHasFixedSize(true)
+
+        (mBinding.recyclerviewMypagebookmarkList.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
+        (mBinding.recyclerviewMypagebookmarkList.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
+        (mBinding.recyclerviewMypagebookmarkList.layoutManager as WrapGridLayoutManager).setSpanSizeLookup(
+                object : GridLayoutManager.SpanSizeLookup(){
+                    override fun getSpanSize(position: Int): Int {
+                        return if(mViewModel.listData.value!![position].sellerId > 0) 1 else 2
+                    }
+                }
+        )
+
+        mViewModel.listData.observe(this,
+                androidx.lifecycle.Observer<ArrayList<Product>> {
+                    mViewModel.getListAdapter().notifyDataSetChanged()
+                }
+        )
+        mViewModel.totalItemSize.observe(this,androidx.lifecycle.Observer<Int> {
+            var size = it
+            if(mViewModel.getListAdapter().items[it-1].sellerId < 0) size = size-1
+
+            var sizeTxt = " " + size.toString()
+            mBinding.textMypagerecentTotal.setText(sizeTxt)
+            if(it > 0){
+                mBinding.recyclerviewMypagebookmarkList.visibility = View.VISIBLE
+                mBinding.linearlayoutMypagebookmarkNoitem.visibility = View.GONE
+            }else{
+                mBinding.recyclerviewMypagebookmarkList.visibility = View.GONE
+                mBinding.linearlayoutMypagebookmarkNoitem.visibility = View.VISIBLE
+            }
+        })
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+    }
+
+    override fun onRefresh() {
+        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onRefresh ", "init -----")
+        mViewModel.reloadRecyclerView(object : OnSwipeRefreshResultListener {
+            override fun onResultCallback() {
+                if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onResultCallback ", "init -----")
+                this@MyPageBookMarkLayout.handler.postDelayed({
+                    mBinding.swipeRefreshLayout.isRefreshing = false
+                },200)
+            }
+        })
     }
 
     override fun onFocusView() {
+        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onFocusView ", "init -----")
 
     }
 
     override fun onStart() {
+        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onStart ", "init -----")
 
     }
 
     override fun onResume() {
+        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onResume ", "init -----")
 
     }
 
     override fun onPause() {
+        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onPause ", "init -----")
 
     }
 
     override fun onStop() {
+        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onStop ", "init -----")
 
     }
 
     override fun onDestroy() {
+        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onDestroy ", "init -----")
+        mBinding.viewModel?.destroyModel()
 
     }
+
 }

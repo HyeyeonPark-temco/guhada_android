@@ -93,8 +93,8 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
                             2->{vw = MyPageDeliveryCerLayout(it)}
                             3->{vw = MyPagePointLayout(it)}
                             4->{vw = MyPageCouponLayout(it)}
-                            5->{vw = MyPageFollowLayout(it)}
-                            6->{vw = MyPageBookMarkLayout(it)}
+                            5->{vw = MyPageBookMarkLayout(it,mDisposable)}
+                            6->{vw = MyPageFollowLayout(it)}
                             7->{vw = MyPageRecentLayout(it,mDisposable)}
                             8->{vw = MyPageReviewLayout(it)}
                             9->{vw = MyPageClaimLayout(it)}

@@ -243,12 +243,15 @@
                     app:layout_constraintEnd_toStartOf="@+id/checkBox5"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <CheckBox
+                <!--  @author park jungho
+                      북마크 기능 추가  -->
+                <ImageButton
                     android:id="@+id/checkBox5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_bookmark_productdetail"
+                    android:background="@{viewModel.productBookMark ? @drawable/detail_icon_bookmark_on : @drawable/selector_bookmark_productdetail}"
                     android:button="@null"
+                    android:onClick="@{()->viewModel.onClickBookMark()}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

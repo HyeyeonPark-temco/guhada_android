@@ -124,12 +124,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    style="@style/ProductImageType"
                     android:id="@+id/imageview_cart_product"
                     android:layout_width="91dp"
                     android:layout_height="120dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
-                    android:scaleType="centerInside"
                     android:src="@color/white_six"
                     app:imageUrl="@{cart.imageUrl}"
                     app:layout_constraintLeft_toLeftOf="parent"

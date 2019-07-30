@@ -18,10 +18,10 @@
 
             <!-- THUMBNAIL -->
             <ImageView
+                style="@style/ProductImageType"
                 android:id="@+id/image_thumb"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY" />
+                android:layout_height="match_parent"/>
 
             <!-- SHIP -->
             <TextView

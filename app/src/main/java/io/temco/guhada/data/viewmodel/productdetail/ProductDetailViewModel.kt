@@ -70,6 +70,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         @Bindable
         get() = field
 
+    var productBookMark = ObservableBoolean(true)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.productBookMark)
+        }
+
     fun getDetail() {
         ProductServer.getProductDetail(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -215,5 +223,11 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             listener?.redirectLoginActivity()
         })
+    }
+
+
+
+    fun onClickBookMark(){
+        productBookMark.set(!productBookMark.get())
     }
 }

@@ -62,11 +62,10 @@
 
                 <!-- THUMBNAIL -->
                 <ImageView
+                    style="@style/ProductImageType"
                     android:id="@+id/image_thumb"
                     android:layout_width="80dp"
-                    android:layout_height="106dp"
-
-                    android:scaleType="centerInside" />
+                    android:layout_height="106dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

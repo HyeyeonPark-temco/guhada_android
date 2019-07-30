@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.order.PurchaseOrder" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/ProductImageType"
+                android:layout_width="90dp"
+                android:layout_height="120dp"
+                android:layout_marginRight="24dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_mypageclaimlist_brand"
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_3"
+                    android:textSize="@dimen/text_13" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+                    <!-- SEASON -->
+                    <TextView
+                        android:id="@+id/text_mypageclaimlist_season"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <!-- TITLE -->
+                    <TextView
+                        android:id="@+id/text_mypageclaimlist_title"
+                        style="@style/TextRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <!-- 판매자 -->
+                <TextView
+                    android:id="@+id/text_mypageclaimlist_seller"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_13" />
+
+                <!-- 작성일자 -->
+                <TextView
+                    android:id="@+id/text_mypageclaimlist_date"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

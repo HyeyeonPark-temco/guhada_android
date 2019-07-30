@@ -249,10 +249,10 @@
 
                         <!-- THUMBNAIL -->
                         <ImageView
+                            style="@style/ProductImageType"
                             android:id="@+id/image_thumb_0"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitXY" />
+                            android:layout_height="@dimen/view_main_home_deal_list_image_height" />
 
                         <!-- SHIP -->
                         <TextView
@@ -403,10 +403,10 @@
 
                         <!-- THUMBNAIL -->
                         <ImageView
+                            style="@style/ProductImageType"
                             android:id="@+id/image_thumb_1"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitXY" />
+                            android:layout_height="@dimen/view_main_home_deal_list_image_height" />
 
                         <!-- SHIP -->
                         <TextView
@@ -568,10 +568,10 @@
 
                         <!-- THUMBNAIL -->
                         <ImageView
+                            style="@style/ProductImageType"
                             android:id="@+id/image_thumb_2"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitXY" />
+                            android:layout_height="@dimen/view_main_home_deal_list_image_height" />
 
                         <!-- SHIP -->
                         <TextView
@@ -720,10 +720,10 @@
 
                         <!-- THUMBNAIL -->
                         <ImageView
+                            style="@style/ProductImageType"
                             android:id="@+id/image_thumb_3"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitXY" />
+                            android:layout_height="@dimen/view_main_home_deal_list_image_height" />
 
                         <!-- SHIP -->
                         <TextView
@@ -885,10 +885,10 @@
 
                         <!-- THUMBNAIL -->
                         <ImageView
+                            style="@style/ProductImageType"
                             android:id="@+id/image_thumb_4"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/view_main_home_deal_list_image_height"
-                            android:scaleType="fitXY" />
+                            android:layout_height="@dimen/view_main_home_deal_list_image_height" />
 
                         <!-- SHIP -->
                         <TextView
@@ -1037,10 +1037,10 @@
 
                         <!-- THUMBNAIL -->
                         <ImageView
+                            style="@style/ProductImageType"
                             android:id="@+id/image_thumb_5"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY" />
+                            android:layout_height="match_parent" />
 
                         <!-- SHIP -->
                         <TextView
