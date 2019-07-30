@@ -1,7 +1,7 @@
 package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.claim.ClaimResponse
-import io.temco.guhada.data.model.InquiryRequest
+import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import retrofit2.Call
@@ -35,6 +35,12 @@ interface ClaimService {
      * 상품 문의 작성하기 API
      */
     @POST("products/{id}/inquiries")
-    fun saveClaim(@Header("Authorization") accessToken: String, @Path("id") productId: Long, @Body inquiry: InquiryRequest): Call<BaseModel<Claim>>
+    fun saveClaim(@Header("Authorization") accessToken: String, @Path("id") productId: Long, @Body inquiry: Inquiry): Call<BaseModel<Claim>>
 
+
+    /**
+     * 상품 문의 수정하기 API
+     */
+    @PUT("products/{id}/inquiries")
+    fun editClaim(@Header("Authorization") accessToken: String, @Path("id") productId: Long, @Body inquiry: Inquiry): Call<BaseModel<Claim>>
 }

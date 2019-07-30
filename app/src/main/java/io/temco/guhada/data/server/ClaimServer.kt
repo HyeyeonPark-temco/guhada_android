@@ -7,7 +7,7 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.data.model.claim.ClaimResponse
-import io.temco.guhada.data.model.InquiryRequest
+import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
@@ -46,8 +46,11 @@ open class ClaimServer {
             })
         }
 
+        /**
+         * 상품문의 작성 API
+         */
         @JvmStatic
-        fun saveClaim(listener: OnServerListener, inquiry: InquiryRequest) {
+        fun saveClaim(listener: OnServerListener, inquiry: Inquiry) {
             val accessToken = Preferences.getToken()?.accessToken
             if (accessToken.isNullOrBlank()) {
                 // 로그인 팝업 노출
@@ -65,5 +68,26 @@ open class ClaimServer {
             }
         }
 
+        /**
+         * 상품문의 수정 API
+         */
+        @JvmStatic
+        fun editClaim(listener: OnServerListener, inquiry: Inquiry) {
+            val accessToken = Preferences.getToken()?.accessToken
+            if (accessToken.isNullOrBlank()) {
+                // 로그인 팝업 노출
+                Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
+            } else {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).editClaim(accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
+                    override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+
+                    override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
     }
 }
