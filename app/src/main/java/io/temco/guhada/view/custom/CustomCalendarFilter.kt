@@ -24,7 +24,17 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
     private lateinit var mBinding: LayoutAllCalendarBinding
     lateinit var mListener: CustomCalendarListener
     var startDate = ""
+        set(value) {
+            field = value
+            mBinding.textDateFrom.text = field
+            mBinding.executePendingBindings()
+        }
     var endDate = ""
+        set(value) {
+            field = value
+            mBinding.textDateTo.text = field
+            mBinding.executePendingBindings()
+        }
 
     constructor(context: Context) : super(context) {
         initView(context, null)
@@ -99,6 +109,12 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
             textView.text = dateStr
             if (textView.id == mBinding.textDateFrom.id) startDate = dateStr
             else endDate = dateStr
+
+            // reset filters
+            mBinding.textWeek.isSelected = false
+            mBinding.textMonth.isSelected = false
+            mBinding.textMonthThree.isSelected = false
+            mBinding.textYear.isSelected = false
 
             mBinding.executePendingBindings()
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH))
