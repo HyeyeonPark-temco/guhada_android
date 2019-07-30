@@ -6,6 +6,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.viewmodel.account.JoinViewModel;
 import io.temco.guhada.databinding.ActivityJoinBinding;
 import io.temco.guhada.view.activity.base.BindActivity;

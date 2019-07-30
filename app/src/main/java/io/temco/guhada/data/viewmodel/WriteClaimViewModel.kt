@@ -4,22 +4,23 @@ import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Flag.ResultCode.NEED_TO_LOGIN
-import io.temco.guhada.common.Flag.ResultCode.SUCCESS
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.activity.WriteClaimActivity
 
-class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener) : BaseObservableViewModel() {
+class WriteClaimViewModel : BaseObservableViewModel() {
     val toolBarTitle: String = "상품 문의하기"
     var inquiry: Inquiry = Inquiry()
+    lateinit var closeActivity: (resultCode: Int, claim: Claim?) -> Unit
 
     fun onClickBack() {
-        listener.closeActivity(RESULT_CANCELED)
+        if (::closeActivity.isInitialized) closeActivity(RESULT_CANCELED, null)
     }
 
     fun onCheckedPrivate(checked: Boolean) {
@@ -28,55 +29,29 @@ class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener)
 
     fun onClickSubmit() {
         if (inquiry.content.isEmpty()) {
-            listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_write_message_empty))
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.claim_write_message_empty))
         } else {
             if (inquiry.inquiryId == null) createInquiry()
             else editInquiry()
         }
     }
 
-    private fun createInquiry() {
-        ClaimServer.saveClaim(OnServerListener { success, o ->
-            if (success) {
-                val model = o as BaseModel<Claim>
-                when (model.resultCode) {
-                    SUCCESS -> {
-                        // 문의 리스트 REFRESH
-                        val claim = model.data as Claim
-                        listener.showMessage("[${claim.id}] 문의가 등록되었습니다.")
-                        listener.closeActivity(RESULT_OK)
-                    }
-                    NEED_TO_LOGIN -> {
-                        listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-                    }
-                }
-            } else {
-                // 임시 메세지
-                listener.showMessage(o?.toString() ?: "오류")
-            }
-        }, inquiry)
-    }
+    private fun createInquiry() = ClaimServer.saveClaim(OnServerListener { success, o -> claimCallback(success, o) }, inquiry)
+    private fun editInquiry() = ClaimServer.editClaim(OnServerListener { success, o -> claimCallback(success, o) }, inquiry)
+    private fun claimCallback(success: Boolean, o: Any) =
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        val model = o as BaseModel<Claim>
+                        when (model.resultCode) {
+                            ResultCode.SUCCESS.flag -> {
+                                val claim = model.data as Claim
+                                if (inquiry.inquiryId == null) ToastUtil.showMessage("[${claim.id}] 문의가 등록되었습니다.")
+                                else ToastUtil.showMessage("[${claim.id}] 문의가 수정되었습니다.")
+                                if (::closeActivity.isInitialized) closeActivity(RESULT_OK, claim)
+                            }
 
-    private fun editInquiry() {
-        ClaimServer.editClaim(OnServerListener { success, o ->
-            if (success) {
-                val model = o as BaseModel<Claim>
-                when (model.resultCode) {
-                    SUCCESS -> {
-                        // 문의 리스트 REFRESH
-                        val claim = model.data as Claim
-                        listener.showMessage("[${claim.id}] 문의가 수정되었습니다.")
-                        listener.closeActivity(RESULT_OK)
-                    }
-                    NEED_TO_LOGIN -> {
-                        listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-                    }
-                }
-            } else {
-                // 임시 메세지
-                listener.showMessage(o?.toString() ?: "오류")
-            }
-        }, inquiry)
-    }
+                            ResultCode.NEED_TO_LOGIN.flag -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                        }
+                    })
 
 }

@@ -31,6 +31,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.user.SnsUser;
 import io.temco.guhada.data.viewmodel.account.LoginViewModel;
@@ -162,7 +163,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
-            public void closeActivity(int resultCode) {
+            public void closeActivity(int resultCode ) {
                 setResult(resultCode);
                 finish();
             }
