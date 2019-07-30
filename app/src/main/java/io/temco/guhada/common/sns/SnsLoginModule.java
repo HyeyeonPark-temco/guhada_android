@@ -25,6 +25,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
@@ -44,12 +46,11 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
 import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.common.util.ServerCallbackUtil;
 import io.temco.guhada.common.util.ToastUtil;
+import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.user.SnsUser;
 import io.temco.guhada.data.model.user.UserProfile;
-import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
 
 public class SnsLoginModule {
@@ -112,31 +113,9 @@ public class SnsLoginModule {
     }
 
     // FACEBOOK
-    public static void initFacebookLogin(OnServerListener serverListener) {
+    public static void initFacebookLogin(FacebookCallback<LoginResult> facebookCallback) {
         mFacebookCallback = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(mFacebookCallback, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
-                    facebookLogin(object, serverListener);
-                });
-
-                Bundle bundle = new Bundle();
-                bundle.putString("fields", "id,name,email,picture");
-                graphRequest.setParameters(bundle);
-                graphRequest.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-                CommonUtil.debug("[FACEBOOK] CANCEL");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                CommonUtil.debug("[FACEBOOK] ERROR: " + error.toString());
-            }
-        });
+        LoginManager.getInstance().registerCallback(mFacebookCallback, facebookCallback);
     }
 
     private void initFacebookProfileTracker() {
@@ -179,11 +158,11 @@ public class SnsLoginModule {
                     UserServer.checkExistSnsUser((success, o) -> {
                         if (success) {
                             BaseModel model = (BaseModel) o;
-                            switch (model.resultCode){
-                                case Flag.ResultCode.SUCCESS :
+                            switch (model.resultCode) {
+                                case Flag.ResultCode.SUCCESS:
                                     googleLogin(account, serverListener);
                                     break;
-                                case Flag.ResultCode.DATA_NOT_FOUND :
+                                case Flag.ResultCode.DATA_NOT_FOUND:
                                     loginListener.redirectTermsActivity(requestCode, account);
                                     break;
                             }
@@ -233,19 +212,6 @@ public class SnsLoginModule {
         }
     }
 
-    private static void facebookLogin(JSONObject object, OnServerListener serverListener) {
-        try {
-            String email = object.getString("email");
-            String name = object.getString("name");
-            String picture = object.getString("picture");
-            String snsId = object.getString("id");
-            SnsUser user = createSnsUser(email, snsId, "FACEBOOK", name, picture);
-            UserServer.facebookLogin(serverListener, user);
-        } catch (JSONException e) {
-            CommonUtil.debug("[FACEBOOK] EXCEPTION: " + e.getMessage());
-        }
-    }
-
     private static SnsUser createSnsUser(String email, String snsId, String snsType, String name, String profileUrl) {
         SnsUser user = new SnsUser();
         user.setEmail(email);
@@ -258,7 +224,6 @@ public class SnsLoginModule {
         profile.setName(name);
         profile.setImageUrl(profileUrl);
         user.setUserProfile(profile);
-
         return user;
     }
 

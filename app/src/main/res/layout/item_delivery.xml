@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <View
@@ -34,7 +34,7 @@
                 style="@style/TextRegularSingleLine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2019.06.03"
+                android:text="@{item.getDate()}"
                 android:textColor="@color/warm_grey"
                 android:textSize="@dimen/text_12"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -57,13 +57,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="주문번호 TEMP"
+                android:text='@{"주문번호 " + String.valueOf(item.purchaseId)}'
                 android:textColor="@color/warm_grey"
                 android:textSize="@dimen/text_12"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/view_delivery_line"
                 app:layout_constraintTop_toTopOf="parent" />
-            <!--android:text="@{`주문번호` + `주문 번호 TEM1230403GUHADA`}"-->
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -77,20 +76,21 @@
 
         <ImageView
             android:id="@+id/imageview_delivery_profile"
-            android:layout_marginTop="21dp"
-            app:imageUrl="@{item.imageUrl}"
             android:layout_width="90dp"
             android:layout_height="120dp"
-            android:background="@color/white_six"
+            android:layout_marginTop="21dp"
+            android:background="@color/common_white"
+            app:imageUrl="@{item.imageUrl}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintlayout_delivery_top" />
 
         <TextView
             android:id="@+id/textview_delivery_brandname"
             android:layout_width="wrap_content"
-            android:layout_marginTop="21dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
+            android:layout_marginTop="21dp"
+            android:text="@{item.brandName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
@@ -107,6 +107,7 @@
             android:ellipsize="end"
             android:gravity="start"
             android:singleLine="true"
+            android:text="@{item.season + ` ` + item.productName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintHorizontal_bias="0"
@@ -122,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="3dp"
+            android:text="@{item.getOptionStr()}"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
@@ -134,8 +136,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="6dp"
+            android:text="@{@string/mypage_price_format(item.discountPrice)}"
             android:textColor="@color/black_four"
-            android:textSize="@dimen/text_13"
+            android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
             app:layout_constraintTop_toBottomOf="@+id/textview_delivery_option" />
 
@@ -146,9 +149,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="16dp"
-            android:text="입금확인중"
+            android:text="@{item.purchaseStatusText}"
             android:textColor="@color/common_blue_purple"
-            android:textSize="@dimen/text_13"
+            android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
             app:layout_constraintTop_toBottomOf="@id/textview_delivery_price" />
 
@@ -156,10 +159,26 @@
             android:id="@+id/recyclerview_delivery_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_delivery_status"
             app:spanCount="2" />
+
+        <Button
+            style="@style/MypageDeliveryButtonStyle"
+            android:id="@+id/button_delivery_claim"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/pale_grey"
+            android:text="@{item.sellerName != null ? @string/mypage_delivery_button_claim(item.sellerName) : @string/mypage_delivery_button_claim_empty}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerview_delivery_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

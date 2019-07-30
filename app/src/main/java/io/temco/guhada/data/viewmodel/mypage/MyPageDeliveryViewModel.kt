@@ -3,12 +3,16 @@ package io.temco.guhada.data.viewmodel.mypage
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.OrderHistoryResponse
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import java.util.*
 
 /**
  * 19.07.22
@@ -32,27 +36,49 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  */
 class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() {
     var orderHistoryList: MutableLiveData<OrderHistoryResponse> = MutableLiveData()
-    var startDate = ""
-    var endDate = ""
+    var startDate = "" // yyyy.MM.dd
+    var endDate = "" // yyyy.MM.dd
     var page = 1
 
     fun getOrders() {
-        val convertedStartDate = convertDateFormat(startDate)
-        val convertedEndDate = convertDateFormat(endDate)
+        if (Preferences.getToken() != null) {
+            if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
+                val convertedStartDate = convertDateFormat(startDate)
+                val convertedEndDate = convertDateFormat(endDate)
 
-        if (convertedStartDate.isNotEmpty() && convertedEndDate.isNotEmpty()) {
-            ServerCallbackUtil.callWithToken(task = {
-                OrderServer.getOrders(OnServerListener { success, o ->
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = { model ->
-                                val response = model.data as OrderHistoryResponse
-                                orderHistoryList.postValue(response)
-                            })
-                }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
-            })
+                if (convertedStartDate.isNotEmpty() && convertedEndDate.isNotEmpty()) {
+                    ServerCallbackUtil.callWithToken(task = {
+                        OrderServer.getOrders(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = { model ->
+                                        val response = model.data as OrderHistoryResponse
+                                        orderHistoryList.postValue(response)
+                                    })
+                        }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
+                    })
+                } else {
+                    ToastUtil.showMessage("날짜 형식이 올바르지 않습니다.")
+                }
+            }
         } else {
-            ToastUtil.showMessage("날짜 형식이 올바르지 않습니다.")
+            orderHistoryList.postValue(OrderHistoryResponse())
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
         }
+    }
+
+    fun setDate(day: Int, callback: (startDate: String, endDate: String) -> Unit) {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+        endDate = convertDateFormat(calendar, ".")
+        calendar.add(Calendar.DAY_OF_MONTH, -day)
+        startDate = convertDateFormat(calendar, ".")
+
+        callback(startDate, endDate)
+    }
+
+    private fun convertDateFormat(calendar: Calendar, operator: String): String {
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        return "${calendar.get(Calendar.YEAR)}$operator${if (month < 10) "0$month" else month}$operator${if (day < 10) "0$day" else day}"
     }
 
     private fun convertDateFormat(date: String): String {

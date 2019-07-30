@@ -5,7 +5,7 @@ import android.widget.Toast
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.base.OnBaseActivityListener
-import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.viewmodel.WriteClaimViewModel
 import io.temco.guhada.databinding.ActivityWriteclaimBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -29,6 +29,11 @@ class WriteClaimActivity : BindActivity<ActivityWriteclaimBinding>() {
             }
         })
 
+        val inquiry = intent.getSerializableExtra("inquiry")
+        if (inquiry != null) {
+            val prevInquiry = inquiry as Inquiry
+            mViewModel.inquiry = prevInquiry
+        }
         val productId = intent.getLongExtra("productId", -1)
         if (productId > -1) {
             mViewModel.inquiry.productId = productId

@@ -6,7 +6,7 @@ public class Flag {
 
         public static final int KAKAO_LOGIN = 10002;
         public static final int NAVER_LOGIN = 10003;
-        public static final int FACEBOOK_LOGIN = 1004;
+        public static final int FACEBOOK_LOGIN = 64206;
         public static final int GOOGLE_LOGIN = 10005;
         public static final int RC_GOOGLE_LOGIN = 10006;
 

@@ -7,8 +7,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag.ResultCode.NEED_TO_LOGIN
 import io.temco.guhada.common.Flag.ResultCode.SUCCESS
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.data.model.claim.ClaimResponse
-import io.temco.guhada.data.model.InquiryRequest
+import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.server.ClaimServer
@@ -17,7 +16,7 @@ import io.temco.guhada.view.activity.WriteClaimActivity
 
 class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener) : BaseObservableViewModel() {
     val toolBarTitle: String = "상품 문의하기"
-    val inquiry: InquiryRequest = InquiryRequest()
+    var inquiry: Inquiry = Inquiry()
 
     fun onClickBack() {
         listener.closeActivity(RESULT_CANCELED)
@@ -28,28 +27,56 @@ class WriteClaimViewModel(val listener: WriteClaimActivity.OnWriteClaimListener)
     }
 
     fun onClickSubmit() {
-        if(inquiry.content.isEmpty()){
+        if (inquiry.content.isEmpty()) {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_write_message_empty))
-        }else {
-            ClaimServer.saveClaim(OnServerListener { success, o ->
-                if (success) {
-                    val model = o as BaseModel<Claim>
-                    when (model.resultCode) {
-                        SUCCESS -> {
-                            // 문의 리스트 REFRESH
-                            val claim = model.data as Claim
-                            listener.showMessage("[${claim.id}] 문의가 등록되었습니다.")
-                            listener.closeActivity(RESULT_OK)
-                        }
-                        NEED_TO_LOGIN -> {
-                            listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-                        }
-                    }
-                } else {
-                    // 임시 메세지
-                    listener.showMessage(o?.toString() ?: "오류")
-                }
-            }, inquiry)
+        } else {
+            if (inquiry.inquiryId == null) createInquiry()
+            else editInquiry()
         }
     }
+
+    private fun createInquiry() {
+        ClaimServer.saveClaim(OnServerListener { success, o ->
+            if (success) {
+                val model = o as BaseModel<Claim>
+                when (model.resultCode) {
+                    SUCCESS -> {
+                        // 문의 리스트 REFRESH
+                        val claim = model.data as Claim
+                        listener.showMessage("[${claim.id}] 문의가 등록되었습니다.")
+                        listener.closeActivity(RESULT_OK)
+                    }
+                    NEED_TO_LOGIN -> {
+                        listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                    }
+                }
+            } else {
+                // 임시 메세지
+                listener.showMessage(o?.toString() ?: "오류")
+            }
+        }, inquiry)
+    }
+
+    private fun editInquiry() {
+        ClaimServer.editClaim(OnServerListener { success, o ->
+            if (success) {
+                val model = o as BaseModel<Claim>
+                when (model.resultCode) {
+                    SUCCESS -> {
+                        // 문의 리스트 REFRESH
+                        val claim = model.data as Claim
+                        listener.showMessage("[${claim.id}] 문의가 수정되었습니다.")
+                        listener.closeActivity(RESULT_OK)
+                    }
+                    NEED_TO_LOGIN -> {
+                        listener.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                    }
+                }
+            } else {
+                // 임시 메세지
+                listener.showMessage(o?.toString() ?: "오류")
+            }
+        }, inquiry)
+    }
+
 }

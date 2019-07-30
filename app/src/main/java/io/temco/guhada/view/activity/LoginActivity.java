@@ -2,19 +2,22 @@ package io.temco.guhada.view.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.gson.internal.LinkedTreeMap;
 import com.kakao.usermgmt.response.model.UserProfile;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
@@ -86,7 +89,29 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
         };
 
-        SnsLoginModule.initFacebookLogin(getSnsLoginServerListener());
+        SnsLoginModule.initFacebookLogin(new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), (object, response) -> {
+                    mViewModel.facebookLogin(object, getSnsLoginServerListener());
+                });
+
+                Bundle bundle = new Bundle();
+                bundle.putString("fields", "id,name,email,picture");
+                graphRequest.setParameters(bundle);
+                graphRequest.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                CommonUtil.debug("[FACEBOOK] CANCEL");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                CommonUtil.debug("[FACEBOOK] ERROR: " + error.toString());
+            }
+        });
         SnsLoginModule.initGoogleLogin();
         SnsLoginModule.initKakaoLogin(mLoginListener);
         SnsLoginModule.initNaverLogin(mBinding.buttonLoginNaver, mLoginListener, getSnsLoginServerListener());
@@ -202,6 +227,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     private OnServerListener getSnsLoginServerListener() {
         return (success, o) -> {

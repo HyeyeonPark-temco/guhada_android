@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="text"
+            type="String" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/framelayout_delivery_button"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@{text.equals(@string/mypage_delivery_button_purchaseconfirm) || text.equals(@string/mypage_delivery_button_writereview) ? @drawable/background_color_purple : @drawable/border_all_silver }"
+        android:onClick="@{onClickListener}"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "@{text}"
+            android:layout_gravity="center"
+            android:textColor="@{text.equals(@string/mypage_delivery_button_purchaseconfirm) || text.equals(@string/mypage_delivery_button_writereview) ? @color/common_white : @color/black_four }"
+            android:textSize="@dimen/text_13" />
+    </FrameLayout>
+</layout>

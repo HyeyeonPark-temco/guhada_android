@@ -1,4 +1,4 @@
-package io.temco.guhada.common.flag
+package io.temco.guhada.common.enum
 
 /**
  * ResultCode enum clsss

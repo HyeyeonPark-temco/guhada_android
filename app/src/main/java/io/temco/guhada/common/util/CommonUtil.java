@@ -17,6 +17,9 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,6 +111,19 @@ public class CommonUtil {
         view.setLayoutParams(layoutParams);
 
         snackbar.show();
+    }
+
+    /**
+     * Convert TimeStamp to Date String (Format: yyyy.MM.dd)
+     *
+     * @param timeStamp type: long
+     * @return dateString
+     * @author Hyeyeon Park
+     */
+    public static String convertTimeStamp(long timeStamp) {
+        DateTime dateTime = new DateTime(timeStamp * 1000L);
+        dateTime.withZone(DateTimeZone.forID("Asia/Seoul"));
+        return dateTime.toString("yyyy.MM.dd");
     }
 
     ////////////////////////////////////////////////

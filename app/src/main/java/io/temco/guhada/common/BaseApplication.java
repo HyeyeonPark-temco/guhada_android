@@ -41,9 +41,6 @@ public class BaseApplication extends MultiDexApplication {
         // FACEBOOK
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-
-        // JODA
-//        JodaTimeAndroid.init(this);
     }
 
     public static BaseApplication getInstance() {
