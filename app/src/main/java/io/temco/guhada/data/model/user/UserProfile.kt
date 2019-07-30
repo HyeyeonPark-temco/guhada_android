@@ -6,10 +6,10 @@ package io.temco.guhada.data.model.user
  * @author Hyeyeon Park
  */
 class UserProfile {
-    var snsId: String? = null
-    var email: String? = null
-    var name: String? = null
-    var familyName: String? = null
-    var givenName: String? = null
-    var imageUrl: String? = null
+    var snsId: String? = ""
+    var email: String? = ""
+    var name: String? = ""
+    var familyName: String? = ""
+    var givenName: String? = ""
+    var imageUrl: String? = ""
 }

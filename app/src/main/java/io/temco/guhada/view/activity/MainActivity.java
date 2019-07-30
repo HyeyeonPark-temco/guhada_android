@@ -597,10 +597,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         mBinding.viewMainProductdetail.setVisibility(View.VISIBLE);
 
         if (mProductDetailFragment != null) {
-            mProductDetailFragment = new ProductDetailFragment(dealId, this);
+            mProductDetailFragment = new ProductDetailFragment();
+            mProductDetailFragment.setDealId(dealId);
+            mProductDetailFragment.setMainListener(this);
             getSupportFragmentManager().beginTransaction().replace(mBinding.viewMainProductdetail.getId(), mProductDetailFragment).addToBackStack(null).commitAllowingStateLoss();
         } else {
-            mProductDetailFragment = new ProductDetailFragment(dealId, this);
+            mProductDetailFragment = new ProductDetailFragment();
+            mProductDetailFragment.setDealId(dealId);
+            mProductDetailFragment.setMainListener(this);
             getSupportFragmentManager().beginTransaction().add(mBinding.viewMainProductdetail.getId(), mProductDetailFragment).addToBackStack(null).commitAllowingStateLoss();
         }
     }

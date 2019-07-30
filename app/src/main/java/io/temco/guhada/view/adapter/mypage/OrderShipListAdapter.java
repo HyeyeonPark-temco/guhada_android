@@ -17,6 +17,9 @@ import io.temco.guhada.common.listener.OnOrderShipListener;
 import io.temco.guhada.data.model.MyOrderItem;
 import io.temco.guhada.view.holder.mypage.OrderShipViewHolder;
 
+/**
+ * 미사용
+ */
 public class OrderShipListAdapter extends RecyclerView.Adapter<OrderShipViewHolder> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------

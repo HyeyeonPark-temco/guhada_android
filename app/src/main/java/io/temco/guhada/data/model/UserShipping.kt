@@ -21,7 +21,6 @@ class UserShipping : Serializable {
     var zip = ""
     var roadAddress = ""
     var detailAddress = ""
-    var shippingMessageType = ""
     var shippingMessage = ""
 
     @SerializedName(value = "recipientName", alternate = ["recepientName"])

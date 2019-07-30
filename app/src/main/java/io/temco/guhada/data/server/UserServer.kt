@@ -5,7 +5,9 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.Token
+import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.ReviewResponse
@@ -37,7 +39,7 @@ class UserServer {
                     if (response.isSuccessful) {
                         val naverResponse = response.body()
                         if (naverResponse != null && naverResponse.resultCode != null) {
-                            if (naverResponse.resultCode == NAVER_API_SUCCESS) {
+                            if (naverResponse.resultCode == NAVER_API_SUCCESS || naverResponse.message == "success") {
                                 listener.onResult(true, naverResponse.user)
                             }
                         } else {
@@ -131,6 +133,15 @@ class UserServer {
         }
 
         /**
+         * SNS 유저 회원가입 API
+         */
+        @JvmStatic
+        fun joinSnsUser(listener: OnServerListener, user: SnsUser) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java).joinSnsUser(user).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>> { successResponse -> listener.onResult(true, successResponse.body()) })
+        }
+
+        /**
          * 구글 로그인 API
          */
         @JvmStatic
@@ -159,8 +170,8 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
 
         @JvmStatic
-        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "중복 SNS 유저 체크 오류"))
+        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String,  email: String?) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId, email ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 개별 유저 정보 조회 API
@@ -237,15 +248,6 @@ class UserServer {
          */
         @JvmStatic
         fun saveUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddress: UserShipping) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).saveShippingAddress(userId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
-
-        /**
-         * 임시회원 배송지 등록 API
-         * shippingMessageType String
-         * @since 2019.07.25
-         */
-        @JvmStatic
-        fun tempSaveUserShippingAddress(listener: OnServerListener, userId: Int, shippingAddress: TempUserShipping) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).tempSaveShippingAddress(userId, shippingAddress).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
-
 
         /**
          * 셀러 정보 가져오기 API

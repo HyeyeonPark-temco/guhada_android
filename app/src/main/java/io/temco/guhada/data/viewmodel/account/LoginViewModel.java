@@ -1,6 +1,10 @@
 package io.temco.guhada.data.viewmodel.account;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.Bindable;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.kakao.usermgmt.response.model.UserProfile;
 
 import io.temco.guhada.BR;
 import io.temco.guhada.R;
@@ -8,10 +12,13 @@ import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnLoginListener;
+import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Token;
-import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.naver.NaverUser;
+import io.temco.guhada.data.model.user.SnsUser;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
@@ -25,6 +32,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     private boolean isIdSaved = Preferences.isIdSaved();
     private OnLoginListener loginListener;
     private Object snsUser;
+    private SnsUser tempSnsUser = new SnsUser();
 
     public LoginViewModel(OnLoginListener listener) {
         this.loginListener = listener;
@@ -46,6 +54,14 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     public void setSnsUser(Object snsUser) {
         this.snsUser = snsUser;
+    }
+
+    public SnsUser getTempSnsUser() {
+        return tempSnsUser;
+    }
+
+    public void setTempSnsUser(SnsUser tempSnsUser) {
+        this.tempSnsUser = tempSnsUser;
     }
 
     public void setId(String id) {
@@ -167,5 +183,52 @@ public class LoginViewModel extends BaseObservableViewModel {
 
     public void onClickFindAccount() {
         loginListener.redirectFindAccountActivity();
+    }
+
+    public void joinSnsUser(OnServerListener listener) {
+        if (tempSnsUser.getSnsType() != null) {
+            switch (tempSnsUser.getSnsType()) {
+                case "KAKAO":
+                    createSnsUser(Long.toString(((UserProfile) snsUser).getId()),
+                            ((UserProfile) snsUser).getEmail(),
+                            ((UserProfile) snsUser).getProfileImagePath(),
+                            ((UserProfile) snsUser).getNickname());
+                    break;
+                case "NAVER":
+                    createSnsUser(((NaverUser) snsUser).getId(),
+                            ((NaverUser) snsUser).getEmail(),
+                            ((NaverUser) snsUser).getProfileImage(),
+                            ((NaverUser) snsUser).getName());
+                    break;
+                case "GOOGLE":
+                    if(snsUser != null){
+                        createSnsUser(((GoogleSignInAccount) snsUser).getId(),
+                                ((GoogleSignInAccount) snsUser).getEmail(),
+                                ((GoogleSignInAccount) snsUser).getPhotoUrl() != null ? ((GoogleSignInAccount) snsUser).getPhotoUrl().toString() : null,
+                                ((GoogleSignInAccount) snsUser).getDisplayName());
+                    }
+
+                    break;
+
+                case "FACEBOOK":
+
+                    break;
+            }
+        }
+
+        UserServer.joinSnsUser(listener, tempSnsUser);
+    }
+
+    private void createSnsUser(String id, String email, @Nullable String imageUrl, String name) {
+        tempSnsUser.setSnsId(id);
+        tempSnsUser.setEmail(email);
+
+        if(tempSnsUser.getUserProfile() == null)
+            tempSnsUser.setUserProfile(new io.temco.guhada.data.model.user.UserProfile());
+
+        tempSnsUser.getUserProfile().setName(name);
+        if (imageUrl != null) tempSnsUser.getUserProfile().setImageUrl(imageUrl);
+        tempSnsUser.getUserProfile().setSnsId(id);
+        tempSnsUser.getUserProfile().setEmail(email);
     }
 }

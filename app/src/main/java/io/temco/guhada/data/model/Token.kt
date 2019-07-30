@@ -7,5 +7,5 @@ package io.temco.guhada.data.model
 class Token {
     var accessToken: String? = null
     var refreshToken: String? = null
-    var expiresIn: Int = 0
+    var expiresIn: Long = 0
 }

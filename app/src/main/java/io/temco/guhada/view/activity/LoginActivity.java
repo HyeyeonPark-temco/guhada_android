@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -9,9 +10,11 @@ import androidx.annotation.Nullable;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.gson.internal.LinkedTreeMap;
 import com.kakao.usermgmt.response.model.UserProfile;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Flag;
@@ -23,9 +26,10 @@ import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.SnsLoginModule;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.ToastUtil;
-import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.naver.NaverUser;
+import io.temco.guhada.data.model.user.SnsUser;
 import io.temco.guhada.data.viewmodel.account.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -57,13 +61,14 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         mLoginListener = new OnSnsLoginListener() {
             @Override
             public void kakaoLogin(UserProfile result) {
-                SnsLoginModule.kakaoJoin(result, getSnsLoginServerListener());
+                SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener());
             }
 
             @Override
             public void redirectTermsActivity(int type, Object data) {
                 mViewModel.setSnsUser(data);
                 Intent intent = new Intent(LoginActivity.this, TermsActivity.class);
+//                intent.putExtra("user", (SnsUser) data);
                 startActivityForResult(intent, type);
             }
 
@@ -164,18 +169,31 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener, getSnsLoginServerListener());
         }
 
+        if (data != null && data.getBooleanExtra("agreeCollectPersonalInfoTos", false)) {
+            SnsUser tempUser = mViewModel.getTempSnsUser();
+            tempUser.setAgreeCollectPersonalInfoTos(data.getBooleanExtra("agreeCollectPersonalInfoTos", false));
+            tempUser.setAgreeEmailReception(data.getBooleanExtra("agreeEmailReception", false));
+            tempUser.setAgreePurchaseTos(data.getBooleanExtra("agreePurchaseTos", false));
+            tempUser.setAgreeSaleTos(data.getBooleanExtra("agreeSaleTos", false));
+            tempUser.setAgreeSmsReception(data.getBooleanExtra("agreeSmsReception", false));
+        }
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case Flag.RequestCode.KAKAO_LOGIN:
-                    SnsLoginModule.kakaoJoin((UserProfile) mViewModel.getSnsUser(), getSnsLoginServerListener());
+                    mViewModel.getTempSnsUser().setSnsType("KAKAO");
+                    SnsLoginModule.kakaoLogin((UserProfile) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
+                    mViewModel.getTempSnsUser().setSnsType("NAVER");
                     SnsLoginModule.naverLogin((NaverUser) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
+                    mViewModel.getTempSnsUser().setSnsType("GOOGLE");
                     SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
+                    mViewModel.getTempSnsUser().setSnsType("FACEBOOK");
 
                     break;
             }
@@ -189,13 +207,36 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         return (success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
-                if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                    Token token = (Token) model.data;
-                    Preferences.setToken(token);
-                    setResult(RESULT_OK);
-                    finish();
-                } else {
-                    ToastUtil.showMessage(model.message);
+                switch (model.resultCode) {
+                    case Flag.ResultCode.SUCCESS:
+                        // SNS 로그인
+                        Token token = (Token) model.data;
+                        Log.e("TOKEN", token.getAccessToken());
+                        Preferences.setToken(token);
+                        setResult(RESULT_OK);
+                        finish();
+                        break;
+                    case Flag.ResultCode.DATA_NOT_FOUND:
+                        // SNS 회원가입
+                        mViewModel.joinSnsUser((success1, o1) -> {
+                            if (success1) {
+                                BaseModel<Token> m = (BaseModel<Token>) o1;
+                                if (m.resultCode == Flag.ResultCode.SUCCESS) {
+                                    Token t = new Token();
+                                    t.setAccessToken(m.data.getAccessToken());
+                                    t.setRefreshToken(m.data.getRefreshToken());
+                                    t.setExpiresIn(m.data.getExpiresIn());
+                                    Log.e("TOKEN", t.getAccessToken());
+
+                                    Preferences.setToken(t);
+                                    setResult(RESULT_OK);
+                                    finish();
+                                } else {
+                                    ToastUtil.showMessage(m.message);
+                                }
+                            }
+                        });
+                        break;
                 }
             } else {
                 String message = (String) o;
