@@ -83,37 +83,6 @@ public class Deal {
         @SerializedName("attributes")
         public String[] attributes;
 
-        @Override
-        public String toString() {
-            return "Option{" +
-                    "type='" + type + '\'' +
-                    ", attributes=" + Arrays.toString(attributes) +
-                    '}';
-        }
     }
 
-    @Override
-    public String toString() {
-        if(CustomLog.INSTANCE.getFlag())return "Deal{" +
-                "brandId=" + brandId +
-                ", brandName='" + brandName + '\'' +
-                ", sellerId=" + sellerId +
-                ", sellerName='" + sellerName + '\'' +
-                ", productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", productSeason='" + productSeason + '\'' +
-                ", imageName='" + imageName + '\'' +
-                ", productImage=" + productImage +
-                ", dealId=" + dealId +
-                ", dealName='" + dealName + '\'' +
-                ", sellPrice=" + sellPrice +
-                ", discountPrice=" + discountPrice +
-                ", setDiscount=" + setDiscount +
-                ", categoryId=" + categoryId +
-                ", options=" + options +
-                ", discountRate=" + discountRate +
-                ", freeShipping=" + freeShipping +
-                '}';
-        else return "";
-    }
 }

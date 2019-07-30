@@ -71,7 +71,6 @@
                                 android:layout_weight="1"
                                 android:textSize="@dimen/text_13"
                                 android:text="@{viewModel.selectedStatusMessage}" />
-                            <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
 
                             <ImageView
                                 android:id="@+id/imageview_payment_shippingmemo"
@@ -81,15 +80,15 @@
                                 android:src="@drawable/payment_icon_selectbox_open" />
                         </LinearLayout>
                     </FrameLayout>
-
                 </FrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/recyclerview_mypageclaimlayout_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/common_white"/>
+                    android:background="@color/common_white"
+                    app:setAdapter="@{viewModel.getListAdapter()}"/>
             </LinearLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

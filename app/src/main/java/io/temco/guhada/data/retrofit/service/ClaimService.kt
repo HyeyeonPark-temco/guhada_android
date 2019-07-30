@@ -4,6 +4,7 @@ import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.InquiryRequest
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
+import io.temco.guhada.data.model.claim.MyPageClaim
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -36,5 +37,12 @@ interface ClaimService {
      */
     @POST("products/{id}/inquiries")
     fun saveClaim(@Header("Authorization") accessToken: String, @Path("id") productId: Long, @Body inquiry: InquiryRequest): Call<BaseModel<Claim>>
+
+
+    /**
+     * 상품 문의 작성하기 API
+     */
+    @GET("users/my-page/inquiries")
+    fun getMyClaimList(@Header("Authorization") accessToken: String, @Query("page") page: Int,  @Query("size") size: Int = 20 ): Call<BaseModel<MyPageClaim>>
 
 }

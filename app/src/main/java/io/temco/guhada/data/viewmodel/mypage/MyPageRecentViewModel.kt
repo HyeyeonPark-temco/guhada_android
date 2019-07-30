@@ -31,11 +31,11 @@ class MyPageRecentViewModel (val context : Context, var mDisposable : CompositeD
     var repository: MyPageRecentRepository = MyPageRecentRepository(context,mDisposable,db)
 
     private val _listData : SingleLiveEvent<ArrayList<Product>> = repository.getList()
-    val listData : LiveData<ArrayList<Product>> get() = _listData
     private val _itemSize : SingleLiveEvent<Int> = repository.getItemSize()
-    val totalItemSize : SingleLiveEvent<Int> get() = _itemSize
-
     private val adapter = MyPageProductListAdapter(this,listData.value!!)
+
+    val listData : LiveData<ArrayList<Product>> get() = _listData
+    val totalItemSize : SingleLiveEvent<Int> get() = _itemSize
 
     fun getListAdapter() = adapter
 

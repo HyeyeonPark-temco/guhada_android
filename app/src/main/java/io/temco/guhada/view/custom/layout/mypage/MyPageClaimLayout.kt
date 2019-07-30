@@ -1,13 +1,20 @@
 package io.temco.guhada.view.custom.layout.mypage
 
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageClaimBinding
+import io.temco.guhada.view.WrapContentLinearLayoutManager
+import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.adapter.SpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 /**
@@ -28,6 +35,19 @@ class MyPageClaimLayout constructor(
     override fun init() {
         mViewModel = MyPageClaimViewModel(context)
         mBinding.viewModel = mViewModel
+
+        mBinding.recyclerviewMypageclaimlayoutList.layoutManager = WrapContentLinearLayoutManager(context as Activity,  LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerviewMypageclaimlayoutList.setHasFixedSize(true)
+
+        (mBinding.recyclerviewMypageclaimlayoutList.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
+        (mBinding.recyclerviewMypageclaimlayoutList.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+
+        mViewModel.listData.observe(this,
+                androidx.lifecycle.Observer<ArrayList<MyPageClaim.Content>> {
+                    if(CustomLog.flag)CustomLog.L("MyPageClaimLayout","observe",it.size)
+                    mViewModel.getListAdapter().notifyDataSetChanged()
+                }
+        )
     }
 
     companion object {

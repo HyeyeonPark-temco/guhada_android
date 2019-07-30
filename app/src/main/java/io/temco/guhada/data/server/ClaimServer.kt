@@ -10,6 +10,7 @@ import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.InquiryRequest
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
+import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ClaimService
 import retrofit2.Call
@@ -59,6 +60,26 @@ open class ClaimServer {
                     }
 
                     override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
+
+
+
+        @JvmStatic
+        fun getMyPageClaimList(listener: OnServerListener, page : Int) {
+            val accessToken = Preferences.getToken()?.accessToken
+            if (accessToken.isNullOrBlank()) {
+                // 로그인 팝업 노출
+                Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
+            } else {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true).getMyClaimList(accessToken = "Bearer $accessToken", page = page).enqueue(object : Callback<BaseModel<MyPageClaim>> {
+                    override fun onResponse(call: Call<BaseModel<MyPageClaim>>, response: Response<BaseModel<MyPageClaim>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+                    override fun onFailure(call: Call<BaseModel<MyPageClaim>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
                 })

@@ -9,6 +9,6 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  *
  * 마이페이지 상품문의 RecyclerView ViewModel
  */
-class MyPageClaimListItemViewPager (val context : Context) : BaseObservableViewModel() {
+class MyPageClaimListItemViewModel (val context : Context) : BaseObservableViewModel() {
 
 }

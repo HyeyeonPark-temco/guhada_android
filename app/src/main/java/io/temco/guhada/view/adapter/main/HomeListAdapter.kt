@@ -215,9 +215,9 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                         }
                     }
                     if(data != null){
-                        itemlayout[i].tag = data.dealId.toString()
+                        itemlayout[i].contentDescription = data.dealId.toString()
                         itemlayout[i].setOnClickListener{
-                            var id = it.tag.toString().toLong()
+                            var id = it.contentDescription.toString().toLong()
                             ProductBridge.mainActivity.addProductDetailView(id)
                         }
                         itemlayout[i].visibility = View.VISIBLE
