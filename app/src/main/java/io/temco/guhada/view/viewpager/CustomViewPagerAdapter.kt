@@ -4,14 +4,15 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+
 /**
  * @author park jungho
  * 19.07.18
  * 수정된 CustomViewPagerAdapter
  */
-abstract class CustomViewPagerAdapter<T>(var context : Context,
-                                         var titleList : Array<String>,
-                                         var items : Array<T>) : PagerAdapter()  {
+abstract class CustomViewPagerAdapter<T>(var context: Context,
+                                         var titleList: Array<String>,
+                                         var items: Array<T>) : PagerAdapter() {
 
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -20,7 +21,7 @@ abstract class CustomViewPagerAdapter<T>(var context : Context,
         return v
     }
 
-    abstract fun setViewLayout(container: ViewGroup, item : T, position: Int) : View
+    abstract fun setViewLayout(container: ViewGroup, item: T, position: Int): View
 
     override fun isViewFromObject(view: View, ob: Any): Boolean {
         return view === ob
@@ -31,7 +32,7 @@ abstract class CustomViewPagerAdapter<T>(var context : Context,
         container.removeView(obj as View)
     }
 
-    fun getItem(positon : Int) : T{
+    fun getItem(positon: Int): T {
         return items[positon]
     }
 
