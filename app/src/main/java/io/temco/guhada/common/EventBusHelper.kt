@@ -3,9 +3,9 @@ package io.temco.guhada.common
 import io.reactivex.subjects.PublishSubject
 
 object EventBusHelper {
-     val mSubject = PublishSubject.create<Int>()
+     val mSubject = PublishSubject.create<EventBusData>()
 
-    fun sendEvent(requestCode: Int) {
-        mSubject.onNext(requestCode)
+    fun sendEvent(requestData: EventBusData) {
+        mSubject.onNext(requestData)
     }
 }

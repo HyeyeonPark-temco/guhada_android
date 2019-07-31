@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.EventBusData;
 import io.temco.guhada.common.EventBusHelper;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
@@ -38,6 +39,7 @@ import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.model.shippingaddress.ShippingAddress;
 import io.temco.guhada.data.server.ProductServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
@@ -215,16 +217,20 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     break;
 
                 case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(Flag.RequestCode.EDIT_SHIPPING_ADDRESS);
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.EDIT_SHIPPING_ADDRESS,null));
                     break;
 
                 case Flag.RequestCode.ADD_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(Flag.RequestCode.ADD_SHIPPING_ADDRESS);
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.ADD_SHIPPING_ADDRESS,null));
+                    break;
+
+                case Flag.RequestCode.MODIFY_CLAIM:
+                    Claim claim = (Claim) data.getExtras().getSerializable("inquiry");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.MODIFY_CLAIM,(claim!=null ? claim : null)));
                     break;
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
-
             switch (requestCode) {
                 case Flag.RequestCode.WRITE_CLAIM:
                     //   ToastUtil.showMessage(getResources().getString(R.string.common_message_error));

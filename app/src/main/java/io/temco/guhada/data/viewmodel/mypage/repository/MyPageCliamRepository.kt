@@ -2,6 +2,7 @@ package io.temco.guhada.data.viewmodel.mypage.repository
 
 import android.content.Context
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
@@ -15,20 +16,22 @@ class MyPageCliamRepository (val context : Context) {
 
     fun getList(): SingleLiveEvent<ArrayList<MyPageClaim.Content>> {
         if (list.value.isNullOrEmpty()) {
-            setInitData()
+            setInitData(null)
         }
         return list
     }
 
 
-    private fun setInitData() {
+    fun setInitData(listener : OnSwipeRefreshResultListener?) {
         list.value = ArrayList()
         ClaimServer.getMyPageClaimList(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var data =  (o as BaseModel<*>).data as MyPageClaim
+                        if(CustomLog.flag)CustomLog.L("MyPageCliamRepository",data.toString())
                         list!!.value!!.addAll(data.content)
                         list!!.value = list!!.value
+                        listener?.run { onResultCallback() }
                     },
                     dataNotFoundTask = {
 

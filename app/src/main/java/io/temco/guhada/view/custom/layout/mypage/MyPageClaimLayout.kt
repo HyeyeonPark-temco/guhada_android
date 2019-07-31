@@ -7,9 +7,14 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.EventBusHelper
+import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageClaimBinding
@@ -29,7 +34,7 @@ class MyPageClaimLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMypageClaimBinding, MyPageClaimViewModel>(context, attrs, defStyleAttr) {
+) : BaseListLayout<CustomlayoutMypageClaimBinding, MyPageClaimViewModel>(context, attrs, defStyleAttr) , SwipeRefreshLayout.OnRefreshListener{
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_claim
@@ -49,6 +54,13 @@ class MyPageClaimLayout constructor(
                     mViewModel.getListAdapter().notifyDataSetChanged()
                 }
         )
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+               RequestCode.MODIFY_CLAIM.flag -> if(CustomLog.flag)CustomLog.L("MyPageClaimLayout","RequestCode.MODIFY_CLAIM ", (requestCode.data as Claim).toString())
+            }
+        }
     }
 
     companion object {
@@ -64,6 +76,18 @@ class MyPageClaimLayout constructor(
                 this.setSelection(0)
             }
         }
+    }
+
+    override fun onRefresh() {
+        if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onRefresh ", "init -----")
+        mViewModel.reloadRecyclerView(object : OnSwipeRefreshResultListener {
+            override fun onResultCallback() {
+                if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onResultCallback ", "init -----")
+                this@MyPageClaimLayout.handler.postDelayed({
+                    mBinding.swipeRefreshLayout.isRefreshing = false
+                },200)
+            }
+        })
     }
 
     override fun onFocusView() {
