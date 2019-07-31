@@ -19,6 +19,7 @@ public class Flag {
         public static final int ADD_SHIPPING_ADDRESS = 10013;
         public static final int SEARCH_ZIP = 10014;
         public static final int MODIFY_CLAIM = 10015;
+        public static final int PRODUCT_DETAIL = 10016;
     }
 
     public static class ResultCode {

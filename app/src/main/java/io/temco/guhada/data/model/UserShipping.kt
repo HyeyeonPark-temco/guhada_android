@@ -31,4 +31,7 @@ class UserShipping : Serializable {
 
     @Expose
     var addList = false // 배송지 목록에 추가 여부
+
+    @Expose
+    var pId: Long = 0 // purchaseId
 }

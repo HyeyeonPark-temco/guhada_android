@@ -88,6 +88,8 @@ class MyPageAddressLayout constructor(
 
     override fun getSelectedPos(): Int = mShippingAddressListFragment.mListAdapter.currentPos
 
+    fun getSelectedItem(): UserShipping? = mViewModel.shippingAddresses.value?.get(getSelectedPos())
+
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {
         Intent(context, EditShippingAddressActivity::class.java).let {
             it.putExtra("shippingAddress", shippingAddress)

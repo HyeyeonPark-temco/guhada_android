@@ -121,7 +121,7 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
         dataPicker.show()
     }
 
-    private fun setPeriod(position: Int) {
+    fun setPeriod(position: Int) {
         when (position) {
             0 -> {
                 mBinding.textWeek.isSelected = true //

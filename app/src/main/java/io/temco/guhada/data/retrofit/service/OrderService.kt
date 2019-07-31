@@ -1,12 +1,10 @@
 package io.temco.guhada.data.retrofit.service
 
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
-import io.temco.guhada.data.model.order.Order
-import io.temco.guhada.data.model.order.OrderHistoryResponse
-import io.temco.guhada.data.model.order.PurchaseOrderResponse
-import io.temco.guhada.data.model.order.RequestOrder
+import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import retrofit2.Call
@@ -78,4 +76,17 @@ interface OrderService {
      */
     @GET("/order/my-orders/{startDt}/{endDt}/{page}")
     fun getOrders(@Header("Authorization") accessToken: String, @Path("startDt") startDate: String, @Path("endDt") endDate: String, @Path("page") page: Int): Call<BaseModel<OrderHistoryResponse>>
+
+    /**
+     * 주문 상태 조회 API
+     */
+    @GET("/order/my-orders-status")
+    fun getOrderStatus(@Header("Authorization") accessToken: String): Call<BaseModel<OrderStatus>>
+
+    /**
+     * 주문 배송지 수정 API
+     * response type : Boolean
+     */
+    @POST("/order/order-update/shipping-address")
+    fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId  : Long, @Body shippingAddress: UserShipping): Call<BaseModel<Any>>
 }

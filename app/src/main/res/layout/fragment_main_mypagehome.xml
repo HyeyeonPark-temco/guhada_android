@@ -2,12 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="io.temco.guhada.data.viewmodel.mypage.MyPageViewModel" />
-    </data>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -87,8 +81,6 @@
                     android:layout_height="match_parent"
                     android:overScrollMode="never"/>
             </RelativeLayout>
-
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <LinearLayout
@@ -96,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/black_four"
+            android:background="@color/common_white"
             android:orientation="horizontal"
             android:visibility="gone"
             android:weightSum="2"
@@ -105,22 +97,22 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="60dp"
+                android:id="@+id/button_mypagehome_addaddress"
                 android:layout_weight="1"
                 android:background="@color/greyish_brown_two"
                 android:text="@string/mypage_shippingaddress_add"
                 android:textColor="@color/common_white"
-                android:textSize="@dimen/text_16"
-                android:visibility="gone" />
+                android:textSize="@dimen/text_16" />
 
             <Button
+                android:id="@+id/button_mypagehome_setdefaultaddress"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
                 android:background="@color/common_blue_purple"
                 android:text="@string/mypage_shippingaddress_default"
                 android:textColor="@color/common_white"
-                android:textSize="@dimen/text_16"
-                android:visibility="gone" />
+                android:textSize="@dimen/text_16" />
         </LinearLayout>
 
     </RelativeLayout>

@@ -1,15 +1,21 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
-import android.util.Log
+import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.OrderHistoryResponse
+import io.temco.guhada.data.model.order.OrderStatus
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import java.util.*
@@ -35,35 +41,78 @@ import java.util.*
  *
  */
 class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() {
-    var orderHistoryList: MutableLiveData<OrderHistoryResponse> = MutableLiveData()
     var startDate = "" // yyyy.MM.dd
     var endDate = "" // yyyy.MM.dd
     var page = 1
+    var orderHistoryList: MutableLiveData<OrderHistoryResponse> = MutableLiveData()
+    var orderStatus: OrderStatus = OrderStatus()
+        @Bindable
+        get() = field
 
     fun getOrders() {
-        if (Preferences.getToken() != null) {
-            if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
-                val convertedStartDate = convertDateFormat(startDate)
-                val convertedEndDate = convertDateFormat(endDate)
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
+                        val convertedStartDate = convertDateFormat(startDate)
+                        val convertedEndDate = convertDateFormat(endDate)
 
-                if (convertedStartDate.isNotEmpty() && convertedEndDate.isNotEmpty()) {
-                    ServerCallbackUtil.callWithToken(task = {
-                        OrderServer.getOrders(OnServerListener { success, o ->
-                            ServerCallbackUtil.executeByResultCode(success, o,
-                                    successTask = { model ->
-                                        val response = model.data as OrderHistoryResponse
-                                        orderHistoryList.postValue(response)
-                                    })
-                        }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
-                    })
-                } else {
-                    ToastUtil.showMessage("날짜 형식이 올바르지 않습니다.")
-                }
-            }
-        } else {
-            orderHistoryList.postValue(OrderHistoryResponse())
-            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-        }
+                        if (convertedStartDate.isNotEmpty() && convertedEndDate.isNotEmpty()) {
+                            ServerCallbackUtil.callWithToken(task = {
+                                OrderServer.getOrders(OnServerListener { success, o ->
+                                    ServerCallbackUtil.executeByResultCode(success, o,
+                                            successTask = { model ->
+                                                val response = model.data as OrderHistoryResponse
+                                                orderHistoryList.postValue(response)
+                                            })
+                                }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
+                            })
+                        } else {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.mypage_delivery_message_invaliddateformat))
+                        }
+                    }
+                },
+                invalidTokenTask = {
+                    orderHistoryList.postValue(OrderHistoryResponse())
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                })
+
+    }
+
+    fun getOrderStatus() {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            OrderServer.getOrderStatus(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            orderStatus = it.data as OrderStatus
+                            notifyPropertyChanged(BR.orderStatus)
+                        })
+            }, token)
+        })
+    }
+
+    fun editShippingAddress(purchaseId: Long) {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            OrderServer.setOrderCompleted(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            val shippingAddress = (it.data as PurchaseOrderResponse).shippingAddress
+                            UserShipping().apply {
+                                this.id = shippingAddress.id.toInt()
+                                this.shippingName = shippingAddress.addressName ?: ""
+                                this.defaultAddress = shippingAddress.addressDefault
+                                this.zip = shippingAddress.zipcode
+                                this.recipientName = shippingAddress.receiverName
+                                this.recipientMobile = shippingAddress.phone
+                                this.address = shippingAddress.addressBasic
+                                this.roadAddress = shippingAddress.addressBasic
+                                this.detailAddress = shippingAddress.addressDetail
+                                this.pId = purchaseId
+                            }.let { userShipping ->
+                                EventBusHelper.sendEvent(EventBusData(RequestCode.EDIT_SHIPPING_ADDRESS.flag, userShipping))
+                            }
+                        })
+            }, accessToken = token, purchaseId = purchaseId.toDouble())
+        })
     }
 
     fun setDate(day: Int, callback: (startDate: String, endDate: String) -> Unit) {

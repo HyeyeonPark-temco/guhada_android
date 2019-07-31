@@ -89,7 +89,7 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
                             mListener.notifyDeleteItem()
                         },
                         failedTask = {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_delete_failed))
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_delete_failed))
                         })
             }, userId, shippingAddressId)
         }
@@ -104,12 +104,12 @@ open class ShippingAddressViewModel(val mListener: OnShippingAddressListener) : 
 
     fun checkEmptyField(task: () -> Unit) {
         when {
-            newItem.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_shippingname))
-            newItem.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_zip))
-            newItem.address.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_address))
-            newItem.detailAddress.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_detailaddress))
-            newItem.recipientName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_recipientname))
-            newItem.recipientMobile.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_empty_recipientmobile))
+            newItem.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_shippingname))
+            newItem.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_zip))
+            newItem.address.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_address))
+            newItem.detailAddress.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_detailaddress))
+            newItem.recipientName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_recipientname))
+            newItem.recipientMobile.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_recipientmobile))
             else -> task()
         }
     }

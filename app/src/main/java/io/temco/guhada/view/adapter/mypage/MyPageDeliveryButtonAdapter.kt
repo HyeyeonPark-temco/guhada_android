@@ -9,6 +9,10 @@ import io.temco.guhada.databinding.ItemDeliveryButtonBinding
 import io.temco.guhada.view.adapter.mypage.MyPageDeliveryAdapter.DeliveryButton
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 마이페이지 주문배송 리스트 아이템 버튼 adapter
+ * @author Hyeyeon Park
+ */
 class MyPageDeliveryButtonAdapter : RecyclerView.Adapter<MyPageDeliveryButtonAdapter.Holder>() {
     var list: MutableList<MyPageDeliveryAdapter.DeliveryButton> = mutableListOf()
 
@@ -25,7 +29,7 @@ class MyPageDeliveryButtonAdapter : RecyclerView.Adapter<MyPageDeliveryButtonAda
         fun bind(item: DeliveryButton) {
             setSpacing()
             mBinding.text = item.text
-            mBinding.onClickListener = item.onClickListener
+            mBinding.onClickListener = item.task
             mBinding.executePendingBindings()
         }
 

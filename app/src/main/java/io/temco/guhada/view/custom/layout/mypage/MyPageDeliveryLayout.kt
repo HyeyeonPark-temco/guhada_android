@@ -8,11 +8,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.TextUtil
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryBinding
 import io.temco.guhada.view.activity.MainActivity
@@ -46,9 +43,14 @@ class MyPageDeliveryLayout constructor(
         mBinding.calendarfilterMypageDeliver.mListener = this
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
             val list = it.orderItemList
-            mBinding.listContents.adapter = MyPageDeliveryAdapter().apply { this.list = list }
+            mBinding.listContents.adapter = MyPageDeliveryAdapter(mViewModel).apply { this.list = list }
             mBinding.executePendingBindings()
         })
+        mBinding.includeDeliveryProcess.viewModel = mViewModel
+
+        mViewModel.getOrderStatus()
+        mBinding.calendarfilterMypageDeliver.setPeriod(0)
+        onClickWeek() // [default] before 1 week
 
         mRequestManager = Glide.with(this)
         setLinkText()
@@ -58,12 +60,7 @@ class MyPageDeliveryLayout constructor(
     private fun calendarCallback(startDate: String, endDate: String) {
         mBinding.calendarfilterMypageDeliver.startDate = startDate
         mBinding.calendarfilterMypageDeliver.endDate = endDate
-
-        if (Preferences.getToken() != null) {
-            mViewModel.getOrders()
-        } else {
-            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-        }
+        mViewModel.getOrders()
     }
 
     override fun onClickWeek() = mViewModel.setDate(7) { startDate, endDate -> calendarCallback(startDate, endDate) }

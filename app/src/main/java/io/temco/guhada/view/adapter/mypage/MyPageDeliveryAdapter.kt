@@ -7,12 +7,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.PurchaseStatus
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
-class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
+/**
+ * 마이페이지 주문배송 리스트 adapter
+ * @author Hyeyeon Park
+ */
+class MyPageDeliveryAdapter(val mViewModel: MyPageDeliveryViewModel) : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
     var list: MutableList<PurchaseOrder> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -28,10 +36,21 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
         fun bind(item: PurchaseOrder) {
             mBinding.item = item
 
-            // space
-            //  val pixels = mBinding.root.context.resources.getDimensionPixelSize(R.dimen.margin_grid_space)
-            //  mBinding.recyclerviewDeliveryButton.addItemDecoration(GridItemSpaceDecoration(pixels))
+            // set buttons
+            val buttons = getButtons(item)
+            mBinding.recyclerviewDeliveryButton.adapter = MyPageDeliveryButtonAdapter().apply { this.list = buttons }
+            (mBinding.recyclerviewDeliveryButton.layoutManager as GridLayoutManager).spanCount = if (buttons.size > 1) 2 else 1
 
+            // image click listener
+            mBinding.imageviewDeliveryProfile.setOnClickListener {
+                val data = EventBusData(requestCode = RequestCode.PRODUCT_DETAIL.flag, data = item.dealId)
+                EventBusHelper.sendEvent(data)
+            }
+
+            mBinding.executePendingBindings()
+        }
+
+        private fun getButtons(item: PurchaseOrder): MutableList<DeliveryButton> {
             val buttons = mutableListOf<DeliveryButton>()
             when (item.purchaseStatus) {
                 PurchaseStatus.WAITING_PAYMENT.status,
@@ -39,6 +58,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     buttons.add(DeliveryButton().apply { text = "주문내역" })
                     buttons.add(DeliveryButton().apply { text = "주문수정" })
                     buttons.add(DeliveryButton().apply { text = "주문취소" })
+                    buttons.add(DeliveryButton().apply {
+                        text = "배송지변경"
+                        task = View.OnClickListener { mViewModel.editShippingAddress(item.purchaseId) }
+                    })
                 }
 
                 PurchaseStatus.SELLER_IDENTIFIED.status,
@@ -107,16 +130,12 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.WITHDRAW_RETURN.status -> { /* NONE */
                 }
             }
-
-            mBinding.recyclerviewDeliveryButton.adapter = MyPageDeliveryButtonAdapter().apply { this.list = buttons }
-            (mBinding.recyclerviewDeliveryButton.layoutManager as GridLayoutManager).spanCount = if (buttons.size > 1) 2 else 1
-            mBinding.executePendingBindings()
+            return buttons
         }
-
     }
 
     inner class DeliveryButton {
         var text = ""
-        var onClickListener: View.OnClickListener = View.OnClickListener { }
+        var task: View.OnClickListener = View.OnClickListener { }
     }
 }
