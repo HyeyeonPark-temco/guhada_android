@@ -5,10 +5,12 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.data.model.Inquiry
@@ -60,7 +62,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
              * @since 2019.07.30
              */
             binding.buttonMypageclaimlistModify.setOnClickListener {
-                val context = (model as MyPageClaimViewModel).context
+                val context = (model as MyPageClaimViewModel).context as AppCompatActivity
                 val intent = Intent(context, WriteClaimActivity::class.java)
                 val claimContent = model.listData.value?.get(adapterPosition)
 
@@ -72,7 +74,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
 
                 intent.putExtra("inquiry", inquiry)
                 intent.putExtra("productId", claimContent?.inquiry?.productId)
-                context.startActivity(intent)
+                context.startActivityForResult(intent, Flag.RequestCode.MODIFY_CLAIM)
             }
             when {
                 index == 0 -> {

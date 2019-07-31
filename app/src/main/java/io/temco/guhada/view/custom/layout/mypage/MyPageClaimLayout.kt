@@ -14,6 +14,7 @@ import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageClaimBinding
@@ -57,7 +58,7 @@ class MyPageClaimLayout constructor(
 
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
-               // RequestCode.MODIFY_CLAIM.flag -> mViewModel.getUserShippingAddress()
+               RequestCode.MODIFY_CLAIM.flag -> if(CustomLog.flag)CustomLog.L("MyPageClaimLayout","RequestCode.MODIFY_CLAIM ", (requestCode.data as Claim).toString())
             }
         }
     }
