@@ -7,10 +7,7 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
-import io.temco.guhada.data.model.order.Order
-import io.temco.guhada.data.model.order.OrderHistoryResponse
-import io.temco.guhada.data.model.order.PurchaseOrderResponse
-import io.temco.guhada.data.model.order.RequestOrder
+import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
@@ -125,7 +122,7 @@ class OrderServer {
          * 장바구니 아이템의 옵션 리스트 조회 API
          */
         @JvmStatic
-        fun getCartItemOptionList(listener: OnServerListener, accessToken: String, cartItemId: Long) {
+        fun getCartItemOptionList(listener: OnServerListener, accessToken: String, cartItemId: Long) =
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCartItemOptionList(accessToken, cartItemId).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     listener.onResult(response.isSuccessful, response.body())
@@ -135,44 +132,52 @@ class OrderServer {
                     listener.onResult(false, t.message)
                 }
             })
-        }
+
 
         /**
          * 장바구니 옵션 변경 API
          */
         @JvmStatic
-        fun updateCartItemOption(listener: OnServerListener, accessToken: String, cartItemId: Long, selectDealOptionId: Int, quantity: Int) {
+        fun updateCartItemOption(listener: OnServerListener, accessToken: String, cartItemId: Long, selectDealOptionId: Int, quantity: Int) =
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemOption(accessToken, cartItemId, selectDealOptionId, quantity).enqueue(
                     ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
-        }
+
 
         /**
          * 장바구니 상품 수량 변경 API
          */
         @JvmStatic
-        fun updateCartItemQuantity(listener: OnServerListener, accessToken: String, cartItemId: Long, quantity: Int) {
+        fun updateCartItemQuantity(listener: OnServerListener, accessToken: String, cartItemId: Long, quantity: Int) =
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemQuantity(accessToken, cartItemId, quantity).enqueue(
                     ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
-        }
+
 
         /**
          * 장바구니 상품 삭제 API
          */
         @JvmStatic
-        fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: IntArray) {
+        fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: IntArray) =
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).deleteCartItem(accessToken, cartItemIdList).enqueue(
                     ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
-        }
+
 
         /**
          * 주문 상품 조회 API
          */
         @JvmStatic
-        fun getOrders(listener: OnServerListener, accessToken: String, startDate: String, endDate : String, page: Int){
+        fun getOrders(listener: OnServerListener, accessToken: String, startDate: String, endDate: String, page: Int) =
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrders(accessToken, startDate, endDate, page).enqueue(
-                    ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderHistoryResponse>>{ successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body())}
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderHistoryResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
             )
-        }
 
+
+        /**
+         * 주문 상태 조회 API
+         */
+        @JvmStatic
+        fun getOrderStatus(listener: OnServerListener, accessToken: String) =
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrderStatus(accessToken).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderStatus>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
+            )
     }
 }
