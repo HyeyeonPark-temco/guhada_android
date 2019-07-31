@@ -47,7 +47,7 @@ class MyPageAddressLayout constructor(
         setShippingAddressListFragment()
 
         EventBusHelper.mSubject.subscribe { requestCode ->
-            when (requestCode) {
+            when (requestCode.requestCode) {
                 RequestCode.EDIT_SHIPPING_ADDRESS.flag -> mViewModel.getUserShippingAddress()
                 RequestCode.ADD_SHIPPING_ADDRESS.flag -> mViewModel.getUserShippingAddress()
             }

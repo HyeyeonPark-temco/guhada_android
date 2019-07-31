@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.EventBusData;
 import io.temco.guhada.common.EventBusHelper;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
@@ -215,15 +216,15 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     break;
 
                 case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(Flag.RequestCode.EDIT_SHIPPING_ADDRESS);
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.EDIT_SHIPPING_ADDRESS,null));
                     break;
 
                 case Flag.RequestCode.ADD_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(Flag.RequestCode.ADD_SHIPPING_ADDRESS);
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.ADD_SHIPPING_ADDRESS,null));
                     break;
 
                 case Flag.RequestCode.MODIFY_CLAIM:
-                    EventBusHelper.INSTANCE.sendEvent(Flag.RequestCode.MODIFY_CLAIM);
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.MODIFY_CLAIM,null));
                     break;
             }
         } else {

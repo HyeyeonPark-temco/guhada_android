@@ -21,6 +21,7 @@ import io.temco.guhada.view.WrapContentLinearLayoutManager
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.adapter.SpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
+
 /**
  * 19.07.22
  * @author park jungho
@@ -40,7 +41,7 @@ class MyPageClaimLayout constructor(
         mViewModel = MyPageClaimViewModel(context)
         mBinding.viewModel = mViewModel
 
-        mBinding.recyclerviewMypageclaimlayoutList.layoutManager = WrapContentLinearLayoutManager(context as Activity,  LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerviewMypageclaimlayoutList.layoutManager = WrapContentLinearLayoutManager(context as Activity, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerviewMypageclaimlayoutList.setHasFixedSize(true)
 
         (mBinding.recyclerviewMypageclaimlayoutList.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
@@ -48,14 +49,14 @@ class MyPageClaimLayout constructor(
 
         mViewModel.listData.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MyPageClaim.Content>> {
-                    if(CustomLog.flag)CustomLog.L("MyPageClaimLayout","observe",it.size)
+                    if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "observe", it.size)
                     mViewModel.getListAdapter().notifyDataSetChanged()
                 }
         )
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
 
         EventBusHelper.mSubject.subscribe { requestCode ->
-            when (requestCode) {
+            when (requestCode.requestCode) {
                // RequestCode.MODIFY_CLAIM.flag -> mViewModel.getUserShippingAddress()
             }
         }
