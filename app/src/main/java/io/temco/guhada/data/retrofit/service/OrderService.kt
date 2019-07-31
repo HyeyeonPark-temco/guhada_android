@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
@@ -80,5 +81,12 @@ interface OrderService {
      * 주문 상태 조회 API
      */
     @GET("/order/my-orders-status")
-    fun getOrderStatus(@Header("Authorization") accessToken: String) : Call<BaseModel<OrderStatus>>
+    fun getOrderStatus(@Header("Authorization") accessToken: String): Call<BaseModel<OrderStatus>>
+
+    /**
+     * 주문 배송지 수정 API
+     * response type : Boolean
+     */
+    @POST("/order/order-update/shipping-address")
+    fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId  : Long, @Body shippingAddress: UserShipping): Call<BaseModel<Any>>
 }

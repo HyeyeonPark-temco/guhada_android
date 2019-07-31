@@ -37,10 +37,13 @@ import io.temco.guhada.common.listener.OnMainListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.model.UserShipping;
 import io.temco.guhada.data.model.claim.Claim;
+import io.temco.guhada.data.model.shippingaddress.ShippingAddress;
 import io.temco.guhada.data.server.ProductServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -219,6 +222,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
 
                 case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
                     EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.EDIT_SHIPPING_ADDRESS, null));
+                    ToastUtil.showMessage(getString(R.string.shippingaddress_message_edit_success));
                     break;
 
                 case Flag.RequestCode.ADD_SHIPPING_ADDRESS:
@@ -261,8 +265,16 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                         switch (data.getRequestCode()) {
                             case Flag.RequestCode.PRODUCT_DETAIL:
                                 removeProductDetailFragment();
-                                addProductDetailView((Long)data.getData());
+                                addProductDetailView((Long) data.getData());
                                 break;
+                            case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
+                                if (data.getData() != null) {
+                                    UserShipping shippingAddress = (UserShipping) data.getData();
+                                    Intent intent = new Intent(MainActivity.this, EditShippingAddressActivity.class);
+                                    intent.putExtra("orderShippingAddress", shippingAddress);
+                                    intent.putExtra("purchaseId", shippingAddress.getPId());
+                                    startActivityForResult(intent, Flag.RequestCode.EDIT_SHIPPING_ADDRESS);
+                                }
                         }
                     }
 

@@ -27,7 +27,16 @@ class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressLi
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         mViewModel = EditShippingAddressViewModel(this)
-        mViewModel.shippingAddress = intent.getSerializableExtra("shippingAddress") as UserShipping
+
+        val orderShippingAddress = intent.getSerializableExtra("orderShippingAddress")
+        if (orderShippingAddress != null) {
+            mViewModel.shippingAddress = orderShippingAddress as UserShipping
+            mViewModel.shippingAddress.pId = intent.getLongExtra("purchaseId", -1)
+            mViewModel.submitTask = { mViewModel.checkEmptyField { mViewModel.updateOrderShippingAddress() } }
+        } else {
+            mViewModel.shippingAddress = intent.getSerializableExtra("shippingAddress") as UserShipping
+            mViewModel.submitTask = { mViewModel.checkEmptyField { mViewModel.updateShippingAddress() } }
+        }
 
         mBinding.includeEditshippingaddress.addButtonVisible = false
         mBinding.includeEditshippingaddress.shippingAddress = mViewModel.shippingAddress

@@ -36,7 +36,7 @@ class AddShippingAddressViewModel(mListener: OnShippingAddressListener) : Shippi
         UserServer.saveUserShippingAddress(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_add_success))
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_add_success))
                         mListener.closeActivity(RESULT_OK, newItem)
                     })
         }, userId, newItem)

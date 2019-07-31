@@ -4,6 +4,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
@@ -123,15 +124,15 @@ class OrderServer {
          */
         @JvmStatic
         fun getCartItemOptionList(listener: OnServerListener, accessToken: String, cartItemId: Long) =
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCartItemOptionList(accessToken, cartItemId).enqueue(object : Callback<BaseModel<Any>> {
-                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
-                }
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCartItemOptionList(accessToken, cartItemId).enqueue(object : Callback<BaseModel<Any>> {
+                    override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
 
-                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
+                    override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
 
 
         /**
@@ -139,8 +140,8 @@ class OrderServer {
          */
         @JvmStatic
         fun updateCartItemOption(listener: OnServerListener, accessToken: String, cartItemId: Long, selectDealOptionId: Int, quantity: Int) =
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemOption(accessToken, cartItemId, selectDealOptionId, quantity).enqueue(
-                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemOption(accessToken, cartItemId, selectDealOptionId, quantity).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
 
         /**
@@ -148,8 +149,8 @@ class OrderServer {
          */
         @JvmStatic
         fun updateCartItemQuantity(listener: OnServerListener, accessToken: String, cartItemId: Long, quantity: Int) =
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemQuantity(accessToken, cartItemId, quantity).enqueue(
-                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateCartItemQuantity(accessToken, cartItemId, quantity).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
 
         /**
@@ -157,8 +158,8 @@ class OrderServer {
          */
         @JvmStatic
         fun deleteCartItem(listener: OnServerListener, accessToken: String, cartItemIdList: IntArray) =
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).deleteCartItem(accessToken, cartItemIdList).enqueue(
-                    ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).deleteCartItem(accessToken, cartItemIdList).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<CartResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
 
         /**
@@ -166,9 +167,9 @@ class OrderServer {
          */
         @JvmStatic
         fun getOrders(listener: OnServerListener, accessToken: String, startDate: String, endDate: String, page: Int) =
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrders(accessToken, startDate, endDate, page).enqueue(
-                    ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderHistoryResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
-            )
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrders(accessToken, startDate, endDate, page).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderHistoryResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
+                )
 
 
         /**
@@ -176,8 +177,17 @@ class OrderServer {
          */
         @JvmStatic
         fun getOrderStatus(listener: OnServerListener, accessToken: String) =
-            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrderStatus(accessToken).enqueue(
-                    ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderStatus>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
-            )
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrderStatus(accessToken).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderStatus>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
+                )
+
+        /**
+         * 주문 배송지 수정 API
+         */
+        @JvmStatic
+        fun updateOrderShippingAddress(listener: OnServerListener, accessToken: String, shippingAddress: UserShipping) =
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateOrderShippingAddress(accessToken, shippingAddress.pId, shippingAddress).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
+                )
     }
 }

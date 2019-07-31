@@ -43,7 +43,7 @@ class MyPageDeliveryLayout constructor(
         mBinding.calendarfilterMypageDeliver.mListener = this
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
             val list = it.orderItemList
-            mBinding.listContents.adapter = MyPageDeliveryAdapter().apply { this.list = list }
+            mBinding.listContents.adapter = MyPageDeliveryAdapter(mViewModel).apply { this.list = list }
             mBinding.executePendingBindings()
         })
         mBinding.includeDeliveryProcess.viewModel = mViewModel

@@ -12,6 +12,7 @@ import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
@@ -19,7 +20,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  * 마이페이지 주문배송 리스트 adapter
  * @author Hyeyeon Park
  */
-class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
+class MyPageDeliveryAdapter(val mViewModel: MyPageDeliveryViewModel) : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
     var list: MutableList<PurchaseOrder> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -57,6 +58,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     buttons.add(DeliveryButton().apply { text = "주문내역" })
                     buttons.add(DeliveryButton().apply { text = "주문수정" })
                     buttons.add(DeliveryButton().apply { text = "주문취소" })
+                    buttons.add(DeliveryButton().apply {
+                        text = "배송지변경"
+                        task = View.OnClickListener { mViewModel.editShippingAddress(item.purchaseId) }
+                    })
                 }
 
                 PurchaseStatus.SELLER_IDENTIFIED.status,
@@ -131,6 +136,6 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
     inner class DeliveryButton {
         var text = ""
-        var onClickListener: View.OnClickListener = View.OnClickListener { }
+        var task: View.OnClickListener = View.OnClickListener { }
     }
 }

@@ -1,5 +1,6 @@
 package io.temco.guhada.common
 
+import androidx.annotation.Nullable
 import io.reactivex.subjects.PublishSubject
 
 object EventBusHelper {

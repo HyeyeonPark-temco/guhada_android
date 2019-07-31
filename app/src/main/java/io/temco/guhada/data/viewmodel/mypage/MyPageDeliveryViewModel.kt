@@ -6,12 +6,16 @@ import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.OrderHistoryResponse
 import io.temco.guhada.data.model.order.OrderStatus
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import java.util.*
@@ -83,6 +87,31 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
                             notifyPropertyChanged(BR.orderStatus)
                         })
             }, token)
+        })
+    }
+
+    fun editShippingAddress(purchaseId: Long) {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            OrderServer.setOrderCompleted(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            val shippingAddress = (it.data as PurchaseOrderResponse).shippingAddress
+                            UserShipping().apply {
+                                this.id = shippingAddress.id.toInt()
+                                this.shippingName = shippingAddress.addressName ?: ""
+                                this.defaultAddress = shippingAddress.addressDefault
+                                this.zip = shippingAddress.zipcode
+                                this.recipientName = shippingAddress.receiverName
+                                this.recipientMobile = shippingAddress.phone
+                                this.address = shippingAddress.addressBasic
+                                this.roadAddress = shippingAddress.addressBasic
+                                this.detailAddress = shippingAddress.addressDetail
+                                this.pId = purchaseId
+                            }.let { userShipping ->
+                                EventBusHelper.sendEvent(EventBusData(RequestCode.EDIT_SHIPPING_ADDRESS.flag, userShipping))
+                            }
+                        })
+            }, accessToken = token, purchaseId = purchaseId.toDouble())
         })
     }
 

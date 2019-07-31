@@ -29,7 +29,7 @@ class MyPageDeliveryButtonAdapter : RecyclerView.Adapter<MyPageDeliveryButtonAda
         fun bind(item: DeliveryButton) {
             setSpacing()
             mBinding.text = item.text
-            mBinding.onClickListener = item.onClickListener
+            mBinding.onClickListener = item.task
             mBinding.executePendingBindings()
         }
 

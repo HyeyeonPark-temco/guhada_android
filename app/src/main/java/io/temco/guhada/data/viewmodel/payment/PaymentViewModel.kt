@@ -230,7 +230,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             UserServer.saveUserShippingAddress(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_messaeg_add_success))
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_add_success))
 
                         })
             }, userId, selectedShippingAddress!!)
