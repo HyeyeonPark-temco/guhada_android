@@ -5,15 +5,19 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.Brand
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerFollower
@@ -70,7 +74,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         @Bindable
         get() = field
 
-    var productBookMark = ObservableBoolean(true)
+    var initBookMarkData = false
+    var productBookMark = ObservableBoolean(false)
         @Bindable
         get() = field
         set(value) {
@@ -135,6 +140,49 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             })
         }
     }
+
+
+    /**
+     * 상품 북마크 확인
+     */
+    fun getBookMark(target : String, targetId: Long) {
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    var userId = -1
+                    if (it != null) {
+                        userId = JWT(it.substring(7,it.length)).getClaim("userId").asInt() ?: -1
+                    }
+                    UserServer.getBookMark(OnServerListener { success, o ->
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = {
+                                    initBookMarkData = true
+                                    if(CustomLog.flag)CustomLog.L("getBookMark","successTask")
+                                    var value = (it as BaseModel<BookMark>).data
+                                    if(!value.content.isNullOrEmpty()){
+                                        productBookMark.set(value.isBookMarkSet)
+                                    }
+                                },
+                                dataNotFoundTask = {
+                                    initBookMarkData = true
+                                    productBookMark.set(false)
+                                },
+                                failedTask = {
+                                    initBookMarkData = true
+                                    productBookMark.set(false)
+                                },
+                                userLikeNotFoundTask = {
+                                    initBookMarkData = true
+                                    productBookMark.set(false)
+                                },
+                                serverRuntimeErrorTask = {
+                                    initBookMarkData = true
+                                    productBookMark.set(false)
+                                }
+                        )
+                    }, accessToken = it, target = target, targetId = targetId, userId = userId)
+                }, invalidTokenTask = { productBookMark.set(false) })
+    }
+
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
     fun onClickTab(view: View) {
@@ -225,6 +273,13 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         })
     }
 
+    fun saveBookMark(){
+
+    }
+
+    fun deleteBookMark(){
+
+    }
 
 
     fun onClickBookMark(){

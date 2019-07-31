@@ -13,10 +13,12 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.util.ImageUtil
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimListItemViewModel
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
+import io.temco.guhada.databinding.ItemMoreListBinding
 import io.temco.guhada.databinding.ItemMypageClaimListBinding
 import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
@@ -24,16 +26,29 @@ import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageClaim.Content>) : CommonRecyclerAdapter<MyPageClaim.Content, CommonRecyclerAdapter.ListViewHolder>(list) {
 
     override fun getItemViewType(position: Int): Int {
-        return position
+        if(items[position].inquiry.id != 0L){
+            return 1
+        }else{
+            return 0
+        }
     }
 
     override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        var res = R.layout.item_mypage_claim_list
-        val binding: ItemMypageClaimListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
-        var viewModel = MyPageClaimListItemViewModel((model as MyPageClaimViewModel).context)
-        binding.item = viewModel
-        return MyPageClaimListViewHolder(binding.root, binding)
+        when(viewType){
+            1 -> {
+                var res = R.layout.item_mypage_claim_list
+                val binding: ItemMypageClaimListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+                var viewModel = MyPageClaimListItemViewModel((model as MyPageClaimViewModel).context)
+                binding.item = viewModel
+                return MyPageClaimListViewHolder(binding.root, binding)
+            }
+            else -> {
+                var res = R.layout.item_more_list
+                val binding: ItemMoreListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+                return MyPageMoreListViewHolder(binding.root, binding)
+            }
+        }
     }
 
     override fun setOnBindViewHolder(viewHolder: ListViewHolder, item: MyPageClaim.Content, position: Int) {
@@ -47,7 +62,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
      * 마이페이지 상품문의 의 리스트에 사용할 viewholder
      */
     inner class MyPageClaimListViewHolder(val containerView: View, val binding: ItemMypageClaimListBinding) : ListViewHolder(containerView, binding) {
-        override fun bind(model: ViewModel, index: Int, data: MyPageClaim.Content) {
+        override fun bind(model: ViewModel, position: Int, data: MyPageClaim.Content) {
             // init
             binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
             binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
@@ -55,6 +70,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             binding.textviewMypageclaimlistAsk1.maxLines = 1
             binding.imageviewMypageclaimlistArrow1.setImageResource(R.drawable.detail_icon_arrow_open)
             binding.buttonMypageclaimlistModify.visibility = View.GONE
+            binding.buttonMypageclaimlistDelete.visibility = View.VISIBLE
 
             /**
              * 상품 문의 수정
@@ -71,17 +87,17 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                     privateInquiry = claimContent?.inquiry?.private ?: false
                     inquiryId = claimContent?.inquiry?.id?.toInt()
                 }
-
+                model.selectedIndex = adapterPosition
                 intent.putExtra("inquiry", inquiry)
                 intent.putExtra("productId", claimContent?.inquiry?.productId)
                 context.startActivityForResult(intent, Flag.RequestCode.MODIFY_CLAIM)
             }
             when {
-                index == 0 -> {
+                position == 0 -> {
                     binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
                     binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
                 }
-                index == this@MyPageClaimAdapter.itemCount - 1 -> {
+                position == this@MyPageClaimAdapter.itemCount - 1 -> {
                     binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
                     binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
                 }
@@ -112,6 +128,8 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             binding.textviewMypageclaimlistAsk1.text = data.inquiry.inquiry + data.inquiry.inquiry + data.inquiry.inquiry + data.inquiry.inquiry + data.inquiry.inquiry
             binding.linearlayoutMypageclaimlistAnswer1.tag = false
             if ("COMPLETED".equals(data.inquiry.status)) {
+                binding.buttonMypageclaimlistDelete.visibility = View.GONE
+                binding.buttonMypageclaimlistDelete.setOnClickListener(null)
                 binding.textviewMypageclaimlistStatus.setBackgroundResource(R.color.common_blue_purple)
                 binding.textviewMypageclaimlistStatus.setText(R.string.productdetail_qna_reply_completed)
                 binding.textviewMypageclaimlistStatus.setTextColor(containerView.context.resources.getColor(R.color.common_white))
@@ -124,86 +142,9 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                         "." + String.format("%02d", data.inquiry.replyAt[2]) +
                         " " + String.format("%02d", data.inquiry.replyAt[3]) +
                         ":" + String.format("%02d", data.inquiry.replyAt[4])
-                binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener{
-                    var flag = binding.linearlayoutMypageclaimlistAnswer1.tag as Boolean
-                    if(!flag){
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.GONE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.VISIBLE
-                        when{
-                            index == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                            index == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                        }
-                    }else{
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
-
-                        when{
-                            index == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                            index == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                        }
-                    }
-                    binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
-                }
-                binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener{
-                    var flag = binding.linearlayoutMypageclaimlistAnswer1.tag as Boolean
-                    if(!flag){
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.GONE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.VISIBLE
-                        when{
-                            index == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                            index == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
-                            }
-                        }
-                    }else{
-                        binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
-                        binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
-
-                        when{
-                            index == 0 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                            index == this@MyPageClaimAdapter.itemCount-1 -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
-                            }
-                            else -> {
-                                binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
-                                binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
-                            }
-                        }
-                    }
-                    binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
-                }
+                binding.linearlayoutMypageclaimlistAnswer1.contentDescription = position.toString()
+                binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener(layoutClickListener)
+                binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener(layoutClickListener)
             }else{
                 binding.buttonMypageclaimlistModify.visibility = View.VISIBLE
                 binding.textviewMypageclaimlistStatus.setBackgroundResource(R.drawable.drawable_border_dsix)
@@ -220,12 +161,69 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                     }
                     binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
                 }
+                binding.buttonMypageclaimlistDelete.setOnClickListener {
+                    var loading = LoadingIndicatorUtil((model as MyPageClaimViewModel).context as AppCompatActivity)
+                    (model as MyPageClaimViewModel).deleteClaimItem(position,data.inquiry.productId, data.inquiry.id, loading)
+                }
+
             }
+        }
+
+        /**
+         * 답변 완료 레이아웃 확장/축소
+         */
+        var layoutClickListener = View.OnClickListener {
+            var index = binding.linearlayoutMypageclaimlistAnswer1.contentDescription.toString().toInt()
+            var flag = binding.linearlayoutMypageclaimlistAnswer1.tag as Boolean
+            if(!flag){
+                binding.linearlayoutMypageclaimlistAnswer1.visibility = View.GONE
+                binding.linearlayoutMypageclaimlistAnswer2.visibility = View.VISIBLE
+                when{
+                    index == 0 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
+                    }
+                    index == this@MyPageClaimAdapter.itemCount-1 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
+                    }
+                }
+            }else{
+                binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
+                binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
+
+                when{
+                    index == 0 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
+                    }
+                    index == this@MyPageClaimAdapter.itemCount-1 -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
+                        binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
+                    }
+                }
+            }
+            binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
         }
 
     }
 
 
+    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
+        override fun bind(model : ViewModel, position : Int, data: MyPageClaim.Content){
+            binding.linearlayoutMoreView.setOnClickListener {
+                (model as MyPageClaimViewModel).getMoreCalimList(data.pageNumber+1)
+            }
+        }
+    }
 
 
 }

@@ -1,15 +1,16 @@
 package io.temco.guhada.data.server
 
 import android.widget.Toast
+import com.google.gson.JsonObject
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
+import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ClaimService
@@ -80,7 +81,8 @@ open class ClaimServer {
                 // 로그인 팝업 노출
                 Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
             } else {
-                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true).getMyClaimList(accessToken = "Bearer $accessToken", page = page).enqueue(object : Callback<BaseModel<MyPageClaim>> {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true)
+                        .getMyClaimList(accessToken = "Bearer $accessToken", page = page).enqueue(object : Callback<BaseModel<MyPageClaim>> {
                     override fun onResponse(call: Call<BaseModel<MyPageClaim>>, response: Response<BaseModel<MyPageClaim>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
@@ -107,6 +109,29 @@ open class ClaimServer {
                     }
 
                     override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
+
+
+        /**
+         * 마이페이지 상품문의 리스트
+         */
+        @JvmStatic
+        fun deleteClaim(listener: OnServerListener, productId : Long, inquiryId : Long) {
+            val accessToken = Preferences.getToken()?.accessToken
+            if (accessToken.isNullOrBlank()) {
+                // 로그인 팝업 노출
+                Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
+            } else {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true)
+                        .deleteClaim(accessToken = "Bearer $accessToken", productId = productId, inquiryId = inquiryId).enqueue(object : Callback<BaseModel<JsonObject>> {
+                    override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+                    override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
                 })

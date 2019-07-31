@@ -18,10 +18,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Info
-import io.temco.guhada.common.ProductBridge
+import io.temco.guhada.common.*
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
@@ -104,8 +101,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
-
-                mViewModel.getLike("SELLER")
+                mViewModel.getLike(Type.BookMarkTarget.SELLER.name)
+                /**
+                 * 북마크 여부 확인
+                 */
+                mViewModel.getBookMark(Type.BookMarkTarget.PRODUCT.name, dealId)
                 mViewModel.getSellerInfo()
                 initOptionMenu()
                 initClaims()

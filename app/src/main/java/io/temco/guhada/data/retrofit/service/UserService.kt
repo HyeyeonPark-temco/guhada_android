@@ -11,7 +11,6 @@ import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.http.*
 
 /**
@@ -217,7 +216,25 @@ interface UserService {
     /**
      * 좋아요 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
+     *
+     * park jungho
+     * 19.07.31
+     * like -> bookmarks 로 변경
      */
-    @GET("/users/{userId}/likes")
+    @GET("/users/{userId}/bookmarks")
     fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("target") target: String): Call<BaseModel<Any>>
+
+
+    /**
+     * 좋아요 정보 조회 API
+     * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
+     *
+     * park jungho
+     * 19.07.31
+     * like -> bookmarks 로 변경
+     * /users/{userId}/bookmarks    회원 북마크 정보 가져오기
+     */
+    @GET("/users/{userId}/bookmarks")
+    fun getBookMark(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<BookMark>>
+
 }

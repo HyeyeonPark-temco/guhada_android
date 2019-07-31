@@ -89,9 +89,6 @@ class Product : BaseProduct() {
         var url: String = ""
     }
 
-    override fun toString(): String {
-        return "Product(brandId=$brandId, modelNumber='$modelNumber', productStatus='$productStatus', productNumber='$productNumber', productOriginType='$productOriginType', originValue1='$originValue1', originValue2='$originValue2', totalStock=$totalStock, shipping=$shipping, shipExpenseType='$shipExpenseType', asInfo='$asInfo', asTelephone='$asTelephone', asDesc='$asDesc', desc='$desc', tag='$tag', sellerId=$sellerId, sellerName='$sellerName', sellPrice=$sellPrice, discountRate=$discountRate, discountPrice=$discountPrice, shipExpense=$shipExpense, imageUrls=$imageUrls, productNotifies=$productNotifies, filters=$filters, optionInfos=$optionInfos, options=$options, lCategoryId=$lCategoryId, mCategoryId=$mCategoryId, sCategoryId=$sCategoryId, dCategoryId=$dCategoryId)"
-    }
 
 
 }

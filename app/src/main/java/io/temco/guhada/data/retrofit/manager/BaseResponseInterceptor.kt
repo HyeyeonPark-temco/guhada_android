@@ -3,6 +3,7 @@ package io.temco.guhada.data.retrofit.manager
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import io.temco.guhada.common.util.CustomLog
 import okhttp3.Interceptor
 import okhttp3.MediaType
 import okhttp3.Response
@@ -30,6 +31,7 @@ class BaseResponseInterceptor() : Interceptor {
         val parser = JsonParser()
         val bodyString = body.string()
         body.close()
+        //if(CustomLog.flag)CustomLog.L("BaseResponseInterceptor",bodyString)
         val json = parser.parse(bodyString)
 
         var model = JsonObject()

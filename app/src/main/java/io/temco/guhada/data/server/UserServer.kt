@@ -3,8 +3,10 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.Verification
@@ -322,5 +324,64 @@ class UserServer {
             })
         }
 
+
+        /**
+         * 북마크 확인
+         *
+         * target : Type.BookMark field
+         * userId : 유져 id
+         */
+        @JvmStatic
+        fun getBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId : Int) {
+            if(CustomLog.flag) CustomLog.L("getBookMark","userId",userId)
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .getBookMark(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<BookMark>> {
+                        override fun onResponse(call: Call<BaseModel<BookMark>>, response: Response<BaseModel<BookMark>>) {
+                            listener.onResult(true, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<BookMark>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+             )
+        }
+
+        /**
+         * 북마크 저장장
+         * */
+        @JvmStatic
+        fun saveBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId : Int) {
+            if(CustomLog.flag) CustomLog.L("getBookMark","userId",userId)
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .getBookMark(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<BookMark>> {
+                        override fun onResponse(call: Call<BaseModel<BookMark>>, response: Response<BaseModel<BookMark>>) {
+                            listener.onResult(true, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<BookMark>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+        /**
+         * 상품 북마크 확인
+         */
+        @JvmStatic
+        fun deleteBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId : Int) {
+            if(CustomLog.flag) CustomLog.L("getBookMark","userId",userId)
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .getBookMark(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<BookMark>> {
+                        override fun onResponse(call: Call<BaseModel<BookMark>>, response: Response<BaseModel<BookMark>>) {
+                            listener.onResult(true, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<BookMark>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
     }
+
 }

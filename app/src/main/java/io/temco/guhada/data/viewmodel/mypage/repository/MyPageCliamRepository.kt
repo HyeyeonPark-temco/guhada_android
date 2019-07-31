@@ -16,31 +16,56 @@ class MyPageCliamRepository (val context : Context) {
 
     fun getList(): SingleLiveEvent<ArrayList<MyPageClaim.Content>> {
         if (list.value.isNullOrEmpty()) {
-            setInitData(null)
+            list.value = ArrayList()
+            setInitData(0,null)
         }
         return list
     }
 
 
-    fun setInitData(listener : OnSwipeRefreshResultListener?) {
-        list.value = ArrayList()
+    fun setInitData(status : Int, listener : OnSwipeRefreshResultListener?) {
+        getMoreClaimList(status, listener)
+    }
+
+    fun getMoreClaimList(status : Int,listener : OnSwipeRefreshResultListener?, nextPage : Int = 1){
         ClaimServer.getMyPageClaimList(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
+                        if(nextPage > 1){
+                            var idx = list!!.value!!.size-1
+                            if(list!!.value!![idx].inquiry.id == 0L){
+                                list!!.value!!.removeAt(idx)
+                            }
+                        }
                         var data =  (o as BaseModel<*>).data as MyPageClaim
-                        if(CustomLog.flag)CustomLog.L("MyPageCliamRepository",data.toString())
+                        if(data.totalPages > 0 && (data.totalPages > data.pageable.pageNumber)){
+                            var page = MyPageClaim().Content()
+                            page.totalPages = data.totalPages
+                            page.pageNumber = data.pageable.pageNumber
+                            data.content.add(page)
+                        }
+
                         list!!.value!!.addAll(data.content)
                         list!!.value = list!!.value
                         listener?.run { onResultCallback() }
                     },
                     dataNotFoundTask = {
-
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","dataNotFoundTask")
                     },
                     failedTask = {
-
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","failedTask")
+                    },
+                    serverRuntimeErrorTask = {
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverRuntimeErrorTask")
+                    },
+                    serverLoginErrorTask = {
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverLoginErrorTask")
                     }
             )
-        },1)
+        },nextPage)
     }
 
+    fun deleteClaim(productId : Long, inquiryId : Long, listener : OnServerListener){
+        ClaimServer.deleteClaim(listener, productId, inquiryId)
+    }
 }

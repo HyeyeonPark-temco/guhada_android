@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import com.google.gson.JsonObject
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
@@ -50,5 +51,12 @@ interface ClaimService {
      */
     @GET("users/my-page/inquiries")
     fun getMyClaimList(@Header("Authorization") accessToken: String, @Query("page") page: Int,  @Query("size") size: Int = 20 ): Call<BaseModel<MyPageClaim>>
+
+
+    /**
+     * 상품 상세 문의 삭제
+     */
+    @DELETE("products/{productId}/inquiries/{inquiryId}")
+    fun deleteClaim(@Header("Authorization") accessToken: String, @Path("productId") productId: Long,  @Path("inquiryId") inquiryId: Long ): Call<BaseModel<JsonObject>>
 
 }

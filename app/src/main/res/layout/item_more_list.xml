@@ -6,13 +6,14 @@
         android:layout_height="50dp"
         android:orientation="vertical"
         android:weightSum="1">
-        
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/warm_grey"/>
 
         <LinearLayout
+            android:id="@+id/linearlayout_more_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"

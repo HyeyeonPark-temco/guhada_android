@@ -19,7 +19,6 @@ import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageClaimBinding
 import io.temco.guhada.view.WrapContentLinearLayoutManager
-import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.adapter.SpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
@@ -58,7 +57,10 @@ class MyPageClaimLayout constructor(
 
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
-               RequestCode.MODIFY_CLAIM.flag -> if(CustomLog.flag)CustomLog.L("MyPageClaimLayout","RequestCode.MODIFY_CLAIM ", (requestCode.data as Claim).toString())
+               RequestCode.MODIFY_CLAIM.flag -> {
+                   mViewModel.getListAdapter().items[mViewModel.selectedIndex].inquiry.inquiry = (requestCode.data as Claim).inquiry
+                   mViewModel.getListAdapter().notifyItemChanged(mViewModel.selectedIndex)
+               }
             }
         }
     }
@@ -84,6 +86,8 @@ class MyPageClaimLayout constructor(
             override fun onResultCallback() {
                 if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onResultCallback ", "init -----")
                 this@MyPageClaimLayout.handler.postDelayed({
+                    mViewModel.getListAdapter().notifyDataSetChanged()
+                    if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onResultCallback ", "getListAdapter -----", mViewModel.getListAdapter().items.size)
                     mBinding.swipeRefreshLayout.isRefreshing = false
                 },200)
             }

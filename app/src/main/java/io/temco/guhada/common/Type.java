@@ -492,4 +492,76 @@ public class Type {
     }
 
     ////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////
+
+    /**
+     * @author park jungho
+     * 19.07.31
+     *
+     * USER BOOKMARK 회원 북마크 target
+     * http://dev.user.guhada.com/swagger-ui.html#/USER_BOOKMARK
+     *
+     */
+    public enum BookMarkTarget {
+        PRODUCT("PRODUCT"),
+        DEAL("DEAL"),
+        BBS("BBS"),
+        COMMENT("COMMENT"),
+        STORE("STORE"),
+        REVIEW("REVIEW"),
+        SELLER("SELLER");
+
+
+        private String type;
+
+        BookMarkTarget(String type) {
+            this.type = type;
+        }
+
+        public static String get(BookMarkTarget type) {
+            switch (type) {
+                case PRODUCT:
+                    return PRODUCT.type;
+                case DEAL:
+                    return DEAL.type;
+                case BBS:
+                    return BBS.type;
+                case COMMENT:
+                    return COMMENT.type;
+                case STORE:
+                    return STORE.type;
+                case REVIEW:
+                    return REVIEW.type;
+                case SELLER:
+                    return SELLER.type;
+                default:
+                    return PRODUCT.type;
+
+            }
+        }
+
+        public static BookMarkTarget getType(String type) {
+            if (type.equalsIgnoreCase(PRODUCT.type)) {
+                return PRODUCT;
+            } else if (type.equalsIgnoreCase(DEAL.type)) {
+                return DEAL;
+            }else if (type.equalsIgnoreCase(BBS.type)) {
+                return BBS;
+            }else if (type.equalsIgnoreCase(COMMENT.type)) {
+                return COMMENT;
+            }else if (type.equalsIgnoreCase(STORE.type)) {
+                return STORE;
+            }else if (type.equalsIgnoreCase(REVIEW.type)) {
+                return REVIEW;
+            }else if (type.equalsIgnoreCase(SELLER.type)) {
+                return SELLER;
+            }else {
+                return PRODUCT;
+            }
+        }
+    }
+
+    ////////////////////////////////////////////////
 }
