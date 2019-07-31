@@ -22,6 +22,8 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.temco.guhada.R;
 import io.temco.guhada.common.EventBusData;
 import io.temco.guhada.common.EventBusHelper;
@@ -35,12 +37,10 @@ import io.temco.guhada.common.listener.OnMainListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
-import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.claim.Claim;
-import io.temco.guhada.data.model.shippingaddress.ShippingAddress;
 import io.temco.guhada.data.server.ProductServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -102,6 +102,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         setFullWideDrawerLayout();
         initMainPager();
         initSideMenu();
+        setEventBus();
     }
 
     @Override
@@ -217,16 +218,16 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                     break;
 
                 case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.EDIT_SHIPPING_ADDRESS,null));
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.EDIT_SHIPPING_ADDRESS, null));
                     break;
 
                 case Flag.RequestCode.ADD_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.ADD_SHIPPING_ADDRESS,null));
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.ADD_SHIPPING_ADDRESS, null));
                     break;
 
                 case Flag.RequestCode.MODIFY_CLAIM:
                     Claim claim = (Claim) data.getExtras().getSerializable("inquiry");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.MODIFY_CLAIM,(claim!=null ? claim : null)));
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.MODIFY_CLAIM, (claim != null ? claim : null)));
                     break;
             }
         } else {
@@ -246,6 +247,36 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
+
+    private void setEventBus() {
+        EventBusHelper.INSTANCE.getMSubject()
+                .subscribe(new Observer<EventBusData>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(EventBusData data) {
+                        switch (data.getRequestCode()) {
+                            case Flag.RequestCode.PRODUCT_DETAIL:
+                                removeProductDetailFragment();
+                                addProductDetailView((Long)data.getData());
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
     private void checkLogin() {
         if (checkToken()) {
@@ -556,7 +587,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
         try {
             for (NdefRecord r : msg.getRecords()) {
                 JSONObject p = new JSONObject(new String(r.getPayload()));  // (*) 중요!
-                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("showBlockChainProduct",p.toString());
+                if (CustomLog.INSTANCE.getFlag())
+                    CustomLog.INSTANCE.L("showBlockChainProduct", p.toString());
                 if (p.getString(TAG_COMPANY).equals(COMPANY_NAME)) {
                     String id = p.getString(TAG_ID); // get productId
                     getProductData(id);

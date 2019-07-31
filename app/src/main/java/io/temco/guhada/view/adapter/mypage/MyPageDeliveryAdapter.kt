@@ -7,7 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.PurchaseStatus
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
@@ -39,7 +42,8 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
             // image click listener
             mBinding.imageviewDeliveryProfile.setOnClickListener {
-                item.dealId
+                val data = EventBusData(requestCode = RequestCode.PRODUCT_DETAIL.flag, data = item.dealId)
+                EventBusHelper.sendEvent(data)
             }
 
             mBinding.executePendingBindings()

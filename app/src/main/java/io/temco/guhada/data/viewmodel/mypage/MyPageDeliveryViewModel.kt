@@ -46,29 +46,32 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
         get() = field
 
     fun getOrders() {
-        if (Preferences.getToken() != null) {
-            if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
-                val convertedStartDate = convertDateFormat(startDate)
-                val convertedEndDate = convertDateFormat(endDate)
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
+                        val convertedStartDate = convertDateFormat(startDate)
+                        val convertedEndDate = convertDateFormat(endDate)
 
-                if (convertedStartDate.isNotEmpty() && convertedEndDate.isNotEmpty()) {
-                    ServerCallbackUtil.callWithToken(task = {
-                        OrderServer.getOrders(OnServerListener { success, o ->
-                            ServerCallbackUtil.executeByResultCode(success, o,
-                                    successTask = { model ->
-                                        val response = model.data as OrderHistoryResponse
-                                        orderHistoryList.postValue(response)
-                                    })
-                        }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
-                    })
-                } else {
-                    ToastUtil.showMessage("날짜 형식이 올바르지 않습니다.")
-                }
-            }
-        } else {
-            orderHistoryList.postValue(OrderHistoryResponse())
-            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-        }
+                        if (convertedStartDate.isNotEmpty() && convertedEndDate.isNotEmpty()) {
+                            ServerCallbackUtil.callWithToken(task = {
+                                OrderServer.getOrders(OnServerListener { success, o ->
+                                    ServerCallbackUtil.executeByResultCode(success, o,
+                                            successTask = { model ->
+                                                val response = model.data as OrderHistoryResponse
+                                                orderHistoryList.postValue(response)
+                                            })
+                                }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
+                            })
+                        } else {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.mypage_delivery_message_invaliddateformat))
+                        }
+                    }
+                },
+                invalidTokenTask = {
+                    orderHistoryList.postValue(OrderHistoryResponse())
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                })
+
     }
 
     fun getOrderStatus() {
