@@ -72,6 +72,7 @@
                             android:paddingRight="20dp">
 
                             <include
+                                android:id="@+id/include_delivery_process"
                                 layout="@layout/layout_order_ship_process"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

@@ -74,6 +74,7 @@
     <string name="order_shipping_deposit_confirm">Ordered</string>
     <string name="order_shipping_payment_complete">Paid</string>
     <string name="order_shipping_product_authenticate">Being evaluated</string>
+    <string name="order_shipping_product_ready">Preparation</string>
     <string name="order_shipping_ing">In transit</string>
     <string name="order_shipping_complete">Delivered</string>
 

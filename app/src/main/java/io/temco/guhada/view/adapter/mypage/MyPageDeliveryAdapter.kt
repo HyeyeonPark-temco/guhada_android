@@ -12,6 +12,10 @@ import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 마이페이지 주문배송 리스트 adapter
+ * @author Hyeyeon Park
+ */
 class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
     var list: MutableList<PurchaseOrder> = mutableListOf()
 
@@ -28,10 +32,20 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
         fun bind(item: PurchaseOrder) {
             mBinding.item = item
 
-            // space
-            //  val pixels = mBinding.root.context.resources.getDimensionPixelSize(R.dimen.margin_grid_space)
-            //  mBinding.recyclerviewDeliveryButton.addItemDecoration(GridItemSpaceDecoration(pixels))
+            // set buttons
+            val buttons = getButtons(item)
+            mBinding.recyclerviewDeliveryButton.adapter = MyPageDeliveryButtonAdapter().apply { this.list = buttons }
+            (mBinding.recyclerviewDeliveryButton.layoutManager as GridLayoutManager).spanCount = if (buttons.size > 1) 2 else 1
 
+            // image click listener
+            mBinding.imageviewDeliveryProfile.setOnClickListener {
+                item.dealId
+            }
+
+            mBinding.executePendingBindings()
+        }
+
+        private fun getButtons(item: PurchaseOrder): MutableList<DeliveryButton> {
             val buttons = mutableListOf<DeliveryButton>()
             when (item.purchaseStatus) {
                 PurchaseStatus.WAITING_PAYMENT.status,
@@ -107,12 +121,8 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.WITHDRAW_RETURN.status -> { /* NONE */
                 }
             }
-
-            mBinding.recyclerviewDeliveryButton.adapter = MyPageDeliveryButtonAdapter().apply { this.list = buttons }
-            (mBinding.recyclerviewDeliveryButton.layoutManager as GridLayoutManager).spanCount = if (buttons.size > 1) 2 else 1
-            mBinding.executePendingBindings()
+            return buttons
         }
-
     }
 
     inner class DeliveryButton {

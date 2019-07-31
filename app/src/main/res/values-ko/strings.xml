@@ -74,6 +74,7 @@
     <string name="order_shipping_deposit_confirm">입금확인</string>
     <string name="order_shipping_payment_complete">결제완료</string>
     <string name="order_shipping_product_authenticate">제품감정</string>
+    <string name="order_shipping_product_ready">상품준비</string>
     <string name="order_shipping_ing">배송중</string>
     <string name="order_shipping_complete">배송완료</string>
 

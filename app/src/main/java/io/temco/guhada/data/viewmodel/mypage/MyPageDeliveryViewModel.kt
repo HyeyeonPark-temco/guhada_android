@@ -1,8 +1,9 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
-import android.util.Log
+import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
@@ -10,6 +11,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.OrderHistoryResponse
+import io.temco.guhada.data.model.order.OrderStatus
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import java.util.*
@@ -35,10 +37,13 @@ import java.util.*
  *
  */
 class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() {
-    var orderHistoryList: MutableLiveData<OrderHistoryResponse> = MutableLiveData()
     var startDate = "" // yyyy.MM.dd
     var endDate = "" // yyyy.MM.dd
     var page = 1
+    var orderHistoryList: MutableLiveData<OrderHistoryResponse> = MutableLiveData()
+    var orderStatus: OrderStatus = OrderStatus()
+        @Bindable
+        get() = field
 
     fun getOrders() {
         if (Preferences.getToken() != null) {
@@ -64,6 +69,18 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
             orderHistoryList.postValue(OrderHistoryResponse())
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
         }
+    }
+
+    fun getOrderStatus() {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            OrderServer.getOrderStatus(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            orderStatus = it.data as OrderStatus
+                            notifyPropertyChanged(BR.orderStatus)
+                        })
+            }, token)
+        })
     }
 
     fun setDate(day: Int, callback: (startDate: String, endDate: String) -> Unit) {

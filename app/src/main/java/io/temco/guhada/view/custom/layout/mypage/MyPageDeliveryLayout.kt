@@ -49,6 +49,8 @@ class MyPageDeliveryLayout constructor(
             mBinding.listContents.adapter = MyPageDeliveryAdapter().apply { this.list = list }
             mBinding.executePendingBindings()
         })
+        mBinding.includeDeliveryProcess.viewModel = mViewModel
+        mViewModel.getOrderStatus()
 
         mRequestManager = Glide.with(this)
         setLinkText()

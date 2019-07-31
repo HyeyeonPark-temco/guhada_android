@@ -50,8 +50,12 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * 상품 상세 Fragment
+ * @author Hyeyeon Park
+ */
 class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
-    var dealId: Long = 0
+    var dealId: Long = 0 // * required initially
     lateinit var mainListener: OnMainListener
     private val INVALID_DEAL_ID = -1
     private var animFlag = true

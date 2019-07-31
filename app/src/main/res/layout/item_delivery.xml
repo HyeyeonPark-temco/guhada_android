@@ -7,6 +7,7 @@
         <variable
             name="item"
             type="io.temco.guhada.data.model.order.PurchaseOrder" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
