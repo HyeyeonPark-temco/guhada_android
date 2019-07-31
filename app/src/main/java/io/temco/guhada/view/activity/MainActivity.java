@@ -273,6 +273,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> implements V
                                     Intent intent = new Intent(MainActivity.this, EditShippingAddressActivity.class);
                                     intent.putExtra("orderShippingAddress", shippingAddress);
                                     intent.putExtra("purchaseId", shippingAddress.getPId());
+                                    intent.putExtra("addButtonVisible", true);
                                     startActivityForResult(intent, Flag.RequestCode.EDIT_SHIPPING_ADDRESS);
                                 }
                         }

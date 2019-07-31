@@ -88,5 +88,5 @@ interface OrderService {
      * response type : Boolean
      */
     @POST("/order/order-update/shipping-address")
-    fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId  : Long, @Body shippingAddress: UserShipping): Call<BaseModel<Any>>
+    fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId  : Long, @Body shippingAddress: UserShipping, @Query("addShippingAddress") addShippingAddress : Boolean): Call<BaseModel<Any>>
 }

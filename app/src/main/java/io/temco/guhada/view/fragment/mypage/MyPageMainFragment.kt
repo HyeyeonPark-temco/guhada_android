@@ -59,7 +59,10 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     }
 
     private fun initShippingAddressButtons() {
-        mBinding.buttonMypagehomeAddaddress.setOnClickListener { startActivityForResult(Intent(context, AddShippingAddressActivity::class.java), RequestCode.ADD_SHIPPING_ADDRESS.flag) }
+        mBinding.buttonMypagehomeAddaddress.setOnClickListener {
+            val intent = Intent(context, AddShippingAddressActivity::class.java)
+            startActivityForResult(intent, RequestCode.ADD_SHIPPING_ADDRESS.flag)
+        }
         mBinding.buttonMypagehomeSetdefaultaddress.setOnClickListener {
             val isExist = customLayoutMap.contains(SHIPPING_ADDRESS_IDX)
             if (isExist) {

@@ -38,7 +38,7 @@ class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressLi
             mViewModel.submitTask = { mViewModel.checkEmptyField { mViewModel.updateShippingAddress() } }
         }
 
-        mBinding.includeEditshippingaddress.addButtonVisible = false
+        mBinding.includeEditshippingaddress.addButtonVisible = intent.getBooleanExtra("addButtonVisible", false)
         mBinding.includeEditshippingaddress.shippingAddress = mViewModel.shippingAddress
         mBinding.includeEditshippingaddress.setOnClickZipListener {
             redirectSearchZipWebViewActivity()

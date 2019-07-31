@@ -186,7 +186,7 @@ class OrderServer {
          */
         @JvmStatic
         fun updateOrderShippingAddress(listener: OnServerListener, accessToken: String, shippingAddress: UserShipping) =
-                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateOrderShippingAddress(accessToken, shippingAddress.pId, shippingAddress).enqueue(
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateOrderShippingAddress(accessToken, shippingAddress.pId, shippingAddress, shippingAddress.addShippingAddress).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
                 )
     }
