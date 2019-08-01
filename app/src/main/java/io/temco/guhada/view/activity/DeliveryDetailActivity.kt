@@ -1,10 +1,12 @@
 package io.temco.guhada.view.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel
@@ -21,6 +23,8 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     override fun getViewType(): Type.View = Type.View.DELIVERY_DETAIL
 
     override fun init() {
+        initHeader()
+
         mViewModel = MyPageDeliveryDetailViewModel().apply {
             val data = intent.getLongExtra("purchaseId", -1)
             if (data > 0) {
@@ -41,7 +45,30 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailRefundinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
+
+            mViewModel.onClickClaimTask = { productId ->
+                val intent = Intent(this, WriteClaimActivity::class.java)
+                intent.putExtra("productId", productId)
+                startActivityForResult(intent, RequestCode.WRITE_CLAIM.flag)
+            }
+            mViewModel.onClickReceiptTask = { tId ->
+                val intent = Intent(this, ReceiptActivity::class.java)
+                intent.putExtra("tId", tId)
+                startActivityForResult(intent, RequestCode.WRITE_CLAIM.flag)
+            }
             mBinding.executePendingBindings()
+        }
+    }
+
+    private fun initHeader() {
+        mBinding.includeDeliverydetailHeader.title = "주문 내역 상세"
+        mBinding.includeDeliverydetailHeader.setOnClickBackButton { finish() }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RequestCode.WRITE_CLAIM.flag && resultCode == Activity.RESULT_OK) {
+            ToastUtil.showMessage(getString(R.string.claim_message_add))
         }
     }
 

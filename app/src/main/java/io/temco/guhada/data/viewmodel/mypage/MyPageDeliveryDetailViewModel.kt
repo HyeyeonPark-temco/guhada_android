@@ -5,7 +5,6 @@ import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
@@ -23,6 +22,8 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
     var user: User = User()
         @Bindable
         get() = field
+    var onClickClaimTask: (productId: Long) -> Unit = {}
+    var onClickReceiptTask : (tId: String) -> Unit = {}
 
     fun getOrder() {
         ServerCallbackUtil.callWithToken(task = { token ->
@@ -51,6 +52,9 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
                 }, userId)
             else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
         })
-
     }
+
+    fun onClickClaim() = onClickClaimTask(purchaseOrderResponse.orderList[0].productId)
+
+    fun onClickReceipt() = onClickReceiptTask(purchaseOrderResponse.pgTid)
 }

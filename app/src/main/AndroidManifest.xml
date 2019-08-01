@@ -155,6 +155,10 @@
             android:name=".view.activity.DeliveryDetailActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".view.activity.ReceiptActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- Kakao -->
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"

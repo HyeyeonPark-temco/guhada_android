@@ -416,6 +416,7 @@
     <string name="claim_write_empty">작성된 상품 문의가 없습니다.</string>
     <string name="claim_write_message_empty">문의 내용을 작성해주세요.</string>
     <string name="claim_message_lastitem">마지막 상품 문의입니다.</string>
+    <string name="claim_message_add">문의가 등록되었습니다.</string>
 
     <!-- PAYMENT -->
     <string name="payment_title_header">주문 결제</string>

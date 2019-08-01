@@ -22,12 +22,14 @@ class WriteClaimActivity : BindActivity<ActivityWriteclaimBinding>() {
     override fun init() {
         mViewModel.closeActivity = { resultCode, claim -> closeActivity(resultCode, claim) }
 
+        // 문의 수정
         val inquiry = intent.getSerializableExtra("inquiry")
         if (inquiry != null) {
             val prevInquiry = inquiry as Inquiry
             mViewModel.inquiry = prevInquiry
         }
 
+        // 문의 등록
         val productId = intent.getLongExtra("productId", -1)
         if (productId > -1) {
             mViewModel.inquiry.productId = productId

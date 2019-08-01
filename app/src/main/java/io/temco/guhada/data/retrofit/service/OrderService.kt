@@ -89,4 +89,12 @@ interface OrderService {
      */
     @POST("/order/order-update/shipping-address")
     fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId  : Long, @Body shippingAddress: UserShipping, @Query("addShippingAddress") addShippingAddress : Boolean): Call<BaseModel<Any>>
+
+    /**
+     * 영수증 주소 조회 API
+     */
+    @GET ("/receiptUrlSearch")
+    fun getReceiptUrl(@Query("tid") tId : String) : Call<BaseModel<Any>>
+
+
 }

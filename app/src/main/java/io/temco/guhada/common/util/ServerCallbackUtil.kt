@@ -72,7 +72,7 @@ class ServerCallbackUtil {
          * @author park jungho
          * 에러 처리 관련 수정
          */
-        fun executeByResultCode(success: Boolean, o: Any,
+        fun executeByResultCode(success: Boolean, o: Any?,
                                 successTask: (BaseModel<*>) -> Unit,
                                 failedTask: (BaseModel<*>) -> Unit = {
                                     CommonUtil.debug(it.message)
@@ -86,30 +86,36 @@ class ServerCallbackUtil {
                                 dataNotFoundTask: () -> Unit = {},
                                 productNotFoundTask: (BaseModel<*>) -> Unit = {},
                                 userLikeNotFoundTask: () -> Unit = {}) {
-            if (success) {
-                val model = o as BaseModel<*>
-                when (model.resultCode) {
-                    ResultCode.SUCCESS.flag -> successTask(model)
-                    ResultCode.DATA_NOT_FOUND.flag -> dataNotFoundTask()
-                    ResultCode.PRODUCT_RESOURCE_NOT_FOUND.flag -> productNotFoundTask(model)
-                    ResultCode.USER_LIKE_NOT_FOUND.flag -> userLikeNotFoundTask()
-                    ResultCode.RUNTIME_EXCEPTION_ERROR.flag -> serverRuntimeErrorTask(model)
-                    ResultCode.SERVER_LOGIN_FAILED.flag -> serverLoginErrorTask(model)
-                }
-            } else {
-                // modify ------------------------------------
-                if (o is String) {
-                    var gson = Gson()
-                    if (CustomLog.flag) CustomLog.L("executeByResultCode", o)
-                    var base = gson.fromJson<BaseModel<*>>(o, BaseModel::class.java)
-                    failedTask(base)
+            if(o != null){
+                if (success) {
+                    val model = o as BaseModel<*>
+                    when (model.resultCode) {
+                        ResultCode.SUCCESS.flag -> successTask(model)
+                        ResultCode.DATA_NOT_FOUND.flag -> dataNotFoundTask()
+                        ResultCode.PRODUCT_RESOURCE_NOT_FOUND.flag -> productNotFoundTask(model)
+                        ResultCode.USER_LIKE_NOT_FOUND.flag -> userLikeNotFoundTask()
+                        ResultCode.RUNTIME_EXCEPTION_ERROR.flag -> serverRuntimeErrorTask(model)
+                        ResultCode.SERVER_LOGIN_FAILED.flag -> serverLoginErrorTask(model)
+                    }
                 } else {
-                    var base = BaseModel<Any>()
-                    base.error = ""
-                    failedTask(base)
+                    // modify ------------------------------------
+                    if (o is String) {
+                        var gson = Gson()
+                        if (CustomLog.flag) CustomLog.L("executeByResultCode", o)
+                        var base = gson.fromJson<BaseModel<*>>(o, BaseModel::class.java)
+                        failedTask(base)
+                    } else {
+                        var base = BaseModel<Any>()
+                        base.error = ""
+                        failedTask(base)
+                    }
+                    //  -------------------------------------------
                 }
-                //  -------------------------------------------
+            }else {
+                CommonUtil.debug("o is null")
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
             }
+
         }
 
 

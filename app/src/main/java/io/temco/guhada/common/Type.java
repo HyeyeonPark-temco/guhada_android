@@ -40,7 +40,8 @@ public class Type {
         BLOCKCHAIN,
         SEARCH_ZIP_WEBVIEW,
         CART,
-        DELIVERY_DETAIL
+        DELIVERY_DETAIL,
+        RECEIPT
     }
 
     // Main
