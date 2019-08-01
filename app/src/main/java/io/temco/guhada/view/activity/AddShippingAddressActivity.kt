@@ -19,9 +19,9 @@ import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressFormFragment
 
 class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListener {
     lateinit var mBinding: DialogAddshippingaddressBinding
+    var addButtonVisible = false
     private lateinit var mViewModel: AddShippingAddressViewModel
     private lateinit var mShippingAddressFormFragment: ShippingAddressFormFragment
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +29,7 @@ class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListene
         mBinding = DataBindingUtil.setContentView(this, R.layout.dialog_addshippingaddress)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
+        addButtonVisible = intent.getBooleanExtra("addButtonVisible", false)
         mViewModel = AddShippingAddressViewModel(this)
         initForm()
 
@@ -39,7 +40,7 @@ class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListene
     private fun initForm() {
         mShippingAddressFormFragment = ShippingAddressFormFragment().apply {
             this.mViewModel = this@AddShippingAddressActivity.mViewModel
-            this.addButtonVisible = false
+            this.addButtonVisible = this@AddShippingAddressActivity.addButtonVisible
         }
         supportFragmentManager.beginTransaction().add(mBinding.framelayoutAddshippingaddressForm.id, mShippingAddressFormFragment).commitAllowingStateLoss()
     }

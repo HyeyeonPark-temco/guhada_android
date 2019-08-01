@@ -22,6 +22,7 @@ class UserShipping : Serializable {
     var roadAddress = ""
     var detailAddress = ""
     var shippingMessage = ""
+    var addShippingAddress = false
 
     @SerializedName(value = "recipientName", alternate = ["recepientName"])
     var recipientName = ""
@@ -31,6 +32,10 @@ class UserShipping : Serializable {
 
     @Expose
     var addList = false // 배송지 목록에 추가 여부
+        set(value) {
+            field = value
+            addShippingAddress = value
+        }
 
     @Expose
     var pId: Long = 0 // purchaseId
