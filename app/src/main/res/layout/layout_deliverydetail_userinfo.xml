@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pale_grey"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/common_white"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="40dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="40dp">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/common_white">
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_userinfo_title"
+                    style="@style/MypageDeliveryBlackTitleTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mypage_deliverydetail_userinfo_title"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_username_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="24dp"
+                    android:text="@string/mypage_deliverydetail_userinfo_name"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_userinfo_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_useremail_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/mypage_deliverydetail_userinfo_email"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_username_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_userphone_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/mypage_deliverydetail_userinfo_phone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_useremail_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_username_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="53dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@{viewModel.user.name}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_username_title"
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_userinfo_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_useremail_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="41dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@{viewModel.user.email}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_useremail_title"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_username_content" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_userphone_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="41dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@{viewModel.user.mobile}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_userphone_title"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_useremail_content" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view_deliverydetail_userinfo_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="@color/white_four" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippinginfo_title"
+                    style="@style/MypageDeliveryBlackTitleTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mypage_deliverydetail_shippinginfo_title"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingname_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="24dp"
+                    android:text="@string/mypage_deliverydetail_shippinginfo_shippingname"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippinginfo_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingaddress_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/mypage_deliverydetail_shippinginfo_address"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingname_title"/>
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingrecipientname_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/mypage_deliverydetail_shippinginfo_recipientname"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingaddress_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingrecipientphone_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/mypage_deliverydetail_shippinginfo_recipientphone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientname_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingmemo_title"
+                    style="@style/MypageDeliveryBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/mypage_deliverydetail_shippinginfo_memo"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientphone_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingname_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@{viewModel.purchaseOrderResponse.shippingAddress.addressName}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingname_title"
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippinginfo_title" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingaddress_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="53dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@{viewModel.purchaseOrderResponse.shippingAddress.roadAddress + ` ` +  viewModel.purchaseOrderResponse.shippingAddress.addressDefault}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingaddress_title"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingname_content" />
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingrecipientname_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="41dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@{viewModel.purchaseOrderResponse.shippingAddress.receiverName}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingrecipientname_title"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingaddress_content" />
+
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingrecipientphone_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="41dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@{viewModel.purchaseOrderResponse.shippingAddress.phone}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingrecipientphone_title"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientname_content" />
+
+
+                <TextView
+                    android:id="@+id/textview_deliverydetail_shippingmemo_content"
+                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="18dp"
+                    android:text="@{viewModel.purchaseOrderResponse.shippingAddress.message}"
+                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingmemo_title"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientphone_content" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

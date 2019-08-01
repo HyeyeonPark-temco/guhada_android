@@ -18,6 +18,7 @@ import io.temco.guhada.common.Preferences;
 import io.temco.guhada.view.activity.CartActivity;
 import io.temco.guhada.view.activity.CategorySubActivity;
 import io.temco.guhada.view.activity.CustomViewActivity;
+import io.temco.guhada.view.activity.DeliveryDetailActivity;
 import io.temco.guhada.view.activity.FindAccountActivity;
 import io.temco.guhada.view.activity.JoinActivity;
 import io.temco.guhada.view.activity.LoginActivity;
@@ -130,6 +131,9 @@ public class TestListActivity extends AppCompatActivity {
                 case 17:
                     startActivity(CartActivity.class);
                     break;
+                case 18:
+                    startActivity(DeliveryDetailActivity.class);
+                    break;
             }
         });
         list.setAdapter(adapter);
@@ -160,7 +164,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("Test Write NFC "); // 15
         list.add("SEARCH_ZIP_WEBVIEW"); // 16
         list.add("Cart"); // 17
-        list.add(""); // 18
+        list.add("DELIVERY_DETAIL"); // 18
         return list;
     }
 

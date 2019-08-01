@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include_deliverydetail_header"
+            layout="@layout/header_common_backbutton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/view_deliverydetail_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/include_deliverydetail_header" />
+
+                <include
+                    android:id="@+id/include_deliverydetail_orderinfo"
+                    layout="@layout/layout_deliverydetail_orderinfo" />
+
+                <include
+                    android:id="@+id/include_deliverydetail_productinfo"
+                    layout="@layout/layout_deliverydetail_productinfo" />
+
+                <include
+                    android:id="@+id/include_deliverydetail_userinfo"
+                    layout="@layout/layout_deliverydetail_userinfo" />
+
+                <include
+                    android:id="@+id/include_deliverydetail_paymentinfo"
+                    layout="@layout/layout_deliverydetail_paymentinfo" />
+
+                <include
+                    android:id="@+id/include_deliverydetail_refundinfo"
+                    layout="@layout/layout_deliverydetail_refundinfo" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

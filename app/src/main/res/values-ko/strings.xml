@@ -40,6 +40,7 @@
     <string name="common_show">보기</string>
     <string name="common_max">최대</string>
     <string name="common_price_format">%,2d</string>
+    <string name="common_priceunit_format">%,2d원</string>
 
     <string name="common_more">더보기</string>
     <string name="common_reset">초기화</string>
@@ -653,6 +654,48 @@
     <string name="mypage_delivery_button_purchaseconfirm">구매확정</string>
     <string name="mypage_delivery_button_writereview">리뷰작성</string>
     <string name="mypage_delivery_message_invaliddateformat">"날짜 형식이 올바르지 않습니다."</string>
+
+    <!-- MYPAGE DELIVERY DETAIL -->
+    <string name="mypage_deliverydetail_ordernumber">주문 번호</string>
+    <string name="mypage_deliverydetail_rderdate">주문일</string>
+    <string name="mypage_deliverydetail_button_receipt">영수증 조회</string>
+
+    <string name="mypage_deliverydetail_userinfo_title">주문자 정보</string>
+    <string name="mypage_deliverydetail_userinfo_name">이름</string>
+    <string name="mypage_deliverydetail_userinfo_email">이메일</string>
+    <string name="mypage_deliverydetail_userinfo_phone">연락처</string>
+
+    <string name="mypage_deliverydetail_shippinginfo_title">배송지 정보</string>
+    <string name="mypage_deliverydetail_shippinginfo_shippingname">배송지명</string>
+    <string name="mypage_deliverydetail_shippinginfo_address">주소</string>
+    <string name="mypage_deliverydetail_shippinginfo_recipientname">받는분</string>
+    <string name="mypage_deliverydetail_shippinginfo_recipientphone">연락처</string>
+    <string name="mypage_deliverydetail_shippinginfo_memo">배송 메모</string>
+
+    <string name="mypage_deliverydetail_paymentinfo_title">결제 정보</string>
+    <string name="mypage_deliverydetail_paymentinfo_order1">총 주문금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_order2">상품합계 (총%d개)</string>
+    <string name="mypage_deliverydetail_paymentinfo_order3">배송비</string>
+    <string name="mypage_deliverydetail_paymentinfo_discount1">총 할인금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_discount2">상품 할인 쿠폰</string>
+    <string name="mypage_deliverydetail_paymentinfo_fiinal1">최종 결제 금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_fiinal2">총 결제금액 (%s)</string>
+    <string name="mypage_deliverydetail_paymentinfo_fiinal3">포인트 사용</string>
+
+    <string name="mypage_deliverydetail_reufndinfo_title">환불금액 정보</string>
+    <string name="mypage_deliverydetail_reufndinfo_order1">취소 상품 주문금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_order2">취소 상품 금액 합계</string>
+    <string name="mypage_deliverydetail_reufndinfo_order3">취소 배송비 합계</string>
+    <string name="mypage_deliverydetail_reufndinfo_order4">상품 ・ 주문할인취소</string>
+    <string name="mypage_deliverydetail_reufndinfo_order5">스토어할인 취소</string>
+    <string name="mypage_deliverydetail_reufndinfo_order6">배송비할인 취소</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount1">환불금액 차감내역</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount2">배송비 추가금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount3">할인변동금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount4">취소 ・ 반품비용 차감</string>
+    <string name="mypage_deliverydetail_reufndinfo_final1">총 환불금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_final2">신용카드 환불금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_final3">포인트 환불금액</string>
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">전체</string>

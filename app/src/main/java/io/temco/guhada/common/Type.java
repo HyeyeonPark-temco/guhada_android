@@ -39,7 +39,8 @@ public class Type {
         TEMP_LOGOUT,
         BLOCKCHAIN,
         SEARCH_ZIP_WEBVIEW,
-        CART
+        CART,
+        DELIVERY_DETAIL
     }
 
     // Main
