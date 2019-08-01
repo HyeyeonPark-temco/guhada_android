@@ -38,7 +38,7 @@ class MyPageCliamRepository (val context : Context) {
                             }
                         }
                         var data =  (o as BaseModel<*>).data as MyPageClaim
-                        if(data.totalPages > 0 && (data.totalPages > data.pageable.pageNumber)){
+                        if(data.totalPages > 0 && (data.totalPages-1 > data.pageable.pageNumber)){
                             var page = MyPageClaim().Content()
                             page.totalPages = data.totalPages
                             page.pageNumber = data.pageable.pageNumber

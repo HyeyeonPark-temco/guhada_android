@@ -59,8 +59,8 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
         get() = field
 
     fun onShippingMemoSelected(position: Int) {
-        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onShippingMemoSelected ", "position -----",position)
-        if (claimMessages.size > position && selectedIndex != position) {
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onShippingMemoSelected ", "position -----",position, "selectClaimStatusFilter",selectClaimStatusFilter)
+        if (claimMessages.size > position && selectClaimStatusFilter != position) {
             selectClaimStatusFilter = position
             val message = claimMessages[position]
             selectedStatusMessage.set(message)
