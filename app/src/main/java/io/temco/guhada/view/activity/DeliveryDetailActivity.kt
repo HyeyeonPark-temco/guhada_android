@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import io.temco.guhada.R
@@ -25,6 +26,8 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     override fun init() {
         initHeader()
 
+
+
         mViewModel = MyPageDeliveryDetailViewModel().apply {
             val data = intent.getLongExtra("purchaseId", -1)
             if (data > 0) {
@@ -39,13 +42,6 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         if (::mViewModel.isInitialized) {
             mViewModel.getOrder()
             mViewModel.getUser()
-            mBinding.viewModel = mViewModel
-            mBinding.includeDeliverydetailOrderinfo.viewModel = mViewModel
-            mBinding.includeDeliverydetailPaymentinfo.viewModel = mViewModel
-            mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
-            mBinding.includeDeliverydetailRefundinfo.viewModel = mViewModel
-            mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
-
             mViewModel.onClickClaimTask = { productId ->
                 val intent = Intent(this, WriteClaimActivity::class.java)
                 intent.putExtra("productId", productId)
@@ -56,6 +52,17 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
                 intent.putExtra("tId", tId)
                 startActivityForResult(intent, RequestCode.WRITE_CLAIM.flag)
             }
+
+            mBinding.viewModel = mViewModel
+            mBinding.includeDeliverydetailOrderinfo.viewModel = mViewModel
+            mBinding.includeDeliverydetailPaymentinfo.viewModel = mViewModel
+            mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
+//            mBinding.includeDeliverydetailRefundinfo.viewModel = mViewModel
+            mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
+
+            val receiptButtonVisible = intent.getBooleanExtra("receiptButtonVisible", true)
+            mBinding.includeDeliverydetailOrderinfo.buttonDeliverydetailReceipt.visibility = if(receiptButtonVisible) View.VISIBLE else View.GONE
+
             mBinding.executePendingBindings()
         }
     }

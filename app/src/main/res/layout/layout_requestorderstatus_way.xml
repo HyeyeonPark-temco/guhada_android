@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pale_grey">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/common_white"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textview_requestorderstatus_way_title"
+                style="@style/RequestOrderStatusBlackSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/requestorderstatus_common_collection_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_requestorderstatus_way_subtitle"
+                style="@style/RequestOrderStatusBlackTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="@string/requestorderstatus_exchange_way_description"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_way_title" />
+
+            <RadioButton
+                android:id="@+id/radiobutton_requestorderstatus_way_true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/selector_ovalradiobutton_all"
+                android:button="@null"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_way_subtitle" />
+
+            <TextView
+                android:id="@+id/textview_requestorderstatus_way_true"
+                style="@style/RequestOrderStatusBlackTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/requestorderstatus_common_collection_true"
+                app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_way_true"
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_way_subtitle" />
+
+
+            <RadioButton
+                android:id="@+id/radiobutton_requestorderstatus_way_false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/selector_ovalradiobutton_all"
+                android:button="@null"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radiobutton_requestorderstatus_way_true" />
+
+            <TextView
+                android:id="@+id/textview_requestorderstatus_way_false"
+                style="@style/RequestOrderStatusBlackTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/requestorderstatus_common_collection_false"
+                app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_way_false"
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_way_true" />
+
+            <FrameLayout
+                android:id="@+id/framelayout_requestorderstatus_shippingmemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_way_false">
+
+                <Spinner
+                    android:id="@+id/spinner_requestorderstatus_shippingmemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown" />
+
+                <!--android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"-->
+                <!--app:userShippingMemo="@{viewModel.shippingMessages}"-->
+                <FrameLayout
+                    android:id="@+id/framelayout_requestorderstatus_shippingmemobutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white_three"
+                    android:padding="1dp">
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_requestorderstatus_shippingmemo"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            style="@style/RequestOrderStatusWarmGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/requestorderstatus_common_courier_hint1"
+                            android:textSize="@dimen/text_13" />
+
+                        <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
+
+                        <ImageView
+                            android:id="@+id/imageview_requestorderstatus_shippingmemo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+                </FrameLayout>
+
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/edittext_requestorderstatus_shippingid"
+                style="@style/RequestOrderStatusWarmGreyTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_all_silver"
+                android:hint="@string/requestorderstatus_common_courier_hint2"
+                android:textColorHint="@color/warm_grey"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/framelayout_requestorderstatus_shippingmemo" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>

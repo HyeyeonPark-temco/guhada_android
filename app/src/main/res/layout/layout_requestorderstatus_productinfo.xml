@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_requestcancelorder_productinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/common_white"
+        android:paddingLeft="20dp"
+        android:paddingTop="30dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/imageview_requestcancelorder_profile"
+            android:layout_width="90dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/common_white"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--app:imageUrl="@{viewModel.purchaseOrderResponse.orderList[0].imageUrl}"-->
+        <TextView
+            android:id="@+id/textview_requestcancelorder_brandname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_requestcancelorder_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--android:text="@{viewModel.purchaseOrderResponse.orderList[0].brandName}"-->
+        <TextView
+            android:id="@+id/textview_requestcancelorder_productname"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="25dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:singleLine="true"
+
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@+id/imageview_requestcancelorder_profile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_requestcancelorder_brandname" />
+        <!--android:text="@{viewModel.purchaseOrderResponse.orderList[0].season + ` ` + viewModel.purchaseOrderResponse.orderList[0].productName}"-->
+
+        <TextView
+            android:id="@+id/textview_requestcancelorder_option"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="3dp"
+
+            android:textColor="@color/warm_grey"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@id/imageview_requestcancelorder_profile"
+            app:layout_constraintTop_toBottomOf="@+id/textview_requestcancelorder_productname" />
+        <!--android:text="@{viewModel.purchaseOrderResponse.orderList[0].getOptionStr()}"-->
+        <TextView
+            android:id="@+id/textview_requestcancelorder_price"
+            style="@style/TextBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="6dp"
+
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_14"
+            app:layout_constraintLeft_toRightOf="@id/imageview_requestcancelorder_profile"
+            app:layout_constraintTop_toBottomOf="@+id/textview_requestcancelorder_option" />
+        <!--android:text="@{@string/mypage_price_format(viewModel.purchaseOrderResponse.orderList[0].discountPrice)}"-->
+        <TextView
+            android:id="@+id/textview_requestcancelorder_status"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+
+            android:textColor="@color/common_blue_purple"
+            android:textSize="@dimen/text_14"
+            app:layout_constraintLeft_toRightOf="@id/imageview_requestcancelorder_profile"
+            app:layout_constraintTop_toBottomOf="@id/textview_requestcancelorder_price"
+            app:layout_constraintVertical_bias="0" />
+        <!--android:text="@{viewModel.purchaseOrderResponse.orderList[0].purchaseStatusText}"-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

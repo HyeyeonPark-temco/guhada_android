@@ -700,6 +700,49 @@
     <string name="mypage_deliverydetail_reufndinfo_final2">신용카드 환불금액</string>
     <string name="mypage_deliverydetail_reufndinfo_final3">포인트 환불금액</string>
 
+    <!-- REQUEST ORDER STATUS -->
+    <string name="requestorderstatus_common_seller">판매자</string>
+    <string name="requestorderstatus_common_button_cancel">취소</string>
+    <string name="requestorderstatus_common_collection_title">수거방법</string>
+    <string name="requestorderstatus_common_collection_true">네</string>
+    <string name="requestorderstatus_common_collection_false">아니요</string>
+    <string name="requestorderstatus_common_courier_hint1">택배 업체를 선택하세요.</string>
+    <string name="requestorderstatus_common_courier_hint2">운송장 번호를 입력하세요.</string>
+
+    <string name="requestorderstatus_common_shipping_radio1">박스에 동봉</string>
+    <string name="requestorderstatus_common_shipping_radio2">판매자에게 직접 송금</string>
+
+    <string name="requestorderstatus_cancel_title">주문상품 취소 신청</string>
+    <string name="requestorderstatus_cancel_quantity">취소수량</string>
+    <string name="requestorderstatus_cancel_cause">취소 사유를 선택해주세요.</string>
+    <string name="requestorderstatus_cancel_hint_cause">취소 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_cancel_button_submit">취소 신청</string>
+
+    <string name="requestorderstatus_exchange_title">교환 신청</string>
+    <string name="requestorderstatus_exchange_quantity">교환 수량</string>
+    <string name="requestorderstatus_exchange_cause">교환 사유를 선택해주세요.</string>
+    <string name="requestorderstatus_exchange_hint_cause">교환 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_exchange_button_submit">교환 신청</string>
+    <string name="requestorderstatus_exchange_address">교환상품 배송지</string>
+    <string name="requestorderstatus_exchange_selleraddress">교환상품 반송지</string>
+    <string name="requestorderstatus_exchange_way_description">교환상품을 이미 발송하셨습니까?</string>
+    <string name="requestorderstatus_exchange_shipping_title">교환배송비 결제</string>
+    <string name="requestorderstatus_exchange_shipping_description1">구매자 책임사유에 의한 교환이므로</string>
+    <string name="requestorderstatus_exchange_shipping_description2">교환배송비 5,000원을 구매자가 부담합니다.</string>
+
+    <string name="requestorderstatus_refund_title">반품 신청</string>
+    <string name="requestorderstatus_refund_quantity">반품 수량</string>
+    <string name="requestorderstatus_refund_cause">반품 사유를 선택해주세요.</string>
+    <string name="requestorderstatus_refund_hint_cause">반품 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_refund_button_submit">반품 신청</string>
+    <string name="requestorderstatus_refund_selleraddress">반품상품 반송지</string>
+    <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨습니까?</string>
+    <string name="requestorderstatus_refund_shipping_title">반품배송비 결제</string>
+    <string name="requestorderstatus_refund_shipping_description1">구매자 책임사유에 의한 교환이므로</string>
+    <string name="requestorderstatus_refund_shipping_description2">반품배송비 5,000원을 구매자가 부담합니다.</string>
+    <string name="requestorderstatus_refund_shipping_radio">환불금액에서 차감</string>
+
+
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">ALL</string>
     <string name="mainlistsubtitle_women">Women</string>

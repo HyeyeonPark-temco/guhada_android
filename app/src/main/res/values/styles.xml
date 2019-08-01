@@ -317,5 +317,19 @@
         <item name="android:textSize">@dimen/text_13</item>
     </style>
 
+    <style name="RequestOrderStatusBlackSubTitleTextStyle" parent="@style/TextBold">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_15</item>
+    </style>
+
+    <style name="RequestOrderStatusBlackTextStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="RequestOrderStatusWarmGreyTextStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/warm_grey</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
 
 </resources>
