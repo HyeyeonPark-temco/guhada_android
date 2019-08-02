@@ -74,8 +74,8 @@
                         android:gravity="center"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
-                        android:onClick="@{()->viewModel.onClickDeleteAll()}"
-                        />
+                        android:visibility="invisible"
+                        android:onClick="@{()->viewModel.onClickDeleteAll()}" />
 
                 </LinearLayout>
 
@@ -107,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="@string/no_list_item_desc"
+                        android:text="@string/no_list_item_productbookmark_desc"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>

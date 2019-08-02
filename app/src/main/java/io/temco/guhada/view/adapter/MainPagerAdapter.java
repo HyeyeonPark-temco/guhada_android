@@ -15,7 +15,6 @@ import io.temco.guhada.view.fragment.mypage.MyPageMainFragment;
 import io.temco.guhada.view.fragment.product.ProductFragment;
 import io.temco.guhada.view.fragment.main.CommunityFragment;
 import io.temco.guhada.view.fragment.main.HomeFragment;
-import io.temco.guhada.view.fragment.main.MyPageFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 

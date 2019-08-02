@@ -7,6 +7,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.review.ReviewResponse
@@ -34,11 +35,15 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         UserServer.getProductReviewSummary(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        this.reviewSummary = it.data as ReviewSummary
-                        notifyPropertyChanged(BR.reviewSummary)
+                        try{
+                            this.reviewSummary = it.data as ReviewSummary
+                            notifyPropertyChanged(BR.reviewSummary)
 
-                        if (::listener.isInitialized)
-                            listener.notifySummary(reviewSummary.averageReviewsRating)
+                            if (::listener.isInitialized)
+                                listener.notifySummary(reviewSummary.averageReviewsRating)
+                        }catch (e : Exception){
+                            if(CustomLog.flag)CustomLog.E(e)
+                        }
                     },
                     failedTask = {
                         listener.showMessage(it.message)

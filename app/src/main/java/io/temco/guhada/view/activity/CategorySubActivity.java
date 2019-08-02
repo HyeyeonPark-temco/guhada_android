@@ -6,6 +6,8 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import io.temco.guhada.R;
@@ -13,6 +15,7 @@ import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ActivityCategorySubBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -116,6 +119,7 @@ public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding
     }
 
     private void finishWithData(Type.Category type, int[] hierarchies) {
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("CategorySubActivity","finishWithData",type.name(), Arrays.toString(hierarchies));
         Intent i = new Intent();
         i.putExtra(Info.INTENT_CATEGORY_TYPE, type);
         i.putExtra(Info.INTENT_CATEGORY_HIERARCHIES, hierarchies);

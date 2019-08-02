@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
@@ -220,7 +221,7 @@ interface UserService {
     fun getSellerFollowers(@Header("Authorization") accessToken: String, @Path("sellerId") sellerId: Long): Call<BaseModel<SellerFollower>>
 
     /**
-     * 좋아요 정보 조회 API
+     * BookMark 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
      *
      * park jungho
@@ -232,15 +233,42 @@ interface UserService {
 
 
     /**
-     * 좋아요 정보 조회 API
+     * BookMark 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
      *
      * park jungho
      * 19.07.31
      * like -> bookmarks 로 변경
-     * /users/{userId}/bookmarks    회원 북마크 정보 가져오기
+     * /users/{userId}/bookmarks   회원 북마크 정보 가져오기 특정 타겟의 targetId의 정보가 있는지 확인
      */
     @GET("/users/{userId}/bookmarks")
     fun getBookMark(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<BookMark>>
+
+
+
+
+    /**
+     * BookMark 정보 추가
+     * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
+     *
+     * park jungho
+     * 19.08.01
+     * /users/bookmarks
+     */
+    @POST("/users/bookmarks")
+    fun saveBookMark(@Header("Authorization") accessToken: String, @Body response: JsonObject): Call<BaseModel<Any>>
+
+    /**
+     * BookMark 정보 추가
+     * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
+     *
+     * park jungho
+     * 19.08.01
+     * /users/bookmarks
+     */
+    @DELETE("/users/bookmarks")
+    fun deleteBookMark(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<Any>>
+
+
 
 }

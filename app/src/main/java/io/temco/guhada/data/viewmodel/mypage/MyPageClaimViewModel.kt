@@ -30,7 +30,7 @@ import io.temco.guhada.view.adapter.mypage.MyPageClaimAdapter
  */
 class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
     private var repository = MyPageCliamRepository(context)
-    private val handler : Handler = Handler(context.mainLooper)
+    //private val handler : Handler = Handler(context.mainLooper)
 
     private val _listData : SingleLiveEvent<ArrayList<MyPageClaim.Content>> = repository.getList()
     val listData : LiveData<ArrayList<MyPageClaim.Content>> get() = _listData
@@ -38,8 +38,8 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
     private val adapter = MyPageClaimAdapter(this,listData.value!!)
     fun getListAdapter() = adapter
 
+    private var selectClaimStatusFilter = 0
     var selectedIndex = 0
-    var selectClaimStatusFilter = 0
 
 
     fun reloadRecyclerView(listener : OnSwipeRefreshResultListener?){
