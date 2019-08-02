@@ -28,12 +28,16 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
             field = value
             mBinding.textDateFrom.text = field
             mBinding.executePendingBindings()
+
+            if (::mListener.isInitialized) mListener.onChangeDate(startDate, endDate)
         }
     var endDate = ""
         set(value) {
             field = value
             mBinding.textDateTo.text = field
             mBinding.executePendingBindings()
+
+            if (::mListener.isInitialized) mListener.onChangeDate(startDate, endDate)
         }
 
     constructor(context: Context) : super(context) {
@@ -56,18 +60,22 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.text_week -> {
+                setDate(7)
                 setPeriod(0)
                 if (::mListener.isInitialized) mListener.onClickWeek()
             }
             R.id.text_month -> {
+                setDate(30)
                 setPeriod(1)
                 if (::mListener.isInitialized) mListener.onClickMonth()
             }
             R.id.text_month_three -> {
+                setDate(90)
                 setPeriod(2)
                 if (::mListener.isInitialized) mListener.onClickThreeMonth()
             }
             R.id.text_year -> {
+                setDate(365)
                 setPeriod(3)
                 if (::mListener.isInitialized) mListener.onClickYear()
             }
@@ -83,6 +91,8 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
                 if (::mListener.isInitialized) checkDate { mListener.onClickCheck() }
             }
         }
+
+        if (::mListener.isInitialized) mListener.onChangeDate(startDate, endDate)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -150,11 +160,25 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
         }
     }
 
+    fun setDate(day: Int) {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+        endDate = convertDateFormat(calendar, ".")
+        calendar.add(Calendar.DAY_OF_MONTH, -day)
+        startDate = convertDateFormat(calendar, ".")
+    }
+
+    private fun convertDateFormat(calendar: Calendar, operator: String): String {
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        return "${calendar.get(Calendar.YEAR)}$operator${if (month < 10) "0$month" else month}$operator${if (day < 10) "0$day" else day}"
+    }
+
     interface CustomCalendarListener {
         fun onClickWeek()
         fun onClickMonth()
         fun onClickThreeMonth()
         fun onClickYear()
         fun onClickCheck()
+        fun onChangeDate(startDate: String, fromDate: String)
     }
 }

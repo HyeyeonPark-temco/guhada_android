@@ -67,7 +67,8 @@ public class Type {
         PAYMENT,
         BLOCKCHAIN, // BlockChain
         LOCAL, // 핸드폰 인증
-        NAVER_PROFILE;
+        NAVER_PROFILE,
+        BENEFIT;
 
         public static String getUrl(Server type) {
             switch (type) {
@@ -91,6 +92,8 @@ public class Type {
                     return "http://13.209.10.68/";
                 case BLOCKCHAIN:
                     return "http://52.79.95.78:8080/";
+                case BENEFIT:
+                    return getBenefitUrl();
                 default:
                     return "";
             }
@@ -164,6 +167,16 @@ public class Type {
 
             default:
                 return "http://dev.payment.guhada.com:8081/";
+        }
+    }
+
+    private static String getBenefitUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.benefit.guhada.com:8080/";
+
+            default:
+                return "http://dev.benefit.guhada.com:8080/";
         }
     }
 
@@ -415,11 +428,9 @@ public class Type {
         }
 
         /**
-         *
          * @Author park jungho
          * 19.07.18
          * RGB 값추가 - 메인 홈에서 deal에 사용
-         *
          */
         public static ProductOption getType(String type) {
             if (type.equalsIgnoreCase(COLOR.type)) {
@@ -501,10 +512,9 @@ public class Type {
     /**
      * @author park jungho
      * 19.07.31
-     *
+     * <p>
      * USER BOOKMARK 회원 북마크 target
      * http://dev.user.guhada.com/swagger-ui.html#/USER_BOOKMARK
-     *
      */
     public enum BookMarkTarget {
         PRODUCT("PRODUCT"),
@@ -549,17 +559,17 @@ public class Type {
                 return PRODUCT;
             } else if (type.equalsIgnoreCase(DEAL.type)) {
                 return DEAL;
-            }else if (type.equalsIgnoreCase(BBS.type)) {
+            } else if (type.equalsIgnoreCase(BBS.type)) {
                 return BBS;
-            }else if (type.equalsIgnoreCase(COMMENT.type)) {
+            } else if (type.equalsIgnoreCase(COMMENT.type)) {
                 return COMMENT;
-            }else if (type.equalsIgnoreCase(STORE.type)) {
+            } else if (type.equalsIgnoreCase(STORE.type)) {
                 return STORE;
-            }else if (type.equalsIgnoreCase(REVIEW.type)) {
+            } else if (type.equalsIgnoreCase(REVIEW.type)) {
                 return REVIEW;
-            }else if (type.equalsIgnoreCase(SELLER.type)) {
+            } else if (type.equalsIgnoreCase(SELLER.type)) {
                 return SELLER;
-            }else {
+            } else {
                 return PRODUCT;
             }
         }

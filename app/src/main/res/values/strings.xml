@@ -587,6 +587,18 @@
     <string name="mypageordership_deliveryrefundok">환불 신청이 완료되었습니다.</string>
     <string name="mypageordership_deliverydeliveryok">배송 접수가 완료되었습니다.</string>
 
+    <!-- MYPAGE PIOINT -->
+    <string name="mypagepoint_more">더보기</string>
+    <string name="mypagepoint_enabled">사용 가능한 포인트</string>
+    <string name="mypagepoint_expected">적립 예정</string>
+    <string name="mypagepoint_accumulated">누적 포인트</string>
+    <string name="mypagepoint_empty">포인트 내역이 없습니다.</string>
+    <string name="mypagepoint_status_used">사용</string>
+    <string name="mypagepoint_status_accumulated">적립</string>
+    <string name="mypagepoint_status_canceled">취소</string>
+    <string name="mypagepoint_status_recovered">복원</string>
+    <string name="mypagepoint_status_expired">소멸</string>
+
     <!-- PRODUCT INFO REVIEW -->
     <string name="productdetaininfo_review_sort1">Newly Listed</string>
     <string name="productdetaininfo_review_sort2">Rating</string>
