@@ -189,5 +189,15 @@ class OrderServer {
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).updateOrderShippingAddress(accessToken, shippingAddress.pId, shippingAddress, shippingAddress.addShippingAddress).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
                 )
+
+        /**
+         * 영수증 주소 조회 API
+         */
+        @JvmStatic
+        fun getReceiptUrl(listener: OnServerListener, tId: String) =
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getReceiptUrl(tId).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+
+
     }
 }

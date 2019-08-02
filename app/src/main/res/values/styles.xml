@@ -275,4 +275,61 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
+    <style name="MypageDeliveryReceiptButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/border_all_silver</item>
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_13</item>
+    </style>
+
+    <style name="MypageDeliveryBlackTextStyle" parent="@style/TextRegular">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_13</item>
+    </style>
+
+    <style name="MypageDeliveryBlackTitleTextStyle" parent="@style/TextBold">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+
+    <style name="MypageDeliveryBlackSubTitleTextStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="MypageDeliveryBlackBoldTextStyle" parent="@style/TextBold">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+
+    <style name="MypageDeliveryRedTitleTextStyle" parent="@style/TextBold">
+        <item name="android:textColor">@color/brick</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="MypageDeliveryGreyishBrownTextStyle" parent="@style/TextRegular">
+        <item name="android:textColor">@color/greyish_brown</item>
+        <item name="android:textSize">@dimen/text_13</item>
+    </style>
+
+    <style name="MypageDeliveryWarmGreyTextStyle" parent="@style/TextRegular">
+        <item name="android:textColor">@color/warm_grey</item>
+        <item name="android:textSize">@dimen/text_13</item>
+    </style>
+
+    <style name="RequestOrderStatusBlackSubTitleTextStyle" parent="@style/TextBold">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_15</item>
+    </style>
+
+    <style name="RequestOrderStatusBlackTextStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="RequestOrderStatusWarmGreyTextStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/warm_grey</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
 </resources>

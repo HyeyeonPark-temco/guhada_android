@@ -20,6 +20,12 @@ import retrofit2.http.*
 interface UserService {
 
     /**
+     * 회원 정보 가져오기 API
+     */
+    @GET ("/users")
+    fun getUserInfo(@Query("userIds") userIds : IntArray) : Call<BaseModel<User>>
+
+    /**
      * 회원가입 API
      */
     @POST("/signUpUser")

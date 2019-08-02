@@ -49,18 +49,17 @@
         <activity
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <!-- Main -->
         <activity
             android:name=".view.activity.MainActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"/>
 
         <!-- Category -->
         <activity
@@ -151,6 +150,14 @@
             android:name=".view.activity.CartActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Mypage -->
+        <activity
+            android:name=".view.activity.DeliveryDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".view.activity.ReceiptActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- Kakao -->
         <activity
@@ -158,10 +165,10 @@
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize">
 
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <!-- Facebook -->
@@ -182,6 +189,8 @@
                     android:scheme="@string/fb_login_protocol_scheme"
                     tools:ignore="ManifestResource" />
             </intent-filter>
+
+
         </activity>
 
         <!-- //////////////////////////////// -->

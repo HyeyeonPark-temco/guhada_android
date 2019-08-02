@@ -30,6 +30,14 @@ import retrofit2.Response
 class UserServer {
     companion object {
         /**
+         * 유저 정보 가져오기 API
+         */
+        @JvmStatic
+        fun getUserInfo(listener: OnServerListener, userId: Int) =
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getUserInfo(intArrayOf(userId)).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<User>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+
+        /**
          * 네이버 유저 프로필 가져오기 API
          */
         @JvmStatic
@@ -171,8 +179,9 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java).facebookLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "페이스북 로그인 오류"))
 
         @JvmStatic
-        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String,  email: String?) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId, email ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+        fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String, email: String?) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId, email
+                        ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 개별 유저 정보 조회 API
@@ -296,7 +305,7 @@ class UserServer {
          */
         @JvmStatic
         fun getProductReviewSummary(listener: OnServerListener, productId: Long) {
-            /*RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewSummary(productId).enqueue(object : Callback<BaseModel<ReviewSummary>> {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewSummary(productId).enqueue(object : Callback<BaseModel<ReviewSummary>> {
                 override fun onResponse(call: Call<BaseModel<ReviewSummary>>, response: Response<BaseModel<ReviewSummary>>) {
                     listener.onResult(true, response.body())
                 }
@@ -304,7 +313,7 @@ class UserServer {
                 override fun onFailure(call: Call<BaseModel<ReviewSummary>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
-            })*/
+            })
         }
 
         /**
@@ -331,13 +340,14 @@ class UserServer {
          * userId : 유져 id
          */
         @JvmStatic
-        fun getBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId : Int) {
-            if(CustomLog.flag) CustomLog.L("getBookMark","userId",userId)
+        fun getBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId: Int) {
+            if (CustomLog.flag) CustomLog.L("getBookMark", "userId", userId)
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .getBookMark(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<BookMark>> {
                         override fun onResponse(call: Call<BaseModel<BookMark>>, response: Response<BaseModel<BookMark>>) {
                             listener.onResult(true, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<BookMark>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }

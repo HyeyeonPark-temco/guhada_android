@@ -40,6 +40,7 @@
     <string name="common_show">show</string>
     <string name="common_max">Maximum</string>
     <string name="common_price_format">%,2d</string>
+    <string name="common_priceunit_format">%,2d원</string>
 
     <string name="common_more">More</string>
     <string name="common_reset">초기화</string>
@@ -414,6 +415,7 @@
     <string name="claim_write_empty">There is no product inquiry yet</string>
     <string name="claim_write_message_empty">Inquiry content is empty</string>
     <string name="claim_message_lastitem">No More Inquiries</string>
+    <string name="claim_message_add">문의가 등록되었습니다.</string>
 
     <!-- PAYMENT -->
     <string name="payment_title_header">Order payment</string>
@@ -655,6 +657,91 @@
     <string name="mypage_delivery_button_purchaseconfirm">구매확정</string>
     <string name="mypage_delivery_button_writereview">리뷰작성</string>
     <string name="mypage_delivery_message_invaliddateformat">"날짜 형식이 올바르지 않습니다."</string>
+
+    <!-- MYPAGE DELIVERY DETAIL -->
+    <string name="mypage_deliverydetail_ordernumber">주문 번호</string>
+    <string name="mypage_deliverydetail_rderdate">주문일</string>
+    <string name="mypage_deliverydetail_button_receipt">영수증 조회</string>
+
+    <string name="mypage_deliverydetail_userinfo_title">주문자 정보</string>
+    <string name="mypage_deliverydetail_userinfo_name">이름</string>
+    <string name="mypage_deliverydetail_userinfo_email">이메일</string>
+    <string name="mypage_deliverydetail_userinfo_phone">연락처</string>
+
+    <string name="mypage_deliverydetail_shippinginfo_title">배송지 정보</string>
+    <string name="mypage_deliverydetail_shippinginfo_shippingname">배송지명</string>
+    <string name="mypage_deliverydetail_shippinginfo_address">주소</string>
+    <string name="mypage_deliverydetail_shippinginfo_recipientname">받는분</string>
+    <string name="mypage_deliverydetail_shippinginfo_recipientphone">연락처</string>
+    <string name="mypage_deliverydetail_shippinginfo_memo">배송메모</string>
+
+    <string name="mypage_deliverydetail_paymentinfo_title">결제 정보</string>
+    <string name="mypage_deliverydetail_paymentinfo_order1">총 주문금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_order2">상품합계 (총%d개)</string>
+    <string name="mypage_deliverydetail_paymentinfo_order3">배송비</string>
+    <string name="mypage_deliverydetail_paymentinfo_discount1">총 할인금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_discount2">상품 할인 쿠폰</string>
+    <string name="mypage_deliverydetail_paymentinfo_fiinal1">최종 결제 금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_fiinal2">총 결제금액 (%s)</string>
+    <string name="mypage_deliverydetail_paymentinfo_fiinal3">포인트 사용</string>
+
+    <string name="mypage_deliverydetail_reufndinfo_title">환불금액 정보</string>
+    <string name="mypage_deliverydetail_reufndinfo_order1">취소 상품 주문금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_order2">취소 상품 금액 합계</string>
+    <string name="mypage_deliverydetail_reufndinfo_order3">취소 배송비 합계</string>
+    <string name="mypage_deliverydetail_reufndinfo_order4">상품 ・ 주문할인취소</string>
+    <string name="mypage_deliverydetail_reufndinfo_order5">스토어할인 취소</string>
+    <string name="mypage_deliverydetail_reufndinfo_order6">배송비할인 취소</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount1">환불금액 차감내역</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount2">배송비 추가금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount3">할인변동금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount4">취소 ・ 반품비용 차감</string>
+    <string name="mypage_deliverydetail_reufndinfo_final1">총 환불금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_final2">신용카드 환불금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_final3">포인트 환불금액</string>
+
+    <!-- REQUEST ORDER STATUS -->
+    <string name="requestorderstatus_common_seller">판매자</string>
+    <string name="requestorderstatus_common_button_cancel">취소</string>
+    <string name="requestorderstatus_common_collection_title">수거방법</string>
+    <string name="requestorderstatus_common_collection_true">네</string>
+    <string name="requestorderstatus_common_collection_false">아니요</string>
+    <string name="requestorderstatus_common_courier_hint1">택배 업체를 선택하세요.</string>
+    <string name="requestorderstatus_common_courier_hint2">운송장 번호를 입력하세요.</string>
+
+    <string name="requestorderstatus_common_shipping_radio1">박스에 동봉</string>
+    <string name="requestorderstatus_common_shipping_radio2">판매자에게 직접 송금</string>
+
+    <string name="requestorderstatus_cancel_title">주문상품 취소 신청</string>
+    <string name="requestorderstatus_cancel_quantity">취소수량</string>
+    <string name="requestorderstatus_cancel_cause">취소 사유를 선택해주세요.</string>
+    <string name="requestorderstatus_cancel_hint_cause">취소 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_cancel_button_submit">취소 신청</string>
+
+    <string name="requestorderstatus_exchange_title">교환 신청</string>
+    <string name="requestorderstatus_exchange_quantity">교환 수량</string>
+    <string name="requestorderstatus_exchange_cause">교환 사유를 선택해주세요.</string>
+    <string name="requestorderstatus_exchange_hint_cause">교환 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_exchange_button_submit">교환 신청</string>
+    <string name="requestorderstatus_exchange_address">교환상품 배송지</string>
+    <string name="requestorderstatus_exchange_selleraddress">교환상품 반송지</string>
+    <string name="requestorderstatus_exchange_way_description">교환상품을 이미 발송하셨습니까?</string>
+    <string name="requestorderstatus_exchange_shipping_title">교환배송비 결제</string>
+    <string name="requestorderstatus_exchange_shipping_description1">구매자 책임사유에 의한 교환이므로</string>
+    <string name="requestorderstatus_exchange_shipping_description2">교환배송비 5,000원을 구매자가 부담합니다.</string>
+
+    <string name="requestorderstatus_refund_title">반품 신청</string>
+    <string name="requestorderstatus_refund_quantity">반품 수량</string>
+    <string name="requestorderstatus_refund_cause">반품 사유를 선택해주세요.</string>
+    <string name="requestorderstatus_refund_hint_cause">반품 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_refund_button_submit">반품 신청</string>
+    <string name="requestorderstatus_refund_selleraddress">반품상품 반송지</string>
+    <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨습니까?</string>
+    <string name="requestorderstatus_refund_shipping_title">반품배송비 결제</string>
+    <string name="requestorderstatus_refund_shipping_description1">구매자 책임사유에 의한 교환이므로</string>
+    <string name="requestorderstatus_refund_shipping_description2">반품배송비 5,000원을 구매자가 부담합니다.</string>
+    <string name="requestorderstatus_refund_shipping_radio">환불금액에서 차감</string>
+
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">ALL</string>
