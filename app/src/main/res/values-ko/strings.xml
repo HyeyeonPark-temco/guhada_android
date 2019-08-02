@@ -746,6 +746,7 @@
     <string name="btn_delete_all">전체 삭제</string>
 
     <string name="no_list_item_desc">최근 본 상품이 없습니다.</string>
+    <string name="no_list_item_productbookmark_desc">찜한 상품이 없습니다.</string>
 
     <string name="btn_claim_modify">문의수정</string>
 

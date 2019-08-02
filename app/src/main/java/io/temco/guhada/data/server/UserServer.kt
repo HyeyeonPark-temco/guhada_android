@@ -1,15 +1,13 @@
 package io.temco.guhada.data.server
 
+import com.google.gson.JsonObject
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.BookMark
-import io.temco.guhada.data.model.Token
-import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.model.Verification
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.ReviewResponse
@@ -21,6 +19,7 @@ import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.UserService
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -297,7 +296,7 @@ class UserServer {
          */
         @JvmStatic
         fun getProductReviewSummary(listener: OnServerListener, productId: Long) {
-            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewSummary(productId).enqueue(object : Callback<BaseModel<ReviewSummary>> {
+            /*RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewSummary(productId).enqueue(object : Callback<BaseModel<ReviewSummary>> {
                 override fun onResponse(call: Call<BaseModel<ReviewSummary>>, response: Response<BaseModel<ReviewSummary>>) {
                     listener.onResult(true, response.body())
                 }
@@ -305,7 +304,7 @@ class UserServer {
                 override fun onFailure(call: Call<BaseModel<ReviewSummary>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
-            })
+            })*/
         }
 
         /**
@@ -347,39 +346,38 @@ class UserServer {
         }
 
         /**
-         * 북마크 저장장
+         * 북마크 저장
          * */
         @JvmStatic
-        fun saveBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId : Int) {
-            if(CustomLog.flag) CustomLog.L("getBookMark","userId",userId)
+        fun saveBookMark(listener: OnServerListener, accessToken: String, response: JsonObject) {
+            if(CustomLog.flag) CustomLog.L("saveBookMark","response",response.toString())
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .getBookMark(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<BookMark>> {
-                        override fun onResponse(call: Call<BaseModel<BookMark>>, response: Response<BaseModel<BookMark>>) {
+                    .saveBookMark(accessToken, response).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             listener.onResult(true, response.body())
                         }
-                        override fun onFailure(call: Call<BaseModel<BookMark>>, t: Throwable) {
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+             )
         }
 
         /**
-         * 상품 북마크 확인
+         * 북마크 삭제
          */
         @JvmStatic
-        fun deleteBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long, userId : Int) {
-            if(CustomLog.flag) CustomLog.L("getBookMark","userId",userId)
+        fun deleteBookMark(listener: OnServerListener, accessToken: String, target: String, targetId: Long) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .getBookMark(accessToken, userId, target, targetId).enqueue(object : Callback<BaseModel<BookMark>> {
-                        override fun onResponse(call: Call<BaseModel<BookMark>>, response: Response<BaseModel<BookMark>>) {
+                    .deleteBookMark(accessToken, target, targetId).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             listener.onResult(true, response.body())
                         }
-                        override fun onFailure(call: Call<BaseModel<BookMark>>, t: Throwable) {
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
     }

@@ -2,6 +2,7 @@ package io.temco.guhada.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
 import java.util.List;
 
 import io.temco.guhada.common.Type;
@@ -43,4 +44,24 @@ public class Category {
 
     @SerializedName("children")
     public List<Category> children;
+
+    public int selectId = -1;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "type=" + type +
+                ", isSelected=" + isSelected +
+                ", isExpand=" + isExpand +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", key='" + key + '\'' +
+                ", hierarchy='" + hierarchy + '\'' +
+                ", fullDepthName='" + fullDepthName + '\'' +
+                ", immediateChildrenCount=" + immediateChildrenCount +
+                ", hierarchies=" + Arrays.toString(hierarchies) +
+                ", isUnisex=" + isUnisex +
+                ", children=" + children +
+                '}';
+    }
 }

@@ -178,18 +178,24 @@ public class CommonUtil {
         List<Category> data = Preferences.getCategories();
         if (data == null) return null;
         mCurrentCategory = null;
-        getCategory(hierarchies[hierarchies.length - 1], data);
+        getCategory(hierarchies[hierarchies.length - 1], data,null);
         return mCurrentCategory;
     }
 
-    private static void getCategory(int id, List<Category> categories) {
+    private static void getCategory(int id, List<Category> categories, Category parent) {
         if (categories != null && categories.size() > 0) {
             for (Category c : categories) {
                 if (c.id == id) {
-                    mCurrentCategory = c;
+                    if(c.children != null){
+                        mCurrentCategory = c;
+                        mCurrentCategory.selectId = -1;
+                    }else{
+                        mCurrentCategory = parent;
+                        mCurrentCategory.selectId = id;
+                    }
                     break;
                 } else {
-                    getCategory(id, c.children);
+                    getCategory(id, c.children,c);
                 }
             }
         }

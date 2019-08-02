@@ -70,6 +70,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private int mPosition;
     private int mId;
     private int mPageNumber = 1;
+    private int tabIndex = 0;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -221,20 +222,27 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void setCategoryTabLayout() {
-        if (mCategoryData != null &&
-                mCategoryData.children != null && mCategoryData.children.size() > 0) {
+        if (mCategoryData != null && mCategoryData.children != null && mCategoryData.children.size() > 0) {
             mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
             // Remove
             if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
                 mBinding.layoutHeader.layoutTab.removeAllTabs();
             }
-            // Add All
+            // Add All (전체보기)
             String title = getContext() != null ? getContext().getString(R.string.category_all) : null;
             Category all = CommonUtil.createAllCategoryData(title, mCategoryData.fullDepthName, mCategoryData.id, mCategoryData.hierarchies);
-            addCategoryTab(all, true);
+            addCategoryTab(all, mCategoryData.selectId == -1);
             // Add Category
+            int i=0;
             for (Category c : mCategoryData.children) {
-                addCategoryTab(c, false);
+                if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
+                    tabIndex = i+1;
+                    addCategoryTab(c, true);
+                    //loadCategory(c, false);
+                }else{
+                    addCategoryTab(c, false);
+                }
+                i++;
             }
             // Select Event
             mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -256,6 +264,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     }
                 }
             });
+            mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
+                @Override
+                public void run() {
+                    mBinding.layoutHeader.layoutTab.setScrollPosition(tabIndex,0f,true);
+                    loadCategory(mCategoryData.children.get(tabIndex-1), false);
+                }
+            },150);
             // Scroll // Not Used
             // setTabLayoutScrollEvent();
         } else {
@@ -470,10 +485,16 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         changeScaleView(mBinding.buttonFloatingTop.getRoot(), isShow, animate);
     }
 
+    /**
+     * @editor park jungho
+     * 19.08.01
+     * scrollToTop Value -> false 로 변경
+     *
+     */
     private void changeScaleView(View v, boolean isShow, boolean animate) {
         if (isShow) {
             if (v.getVisibility() != View.VISIBLE) {
-                v.setOnClickListener(view -> scrollToTop(true));
+                v.setOnClickListener(view -> scrollToTop(false));
                 v.setVisibility(View.VISIBLE);
                 if (animate) {
                     showScaleAnimation(v);
@@ -758,6 +779,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // SERVER
     ////////////////////////////////////////////////
 
+    /**
+     * @author park jungho
+     * 상품 리스트에서 카테고리 별 상품 리스트 데이터 가져오는 부분
+     *
+     * @param reset 초기화 여부
+     */
     private void getProductListByCategory(boolean reset) {
         if (mIsLoading) return;
         mIsLoading = true;
@@ -780,6 +807,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         });
     }
 
+    /**
+     * @author park jungho
+     * 상품 리스트에서 브랜드 별 상품 리스트 데이터 가져오는 부분
+     *
+     * @param reset 초기화 여부
+     */
     private void getProductListByBrand(boolean reset) {
         if (mIsLoading) return;
         mIsLoading = true;

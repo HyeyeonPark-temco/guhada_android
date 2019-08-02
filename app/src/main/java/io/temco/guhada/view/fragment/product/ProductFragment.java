@@ -15,6 +15,12 @@ import io.temco.guhada.databinding.FragmentProductBinding;
 import io.temco.guhada.view.adapter.ProductListPagerAdapter;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
+/**
+ * parkjungho
+ * 카테고리, 브랜드 클릭후 넘어오는 값의 productList의 ViewPager를 담고 있는 fragment
+ * 내부에 표시 해야할 카테고리나 브랜드의 숫자만큼 productListFragment의 상품리스트 객채를 만들고 보여줌
+ * 상품 리스트의 껍데기 viewPager를 담고 있는 Fragment
+ */
 public class ProductFragment extends BaseFragment<FragmentProductBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------

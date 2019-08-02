@@ -9,6 +9,7 @@ import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -16,6 +17,7 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BookMark
+import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.product.Product
@@ -73,14 +75,20 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var advantageInfoExpanded = ObservableBoolean(false)
         @Bindable
         get() = field
-
+    /**
+     * 북마크 여부 데이터 가져왔는지 여부
+     * 처음 상품상세에 진입해서 확인하지 않은 상태에서 북마크 버튼을 누르면
+     * 값을 변경하지 않음 삭제,취소도 하지 않음
+     */
     var initBookMarkData = false
     var productBookMark = ObservableBoolean(false)
         @Bindable
         get() = field
         set(value) {
-            field = value
-            notifyPropertyChanged(BR.productBookMark)
+            if(initBookMarkData){
+                field = value
+                notifyPropertyChanged(BR.productBookMark)
+            }
         }
 
     fun getDetail() {
@@ -149,9 +157,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         ServerCallbackUtil.callWithToken(
                 task = {
                     var userId = -1
-                    if (it != null) {
-                        userId = JWT(it.substring(7,it.length)).getClaim("userId").asInt() ?: -1
-                    }
+                    if (it != null)  userId = JWT(it.substring(7,it.length)).getClaim("userId").asInt() ?: -1
                     UserServer.getBookMark(OnServerListener { success, o ->
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = {
@@ -162,22 +168,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                         productBookMark.set(value.isBookMarkSet)
                                     }
                                 },
-                                dataNotFoundTask = {
-                                    initBookMarkData = true
-                                    productBookMark.set(false)
-                                },
-                                failedTask = {
-                                    initBookMarkData = true
-                                    productBookMark.set(false)
-                                },
-                                userLikeNotFoundTask = {
-                                    initBookMarkData = true
-                                    productBookMark.set(false)
-                                },
-                                serverRuntimeErrorTask = {
-                                    initBookMarkData = true
-                                    productBookMark.set(false)
-                                }
+                                dataNotFoundTask = {initBookMarkData = true; productBookMark.set(false) },
+                                failedTask = {initBookMarkData = true; productBookMark.set(false) },
+                                userLikeNotFoundTask = {initBookMarkData = true; productBookMark.set(false) },
+                                serverRuntimeErrorTask = {initBookMarkData = true; productBookMark.set(false) }
                         )
                     }, accessToken = it, target = target, targetId = targetId, userId = userId)
                 }, invalidTokenTask = { productBookMark.set(false) })
@@ -273,16 +267,53 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         })
     }
 
-    fun saveBookMark(){
-
+    private fun saveBookMark(target : String, targetId: Long){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    var bookMarkResponse = BookMarkResponse(target,targetId)
+                    UserServer.saveBookMark(OnServerListener { success, o ->
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = {
+                                    if(CustomLog.flag)CustomLog.L("saveBookMark","successTask")
+                                },
+                                dataNotFoundTask = { },
+                                failedTask = { },
+                                userLikeNotFoundTask = { },
+                                serverRuntimeErrorTask = { }
+                        )
+                    }, accessToken = it, response = bookMarkResponse.getProductBookMarkRespose())
+                }, invalidTokenTask = {  })
     }
 
-    fun deleteBookMark(){
-
+    private fun deleteBookMark(target : String, targetId: Long){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    UserServer.deleteBookMark(OnServerListener { success, o ->
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = {
+                                    if(CustomLog.flag)CustomLog.L("deleteBookMark","successTask")
+                                },
+                                dataNotFoundTask = { },
+                                failedTask = { },
+                                userLikeNotFoundTask = { },
+                                serverRuntimeErrorTask = { }
+                        )
+                    }, accessToken = it, target = target,targetId = targetId)
+                }, invalidTokenTask = { })
     }
 
 
     fun onClickBookMark(){
-        productBookMark.set(!productBookMark.get())
+        if(initBookMarkData){
+            if(productBookMark.get()){
+                deleteBookMark(Type.BookMarkTarget.PRODUCT.name, dealId)
+            }else{
+                saveBookMark(Type.BookMarkTarget.PRODUCT.name, dealId)
+            }
+            productBookMark.set(!productBookMark.get())
+        }else{
+            ToastUtil.showMessage("test")
+        }
     }
+
 }
