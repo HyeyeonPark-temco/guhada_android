@@ -152,6 +152,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     /**
      * 상품 북마크 확인
+     *
+     * @exception
+     * [IllegalStateException] Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+     * [0714]  Failed to connect to dev.user.guhada.com/13.125.76.109:8080
+     * line ServerCallbackUtil.kt:105
+     * @since 2019.08.05
+     * @author Hyeyeon Park
+     *
      */
     fun getBookMark(target : String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
