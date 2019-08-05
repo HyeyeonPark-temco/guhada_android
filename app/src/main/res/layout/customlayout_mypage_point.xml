@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="androidx.lifecycle.MutableLiveData" />
 
         <variable
@@ -25,7 +27,7 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:fillViewport="true"
                 android:overScrollMode="never">
 
@@ -161,13 +163,50 @@
                         app:layout_constraintTop_toBottomOf="@+id/framelayout_mypagepoint_calendarfilter"
                         app:pointHistories="@{viewModel.pointHistory.content}" />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="@color/common_white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:visibility="@{viewModel.pointHistory.empty ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_mypagepoint_calendarfilter"
+                        app:layout_constraintVertical_bias="0">
+
+                        <ImageView
+                            android:id="@+id/imageview_mypagepoint_empty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="80dp"
+                            android:src="@drawable/icon_no_data"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textview_mypagepoint_empty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="80dp"
+                            android:text="@string/mypagepoint_empty"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_mypagepoint_empty" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <LinearLayout
                         android:id="@+id/linearlayout_mypagepoint_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp"
                         android:onClick="@{()->viewModel.onClickMore()}"
+                        android:orientation="horizontal"
+                        android:paddingStart="40dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="40dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="@{viewModel.pointHistory.last ? View.GONE : View.VISIBLE}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">

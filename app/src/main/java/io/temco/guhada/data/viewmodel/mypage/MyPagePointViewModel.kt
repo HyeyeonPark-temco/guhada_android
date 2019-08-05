@@ -1,6 +1,7 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -79,6 +80,7 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
                             if (page > 2 && pointHistory.get()?.content?.isNotEmpty() ?: false) {
                                 val history = it.data as PointHistory
                                 pointHistory.get()?.content?.addAll(history.content)
+                                pointHistory.get()?.last = history.last
                             } else {
                                 pointHistory = ObservableField(it.data as PointHistory)
                             }

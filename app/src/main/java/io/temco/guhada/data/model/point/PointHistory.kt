@@ -30,6 +30,7 @@ class PointHistory : BasePageModel() {
                 PointStatus.SAVED.status,
                 PointStatus.DUE_SAVE.status -> BaseApplication.getInstance().getString(R.string.mypagepoint_status_accumulated)
 
+
                 PointStatus.CONSUMPTION.status,
                 PointStatus.DUE_CONSUMPTION.status -> BaseApplication.getInstance().getString(R.string.mypagepoint_status_used)
 
@@ -48,15 +49,15 @@ class PointHistory : BasePageModel() {
 
         // 수정 예정
         fun getPointStr(): String {
-            return point.toString()
-//            val point = DecimalFormat("#,###,###").format(point)
-//
-//            Log.e("ㅇㅇㅇ" , point)
-//            return if (status == PointStatus.SAVED.status || status == PointStatus.DUE_SAVE.status || status == PointStatus.RESTORE.status) {
-//                "+$point"
-//            } else {
-//                "-$point"
-//            }
+//            return point.toString()
+            val point = DecimalFormat("#,###,###").format(point)
+
+            Log.e("ㅇㅇㅇ", point)
+            return if (status == PointStatus.SAVED.status || status == PointStatus.DUE_SAVE.status || status == PointStatus.RESTORE.status) {
+                "+$point"
+            } else {
+                "-$point"
+            }
         }
     }
 }
