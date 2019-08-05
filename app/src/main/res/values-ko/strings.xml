@@ -710,6 +710,12 @@
     <string name="mypage_deliverydetail_reufndinfo_final2">신용카드 환불금액</string>
     <string name="mypage_deliverydetail_reufndinfo_final3">포인트 환불금액</string>
 
+    <!-- MYPAGE DELIVERY CER -->
+    <string name="mypage_deliverycer_cancel">취소</string>
+    <string name="mypage_deliverycer_exchange">교환</string>
+    <string name="mypage_deliverycer_refund">반품</string>
+    <string name="mypage_deliverycer_more">더보기</string>
+
     <!-- REQUEST ORDER STATUS -->
     <string name="requestorderstatus_common_seller">판매자</string>
     <string name="requestorderstatus_common_button_cancel">취소</string>

@@ -73,9 +73,18 @@ interface OrderService {
 
     /**
      * 주문 리스트 조회 API
+     * deprecated
+     * @see getOrders
      */
     @GET("/order/my-orders/{startDt}/{endDt}/{page}")
-    fun getOrders(@Header("Authorization") accessToken: String, @Path("startDt") startDate: String, @Path("endDt") endDate: String, @Path("page") page: Int): Call<BaseModel<OrderHistoryResponse>>
+    fun getOrderList(@Header("Authorization") accessToken: String, @Path("startDt") startDate: String, @Path("endDt") endDate: String, @Path("page") page: Int): Call<BaseModel<OrderHistoryResponse>>
+
+    /**
+     * 주문 리스트 조회 API
+     */
+    @GET("/order/my-order-list")
+    fun getOrders(@Header("Authorization") accessToken: String, @Query("startTimestamp") startTimestamp: Long, @Query("endTimestamp") endTimestamp: Long, @Query("page") page: Int): Call<BaseModel<OrderHistoryResponse>>
+
 
     /**
      * 주문 상태 조회 API
@@ -88,13 +97,13 @@ interface OrderService {
      * response type : Boolean
      */
     @POST("/order/order-update/shipping-address")
-    fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId  : Long, @Body shippingAddress: UserShipping, @Query("addShippingAddress") addShippingAddress : Boolean): Call<BaseModel<Any>>
+    fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId: Long, @Body shippingAddress: UserShipping, @Query("addShippingAddress") addShippingAddress: Boolean): Call<BaseModel<Any>>
 
     /**
      * 영수증 주소 조회 API
      */
-    @GET ("/receiptUrlSearch")
-    fun getReceiptUrl(@Query("tid") tId : String) : Call<BaseModel<Any>>
+    @GET("/receiptUrlSearch")
+    fun getReceiptUrl(@Query("tid") tId: String): Call<BaseModel<Any>>
 
 
 }

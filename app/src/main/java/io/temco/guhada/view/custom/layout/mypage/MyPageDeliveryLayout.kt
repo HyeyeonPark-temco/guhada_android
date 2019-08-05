@@ -111,6 +111,7 @@ class MyPageDeliveryLayout constructor(
     override fun onRefresh() {
         mBinding.swipeRefreshLayout.isRefreshing = false
         mViewModel.getOrders()
+        mViewModel.getOrderStatus()
     }
 
 ////////////////////////////////////////////////

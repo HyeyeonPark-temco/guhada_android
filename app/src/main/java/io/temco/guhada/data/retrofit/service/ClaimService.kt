@@ -50,13 +50,19 @@ interface ClaimService {
      * 마이페이지 상품 문의 리스트 API
      */
     @GET("users/my-page/inquiries")
-    fun getMyClaimList(@Header("Authorization") accessToken: String, @Query("page") page: Int,  @Query("size") size: Int = 20 ): Call<BaseModel<MyPageClaim>>
+    fun getMyClaimList(@Header("Authorization") accessToken: String, @Query("page") page: Int, @Query("size") size: Int = 20): Call<BaseModel<MyPageClaim>>
 
 
     /**
-     * 상품 상세 문의 삭제
+     * 상품 상세 문의 삭제 API
      */
     @DELETE("products/{productId}/inquiries/{inquiryId}")
-    fun deleteClaim(@Header("Authorization") accessToken: String, @Path("productId") productId: Long,  @Path("inquiryId") inquiryId: Long ): Call<BaseModel<JsonObject>>
+    fun deleteClaim(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("inquiryId") inquiryId: Long): Call<BaseModel<JsonObject>>
+
+    /**
+     * 주문 취소/교환/반품 리스트 조회 API
+     */
+    @GET("/order-claim/my-cancel-order-list")
+    fun getCancelOrderList(@Header("Authorization") accessToken: String, @Query("startTimestamp") startTimestamp: Long, @Query("endTimestamp") endTimestamp: Long, @Query("page") page: Int)
 
 }

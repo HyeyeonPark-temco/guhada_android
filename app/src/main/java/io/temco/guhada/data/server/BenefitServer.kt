@@ -43,7 +43,7 @@ class BenefitServer {
          * @param userId 사용자 아이디
          */
         fun getPointHistories(listener: OnServerListener, accessToken: String, fromAt: String, toAt: String, charge: Boolean, historyStatus: String, orderType: String, sortType: String, unitPerPage: Int, page: Int, userId: Int) =
-                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getPointHistories("", charge, historyStatus, orderType, sortType, fromAt, toAt, page, unitPerPage, 162).enqueue(
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getPointHistories(accessToken, charge, historyStatus, orderType, sortType, fromAt, toAt, page, unitPerPage, userId).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
     }

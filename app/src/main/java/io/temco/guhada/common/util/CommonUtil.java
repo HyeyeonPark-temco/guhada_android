@@ -26,6 +26,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,16 +124,34 @@ public class CommonUtil {
     }
 
     /**
-     * Convert TimeStamp to Date String (Format: yyyy.MM.dd)
+     * Convert TimeStamp(ms) to Date String (Format: yyyy.MM.dd)
      *
-     * @param timeStamp type: long
-     * @return dateString
+     * @param timeStamp type: Long
+     * @return dateString type: String
      * @author Hyeyeon Park
      */
-    public static String convertTimeStamp(long timeStamp) {
+    public static String convertTimeStampToDate(long timeStamp) {
         DateTime dateTime = new DateTime(timeStamp * 1000L);
         dateTime.withZone(DateTimeZone.forID("Asia/Seoul"));
         return dateTime.toString("yyyy.MM.dd");
+    }
+
+    /**
+     * Conver Date String to TimeStamp(ms)
+     *
+     * @param dateString type: String
+     * @return timeStamp type : Long
+     * @author Hyeyeon Park
+     */
+    public static Long convertDateToTimeStamp(String dateString, String operator) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy" + operator + "MM" + operator + "dd");
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            CommonUtil.debug("convertDateToTimeStamp", e.getMessage());
+        }
+        return date != null ? date.getTime() : 0;
     }
 
 
@@ -185,7 +207,7 @@ public class CommonUtil {
         List<Category> data = Preferences.getCategories();
         if (data == null) return null;
         mCurrentCategory = null;
-        getCategory(hierarchies[hierarchies.length - 1], data,null);
+        getCategory(hierarchies[hierarchies.length - 1], data, null);
         return mCurrentCategory;
     }
 
@@ -193,16 +215,16 @@ public class CommonUtil {
         if (categories != null && categories.size() > 0) {
             for (Category c : categories) {
                 if (c.id == id) {
-                    if(c.children != null){
+                    if (c.children != null) {
                         mCurrentCategory = c;
                         mCurrentCategory.selectId = -1;
-                    }else{
+                    } else {
                         mCurrentCategory = parent;
                         mCurrentCategory.selectId = id;
                     }
                     break;
                 } else {
-                    getCategory(id, c.children,c);
+                    getCategory(id, c.children, c);
                 }
             }
         }
