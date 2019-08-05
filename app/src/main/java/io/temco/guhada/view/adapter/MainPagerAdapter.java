@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
@@ -22,7 +21,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private final String TAG = MainPagerAdapter.class.getSimpleName();
     private final String TAG_PRODUCT = "product";
     private FragmentManager mFragmentManager;
-    private OnDrawerLayoutListener mDrawerListener;
     private HomeFragment mHomeFragment;
     private CommunityFragment mCommunityFragment;
     private MyPageMainFragment mMyPageFragment;
@@ -54,21 +52,21 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 0: // Home
                 if (mHomeFragment == null) {
                     mHomeFragment = new HomeFragment();
-                    mHomeFragment.setOnDrawerLayoutListener(mDrawerListener);
+                   // mHomeFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mHomeFragment;
 
             case 1: // Community
                 if (mCommunityFragment == null) {
                     mCommunityFragment = new CommunityFragment();
-                    mCommunityFragment.setOnDrawerLayoutListener(mDrawerListener);
+                    //mCommunityFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mCommunityFragment;
 
             case 2: // My Page
                 if (mMyPageFragment == null) {
                     mMyPageFragment = new MyPageMainFragment();
-                    mMyPageFragment.setOnDrawerLayoutListener(mDrawerListener);
+                    //mMyPageFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mMyPageFragment;
         }
@@ -79,20 +77,15 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void setOnDrawerLayoutListener(OnDrawerLayoutListener listener) {
-        mDrawerListener = listener;
-    }
-
-    public void addProductCategoryData(Type.Category type, int[] hierarchies) {
+    public void addProductCategoryData(Type.Category type,int[] hierarchies) {
         Category c = CommonUtil.getCategory(hierarchies);
         if (c != null) {
             addProductFragment(c);
         }
     }
 
-    public void setProductBrandData(Brand brand) {
-        addProductFragment(brand);
-    }
+    public void setProductBrandData(Brand brand) { addProductFragment(brand); }
+    public void setProductSearchData(String word) { addProductFragment(word); }
 
     public void removeProduct() {
         removeProductFragment();
@@ -111,7 +104,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private void checkProductFragment() {
         if (mProductFragment == null) {
             mProductFragment = new ProductFragment();
-            mProductFragment.setOnDrawerLayoutListener(mDrawerListener);
             mProductFragment.setOnBackPressListener(this::removeProductFragment);
         }
         // Exist
@@ -125,14 +117,20 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     private void addProductFragment(Category c) {
         checkProductFragment();
-        mProductFragment.changeProduct(true);
+        mProductFragment.changeProduct(Type.ProductListViewType.CATEGORY);
         mProductFragment.setCategory(c);
     }
 
     private void addProductFragment(Brand b) {
         checkProductFragment();
-        mProductFragment.changeProduct(false);
+        mProductFragment.changeProduct(Type.ProductListViewType.BRAND);
         mProductFragment.setBrand(b);
+    }
+
+    private void addProductFragment(String s) {
+        checkProductFragment();
+        mProductFragment.changeProduct(Type.ProductListViewType.SEARCH);
+        mProductFragment.setSearch(s);
     }
 
     private void removeProductFragment() {

@@ -14,8 +14,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
-import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.Deal
@@ -82,7 +82,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 binding.linearlayoutMypageproductlistadapterItemlayout.tag = data.dealId.toString()
                 binding.linearlayoutMypageproductlistadapterItemlayout.setOnClickListener{
                     var id = it.tag.toString().toLong()
-                    ProductBridge.mainActivity.addProductDetailView(id)
+                    CommonUtil.startProductActivity(containerView.context as Activity, id)
                 }
                 binding.linearlayoutMypageproductlistadapterItemlayout.visibility = View.VISIBLE
                 var url = data.imageUrls!![0]

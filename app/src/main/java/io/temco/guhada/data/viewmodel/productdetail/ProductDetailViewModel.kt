@@ -156,24 +156,27 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     fun getBookMark(target : String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
                 task = {
+                    if(CustomLog.flag)CustomLog.L("getBookMark","callWithToken",it)
                     var userId = -1
-                    if (it != null)  userId = JWT(it.substring(7,it.length)).getClaim("userId").asInt() ?: -1
-                    UserServer.getBookMark(OnServerListener { success, o ->
-                        ServerCallbackUtil.executeByResultCode(success, o,
-                                successTask = {
-                                    initBookMarkData = true
-                                    if(CustomLog.flag)CustomLog.L("getBookMark","successTask")
-                                    var value = (it as BaseModel<BookMark>).data
-                                    if(!value.content.isNullOrEmpty()){
-                                        productBookMark.set(value.isBookMarkSet)
-                                    }
-                                },
-                                dataNotFoundTask = {initBookMarkData = true; productBookMark.set(false) },
-                                failedTask = {initBookMarkData = true; productBookMark.set(false) },
-                                userLikeNotFoundTask = {initBookMarkData = true; productBookMark.set(false) },
-                                serverRuntimeErrorTask = {initBookMarkData = true; productBookMark.set(false) }
-                        )
-                    }, accessToken = it, target = target, targetId = targetId, userId = userId)
+                    if (it != null){
+                        userId = JWT(it.substring(7,it.length)).getClaim("userId").asInt() ?: -1
+                        UserServer.getBookMark(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        initBookMarkData = true
+                                        if(CustomLog.flag)CustomLog.L("getBookMark","successTask")
+                                        var value = (it as BaseModel<BookMark>).data
+                                        if(!value.content.isNullOrEmpty()){
+                                            productBookMark.set(value.isBookMarkSet)
+                                        }
+                                    },
+                                    dataNotFoundTask = {initBookMarkData = true; productBookMark.set(false) },
+                                    failedTask = {initBookMarkData = true; productBookMark.set(false) },
+                                    userLikeNotFoundTask = {initBookMarkData = true; productBookMark.set(false) },
+                                    serverRuntimeErrorTask = {initBookMarkData = true; productBookMark.set(false) }
+                            )
+                        }, accessToken = it, target = target, targetId = targetId, userId = userId)
+                    }
                 }, invalidTokenTask = { productBookMark.set(false) })
     }
 
@@ -314,6 +317,11 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         }else{
             ToastUtil.showMessage("test")
         }
+    }
+
+
+    fun onClickSearch() {
+        listener?.showSearchWordActivity()
     }
 
 }

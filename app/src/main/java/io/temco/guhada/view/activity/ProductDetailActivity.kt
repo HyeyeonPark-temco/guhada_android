@@ -357,6 +357,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 //        AddCartResultFragment.getInstance().show(supportFragmentManager, "addCartResult")
     }
 
+    override fun showSearchWordActivity() {
+
+    }
+
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {

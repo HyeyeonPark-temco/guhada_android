@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.SearchWordViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/pale_grey"
+        android:weightSum="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:background="@color/common_white"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/button_searchword_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/top_btn_back" />
+
+            <!-- Edit -->
+            <EditText
+                android:id="@+id/edittext_searchword_word"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/brand_search_hint"
+                android:imeOptions="actionSearch"
+                android:textColorHint="@color/text_7"
+                android:textSize="@dimen/text_14" />
+
+            <ImageButton
+                android:id="@+id/button_searchword_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/top_btn_search" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/common_white"
+            app:layout_constraintEnd_toEndOf="@+id/linearlayout_searchword_recentlayout"
+            app:layout_constraintStart_toEndOf="@+id/linearlayout_searchword_recentlayout">
+
+            <ImageView
+                android:id="@+id/imageView9"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_2"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearlayout_searchword_recentlayout"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/linearlayout_searchword_popularlayout">
+
+                <TextView
+                    android:id="@+id/textview_searchword_recenttitle"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:text="@string/search_word_recenttitle"
+                    android:textColor="@color/blue_purple"
+                    android:textSize="@dimen/text_14" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/blue_purple" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_searchword_popularlayout"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/linearlayout_searchword_recentlayout"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <TextView
+                    android:id="@+id/textview_searchword_populartitle"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:text="@string/search_word_populartitle"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/transparent" />
+
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/common_white"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_searchword_recent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_searchword_popular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="41dp"
+            android:gravity="center_vertical"
+            android:background="@color/pale_grey"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/search_word_autotexttitle"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13" />
+
+            <ImageButton
+                android:id="@+id/button_searchword_toggle"
+                android:layout_width="32.5dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/toggle_btn_off" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="@string/btn_delete_all"
+                android:textColor="@color/pinkish_grey"
+                android:textSize="@dimen/text_13" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

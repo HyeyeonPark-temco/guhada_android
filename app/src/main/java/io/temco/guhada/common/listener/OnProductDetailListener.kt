@@ -9,6 +9,7 @@ interface OnProductDetailListener {
     fun showMenu()
     fun showAddCartResult()
     fun showSideMenu()
+    fun showSearchWordActivity()
 
     fun hideLoadingIndicator()
     fun dismissOptionMenu()

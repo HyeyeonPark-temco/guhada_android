@@ -1,5 +1,7 @@
 package io.temco.guhada.common;
 
+import java.io.Serializable;
+
 import io.temco.guhada.BuildConfig;
 
 public class Type {
@@ -41,7 +43,10 @@ public class Type {
         SEARCH_ZIP_WEBVIEW,
         CART,
         DELIVERY_DETAIL,
-        RECEIPT
+        RECEIPT,
+        SEARCH_WORD,
+        SIDE_MENU,
+        PRODUCT_LIST
     }
 
     // Main
@@ -95,6 +100,14 @@ public class Type {
                     return "";
             }
         }
+    }
+
+    // ProductListViewType
+    public enum ProductListViewType implements Serializable {
+        CATEGORY,
+        BRAND,
+        SEARCH,
+        NONE
     }
 
     private static String getSearchUrl() {
@@ -278,7 +291,7 @@ public class Type {
 
     ////////////////////////////////////////////////
     // Category
-    public enum Category {
+    public enum Category implements Serializable{
 
         NORMAL(0), // 일반
         ALL(1), // 전체보기

@@ -8,12 +8,13 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.enum.RequestCode
-import io.temco.guhada.common.listener.OnDrawerLayoutListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.viewmodel.mypage.MyPageViewModel
 import io.temco.guhada.databinding.FragmentMainMypagehomeBinding
 import io.temco.guhada.view.activity.AddShippingAddressActivity
+import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.custom.layout.mypage.*
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -38,7 +39,6 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     private val SHIPPING_ADDRESS_IDX = 10
 
     // -------- LOCAL VALUE --------
-    private var mDrawerListener: OnDrawerLayoutListener? = null
     private var viewPagerAdapter: CustomViewPagerAdapter<String>? = null
     private var currentPagerIndex: Int = 0
 
@@ -74,11 +74,18 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.image_side_menu -> if (mDrawerListener != null) {
-                mDrawerListener!!.onDrawerEvnet(true)
+            // @TODO MENU
+            R.id.image_side_menu ->{
+                CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
             }
-            R.id.image_search -> CommonUtil.debug("image_search")
-            R.id.image_shop_cart -> CommonUtil.debug("image_shop_cart")
+            R.id.image_search -> {
+                //CommonUtil.debug("image_search")
+                CommonUtil.startSearchWordActivity(context as MainActivity)
+            }
+            R.id.image_shop_cart -> {
+                //CommonUtil.debug("image_shop_cart")
+                CommonUtil.startCartActivity(context as MainActivity)
+            }
         }
     }
 
@@ -86,9 +93,6 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     // PUBLIC
     ////////////////////////////////////////////////
 
-    fun setOnDrawerLayoutListener(listener: OnDrawerLayoutListener) {
-        mDrawerListener = listener
-    }
 
     ////////////////////////////////////////////////
     // PRIVATE

@@ -9,12 +9,18 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnChangeTitleListener;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.fragment.product.ProductListFragment;
-
+/**
+ * @author park jungho
+ * 19.08.05
+ * 카테고리, 브랜드 상품 리스트 Recycler List View adapter
+ *
+ */
 public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
 
     // -------- LOCAL VALUE --------
@@ -79,7 +85,7 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
     public void addCategoryFragment(Category data) {
         // Fragment
         ProductListFragment f = new ProductListFragment();
-        f.setIsCategory(true);
+        f.setProductListViewType(Type.ProductListViewType.CATEGORY);
         f.setCategoryData(data);
         f.setOnAddCategoryListener(mCategoryListener);
         // Add
@@ -97,8 +103,22 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
     public void addBrandFragment(Brand data) {
         // Fragment
         ProductListFragment f = new ProductListFragment();
-        f.setIsCategory(false);
+        f.setProductListViewType(Type.ProductListViewType.BRAND);
         f.setBrandData(data);
+        // Add
+        mFragmentList.add(f);
+        // Position
+        f.setPosition(mFragmentList.size() - 1);
+        // Title
+        notifyDataSetChanged();
+    }
+
+
+    public void addSearchFragment(String data) {
+        // Fragment
+        ProductListFragment f = new ProductListFragment();
+        f.setProductListViewType(Type.ProductListViewType.SEARCH);
+        f.setSearchData(data);
         // Add
         mFragmentList.add(f);
         // Position

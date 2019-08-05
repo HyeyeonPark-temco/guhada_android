@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.ProductBridge
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.Inquiry
@@ -112,7 +112,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             binding.imageviewMypageclaimlistProduct.contentDescription = data.item.dealId.toString()
             binding.imageviewMypageclaimlistProduct.setOnClickListener {
                 var id = it.contentDescription.toString().toLong()
-                ProductBridge.mainActivity.addProductDetailView(id)
+                CommonUtil.startProductActivity((model as MyPageClaimViewModel).context as Activity, id)
             }
             binding.textviewMypageclaimlistBrand.text = data.item.brandName
             binding.textviewMypageclaimlistTitle.text = data.item.productName

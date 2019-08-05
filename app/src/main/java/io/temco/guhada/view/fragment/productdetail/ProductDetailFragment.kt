@@ -22,6 +22,7 @@ import io.temco.guhada.common.*
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
@@ -34,9 +35,7 @@ import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
-import io.temco.guhada.view.activity.LoginActivity
-import io.temco.guhada.view.activity.PaymentActivity
-import io.temco.guhada.view.activity.ProductDetailActivity
+import io.temco.guhada.view.activity.*
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
@@ -313,7 +312,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
-    override fun showSideMenu() = ProductBridge.showSideMenu()
+    override fun showSideMenu() = this.mainListener.showSideMenu(true)
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
     override fun scrollToElement(pos: Int) {
@@ -447,17 +446,25 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun closeActivity() {
-        ProductBridge.mainActivity.removeProductDetailFragment()
+        mainListener.removeProductDetailFragment()
     }
 
     override fun setBrandProductList(brand: Brand) {
-        ProductBridge.mainActivity.setBrandProductList(brand)
+        mainListener.setBrandProductList(brand)
+    }
+
+    /**
+     * @author park jungho
+     * 검색 화면으로 이동
+     */
+    override fun showSearchWordActivity() {
+        CommonUtil.startSearchWordActivity(context as Activity)
     }
 
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {
-            val intent = Intent(context, ProductDetailActivity::class.java)
+            val intent = Intent(context, ProductFragmentDetailActivity::class.java)
             intent.putExtra(Info.INTENT_DEAL_ID, id)
             context.startActivity(intent)
         }
