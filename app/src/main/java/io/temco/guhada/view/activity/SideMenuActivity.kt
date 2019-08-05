@@ -12,6 +12,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
@@ -200,6 +201,9 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                 }
 
             }
+        } else if(resultCode== ResultCode.ALL_FINISH.flag){
+            setResult(ResultCode.ALL_FINISH.flag)
+            finish()
         }
     }
 

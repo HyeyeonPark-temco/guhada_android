@@ -35,7 +35,6 @@ import io.temco.guhada.view.custom.dialog.CategoryListDialog;
  * @author park jungho
  * 19.08.05
  * 사이드 메뉴,상품상세 화면 걷어 냄
- *
  */
 public class MainActivity extends BindActivity<ActivityMainBinding> {
 
@@ -102,6 +101,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                case Flag.ResultCode.ALL_FINISH:
+                    // main tab으로 이동
+                    // 2019.08.05
+                    // Hyeyeon Park
+
                 case REQUEST_CODE_LOGIN:
                     //changeLoginStatus(checkToken());
                     break;
@@ -141,7 +145,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if (data != null) {
                         mPagerAdapter.removeAll();
                         String text = data.getExtras().getString("search_word");
-                        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("MainActivity","SEARCH_WORD", text);
+                        if (CustomLog.INSTANCE.getFlag())
+                            CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
                         mPagerAdapter.setProductSearchData(text);
                     }
                     break;
@@ -171,6 +176,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     public void onSubscribe(Disposable d) {
 
                     }
+
                     @Override
                     public void onNext(EventBusData data) {
                         switch (data.getRequestCode()) {
@@ -178,6 +184,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                                 /*removeProductDetailFragment();
                                 addProductDetailView((Long) data.getData());*/
                                 CommonUtil.startProductActivity(MainActivity.this, (Long) data.getData());
+                                break;
+                            case Flag.RequestCode.ALL_FINISH:
+                                finish();
                                 break;
                             case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
                                 if (data.getData() != null) {
@@ -219,20 +228,20 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private void addCustomTabs(int current) {
         // Add Custom Tab
         layout_maintab_layout = new LinearLayout[]{mBinding.layoutContents.layoutMaintabLayout1
-                ,mBinding.layoutContents.layoutMaintabLayout2,mBinding.layoutContents.layoutMaintabLayout3
-                ,mBinding.layoutContents.layoutMaintabLayout4,mBinding.layoutContents.layoutMaintabLayout5};
+                , mBinding.layoutContents.layoutMaintabLayout2, mBinding.layoutContents.layoutMaintabLayout3
+                , mBinding.layoutContents.layoutMaintabLayout4, mBinding.layoutContents.layoutMaintabLayout5};
         imageview_maintab_con = new ImageView[]{mBinding.layoutContents.imageviewMaintabIcon1
-                ,mBinding.layoutContents.imageviewMaintabIcon2,mBinding.layoutContents.imageviewMaintabIcon3
-                ,mBinding.layoutContents.imageviewMaintabIcon4,mBinding.layoutContents.imageviewMaintabIcon5};
+                , mBinding.layoutContents.imageviewMaintabIcon2, mBinding.layoutContents.imageviewMaintabIcon3
+                , mBinding.layoutContents.imageviewMaintabIcon4, mBinding.layoutContents.imageviewMaintabIcon5};
         textview_maintab_title = new TextView[]{mBinding.layoutContents.textviewMaintabTitle1
-                ,mBinding.layoutContents.textviewMaintabTitle2,mBinding.layoutContents.textviewMaintabTitle3
-                ,mBinding.layoutContents.textviewMaintabTitle4,mBinding.layoutContents.textviewMaintabTitle5};
-        for (int i = 0; i<layout_maintab_layout.length ; i++){
+                , mBinding.layoutContents.textviewMaintabTitle2, mBinding.layoutContents.textviewMaintabTitle3
+                , mBinding.layoutContents.textviewMaintabTitle4, mBinding.layoutContents.textviewMaintabTitle5};
+        for (int i = 0; i < layout_maintab_layout.length; i++) {
             layout_maintab_layout[i].setTag(i);
             layout_maintab_layout[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = (int)v.getTag();
+                    int position = (int) v.getTag();
                     selectTab(position, position == currentViewPagerIndex);
                 }
             });
@@ -268,9 +277,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     private void selectTab(int position, boolean isReselected) {
         int index = currentViewPagerIndex;
-        if(position >= 2) index = position;
-        for (int i = 0; i<layout_maintab_layout.length ; i++){
-            if(index == i){
+        if (position >= 2) index = position;
+        for (int i = 0; i < layout_maintab_layout.length; i++) {
+            if (index == i) {
                 textview_maintab_title[i].setTextColor(Color.parseColor("#5d2ed1"));
                 switch (i) {
                     case 2: // Home
@@ -283,7 +292,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                         imageview_maintab_con[i].setBackgroundResource(R.drawable.tool_icon_mypage_on);
                         break;
                 }
-            }else{
+            } else {
                 textview_maintab_title[i].setTextColor(Color.parseColor("#333333"));
                 switch (i) {
                     case 2: // Home
@@ -298,7 +307,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 }
             }
         }
-        if(position >= 2) currentViewPagerIndex = position;
+        if (position >= 2) currentViewPagerIndex = position;
         switch (position) {
             case 0: // Category
                 showCategoryListDialog();

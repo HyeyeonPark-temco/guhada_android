@@ -261,45 +261,44 @@ public class CommonUtil {
 
 
     /**
+     * @param act
      * @author park jungho
      * 검색어 입력 화면
-     * @param act
      */
-    public static void startSearchWordActivity(Activity act){
+    public static void startSearchWordActivity(Activity act) {
         Intent intent = new Intent(act, SearchWordActivity.class);
         act.startActivityForResult(intent, Flag.RequestCode.SEARCH_WORD);
     }
 
 
     /**
+     * @param act
      * @author park jungho
      * 장바구니 화면
-     * @param act
      */
-    public static void startCartActivity(Activity act){
+    public static void startCartActivity(Activity act) {
         Intent intent = new Intent(act, CartActivity.class);
         act.startActivityForResult(intent, Flag.RequestCode.BASE);
     }
 
     /**
+     * @param act
      * @author park jungho
      * 사이드 메뉴 화면
-     * @param act
      */
-    public static void startMenuActivity(Activity act, int res){
+    public static void startMenuActivity(Activity act, int res) {
         Intent intent = new Intent(act, SideMenuActivity.class);
         act.startActivityForResult(intent, res);
     }
 
     /**
+     * @param act
      * @author park jungho
      * 상품 리스트 (카테고리, 브랜드)
-     * @param act
      */
-    public static void startProductActivity(Activity act, Long dealId){
+    public static void startProductActivity(Activity act, Long dealId) {
         Intent intent = new Intent(act, ProductFragmentDetailActivity.class);
-        intent.putExtra("dealId",dealId);
-        act.startActivityForResult(intent,Flag.RequestCode.PRODUCT_DETAIL);
+        intent.putExtra("dealId", dealId);
+        act.startActivityForResult(intent, Flag.RequestCode.PRODUCT_DETAIL);
     }
-    ////////////////////////////////////////////////
 }

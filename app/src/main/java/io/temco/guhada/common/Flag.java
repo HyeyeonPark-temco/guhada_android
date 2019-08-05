@@ -3,6 +3,7 @@ package io.temco.guhada.common;
 public class Flag {
     public static class RequestCode {
         public static final int BASE = 100;
+        public static final int ALL_FINISH = -9999;
         public static final int VERIFY_PHONE = 10001;
 
         public static final int KAKAO_LOGIN = 10002;
@@ -28,7 +29,7 @@ public class Flag {
 
     public static class ResultCode {
         public static final int SUCCESS = 200;
-
+        public static final int ALL_FINISH = -9999;
         public static final int ORDER_NOT_VALID_ERROR = 1001;
         public static final int DATA_NOT_FOUND = 5004;
         public static final int NOT_FOUND_VERIFY_INFO = 5400;

@@ -7,6 +7,7 @@ package io.temco.guhada.common.enum
  * @author Hyeyeon Park
  */
 enum class ResultCode(val flag: Int) {
+    ALL_FINISH(-9999),
     SUCCESS(200),
     ORDER_NOT_VALID_ERROR(1001),
     RUNTIME_EXCEPTION_ERROR(5002),

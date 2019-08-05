@@ -6,6 +6,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.databinding.ActivityProductfilterlistBinding
@@ -18,15 +19,15 @@ import io.temco.guhada.view.adapter.ProductFilterPagerAdapter
  * 카테고리, 브랜드 리스트 Activity
  *
  */
-class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>(){
+class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>() {
 
     private var mPagerAdapter: ProductFilterPagerAdapter? = null
 
     private var type = Type.ProductListViewType.NONE
-    private var categoryType : Type.Category? = null
+    private var categoryType: Type.Category? = null
     private var hierarchies: IntArray = intArrayOf()
-    private var brand : Brand? = null
-    private var searchWord : String? = null
+    private var brand: Brand? = null
+    private var searchWord: String? = null
 
     // room database init
     private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this)!! }
@@ -38,17 +39,17 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
     override fun getViewType(): Type.View = Type.View.PRODUCT_LIST
 
     override fun init() {
-        if(!intent.extras.isEmpty && intent.extras.containsKey("type")){
+        if (!intent.extras.isEmpty && intent.extras.containsKey("type")) {
             type = intent.extras.getSerializable("type") as Type.ProductListViewType
-            when(type){
-                Type.ProductListViewType.CATEGORY ->{
+            when (type) {
+                Type.ProductListViewType.CATEGORY -> {
                     hierarchies = intent.getIntArrayExtra("hierarchies")
                     categoryType = intent.extras.getSerializable("categoryType") as Type.Category
                 }
-                Type.ProductListViewType.BRAND ->{
+                Type.ProductListViewType.BRAND -> {
                     brand = intent.extras.getSerializable("brand") as Brand
                 }
-                Type.ProductListViewType.SEARCH ->{
+                Type.ProductListViewType.SEARCH -> {
                     searchWord = intent.extras.getString("search_word")
                 }
             }
@@ -57,11 +58,11 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
     }
 
 
-    private fun setViewInit(){
+    private fun setViewInit() {
         initMainPager()
     }
 
-    private fun initMainPager(){
+    private fun initMainPager() {
         if (mPagerAdapter == null) mPagerAdapter = ProductFilterPagerAdapter(getSupportFragmentManager())
         // Pager
         mBinding.layoutPager.apply {
@@ -72,19 +73,24 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
         addFragmentList()
     }
 
-    private fun addFragmentList(){
-        if(type == Type.ProductListViewType.CATEGORY){
+    private fun addFragmentList() {
+        if (type == Type.ProductListViewType.CATEGORY) {
             mPagerAdapter?.addProductCategoryData(categoryType!!, hierarchies)
-        }else if(type == Type.ProductListViewType.BRAND){
+        } else if (type == Type.ProductListViewType.BRAND) {
             mPagerAdapter?.setProductBrandData(brand!!)
-        }else if(type == Type.ProductListViewType.SEARCH){
+        } else if (type == Type.ProductListViewType.SEARCH) {
             mPagerAdapter?.setProductSearchData(searchWord!!)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == Flag.RequestCode.SIDE_MENU_FROM_PRODUCT_FILTER && resultCode == Activity.RESULT_FIRST_USER){
+        if (requestCode == Flag.RequestCode.SIDE_MENU_FROM_PRODUCT_FILTER && resultCode == Activity.RESULT_FIRST_USER) {
+            finish()
+        }
+
+        if (resultCode == ResultCode.ALL_FINISH.flag) {
+            setResult(ResultCode.ALL_FINISH.flag)
             finish()
         }
     }

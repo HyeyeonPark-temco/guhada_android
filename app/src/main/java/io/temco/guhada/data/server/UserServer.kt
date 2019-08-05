@@ -281,7 +281,7 @@ class UserServer {
          */
         @JvmStatic
         fun getSellerSatisfaction(listener: OnServerListener, sellerId: Long) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).getSellerSatisfaction(sellerId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerSatisfaction>> { successResponse -> listener.onResult(true, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getSellerSatisfaction(sellerId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerSatisfaction>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 셀러 팔로우 여부 조회 API
