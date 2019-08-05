@@ -7,6 +7,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
@@ -20,6 +21,9 @@ import retrofit2.Response
 
 open class ClaimServer {
     companion object {
+        /**
+         * 회원 상품 문의 조회
+         */
         @JvmStatic
         fun getClaims(listener: OnServerListener, productId: Long, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaims(productId = productId, isMyInquiry = isMyInquiry,
@@ -34,6 +38,9 @@ open class ClaimServer {
             })
         }
 
+        /**
+         * 비회원 상품 문의 조회
+         */
         @JvmStatic
         fun getClaimsForGuest(listener: OnServerListener, productId: Long, pageNo: Int, size: Int, status: String) {
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaimsForQuest(productId = productId,
@@ -49,7 +56,7 @@ open class ClaimServer {
         }
 
         /**
-         * 상품문의 작성 API
+         * 상품문의 작성
          */
         @JvmStatic
         fun saveClaim(listener: OnServerListener, inquiry: Inquiry) {
@@ -72,7 +79,7 @@ open class ClaimServer {
 
 
         /**
-         * 마이페이지 상품문의 리스트
+         * 마이페이지 상품문의 리스트 조회
          */
         @JvmStatic
         fun getMyPageClaimList(listener: OnServerListener, page : Int, status : String) {
@@ -94,7 +101,7 @@ open class ClaimServer {
         }
 
         /**
-         * 상품문의 수정 API
+         * 상품문의 수정
          */
         @JvmStatic
         fun editClaim(listener: OnServerListener, inquiry: Inquiry) {
@@ -117,25 +124,36 @@ open class ClaimServer {
 
 
         /**
-         * 마이페이지 상품문의 리스트
+         * 마이페이지 상품문의 리스트 조회
          */
         @JvmStatic
-        fun deleteClaim(listener: OnServerListener, productId : Long, inquiryId : Long) {
+        fun deleteClaim(listener: OnServerListener, productId: Long, inquiryId: Long) {
             val accessToken = Preferences.getToken()?.accessToken
             if (accessToken.isNullOrBlank()) {
                 // 로그인 팝업 노출
                 Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
             } else {
-                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true)
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
                         .deleteClaim(accessToken = "Bearer $accessToken", productId = productId, inquiryId = inquiryId).enqueue(object : Callback<BaseModel<JsonObject>> {
-                    override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
-                        listener.onResult(response.isSuccessful, response.body())
-                    }
-                    override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
-                        listener.onResult(false, t.message)
-                    }
-                })
+                            override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                                listener.onResult(response.isSuccessful, response.body())
+                            }
+
+                            override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
             }
         }
+
+        /**
+         * 마이페이지 취소교환반품 리스트 조회
+         */
+        @JvmStatic
+        fun getCancelOrders(listener: OnServerListener, accessToken: String, startTimeStamp: Long, endTimeStamp: Long, page: Int) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                        .getCancelOrderList(accessToken = accessToken, startTimestamp = startTimeStamp, endTimestamp = endTimeStamp, page = page).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
     }
 }

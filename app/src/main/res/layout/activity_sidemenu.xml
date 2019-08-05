@@ -68,11 +68,11 @@
                 </RelativeLayout>
 
                 <!-- BANNER -->
-                <View
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_marginTop="30dp"
-                    android:background="#005500" />
+                    android:background="@drawable/sidemenu_dummy" />
 
                 <!-- SUB MENU -->
                 <include
