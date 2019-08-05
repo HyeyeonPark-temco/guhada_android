@@ -586,6 +586,18 @@
     <string name="mypageordership_deliveryrefundok">환불 신청이 완료되었습니다.</string>
     <string name="mypageordership_deliverydeliveryok">배송 접수가 완료되었습니다.</string>
 
+    <!-- MYPAGE PIOINT -->
+    <string name="mypagepoint_more">더보기</string>
+    <string name="mypagepoint_enabled">사용 가능한 포인트</string>
+    <string name="mypagepoint_expected">적립 예정</string>
+    <string name="mypagepoint_accumulated">누적 포인트</string>
+    <string name="mypagepoint_empty">포인트 내역이 없습니다.</string>
+    <string name="mypagepoint_status_used">사용</string>
+    <string name="mypagepoint_status_accumulated">적립</string>
+    <string name="mypagepoint_status_canceled">취소</string>
+    <string name="mypagepoint_status_recovered">복원</string>
+    <string name="mypagepoint_status_expired">만료</string>
+
     <!-- PRODUCT INFO REVIEW -->
     <string name="productdetaininfo_review_sort1">최신순</string>
     <string name="productdetaininfo_review_sort2">전체평점</string>
@@ -697,6 +709,12 @@
     <string name="mypage_deliverydetail_reufndinfo_final1">총 환불금액</string>
     <string name="mypage_deliverydetail_reufndinfo_final2">신용카드 환불금액</string>
     <string name="mypage_deliverydetail_reufndinfo_final3">포인트 환불금액</string>
+
+    <!-- MYPAGE DELIVERY CER -->
+    <string name="mypage_deliverycer_cancel">취소</string>
+    <string name="mypage_deliverycer_exchange">교환</string>
+    <string name="mypage_deliverycer_refund">반품</string>
+    <string name="mypage_deliverycer_more">더보기</string>
 
     <!-- REQUEST ORDER STATUS -->
     <string name="requestorderstatus_common_seller">판매자</string>

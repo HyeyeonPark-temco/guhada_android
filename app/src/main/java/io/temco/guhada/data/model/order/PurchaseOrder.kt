@@ -62,6 +62,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
         return result
     }
 
-    fun getDate() = CommonUtil.convertTimeStamp(orderTimestamp) ?: ""
+    fun getDate() = CommonUtil.convertTimeStampToDate(orderTimestamp) ?: ""
 
 }

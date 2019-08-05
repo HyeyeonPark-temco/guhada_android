@@ -3,28 +3,231 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
+
+        <import type="androidx.lifecycle.MutableLiveData" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPagePointViewModel" />
     </data>
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/text_2"
+        android:layout_height="wrap_content"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/text_2"/>
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:overScrollMode="never">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textview_mypagepoint_enabled_title"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:text="@string/mypagepoint_enabled"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_16"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_mypagepoint_enabled_content"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@{@string/common_price_format(viewModel.pointSummary.totalFreePoint) + @string/common_unit_point}"
+                        android:textColor="@color/black_four"
+                        android:textSize="36sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_mypagepoint_enabled_title" />
+
+                    <View
+                        android:id="@+id/view_mypagepoint_line1"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@color/line_2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_mypagepoint_enabled_content" />
+
+                    <TextView
+                        android:id="@+id/textview_mypagepoint_expected_content"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@{@string/common_price_format(viewModel.pointSummary.totalDueSavePoint) + @string/common_unit_point}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_16"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/view_mypagepoint_line2"
+                        app:layout_constraintTop_toBottomOf="@+id/view_mypagepoint_line1" />
+
+                    <TextView
+                        android:id="@+id/textview_mypagepoint_expected_title"
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="@string/mypagepoint_expected"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_12"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/view_mypagepoint_line2"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_mypagepoint_expected_content" />
+
+                    <TextView
+                        android:id="@+id/textview_mypagepoint_acuumulated_content"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@{@string/common_price_format(viewModel.pointSummary.totalFreePoint ) + @string/common_unit_point}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_16"
+                        app:layout_constraintLeft_toRightOf="@id/view_mypagepoint_line2"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view_mypagepoint_line1" />
+
+                    <TextView
+                        android:id="@+id/textview_mypagepoint_acuumulated_title"
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="@string/mypagepoint_accumulated"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_12"
+                        app:layout_constraintLeft_toRightOf="@id/view_mypagepoint_line2"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_mypagepoint_acuumulated_content" />
+
+                    <View
+                        android:id="@+id/view_mypagepoint_line2"
+                        android:layout_width="1dp"
+                        android:layout_height="36dp"
+                        android:background="@color/line_2"
+                        app:layout_constraintBottom_toTopOf="@+id/framelayout_mypagepoint_calendarfilter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view_mypagepoint_line1" />
+
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_mypagepoint_calendarfilter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:background="@color/pale_grey"
+                        android:padding="20dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_mypagepoint_expected_title">
+
+                        <io.temco.guhada.view.custom.CustomCalendarFilter
+                            android:id="@+id/calendarfilter_mypagepoint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </FrameLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_mypagepoint"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_mypagepoint_calendarfilter"
+                        app:pointHistories="@{viewModel.pointHistory.content}" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:background="@color/common_white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:visibility="@{viewModel.pointHistory.empty ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_mypagepoint_calendarfilter"
+                        app:layout_constraintVertical_bias="0">
+
+                        <ImageView
+                            android:id="@+id/imageview_mypagepoint_empty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="80dp"
+                            android:src="@drawable/icon_no_data"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textview_mypagepoint_empty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginBottom="80dp"
+                            android:text="@string/mypagepoint_empty"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_mypagepoint_empty" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypagepoint_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{()->viewModel.onClickMore()}"
+                        android:orientation="horizontal"
+                        android:paddingStart="40dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="40dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="@{viewModel.pointHistory.last ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mypagepoint_more"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_14" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/detail_btn_more_open" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>

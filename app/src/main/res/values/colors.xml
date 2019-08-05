@@ -20,7 +20,7 @@
 
     <!-- LINE -->
     <color name="line_1">#e6e6e6</color>
-    <color name="line_2">#eeeeee</color>
+    <color name="line_2">@color/white_four</color>
     <color name="line_3">#ebedef</color>
     <color name="line_4">#d9dde0</color>
     <color name="line_5">#111111</color>

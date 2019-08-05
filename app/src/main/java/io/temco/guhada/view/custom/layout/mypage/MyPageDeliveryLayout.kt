@@ -67,6 +67,9 @@ class MyPageDeliveryLayout constructor(
     override fun onClickMonth() = mViewModel.setDate(30) { startDate, endDate -> calendarCallback(startDate, endDate) }
     override fun onClickThreeMonth() = mViewModel.setDate(90) { startDate, endDate -> calendarCallback(startDate, endDate) }
     override fun onClickYear() = mViewModel.setDate(365) { startDate, endDate -> calendarCallback(startDate, endDate) }
+    override fun onChangeDate(startDate: String, fromDate: String) {
+
+    }
 
     override fun onClickCheck() {
         mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startDate
@@ -108,6 +111,7 @@ class MyPageDeliveryLayout constructor(
     override fun onRefresh() {
         mBinding.swipeRefreshLayout.isRefreshing = false
         mViewModel.getOrders()
+        mViewModel.getOrderStatus()
     }
 
 ////////////////////////////////////////////////

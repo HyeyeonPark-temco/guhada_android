@@ -84,7 +84,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         @JvmStatic
         @BindingAdapter("timeStamp")
         fun TextView.bindTimeStamp(timeStamp: Long) {
-            this.text = if (timeStamp > 0) CommonUtil.convertTimeStamp(timeStamp)
+            this.text = if (timeStamp > 0) CommonUtil.convertTimeStampToDate(timeStamp)
             else ""
         }
     }

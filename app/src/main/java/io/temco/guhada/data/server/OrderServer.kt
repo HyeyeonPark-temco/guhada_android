@@ -166,7 +166,7 @@ class OrderServer {
          * 주문 상품 조회 API
          */
         @JvmStatic
-        fun getOrders(listener: OnServerListener, accessToken: String, startDate: String, endDate: String, page: Int) =
+        fun getOrders(listener: OnServerListener, accessToken: String, startDate: Long, endDate: Long, page: Int) =
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getOrders(accessToken, startDate, endDate, page).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<OrderHistoryResponse>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) }
                 )

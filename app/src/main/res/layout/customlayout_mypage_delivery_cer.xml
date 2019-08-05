@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryCerViewModel" />
@@ -11,19 +12,194 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/text_6"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/text_6"/>
+                android:layout_weight="1"
+                android:overScrollMode="never">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#f9f9fa"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <io.temco.guhada.view.custom.CustomCalendarFilter
+                            android:id="@+id/calendarfilter_mypage_deliver"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/textview_mypagedeliverycer_cancel_content"
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="0"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_16"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="@id/view_mypagedeliverycer_line1"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textview_mypagedeliverycer_cancel_title"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="20dp"
+                            android:text="@string/mypage_deliverycer_cancel"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="@id/view_mypagedeliverycer_line1"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_mypagedeliverycer_cancel_content" />
+
+                        <View
+                            android:id="@+id/view_mypagedeliverycer_line1"
+                            android:layout_width="1dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="43dp"
+                            android:background="@color/line_6"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/textview_mypagedeliverycer_cancel_title"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textview_mypagedeliverycer_exchange_content"
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="0"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_16"
+                            app:layout_constraintLeft_toRightOf="@+id/view_mypagedeliverycer_line1"
+                            app:layout_constraintRight_toLeftOf="@+id/view_mypagedeliverycer_line2"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textview_mypagedeliverycer_exchange_title"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="43dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="20dp"
+                            android:text="@string/mypage_deliverycer_exchange"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/view_mypagedeliverycer_line1"
+                            app:layout_constraintRight_toLeftOf="@id/view_mypagedeliverycer_line2"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_mypagedeliverycer_exchange_content" />
+
+                        <View
+                            android:id="@+id/view_mypagedeliverycer_line2"
+                            android:layout_width="1dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="43dp"
+                            android:background="@color/line_6"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/textview_mypagedeliverycer_exchange_title"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textview_mypagedeliverycer_refund_content"
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="43dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="43dp"
+                            android:text="0"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_16"
+                            app:layout_constraintLeft_toRightOf="@+id/view_mypagedeliverycer_line2"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textview_mypagedeliverycer_refund_title"
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="43dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="43dp"
+                            android:layout_marginBottom="20dp"
+                            android:text="@string/mypage_deliverycer_refund"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/view_mypagedeliverycer_line2"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_mypagedeliverycer_refund_content" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_mypagedeliverycer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypagedeliverycer_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{()->viewModel.onClickMore()}"
+                        android:orientation="horizontal"
+                        android:paddingStart="40dp"
+                        android:paddingTop="16dp"
+                        android:layout_gravity="center_horizontal"
+                        android:paddingEnd="40dp"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mypage_deliverycer_more"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_14" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/detail_btn_more_open" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

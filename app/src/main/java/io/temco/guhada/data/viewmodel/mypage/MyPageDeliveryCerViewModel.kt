@@ -4,8 +4,11 @@ import android.content.Context
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 /**
- * 19.07.22
+ * created 19.07.22
  * @author park jungho
+ *
+ * @author Hyeyeon Park
+ * @since 2019.08.05
  *
  * 취소교환환불
     - 해당 탭의 제품 요청, 처리중, 완료 리스트
@@ -17,6 +20,8 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  */
 class MyPageDeliveryCerViewModel (val context : Context) : BaseObservableViewModel() {
 
+    fun onClickMore(){
 
+    }
 
 }

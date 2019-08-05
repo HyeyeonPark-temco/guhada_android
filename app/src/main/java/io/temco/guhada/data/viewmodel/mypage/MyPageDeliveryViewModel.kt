@@ -10,6 +10,7 @@ import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
@@ -53,10 +54,12 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
         ServerCallbackUtil.callWithToken(
                 task = {
                     if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
-                        val convertedStartDate = convertDateFormat(startDate)
-                        val convertedEndDate = convertDateFormat(endDate)
+                  //     val convertedStartDate = convertDateFormat(startDate)
+                  //      val convertedEndDate = convertDateFormat(endDate)
+                        val convertedStartDate = CommonUtil.convertDateToTimeStamp(startDate, ".")
+                        val convertedEndDate = CommonUtil.convertDateToTimeStamp(endDate, ".")
 
-                        if (convertedStartDate.isNotEmpty() && convertedEndDate.isNotEmpty()) {
+                        if (convertedStartDate > 0 && convertedEndDate > 0) {
                             ServerCallbackUtil.callWithToken(task = {
                                 OrderServer.getOrders(OnServerListener { success, o ->
                                     ServerCallbackUtil.executeByResultCode(success, o,
@@ -66,8 +69,6 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
                                             })
                                 }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
                             })
-                        } else {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.mypage_delivery_message_invaliddateformat))
                         }
                     }
                 },
