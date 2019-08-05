@@ -52,8 +52,9 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, getLayoutId());
         // Init
-        initNfc();
-
+        if(!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
+            initNfc();
+        }
         init();
     }
 
@@ -137,12 +138,12 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
     @Override
     protected void onResume() {
         super.onResume();
-        enableNfc();
+        if(!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) enableNfc();
     }
 
     @Override
     protected void onPause() {
-        disableNfc();
+        if(!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) disableNfc();
         super.onPause();
     }
 

@@ -331,11 +331,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     fun refreshClaims() {
-        mClaimFragment.refreshClaims()
+        if(::mClaimFragment.isInitialized) mClaimFragment.refreshClaims()
     }
 
     fun refreshIsMyClaimsVisible() {
-        mClaimFragment.refreshIsMineVisible()
+        if(::mClaimFragment.isInitialized) mClaimFragment.refreshIsMineVisible()
     }
 
     override fun redirectLoginActivity() {

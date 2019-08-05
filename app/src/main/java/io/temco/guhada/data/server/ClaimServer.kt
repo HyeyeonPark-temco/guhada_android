@@ -75,14 +75,14 @@ open class ClaimServer {
          * 마이페이지 상품문의 리스트
          */
         @JvmStatic
-        fun getMyPageClaimList(listener: OnServerListener, page : Int) {
+        fun getMyPageClaimList(listener: OnServerListener, page : Int, status : String) {
             val accessToken = Preferences.getToken()?.accessToken
             if (accessToken.isNullOrBlank()) {
                 // 로그인 팝업 노출
                 Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
             } else {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true)
-                        .getMyClaimList(accessToken = "Bearer $accessToken", page = page).enqueue(object : Callback<BaseModel<MyPageClaim>> {
+                        .getMyClaimList(accessToken = "Bearer $accessToken", page = page, status = status).enqueue(object : Callback<BaseModel<MyPageClaim>> {
                     override fun onResponse(call: Call<BaseModel<MyPageClaim>>, response: Response<BaseModel<MyPageClaim>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }

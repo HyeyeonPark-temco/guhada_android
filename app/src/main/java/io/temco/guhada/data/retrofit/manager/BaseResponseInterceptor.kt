@@ -31,7 +31,7 @@ class BaseResponseInterceptor() : Interceptor {
         val parser = JsonParser()
         val bodyString = body.string()
         body.close()
-        if(CustomLog.flag)CustomLog.L("BaseResponseInterceptor",bodyString)
+        //if(CustomLog.flag)CustomLog.L("BaseResponseInterceptor",bodyString)
         val json = parser.parse(bodyString)
 
         var model = JsonObject()

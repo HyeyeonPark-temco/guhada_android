@@ -28,6 +28,11 @@ class MyPageCliamRepository (val context : Context) {
     }
 
     fun getMoreClaimList(status : Int,listener : OnSwipeRefreshResultListener?, nextPage : Int = 1){
+        var statusValue = ""
+        when(status){
+            1->statusValue = "PENDING"
+            2->statusValue = "COMPLETED"
+        }
         ClaimServer.getMyPageClaimList(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -62,7 +67,7 @@ class MyPageCliamRepository (val context : Context) {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverLoginErrorTask")
                     }
             )
-        },nextPage)
+        },nextPage,statusValue)
     }
 
     fun deleteClaim(productId : Long, inquiryId : Long, listener : OnServerListener){
