@@ -99,7 +99,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             ResultCode.ALL_FINISH.flag,
-            RESULT_FIRST_USER -> {
+            RESULT_FIRST_USER -> { //  RESULT_FIRST_USER: SideMenu.kt에서 받아옴
                 setResult(ResultCode.ALL_FINISH.flag)
                 finish()
             }
