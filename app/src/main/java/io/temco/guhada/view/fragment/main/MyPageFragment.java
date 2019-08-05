@@ -6,16 +6,15 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.databinding.FragmentMainMyPageBinding;
+import io.temco.guhada.view.activity.MainActivity;
 import io.temco.guhada.view.adapter.MyPagePagerAdapter;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
 public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private OnDrawerLayoutListener mDrawerListener;
     private MyPagePagerAdapter mPagerAdapter;
     // -----------------------------
 
@@ -41,17 +40,19 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_side_menu:
-                if (mDrawerListener != null) {
+                // @TODO MENU
+                /*if (mDrawerListener != null) {
                     mDrawerListener.onDrawerEvnet(true);
-                }
+                }*/
                 break;
 
             case R.id.image_search:
-                CommonUtil.debug("image_search");
+                CommonUtil.startSearchWordActivity((MainActivity)getContext());
                 break;
 
             case R.id.image_shop_cart:
-                CommonUtil.debug("image_shop_cart");
+                //CommonUtil.debug("image_shop_cart");
+                CommonUtil.startCartActivity((MainActivity)getContext());
                 break;
 
         }
@@ -60,10 +61,6 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
-
-    public void setOnDrawerLayoutListener(OnDrawerLayoutListener listener) {
-        mDrawerListener = listener;
-    }
 
     ////////////////////////////////////////////////
     // PRIVATE

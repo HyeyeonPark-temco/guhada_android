@@ -6,9 +6,10 @@ import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
-import io.temco.guhada.common.listener.OnDrawerLayoutListener
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.databinding.FragmentMainHomeBinding
+import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.custom.layout.main.HomeListLayout
 import io.temco.guhada.view.custom.layout.main.KidsListLayout
@@ -21,7 +22,6 @@ import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private var mDrawerListener: OnDrawerLayoutListener? = null
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
     private var currentPagerIndex : Int = 0
     // -----------------------------
@@ -39,11 +39,16 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.image_side_menu -> if (mDrawerListener != null) {
-                mDrawerListener!!.onDrawerEvnet(true)
+            // @TODO MENU
+            R.id.image_side_menu ->{
+                CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
             }
-            R.id.image_search -> CommonUtil.debug("image_search")
-            R.id.image_shop_cart -> CommonUtil.debug("image_shop_cart")
+            R.id.image_search -> {
+                CommonUtil.startSearchWordActivity(context as MainActivity)
+            }
+            R.id.image_shop_cart -> {
+                CommonUtil.startCartActivity(context as MainActivity)
+            }
         }
     }
 
@@ -51,9 +56,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     // PUBLIC
     ////////////////////////////////////////////////
 
-    fun setOnDrawerLayoutListener(listener: OnDrawerLayoutListener) {
-        mDrawerListener = listener
-    }
 
     ////////////////////////////////////////////////
     // PRIVATE

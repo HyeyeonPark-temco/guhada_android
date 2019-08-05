@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter.product;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,8 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.listener.OnProductListListener;
+import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Deal;
 import io.temco.guhada.view.holder.base.BaseProductViewHolder;
 import io.temco.guhada.view.holder.product.ProductOneViewHolder;
@@ -26,7 +28,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHold
     // -------- LOCAL VALUE --------
     private Context mContext;
     private RequestManager mRequestManager;
-    private OnProductListListener mProductListener;
     private Type.Grid mGridType = Type.Grid.TWO;
     private List<Deal> mItems;
     // -----------------------------
@@ -78,10 +79,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHold
 
     @Override
     public void onClick(View v) {
-        if (mProductListener != null
-                && v.getTag() != null && v.getTag() instanceof Integer) {
+        if (v.getTag() != null && v.getTag() instanceof Integer) {
             Deal data = getItem((int) v.getTag());
-            mProductListener.onProduct(data.dealId);
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("ProductListAdapter","onClick dealId",data.dealId);
+            CommonUtil.startProductActivity(((Activity)mContext),(long)(data.dealId));
         }
     }
 
@@ -105,10 +106,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHold
 
     public void reset() {
         mItems = null;
-    }
-
-    public void setOnProductListListener(OnProductListListener listener) {
-        mProductListener = listener;
     }
 
     ////////////////////////////////////////////////

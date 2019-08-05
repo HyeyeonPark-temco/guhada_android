@@ -2,6 +2,7 @@ package io.temco.guhada.common;
 
 public class Flag {
     public static class RequestCode {
+        public static final int BASE = 100;
         public static final int VERIFY_PHONE = 10001;
 
         public static final int KAKAO_LOGIN = 10002;
@@ -20,6 +21,9 @@ public class Flag {
         public static final int SEARCH_ZIP = 10014;
         public static final int MODIFY_CLAIM = 10015;
         public static final int PRODUCT_DETAIL = 10016;
+        public static final int SEARCH_WORD = 10017;
+        public static final int SIDE_MENU = 10018;
+        public static final int SIDE_MENU_FROM_PRODUCT_FILTER = 10019;
     }
 
     public static class ResultCode {

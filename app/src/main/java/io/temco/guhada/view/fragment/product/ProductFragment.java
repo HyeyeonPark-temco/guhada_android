@@ -1,13 +1,15 @@
 package io.temco.guhada.view.fragment.product;
 
+import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Flag;
+import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBackPressListener;
-import io.temco.guhada.common.listener.OnDrawerLayoutListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
@@ -24,14 +26,14 @@ import io.temco.guhada.view.fragment.base.BaseFragment;
 public class ProductFragment extends BaseFragment<FragmentProductBinding> implements View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private OnDrawerLayoutListener mDrawerListener;
     private OnBackPressListener mBackListener;
     private FragmentManager mFragmentManager;
     private ProductListPagerAdapter mListPagerAdapter;
     //
-    private boolean mIsCategory = true;
+    private Type.ProductListViewType mType;
     private Category mCategoryData;
     private Brand mBrandData;
+    private String mSearchData;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -59,10 +61,12 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         // List
         CommonUtil.delayRunnable(() -> {
             initList();
-            if (mIsCategory) {
+            if (mType == Type.ProductListViewType.CATEGORY) {
                 addCategoryList();
-            } else {
+            } else if (mType == Type.ProductListViewType.BRAND) {
                 addBrandList();
+            }else if (mType == Type.ProductListViewType.SEARCH) {
+                addSearchList();
             }
         });
     }
@@ -76,15 +80,15 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 break;
 
             case R.id.image_side_menu:
-                if (mDrawerListener != null) mDrawerListener.onDrawerEvnet(true);
+                CommonUtil.startMenuActivity((Activity) getContext(), Flag.RequestCode.SIDE_MENU_FROM_PRODUCT_FILTER);
                 break;
 
             case R.id.image_search:
-                //
+                CommonUtil.startSearchWordActivity((Activity) getContext());
                 break;
 
             case R.id.image_shop_cart:
-                if (mDrawerListener != null) mDrawerListener.onDrawerEvnet(false);
+                CommonUtil.startCartActivity((Activity) getContext());
                 break;
         }
     }
@@ -93,10 +97,9 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void changeProduct(boolean isCategory) {
-        mIsCategory = isCategory;
+    public void changeProduct(Type.ProductListViewType type) {
+        mType = type;
     }
-
     public void setCategory(Category data) {
         mCategoryData = data;
         addCategoryList();
@@ -106,6 +109,12 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         mBrandData = data;
         addBrandList();
     }
+
+    public void setSearch(String data) {
+        mSearchData = data;
+        addSearchList();
+    }
+
 
     public void removeAll() {
         if (mFragmentManager != null) {
@@ -119,9 +128,6 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         }
     }
 
-    public void setOnDrawerLayoutListener(OnDrawerLayoutListener listener) {
-        mDrawerListener = listener;
-    }
 
     public void setOnBackPressListener(OnBackPressListener listener) {
         mBackListener = listener;
@@ -164,8 +170,22 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         }
     }
 
+    private void addSearchList() {
+        if (mBinding != null && mSearchData != null) {
+            setTitle(mSearchData);
+            addSearchFragment(mSearchData);
+        }
+    }
+
     private void addBrandChildFragment(Brand data) {
         mListPagerAdapter.addBrandFragment(data);
+        mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
+        mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
+    }
+
+
+    private void addSearchFragment(String data) {
+        mListPagerAdapter.addSearchFragment(data);
         mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
         mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
     }
@@ -184,7 +204,8 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount() - 1);
                 mFragmentManager.popBackStack();
             } else {
-                mBackListener.onPress();
+                ((Activity)getContext()).finish();
+                //mBackListener.onPress();
             }
         }
     }

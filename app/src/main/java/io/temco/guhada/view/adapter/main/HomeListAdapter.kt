@@ -13,18 +13,13 @@ import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
-import io.temco.guhada.common.ProductBridge
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductListListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.Deal
-import io.temco.guhada.data.model.main.HomeType
-import io.temco.guhada.data.model.main.MainBaseModel
-import io.temco.guhada.data.model.main.DummyImage
-import io.temco.guhada.data.model.main.EventData
-import io.temco.guhada.data.model.main.MainEvent
-import io.temco.guhada.data.model.main.SubTitleItemList
+import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainItemDummyBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemMaineventBinding
@@ -218,7 +213,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                         itemlayout[i].contentDescription = data.dealId.toString()
                         itemlayout[i].setOnClickListener{
                             var id = it.contentDescription.toString().toLong()
-                            ProductBridge.mainActivity.addProductDetailView(id)
+                            CommonUtil.startProductActivity(viewModel.context as Activity, id)
                         }
                         itemlayout[i].visibility = View.VISIBLE
                         ImageUtil.loadImage(Glide.with(containerView.context as Activity), imageThumb[i], data.productImage.url)

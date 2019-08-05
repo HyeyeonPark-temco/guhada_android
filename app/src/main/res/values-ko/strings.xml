@@ -853,4 +853,11 @@
 
     <string name="btn_claim_modify">문의수정</string>
 
+    <string name="search_word_recenttitle">최근 검색어</string>
+    <string name="search_word_populartitle">인기 검색어</string>
+    <string name="search_word_autotexttitle">자동 완성</string>
+    <string name="search_word_nosearchwordtoast">검색어를 입력해 주세요.</string>
+
+
+
 </resources>

@@ -1,6 +1,8 @@
 package io.temco.guhada.common.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Handler;
@@ -37,10 +39,15 @@ import java.util.regex.Pattern;
 import io.temco.guhada.BuildConfig;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.view.activity.CartActivity;
+import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
+import io.temco.guhada.view.activity.SearchWordActivity;
+import io.temco.guhada.view.activity.SideMenuActivity;
 
 public class CommonUtil {
 
@@ -252,5 +259,47 @@ public class CommonUtil {
         return isSelect;
     }
 
+
+    /**
+     * @author park jungho
+     * 검색어 입력 화면
+     * @param act
+     */
+    public static void startSearchWordActivity(Activity act){
+        Intent intent = new Intent(act, SearchWordActivity.class);
+        act.startActivityForResult(intent, Flag.RequestCode.SEARCH_WORD);
+    }
+
+
+    /**
+     * @author park jungho
+     * 장바구니 화면
+     * @param act
+     */
+    public static void startCartActivity(Activity act){
+        Intent intent = new Intent(act, CartActivity.class);
+        act.startActivityForResult(intent, Flag.RequestCode.BASE);
+    }
+
+    /**
+     * @author park jungho
+     * 사이드 메뉴 화면
+     * @param act
+     */
+    public static void startMenuActivity(Activity act, int res){
+        Intent intent = new Intent(act, SideMenuActivity.class);
+        act.startActivityForResult(intent, res);
+    }
+
+    /**
+     * @author park jungho
+     * 상품 리스트 (카테고리, 브랜드)
+     * @param act
+     */
+    public static void startProductActivity(Activity act, Long dealId){
+        Intent intent = new Intent(act, ProductFragmentDetailActivity.class);
+        intent.putExtra("dealId",dealId);
+        act.startActivityForResult(intent,Flag.RequestCode.PRODUCT_DETAIL);
+    }
     ////////////////////////////////////////////////
 }

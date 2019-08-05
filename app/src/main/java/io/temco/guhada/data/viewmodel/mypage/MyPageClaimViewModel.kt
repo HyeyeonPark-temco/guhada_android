@@ -71,8 +71,8 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
 
     fun deleteClaimItem(itemIndex : Int, productId : Long, inquiryId : Long, loading : LoadingIndicatorUtil){
         repository.deleteClaim(productId,inquiryId, OnServerListener { success, o ->
+            loading.hide()
             if(success){
-                loading.hide()
                 var data = (o as BaseModel<JsonObject>)
                 if(data.resultCode in 200..400){
                     adapter.items.removeAt(itemIndex)
