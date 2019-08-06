@@ -71,9 +71,9 @@ class MyPageDeliveryLayout constructor(
 
     }
 
-    override fun onClickCheck() {
-        mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startDate
-        mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endDate
+    override fun onClickCheck(startDate: String, endDate: String) {
+        mViewModel.startDate = startDate
+        mViewModel.endDate = endDate
         mViewModel.getOrders()
     }
 

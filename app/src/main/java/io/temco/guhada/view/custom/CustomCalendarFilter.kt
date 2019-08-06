@@ -88,7 +88,7 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
                 endDate = mBinding.textDateTo.text.toString()
             }
             R.id.text_check -> {
-                if (::mListener.isInitialized) checkDate { mListener.onClickCheck() }
+                if (::mListener.isInitialized) checkDate { mListener.onClickCheck(startDate, endDate) }
             }
         }
 
@@ -178,7 +178,7 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
         fun onClickMonth()
         fun onClickThreeMonth()
         fun onClickYear()
-        fun onClickCheck()
-        fun onChangeDate(startDate: String, fromDate: String)
+        fun onClickCheck(startDate: String, endDate: String)
+        fun onChangeDate(startDate: String, endDate: String)
     }
 }

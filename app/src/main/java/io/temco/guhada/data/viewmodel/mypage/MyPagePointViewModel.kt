@@ -34,7 +34,9 @@ import java.util.*
  *
  */
 class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
-    var pointSummary: MutableLiveData<PointSummary> = MutableLiveData()
+    var pointSummary: ObservableField<PointSummary> = ObservableField()
+        @Bindable
+        get() = field
     var pointList: MutableLiveData<MutableList<Point>> = MutableLiveData()
     var pointHistory: ObservableField<PointHistory> = ObservableField()
         @Bindable
@@ -53,7 +55,9 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
             BenefitServer.getPointSummary(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            this.pointSummary.apply { it.data as PointSummary }
+                            this.pointSummary = ObservableField(it.data as PointSummary)
+                            notifyPropertyChanged(BR.pointSummary)
+//                            this.pointSummary.apply { it.data as PointSummary }
 //                            this.pointSummary.postValue(it.data as PointSummary)
                         })
             }, token, expireDays = 30)
