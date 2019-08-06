@@ -97,6 +97,7 @@
 
                         <!-- INFORMATION -->
                         <include
+                            android:visibility="gone"
                             android:id="@+id/layout_information"
                             layout="@layout/layout_information" />
                     </LinearLayout>

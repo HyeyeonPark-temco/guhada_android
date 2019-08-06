@@ -33,6 +33,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -151,14 +152,9 @@ public class CommonUtil {
      * @author Hyeyeon Park
      */
     public static Long convertDateToTimeStamp(String dateString, String operator) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy" + operator + "MM" + operator + "dd");
-        Date date = null;
-        try {
-            date = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            CommonUtil.debug("convertDateToTimeStamp", e.getMessage());
-        }
-        return date != null ? date.getTime() : 0;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy" + operator + "MM" + operator + "dd");
+        DateTime dateTime = dateTimeFormatter.parseDateTime(dateString);
+        return dateTime.getMillis();
     }
 
 

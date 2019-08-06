@@ -25,14 +25,9 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 class MyPageDeliveryAdapter(val mViewModel: MyPageDeliveryViewModel) : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
     var list: MutableList<PurchaseOrder> = mutableListOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
-            Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_delivery, parent, false))
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_delivery, parent, false))
     override fun getItemCount(): Int = list.size
-
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(list[position])
-    }
+    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(list[position])
 
     inner class Holder(binding: ItemDeliveryBinding) : BaseViewHolder<ItemDeliveryBinding>(binding.root) {
         fun bind(item: PurchaseOrder) {

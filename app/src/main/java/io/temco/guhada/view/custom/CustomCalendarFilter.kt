@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -162,9 +163,15 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
 
     fun setDate(day: Int) {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+        calendar.set(Calendar.HOUR_OF_DAY, 24)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
         endDate = convertDateFormat(calendar, ".")
         calendar.add(Calendar.DAY_OF_MONTH, -day)
         startDate = convertDateFormat(calendar, ".")
+
+        Log.e("캘린더필터", "start: $startDate, end: $endDate")
     }
 
     private fun convertDateFormat(calendar: Calendar, operator: String): String {

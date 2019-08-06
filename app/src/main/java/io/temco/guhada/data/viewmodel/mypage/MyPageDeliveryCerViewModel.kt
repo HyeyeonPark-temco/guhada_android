@@ -1,10 +1,12 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.order.CancelOrderStatus
+import io.temco.guhada.data.model.order.OrderHistoryResponse
 import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
@@ -24,19 +26,36 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  *
  */
 class MyPageDeliveryCerViewModel(val context: Context) : BaseObservableViewModel() {
+    var page = 1
     var startDate: Long = 0
     var endDate: Long = 0
     var cancelOrderStatus: MutableLiveData<CancelOrderStatus> = MutableLiveData()
+    var cancelOrderHistory: MutableLiveData<OrderHistoryResponse> = MutableLiveData()
 
     fun getCancelOrderStatus() {
-        if(startDate > 0 && endDate > 0){
+        if (startDate > 0 && endDate > 0) {
             ServerCallbackUtil.callWithToken(task = { token ->
                 ClaimServer.getCancelOrderStatus(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = {
+                                //                                this.cancelOrderStatus.apply { it.data as CancelOrderStatus }
                                 this.cancelOrderStatus.postValue(it.data as CancelOrderStatus)
                             })
                 }, accessToken = token, startTimeStamp = startDate, endTimeStamp = endDate)
+            })
+        }
+    }
+
+    fun getCancelOrderHistories() {
+        Log.e("취소내역", "start: $startDate, end: $endDate")
+        if (startDate > 0 && endDate > 0) {
+            ServerCallbackUtil.callWithToken(task = { token ->
+                ClaimServer.getCancelOrders(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                this.cancelOrderHistory.postValue(it.data as OrderHistoryResponse)
+                            })
+                }, accessToken = token, startTimeStamp = startDate, endTimeStamp = endDate, page = page++)
             })
         }
     }
