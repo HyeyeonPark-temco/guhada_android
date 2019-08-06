@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_default"
+        android:weightSum="1"
         android:orientation="vertical">
 
         <!-- HEADER -->
@@ -17,6 +18,150 @@
         <io.temco.guhada.view.custom.SwipeViewPager
             android:id="@+id/layout_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/layout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/background_default"
+            android:orientation="vertical">
+
+            <!-- LINE -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/line_1" />
+
+            <!-- TAB -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <LinearLayout
+                    android:id="@+id/layout_maintab_layout1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageview_maintab_icon1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/tool_icon_category_on"/>
+
+                    <TextView
+                        android:id="@+id/textview_maintab_title1"
+                        style="@style/TextTabStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_category"
+                        android:textColor="@color/common_blue_purple"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_maintab_layout2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageview_maintab_icon2"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/tool_icon_brand_off" />
+
+                    <TextView
+                        android:id="@+id/textview_maintab_title2"
+                        style="@style/TextTabStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_brand"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_maintab_layout3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageview_maintab_icon3"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/tool_icon_home_off" />
+
+                    <TextView
+                        android:id="@+id/textview_maintab_title3"
+                        style="@style/TextTabStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_home"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_maintab_layout4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageview_maintab_icon4"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/tool_icon_community_off" />
+
+                    <TextView
+                        android:id="@+id/textview_maintab_title4"
+                        style="@style/TextTabStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_community"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/layout_maintab_layout5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageview_maintab_icon5"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/tool_icon_mypage_off" />
+
+                    <TextView
+                        android:id="@+id/textview_maintab_title5"
+                        style="@style/TextTabStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_my_page"
+                        android:layout_marginTop="2dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </layout>

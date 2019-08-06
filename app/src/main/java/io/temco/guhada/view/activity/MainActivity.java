@@ -328,7 +328,13 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     }
 
     private void startCategoryScreen(Type.Category type, int[] hierarchies) {
-        mPagerAdapter.addProductCategoryData(type, hierarchies);
+        //mPagerAdapter.addProductCategoryData(type, hierarchies);
+        Intent intent = new Intent(this, ProductFilterListActivity.class);
+        intent.putExtra("type", Type.ProductListViewType.CATEGORY);
+        intent.putExtra("hierarchies", hierarchies);
+        intent.putExtra("categoryType", type);
+        this.startActivityForResult(intent,Flag.RequestCode.BASE);
+        this.overridePendingTransition(0,0);
     }
 
     // Dialog

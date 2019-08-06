@@ -86,7 +86,6 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         intent.putExtra("hierarchies", hierarchies)
         intent.putExtra("categoryType", type)
         this@SideMenuActivity.startActivityForResult(intent,Flag.RequestCode.BASE)
-        setResult(Activity.RESULT_FIRST_USER)
         overridePendingTransition(0,0)
         finish()
     }

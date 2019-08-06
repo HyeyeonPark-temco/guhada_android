@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
@@ -36,6 +37,11 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
     override fun getBaseTag(): String = this@ProductFilterListActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_productfilterlist
     override fun getViewType(): Type.View = Type.View.PRODUCT_LIST
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        this.overridePendingTransition(R.anim.fade, R.anim.fade)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun init() {
         if(!intent.extras.isEmpty && intent.extras.containsKey("type")){
@@ -85,6 +91,7 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == Flag.RequestCode.SIDE_MENU_FROM_PRODUCT_FILTER && resultCode == Activity.RESULT_FIRST_USER){
+            overridePendingTransition(R.anim.fade, R.anim.fade)
             finish()
         }
     }
@@ -109,4 +116,11 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
     override fun onStop() {
         super.onStop()
     }
+
+    override fun onBackPressed() {
+        overridePendingTransition(R.anim.fade, R.anim.fade)
+        super.onBackPressed()
+        overridePendingTransition(R.anim.fade, R.anim.fade)
+    }
+
 }

@@ -204,7 +204,9 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount() - 1);
                 mFragmentManager.popBackStack();
             } else {
+                ((Activity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
                 ((Activity)getContext()).finish();
+                ((Activity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
                 //mBackListener.onPress();
             }
         }

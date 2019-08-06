@@ -62,6 +62,7 @@ class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
                 if (CustomLog.flag) CustomLog.L("searchWordList", searchWordEntity.toString())
                 db.searchWordDao().insert(searchWordEntity)
                 var list = db.searchWordDao().getAll(21)
+                if (CustomLog.flag) CustomLog.L("searchWordList list", list.toString())
                 if (list.size >= 21) {
                     db.searchWordDao().delete(list[list.size - 1])
                 }
