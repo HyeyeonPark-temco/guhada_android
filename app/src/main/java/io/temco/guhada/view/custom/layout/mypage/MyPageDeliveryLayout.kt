@@ -42,7 +42,10 @@ class MyPageDeliveryLayout constructor(
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         mBinding.calendarfilterMypageDeliver.mListener = this
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
-            mBinding.listContents.adapter = MyPageDeliveryAdapter(mViewModel).apply { this.list = it.orderItemList }
+            mBinding.listContents.adapter = MyPageDeliveryAdapter().apply {
+                this.list = it.orderItemList
+                this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
+            }
             mBinding.executePendingBindings()
         })
         mBinding.includeDeliveryProcess.viewModel = mViewModel

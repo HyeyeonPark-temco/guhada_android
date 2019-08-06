@@ -12,6 +12,7 @@ import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.data.model.DeliveryButton
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.ItemDeliveryBinding
@@ -19,15 +20,21 @@ import io.temco.guhada.view.activity.DeliveryDetailActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
- * 마이페이지 주문배송 리스트 adapter
+ * 마이페이지 주문배송, 취소교환반품 리스트 adapter
  * @author Hyeyeon Park
  */
-class MyPageDeliveryAdapter(val mViewModel: MyPageDeliveryViewModel) : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
+class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
     var list: MutableList<PurchaseOrder> = mutableListOf()
+    var editShippingAddressTask : (purchaseId: Long) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_delivery, parent, false))
     override fun getItemCount(): Int = list.size
     override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(list[position])
+
+    fun setItems(list: MutableList<PurchaseOrder>) {
+        this.list = list
+        notifyDataSetChanged()
+    }
 
     inner class Holder(binding: ItemDeliveryBinding) : BaseViewHolder<ItemDeliveryBinding>(binding.root) {
         fun bind(item: PurchaseOrder) {
@@ -65,7 +72,7 @@ class MyPageDeliveryAdapter(val mViewModel: MyPageDeliveryViewModel) : RecyclerV
                     buttons.add(DeliveryButton().apply { text = "주문취소" })
                     buttons.add(DeliveryButton().apply {
                         text = "배송지변경"
-                        task = View.OnClickListener { mViewModel.editShippingAddress(item.purchaseId) }
+                        task = View.OnClickListener { editShippingAddressTask(item.purchaseId) }
                     })
                 }
 
@@ -139,8 +146,4 @@ class MyPageDeliveryAdapter(val mViewModel: MyPageDeliveryViewModel) : RecyclerV
         }
     }
 
-    inner class DeliveryButton {
-        var text = ""
-        var task: View.OnClickListener = View.OnClickListener { }
-    }
 }

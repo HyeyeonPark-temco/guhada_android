@@ -2,17 +2,12 @@ package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryCerViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryCerBinding
 import io.temco.guhada.view.adapter.mypage.MyPageDeliveryAdapter
-import io.temco.guhada.view.adapter.mypage.MyPageDeliveryCerAdapter
 import io.temco.guhada.view.custom.CustomCalendarFilter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
@@ -35,18 +30,21 @@ class MyPageDeliveryCerLayout constructor(
     override fun init() {
         mBinding.lifecycleOwner = this
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-        mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryCerAdapter()
+        mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply {
+            this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
+        }
 
         mViewModel = MyPageDeliveryCerViewModel(context)
         mViewModel.cancelOrderHistory.observe(this, Observer {
             if (mBinding.recyclerviewMypagedeliverycer.adapter != null)
-                (mBinding.recyclerviewMypagedeliverycer.adapter as MyPageDeliveryCerAdapter).setItems(it.orderItemList)
+                (mBinding.recyclerviewMypagedeliverycer.adapter as MyPageDeliveryAdapter).setItems(it.orderItemList)
             else
-                mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryCerAdapter().apply { this.list = it.orderItemList }
+                mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply { this.list = it.orderItemList }
             mBinding.executePendingBindings()
         })
 
         initCalendarFilter()
+        mViewModel.setDate(7) // [default] before 1 week
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
@@ -63,8 +61,6 @@ class MyPageDeliveryCerLayout constructor(
         mBinding.calendarfilterMypageDeliver.mListener = this
         mBinding.calendarfilterMypageDeliver.setPeriod(0)
         mBinding.calendarfilterMypageDeliver.setDate(7)
-        mViewModel.getCancelOrderStatus()
-        mViewModel.getCancelOrderHistories()
     }
 
     override fun onFocusView() {
@@ -93,24 +89,25 @@ class MyPageDeliveryCerLayout constructor(
     }
 
     // CustomCalendarListener
-    override fun onClickWeek() = changeDate(startDate = mBinding.calendarfilterMypageDeliver.startDate, endDate = mBinding.calendarfilterMypageDeliver.endDate)
-    override fun onClickMonth() = changeDate(startDate = mBinding.calendarfilterMypageDeliver.startDate, endDate = mBinding.calendarfilterMypageDeliver.endDate)
-    override fun onClickThreeMonth() = changeDate(startDate = mBinding.calendarfilterMypageDeliver.startDate, endDate = mBinding.calendarfilterMypageDeliver.endDate)
-    override fun onClickYear() = changeDate(startDate = mBinding.calendarfilterMypageDeliver.startDate, endDate = mBinding.calendarfilterMypageDeliver.endDate)
-    override fun onClickCheck(startDate: String, endDate: String) = changeDate(startDate = startDate, endDate = endDate)
+    override fun onClickWeek() = changeDate()
+
+    override fun onClickMonth() = changeDate()
+    override fun onClickThreeMonth() = changeDate()
+    override fun onClickYear() = changeDate()
+    override fun onClickCheck(startDate: String, endDate: String) = changeDate()
 
     override fun onChangeDate(startDate: String, endDate: String) {
         if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
             mViewModel.page = 1
-            mViewModel.startDate = CommonUtil.convertDateToTimeStamp(startDate, ".")
-            mViewModel.endDate = CommonUtil.convertDateToTimeStamp(endDate, ".")
+            mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp //CommonUtil.convertDateToTimeStamp(startDate, ".")
+            mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp //CommonUtil.convertDateToTimeStamp(endDate, ".")
         }
     }
 
-    private fun changeDate(startDate: String, endDate: String) {
+    private fun changeDate() {
         mViewModel.page = 1
-        mViewModel.startDate = CommonUtil.convertDateToTimeStamp(startDate, ".")
-        mViewModel.endDate = CommonUtil.convertDateToTimeStamp(endDate, ".")
+        mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp  //  CommonUtil.convertDateToTimeStamp(startDate, ".")
+        mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp // CommonUtil.convertDateToTimeStamp(endDate, ".")
         mViewModel.getCancelOrderStatus()
         mViewModel.getCancelOrderHistories()
     }

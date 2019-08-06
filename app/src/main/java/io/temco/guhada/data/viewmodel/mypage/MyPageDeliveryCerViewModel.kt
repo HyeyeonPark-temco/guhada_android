@@ -3,12 +3,19 @@ package io.temco.guhada.data.viewmodel.mypage
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import io.temco.guhada.common.EventBusData
+import io.temco.guhada.common.EventBusHelper
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.CancelOrderStatus
 import io.temco.guhada.data.model.order.OrderHistoryResponse
+import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.server.ClaimServer
+import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import java.util.*
 
 /**
  * created 19.07.22
@@ -60,8 +67,51 @@ class MyPageDeliveryCerViewModel(val context: Context) : BaseObservableViewModel
         }
     }
 
-    fun onClickMore() {
+    fun editShippingAddress(purchaseId: Long) {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            OrderServer.setOrderCompleted(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            val shippingAddress = (it.data as PurchaseOrderResponse).shippingAddress
+                            UserShipping().apply {
+                                this.id = shippingAddress.id.toInt()
+                                this.shippingName = shippingAddress.addressName ?: ""
+                                this.defaultAddress = shippingAddress.addressDefault
+                                this.zip = shippingAddress.zipcode
+                                this.recipientName = shippingAddress.receiverName
+                                this.recipientMobile = shippingAddress.phone
+                                this.address = shippingAddress.addressBasic
+                                this.roadAddress = shippingAddress.addressBasic
+                                this.detailAddress = shippingAddress.addressDetail
+                                this.pId = purchaseId
+                            }.let { userShipping ->
+                                EventBusHelper.sendEvent(EventBusData(RequestCode.EDIT_SHIPPING_ADDRESS.flag, userShipping))
+                            }
+                        })
+            }, accessToken = token, purchaseId = purchaseId.toDouble())
+        })
+    }
 
+    fun setDate(day: Int) {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        endDate = calendar.timeInMillis
+
+        calendar.add(Calendar.DAY_OF_MONTH, -day)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        startDate = calendar.timeInMillis
+
+        getCancelOrderStatus()
+        getCancelOrderHistories()
+    }
+
+    fun onClickMore() {
+        page = 1
+        getCancelOrderHistories()
     }
 
 }

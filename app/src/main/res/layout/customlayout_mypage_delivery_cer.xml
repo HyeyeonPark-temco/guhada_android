@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryCerViewModel" />
@@ -171,6 +173,7 @@
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
                         android:orientation="vertical"
+                        android:overScrollMode="never"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                     <LinearLayout
@@ -184,6 +187,7 @@
                         android:paddingTop="16dp"
                         android:paddingEnd="40dp"
                         android:paddingBottom="16dp"
+                        android:visibility="@{viewModel.cancelOrderHistory.page == viewModel.cancelOrderHistory.totalPage ? View.GONE : View.VISIBLE}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">
