@@ -550,7 +550,7 @@
     <string name="editshippingaddress_set_default">기본 배송지 설정</string>
     <string name="editshippingaddress_add">주문 완료 시 배송지 목록에 추가</string>
     <string name="editshippingaddress_button_cancel">취소</string>
-    <string name="editshippingaddress_button_submit">변경</string>
+    <string name="editshippingaddress_button_submit">수정 완료</string>
     <string name="editshippingaddress_button_zip">우편번호 찾기</string>
     <string name="editshippingaddress_hint_addressname">배송지명을 입력해주세요</string>
     <string name="editshippingaddress_hint_zip">우편번호</string>
@@ -560,12 +560,15 @@
     <string name="editshippingaddress_hint_recipientmobile">연락처를 입력해주세요</string>
 
     <!-- ADD SHIPPING ADDRESS -->
-    <string name="addshippingaddress_title">배송지 등록</string>
+    <string name="addshippingaddress_title">신규배송지 등록</string>
     <string name="addshippingaddress_button_cancel">입력  취소</string>
     <string name="addshippingaddress_button_confirm">입력 완료</string>
     <string name="addshippingaddress_button_close">닫기</string>
-    <string name="addshippingaddress_button_save">저장</string>
-
+    <string name="addshippingaddress_button_save">등록</string>
+    <string name="addshippingaddress_description">저장하신 배송지는 배송지 관리에서 수정 및 삭제가 가능합니다.</string>
+    <string name="addshippingaddress_description1">저장하신 배송지는</string>
+    <string name="addshippingaddress_description2">배송지 관리</string>
+    <string name="addshippingaddress_description3">에서 수정 및 삭제가 가능합니다.</string>
 
     <!-- HOME FRAGMENT -->
     <string-array name="main_titles">
@@ -587,7 +590,7 @@
     <string name="mypageordership_deliveryrefundok">환불 신청이 완료되었습니다.</string>
     <string name="mypageordership_deliverydeliveryok">배송 접수가 완료되었습니다.</string>
 
-    <!-- MYPAGE PIOINT -->
+    <!-- MYPAGE POINT -->
     <string name="mypagepoint_more">더보기</string>
     <string name="mypagepoint_enabled">사용 가능한 포인트</string>
     <string name="mypagepoint_expected">적립 예정</string>
@@ -669,6 +672,7 @@
     <string name="mypage_delivery_button_purchaseconfirm">구매확정</string>
     <string name="mypage_delivery_button_writereview">리뷰작성</string>
     <string name="mypage_delivery_message_invaliddateformat">"날짜 형식이 올바르지 않습니다."</string>
+    <string name="mypage_delivery_message_empty">최근 내역이 없습니다</string>
 
     <!-- MYPAGE DELIVERY DETAIL -->
     <string name="mypage_deliverydetail_ordernumber">주문 번호</string>
@@ -717,7 +721,6 @@
     <string name="mypage_deliverycer_exchange">교환</string>
     <string name="mypage_deliverycer_refund">반품</string>
     <string name="mypage_deliverycer_more">더보기</string>
-
 
     <!-- REQUEST ORDER STATUS -->
     <string name="requestorderstatus_common_seller">판매자</string>

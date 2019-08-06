@@ -15,16 +15,20 @@ import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.shippingaddress.EditShippingAddressViewModel
 import io.temco.guhada.databinding.DialogEditshippingaddressBinding
 
+/**
+ * 배송지 수정 액티비티
+ * @author Hyeyeon Park
+ */
 class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressListener {
     private lateinit var mBinding: DialogEditshippingaddressBinding
     private lateinit var mViewModel: EditShippingAddressViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this@EditShippingAddressActivity.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        this@EditShippingAddressActivity.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.dialog_editshippingaddress)
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         mViewModel = EditShippingAddressViewModel(this)
 
