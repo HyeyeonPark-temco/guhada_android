@@ -247,7 +247,6 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == Flag.RequestCode.VERIFY_PHONE) {
             if (resultCode == RESULT_OK) {
                 ToastUtil.showMessage("본인인증이 완료되었습니다.");

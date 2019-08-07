@@ -458,7 +458,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * 검색 화면으로 이동
      */
     override fun showSearchWordActivity() {
-        CommonUtil.startSearchWordActivity(context as Activity)
+        CommonUtil.startSearchWordActivity(context as Activity,null, true)
     }
 
     companion object {

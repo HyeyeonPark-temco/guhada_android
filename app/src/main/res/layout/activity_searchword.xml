@@ -4,6 +4,12 @@
 
     <data>
         <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
+
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.SearchWordViewModel" />
     </data>
@@ -40,24 +46,45 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/brand_search_hint"
+                android:inputType="text"
                 android:imeOptions="actionSearch"
                 android:textColorHint="@color/text_7"
                 android:textSize="@dimen/text_14" />
 
             <ImageButton
+                android:id="@+id/button_searchword_deleteword"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:visibility="@{viewModel.emptyEditTextWord ? View.GONE : View.VISIBLE, default = gone}"
+                android:src="@drawable/icon_keyword_delet" />
+
+            <ImageButton
                 android:id="@+id/button_searchword_search"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:padding="5dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/top_btn_search" />
+                android:src="@drawable/top_btn_search" />
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_searchword_auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/common_white"
+            android:visibility="@{viewModel.autoCompleteViewVisible ? View.VISIBLE : View.GONE, default = gone}"
+            app:setAdapter="@{viewModel.getAutoCompleteAdapter()}"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="8dp"
+            android:paddingBottom="10dp"
             android:background="@color/common_white"
+            android:visibility="@{viewModel.autoCompleteViewVisible ? View.GONE : View.VISIBLE, default = gone}"
             app:layout_constraintEnd_toEndOf="@+id/linearlayout_searchword_recentlayout"
             app:layout_constraintStart_toEndOf="@+id/linearlayout_searchword_recentlayout">
 
@@ -74,6 +101,7 @@
                 android:layout_height="52dp"
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical"
+                android:onClick="@{()-> viewModel.clickTab(0)}"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -87,13 +115,13 @@
                     android:layout_marginTop="1dp"
                     android:gravity="center"
                     android:text="@string/search_word_recenttitle"
-                    android:textColor="@color/blue_purple"
+                    android:textColor="@{viewModel.tabVisibleSwitch == 0 ? @color/blue_purple : @color/black_four, default = @color/black_four}"
                     android:textSize="@dimen/text_14" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/blue_purple" />
+                    android:background="@{viewModel.tabVisibleSwitch == 0 ? @color/blue_purple : @color/transparent, default = @color/transparent}" />
             </LinearLayout>
 
             <LinearLayout
@@ -102,6 +130,7 @@
                 android:layout_height="52dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
+                android:onClick="@{()-> viewModel.clickTab(1)}"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/linearlayout_searchword_recentlayout"
@@ -115,13 +144,13 @@
                     android:layout_marginTop="1dp"
                     android:gravity="center"
                     android:text="@string/search_word_populartitle"
-                    android:textColor="@color/black_four"
+                    android:textColor="@{viewModel.tabVisibleSwitch == 1 ? @color/blue_purple : @color/black_four, default = @color/black_four}"
                     android:textSize="@dimen/text_14" />
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/transparent" />
+                    android:background="@{viewModel.tabVisibleSwitch == 1 ? @color/blue_purple : @color/transparent, default = @color/transparent}" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -130,28 +159,54 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/common_white"
+            android:visibility="@{viewModel.autoCompleteViewVisible ? View.GONE : View.VISIBLE, default = gone}"
             android:layout_weight="1">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_searchword_recent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="@{viewModel.tabVisibleSwitch == 0 ? (viewModel.recentEmptyViewVisible ? View.GONE : View.VISIBLE): View.GONE, default = gone}"
+                app:setAdapter="@{viewModel.getRecentAdapter()}"/>
 
-            </androidx.recyclerview.widget.RecyclerView>
+            <LinearLayout
+                android:id="@+id/linearlayout_searchword_noitem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@color/common_white"
+                android:paddingBottom="60dp"
+                android:visibility="@{viewModel.tabVisibleSwitch == 0 ? (viewModel.recentEmptyViewVisible ? View.VISIBLE : View.GONE): View.GONE, default = gone}"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/icon_no_data"/>
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/no_list_item_searchword_desc"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_searchword_popular"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
+                android:visibility="@{viewModel.tabVisibleSwitch == 0 ? View.GONE : View.VISIBLE, default = gone}"
+                app:setAdapter="@{viewModel.getPopularAdapter()}"/>
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="@{viewModel.autoCompleteViewVisible ? View.GONE : View.VISIBLE, default = gone}"
             android:background="@color/line_2" />
 
         <LinearLayout
@@ -160,6 +215,7 @@
             android:gravity="center_vertical"
             android:background="@color/pale_grey"
             android:weightSum="1"
+            android:visibility="@{viewModel.autoCompleteViewVisible ? View.GONE : View.VISIBLE, default = gone}"
             android:orientation="horizontal">
 
             <TextView
@@ -168,6 +224,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="@string/search_word_autotexttitle"
+                android:onClick="@{()-> viewModel.clickAutoComplete()}"
                 android:textColor="@color/greyish_brown_two"
                 android:textSize="@dimen/text_13" />
 
@@ -176,7 +233,8 @@
                 android:layout_width="32.5dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/toggle_btn_off" />
+                android:onClick="@{()-> viewModel.clickAutoComplete()}"
+                android:background="@{viewModel.autoCompleteFlag ? @drawable/toggle_btn_on : @drawable/toggle_btn_off, default = @drawable/toggle_btn_off}" />
 
             <View
                 android:layout_width="0dp"
@@ -184,11 +242,14 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/button_searchword_deleteRecentAll"
                 style="@style/TextRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:text="@string/btn_delete_all"
+                android:onClick="@{()-> viewModel.deleteAllRecentWord()}"
+                android:visibility="@{viewModel.tabVisibleSwitch == 0 ? View.VISIBLE: View.INVISIBLE, default = invisible}"
                 android:textColor="@color/pinkish_grey"
                 android:textSize="@dimen/text_13" />
         </LinearLayout>

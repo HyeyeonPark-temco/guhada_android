@@ -271,7 +271,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     }
                 }
             });
-            if(mCategoryData.selectId != -1){
+            /*if(mCategoryData.selectId != -1){
                 mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
                     @Override
                     public void run() {
@@ -279,7 +279,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                         loadCategory(mCategoryData.children.get(tabIndex-1), false);
                     }
                 },150);
-            }
+            }*/
             // Scroll // Not Used
             // setTabLayoutScrollEvent();
         } else {

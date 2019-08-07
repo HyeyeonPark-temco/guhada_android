@@ -5,13 +5,14 @@ import android.content.Intent
 import android.view.View
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.R
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Preferences
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
+import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Brand
+import io.temco.guhada.view.activity.base.ActivityManager
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
 
@@ -21,7 +22,7 @@ import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
  * 상품 상세 Activity
  *
  */
-class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.ActivityProductdetailfragmentBinding>(), OnMainListener{
+class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.ActivityProductdetailfragmentBinding>(), OnMainListener {
 
     //private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private var mProductDetailFragment: ProductDetailFragment? = null
@@ -33,12 +34,12 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
     override fun getViewType(): Type.View = Type.View.PRODUCT_DETAIL
 
     override fun init() {
-        dealId = intent.getLongExtra("dealId",dealId)
+        dealId = intent.getLongExtra("dealId", dealId)
         setViewInit()
     }
 
 
-    private fun setViewInit(){
+    private fun setViewInit() {
         addProductDetailView(dealId)
     }
 
@@ -60,9 +61,12 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
     }
 
     override fun removeProductFragment() {
-        removeProductDetailFragment()
+        // setResult(Activity.RESULT_OK)
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+        setResult(ResultCode.GO_TO_MAIN.flag)
+        finish()
+        //  removeProductDetailFragment()
     }
-
 
     // [2019.06.26] 임시 브릿지
     override fun removeProductDetailFragment() {
@@ -70,16 +74,19 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         if (mProductDetailFragment != null && mProductDetailFragment!!.isAdded())
             supportFragmentManager.beginTransaction().remove(mProductDetailFragment!!).commitAllowingStateLoss()
         mLoadingIndicatorUtil.hide()*/
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+        setResult(ResultCode.GO_TO_MAIN.flag)
         finish()
     }
+
     override fun showSideMenu(isOpen: Boolean) {
-        if(CustomLog.flag)CustomLog.L("ProductFragmentDetailActivity","showSideMenu")
+        if (CustomLog.flag) CustomLog.L("ProductFragmentDetailActivity", "showSideMenu")
         CommonUtil.startMenuActivity(this, Flag.RequestCode.SIDE_MENU)
 
     }
 
     override fun setBrandProductList(brand: Brand) {
-        if(CustomLog.flag)CustomLog.L("ProductFragmentDetailActivity","setBrandProductList")
+        if (CustomLog.flag) CustomLog.L("ProductFragmentDetailActivity", "setBrandProductList")
         var intent = Intent(this@ProductFragmentDetailActivity, ProductFilterListActivity::class.java)
         intent.putExtra("type", Type.ProductListViewType.BRAND)
         intent.putExtra("brand", brand)
@@ -90,17 +97,24 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
+        when (resultCode) {
+            /*RESULT_FIRST_USER -> { //  RESULT_FIRST_USER: SideMenu.kt에서 받아옴
+                BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+                setResult(ResultCode.GO_TO_MAIN.flag)
+                finish()
+            }*/
+            Activity.RESULT_OK -> when (requestCode) {
                 Flag.RequestCode.WRITE_CLAIM -> mProductDetailFragment!!.refreshClaims()
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-            when (requestCode) {
-                Flag.RequestCode.WRITE_CLAIM -> {
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+                when (requestCode) {
+                    Flag.RequestCode.WRITE_CLAIM -> {
+                    }
                 }
             }
         }
+
     }
 
     override fun onResume() {
@@ -139,13 +153,13 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
     private fun changeLoginStatus() {
         if (mBinding != null) {
             // [상품 상세] 문의 리스트 리프레시
-            try{
+            try {
                 if (mProductDetailFragment != null) {
                     mProductDetailFragment!!.refreshIsMyClaimsVisible()
                     mProductDetailFragment!!.refreshClaims()
                 }
-            }catch (e: Exception){
-                if(CustomLog.flag)CustomLog.E(e)
+            } catch (e: Exception) {
+                if (CustomLog.flag) CustomLog.E(e)
             }
         }
     }

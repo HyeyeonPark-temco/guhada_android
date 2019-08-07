@@ -2,6 +2,13 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -9,13 +16,15 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.SearchWordEntity
+import io.temco.guhada.data.model.search.SearchWord
 import io.temco.guhada.data.viewmodel.SearchWordViewModel
 import io.temco.guhada.databinding.ActivitySearchwordBinding
+import io.temco.guhada.view.WrapContentLinearLayoutManager
 import io.temco.guhada.view.activity.base.BindActivity
+import java.lang.Exception
 import java.util.*
 
 /**
@@ -26,8 +35,10 @@ import java.util.*
  */
 class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
 
-    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: SearchWordViewModel
+
+    private var searchWord : String = ""
+    private var isNewActivity : Boolean = false
 
     // room database init
     private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this)!! }
@@ -39,9 +50,11 @@ class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
     override fun getViewType(): Type.View = Type.View.SEARCH_WORD
 
     override fun init() {
-        mViewModel = SearchWordViewModel()
+        mViewModel = SearchWordViewModel(this, mDisposable,db)
         mBinding.viewModel = mViewModel
-
+        if(!intent.extras.isEmpty && intent.extras.containsKey("searchWord")) searchWord = intent.extras.getString("searchWord")
+        if(!intent.extras.isEmpty && intent.extras.containsKey("isNewActivity")) isNewActivity = intent.extras.getBoolean("isNewActivity")
+        mViewModel.isNewActivity = isNewActivity
         setViewInit()
     }
 
@@ -49,31 +62,80 @@ class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
     private fun setViewInit(){
         mBinding.buttonSearchwordBack.setOnClickListener { finish() }
         mBinding.buttonSearchwordSearch.setOnClickListener { searchWordList() }
+        mBinding.buttonSearchwordDeleteword.setOnClickListener { mBinding.edittextSearchwordWord.text = Editable.Factory.getInstance().newEditable("") }
+        mBinding.edittextSearchwordWord.text = Editable.Factory.getInstance().newEditable(searchWord)
+        mBinding.edittextSearchwordWord.setSelection(searchWord.length)
+        if(searchWord.isNotEmpty()) mViewModel.emptyEditTextWord.set(true)
+
+        mBinding.edittextSearchwordWord.addTextChangedListener(object  : TextWatcher{
+            override fun afterTextChanged(s: Editable?) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(::mViewModel.isInitialized) mViewModel.getAutoCompolete(s.toString())
+                if(s.isNullOrEmpty() || s.isNullOrBlank()){
+                    mViewModel.emptyEditTextWord.set(true)
+                }else{
+                    mViewModel.emptyEditTextWord.set(false)
+                }
+            }
+        })
+        mBinding.edittextSearchwordWord.setOnEditorActionListener { v, actionId, event ->
+            var flag = false
+            if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                searchWordList()
+                flag = true
+            }
+            flag
+        }
+        mBinding.recyclerviewSearchwordRecent.setHasFixedSize(true)
+        mBinding.recyclerviewSearchwordRecent.layoutManager = WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        (mBinding.recyclerviewSearchwordRecent.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
+        (mBinding.recyclerviewSearchwordRecent.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+
+        mViewModel.listRecentData.observe(this,
+                androidx.lifecycle.Observer<ArrayList<SearchWord>> {
+                    if(it.size > 0) {
+                        mViewModel.recentEmptyViewVisible.set(false)
+                    }else{
+                        mViewModel.recentEmptyViewVisible.set(true)
+                    }
+                    mViewModel.getRecentAdapter().notifyDataSetChanged()
+                }
+        )
+
+        mBinding.recyclerviewSearchwordPopular.setHasFixedSize(true)
+        mBinding.recyclerviewSearchwordPopular.layoutManager = WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        (mBinding.recyclerviewSearchwordPopular.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
+        (mBinding.recyclerviewSearchwordPopular.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+
+        mViewModel.listPopularData.observe(this,
+                androidx.lifecycle.Observer<ArrayList<SearchWord>> {
+                    mViewModel.getPopularAdapter().notifyDataSetChanged()
+                }
+        )
+
+
+        mBinding.recyclerviewSearchwordAuto.setHasFixedSize(true)
+        mBinding.recyclerviewSearchwordAuto.layoutManager = WrapContentLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        (mBinding.recyclerviewSearchwordAuto.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
+        (mBinding.recyclerviewSearchwordAuto.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+
+        mViewModel.listAutoCompleteData.observe(this,
+                androidx.lifecycle.Observer<ArrayList<SearchWord>> {
+                    //mViewModel.getAutoCompleteAdapter().notifyDataSetChanged()
+                }
+        )
+
     }
 
 
     private fun searchWordList(){
         var text = mBinding.edittextSearchwordWord.text.toString()
         if(!text.isNullOrEmpty() && !text.isBlank()){
-            mDisposable.add(Observable.just(text).subscribeOn(Schedulers.io()).subscribe {
-                db.searchWordDao().delete(text)
-                var searchWordEntity = SearchWordEntity()
-                searchWordEntity.initData(Calendar.getInstance().timeInMillis, text, "", "", "", "")
-                if (CustomLog.flag) CustomLog.L("searchWordList", searchWordEntity.toString())
-                db.searchWordDao().insert(searchWordEntity)
-                var list = db.searchWordDao().getAll(21)
-                if (CustomLog.flag) CustomLog.L("searchWordList list", list.toString())
-                if (list.size >= 21) {
-                    db.searchWordDao().delete(list[list.size - 1])
-                }
-            })
-            var intent = Intent(this@SearchWordActivity, ProductFilterListActivity::class.java)
-            intent.putExtra("type", Type.ProductListViewType.SEARCH)
-            intent.putExtra("search_word", text)
-            this.startActivityForResult(intent, Flag.RequestCode.BASE)
-            setResult(Activity.RESULT_FIRST_USER)
-            overridePendingTransition(0,0)
-            finish()
+            mViewModel.searchWordList(text)
         }else{
             ToastUtil.showMessage(resources.getString(R.string.search_word_nosearchwordtoast))
         }
@@ -85,7 +147,12 @@ class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
 
     override fun onDestroy() {
         super.onDestroy()
-        mDisposable?.dispose()
+        try{
+            mDisposable?.dispose()
+            GuhadaDB.destroyInstance()
+        }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
     }
 
     override fun onStart() {
@@ -99,4 +166,11 @@ class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
     override fun onStop() {
         super.onStop()
     }
+
+    /*override fun onClick(v: View?) {
+        when(v!!.id){
+            R.id.linearlayout_searchword_recentlayout -> mViewModel.clickTab(0)
+            R.id.linearlayout_searchword_popularlayout -> mViewModel.clickTab(1)
+        }
+    }*/
 }

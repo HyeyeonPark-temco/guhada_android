@@ -18,17 +18,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.ProductByList;
 import io.temco.guhada.data.server.ProductServer;
+import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.BlockChainHistoryActivity;
+import io.temco.guhada.view.activity.MainActivity;
 
 /**
- * @author park jungho
- *
- * nfc 기능 공통 Activity 넣음
- *
  * @param <B>
+ * @author park jungho
+ * <p>
+ * nfc 기능 공통 Activity 넣음
  */
 public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivity {
 
@@ -52,7 +55,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, getLayoutId());
         // Init
-        if(!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
+        if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) {
             initNfc();
         }
         init();
@@ -68,14 +71,17 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
             // 미지원 기기
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("BindActivity",this.getClass().getSimpleName());
-            if("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())) showToast(R.string.common_message_nfc_unsupported);
+            if (CustomLog.INSTANCE.getFlag())
+                CustomLog.INSTANCE.L("BindActivity", this.getClass().getSimpleName());
+            if ("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName()))
+                showToast(R.string.common_message_nfc_unsupported);
         } else {
             if (mNfcAdapter.isEnabled()) {
                 Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 mPendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
             } else {
-                if("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName()))  showToast(R.string.common_message_nfc_off);
+                if ("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName()))
+                    showToast(R.string.common_message_nfc_off);
             }
         }
     }
@@ -138,12 +144,24 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
     @Override
     protected void onResume() {
         super.onResume();
-        if(!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) enableNfc();
+        if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) enableNfc();
+        /**
+         * @author park jungho
+         *
+         * 메인으로 이동
+         */
+        if (!"MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
+            if(((BaseApplication)getApplicationContext()).getMoveToMain() !=null &&
+                    ((BaseApplication)getApplicationContext()).getMoveToMain().isMoveToMain()){
+                setResult(Flag.RequestCode.GO_TO_MAIN);
+                finish();
+            }
+        }
     }
 
     @Override
     protected void onPause() {
-        if(!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) disableNfc();
+        if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) disableNfc();
         super.onPause();
     }
 
@@ -153,4 +171,20 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         if (intent != null) readData(intent);
     }
 
+
+    //////////////////////////////////////////////
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*if (resultCode == Flag.RequestCode.GO_TO_MAIN) {
+            if (!"MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
+                setResult(Flag.RequestCode.GO_TO_MAIN);
+                finish();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }*/
+    }
 }

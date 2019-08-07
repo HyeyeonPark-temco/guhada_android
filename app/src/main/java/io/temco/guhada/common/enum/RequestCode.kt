@@ -22,5 +22,6 @@ enum class RequestCode(val flag: Int) {
     ADD_SHIPPING_ADDRESS(10013),
     SEARCH_ZIP(10014),
     MODIFY_CLAIM(10015),
-    PRODUCT_DETAIL(10016)
+    PRODUCT_DETAIL(10016),
+    SIDE_MENU(10018)
 }

@@ -80,7 +80,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
             }
             R.id.image_search -> {
                 //CommonUtil.debug("image_search")
-                CommonUtil.startSearchWordActivity(context as MainActivity)
+                CommonUtil.startSearchWordActivity(context as MainActivity,null, true)
             }
             R.id.image_shop_cart -> {
                 //CommonUtil.debug("image_shop_cart")

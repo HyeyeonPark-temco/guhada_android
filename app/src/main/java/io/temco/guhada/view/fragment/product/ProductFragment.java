@@ -34,6 +34,8 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     private Category mCategoryData;
     private Brand mBrandData;
     private String mSearchData;
+
+
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -57,16 +59,23 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
 
         // Header
         mBinding.layoutHeader.setClickListener(this);
+        mBinding.layoutHeaderSearch.setClickListener(this);
 
         // List
         CommonUtil.delayRunnable(() -> {
             initList();
             if (mType == Type.ProductListViewType.CATEGORY) {
                 addCategoryList();
+                mBinding.layoutHeader.layoutHeader.setVisibility(View.VISIBLE);
+                mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.GONE);
             } else if (mType == Type.ProductListViewType.BRAND) {
                 addBrandList();
+                mBinding.layoutHeader.layoutHeader.setVisibility(View.VISIBLE);
+                mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.GONE);
             }else if (mType == Type.ProductListViewType.SEARCH) {
                 addSearchList();
+                mBinding.layoutHeader.layoutHeader.setVisibility(View.GONE);
+                mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -83,12 +92,17 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 CommonUtil.startMenuActivity((Activity) getContext(), Flag.RequestCode.SIDE_MENU_FROM_PRODUCT_FILTER);
                 break;
 
+            case R.id.image_delete:
             case R.id.image_search:
-                CommonUtil.startSearchWordActivity((Activity) getContext());
+                CommonUtil.startSearchWordActivity((Activity) getContext(),null, mType != Type.ProductListViewType.SEARCH);
                 break;
 
             case R.id.image_shop_cart:
                 CommonUtil.startCartActivity((Activity) getContext());
+                break;
+
+            case R.id.text_search_headertitle:
+                CommonUtil.startSearchWordActivity((Activity) getContext(),mBinding.layoutHeaderSearch.textSearchHeadertitle.getText().toString(), mType != Type.ProductListViewType.SEARCH);
                 break;
         }
     }
@@ -207,14 +221,17 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 ((Activity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
                 ((Activity)getContext()).finish();
                 ((Activity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
-                //mBackListener.onPress();
             }
         }
     }
 
     private void setTitle(String title) {
         if (!TextUtils.isEmpty(title)) {
-            mBinding.layoutHeader.setTitle(title);
+            if (mType == Type.ProductListViewType.SEARCH) {
+                mBinding.layoutHeaderSearch.setTitle(title);
+            }else{
+                mBinding.layoutHeader.setTitle(title);
+            }
         }
     }
 

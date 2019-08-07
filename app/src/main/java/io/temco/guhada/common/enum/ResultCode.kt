@@ -7,6 +7,10 @@ package io.temco.guhada.common.enum
  * @author Hyeyeon Park
  */
 enum class ResultCode(val flag: Int) {
+    GO_TO_MAIN(-9999),
+    GO_TO_MAIN_HOME(-9997),
+    GO_TO_MAIN_COMUNITY(-9996),
+    GO_TO_MAIN_MYPAGE(-9995),
     SUCCESS(200),
     ORDER_NOT_VALID_ERROR(1001),
     RUNTIME_EXCEPTION_ERROR(5002),

@@ -47,7 +47,7 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
                 break;
 
             case R.id.image_search:
-                CommonUtil.startSearchWordActivity((MainActivity)getContext());
+                CommonUtil.startSearchWordActivity((MainActivity)getContext(),null, true);
                 break;
 
             case R.id.image_shop_cart:
