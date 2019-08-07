@@ -731,6 +731,9 @@
     <string name="requestorderstatus_common_courier_hint1">택배 업체를 선택하세요.</string>
     <string name="requestorderstatus_common_courier_hint2">운송장 번호를 입력하세요.</string>
 
+    <string name="requestorderstatus_common_message_overmaxquantity">최대 수량을 초과하였습니다.</string>
+    <string name="requestorderstatus_common_message_overminquantity">최소 수량은 1개입니다.</string>
+
     <string name="requestorderstatus_common_shipping_radio1">박스에 동봉</string>
     <string name="requestorderstatus_common_shipping_radio2">판매자에게 직접 송금</string>
 
@@ -764,6 +767,12 @@
     <string name="requestorderstatus_refund_shipping_description2">반품배송비 5,000원을 구매자가 부담합니다.</string>
     <string name="requestorderstatus_refund_shipping_radio">환불금액에서 차감</string>
 
+    <!-- SUCCESS CANCEL ORDER -->
+    <string name="successcancelorder_title1">주문상품의&#160;</string>
+    <string name="successcancelorder_title2">주문취소가</string>
+    <string name="successcancelorder_title3">완료</string>
+    <string name="successcancelorder_title4">되었습니다.</string>
+    <string name="successcancelorder_button">확인</string>
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">ALL</string>

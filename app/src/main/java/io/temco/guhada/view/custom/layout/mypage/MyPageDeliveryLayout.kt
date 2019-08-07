@@ -1,22 +1,19 @@
 package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
-import android.text.method.LinkMovementMethod
+import android.content.Intent
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.TextUtil
+import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryBinding
-import io.temco.guhada.view.activity.MainActivity
+import io.temco.guhada.view.activity.CancelOrderActivity
 import io.temco.guhada.view.adapter.mypage.MyPageDeliveryAdapter
 import io.temco.guhada.view.custom.CustomCalendarFilter
-import io.temco.guhada.view.custom.dialog.MessageDialog
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -47,6 +44,7 @@ class MyPageDeliveryLayout constructor(
             mBinding.listContents.adapter = MyPageDeliveryAdapter().apply {
                 this.list = it.orderItemList
                 this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
+                this.requestCancelOrderTask = { purchaseOrder -> redirectCancelOrderActivity(purchaseOrder) }
             }
 
             if (it.totalPage == 1 && it.orderItemList.isEmpty()) {
@@ -106,6 +104,12 @@ class MyPageDeliveryLayout constructor(
         mBinding.calendarfilterMypageDeliver.mListener = this
         mBinding.calendarfilterMypageDeliver.setPeriod(0)
         mBinding.calendarfilterMypageDeliver.setDate(7)
+    }
+
+    private fun redirectCancelOrderActivity(purchaseOrder: PurchaseOrder) {
+        val intent = Intent(context, CancelOrderActivity::class.java)
+        intent.putExtra("purchaseOrder", purchaseOrder)
+        context.startActivity(intent)
     }
 
 

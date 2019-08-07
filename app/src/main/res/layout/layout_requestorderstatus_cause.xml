@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="java.util.List" />
+        <import type="io.temco.guhada.data.model.OrderChangeCause" />
 
         <variable
             name="onClickAmountPlus"
@@ -11,10 +13,6 @@
         <variable
             name="onClickAmountMinus"
             type="android.view.View.OnClickListener" />
-
-        <variable
-            name="onItemSelected"
-            type="android.widget.AdapterView.OnItemSelectedListener" />
 
         <variable
             name="defaultMessage"
@@ -27,6 +25,19 @@
         <variable
             name="sellerName"
             type="String" />
+
+        <variable
+            name="quantityTitle"
+            type="String" />
+
+        <variable
+            name="quantity"
+            type="Integer" />
+
+        <variable
+            name="causeList"
+            type="List&lt;OrderChangeCause>" />
+
     </data>
 
     <LinearLayout
@@ -47,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="@string/requestorderstatus_cancel_quantity"
+                android:text="@{quantityTitle}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,7 +89,7 @@
                     android:paddingTop="8dp"
                     android:paddingEnd="12dp"
                     android:paddingBottom="8dp"
-                    android:text="1"
+                    android:text="@{String.valueOf(quantity)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintLeft_toRightOf="@id/imagebutton_cart_minus" />
@@ -120,7 +131,7 @@
         </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/framelayout_requestorderstatus_shippingmemo"
+            android:id="@+id/framelayout_requestorderstatus_cause"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -129,11 +140,11 @@
             android:layout_marginEnd="20dp">
 
             <Spinner
-                android:id="@+id/spinner_requestorderstatus_shippingmemo"
+                android:id="@+id/spinner_requestorderstatus_cause"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/border_all_whitethree"
-
+                app:cause="@{causeList}"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
                 android:overlapAnchor="false"
@@ -142,14 +153,14 @@
             <!--android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"-->
             <!--app:userShippingMemo="@{viewModel.shippingMessages}"-->
             <FrameLayout
-                android:id="@+id/framelayout_requestorderstatus_shippingmemobutton"
+                android:id="@+id/framelayout_requestorderstatus_causebutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white_three"
                 android:padding="1dp">
 
                 <LinearLayout
-                    android:id="@+id/linearlayout_requestorderstatus_shippingmemo"
+                    android:id="@+id/linearlayout_requestorderstatus_cause"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/common_white"
@@ -166,9 +177,8 @@
                         android:layout_weight="1"
                         android:text="@{defaultMessage}"
                         android:textSize="@dimen/text_13" />
-                    <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
                     <ImageView
-                        android:id="@+id/imageview_requestorderstatus_shippingmemo"
+                        android:id="@+id/imageview_requestorderstatus_cause"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -189,6 +199,7 @@
             <EditText
                 style="@style/MypageDeliveryWarmGreyTextStyle"
                 android:layout_width="match_parent"
+                android:id="@+id/edittext_requestorderstatus_cause"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_all_silver"
                 android:gravity="left|top"

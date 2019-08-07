@@ -130,8 +130,8 @@ public class CommonUtil {
      * @author Hyeyeon Park
      */
     public static String convertTimeStampToDate(long timeStamp) {
-        DateTime dateTime = new DateTime(timeStamp * 1000L);
-        dateTime.withZone(DateTimeZone.forID("Asia/Seoul"));
+        DateTime dateTime = new DateTime(timeStamp);
+//        dateTime.withZone(DateTimeZone.forID("Asia/Seoul"));
         return dateTime.toString("yyyy.MM.dd");
     }
 

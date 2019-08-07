@@ -1,6 +1,7 @@
 package io.temco.guhada.data.retrofit.service
 
 import com.google.gson.JsonObject
+import io.temco.guhada.data.model.CancelRequest
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
@@ -72,4 +73,11 @@ interface ClaimService {
      */
     @GET("/order-claim/my-cancel-orders-status-list")
     fun getCancelOrderStatus(@Header("Authorization") accessToken: String, @Query("startTimestamp") startTimestamp: Long, @Query("endTimestamp") endTimestamp: Long): Call<BaseModel<CancelOrderStatus>>
+
+    /**
+     * 주문 취소 신청 API
+     */
+    @POST("/order-claim/order-cancel")
+    fun cancelOrder(@Header("Authorization") accessToken: String, @Body cancelRequest: CancelRequest): Call<BaseModel<Any>>
+
 }
