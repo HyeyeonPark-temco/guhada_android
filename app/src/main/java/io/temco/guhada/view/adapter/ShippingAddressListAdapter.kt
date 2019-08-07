@@ -1,6 +1,7 @@
 package io.temco.guhada.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import io.temco.guhada.databinding.ItemShippingaddressListBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : RecyclerView.Adapter<ShippingAddressListAdapter.Holder>() {
+    var radioButtonVisible = true
     var prevPos = -1
     var currentPos = -1
     var deletePos = -1
@@ -42,7 +44,7 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
         }
     }
 
-    fun initPoses(){
+    fun initPoses() {
         currentPos = -1
         prevPos = -1
         deletePos = -1
@@ -51,6 +53,7 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
     inner class Holder(val binding: ItemShippingaddressListBinding) : BaseViewHolder<ItemShippingaddressListBinding>(binding.root) {
         fun bind(shipping: UserShipping) {
             if (mViewModel.selectedItem.id == shipping.id) currentPos = adapterPosition
+            binding.radioButtonVisible = radioButtonVisible
             binding.radiobuttonShippingaddresslist.setOnCheckedChangeListener(null)
             binding.radiobuttonShippingaddresslist.isChecked = currentPos == adapterPosition || mViewModel.selectedItem.id == shipping.id
             binding.viewModel = mViewModel
@@ -76,6 +79,9 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
             binding.textviewShippingaddressEdit.setOnClickListener {
                 mViewModel.editShippingAddress(adapterPosition)
             }
+
+            if (adapterPosition == itemCount - 1) binding.viewShippingaddresslistLine.visibility = View.GONE
+            else binding.viewShippingaddresslistLine.visibility = View.VISIBLE
 
             binding.executePendingBindings()
         }

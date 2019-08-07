@@ -83,38 +83,6 @@
             </RelativeLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <LinearLayout
-            android:id="@+id/testLayout"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/common_white"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:weightSum="2"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:id="@+id/button_mypagehome_addaddress"
-                android:layout_weight="1"
-                android:background="@color/greyish_brown_two"
-                android:text="@string/mypage_shippingaddress_add"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_16" />
-
-            <Button
-                android:id="@+id/button_mypagehome_setdefaultaddress"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:background="@color/common_blue_purple"
-                android:text="@string/mypage_shippingaddress_default"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_16" />
-        </LinearLayout>
-
     </RelativeLayout>
 </layout>
 

@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/include_searchzipwebview_header"
-            layout="@layout/header_common_backbutton"
+            layout="@layout/header_common_closebutton"
             app:layout_constraintBottom_toTopOf="@+id/webview_searchzipwebview"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
