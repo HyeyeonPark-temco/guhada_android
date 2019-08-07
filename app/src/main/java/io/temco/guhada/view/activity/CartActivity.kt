@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
@@ -22,6 +23,7 @@ import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.cart.CartOptionAdapter
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.cart.EmptyCartFragment
 
 /**
@@ -40,7 +42,22 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         mBinding.includeCartHeader.setOnClickBackButton { finish() }
         mBinding.includeCartHeader.title = resources.getString(R.string.cart_title)
 
+        initViewModel()
+        initCartAdapter()
+
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
+    }
+
+    private fun initViewModel() {
         mViewModel = CartViewModel()
+        mViewModel.showDeleteDialog = {
+            CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete),
+                    cancelButtonVisible = true,
+                    confirmTask = {
+                        mViewModel.deleteCartItem()
+                    }).show(manager = (mBinding.root.context as AppCompatActivity).supportFragmentManager, tag = CartProductAdapter::class.java.simpleName)
+        }
         mViewModel.clickPaymentListener = { productList, cartIdList ->
             val intent = Intent(this@CartActivity, PaymentActivity::class.java)
             intent.putExtra("productList", productList)
@@ -68,13 +85,12 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             redirectLoginActivity()
         })
-        mCartProductAdapter = CartProductAdapter(mViewModel)
+    }
 
+    private fun initCartAdapter(){
+        mCartProductAdapter = CartProductAdapter(mViewModel)
         mBinding.recyclerviewCartProduct.adapter = mCartProductAdapter
         (mBinding.recyclerviewCartProduct.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        mBinding.viewModel = mViewModel
-
-        mBinding.executePendingBindings()
     }
 
     private fun setTotalPrice(cartResponse: CartResponse) {

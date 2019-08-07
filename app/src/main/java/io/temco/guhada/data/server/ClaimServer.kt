@@ -8,6 +8,7 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.CancelRequest
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
@@ -163,6 +164,15 @@ open class ClaimServer {
         fun getCancelOrderStatus(listener: OnServerListener, accessToken: String, startTimeStamp: Long, endTimeStamp: Long) =
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
                         .getCancelOrderStatus(accessToken = accessToken, startTimestamp = startTimeStamp, endTimestamp = endTimeStamp).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 주문 취소 신청
+         */
+        @JvmStatic
+        fun cancelOrder(listener: OnServerListener, accessToken: String, cancelRequest: CancelRequest) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .cancelOrder(accessToken = accessToken, cancelRequest = cancelRequest).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
     }
 }

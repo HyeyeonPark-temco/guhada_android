@@ -66,6 +66,10 @@ class CartViewModel : BaseObservableViewModel() {
 
     lateinit var clickPaymentListener: (productList: ArrayList<BaseProduct>, cartIdList: Array<Int>) -> Unit
 
+    // 선택 삭제 클릭
+    var showDeleteDialog: () -> Unit = {}
+
+
     // CLICK EVENT
     fun onClickDiscountContent() {
         totalDiscountVisible = ObservableBoolean(!totalDiscountVisible.get())
@@ -186,22 +190,27 @@ class CartViewModel : BaseObservableViewModel() {
         })
     }
 
-    fun deleteCartItem() {
+    fun onClickDeleteCartItem() {
         if (selectCartItemId.isEmpty()) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_deleteempty))
         } else {
-            callWithToken(task = { accessToken ->
-                OrderServer.deleteCartItem(OnServerListener { success, o ->
-                    executeByResultCode(success, o,
-                            successTask = {
-                                selectedCartItem = mutableListOf()
-                                selectCartItemId = mutableListOf()
-                                notifyPropertyChanged(BR.selectCartItemId)
-                                this.cartResponse.postValue(it.data as CartResponse)
-                            })
-                }, accessToken = accessToken, cartItemIdList = selectCartItemId.toIntArray())
-            })
+            showDeleteDialog()
         }
+    }
+
+    fun deleteCartItem() {
+        callWithToken(task = { accessToken ->
+            OrderServer.deleteCartItem(OnServerListener { success, o ->
+                executeByResultCode(success, o,
+                        successTask = {
+                            selectedCartItem = mutableListOf()
+                            selectCartItemId = mutableListOf()
+                            notifyPropertyChanged(BR.selectCartItemId)
+                            this.cartResponse.postValue(it.data as CartResponse)
+                        })
+            }, accessToken = accessToken, cartItemIdList = selectCartItemId.toIntArray())
+        })
+
     }
 
     private fun setCartItemList(cartResponse: CartResponse) = this.cartResponse.postValue(cartResponse)

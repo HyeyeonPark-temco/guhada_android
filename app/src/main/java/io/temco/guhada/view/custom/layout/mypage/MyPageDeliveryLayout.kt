@@ -1,21 +1,19 @@
 package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
-import android.text.method.LinkMovementMethod
+import android.content.Intent
 import android.util.AttributeSet
-import android.widget.TextView
+import android.view.View
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.TextUtil
+import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryBinding
-import io.temco.guhada.view.activity.MainActivity
+import io.temco.guhada.view.activity.CancelOrderActivity
 import io.temco.guhada.view.adapter.mypage.MyPageDeliveryAdapter
 import io.temco.guhada.view.custom.CustomCalendarFilter
-import io.temco.guhada.view.custom.dialog.MessageDialog
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -38,83 +36,82 @@ class MyPageDeliveryLayout constructor(
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_delivery
     override fun init() {
-        mViewModel = MyPageDeliveryViewModel(context)
+        mBinding.lifecycleOwner = this
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-        mBinding.calendarfilterMypageDeliver.mListener = this
+
+        mViewModel = MyPageDeliveryViewModel(context)
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
             mBinding.listContents.adapter = MyPageDeliveryAdapter().apply {
                 this.list = it.orderItemList
                 this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
+                this.requestCancelOrderTask = { purchaseOrder -> redirectCancelOrderActivity(purchaseOrder) }
             }
+
+            if (it.totalPage == 1 && it.orderItemList.isEmpty()) {
+                mBinding.imageviewMypageDeliveryEmpty.visibility = View.VISIBLE
+                mBinding.textviewMypageDeliveryEmpty.visibility = View.VISIBLE
+            } else {
+                mBinding.imageviewMypageDeliveryEmpty.visibility = View.GONE
+                mBinding.textviewMypageDeliveryEmpty.visibility = View.GONE
+            }
+
+            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage != it.page) View.VISIBLE else View.GONE
+
             mBinding.executePendingBindings()
         })
+
+        mBinding.viewModel = mViewModel
         mBinding.includeDeliveryProcess.viewModel = mViewModel
 
         mViewModel.getOrderStatus()
-        mBinding.calendarfilterMypageDeliver.setPeriod(0)
-        onClickWeek() // [default] before 1 week
+        initCalendarFilter()
 
         mRequestManager = Glide.with(this)
     }
 
     // CustomCalendarListener
-    private fun calendarCallback(startDate: String, endDate: String) {
-        mBinding.calendarfilterMypageDeliver.startDate = startDate
-        mBinding.calendarfilterMypageDeliver.endDate = endDate
+
+    override fun onClickWeek() = changeDate()
+    override fun onClickMonth() = changeDate()
+    override fun onClickThreeMonth() = changeDate()
+    override fun onClickYear() = changeDate()
+    override fun onChangeDate(startDate: String, endDate: String) {
+        if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
+            mViewModel.page = 1
+            mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp
+            mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp
+        }
+    }
+
+    private fun changeDate() {
+        mViewModel.page = 1
+        mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp  //  CommonUtil.convertDateToTimeStamp(startDate, ".")
+        mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp // CommonUtil.convertDateToTimeStamp(endDate, ".")
+        mViewModel.getOrderStatus()
         mViewModel.getOrders()
     }
 
-    override fun onClickWeek() = mViewModel.setDate(7) { startDate, endDate -> calendarCallback(startDate, endDate) }
-    override fun onClickMonth() = mViewModel.setDate(30) { startDate, endDate -> calendarCallback(startDate, endDate) }
-    override fun onClickThreeMonth() = mViewModel.setDate(90) { startDate, endDate -> calendarCallback(startDate, endDate) }
-    override fun onClickYear() = mViewModel.setDate(365) { startDate, endDate -> calendarCallback(startDate, endDate) }
-    override fun onChangeDate(startDate: String, fromDate: String) {
-
-    }
-
-    override fun onClickCheck(startDate: String, endDate: String) {
-        mViewModel.startDate = startDate
-        mViewModel.endDate = endDate
-        mViewModel.getOrders()
-    }
-
-    // footer
-    private fun setLinkText() {
-        // Sales Number
-        mBinding.layoutInformation.textInformationSalesNumber.setMovementMethod(LinkMovementMethod.getInstance())
-        mBinding.layoutInformation.textInformationSalesNumber.setText(TextUtil.createTextWithLink(context!!,
-                R.string.information_company_sales_number, R.string.information_confirm_company,
-                R.dimen.text_11, true
-        ) {
-            if (true) {
-                CommonUtil.debug("Company Info!")
-            }
-        }, TextView.BufferType.SPANNABLE)
-        // Description
-        mBinding.layoutInformation.textInformationDescription.setMovementMethod(LinkMovementMethod.getInstance())
-        mBinding.layoutInformation.textInformationDescription.setText(TextUtil.createTextWithLink(context!!,
-                R.string.information_description, R.string.information_confirm_service,
-                R.dimen.text_11, true
-        ) {
-            if (true) {
-                CommonUtil.debug("Sevice Confirm!")
-            }
-        }, TextView.BufferType.SPANNABLE)
-    }
-
-
-    private fun showRewardDialog(message: String) {
-        val md = MessageDialog()
-        md.setMessage(message)
-        md.show((context as MainActivity).supportFragmentManager, "OrderShipFragment")
-    }
-
+    override fun onClickCheck(startDate: String, endDate: String) = changeDate()
 
     override fun onRefresh() {
-        mBinding.swipeRefreshLayout.isRefreshing = false
+        mViewModel.page = 1
         mViewModel.getOrders()
         mViewModel.getOrderStatus()
+        mBinding.swipeRefreshLayout.isRefreshing = false
     }
+
+    private fun initCalendarFilter() {
+        mBinding.calendarfilterMypageDeliver.mListener = this
+        mBinding.calendarfilterMypageDeliver.setPeriod(0)
+        mBinding.calendarfilterMypageDeliver.setDate(7)
+    }
+
+    private fun redirectCancelOrderActivity(purchaseOrder: PurchaseOrder) {
+        val intent = Intent(context, CancelOrderActivity::class.java)
+        intent.putExtra("purchaseOrder", purchaseOrder)
+        context.startActivity(intent)
+    }
+
 
 ////////////////////////////////////////////////
 

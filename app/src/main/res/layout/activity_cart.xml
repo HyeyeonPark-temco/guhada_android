@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:onClick="@{()-> viewModel.deleteCartItem()}"
+                        android:onClick="@{()-> viewModel.onClickDeleteCartItem()}"
                         android:text="@string/cart_select_delete"
                         android:textColor="@color/greyish_brown_two"
                         android:textSize="@dimen/text_13"

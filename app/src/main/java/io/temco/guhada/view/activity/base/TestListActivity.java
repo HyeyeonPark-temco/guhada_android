@@ -29,6 +29,7 @@ import io.temco.guhada.view.activity.PaymentWebViewActivity;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.activity.SearchZipWebViewActivity;
 import io.temco.guhada.view.activity.SplashActivity;
+import io.temco.guhada.view.activity.SuccessCancelOrderActivity;
 import io.temco.guhada.view.activity.TempLogoutActivity;
 import io.temco.guhada.view.activity.TermsActivity;
 import io.temco.guhada.view.activity.VerifyPhoneActivity;
@@ -134,6 +135,9 @@ public class TestListActivity extends AppCompatActivity {
                 case 18:
                     startActivity(DeliveryDetailActivity.class);
                     break;
+                case 19:
+                    startActivity(SuccessCancelOrderActivity.class);
+                    break;
             }
         });
         list.setAdapter(adapter);
@@ -165,6 +169,7 @@ public class TestListActivity extends AppCompatActivity {
         list.add("SEARCH_ZIP_WEBVIEW"); // 16
         list.add("Cart"); // 17
         list.add("DELIVERY_DETAIL"); // 18
+        list.add("SUCCESS_CANCEL_ORDER"); // 18
         return list;
     }
 

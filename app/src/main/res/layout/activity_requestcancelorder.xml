@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.CancelOrderViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/include_requestcancelorder_header"
+                layout="@layout/header_common_backbutton" />
+
+            <include
+                android:id="@+id/include_requestcancelorder_orderinfo"
+                layout="@layout/layout_requestorderstatus_orderinfo" />
+
+            <include
+                android:id="@+id/include_requestcancelorder_productinfo"
+                layout="@layout/layout_requestorderstatus_productinfo" />
+
+            <include
+                android:id="@+id/include_requestcancelorder_cause"
+                layout="@layout/layout_requestorderstatus_cause" />
+
+            <include
+                android:id="@+id/include_requestcancelorder_refund"
+                layout="@layout/layout_deliverydetail_refundinfo" />
+
+            <include
+                android:id="@+id/include_requestcancelorder_button"
+                layout="@layout/layout_requestorderstatus_button" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

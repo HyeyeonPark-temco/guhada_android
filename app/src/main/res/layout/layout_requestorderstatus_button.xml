@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="confirmText"
+            type="String" />
+
+        <variable
+            name="cancelText"
+            type="String" />
+
+        <variable
+            name="onClickConfirm"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClickCancel"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button_requestorderstatus_cancel"
+            style="@style/borderlessStyle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@color/greyish_brown"
+            android:onClick="@{onClickCancel}"
+            android:text="@{cancelText}"
+            android:textColor="@color/common_white"
+            android:textSize="@dimen/text_18" />
+
+        <Button
+            android:id="@+id/button_requestorderstatus_submit"
+            style="@style/borderlessStyle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@color/common_blue_purple"
+            android:onClick="@{onClickConfirm}"
+            android:text="@{confirmText}"
+            android:textColor="@color/common_white"
+            android:textSize="@dimen/text_18" />
+    </LinearLayout>
+
+</layout>

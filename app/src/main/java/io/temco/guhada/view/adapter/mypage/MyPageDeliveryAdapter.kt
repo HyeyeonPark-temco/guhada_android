@@ -25,7 +25,8 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
     var list: MutableList<PurchaseOrder> = mutableListOf()
-    var editShippingAddressTask : (purchaseId: Long) -> Unit = {}
+    var editShippingAddressTask: (purchaseId: Long) -> Unit = {}
+    var requestCancelOrderTask: (purchaseOrder:  PurchaseOrder) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_delivery, parent, false))
     override fun getItemCount(): Int = list.size
@@ -69,7 +70,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.COMPLETE_PAYMENT.status -> {
                     buttons.add(DeliveryButton().apply { text = "주문내역" })
                     buttons.add(DeliveryButton().apply { text = "주문수정" })
-                    buttons.add(DeliveryButton().apply { text = "주문취소" })
+                    buttons.add(DeliveryButton().apply {
+                        text = "주문취소"
+                        task = View.OnClickListener { requestCancelOrderTask(item) }
+                    })
                     buttons.add(DeliveryButton().apply {
                         text = "배송지변경"
                         task = View.OnClickListener { editShippingAddressTask(item.purchaseId) }
@@ -139,7 +143,8 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 }
 
                 PurchaseStatus.WITHDRAW_EXCHANGE.status,
-                PurchaseStatus.WITHDRAW_RETURN.status -> { /* NONE */
+                PurchaseStatus.WITHDRAW_RETURN.status -> {
+                    /* NONE */
                 }
             }
             return buttons

@@ -46,7 +46,9 @@ public class Type {
         RECEIPT,
         SEARCH_WORD,
         SIDE_MENU,
-        PRODUCT_LIST
+        PRODUCT_LIST,
+        CANCEL_ORDER,
+        SUCCESS_CANCEL_ORDER
     }
 
     // Main

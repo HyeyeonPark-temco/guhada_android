@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="cause"
+            type="io.temco.guhada.data.model.OrderChangeCause" />
+    </data>
+
+    <FrameLayout
+        android:id="@+id/framelayout_cancelorder_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_three">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/common_white">
+
+            <TextView
+                android:id="@+id/textview_cancelorder_spinner"
+                style="@style/PaymentContentGreyTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="15dp"
+                android:text="@{cause.label}" />
+        </FrameLayout>
+    </FrameLayout>
+</layout>
