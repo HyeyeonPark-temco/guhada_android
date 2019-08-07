@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.ProductByList;
@@ -144,6 +145,18 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
     protected void onResume() {
         super.onResume();
         if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) enableNfc();
+        /**
+         * @author park jungho
+         *
+         * 메인으로 이동
+         */
+        if (!"MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
+            if(((BaseApplication)getApplicationContext()).getMoveToMain() !=null &&
+                    ((BaseApplication)getApplicationContext()).getMoveToMain().isMoveToMain()){
+                setResult(Flag.RequestCode.GO_TO_MAIN);
+                finish();
+            }
+        }
     }
 
     @Override
@@ -164,11 +177,14 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == Flag.RequestCode.ALL_FINISH) {
-            setResult(Flag.RequestCode.ALL_FINISH);
-            finish();
+        super.onActivityResult(requestCode, resultCode, data);
+        /*if (resultCode == Flag.RequestCode.GO_TO_MAIN) {
+            if (!"MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
+                setResult(Flag.RequestCode.GO_TO_MAIN);
+                finish();
+            }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
-        }
+        }*/
     }
 }

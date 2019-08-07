@@ -5,9 +5,7 @@ import android.content.Intent
 import android.view.View
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.R
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Preferences
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnMainListener
@@ -64,7 +62,8 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
 
     override fun removeProductFragment() {
         // setResult(Activity.RESULT_OK)
-        setResult(ResultCode.ALL_FINISH.flag)
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+        setResult(ResultCode.GO_TO_MAIN.flag)
         finish()
         //  removeProductDetailFragment()
     }
@@ -75,7 +74,8 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         if (mProductDetailFragment != null && mProductDetailFragment!!.isAdded())
             supportFragmentManager.beginTransaction().remove(mProductDetailFragment!!).commitAllowingStateLoss()
         mLoadingIndicatorUtil.hide()*/
-        setResult(ResultCode.ALL_FINISH.flag)
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+        setResult(ResultCode.GO_TO_MAIN.flag)
         finish()
     }
 
@@ -98,11 +98,11 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
-            ResultCode.ALL_FINISH.flag,
-            RESULT_FIRST_USER -> { //  RESULT_FIRST_USER: SideMenu.kt에서 받아옴
-                setResult(ResultCode.ALL_FINISH.flag)
+            /*RESULT_FIRST_USER -> { //  RESULT_FIRST_USER: SideMenu.kt에서 받아옴
+                BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+                setResult(ResultCode.GO_TO_MAIN.flag)
                 finish()
-            }
+            }*/
             Activity.RESULT_OK -> when (requestCode) {
                 Flag.RequestCode.WRITE_CLAIM -> mProductDetailFragment!!.refreshClaims()
             }

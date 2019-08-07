@@ -104,7 +104,6 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         when (requestCode) {
             Flag.RequestCode.LOGIN ->
                 if (resultCode == Activity.RESULT_OK) mViewModel.getCart()

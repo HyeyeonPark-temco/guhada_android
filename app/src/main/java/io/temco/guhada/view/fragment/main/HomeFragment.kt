@@ -44,7 +44,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
             }
             R.id.image_search -> {
-                CommonUtil.startSearchWordActivity(context as MainActivity)
+                CommonUtil.startSearchWordActivity(context as MainActivity,"", true)
             }
             R.id.image_shop_cart -> {
                 CommonUtil.startCartActivity(context as MainActivity)
@@ -150,6 +150,11 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                         CommonUtil.debug("Sevice Confirm!");
                     }
                 }), TextView.BufferType.SPANNABLE);*/
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mBinding.layoutAppbar.setExpanded(true,false)
     }
 
     ////////////////////////////////////////////////

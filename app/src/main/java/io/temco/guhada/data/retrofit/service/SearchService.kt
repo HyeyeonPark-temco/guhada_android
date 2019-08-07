@@ -3,6 +3,8 @@ package io.temco.guhada.data.retrofit.service
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
+import io.temco.guhada.data.model.search.AutoComplete
+import io.temco.guhada.data.model.search.Popular
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -25,4 +27,14 @@ interface SearchService {
                                  @Query("page") page: Int,
                                  @Query("searchQuery") searchQuery: String,
                                  @Query("unitPerPage") unit: Int): Call<BaseModel<ProductList>>
+
+
+
+    @GET("ps/keyword/popular")
+    fun getSearchPopularKeyword(@Query("top") top: Int = 10): Call<BaseModel<Popular>>
+
+
+    @GET("ps/search/autoComplete")
+    fun getSearchAutoComplete(@Query("searchQuery") searchQuery: String): Call<BaseModel<AutoComplete>>
+
 }

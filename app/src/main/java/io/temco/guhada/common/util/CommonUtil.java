@@ -35,8 +35,10 @@ import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.activity.CartActivity;
+import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
 import io.temco.guhada.view.activity.SearchWordActivity;
 import io.temco.guhada.view.activity.SideMenuActivity;
@@ -252,8 +254,11 @@ public class CommonUtil {
      * @author park jungho
      * 검색어 입력 화면
      */
-    public static void startSearchWordActivity(Activity act) {
+    public static void startSearchWordActivity(Activity act, String text, boolean isNewAct) {
         Intent intent = new Intent(act, SearchWordActivity.class);
+        if(text!=null && !"".equals(text))  intent.putExtra("searchWord",text);
+        else intent.putExtra("searchWord","");
+        intent.putExtra("isNewActivity",isNewAct);
         act.startActivityForResult(intent, Flag.RequestCode.SEARCH_WORD);
     }
 
@@ -288,4 +293,31 @@ public class CommonUtil {
         intent.putExtra("dealId", dealId);
         act.startActivityForResult(intent, Flag.RequestCode.PRODUCT_DETAIL);
     }
+
+    public static void startCategoryScreen(Activity act,Type.Category type, int[] hierarchies, boolean isFinish) {
+        Intent intent = new Intent(act, ProductFilterListActivity.class);
+        intent.putExtra("type", Type.ProductListViewType.CATEGORY);
+        intent.putExtra("hierarchies", hierarchies);
+        intent.putExtra("categoryType", type);
+        act.startActivityForResult(intent,Flag.RequestCode.BASE);
+        if(isFinish){
+            act.overridePendingTransition(0,0);
+            act.finish();
+            act.overridePendingTransition(0,0);
+        }
+    }
+
+    public static void startBrandScreen(Activity act, Brand brand, boolean isFinish){
+        Intent intent = new Intent(act, ProductFilterListActivity.class);
+        intent.putExtra("type", Type.ProductListViewType.BRAND);
+        intent.putExtra("brand", brand);
+        act.startActivityForResult(intent,Flag.RequestCode.BASE);
+        if(isFinish){
+            act.setResult(Activity.RESULT_FIRST_USER);
+            act.overridePendingTransition(0,0);
+            act.finish();
+        }
+    }
+
+
 }

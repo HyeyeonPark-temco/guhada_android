@@ -7,6 +7,7 @@ import android.os.Looper;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.data.model.Brand;
@@ -38,6 +39,7 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
 
     @Override
     protected void init() {
+        BaseApplication.getInstance().setMoveToMain(null);
         getCategories();
     }
 

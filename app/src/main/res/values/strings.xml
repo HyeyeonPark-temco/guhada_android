@@ -873,5 +873,6 @@
     <string name="search_word_populartitle">인기 검색어</string>
     <string name="search_word_autotexttitle">자동 완성</string>
     <string name="search_word_nosearchwordtoast">검색어를 입력해 주세요.</string>
+    <string name="no_list_item_searchword_desc">최근에 검색한 내역이 없습니다.</string>
 
 </resources>

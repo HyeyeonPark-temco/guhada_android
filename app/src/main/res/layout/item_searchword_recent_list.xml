@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="keyword"
+            type="String" />
+
+        <variable
+            name="date"
+            type="String" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_itemsearchwordrecent_list"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:onClick="@{clickListener}"
+        android:weightSum="1"
+        android:background="@color/common_white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/icon_history"/>
+
+        <TextView
+            style="@style/TextMediumSingleLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@{keyword}"
+            android:textSize="@dimen/text_14"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:layout_height="wrap_content"
+            android:text="@{date}"/>
+        
+        <ImageButton
+            android:id="@+id/imagebutton_itemsearchwordrecent_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="20dp"
+            android:onClick="@{clickListener}"
+            android:src="@drawable/icon_delet"/>
+
+    </LinearLayout>
+</layout>

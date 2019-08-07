@@ -23,10 +23,17 @@ public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication mApplication;
 
+    /**
+     * @author park jungho
+     * 메인으로 이동하기 위한 값 추가
+     */
+    private ActivityMoveToMain moveToMain = null;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mApplication = this;
+        moveToMain = new ActivityMoveToMain(0,false);
         getFCMToken();
 
         // Preference
@@ -43,6 +50,13 @@ public class BaseApplication extends MultiDexApplication {
         AppEventsLogger.activateApp(this);
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        moveToMain = null;
+        mApplication = null;
+    }
+
     public static BaseApplication getInstance() {
         return mApplication;
     }
@@ -57,5 +71,13 @@ public class BaseApplication extends MultiDexApplication {
                     }
                     CommonUtil.debug(FCM_TAG, task.getResult() != null ? task.getResult().getToken() : "Token result is null");
                 });
+    }
+
+    public ActivityMoveToMain getMoveToMain() {
+        return moveToMain;
+    }
+
+    public void setMoveToMain(ActivityMoveToMain moveToMain) {
+        this.moveToMain = moveToMain;
     }
 }

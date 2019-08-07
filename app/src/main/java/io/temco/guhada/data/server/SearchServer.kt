@@ -10,6 +10,8 @@ import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
+import io.temco.guhada.data.model.search.AutoComplete
+import io.temco.guhada.data.model.search.Popular
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.SearchService
 import retrofit2.Call
@@ -121,6 +123,71 @@ class SearchServer {
                         })
             }
         }
+
+
+
+        @JvmStatic
+        fun getSearchPopularKeyword(itemCount: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                // Request
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
+                        .getSearchPopularKeyword(itemCount)
+                        .enqueue(object : Callback<BaseModel<Popular>> {
+                            override fun onResponse(call: Call<BaseModel<Popular>>, response: Response<BaseModel<Popular>>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body())
+                                    } else {
+                                        listener.onResult(false, response.body())
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+
+                                }
+                            }
+                            override fun onFailure(call: Call<BaseModel<Popular>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
+            }
+        }
+
+
+        @JvmStatic
+        fun getSearchAutoComplete(keyword: String, listener: OnServerListener?) {
+            if (listener != null) {
+                // Request
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
+                        .getSearchAutoComplete(keyword)
+                        .enqueue(object : Callback<BaseModel<AutoComplete>> {
+                            override fun onResponse(call: Call<BaseModel<AutoComplete>>, response: Response<BaseModel<AutoComplete>>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body())
+                                    } else {
+                                        listener.onResult(false, response.body())
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+
+                                }
+                            }
+                            override fun onFailure(call: Call<BaseModel<AutoComplete>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
+            }
+        }
+
+
     }
 
 }

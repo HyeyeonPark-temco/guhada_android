@@ -8,10 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.auth0.android.jwt.JWT
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Info
-import io.temco.guhada.common.Preferences
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
@@ -82,14 +79,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
     }
 
     private fun startCategoryScreen(type: Type.Category, hierarchies: IntArray) {
-        var intent = Intent(this@SideMenuActivity, ProductFilterListActivity::class.java)
-        intent.putExtra("type", Type.ProductListViewType.CATEGORY)
-        intent.putExtra("hierarchies", hierarchies)
-        intent.putExtra("categoryType", type)
-        this@SideMenuActivity.startActivityForResult(intent,Flag.RequestCode.BASE)
-        setResult(Activity.RESULT_FIRST_USER)
-        overridePendingTransition(0,0)
-        finish()
+        CommonUtil.startCategoryScreen(this, type, hierarchies, true)
     }
 
 
@@ -190,20 +180,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                     // @TODO MENU
                     if (data != null) {
                         val brand = data!!.getSerializableExtra(Info.INTENT_BRAND_DATA) as Brand
-                        var intent = Intent(this@SideMenuActivity, ProductFilterListActivity::class.java)
-                        intent.putExtra("type", Type.ProductListViewType.BRAND)
-                        intent.putExtra("brand", brand)
-                        this@SideMenuActivity.startActivityForResult(intent,Flag.RequestCode.BASE)
-                        setResult(Activity.RESULT_FIRST_USER)
-                        overridePendingTransition(0,0)
-                        finish()
+                        CommonUtil.startBrandScreen(this@SideMenuActivity, brand,true)
                     }
                 }
 
             }
-        } else if(resultCode== ResultCode.ALL_FINISH.flag){
-            setResult(ResultCode.ALL_FINISH.flag)
-            finish()
         }
     }
 
