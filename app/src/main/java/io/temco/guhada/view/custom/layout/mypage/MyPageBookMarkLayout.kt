@@ -12,6 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.mypage.MyPageBookMarkViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageBookmarkBinding
@@ -46,30 +47,22 @@ class MyPageBookMarkLayout constructor(
         (mBinding.recyclerviewMypagebookmarkList.layoutManager as WrapGridLayoutManager).setSpanSizeLookup(
                 object : GridLayoutManager.SpanSizeLookup(){
                     override fun getSpanSize(position: Int): Int {
-                        return if(mViewModel.listData.value!![position].sellerId > 0) 1 else 2
+                        return if(mViewModel.listData.value!![position].dealId > 0) 1 else 2
                     }
                 }
         )
-
         mViewModel.listData.observe(this,
-                androidx.lifecycle.Observer<ArrayList<Product>> {
-                    mViewModel.getListAdapter().notifyDataSetChanged()
+                androidx.lifecycle.Observer<ArrayList<Deal>> {
+                    if(it.isNullOrEmpty()){
+                        mViewModel.emptyViewVisible.set(true)
+                    }else{
+                        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "observe it ", it.size)
+                        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "observe items ", mViewModel.getListAdapter().items.size)
+                        mViewModel.emptyViewVisible.set(false)
+                        mViewModel.getListAdapter().notifyDataSetChanged()
+                    }
                 }
         )
-        mViewModel.totalItemSize.observe(this,androidx.lifecycle.Observer<Int> {
-            var size = it
-            if(mViewModel.getListAdapter().items[it-1].sellerId < 0) size = size-1
-
-            var sizeTxt = " " + size.toString()
-            mBinding.textMypagerecentTotal.setText(sizeTxt)
-            if(it > 0){
-                mBinding.recyclerviewMypagebookmarkList.visibility = View.VISIBLE
-                mBinding.linearlayoutMypagebookmarkNoitem.visibility = View.GONE
-            }else{
-                mBinding.recyclerviewMypagebookmarkList.visibility = View.GONE
-                mBinding.linearlayoutMypagebookmarkNoitem.visibility = View.VISIBLE
-            }
-        })
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
     }
 

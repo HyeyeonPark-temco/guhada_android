@@ -2,19 +2,22 @@ package io.temco.guhada.data.viewmodel.mypage
 
 import android.app.Activity
 import android.content.Context
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.temco.guhada.BR
+import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.db.GuhadaDB
-import io.temco.guhada.data.model.product.Product
+import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.data.viewmodel.mypage.repository.MyPageProductBookMarkRepository
-import io.temco.guhada.view.adapter.mypage.MyPageProductListAdapter
+import io.temco.guhada.view.adapter.mypage.MyPageDealListAdapter
 
 /**
  * 19.07.22
@@ -30,18 +33,40 @@ import io.temco.guhada.view.adapter.mypage.MyPageProductListAdapter
  */
 class MyPageBookMarkViewModel (val context : Context, var mDisposable : CompositeDisposable) : BaseObservableViewModel() {
     val db : GuhadaDB = GuhadaDB.getInstance(this.context as Activity)!!
-    var repository: MyPageProductBookMarkRepository = MyPageProductBookMarkRepository(context,mDisposable,db)
+    var repository: MyPageProductBookMarkRepository = MyPageProductBookMarkRepository(this)
 
-    private val _listData : SingleLiveEvent<ArrayList<Product>> = repository.getList()
-    val listData : LiveData<ArrayList<Product>> get() = _listData
-    private val _itemSize : SingleLiveEvent<Int> = repository.getItemSize()
-    val totalItemSize : SingleLiveEvent<Int> get() = _itemSize
+    private val _listData : SingleLiveEvent<ArrayList<Deal>> = repository.getList()
+    private val adapter = MyPageDealListAdapter(this,listData.value!!)
 
-    private val adapter = MyPageProductListAdapter(this,listData.value!!)
+    val listData : LiveData<ArrayList<Deal>> get() = _listData
+
+    var currentPage : Int = 0
+
+    var totalElement = ObservableField("0") // ObservableInt(View.GONE)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.totalElement)
+        }
+
+    var emptyViewVisible = ObservableBoolean(false) // ObservableInt(View.GONE)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.emptyViewVisible)
+        }
 
     fun getListAdapter() = adapter
 
+    fun getMyPageBookMarkList(){
+        currentPage += 1
+        repository.getMyBookMarkProductList(currentPage,null)
+    }
+
     fun reloadRecyclerView(listener : OnSwipeRefreshResultListener){
+        currentPage = 0
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "reloadRecyclerView ", "init -----")
         adapter.items?.run{ clear() }
         repository.setInitData(listener)
@@ -57,25 +82,34 @@ class MyPageBookMarkViewModel (val context : Context, var mDisposable : Composit
         }
     }
 
-    fun onClickDeleteAll() {
-        mDisposable.add(Observable.fromCallable<Boolean> {
-            var isFlag = true
-            try {
-                adapter.items.clear()
-                db.recentDealDao().deleteAll()
-            }catch (e : java.lang.Exception){
-                isFlag = false
+
+    fun onClickDelete(targetId : Long) {
+        repository.deleteBookMark(Type.BookMarkTarget.PRODUCT.name, targetId, object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag)CustomLog.L("MyPageBookMarkViewModel","onClickDelete",resultFlag,value)
+                var v = totalElement.get()!!.toInt() -1
+                totalElement.set(v.toString())
+                getListAdapter().notifyDataSetChanged()
             }
-            isFlag
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result ->
-                    if(result){
-                        totalItemSize.value = adapter.itemCount
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-        )
+        })
     }
+
+    fun onClickDeleteAll() {
+        if(getListAdapter().items.isNotEmpty()){
+            repository.deleteBookMarkAll(Type.BookMarkTarget.PRODUCT.name, object : OnCallBackListener{
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    if(CustomLog.flag)CustomLog.L("MyPageBookMarkViewModel","onClickDeleteAll",resultFlag,value)
+                    getListAdapter().items.clear()
+                    totalElement.set("0")
+                    getListAdapter().notifyDataSetChanged()
+                    emptyViewVisible.set(true)
+                    currentPage = 0
+                }
+            })
+        }
+    }
+
+
 
 
 

@@ -317,9 +317,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     fun onClickBookMark(){
         if(initBookMarkData){
             if(productBookMark.get()){
-                deleteBookMark(Type.BookMarkTarget.PRODUCT.name, dealId)
+                deleteBookMark(Type.BookMarkTarget.PRODUCT.name, product.value!!.productId)
             }else{
-                saveBookMark(Type.BookMarkTarget.PRODUCT.name, dealId)
+                saveBookMark(Type.BookMarkTarget.PRODUCT.name, product.value!!.productId)
             }
             productBookMark.set(!productBookMark.get())
         }else{

@@ -24,6 +24,7 @@ import kotlin.collections.ArrayList
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.text.SpannableStringBuilder
+import java.lang.Exception
 import java.util.regex.Pattern
 
 /**
@@ -135,16 +136,28 @@ class SearchWordAdapter (private val model : ViewModel, list : ArrayList<SearchW
                     binding.textviewItemsearchwordpopularRankChange.text = "NEW"
                     binding.textviewItemsearchwordpopularRankChange.setTextColor(Color.parseColor("#ce2525"))
                     binding.imageviewItemsearchwordpopularRankChange.visibility = View.GONE
-                }else if(item.popular.rankChange.toInt() > 0){
-                    binding.textviewItemsearchwordpopularRankChange.text = item.popular.rankChange
+                }else if("-".equals(item.popular.rankChange)) {
+                    binding.textviewItemsearchwordpopularRankChange.text = ""
                     binding.textviewItemsearchwordpopularRankChange.setTextColor(Color.parseColor("#ce2525"))
                     binding.imageviewItemsearchwordpopularRankChange.visibility = View.VISIBLE
-                    binding.imageviewItemsearchwordpopularRankChange.setBackgroundResource(R.drawable.icon_up)
-                }else{
-                    binding.textviewItemsearchwordpopularRankChange.text = item.popular.rankChange
-                    binding.textviewItemsearchwordpopularRankChange.setTextColor(Color.parseColor("#0058dd"))
-                    binding.imageviewItemsearchwordpopularRankChange.setBackgroundResource(R.drawable.icon_down)
-                    binding.imageviewItemsearchwordpopularRankChange.visibility = View.VISIBLE
+                    binding.imageviewItemsearchwordpopularRankChange.setBackgroundResource(R.drawable.icon_keep)
+                }else {
+                    try{
+                        if(item.popular.rankChange.toInt() > 0){
+                            binding.textviewItemsearchwordpopularRankChange.text = item.popular.rankChange
+                            binding.textviewItemsearchwordpopularRankChange.setTextColor(Color.parseColor("#ce2525"))
+                            binding.imageviewItemsearchwordpopularRankChange.visibility = View.VISIBLE
+                            binding.imageviewItemsearchwordpopularRankChange.setBackgroundResource(R.drawable.icon_up)
+                        }else{
+                            binding.textviewItemsearchwordpopularRankChange.text = item.popular.rankChange
+                            binding.textviewItemsearchwordpopularRankChange.setTextColor(Color.parseColor("#0058dd"))
+                            binding.imageviewItemsearchwordpopularRankChange.setBackgroundResource(R.drawable.icon_down)
+                            binding.imageviewItemsearchwordpopularRankChange.visibility = View.VISIBLE
+                        }
+                    }catch (e : Exception){
+                        binding.textviewItemsearchwordpopularRankChange.visibility = View.GONE
+                        binding.imageviewItemsearchwordpopularRankChange.visibility = View.GONE
+                    }
                 }
             }
         }

@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageBookMarkViewModel" />
@@ -49,6 +51,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginRight="2dp"
+                        android:text="@{viewModel.totalElement}"
                         android:textColor="@color/blue_purple"
                         android:textSize="@dimen/text_13" />
 
@@ -74,7 +79,6 @@
                         android:gravity="center"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
-                        android:visibility="invisible"
                         android:onClick="@{()->viewModel.onClickDeleteAll()}" />
 
                 </LinearLayout>
@@ -84,6 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/common_white"
+                    android:visibility="@{viewModel.emptyViewVisible ? View.GONE : View.VISIBLE, default = gone}"
                     android:layout_weight="1"
                     app:setAdapter="@{viewModel.getListAdapter()}"/>
 
@@ -94,6 +99,7 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:background="@color/common_white"
+                    android:visibility="@{viewModel.emptyViewVisible ? View.VISIBLE : View.GONE, default = gone}"
                     android:paddingBottom="60dp"
                     android:layout_weight="1">
 

@@ -19,9 +19,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.Deal
-import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.mypage.MyPageBookMarkViewModel
-import io.temco.guhada.data.viewmodel.mypage.MyPageRecentViewModel
 import io.temco.guhada.databinding.ItemMoreListBinding
 import io.temco.guhada.databinding.ItemMypageProductListTwoBinding
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
@@ -31,15 +29,15 @@ import io.temco.guhada.view.holder.base.BaseProductViewHolder
  * @author park jungho
  * 19.07.26
  *
- * 마이페이지 최근본상품,
+ * 마이페이지 찜한상품 (BookMark)
  */
-class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<Product>) :
-        CommonRecyclerAdapter<Product, MyPageProductListAdapter.ListViewHolder>(list) {
+class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Deal>) :
+        CommonRecyclerAdapter<Deal, MyPageDealListAdapter.ListViewHolder>(list) {
 
     override fun getItemViewType(position: Int): Int {
         return items.let {
             if(items.isNullOrEmpty()) 0
-            else if(items[position].sellerId < 0) -1
+            else if(items[position].dealId < 0) -1
             else 0
         }
     }
@@ -57,7 +55,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
         }
     }
 
-    override fun setOnBindViewHolder(viewHolder: ListViewHolder, item: Product, position: Int) {
+    override fun setOnBindViewHolder(viewHolder: ListViewHolder, item: Deal, position: Int) {
         viewHolder.bind(model, position, item)
     }
 
@@ -68,7 +66,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
      * 메인 리스트에 사용할 base view holder
      */
     open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseProductViewHolder<ViewDataBinding>(containerView){
-        abstract fun bind(viewModel : ViewModel, position : Int, data : Product)
+        abstract fun bind(viewModel : ViewModel, position : Int, data : Deal)
     }
 
     /**
@@ -76,7 +74,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
      */
     inner class MyPageProductListViewHolder(val containerView: View, val binding: ItemMypageProductListTwoBinding) : ListViewHolder(containerView,binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
-        override fun bind(model : ViewModel, position : Int, data : Product){
+        override fun bind(model : ViewModel, position : Int, data : Deal){
             // Thumbnail
             if(data != null){
                 binding.linearlayoutMypageproductlistadapterItemlayout.tag = data.dealId.toString()
@@ -85,17 +83,16 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                     CommonUtil.startProductActivity(containerView.context as Activity, id)
                 }
                 binding.linearlayoutMypageproductlistadapterItemlayout.visibility = View.VISIBLE
-                var url = data.imageUrls!![0]
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, url)
+                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, data.productImage.url)
 
                 // Brand
                 binding.textBrand.setText(data.brandName)
 
                 // Season
-                binding.textSeason.setText(data.season)
+                binding.textSeason.setText(data.productSeason)
 
                 // Title
-                binding.textTitle.setText(data.name)
+                binding.textTitle.setText(data.productName)
 
                 // Option
                 if (binding.layoutColor.getChildCount() > 0)binding.layoutColor.removeAllViews()
@@ -103,9 +100,9 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 if (data.options != null && data!!.options!!.size > 0) {
                     for (o in data!!.options!!) {
                         when (Type.ProductOption.getType(o!!.type)) {
-                            Type.ProductOption.COLOR -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes.toTypedArray()) // 5 Units
-                            Type.ProductOption.RGB -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes.toTypedArray()) // 5 Units
-                            Type.ProductOption.TEXT -> addText((containerView.context as Activity), o.attributes.toTypedArray())
+                            Type.ProductOption.COLOR -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes) // 5 Units
+                            Type.ProductOption.RGB -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes) // 5 Units
+                            Type.ProductOption.TEXT -> addText((containerView.context as Activity), o.attributes)
                         }
                     }
                 }
@@ -119,26 +116,17 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 }
                 // Ship
                 //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
-                binding.textShipFree.setVisibility(if (data.shipping!!.isFreeShipping()) View.VISIBLE else View.GONE)
+                binding.textShipFree.setVisibility(if (data.isFreeShipping) View.VISIBLE else View.GONE)
 
-                binding.btnDelete.tag = data.dealId.toString()
+                binding.btnDelete.tag = data.productId.toString()
                 binding.btnDelete.contentDescription = position.toString()
                 binding.btnDelete.setOnClickListener {
                     var id = it.tag.toString().toLong()
                     var position = it.contentDescription.toString().toInt()
-                    if(model is MyPageRecentViewModel){
+                    if(model is MyPageBookMarkViewModel){
+                        var position = it.contentDescription.toString().toInt()
                         model.getListAdapter().items.removeAt(position)
-                        model.mDisposable.add(Observable.fromCallable {
-                            model.db.recentDealDao().delete(id)
-                        }.subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe { result ->
-                                    model.totalItemSize.value = model.getListAdapter().itemCount
-                                    model.getListAdapter().notifyDataSetChanged()
-                                }
-                        )
-                    }else if(model is MyPageBookMarkViewModel){
-
+                        model.onClickDelete(id)
                     }
                 }
             }else{
@@ -151,8 +139,12 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
 
     inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) {  }
-        override fun bind(model : ViewModel, position : Int, data : Product){
-
+        override fun bind(model : ViewModel, position : Int, data : Deal){
+            binding.linearlayoutMoreView.setOnClickListener {
+                if(model is MyPageBookMarkViewModel){
+                    model.getMyPageBookMarkList()
+                }
+            }
         }
     }
 

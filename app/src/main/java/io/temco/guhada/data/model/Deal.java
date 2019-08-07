@@ -85,4 +85,28 @@ public class Deal {
 
     }
 
+    @Override
+    public String toString() {
+        return "Deal{" +
+                "brandId=" + brandId +
+                ", brandName='" + brandName + '\'' +
+                ", sellerId=" + sellerId +
+                ", sellerName='" + sellerName + '\'' +
+                ", productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productSeason='" + productSeason + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", productImage=" + productImage +
+                ", dealId=" + dealId +
+                ", dealName='" + dealName + '\'' +
+                ", sellPrice=" + sellPrice +
+                ", discountPrice=" + discountPrice +
+                ", setDiscount=" + setDiscount +
+                ", categoryId=" + categoryId +
+                ", options=" + options +
+                ", discountRate=" + discountRate +
+                ", freeShipping=" + freeShipping +
+                ", shipExpenseType='" + shipExpenseType + '\'' +
+                '}';
+    }
 }

@@ -390,6 +390,23 @@ class UserServer {
             )
         }
 
+
+        /**
+         * 북마크 전체 삭제
+         */
+        @JvmStatic
+        fun deleteBookMarkAll(listener: OnServerListener, accessToken: String, target: String) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .deleteBookMarkAll(accessToken, target).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            listener.onResult(true, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -85,6 +86,7 @@ class ServerCallbackUtil {
                                 serverLoginErrorTask: (BaseModel<*>) -> Unit = {},
                                 dataNotFoundTask: () -> Unit = {},
                                 productNotFoundTask: (BaseModel<*>) -> Unit = {},
+                                dataIsNull: (String) -> Unit = {},
                                 userLikeNotFoundTask: () -> Unit = {}) {
             if (o != null) {
                 if (success) {
@@ -110,15 +112,25 @@ class ServerCallbackUtil {
                         }
 
                     } else {
-                        var base = BaseModel<Any>()
-                        base.error = ""
-                        failedTask(base)
+                        if(o is BaseErrorModel){
+                            var base = BaseModel<Any>()
+                            base.errorModel = o
+                            failedTask(base)
+                        }else{
+                            var base = BaseModel<Any>()
+                            base.error = ""
+                            failedTask(base)
+                        }
                     }
                     //  -------------------------------------------
                 }
             } else {
                 CommonUtil.debug("o is null")
-                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                try {
+                    dataIsNull("o is null")
+                } catch (e: Exception) {
+                    CustomLog.L("Gson Parser Exception", o.toString())
+                }
             }
 
         }

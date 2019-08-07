@@ -108,7 +108,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 /**
                  * 북마크 여부 확인
                  */
-                mViewModel.getBookMark(Type.BookMarkTarget.PRODUCT.name, dealId)
+                mViewModel.getBookMark(Type.BookMarkTarget.PRODUCT.name, mViewModel.product.value!!.productId)
                 mViewModel.getSellerInfo()
                 initOptionMenu()
                 initClaims()

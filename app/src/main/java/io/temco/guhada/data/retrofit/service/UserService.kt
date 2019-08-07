@@ -270,5 +270,17 @@ interface UserService {
     fun deleteBookMark(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<Any>>
 
 
+    /**
+     * BookMark 정보 추가
+     * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
+     *
+     * park jungho
+     * 19.08.01
+     * /users/bookmarks
+     */
+    @DELETE("/users/bookmarks")
+    fun deleteBookMarkAll(@Header("Authorization") accessToken: String, @Query("target") target: String): Call<BaseModel<Any>>
+
+
 
 }

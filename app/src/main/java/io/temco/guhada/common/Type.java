@@ -73,7 +73,8 @@ public class Type {
         BLOCKCHAIN, // BlockChain
         LOCAL, // 핸드폰 인증
         NAVER_PROFILE,
-        BENEFIT;
+        BENEFIT,
+        GATEWAY;
 
         public static String getUrl(Server type) {
             switch (type) {
@@ -99,6 +100,8 @@ public class Type {
                     return "http://52.79.95.78:8080/";
                 case BENEFIT:
                     return getBenefitUrl();
+                case GATEWAY:
+                    return getGatewayUrl();
                 default:
                     return "";
             }
@@ -190,6 +193,16 @@ public class Type {
 
             default:
                 return "http://dev.benefit.guhada.com:8080/";
+        }
+    }
+
+    private static String getGatewayUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.gateway.guhada.com/";
+
+            default:
+                return "http://dev.gateway.guhada.com/";
         }
     }
 

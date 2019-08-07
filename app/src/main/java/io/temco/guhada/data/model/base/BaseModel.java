@@ -35,6 +35,8 @@ public class BaseModel<T> {
     @SerializedName("result")
     public String result;
 
+    public BaseErrorModel errorModel = null;
+
     @Override
     public String toString() {
         if(CustomLog.INSTANCE.getFlag()) return "BaseModel{" +
