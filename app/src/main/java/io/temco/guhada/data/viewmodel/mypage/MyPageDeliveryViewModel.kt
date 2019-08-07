@@ -44,8 +44,8 @@ import java.util.*
  *
  */
 class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() {
-    var startDate = "" // yyyy.MM.dd
-    var endDate = "" // yyyy.MM.dd
+    var startDate: Long = 0 // yyyy.MM.dd
+    var endDate: Long = 0 // yyyy.MM.dd
     var page = 1
     var orderHistoryList: MutableLiveData<OrderHistoryResponse> = MutableLiveData()
     var orderStatus: OrderStatus = OrderStatus()
@@ -55,23 +55,29 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
     fun getOrders() {
         ServerCallbackUtil.callWithToken(
                 task = {
-                    if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
-                        //     val convertedStartDate = convertDateFormat(startDate)
-                        //      val convertedEndDate = convertDateFormat(endDate)
-                        val convertedStartDate = CommonUtil.convertDateToTimeStamp(startDate, ".")
-                        val convertedEndDate = CommonUtil.convertDateToTimeStamp(endDate, ".")
-
-                        if (convertedStartDate > 0 && convertedEndDate > 0) {
-                            ServerCallbackUtil.callWithToken(task = {
-                                OrderServer.getOrders(OnServerListener { success, o ->
-                                    ServerCallbackUtil.executeByResultCode(success, o,
-                                            successTask = { model ->
-                                                val response = model.data as OrderHistoryResponse
-                                                orderHistoryList.postValue(response)
-                                            })
-                                }, accessToken = it, startDate = convertedStartDate, endDate = convertedEndDate, page = page)
-                            })
-                        }
+                    if (startDate > 0 && endDate > 0) {
+                        //  val convertedStartDate = CommonUtil.convertDateToTimeStamp(startDate, ".")
+                        // val convertedEndDate = CommonUtil.convertDateToTimeStamp(endDate, ".")
+//
+//                        if (convertedStartDate > 0 && convertedEndDate > 0)
+                        ServerCallbackUtil.callWithToken(task = {
+                            OrderServer.getOrders(OnServerListener { success, o ->
+                                ServerCallbackUtil.executeByResultCode(success, o,
+                                        successTask = { model ->
+                                            val response = (model.data as OrderHistoryResponse)
+                                            if (response.page > 1) {
+                                                orderHistoryList.value?.page = response.page
+                                                orderHistoryList.value?.count = response.count
+                                                orderHistoryList.value?.totalPage = response.totalPage
+                                                orderHistoryList.value?.orderItemList?.addAll(response.orderItemList)
+                                                this.orderHistoryList.postValue(this.orderHistoryList.value)
+                                            } else {
+                                                this.orderHistoryList.postValue(response)
+                                            }
+                                        })
+                            }, accessToken = it, startDate = startDate, endDate = endDate, page = page++)
+                        })
+//                        }
                     }
                 },
                 invalidTokenTask = {
@@ -118,13 +124,17 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
         })
     }
 
-    fun setDate(day: Int, callback: (startDate: String, endDate: String) -> Unit) {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
-        endDate = convertDateFormat(calendar, ".")
-        calendar.add(Calendar.DAY_OF_MONTH, -day)
-        startDate = convertDateFormat(calendar, ".")
+//    fun setDate(day: Int, callback: (startDate: String, endDate: String) -> Unit) {
+//        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+//        endDate = convertDateFormat(calendar, ".")
+//        calendar.add(Calendar.DAY_OF_MONTH, -day)
+//        startDate = convertDateFormat(calendar, ".")
+//
+//        callback(startDate, endDate)
+//    }
 
-        callback(startDate, endDate)
+    fun onClickMore() {
+        getOrders()
     }
 
     private fun convertDateFormat(calendar: Calendar, operator: String): String {

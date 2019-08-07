@@ -68,7 +68,7 @@ class MyPageDeliveryCerViewModel(val context: Context) : BaseObservableViewModel
                                     cancelOrderHistory.value?.orderItemList?.addAll(response.orderItemList)
                                     this.cancelOrderHistory.postValue(this.cancelOrderHistory.value)
                                 }else {
-                                    this.cancelOrderHistory.postValue(it.data as OrderHistoryResponse)
+                                    this.cancelOrderHistory.postValue(response)
                                 }
                             })
                 }, accessToken = token, startTimeStamp = startDate, endTimeStamp = endDate, page = page++)
