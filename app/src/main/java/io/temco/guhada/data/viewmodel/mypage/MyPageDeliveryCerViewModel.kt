@@ -60,7 +60,16 @@ class MyPageDeliveryCerViewModel(val context: Context) : BaseObservableViewModel
                 ClaimServer.getCancelOrders(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = {
-                                this.cancelOrderHistory.postValue(it.data as OrderHistoryResponse)
+                                val response = (it.data as OrderHistoryResponse)
+                                if (response.page > 1) {
+                                    cancelOrderHistory.value?.page = response.page
+                                    cancelOrderHistory.value?.count = response.count
+                                    cancelOrderHistory.value?.totalPage = response.totalPage
+                                    cancelOrderHistory.value?.orderItemList?.addAll(response.orderItemList)
+                                    this.cancelOrderHistory.postValue(this.cancelOrderHistory.value)
+                                }else {
+                                    this.cancelOrderHistory.postValue(it.data as OrderHistoryResponse)
+                                }
                             })
                 }, accessToken = token, startTimeStamp = startDate, endTimeStamp = endDate, page = page++)
             })
@@ -110,7 +119,6 @@ class MyPageDeliveryCerViewModel(val context: Context) : BaseObservableViewModel
     }
 
     fun onClickMore() {
-        page = 1
         getCancelOrderHistories()
     }
 

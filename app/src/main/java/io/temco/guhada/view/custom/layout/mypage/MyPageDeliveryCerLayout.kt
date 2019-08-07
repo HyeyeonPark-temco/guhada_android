@@ -36,10 +36,12 @@ class MyPageDeliveryCerLayout constructor(
 
         mViewModel = MyPageDeliveryCerViewModel(context)
         mViewModel.cancelOrderHistory.observe(this, Observer {
-            if (mBinding.recyclerviewMypagedeliverycer.adapter != null)
-                (mBinding.recyclerviewMypagedeliverycer.adapter as MyPageDeliveryAdapter).setItems(it.orderItemList)
-            else
+            if (mBinding.recyclerviewMypagedeliverycer.adapter != null) {
+                (mBinding.recyclerviewMypagedeliverycer.adapter as MyPageDeliveryAdapter).setItems(mViewModel.cancelOrderHistory.value?.orderItemList
+                        ?: it.orderItemList)
+            } else
                 mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply { this.list = it.orderItemList }
+
             mBinding.executePendingBindings()
         })
 
