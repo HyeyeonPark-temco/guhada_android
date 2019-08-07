@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="onClickAmountPlus"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClickAmountMinus"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onItemSelected"
+            type="android.widget.AdapterView.OnItemSelectedListener" />
+
+        <variable
+            name="defaultMessage"
+            type="String" />
+
+        <variable
+            name="hintMessage"
+            type="String" />
+
+        <variable
+            name="sellerName"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_requestorderstatus_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textview_requestorderstatus_quantity"
+                style="@style/MypageDeliveryBlackSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/requestorderstatus_cancel_quantity"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="67dp"
+                android:background="@drawable/border_all_whitethree"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toRightOf="@+id/textview_requestorderstatus_quantity"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/imagebutton_cart_minus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:onClick="@{onClickAmountMinus}"
+                    android:src="@drawable/bag_btn_quantity_minus_off" />
+
+                <TextView
+                    android:id="@+id/imageview_cart_amount"
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_all_whitethree"
+                    android:paddingStart="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="8dp"
+                    android:text="1"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_12"
+                    app:layout_constraintLeft_toRightOf="@id/imagebutton_cart_minus" />
+                <!--android:text="@{String.valueOf(amount)}"-->
+                <ImageButton
+                    android:id="@+id/imagebutton_cart_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:onClick="@{onClickAmountPlus}"
+                    android:src="@drawable/bag_btn_quantity_plus_on" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/MypageDeliveryBlackSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/requestorderstatus_common_seller" />
+
+            <TextView
+                style="@style/MypageDeliveryWarmGreyTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="80dp"
+                android:text="@{sellerName}"
+                android:textSize="@dimen/text_14" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/framelayout_requestorderstatus_shippingmemo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="20dp">
+
+            <Spinner
+                android:id="@+id/spinner_requestorderstatus_shippingmemo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/border_all_whitethree"
+                android:onItemSelected="@{onItemSelected}"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:overlapAnchor="false"
+                android:popupBackground="@null"
+                android:spinnerMode="dropdown" />
+            <!--android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"-->
+            <!--app:userShippingMemo="@{viewModel.shippingMessages}"-->
+            <FrameLayout
+                android:id="@+id/framelayout_requestorderstatus_shippingmemobutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_three"
+                android:padding="1dp">
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_requestorderstatus_shippingmemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:popupBackground="@null">
+
+                    <TextView
+                        style="@style/MypageDeliveryWarmGreyTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@{defaultMessage}"
+                        android:textSize="@dimen/text_13" />
+                    <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
+                    <ImageView
+                        android:id="@+id/imageview_requestorderstatus_shippingmemo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/payment_icon_selectbox_open" />
+                </LinearLayout>
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp">
+
+            <EditText
+                style="@style/MypageDeliveryWarmGreyTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_all_silver"
+                android:gravity="left|top"
+                android:hint="@{hintMessage}"
+                android:padding="15dp" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>
