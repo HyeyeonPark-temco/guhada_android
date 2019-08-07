@@ -42,8 +42,10 @@ class MyPageDeliveryLayout constructor(
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         mBinding.calendarfilterMypageDeliver.mListener = this
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
-            val list = it.orderItemList
-            mBinding.listContents.adapter = MyPageDeliveryAdapter(mViewModel).apply { this.list = list }
+            mBinding.listContents.adapter = MyPageDeliveryAdapter().apply {
+                this.list = it.orderItemList
+                this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
+            }
             mBinding.executePendingBindings()
         })
         mBinding.includeDeliveryProcess.viewModel = mViewModel
@@ -53,7 +55,6 @@ class MyPageDeliveryLayout constructor(
         onClickWeek() // [default] before 1 week
 
         mRequestManager = Glide.with(this)
-        setLinkText()
     }
 
     // CustomCalendarListener
@@ -71,12 +72,13 @@ class MyPageDeliveryLayout constructor(
 
     }
 
-    override fun onClickCheck() {
-        mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startDate
-        mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endDate
+    override fun onClickCheck(startDate: String, endDate: String) {
+        mViewModel.startDate = startDate
+        mViewModel.endDate = endDate
         mViewModel.getOrders()
     }
 
+    // footer
     private fun setLinkText() {
         // Sales Number
         mBinding.layoutInformation.textInformationSalesNumber.setMovementMethod(LinkMovementMethod.getInstance())

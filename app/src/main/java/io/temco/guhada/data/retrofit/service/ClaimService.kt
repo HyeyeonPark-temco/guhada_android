@@ -6,6 +6,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.claim.MyPageClaim
+import io.temco.guhada.data.model.order.CancelOrderStatus
 import io.temco.guhada.data.model.order.OrderHistoryResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -66,4 +67,9 @@ interface ClaimService {
     @GET("/order-claim/my-cancel-order-list")
     fun getCancelOrderList(@Header("Authorization") accessToken: String, @Query("startTimestamp") startTimestamp: Long, @Query("endTimestamp") endTimestamp: Long, @Query("page") page: Int): Call<BaseModel<OrderHistoryResponse>>
 
+    /**
+     * 주문 취소/교환/반품 상태 조회 API
+     */
+    @GET("/order-claim/my-cancel-orders-status-list")
+    fun getCancelOrderStatus(@Header("Authorization") accessToken: String, @Query("startTimestamp") startTimestamp: Long, @Query("endTimestamp") endTimestamp: Long): Call<BaseModel<CancelOrderStatus>>
 }

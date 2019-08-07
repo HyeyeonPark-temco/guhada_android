@@ -64,7 +64,10 @@ class MyPageAddressLayout constructor(
     }
 
     private fun setShippingAddressListFragment() {
-        mShippingAddressListFragment = ShippingAddressListFragment().apply { this.mViewModel = this@MyPageAddressLayout.mViewModel }
+        mShippingAddressListFragment = ShippingAddressListFragment().apply {
+            this.mViewModel = this@MyPageAddressLayout.mViewModel
+            this.radioButtonVisible = false
+        }
         (context as AppCompatActivity).supportFragmentManager.beginTransaction().add(mBinding.framelayoutMypageAddress.id, mShippingAddressListFragment).commitAllowingStateLoss()
     }
 

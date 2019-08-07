@@ -14,6 +14,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBinding>() {
     lateinit var mViewModel: ShippingAddressViewModel
     lateinit var mListAdapter: ShippingAddressListAdapter
+    var radioButtonVisible = true
     private lateinit var mLoadingIndicator: LoadingIndicatorUtil
 
     override fun getBaseTag(): String = ShippingAddressListFragment::class.java.simpleName
@@ -26,7 +27,7 @@ class ShippingAddressListFragment : BaseFragment<FragmentShippingaddresslistBind
             getShippingAddressList()
             mViewModel.shippingAddresses.observe(this, Observer {
                 if (!::mListAdapter.isInitialized)
-                    mListAdapter = ShippingAddressListAdapter(mViewModel)
+                    mListAdapter = ShippingAddressListAdapter(mViewModel).apply { this.radioButtonVisible = this@ShippingAddressListFragment.radioButtonVisible }
 
                 if (mBinding.recyclerviewShippingaddress.adapter == null) {
                     mListAdapter.setItems(it)

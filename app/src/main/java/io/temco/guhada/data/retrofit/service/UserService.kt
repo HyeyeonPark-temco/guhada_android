@@ -86,14 +86,14 @@ interface UserService {
     fun verifyPhone(@Body user: User): Call<BaseModel<Any>>
 
     /**
-     * 인증번호로 비밀번호 바꾸기 API
+     * 인증번호로 비밀번호 재설정 API
      * @param verification [field] email, newPassword, verificationNumber
      */
     @POST("/verify/change-password")
     fun changePassword(@Body verification: Verification): Call<BaseModel<Any>>
 
     /**
-     * 본인인증으로 비밀번호 바꾸기 API
+     * 본인인증으로 비밀번호 재설정 API
      * @param verification [field] diCode, newPassword, mobile
      */
     @POST("/verify/identity/change-password")

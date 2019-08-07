@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -28,15 +29,21 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
             field = value
             mBinding.textDateFrom.text = field
             mBinding.executePendingBindings()
-
-            if (::mListener.isInitialized) mListener.onChangeDate(startDate, endDate)
         }
     var endDate = ""
         set(value) {
             field = value
             mBinding.textDateTo.text = field
             mBinding.executePendingBindings()
-
+        }
+    var startTimeStamp: Long = 0
+        set(value) {
+            field = value
+            if (::mListener.isInitialized) mListener.onChangeDate(startDate, endDate)
+        }
+    var endTimeStamp: Long = 0
+        set(value) {
+            field = value
             if (::mListener.isInitialized) mListener.onChangeDate(startDate, endDate)
         }
 
@@ -88,7 +95,7 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
                 endDate = mBinding.textDateTo.text.toString()
             }
             R.id.text_check -> {
-                if (::mListener.isInitialized) checkDate { mListener.onClickCheck() }
+                if (::mListener.isInitialized) checkDate { mListener.onClickCheck(startDate, endDate) }
             }
         }
 
@@ -117,8 +124,19 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
             val dateStr = "$year.$monthStr.$dayStr"
 
             textView.text = dateStr
-            if (textView.id == mBinding.textDateFrom.id) startDate = dateStr
-            else endDate = dateStr
+            if (textView.id == mBinding.textDateFrom.id) {
+                startDate = dateStr
+                Calendar.getInstance().let {
+                    it.set(year, month, dayOfMonth, 0, 0, 0)
+                    this@CustomCalendarFilter.startTimeStamp = it.timeInMillis
+                }
+            } else {
+                endDate = dateStr
+                Calendar.getInstance().let {
+                    it.set(year, month, dayOfMonth, 23, 59, 59)
+                    this@CustomCalendarFilter.endTimeStamp = it.timeInMillis
+                }
+            }
 
             // reset filters
             mBinding.textWeek.isSelected = false
@@ -161,11 +179,23 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
     }
 
     fun setDate(day: Int) {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
         endDate = convertDateFormat(calendar, ".")
+        endTimeStamp = calendar.timeInMillis
+
         calendar.add(Calendar.DAY_OF_MONTH, -day)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
         startDate = convertDateFormat(calendar, ".")
+        startTimeStamp = calendar.timeInMillis
+
+        Log.e("캘린더필터", "start: $startDate($startTimeStamp) , end: $endDate($endTimeStamp)")
     }
+
 
     private fun convertDateFormat(calendar: Calendar, operator: String): String {
         val month = calendar.get(Calendar.MONTH) + 1
@@ -178,7 +208,7 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
         fun onClickMonth()
         fun onClickThreeMonth()
         fun onClickYear()
-        fun onClickCheck()
-        fun onChangeDate(startDate: String, fromDate: String)
+        fun onClickCheck(startDate: String, endDate: String)
+        fun onChangeDate(startDate: String, endDate: String)
     }
 }

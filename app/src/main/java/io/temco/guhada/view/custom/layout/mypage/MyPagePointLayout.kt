@@ -64,7 +64,12 @@ class MyPagePointLayout constructor(
         mViewModel.page = 1
     }
 
-    override fun onClickCheck() {
+    // startDate, endDate timeStamp로 변경 후 사용 예정 (2019.08.06)
+    override fun onClickCheck(startDate: String, endDate: String) {
+
+    }
+
+    private fun onClickCheck() {
         val startDate = mBinding.calendarfilterMypagepoint.startDate.split(".")
         val endDate = mBinding.calendarfilterMypagepoint.endDate.split(".")
         mViewModel.fromDate = "${startDate[0]}-${startDate[1]}-${startDate[2]}"

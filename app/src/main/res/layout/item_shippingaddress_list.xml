@@ -11,6 +11,10 @@
             type="io.temco.guhada.data.model.UserShipping" />
 
         <variable
+            name="radioButtonVisible"
+            type="Boolean" />
+
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel" />
     </data>
@@ -24,8 +28,9 @@
             android:id="@+id/radiobutton_shippingaddresslist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@null"
             android:background="@drawable/selector_ovalradiobutton_all"
+            android:button="@null"
+            android:visibility="@{radioButtonVisible ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +80,8 @@
 
             <View
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
                 android:background="@color/warm_grey_three" />
 
             <TextView
@@ -128,13 +134,12 @@
             app:layout_constraintTop_toBottomOf="@id/textview_shippingaddresslist_address" />
 
         <View
-            android:id="@+id/textview_shippingaddresslist_line"
+            android:id="@+id/view_shippingaddresslist_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/white_six"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

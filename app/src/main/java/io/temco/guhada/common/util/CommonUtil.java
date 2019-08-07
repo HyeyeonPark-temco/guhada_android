@@ -16,22 +16,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -153,14 +145,9 @@ public class CommonUtil {
      * @author Hyeyeon Park
      */
     public static Long convertDateToTimeStamp(String dateString, String operator) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy" + operator + "MM" + operator + "dd");
-        Date date = null;
-        try {
-            date = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            CommonUtil.debug("convertDateToTimeStamp", e.getMessage());
-        }
-        return date != null ? date.getTime() : 0;
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy" + operator + "MM" + operator + "dd");
+        DateTime dateTime = dateTimeFormatter.parseDateTime(dateString);
+        return dateTime.getMillis();
     }
 
 

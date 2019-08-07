@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_1"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -24,48 +24,43 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:overScrollMode="never">
 
-                <FrameLayout
-                    android:id="@+id/framelayout_mypage_address"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toTopOf="@id/button_mypageaddress_add"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/button_mypageaddress_add"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:background="@color/greyish_brown_two"
-                    android:onClick="@{()->viewModel.onClickAddNew()}"
-                    android:text="@string/mypage_shippingaddress_add"
-                    android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_16"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/button_mypageaddress_default"/>
+                    <Button
+                        android:id="@+id/button_mypageaddress_addnew"
+                        style="@style/borderlessStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/border_all_silver"
+                        android:onClick="@{()->viewModel.onClickAddNew()}"
+                        android:text="@string/mypage_shippingaddress_add"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/button_mypageaddress_default"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:background="@color/common_blue_purple"
-                    android:text="@string/mypage_shippingaddress_default"
-                    android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_16"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:onClick="@{()->viewModel.onClickDefault()}"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintLeft_toRightOf="@+id/button_mypageaddress_add"
-                    app:layout_constraintRight_toRightOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <FrameLayout
+                        android:id="@+id/framelayout_mypage_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button_mypageaddress_addnew" />
 
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel" />
@@ -78,27 +80,64 @@
 
                             <!-- LINE -->
                             <View
-                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:layout_marginTop="10dp"
-                                android:background="@color/line_3" />
+                                android:background="@color/line_3"
+                                android:visibility="gone" />
                         </LinearLayout>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/list_contents"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:overScrollMode="never"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                            android:layout_height="wrap_content">
 
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/list_contents"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:overScrollMode="never"
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0" />
+
+                            <ImageView
+                                android:id="@+id/imageview_mypage_delivery_empty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="80dp"
+                                android:src="@drawable/icon_no_data"
+                                android:visibility="@{viewModel.orderHistoryList.orderItemList.isEmpty() &amp;&amp; viewModel.orderHistoryList.count == 0 ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="13dp"
+                                android:layout_marginBottom="80dp"
+                                android:text="@string/mypage_delivery_message_empty"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/imageview_mypage_delivery_empty" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                         <!-- INFORMATION -->
                         <include
                             android:id="@+id/layout_information"
-                            layout="@layout/layout_information" />
+                            layout="@layout/layout_information"
+                            android:visibility="gone" />
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
 

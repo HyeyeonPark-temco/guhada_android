@@ -30,7 +30,7 @@ class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>()
     override fun init() {
         initWebView()
         mBinding.includeSearchzipwebviewHeader.title = ""
-        mBinding.includeSearchzipwebviewHeader.setOnClickBackButton {
+        mBinding.includeSearchzipwebviewHeader.setOnClickCloseButton {
             setResult(Activity.RESULT_CANCELED)
             finish()
         }

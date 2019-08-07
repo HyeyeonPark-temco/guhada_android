@@ -2,9 +2,14 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
@@ -16,7 +21,13 @@ import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.shippingaddress.AddShippingAddressViewModel
 import io.temco.guhada.databinding.DialogAddshippingaddressBinding
 import io.temco.guhada.view.fragment.shippingaddress.ShippingAddressFormFragment
+import java.awt.font.TextAttribute
+import java.text.AttributedString
 
+/**
+ * 신규 배송지 등록 액티비티
+ * @author Hyeyeon Park
+ */
 class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListener {
     lateinit var mBinding: DialogAddshippingaddressBinding
     var addButtonVisible = false
@@ -25,16 +36,26 @@ class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this@AddShippingAddressActivity.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        this@AddShippingAddressActivity.requestWindowFeature(Window.FEATURE_NO_TITLE)
         mBinding = DataBindingUtil.setContentView(this, R.layout.dialog_addshippingaddress)
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         addButtonVisible = intent.getBooleanExtra("addButtonVisible", false)
         mViewModel = AddShippingAddressViewModel(this)
         initForm()
+        setDescription()
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+    }
+
+    private fun setDescription(){
+        val description1 = resources.getString(R.string.addshippingaddress_description1)
+        val description2 = resources.getString(R.string.addshippingaddress_description2)
+        val description3 = resources.getString(R.string.addshippingaddress_description3)
+        val spannable = SpannableString("$description1 $description2 $description3")
+        spannable.setSpan(ForegroundColorSpan(resources.getColor(R.color.common_blue_purple)), description1.length, description1.length + description2.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        mBinding.textviewAddshippingaddressDescription.setText(spannable, TextView.BufferType.SPANNABLE)
     }
 
     private fun initForm() {

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryCerViewModel" />
@@ -58,7 +60,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
-                            android:text="0"
+                            android:text="@{String.valueOf(viewModel.cancelOrderStatus.cancelOrder)}"
                             android:textColor="@color/black_four"
                             android:textSize="@dimen/text_16"
                             app:layout_constraintLeft_toLeftOf="parent"
@@ -97,7 +99,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="8dp"
-                            android:text="0"
+                            android:text="@{String.valueOf(viewModel.cancelOrderStatus.exchangeOrder)}"
                             android:textColor="@color/black_four"
                             android:textSize="@dimen/text_16"
                             app:layout_constraintLeft_toRightOf="@+id/view_mypagedeliverycer_line1"
@@ -138,7 +140,7 @@
                             android:layout_marginStart="43dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="43dp"
-                            android:text="0"
+                            android:text="@{String.valueOf(viewModel.cancelOrderStatus.returnOrder)}"
                             android:textColor="@color/black_four"
                             android:textSize="@dimen/text_16"
                             app:layout_constraintLeft_toRightOf="@+id/view_mypagedeliverycer_line2"
@@ -167,19 +169,25 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerview_mypagedeliverycer"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:orientation="vertical"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                     <LinearLayout
                         android:id="@+id/linearlayout_mypagedeliverycer_more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:onClick="@{()->viewModel.onClickMore()}"
                         android:orientation="horizontal"
                         android:paddingStart="40dp"
                         android:paddingTop="16dp"
-                        android:layout_gravity="center_horizontal"
                         android:paddingEnd="40dp"
                         android:paddingBottom="16dp"
+                        android:visibility="@{viewModel.cancelOrderHistory.page == viewModel.cancelOrderHistory.totalPage ? View.GONE : View.VISIBLE}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">

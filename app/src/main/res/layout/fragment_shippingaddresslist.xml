@@ -9,59 +9,75 @@
             type="io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/common_white"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:nestedScrollingEnabled="false">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_shippingaddress"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:orientation="vertical"
-                android:overScrollMode="never"
-                app:bindShippingAddress="@{viewModel.shippingAddresses}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.core.widget.NestedScrollView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_shippingaddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:bindShippingAddress="@{viewModel.shippingAddresses}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+            </LinearLayout>
+
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
-                android:fillViewport="true"
                 android:visibility="@{viewModel.emptyVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    style="@style/TextRegular"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="등록된 배송지가 없습니다."
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_15"
-                    android:visibility="@{viewModel.emptyVisibility}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.core.widget.NestedScrollView>
+                    android:orientation="vertical">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/icon_no_data" />
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center"
+                        android:text="등록된 배송지가 없습니다."
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_15"
+                        android:visibility="@{viewModel.emptyVisibility}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+            </FrameLayout>
+        </FrameLayout>
+
 </layout>

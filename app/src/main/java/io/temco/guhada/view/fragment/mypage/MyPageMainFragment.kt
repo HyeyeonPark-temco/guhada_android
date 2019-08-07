@@ -55,21 +55,20 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun init() {
         mViewModel = MyPageViewModel(context ?: mBinding.root.context)
         initHeader()
-        initShippingAddressButtons()
     }
 
     private fun initShippingAddressButtons() {
-        mBinding.buttonMypagehomeAddaddress.setOnClickListener { activity!!.startActivityForResult(Intent(context, AddShippingAddressActivity::class.java), RequestCode.ADD_SHIPPING_ADDRESS.flag) }
-        mBinding.buttonMypagehomeSetdefaultaddress.setOnClickListener {
-            val isExist = customLayoutMap.contains(SHIPPING_ADDRESS_IDX)
-            if (isExist) {
-                val shippingAddressLayout = customLayoutMap[SHIPPING_ADDRESS_IDX] as MyPageAddressLayout
-                val selectedItem = shippingAddressLayout.getSelectedItem()
-                if (selectedItem != null) {
-                    mViewModel.onClickDefault(shippingAddressLayout.getSelectedPos(), selectedItem) { shippingAddressLayout.onRefresh() }
-                }
-            }
-        }
+//        mBinding.buttonMypagehomeAddaddress.setOnClickListener { activity!!.startActivityForResult(Intent(context, AddShippingAddressActivity::class.java), RequestCode.ADD_SHIPPING_ADDRESS.flag) }
+//        mBinding.buttonMypagehomeSetdefaultaddress.setOnClickListener {
+//            val isExist = customLayoutMap.contains(SHIPPING_ADDRESS_IDX)
+//            if (isExist) {
+//                val shippingAddressLayout = customLayoutMap[SHIPPING_ADDRESS_IDX] as MyPageAddressLayout
+//                val selectedItem = shippingAddressLayout.getSelectedItem()
+//                if (selectedItem != null) {
+//                    mViewModel.onClickDefault(shippingAddressLayout.getSelectedPos(), selectedItem) { shippingAddressLayout.onRefresh() }
+//                }
+//            }
+//        }
     }
 
     override fun onClick(v: View) {
@@ -173,11 +172,6 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
             override fun onPageSelected(position: Int) {
                 currentPagerIndex = position
                 if (customLayoutMap.containsKey(currentPagerIndex)) customLayoutMap.get(currentPagerIndex)!!.onFocusView()
-                if (currentPagerIndex == 10) {
-                    mBinding.testLayout.visibility = View.VISIBLE
-                } else {
-                    mBinding.testLayout.visibility = View.GONE
-                }
             }
         })
         mBinding.viewpager.offscreenPageLimit = 1

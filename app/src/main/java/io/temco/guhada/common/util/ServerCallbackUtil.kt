@@ -86,7 +86,7 @@ class ServerCallbackUtil {
                                 dataNotFoundTask: () -> Unit = {},
                                 productNotFoundTask: (BaseModel<*>) -> Unit = {},
                                 userLikeNotFoundTask: () -> Unit = {}) {
-            if(o != null){
+            if (o != null) {
                 if (success) {
                     val model = o as BaseModel<*>
                     when (model.resultCode) {
@@ -100,10 +100,15 @@ class ServerCallbackUtil {
                 } else {
                     // modify ------------------------------------
                     if (o is String) {
-                        var gson = Gson()
-                        if (CustomLog.flag) CustomLog.L("executeByResultCode", o)
-                        var base = gson.fromJson<BaseModel<*>>(o, BaseModel::class.java)
-                        failedTask(base)
+                        try {
+                            var gson = Gson()
+                            if (CustomLog.flag) CustomLog.L("executeByResultCode", o)
+                            var base = gson.fromJson<BaseModel<*>>(o, BaseModel::class.java)
+                            failedTask(base)
+                        } catch (e: Exception) {
+                            CustomLog.L("Gson Parser Exception", o.toString())
+                        }
+
                     } else {
                         var base = BaseModel<Any>()
                         base.error = ""
@@ -111,7 +116,7 @@ class ServerCallbackUtil {
                     }
                     //  -------------------------------------------
                 }
-            }else {
+            } else {
                 CommonUtil.debug("o is null")
                 ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
             }
