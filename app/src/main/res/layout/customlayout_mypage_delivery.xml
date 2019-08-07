@@ -112,17 +112,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="80dp"
                                 android:src="@drawable/icon_no_data"
-                                android:visibility="@{viewModel.orderHistoryList.totalPage == 1 &amp;&amp; viewModel.orderHistoryList.count == 0 ? View.VISIBLE : View.GONE}"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
+                                android:id="@+id/textview_mypage_delivery_empty"
                                 style="@style/TextMedium"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="13dp"
-                                android:visibility="@{viewModel.orderHistoryList.totalPage == 1 &amp;&amp; viewModel.orderHistoryList.count == 0 ? View.VISIBLE : View.GONE}"
                                 android:layout_marginBottom="80dp"
                                 android:text="@string/mypage_delivery_message_empty"
                                 android:textColor="@color/black_four"
@@ -131,7 +130,6 @@
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/imageview_mypage_delivery_empty" />
-
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                         <!-- INFORMATION -->

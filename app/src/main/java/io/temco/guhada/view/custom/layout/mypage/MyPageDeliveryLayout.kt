@@ -3,6 +3,7 @@ package io.temco.guhada.view.custom.layout.mypage
 import android.content.Context
 import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
+import android.view.View
 import android.widget.TextView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -46,6 +47,15 @@ class MyPageDeliveryLayout constructor(
                 this.list = it.orderItemList
                 this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
             }
+
+            if(it.totalPage == 1 && it.orderItemList.isEmpty()){
+                mBinding.imageviewMypageDeliveryEmpty.visibility = View.VISIBLE
+                mBinding.textviewMypageDeliveryEmpty.visibility = View.VISIBLE
+            }else {
+                mBinding.imageviewMypageDeliveryEmpty.visibility = View.GONE
+                mBinding.textviewMypageDeliveryEmpty.visibility = View.GONE
+            }
+
             mBinding.executePendingBindings()
         })
         mBinding.includeDeliveryProcess.viewModel = mViewModel

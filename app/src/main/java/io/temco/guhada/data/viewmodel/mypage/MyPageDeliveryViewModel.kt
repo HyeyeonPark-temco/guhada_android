@@ -1,7 +1,9 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import android.util.Log
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -54,8 +56,8 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
         ServerCallbackUtil.callWithToken(
                 task = {
                     if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
-                  //     val convertedStartDate = convertDateFormat(startDate)
-                  //      val convertedEndDate = convertDateFormat(endDate)
+                        //     val convertedStartDate = convertDateFormat(startDate)
+                        //      val convertedEndDate = convertDateFormat(endDate)
                         val convertedStartDate = CommonUtil.convertDateToTimeStamp(startDate, ".")
                         val convertedEndDate = CommonUtil.convertDateToTimeStamp(endDate, ".")
 

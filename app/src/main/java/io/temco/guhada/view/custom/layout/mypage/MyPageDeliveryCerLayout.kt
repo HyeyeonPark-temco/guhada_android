@@ -2,6 +2,7 @@ package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
@@ -41,6 +42,14 @@ class MyPageDeliveryCerLayout constructor(
                         ?: it.orderItemList)
             } else
                 mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply { this.list = it.orderItemList }
+
+            if(it.totalPage == 1 && it.orderItemList.isEmpty()){
+                mBinding.imageviewMypagedeliverycerEmpty.visibility = View.VISIBLE
+                mBinding.textviewMypagedeliverycerEmpty.visibility = View.VISIBLE
+            }else {
+                mBinding.imageviewMypagedeliverycerEmpty.visibility = View.GONE
+                mBinding.textviewMypagedeliverycerEmpty.visibility = View.GONE
+            }
 
             mBinding.executePendingBindings()
         })
