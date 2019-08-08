@@ -784,7 +784,8 @@
     <string name="mypagecoupon_add_button">쿠폰 등록</string>
     <string name="mypagecoupon_enabled_list">사용 가능 쿠폰</string>
     <string name="mypagecoupon_enabled_empty">사용 가능한 쿠폰이 없습니다.</string>
-
+    <string name="mypagecoupon_number">쿠폰번호</string>
+    <string name="mypagecoupon_guhada">구하다 쿠폰</string>
 
 
     <!-- MAIN LIST SUBTITLE -->

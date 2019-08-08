@@ -31,7 +31,7 @@ class BenefitServer {
                 )
 
         /**
-         * 포인트 리스트 기간별 조회 API
+         * 포인트 리스트 기간별 조회
          * @param fromAt 조회 시작 기간 (required)
          * @param toAt 조회 종료 가간 (required)
          * @param charge 충전 내역 조회 (default: false)
@@ -44,6 +44,13 @@ class BenefitServer {
          */
         fun getPointHistories(listener: OnServerListener, accessToken: String, fromAt: String, toAt: String, charge: Boolean, historyStatus: String, orderType: String, sortType: String, unitPerPage: Int, page: Int, userId: Int) =
                 RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getPointHistories(accessToken, charge, historyStatus, orderType, sortType, fromAt, toAt, page, unitPerPage, userId).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 쿠폰 리스트 조회
+         */
+        fun getCoupons(listener: OnServerListener, accessToken: String, isAvailable: Boolean, page: Int, unitPerPage: Int) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getCoupons(accessToken, isAvailable, page, unitPerPage).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
     }

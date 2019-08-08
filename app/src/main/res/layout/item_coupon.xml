@@ -2,25 +2,33 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="coupon"
+            type="io.temco.guhada.data.model.coupon.Coupon" />
+    </data>
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
-        android:minWidth="320dp"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="4">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="@drawable/background_coupon_border"
                 android:id="@+id/constraintlayout_coupon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="4"
+                android:background="@drawable/background_coupon_border"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -31,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="23dp"
-                    android:text="팔로우 감사쿠폰"
+                    android:text="@{coupon.couponTitle}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_14"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -57,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="5dp"
-                    android:text="1,000원 할인"
+                    android:text="@{coupon.discountRate != null ? coupon.discountRate : coupon.discountPrice}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_22"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -72,7 +80,7 @@
                     android:layout_marginTop="27dp"
                     android:layout_marginEnd="74dp"
                     android:layout_marginBottom="20dp"
-                    android:text="쿠폰번호 193049204293"
+                    android:text="@{@string/mypagecoupon_number + coupon.couponWalletKey.couponNumber}"
                     android:textColor="@color/warm_grey"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -89,12 +97,12 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1"
                     android:layout_marginBottom="22dp"
-                    android:src="@drawable/Coupon_logo"
+                    android:src="@drawable/coupon_logo"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_coupon_delete"
@@ -114,6 +122,7 @@
                     android:layout_marginTop="11dp"
                     android:layout_marginEnd="30dp"
                     android:src="@drawable/img_coupon_guhada"
+                    android:visibility="@{coupon.sellerId == null ? View.VISIBLE : View.GONE}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imagebutton_coupon_delete" />
@@ -125,9 +134,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="36dp"
-                    android:text="구하다 쿠폰"
+                    android:text="@string/mypagecoupon_guhada"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_13"
+                    android:visibility="@{coupon.sellerId == null ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -141,9 +151,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:text="압구정 날라리"
+                    android:text="@{coupon.sellerName}"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_13"
+                    android:visibility="@{coupon.sellerId != null &amp;&amp; coupon.sellerName != null ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -170,7 +181,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="・ 2019. 05. 01 22:15 ~ 2019. 05. 31 22:15 까지"
+            android:text="@{ coupon.startAt + `~` + coupon.endAt }"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toLeftOf="parent"
