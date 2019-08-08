@@ -21,7 +21,7 @@ import io.temco.guhada.data.viewmodel.productdetail.ProductDetailClaimViewModel
 import io.temco.guhada.databinding.LayoutProductdetailClaimBinding
 import io.temco.guhada.view.activity.LoginActivity
 import io.temco.guhada.view.activity.WriteClaimActivity
-import io.temco.guhada.view.adapter.ClaimAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailClaimAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<LayoutProductdetailClaimBinding>() {
@@ -47,7 +47,7 @@ class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<Lay
             }
 
             override fun clearClaims() {
-                (mBinding.recyclerviewProductdetailClaim.adapter as ClaimAdapter).clearItems()
+                (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
             }
 
             override fun redirectLoginActivity() {
@@ -56,7 +56,7 @@ class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<Lay
             }
         })
         mBinding.viewModel = mViewModel
-        mBinding.recyclerviewProductdetailClaim.adapter = ClaimAdapter()
+        mBinding.recyclerviewProductdetailClaim.adapter = ProductDetailClaimAdapter()
         mBinding.recyclerviewProductdetailClaim.layoutManager = WrapContentLinearLayoutManager(context, RecyclerView.VERTICAL, false)
         mBinding.tablayoutProductdetailClaim.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -87,7 +87,7 @@ class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<Lay
     }
 
     fun refreshClaims() {
-        (mBinding.recyclerviewProductdetailClaim.adapter as ClaimAdapter).clearItems()
+        (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
         mViewModel.claimPageNo = 0
         mViewModel.claimPageSize = 5
         mViewModel.claimResponse = ClaimResponse()
@@ -100,14 +100,14 @@ class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<Lay
         fun RecyclerView.bindClaims(list: MutableList<Claim>?) {
             if (list != null) {
                 if (this.adapter == null) {
-                    this.adapter = ClaimAdapter()
+                    this.adapter = ProductDetailClaimAdapter()
                 }
 
-                if ((this.adapter as ClaimAdapter).itemCount > 0) {
+                if ((this.adapter as ProductDetailClaimAdapter).itemCount > 0) {
                     // MORE
-                    (this.adapter as ClaimAdapter).addItems(list)
+                    (this.adapter as ProductDetailClaimAdapter).addItems(list)
                 } else {
-                    (this.adapter as ClaimAdapter).setItems(list)
+                    (this.adapter as ProductDetailClaimAdapter).setItems(list)
                 }
             }
         }

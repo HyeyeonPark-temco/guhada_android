@@ -170,6 +170,14 @@
         <item name="tabIndicatorHeight">0dp</item>
     </style>
 
+    <style name="TabLayoutGreyStyle" parent="android:Widget">
+        <item name="tabBackground">@drawable/selector_tab_productdetail_claim</item>
+        <item name="tabIndicatorAnimationDuration">0</item>
+        <item name="tabIndicatorHeight">0dp</item>
+        <item name="tabRippleColor">@android:color/transparent</item>
+        <item name="tabTextColor">@color/black_four</item>
+    </style>
+
     <style name="HeaderTextStyle">
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/black_four</item>
@@ -348,4 +356,13 @@
         <item name="android:textSize">@dimen/text_14</item>
     </style>
 
+    <style name="CommonMoreTextViewStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="CommonEmptyTextViewStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_13</item>
+    </style>
 </resources>
