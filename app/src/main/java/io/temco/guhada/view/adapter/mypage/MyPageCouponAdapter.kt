@@ -2,11 +2,15 @@ package io.temco.guhada.view.adapter.mypage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.databinding.ItemCouponBinding
+import io.temco.guhada.view.adapter.cart.CartProductAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -37,6 +41,11 @@ class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
     inner class Holder(binding: ItemCouponBinding) : BaseViewHolder<ItemCouponBinding>(binding.root) {
         fun bind(item: Coupon) {
             mBinding.coupon = item
+            mBinding.imagebuttonCouponDelete.setOnClickListener {
+                CustomMessageDialog(binding.root.context.getString(R.string.mypagecoupon_message_delete), true, confirmTask = {
+                    ToastUtil.showMessage("쿠폰 삭제 미구현")
+                }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = CartProductAdapter::class.java.simpleName)
+            }
             mBinding.executePendingBindings()
         }
     }

@@ -31,16 +31,17 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-
             <!-- MESSAGE -->
             <TextView
+                style="@style/TextMedium"
+                android:gravity="center"
                 android:id="@+id/text_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
                 android:textColor="@color/black_four"
-                android:textSize="@dimen/text_22" />
+                android:textSize="@dimen/text_14" />
 
             <!-- BUTTON -->
             <androidx.constraintlayout.widget.ConstraintLayout

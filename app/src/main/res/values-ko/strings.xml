@@ -793,6 +793,7 @@
     <string name="mypagecoupon_duedate">%s ~ %s 까지</string>
     <string name="mypagecoupon_dday">D-%d</string>
     <string name="mypagecoupon_status_expired">EXPIRED</string>
+    <string name="mypagecoupon_message_delete">삭제된 쿠폰은 복구할 수 없습니다.\n정말로 삭제하시겠습니까?</string>
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">전체</string>
