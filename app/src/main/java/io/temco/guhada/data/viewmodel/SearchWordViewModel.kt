@@ -3,7 +3,6 @@ package io.temco.guhada.data.viewmodel
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
@@ -13,7 +12,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
-import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
@@ -21,7 +19,6 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.SearchWordEntity
 import io.temco.guhada.data.model.base.BaseModel
@@ -33,6 +30,7 @@ import io.temco.guhada.view.activity.SearchWordActivity
 import io.temco.guhada.view.adapter.SearchWordAdapter
 import java.util.*
 import kotlin.collections.ArrayList
+
 /**
  * @author park jungho
  * 검색화면에서 사용하는 viewmodel

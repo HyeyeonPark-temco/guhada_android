@@ -3,29 +3,182 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable name="clickListener" type="android.view.View.OnClickListener" />
+        <import type="android.view.View" />
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageReviewViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/text_1"
-        android:orientation="vertical">
+        android:background="@color/common_white">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/text_1"/>
+                android:layout_height="49dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="49dp"
+                    android:orientation="vertical"
+                    android:onClick="@{()-> viewModel.clickTab(0)}"
+                    android:background="@{viewModel.mypageReviewTabVisibleSwitch == 0 ? @color/common_white : @color/pale_grey, default = @color/pale_grey}"
+                    android:layout_weight="1">
 
-    </LinearLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageReviewTabVisibleSwitch == 0 ? @color/black_four : @color/pale_grey, default = @color/pale_grey}" />
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="47dp"
+                        android:gravity="center"
+                        android:text="@{@string/mypage_review_tab1_title(viewModel.mypageReviewtab1Title)}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageReviewTabVisibleSwitch == 0 ? @color/common_white : @color/black_four, default = @color/pale_grey}" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black_four" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="49dp"
+                    android:orientation="vertical"
+                    android:onClick="@{()-> viewModel.clickTab(1)}"
+                    android:background="@{viewModel.mypageReviewTabVisibleSwitch == 1 ? @color/common_white : @color/pale_grey, default = @color/pale_grey}"
+                    android:layout_weight="1" >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageReviewTabVisibleSwitch == 1 ? @color/black_four : @color/pale_grey, default = @color/pale_grey}" />
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="47dp"
+                        android:gravity="center"
+                        android:text="@{@string/mypage_review_tab2_title(viewModel.mypageReviewtab2Title)}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageReviewTabVisibleSwitch == 1 ? @color/common_white : @color/black_four, default = @color/pale_grey}" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{viewModel.mypageReviewTabVisibleSwitch == 0 ? View.VISIBLE : View.GONE, default = gone}">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_review_tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="@{viewModel.mypageReviewTabVisibleSwitch == 0 ? (viewModel.tab1EmptyViewVisible ? View.GONE : View.VISIBLE): View.GONE, default = gone}"
+                        app:setAdapter="@{viewModel.getAvailableAdapter()}"
+                        android:background="@color/common_white"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/common_white"
+                        android:paddingBottom="60dp"
+                        android:visibility="@{viewModel.mypageReviewTabVisibleSwitch == 0 ? (viewModel.tab1EmptyViewVisible ? View.VISIBLE : View.GONE): View.GONE, default = gone}"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/icon_no_data"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/no_list_item_review_tab1_desc"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{viewModel.mypageReviewTabVisibleSwitch == 1 ? View.VISIBLE : View.GONE, default = gone}">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView_review_tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="@{viewModel.mypageReviewTabVisibleSwitch == 1 ? (viewModel.tab2EmptyViewVisible ? View.GONE : View.VISIBLE): View.GONE, default = gone}"
+                        app:setAdapter="@{viewModel.getReviewAdapter()}"
+                        android:background="@color/common_white"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/common_white"
+                        android:paddingBottom="60dp"
+                        android:visibility="@{viewModel.mypageReviewTabVisibleSwitch == 1 ? (viewModel.tab2EmptyViewVisible ? View.VISIBLE : View.GONE): View.GONE, default = gone}"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/icon_no_data"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/no_list_item_review_tab2_desc"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>

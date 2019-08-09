@@ -48,7 +48,8 @@ public class Type {
         SIDE_MENU,
         PRODUCT_LIST,
         CANCEL_ORDER,
-        SUCCESS_CANCEL_ORDER
+        SUCCESS_CANCEL_ORDER,
+        REVIEW_WRITE
     }
 
     // Main

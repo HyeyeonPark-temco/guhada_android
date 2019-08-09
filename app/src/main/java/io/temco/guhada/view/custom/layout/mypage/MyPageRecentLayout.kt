@@ -7,6 +7,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.RequestManager
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener

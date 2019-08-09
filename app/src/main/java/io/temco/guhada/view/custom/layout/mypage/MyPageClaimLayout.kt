@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.EventBusHelper
@@ -50,7 +51,11 @@ class MyPageClaimLayout constructor(
         mViewModel.listData.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MyPageClaim.Content>> {
                     if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "observe", it.size)
-                    mViewModel.getListAdapter().notifyDataSetChanged()
+                    if(it.size > 0){
+                        mViewModel.emptyClaimVisible.set(false)
+                        mViewModel.getListAdapter().notifyDataSetChanged()
+                    }
+                    else mViewModel.emptyClaimVisible.set(true)
                 }
         )
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)

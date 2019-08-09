@@ -3,6 +3,8 @@ package io.temco.guhada.data.viewmodel.mypage
 import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -27,6 +29,7 @@ import io.temco.guhada.view.adapter.mypage.MyPageProductListAdapter
  *
  */
 class MyPageRecentViewModel (val context : Context, var mDisposable : CompositeDisposable) : BaseObservableViewModel() {
+    val mRequestManager: RequestManager by lazy { Glide.with(context) }
     val db : GuhadaDB = GuhadaDB.getInstance(this.context as Activity)!!
     var repository: MyPageRecentRepository = MyPageRecentRepository(context,mDisposable,db)
 

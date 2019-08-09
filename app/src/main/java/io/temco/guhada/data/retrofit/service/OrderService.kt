@@ -7,6 +7,7 @@ import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
+import io.temco.guhada.data.model.review.MyPageOrderReview
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -104,6 +105,13 @@ interface OrderService {
      */
     @GET("/receiptUrlSearch")
     fun getReceiptUrl(@Query("tid") tId: String): Call<BaseModel<Any>>
+
+
+    /**
+     * 영수증 주소 조회 API
+     */
+    @GET("/order-review/available-review-order/")
+    fun getAvailableReviewList(@Header("Authorization") accessToken: String, @Path("page") page: Int): Call<BaseModel<MyPageOrderReview>>
 
 
 }

@@ -220,6 +220,10 @@
         <item name="android:progressDrawable">@drawable/selector_ratingbar_review</item>
     </style>
 
+    <style name="ReviewRatingBigStyle" parent="Widget.AppCompat.RatingBar">
+        <item name="android:progressDrawable">@drawable/selector_ratingbarbig_review</item>
+    </style>
+
     <!-- Payment -->
     <style name="PaymentTitleBlackTextStyle" parent="@style/TextBold">
         <item name="android:textSize">@dimen/text_15</item>

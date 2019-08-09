@@ -16,11 +16,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.auth0.android.jwt.Claim;
+import com.auth0.android.jwt.JWT;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -37,6 +38,7 @@ import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.data.model.Token;
 import io.temco.guhada.view.activity.CartActivity;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
@@ -319,5 +321,25 @@ public class CommonUtil {
         }
     }
 
+
+    public static Boolean checkToken() {
+        Token token = Preferences.getToken();
+        if(token == null) return false;
+        else{
+            int current = (int) (System.currentTimeMillis() / 1000L);
+            try{
+                Claim exp = new JWT(token.getAccessToken()).getClaim("exp");
+                if (exp.asInt() > current) {
+                    return true;
+                } else {
+                    Preferences.clearToken();
+                    return false;
+                }
+            }catch (Exception e){
+                Preferences.clearToken();
+                return false;
+            }
+        }
+    }
 
 }

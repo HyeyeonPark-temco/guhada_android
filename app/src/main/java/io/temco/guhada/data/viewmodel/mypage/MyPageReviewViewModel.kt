@@ -1,7 +1,30 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
+import androidx.lifecycle.LiveData
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import io.temco.guhada.R
+import io.temco.guhada.BR
+import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.SingleLiveEvent
+import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.review.MyPageOrderReview
+import io.temco.guhada.data.model.review.MyPageReview
+import io.temco.guhada.data.model.review.MyPageReviewBase
+import io.temco.guhada.data.model.review.MyPageReviewContent
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import io.temco.guhada.view.adapter.mypage.MyPageReviewAdapter
 
 /**
  * 19.07.22
@@ -13,8 +36,233 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
         ○ 상품 리뷰 userAPI 참고해서 작업하면됨
  *
  */
-class MyPageReviewViewModel (val context : Context) : BaseObservableViewModel() {
+class MyPageReviewViewModel (val context : Context, val mLoadingIndicatorUtil: LoadingIndicatorUtil) : BaseObservableViewModel() {
+    val mRequestManager: RequestManager by lazy { Glide.with(context) }
+
+    val INIT_PAGE_NUMBER = 0
+    private var repository = MyPageReviewRepository(this@MyPageReviewViewModel)
+    private val _listAvailableReviewOrder : SingleLiveEvent<ArrayList<MyPageReviewBase>> = repository.getAvailableReviewOrderList()
+    private val _listUserMyPageReview : SingleLiveEvent<ArrayList<MyPageReviewBase>> = repository.getUserMyPageReviewList()
+
+    val listAvailableReviewOrder : LiveData<ArrayList<MyPageReviewBase>> get() = _listAvailableReviewOrder
+    val listUserMyPageReview : LiveData<ArrayList<MyPageReviewBase>> get() = _listUserMyPageReview
+
+    private val adapterAvailable= MyPageReviewAdapter(this,listAvailableReviewOrder.value!!)
+    private val adapterReview = MyPageReviewAdapter(this,listUserMyPageReview.value!!)
+
+    fun getAvailableAdapter() = adapterAvailable
+    fun getReviewAdapter() = adapterReview
+
+    var tab1CurrentPage = INIT_PAGE_NUMBER
+    var tab2CurrentPage = INIT_PAGE_NUMBER
+
+    var mypageReviewTabVisibleSwitch = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mypageReviewTabVisibleSwitch)
+        }
+
+    var tab1EmptyViewVisible = ObservableBoolean(true)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.tab1EmptyViewVisible)
+        }
+
+    var tab2EmptyViewVisible = ObservableBoolean(true)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.tab2EmptyViewVisible)
+        }
+
+    var mypageReviewtab1Title = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mypageReviewtab1Title)
+        }
+
+    var mypageReviewtab2Title = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mypageReviewtab2Title)
+        }
 
 
+    fun reloadRecyclerView(listener : OnSwipeRefreshResultListener){
+        if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "reloadRecyclerView ", "init -----")
+        if(mypageReviewTabVisibleSwitch.get() == 0){
+            tab1CurrentPage = INIT_PAGE_NUMBER
+            //adapter.items?.run{ clear() }
+            //repository.setInitAvailableReviewOrderList(1,listener)
+            listener?.onResultCallback()
+        }else{
+            tab2CurrentPage = INIT_PAGE_NUMBER
+            adapterReview.items?.run{ clear() }
+            repository.setInitUserMyPageReviewList(tab2CurrentPage,listener)
+        }
+    }
+
+    fun clickTab(tabIndex : Int){
+        mypageReviewTabVisibleSwitch.set(tabIndex)
+    }
+
+    fun getMoreTab1List() {
+        tab1CurrentPage += 1
+        repository.getAvailableReviewOrderMore(tab1CurrentPage,null)
+    }
+
+    fun getMoreTab2List() {
+        tab2CurrentPage += 1
+        repository.getUserMyPageReviewMore(tab2CurrentPage,null)
+    }
+
+    fun deleteMyReview(productId : Long, reviewId : Long, listener : OnCallBackListener){
+        repository.deleteReview(productId, reviewId, listener)
+    }
+
+}
+
+
+
+class MyPageReviewRepository(val model : MyPageReviewViewModel){
+    private var availableReviewOrderList = SingleLiveEvent<ArrayList<MyPageReviewBase>>()
+    private var userMyPageReviewList = SingleLiveEvent<ArrayList<MyPageReviewBase>>()
+
+    fun getAvailableReviewOrderList() : SingleLiveEvent<ArrayList<MyPageReviewBase>> {
+        if (availableReviewOrderList.value.isNullOrEmpty()){
+            availableReviewOrderList.value = ArrayList()
+            //setInitAvailableReviewOrderList(INIT_PAGE_NUMBER,null)
+        }
+        return availableReviewOrderList
+    }
+
+    fun setInitAvailableReviewOrderList(page : Int, listener: OnSwipeRefreshResultListener?){
+        getAvailableReviewOrderMore(page,listener)
+    }
+
+
+    fun getAvailableReviewOrderMore(page : Int, listener: OnSwipeRefreshResultListener?){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (it != null){
+                        UserServer.getMypageReviewList(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        /*if(!availableReviewOrderList.value.isNullOrEmpty() && availableReviewOrderList.value!!.get(availableReviewOrderList.value!!.size-1).isMoreList){
+                                            availableReviewOrderList.value!!.removeAt(availableReviewOrderList.value!!.size-1)
+                                        }*/
+                                        var startRange = model.getAvailableAdapter().items.size
+                                        var data = (o as BaseModel<*>).data as MyPageReview
+                                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "setInitData ", o)
+                                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "setInitData ", "init ----- list",data)
+                                        model.mypageReviewtab1Title.set(data.totalElements)
+                                        if(startRange == 0){
+                                            model.getAvailableAdapter().notifyDataSetChanged()
+                                        }else{
+                                            model.getAvailableAdapter().notifyItemRangeChanged(startRange, model.getAvailableAdapter().items.size)
+                                        }
+                                        listener?.onResultCallback()
+                                    },
+                                    dataNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "setInitData dataNotFoundTask ") },
+                                    failedTask = {
+                                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "setInitData failedTask ",o.toString())
+                                        listener?.onResultCallback()
+                                    },
+                                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "setInitData userLikeNotFoundTask ") },
+                                    serverRuntimeErrorTask = {  if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "setInitData serverRuntimeErrorTask ") },
+                                    dataIsNull = {listener?.onResultCallback()}
+                            )
+                        }, accessToken = it, page = page, size = 4)
+                    }
+                }, invalidTokenTask = {  if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "setInitData invalidTokenTask ") })
+    }
+
+
+    fun getUserMyPageReviewList() : SingleLiveEvent<ArrayList<MyPageReviewBase>> {
+        if (userMyPageReviewList.value.isNullOrEmpty()){
+            userMyPageReviewList.value = ArrayList()
+            setInitUserMyPageReviewList(model.INIT_PAGE_NUMBER,null)
+        }
+        return userMyPageReviewList
+    }
+
+    fun setInitUserMyPageReviewList(page : Int, listener: OnSwipeRefreshResultListener?){
+        getUserMyPageReviewMore(page, listener)
+    }
+
+    fun getUserMyPageReviewMore(page : Int, listener: OnSwipeRefreshResultListener?){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (it != null){
+                        UserServer.getMypageReviewList(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        if(!userMyPageReviewList.value.isNullOrEmpty() && userMyPageReviewList.value!!.get(userMyPageReviewList.value!!.size-1).isMoreList){
+                                            userMyPageReviewList.value!!.removeAt(userMyPageReviewList.value!!.size-1)
+                                        }
+                                        var startRange = model.getReviewAdapter().items.size
+                                        var data = (o as BaseModel<*>).data as MyPageReview
+                                        model.mypageReviewtab2Title.set(data.totalElements)
+                                        userMyPageReviewList.value!!.addAll(data.content)
+                                        if(data.totalPages > data.pageable.pageNumber+1){
+                                            var more = MyPageReviewContent()
+                                            more.isMoreList = true
+                                            userMyPageReviewList.value!!.add(more)
+                                        }
+                                        model.tab2EmptyViewVisible.set(false)
+
+                                        if(startRange == 0){
+                                            model.getReviewAdapter().notifyDataSetChanged()
+                                        }else{
+                                            model.getReviewAdapter().notifyItemRangeChanged(startRange, model.getReviewAdapter().items.size)
+                                        }
+
+                                        listener?.onResultCallback()
+                                    },
+                                    dataNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getUserMyPageReviewMore dataNotFoundTask ") },
+                                    failedTask = {
+                                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getMypageReviewList failedTask ",o.toString())
+                                        listener?.onResultCallback()
+                                    },
+                                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getUserMyPageReviewMore userLikeNotFoundTask ") },
+                                    serverRuntimeErrorTask = {  if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getUserMyPageReviewMore serverRuntimeErrorTask ") },
+                                    dataIsNull = {listener?.onResultCallback()}
+                            )
+                        }, accessToken = it, page = page, size = 4)
+                    }
+                }, invalidTokenTask = {  if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getUserMyPageReviewMore invalidTokenTask ") })
+    }
+
+
+    fun deleteReview(productId : Long, reviewId : Long, listener : OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (it != null){
+                        UserServer.deleteReviewData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var data = (o as BaseModel<*>).data as Any
+                                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "deleteReview failedTask ",data.toString())
+                                        listener.callBackListener(true,data)
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false,"dataNotFoundTask") },
+                                    failedTask = { listener.callBackListener(false,"failedTask") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false,"userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = {  listener.callBackListener(false,"serverRuntimeErrorTask") },
+                                    dataIsNull = { listener.callBackListener(false,"dataIsNull") }
+                            )
+                        }, accessToken = it, productId = productId, reviewId = reviewId)
+                    }
+                }, invalidTokenTask = {  listener.callBackListener(false,"invalidTokenTask") })
+    }
 
 }

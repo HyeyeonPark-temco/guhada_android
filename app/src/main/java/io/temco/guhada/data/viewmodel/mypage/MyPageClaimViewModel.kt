@@ -4,8 +4,11 @@ import android.content.Context
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.google.gson.JsonObject
 import io.temco.guhada.BR
 import io.temco.guhada.common.listener.OnServerListener
@@ -29,6 +32,7 @@ import io.temco.guhada.view.adapter.mypage.MyPageClaimAdapter
  *
  */
 class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
+    val mRequestManager: RequestManager by lazy { Glide.with(context) }
     private var repository = MyPageCliamRepository(context)
     //private val handler : Handler = Handler(context.mainLooper)
 
@@ -40,6 +44,16 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
 
     private var selectClaimStatusFilter = 0
     var selectedIndex = 0
+
+
+    var emptyClaimVisible = ObservableBoolean(false) // ObservableInt(View.GONE)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.emptyClaimVisible)
+        }
+
 
 
     fun reloadRecyclerView(listener : OnSwipeRefreshResultListener?){

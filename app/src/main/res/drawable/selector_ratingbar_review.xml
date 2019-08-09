@@ -6,7 +6,7 @@
         android:drawable="@drawable/detail_icon_review_bad"/>
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/detail_icon_review_good"/>
+        android:drawable="@drawable/detail_icon_review_bad"/>
     <item
         android:id="@android:id/progress"
         android:drawable="@drawable/detail_icon_review_good"/>

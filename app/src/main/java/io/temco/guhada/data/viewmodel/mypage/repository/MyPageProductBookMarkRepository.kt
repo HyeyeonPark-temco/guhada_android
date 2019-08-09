@@ -28,7 +28,7 @@ class MyPageProductBookMarkRepository (val model : MyPageBookMarkViewModel) {
 
 
     fun setInitData(listener: OnSwipeRefreshResultListener?) {
-        getMyBookMarkProductList(0,listener)
+        getMyBookMarkProductList(1,listener)
     }
 
 
@@ -42,17 +42,24 @@ class MyPageProductBookMarkRepository (val model : MyPageBookMarkViewModel) {
                                         if(!list.value.isNullOrEmpty() && list.value!!.get(list.value!!.size-1).dealId < 0){
                                             list.value!!.removeAt(list.value!!.size-1)
                                         }
+                                        var startRange = model.getListAdapter().items.size
                                         var data = (o as BaseModel<*>).data as BookMarkProduct
                                         if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData ", "init ----- list",data)
                                         model.totalElement.set(data.totalElements.toString())
                                         list.value!!.addAll(data.deals)
-                                        if(data.totalPage > page+1){
+                                        if(data.totalPage > page){
                                             var moreDeal = Deal()
                                             moreDeal.dealId = -999
                                             list.value!!.add(moreDeal)
                                         }
                                         list!!.value = list!!.value
+                                        if(startRange == 0){
+                                            model.getListAdapter().notifyDataSetChanged()
+                                        }else{
+                                            model.getListAdapter().notifyItemRangeChanged(startRange, model.getListAdapter().items.size)
+                                        }
                                         listener?.onResultCallback()
+
                                     },
                                     dataNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData dataNotFoundTask ") },
                                     failedTask = {

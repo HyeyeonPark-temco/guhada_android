@@ -6,6 +6,8 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.BR
 import io.temco.guhada.common.Type
@@ -32,6 +34,7 @@ import io.temco.guhada.view.adapter.mypage.MyPageDealListAdapter
  *
  */
 class MyPageBookMarkViewModel (val context : Context, var mDisposable : CompositeDisposable) : BaseObservableViewModel() {
+    val mRequestManager: RequestManager by lazy { Glide.with(context) }
     val db : GuhadaDB = GuhadaDB.getInstance(this.context as Activity)!!
     var repository: MyPageProductBookMarkRepository = MyPageProductBookMarkRepository(this)
 
@@ -40,7 +43,7 @@ class MyPageBookMarkViewModel (val context : Context, var mDisposable : Composit
 
     val listData : LiveData<ArrayList<Deal>> get() = _listData
 
-    var currentPage : Int = 0
+    var currentPage : Int = 1
 
     var totalElement = ObservableField("0") // ObservableInt(View.GONE)
         @Bindable

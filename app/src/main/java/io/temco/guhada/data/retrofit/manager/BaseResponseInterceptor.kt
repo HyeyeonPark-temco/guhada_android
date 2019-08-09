@@ -19,7 +19,7 @@ import okhttp3.ResponseBody
  *  BaseModel 에 맞춰서 Json Data를 재생성한다
  *
  */
-class BaseResponseInterceptor() : Interceptor {
+class BaseResponseInterceptor : Interceptor {
     val JSON = MediaType.parse("application/json; charset=utf-8")
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -27,51 +27,64 @@ class BaseResponseInterceptor() : Interceptor {
         val response = chain.proceed(request)
 
         val body : ResponseBody  = response.body()!!
+        val code = response.code()
 
         val parser = JsonParser()
         val bodyString = body.string()
         body.close()
-        val json = parser.parse(bodyString)
+        try{
+            val json = parser.parse(bodyString)
 
-        var model = JsonObject()
-        json?.let {
-            val jsonObject: JsonObject = it.asJsonObject
-            model.addProperty("result", if (jsonObject.has("result")) jsonObject.get("result").asString else "")
-            model.addProperty("message", if (jsonObject.has("message")) jsonObject.get("message").asString else "")
-            model.addProperty("resultCode", if (jsonObject.has("resultCode")) jsonObject.get("resultCode").asInt else -1)
+            var model = JsonObject()
+            json?.let {
+                val jsonObject: JsonObject = it.asJsonObject
+                model.addProperty("result", if (jsonObject.has("result")) jsonObject.get("result").asString else "")
+                model.addProperty("message", if (jsonObject.has("message")) jsonObject.get("message").asString else "")
+                model.addProperty("resultCode", if (jsonObject.has("resultCode")) jsonObject.get("resultCode").asInt else -1)
 
-            if (model.get("resultCode").asInt in 200..400) {
-                if (jsonObject.has("data")) {
-                    if(jsonObject.get("data").isJsonArray){
-                        model.add("data",JsonObject())
-                        model.add("list", if(jsonObject.has("data")) jsonObject.get("data").asJsonArray else JsonArray())
-                    }else if(jsonObject.get("data").isJsonObject){
-                        model.add("data", if (jsonObject.has("data")) jsonObject.get("data").asJsonObject else JsonObject())
-                        model.add("list", JsonArray())
-                    }else {
-                        var newData = JsonObject()
-                        newData.add("data",jsonObject.get("data"))
-                        model.add("data",newData)
-                        model.add("list", JsonArray())
+                if (model.get("resultCode").asInt in 200..400) {
+                    if (jsonObject.has("data")) {
+                        if(jsonObject.get("data").isJsonArray){
+                            model.add("data",JsonObject())
+                            model.add("list", if(jsonObject.has("data")) jsonObject.get("data").asJsonArray else JsonArray())
+                        }else if(jsonObject.get("data").isJsonObject){
+                            model.add("data", if (jsonObject.has("data")) jsonObject.get("data").asJsonObject else JsonObject())
+                            model.add("list", JsonArray())
+                        }else {
+                            var newData = JsonObject()
+                            newData.add("data",jsonObject.get("data"))
+                            model.add("data",newData)
+                            model.add("list", JsonArray())
+                        }
                     }
-                }
-            } else {
-                if (jsonObject.has("data")) {
-                    model.add("data",JsonObject())
-                    model.add("list", JsonArray())
-                    if(jsonObject.get("data").isJsonObject){
-                        model.addProperty("error", jsonObject.getAsJsonObject("data").toString())
-                    }else{
-                        if(!jsonObject.get("data").isJsonNull){
+                } else {
+                    if (jsonObject.has("data")) {
+                        model.add("data",JsonObject())
+                        model.add("list", JsonArray())
+                        if(jsonObject.get("data").isJsonObject){
                             model.addProperty("error", jsonObject.getAsJsonObject("data").toString())
                         }else{
-                            model.addProperty("error",if (jsonObject.has("message")) jsonObject.get("message").asString else "")
+                            if(!jsonObject.get("data").isJsonNull){
+                                model.addProperty("error", jsonObject.getAsJsonObject("data").toString())
+                            }else{
+                                model.addProperty("error",if (jsonObject.has("message")) jsonObject.get("message").asString else "")
+                            }
                         }
                     }
                 }
             }
+            val newResponse = response.newBuilder().body(ResponseBody.create(JSON, model.toString()))
+            return newResponse.build()
+        }catch (e : Exception){
+            var model = JsonObject()
+            model.addProperty("result", "")
+            model.addProperty("message",  bodyString)
+            model.addProperty("resultCode", code)
+            model.add("data",JsonObject())
+            model.add("list", JsonArray())
+            model.addProperty("error", bodyString)
+            val newResponse = response.newBuilder().body(ResponseBody.create(JSON, model.toString()))
+            return newResponse.build()
         }
-        val newResponse = response.newBuilder().body(ResponseBody.create(JSON, model.toString()))
-        return newResponse.build()
     }
 }

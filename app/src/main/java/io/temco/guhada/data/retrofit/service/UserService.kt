@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
+import io.temco.guhada.data.model.review.MyPageReview
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.seller.Seller
@@ -280,6 +281,29 @@ interface UserService {
      */
     @DELETE("/users/bookmarks")
     fun deleteBookMarkAll(@Header("Authorization") accessToken: String, @Query("target") target: String): Call<BaseModel<Any>>
+
+
+    /**
+     * 마이페이지 내가 작성한 리뷰 목록
+     *
+     * park jungho
+     * 19.08.08
+     */
+    @GET("/users/my-page/reviews")
+    fun getMypageReviewList(@Header("Authorization") accessToken: String, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<MyPageReview>>
+
+
+    /**
+     * 마이페이지 내가 작성한 리뷰 삭제
+     *
+     * park jungho
+     * 19.08.09
+     */
+    @DELETE("/products/{productId}/reviews/{reviewId}")
+    fun deleteReviewData(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Long): Call<BaseModel<Any>>
+
+
+
 
 
 

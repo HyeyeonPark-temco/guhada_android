@@ -450,7 +450,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun setBrandProductList(brand: Brand) {
-        mainListener.setBrandProductList(brand)
+        CommonUtil.startBrandScreen(context as Activity, brand, false)
+        //mainListener.setBrandProductList(brand)
     }
 
     /**

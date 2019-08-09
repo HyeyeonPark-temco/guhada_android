@@ -28,6 +28,8 @@ public class Flag {
         public static final int SEARCH_WORD = 10017;
         public static final int SIDE_MENU = 10018;
         public static final int SIDE_MENU_FROM_PRODUCT_FILTER = 10019;
+        public static final int REVIEW_WRITE = 10020;
+        public static final int REVIEW_MODIFY = 10021;
     }
 
     public static class ResultCode {

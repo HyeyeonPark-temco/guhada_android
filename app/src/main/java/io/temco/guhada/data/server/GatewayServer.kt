@@ -1,25 +1,18 @@
 package io.temco.guhada.data.server
 
-import android.widget.Toast
 import com.google.gson.Gson
-import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.BookMarkProduct
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.GatewayService
-import io.temco.guhada.data.retrofit.service.UserService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class GatewayServer {
 
@@ -34,7 +27,7 @@ class GatewayServer {
         @JvmStatic
         fun getBookMarkProduct(listener: OnServerListener, accessToken : String, page: Int) {
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
-                    .getBookMarkProduct(accessToken, page, 10).enqueue(object : Callback<BaseModel<BookMarkProduct>> {
+                    .getBookMarkProduct(accessToken, page, 4).enqueue(object : Callback<BaseModel<BookMarkProduct>> {
                         override fun onResponse(call: Call<BaseModel<BookMarkProduct>>, response: Response<BaseModel<BookMarkProduct>>) {
                             if(response.code() in 200..400 && response.body() != null){
                                 listener.onResult(true, response.body())

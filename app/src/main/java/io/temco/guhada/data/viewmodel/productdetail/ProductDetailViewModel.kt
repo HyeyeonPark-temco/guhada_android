@@ -240,8 +240,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 this.id = product.value?.brandId ?: 0
                 this.nameDefault = product.value?.brandName
             }.let { brand ->
-                listener?.closeActivity()
                 listener?.setBrandProductList(brand)
+                /*listener?.closeActivity()
+                listener?.setBrandProductList(brand)*/
             }
         } else {
             listener?.showMessage("일시적인 오류입니다. 다시 시도해주세요.")

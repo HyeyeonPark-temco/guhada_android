@@ -108,7 +108,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             }
 
             // Product
-            ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageviewMypageclaimlistProduct, data.item.imageUrl)
+            ImageUtil.loadImage((this@MyPageClaimAdapter.model as MyPageClaimViewModel).mRequestManager, binding.imageviewMypageclaimlistProduct, data.item.imageUrl)
             binding.imageviewMypageclaimlistProduct.contentDescription = data.item.dealId.toString()
             binding.imageviewMypageclaimlistProduct.setOnClickListener {
                 var id = it.contentDescription.toString().toLong()

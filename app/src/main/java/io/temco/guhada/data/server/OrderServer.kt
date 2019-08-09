@@ -1,16 +1,21 @@
 package io.temco.guhada.data.server
 
+import com.google.gson.Gson
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
+import io.temco.guhada.data.model.review.MyPageOrderReview
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.OrderService
 import retrofit2.Call
@@ -198,6 +203,43 @@ class OrderServer {
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getReceiptUrl(tId).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
+
+
+
+        /**
+         * 마이페이지 내가 작성가능한 주문목록
+         */
+        @JvmStatic
+        fun getMypageReviewAvailableList(listener: OnServerListener, accessToken: String, page: Int, size : Int) {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true)
+                    .getAvailableReviewList(accessToken, page).enqueue(object : Callback<BaseModel<MyPageOrderReview>> {
+                        override fun onResponse(call: Call<BaseModel<MyPageOrderReview>>, response: Response<BaseModel<MyPageOrderReview>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag) CustomLog.L("getMypageReviewList","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<MyPageOrderReview>>, t: Throwable) {
+                            if(CustomLog.flag) CustomLog.L("getMypageReviewList","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
 
     }
 }

@@ -22,7 +22,6 @@ class MyPageCliamRepository (val context : Context) {
         return list
     }
 
-
     fun setInitData(status : Int, listener : OnSwipeRefreshResultListener?) {
         getMoreClaimList(status, listener)
     }
@@ -65,6 +64,11 @@ class MyPageCliamRepository (val context : Context) {
                     },
                     serverLoginErrorTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverLoginErrorTask")
+                    },
+                    dataIsNull = {
+                        list.value = ArrayList()
+                        list.value = list.value
+                        listener?.run { onResultCallback() }
                     }
             )
         },nextPage,statusValue)

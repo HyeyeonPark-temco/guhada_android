@@ -86,7 +86,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 }
                 binding.linearlayoutMypageproductlistadapterItemlayout.visibility = View.VISIBLE
                 var url = data.imageUrls!![0]
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, url)
+                ImageUtil.loadImage((this@MyPageProductListAdapter.model as MyPageRecentViewModel).mRequestManager, binding.imageThumb, url)
 
                 // Brand
                 binding.textBrand.setText(data.brandName)

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="@string/findid_result_title1"
             android:textColor="@color/black_two"
-            android:textSize="15sp" />
+            android:textSize="@dimen/text_15" />
 
         <LinearLayout
             android:layout_width="match_parent"

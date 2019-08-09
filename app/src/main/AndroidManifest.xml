@@ -159,16 +159,25 @@
             android:name=".view.activity.ReceiptActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Search -->
         <activity
             android:name=".view.activity.SearchWordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
 
+        <!-- SideMenu -->
         <activity
             android:name=".view.activity.SideMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <!-- Review Write Modify -->
+        <activity
+            android:name=".view.activity.ReviewWriteActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleBarDialog"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".view.activity.ProductFilterListActivity"

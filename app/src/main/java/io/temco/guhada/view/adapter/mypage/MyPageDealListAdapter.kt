@@ -83,7 +83,7 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
                     CommonUtil.startProductActivity(containerView.context as Activity, id)
                 }
                 binding.linearlayoutMypageproductlistadapterItemlayout.visibility = View.VISIBLE
-                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, data.productImage.url)
+                ImageUtil.loadImage((this@MyPageDealListAdapter.model as MyPageBookMarkViewModel).mRequestManager, binding.imageThumb, data.productImage.url)
 
                 // Brand
                 binding.textBrand.setText(data.brandName)

@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="onClickCloseButton"
+            type="android.view.View.OnClickListener" />
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ReviewWriteViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_reivewwrite_parent"
+        android:layout_width="match_parent"
+        android:minWidth="320dp"
+        android:weightSum="1"
+        android:layout_height="match_parent"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="67dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/common_white"
+                android:paddingTop="30dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    style="@style/HeaderTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.modifyReviewStatus ? @string/review_modity_title : @string/review_write_title}"
+                    android:layout_marginLeft="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/button_header_back"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:onClick="@{onClickCloseButton}"
+                    android:src="@drawable/bag_icon_delete"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@color/black_four"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include android:id="@+id/product_item_layout"
+                    layout="@layout/product_item_layout"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@color/disable_border"/>
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/review_activity_rating1" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/ratingbar_reviewwriteactivity_star"
+                    style="@style/ReviewRatingBigStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:numStars="5"
+                    android:stepSize="0.5"/>
+
+                <!-- size -->
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/review_activity_desc1" />
+
+                <LinearLayout
+                    android:layout_width="294dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:weightSum="3"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:paddingLeft="40dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="1"
+                            android:onClick="@{()-> viewModel.clickReviewSelectStatus1(0)}"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus1 == 0 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus1 == 0 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc1_size1" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> viewModel.clickReviewSelectStatus1(1)}"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="2"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus1 == 1 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus1 == 1 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc1_size2" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> viewModel.clickReviewSelectStatus1(2)}"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:paddingRight="40dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus1 == 2 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus1 == 2 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc1_size3" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- size end -->
+
+
+                <!-- color -->
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/review_activity_desc2" />
+
+                <LinearLayout
+                    android:layout_width="294dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:weightSum="3"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:paddingLeft="40dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="1"
+                            android:onClick="@{()-> viewModel.clickReviewSelectStatus2(0)}"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus2 == 0 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus2 == 0 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc2_color1" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> viewModel.clickReviewSelectStatus2(1)}"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="2"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus2 == 1 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus2 == 1 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc2_color2" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> viewModel.clickReviewSelectStatus2(2)}"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:paddingRight="40dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus2 == 2 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus2 == 2 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc2_color3" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- color end -->
+
+
+
+                <!-- length -->
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/review_activity_desc3" />
+
+                <LinearLayout
+                    android:layout_width="294dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:weightSum="3"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:paddingLeft="40dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="1"
+                            android:onClick="@{()-> viewModel.clickReviewSelectStatus3(0)}"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus3 == 0 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus3 == 0 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc3_length1" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> viewModel.clickReviewSelectStatus3(1)}"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="2"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus3 == 1 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus3 == 1 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc3_length2" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="@{()-> viewModel.clickReviewSelectStatus3(2)}"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="22dp"
+                            android:paddingRight="40dp"
+                            android:gravity="center_vertical"
+                            android:weightSum="1"
+                            android:orientation="horizontal">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp"
+                                android:layout_weight="1"
+                                android:background="@color/white_four"/>
+                            <View
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:background="@{viewModel.reviewSelectStatus3 == 2 ? @drawable/round_bg_selected : @drawable/round_bg_select_none, default=@drawable/round_bg_select_none}" />
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:textColor="@{viewModel.reviewSelectStatus3 == 2 ? @color/blue_purple : @color/warm_grey_two, default=@color/warm_grey_two}"
+                            android:textSize="@dimen/text_12"
+                            android:text="@string/review_activity_desc3_length3" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!-- length end -->
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/white_three"
+                    android:padding="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            style="@style/PaymentContentGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/text_13"
+                            android:text="리뷰 직접 입력" />
+
+                        <ImageView
+                            android:id="@+id/imageview_payment_shippingmemo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <EditText
+                    android:id="@+id/edittext_reviewwrite_text"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:padding="15dp"
+                    android:gravity="start"
+                    android:background="@drawable/drawable_border_dsix"
+                    android:hint="@string/review_activity_edittext_hint"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
+                    android:textColorHint="@color/text_7"
+                    android:textSize="@dimen/text_14" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="1"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/pic_icon"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="@string/review_activity_pic"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/blue_purple"
+                        android:textSize="@dimen/text_13" />
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/1000"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/disable_border"/>
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/review_activity_desc_end"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:weightSum="2"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_addshippingaddress_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="3dp"
+                android:text="취소"
+                android:background="@color/greyish_brown_two"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18" />
+
+            <Button
+                android:id="@+id/button_addshippingaddress_confirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:text="등록"
+                android:background="@color/common_blue_purple"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -84,7 +84,6 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
 
 
     override fun onClick(v: View) {
-        if(CustomLog.flag)CustomLog.L("SideMenuActivity","onClick",v.id)
         when (v.id) {
             ////////////////////////////////////////////////
             // Side Menu
@@ -116,9 +115,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
 
     private fun checkLogin() {
         if (checkToken()) {
+            if(CustomLog.flag)CustomLog.L("SideMenuActivity","checkLogin",true)
             changeLoginStatus(true)
         } else {
             // startLoginActivity();
+            if(CustomLog.flag)CustomLog.L("SideMenuActivity","onClick",false)
             changeLoginStatus(false)
         }
     }
@@ -147,6 +148,8 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         val token = Preferences.getToken() ?: return false
         val current = (System.currentTimeMillis() / 1000L).toInt()
         val exp = JWT(token.accessToken!!).getClaim("exp").asInt()!!
+        if(CustomLog.flag)CustomLog.L("SideMenuActivity","checkToken exp",exp)
+        if(CustomLog.flag)CustomLog.L("SideMenuActivity","checkToken current",current)
         if (exp > current) {
             return true
         } else {

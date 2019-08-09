@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.RequestManager
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
@@ -59,7 +60,6 @@ class MyPageBookMarkLayout constructor(
                         if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "observe it ", it.size)
                         if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "observe items ", mViewModel.getListAdapter().items.size)
                         mViewModel.emptyViewVisible.set(false)
-                        mViewModel.getListAdapter().notifyDataSetChanged()
                     }
                 }
         )

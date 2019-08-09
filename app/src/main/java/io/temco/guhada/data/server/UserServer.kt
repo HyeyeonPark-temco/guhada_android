@@ -1,5 +1,6 @@
 package io.temco.guhada.data.server
 
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
@@ -8,8 +9,11 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.naver.NaverResponse
+import io.temco.guhada.data.model.review.MyPageReview
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.seller.Seller
@@ -407,6 +411,80 @@ class UserServer {
                     }
             )
         }
+
+
+
+        /**
+         * 마이페이지 내가 작성한 리뷰 리스트
+         */
+        @JvmStatic
+        fun getMypageReviewList(listener: OnServerListener, accessToken: String, page: Int, size : Int) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .getMypageReviewList(accessToken, page,size).enqueue(object : Callback<BaseModel<MyPageReview>> {
+                        override fun onResponse(call: Call<BaseModel<MyPageReview>>, response: Response<BaseModel<MyPageReview>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag)CustomLog.L("getMypageReviewList","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag)CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<MyPageReview>>, t: Throwable) {
+                            if(CustomLog.flag)CustomLog.L("getMypageReviewList","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 마이페이지 내가 작성한 리뷰 리스트
+         */
+        @JvmStatic
+        fun deleteReviewData(listener: OnServerListener, accessToken: String, productId: Long, reviewId : Long) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .deleteReviewData(accessToken, productId,reviewId).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag)CustomLog.L("deleteReviewData","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag)CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if(CustomLog.flag)CustomLog.L("deleteReviewData","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
     }
 
 }
