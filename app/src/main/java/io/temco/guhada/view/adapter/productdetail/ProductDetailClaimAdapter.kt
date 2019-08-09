@@ -1,4 +1,4 @@
-package io.temco.guhada.view.adapter
+package io.temco.guhada.view.adapter.productdetail
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,11 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.data.model.claim.Claim
-import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.databinding.ItemProductdetailClaimBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
-class ClaimAdapter : RecyclerView.Adapter<ClaimAdapter.Holder>() {
+class ProductDetailClaimAdapter : RecyclerView.Adapter<ProductDetailClaimAdapter.Holder>() {
     private lateinit var context: Context
     private lateinit var parent: ViewGroup
     private var list: MutableList<Claim> = ArrayList()

@@ -277,10 +277,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-
             android:text="0"
             android:textSize="@dimen/text_20"
-            app:layout_constraintBottom_toTopOf="@+id/textview_deliverydetail_paymentprice_content"
             app:layout_constraintRight_toLeftOf="@+id/textview_deliverydetail_final1_content2"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line3"
             app:layout_constraintVertical_bias="0" />

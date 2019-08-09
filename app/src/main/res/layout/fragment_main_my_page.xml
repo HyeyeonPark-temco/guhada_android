@@ -60,7 +60,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- CONTENTS -->
-        <io.temco.guhada.view.custom.SwipeViewPager
+        <io.temco.guhada.view.custom.NonSwipeViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

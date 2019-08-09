@@ -1,7 +1,9 @@
 package io.temco.guhada.data.retrofit.service
 
+import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.point.PointSummary
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.coupon.CouponResponse
 import io.temco.guhada.data.model.point.Point
 import io.temco.guhada.data.model.point.PointHistory
 import retrofit2.Call
@@ -30,4 +32,11 @@ interface BenefitService {
     fun getPointHistories(@Header("Authorization") accessToken: String, @Query("charge") charge: Boolean,
                           @Query("historyStatus") historyStatus: String, @Query("orderType") orderType: String, @Query("sortType") sortType: String,
                           @Query("fromAt") fromAt: String, @Query("toAt") toAt: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int, @Query("userId") userId: Int): Call<BaseModel<PointHistory>>
+
+    /**
+     * 쿠폰 조회 API
+     */
+    @GET("/coupon/wallet")
+    fun getCoupons(@Header("Authorization") accessToken: String, @Query("isAvailable") isAvailable: Boolean, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<CouponResponse>>
+
 }
