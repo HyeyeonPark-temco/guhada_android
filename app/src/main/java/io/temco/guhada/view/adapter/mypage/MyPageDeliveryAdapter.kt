@@ -14,9 +14,9 @@ import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.DeliveryButton
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.activity.DeliveryDetailActivity
+import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -26,7 +26,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
     var list: MutableList<PurchaseOrder> = mutableListOf()
     var editShippingAddressTask: (purchaseId: Long) -> Unit = {}
-    var requestCancelOrderTask: (purchaseOrder:  PurchaseOrder) -> Unit = {}
+    var requestCancelOrderTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_delivery, parent, false))
     override fun getItemCount(): Int = list.size
@@ -53,6 +53,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             }
             mBinding.imageviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId) }
             mBinding.textviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId) }
+            mBinding.buttonDeliveryClaim.setOnClickListener { redirectWriteClaimActivity(item.productId) }
 
             mBinding.executePendingBindings()
         }
@@ -60,6 +61,12 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
         private fun redirectDeliveryDetailActivity(purchaseId: Long) {
             val intent = Intent(binding.root.context, DeliveryDetailActivity::class.java)
             intent.putExtra("purchaseId", purchaseId)
+            binding.root.context.startActivity(intent)
+        }
+
+        private fun redirectWriteClaimActivity(productId: Long) {
+            val intent = Intent(binding.root.context, WriteClaimActivity::class.java)
+            intent.putExtra("productId", productId)
             binding.root.context.startActivity(intent)
         }
 
