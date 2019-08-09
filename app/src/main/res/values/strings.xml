@@ -71,6 +71,8 @@
     <string name="common_minus">-</string>
     <string name="common_plus">+</string>
 
+    <string name="common_dot">・</string>
+
     <!-- ORDER SHIPPING -->
     <string name="order_shipping_deposit_confirm">Ordered</string>
     <string name="order_shipping_payment_complete">Paid</string>
@@ -776,7 +778,8 @@
 
     <!-- MYPAGE COUPON -->
     <string name="mypagecoupon_tab_enabled">사용 가능 쿠폰 %d장</string>
-    <string name="mypagecoupon_tab_diabled">사용완료 ・ 기간만료 쿠폰</string>
+    <string name="mypagecoupon_tab_enabled_temp">사용 가능 쿠폰</string>
+    <string name="mypagecoupon_tab_disabled">사용완료 ・ 기간만료 쿠폰</string>
     <string name="mypagecoupon_more">더보기</string>
     <string name="mypagecoupon_add_title">쿠폰등록</string>
     <string name="mypagecoupon_add_description">구하다 프로모션 쿠폰 및 포인트 적립 쿠폰을 등록하세요.</string>
@@ -786,7 +789,11 @@
     <string name="mypagecoupon_enabled_empty">사용 가능한 쿠폰이 없습니다.</string>
     <string name="mypagecoupon_number">쿠폰번호</string>
     <string name="mypagecoupon_guhada">구하다 쿠폰</string>
-
+    <string name="mypagecoupon_expired">기간만료</string>
+    <string name="mypagecoupon_mincondition">%,2d원 이상 구매시</string>
+    <string name="mypagecoupon_duedate">%s ~ %s 까지</string>
+    <string name="mypagecoupon_dday">D-%d</string>
+    <string name="mypagecoupon_status_expired">EXPIRED</string>
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">ALL</string>

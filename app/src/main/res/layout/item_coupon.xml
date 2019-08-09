@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
@@ -19,6 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="4">
@@ -50,8 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="23dp"
                     android:layout_marginEnd="20dp"
-                    android:text="D-2"
-                    android:textColor="@color/brick"
+                    android:text="@{coupon.status == @string/mypagecoupon_status_expired ? @string/mypagecoupon_expired : @string/mypagecoupon_dday(2) }"
+                    android:textColor="@{coupon.status == @string/mypagecoupon_status_expired ? @color/warm_grey_two : @color/brick}"
                     android:textSize="@dimen/text_13"
                     app:layout_constraintHorizontal_bias="1"
                     app:layout_constraintLeft_toRightOf="@+id/textview_coupon_name"
@@ -84,6 +84,7 @@
                     android:textColor="@color/warm_grey"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_coupon_price" />
@@ -166,12 +167,13 @@
         <TextView
             android:id="@+id/textview_coupon_condition"
             style="@style/TextRegular"
+            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:text="・ 20,000원 이상 구매시"
+            android:text="@{@string/common_dot + @string/mypagecoupon_mincondition(coupon.minimumPrice)}"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_13"
+            android:visibility="@{coupon.minimumPrice != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintlayout_coupon" />
 
@@ -180,8 +182,8 @@
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@{ coupon.startAt + `~` + coupon.endAt }"
+            android:layout_marginTop="5dp"
+            android:text="@{@string/common_dot + @string/mypagecoupon_duedate(coupon.startAt, coupon.endAt) }"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toLeftOf="parent"

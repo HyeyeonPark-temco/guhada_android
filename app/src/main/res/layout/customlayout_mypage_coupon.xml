@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -29,23 +28,12 @@
                     android:id="@+id/tablayout_mypagecoupon"
                     style="@style/TabLayoutGreyStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp" />
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/mypagecoupon_tab_enabled" />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/mypagecoupon_tab_diabled" />
-                </com.google.android.material.tabs.TabLayout>
-
-                <androidx.viewpager.widget.ViewPager
+                <io.temco.guhada.view.custom.NonSwipeViewPager
                     android:id="@+id/viewpager_mypagecoupon"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

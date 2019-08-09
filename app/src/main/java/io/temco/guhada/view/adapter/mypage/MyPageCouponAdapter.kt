@@ -9,6 +9,11 @@ import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.databinding.ItemCouponBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 마이페이지 - 쿠폰 리스트 Adapter
+ * @author Hyeyeon Park
+ * @since 2019.08.08
+ */
 class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
     var list: MutableList<Coupon> = mutableListOf()
 
@@ -21,6 +26,12 @@ class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
     fun setItems(list: MutableList<Coupon>) {
         this.list = list
         notifyDataSetChanged()
+    }
+
+    fun addItems(list: MutableList<Coupon>) {
+        val prevSize = this.list.size
+        this.list.addAll(list)
+        notifyItemRangeInserted(prevSize, list.size - 1)
     }
 
     inner class Holder(binding: ItemCouponBinding) : BaseViewHolder<ItemCouponBinding>(binding.root) {

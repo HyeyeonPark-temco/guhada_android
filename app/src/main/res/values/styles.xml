@@ -263,7 +263,6 @@
         <item name="android:textColor">@color/warm_grey_two</item>
     </style>
 
-
     <style name="MainHomeListProductItemSellerRateTextStyle" parent="@style/TextBold">
         <item name="android:layout_width">20dp</item>
         <item name="android:layout_height">16dp</item>
@@ -272,7 +271,6 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/round_backgroud</item>
     </style>
-
 
     <style name="MainHomeListProductItemSellerNameTextStyle" parent="@style/TextThin">
         <item name="android:layout_width">wrap_content</item>

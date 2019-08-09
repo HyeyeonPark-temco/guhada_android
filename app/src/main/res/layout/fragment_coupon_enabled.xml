@@ -7,6 +7,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="isAvailable"
+            type="Boolean" />
+
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageCouponViewModel" />
     </data>
@@ -31,7 +35,8 @@
                 android:layout_marginTop="40dp"
                 android:text="@string/mypagecoupon_add_title"
                 android:textColor="@color/black_four"
-                android:textSize="@dimen/text_16" />
+                android:textSize="@dimen/text_16"
+                android:visibility="@{isAvailable ? View.VISIBLE : View.GONE}" />
 
             <TextView
                 style="@style/TextRegular"
@@ -40,19 +45,22 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/mypagecoupon_add_description"
                 android:textColor="@color/warm_grey"
-                android:textSize="@dimen/text_13" />
+                android:textSize="@dimen/text_13"
+                android:visibility="@{isAvailable ? View.VISIBLE : View.GONE}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/border_all_silver"
-                android:minHeight="45dp">
+                android:minHeight="45dp"
+                android:visibility="@{isAvailable ? View.VISIBLE : View.GONE}">
 
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@null"
+                    android:hint="@string/mypagecoupon_add_hint"
                     android:padding="13dp"
                     android:textColor="@color/black_four"
                     android:textColorHint="@color/warm_grey"
@@ -84,11 +92,12 @@
                 android:layout_marginTop="40dp"
                 android:text="@string/mypagecoupon_enabled_list"
                 android:textColor="@color/black_four"
-                android:textSize="@dimen/text_16" />
+                android:textSize="@dimen/text_16"
+                android:visibility="@{isAvailable ? View.VISIBLE : View.GONE}" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="20dp">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -96,39 +105,47 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintVertical_bias="0"
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:coupons = "@{viewModel.couponResponse.content}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0" />
 
-                <ImageView
-                    android:id="@+id/imageview_mypagecoupon_enabledlist_empty"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="80dp"
-                    android:src="@drawable/icon_no_data"
-                    android:visibility="@{viewModel.couponResponse.empty ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textview_mypagecoupon_enabledlist_empty"
-                    style="@style/CommonEmptyTextViewStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginBottom="80dp"
-                    android:text="@string/mypagecoupon_enabled_empty"
-                    android:visibility="@{viewModel.couponResponse.empty ? View.VISIBLE : View.GONE}"
+                    android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageview_mypagecoupon_enabledlist_empty" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imageview_mypagecoupon_enabledlist_empty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/icon_no_data"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textview_mypagecoupon_enabledlist_empty"
+                        style="@style/CommonEmptyTextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="13dp"
+                        android:text="@string/mypagecoupon_enabled_empty"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageview_mypagecoupon_enabledlist_empty" />
+                </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
@@ -137,7 +154,6 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/line_6"
-                android:visibility="@{viewModel.couponResponse.last ? View.GONE : View.VISIBLE}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -146,12 +162,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:onClick="@{()->viewModel.onClickMore(isAvailable)}"
                 android:orientation="horizontal"
                 android:paddingLeft="40dp"
                 android:paddingTop="15dp"
                 android:paddingRight="40dp"
-                android:paddingBottom="15dp"
-                android:visibility="@{viewModel.couponResponse.last ? View.GONE : View.VISIBLE}">
+                android:paddingBottom="15dp">
 
                 <TextView
                     android:id="@+id/textview_mypagecoupon_more"
