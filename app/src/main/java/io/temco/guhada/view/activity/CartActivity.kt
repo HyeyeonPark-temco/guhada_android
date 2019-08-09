@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -17,7 +17,6 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
@@ -65,14 +64,14 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             startActivity(intent)
         }
         mViewModel.cartResponse.observe(this, Observer {
-            mBinding.checkboxCartAll.isChecked = false
+            mViewModel.allChecked = ObservableBoolean(false)
             if (it.cartItemResponseList.isEmpty()) {
                 showEmptyView()
             } else {
                 if (mBinding.recyclerviewCartProduct.adapter != null)
                     (mBinding.recyclerviewCartProduct.adapter as CartProductAdapter).setItems(it.cartItemResponseList)
             }
-
+            mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         })
         mViewModel.cartOptionList.observe(this, Observer {
@@ -135,14 +134,6 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             if (isZero) layoutParams.setMargins(0, 0, 0, 0)
             else layoutParams.setMargins(0, marginTop.toInt(), 0, 0)
             view.layoutParams = layoutParams
-        }
-
-        @JvmStatic
-        @BindingAdapter("cart")
-        fun RecyclerView.setCartItems(list: MutableList<Cart>) {
-//            if (this.adapter != null) {
-//                (this.adapter as CartProductAdapter).setItems(list)
-//            }
         }
     }
 }

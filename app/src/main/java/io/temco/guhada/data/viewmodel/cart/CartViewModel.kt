@@ -69,6 +69,13 @@ class CartViewModel : BaseObservableViewModel() {
     // 선택 삭제 클릭
     var showDeleteDialog: () -> Unit = {}
 
+    var totalItemCount = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.totalItemCount)
+        }
 
     // CLICK EVENT
     fun onClickDiscountContent() {
@@ -85,6 +92,11 @@ class CartViewModel : BaseObservableViewModel() {
             allChecked = ObservableBoolean(checked)
             notifyPropertyChanged(BR.allChecked)
         }
+    }
+
+    fun onCheckedAll() {
+        allChecked = ObservableBoolean(!allChecked.get())
+        notifyPropertyChanged(BR.allChecked)
     }
 
     // 주문하기 버튼 클릭
@@ -203,14 +215,17 @@ class CartViewModel : BaseObservableViewModel() {
             OrderServer.deleteCartItem(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
+                            // 초기화
                             selectedCartItem = mutableListOf()
                             selectCartItemId = mutableListOf()
+                            allChecked = ObservableBoolean(false)
+                            notifyPropertyChanged(BR.allChecked)
                             notifyPropertyChanged(BR.selectCartItemId)
+
                             this.cartResponse.postValue(it.data as CartResponse)
                         })
             }, accessToken = accessToken, cartItemIdList = selectCartItemId.toIntArray())
         })
-
     }
 
     private fun setCartItemList(cartResponse: CartResponse) = this.cartResponse.postValue(cartResponse)
