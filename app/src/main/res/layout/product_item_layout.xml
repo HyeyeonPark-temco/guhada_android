@@ -85,7 +85,7 @@
                 style="@style/TextBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="8dp"
                 android:text="@{@string/common_priceunit_format(price)}"
                 android:textColor="@color/text_3"
                 android:textSize="@dimen/text_14" />
@@ -95,7 +95,7 @@
                 style="@style/TextRegularSingleLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="3dp"
                 android:text="@{deliveryComplete}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_13" />

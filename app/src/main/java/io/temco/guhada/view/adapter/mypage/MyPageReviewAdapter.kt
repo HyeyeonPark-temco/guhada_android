@@ -6,12 +6,14 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.ImageUtil
@@ -26,6 +28,7 @@ import io.temco.guhada.databinding.ItemMypageReviewListAvaiableBinding
 import io.temco.guhada.databinding.ItemMypageReviewListReviewBinding
 import io.temco.guhada.view.activity.ReviewWriteActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 
 
@@ -139,28 +142,33 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
                 binding.rating = item.review.getRating()
 
                 binding.setClickDelListener {
-                    if(model is MyPageReviewViewModel){
-                        model.mLoadingIndicatorUtil.show()
-                        var productId = item.order.productId
-                        var reviewId = item.review.id.toLong()
-                        model.deleteMyReview(productId, reviewId, object : OnCallBackListener{
-                            override fun callBackListener(resultFlag: Boolean, value: Any) {
-                                if(resultFlag){
-                                    items.removeAt(position)
-                                    if(model.getReviewAdapter().itemCount > 0){
-                                        model.getReviewAdapter().notifyItemChanged(position)
-                                    }else{
-                                        model.tab2EmptyViewVisible.set(true)
-                                    }
-                                    model.mypageReviewtab2Title.set(model.mypageReviewtab2Title.get()-1)
-                                }else{
-                                    ToastUtil.showMessage(value.toString())
+                    CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.review_activity_tab2_review_del_desc),
+                            cancelButtonVisible = true,
+                            confirmTask = {
+                                if(model is MyPageReviewViewModel){
+                                    model.mLoadingIndicatorUtil.show()
+                                    var productId = item.order.productId
+                                    var reviewId = item.review.id.toLong()
+                                    model.deleteMyReview(productId, reviewId, object : OnCallBackListener{
+                                        override fun callBackListener(resultFlag: Boolean, value: Any) {
+                                            if(resultFlag){
+                                                items.removeAt(position)
+                                                if(model.getReviewAdapter().itemCount > 0){
+                                                    model.getReviewAdapter().notifyItemChanged(position)
+                                                }else{
+                                                    model.tab2EmptyViewVisible.set(true)
+                                                }
+                                                model.mypageReviewtab2Title.set(model.mypageReviewtab2Title.get()-1)
+                                            }else{
+                                                ToastUtil.showMessage(value.toString())
+                                            }
+                                            model.mLoadingIndicatorUtil.hide()
+                                            model.mLoadingIndicatorUtil.dismiss()
+                                        }
+                                    })
                                 }
-                                model.mLoadingIndicatorUtil.hide()
-                                model.mLoadingIndicatorUtil.dismiss()
-                            }
-                        })
-                    }
+                            }).show(manager = ((this@MyPageReviewAdapter.model as MyPageReviewViewModel).context as AppCompatActivity).supportFragmentManager, tag = "MyPageReviewAdapter")
+
                 }
 
                 binding.setClickModifyListener {

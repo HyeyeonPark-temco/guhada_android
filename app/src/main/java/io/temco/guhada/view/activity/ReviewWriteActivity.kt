@@ -1,6 +1,8 @@
 package io.temco.guhada.view.activity
 
 import android.app.Activity
+import android.text.Editable
+import android.text.TextWatcher
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CustomLog
@@ -79,9 +81,20 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         }
 
         mBinding.ratingbarReviewwriteactivityStar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            ToastUtil.showMessage("ratingBar" + rating.toString())
+            //ToastUtil.showMessage("ratingBar" + rating.toString())
         }
         mBinding.ratingbarReviewwriteactivityStar.rating = item.review.getRating()
+
+
+        mBinding.edittextReviewwriteText.text = Editable.Factory.getInstance().newEditable(item.review.textReview)
+        mBinding.textviewReviewwriteTextcount.text = item.review.textReview.length.toString()
+        mBinding.edittextReviewwriteText.addTextChangedListener(object  : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                mBinding.textviewReviewwriteTextcount.text = s!!.length.toString()
+            }
+        })
 
     }
 
