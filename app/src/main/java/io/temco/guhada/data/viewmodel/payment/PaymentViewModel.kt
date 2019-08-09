@@ -152,6 +152,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
     }
 
+    /**
+     * TODO 주문서 진입 시 cartValidStatus 체크해서 처리 [2019.08.09]
+     */
     fun getOrderForm(accessToken: String) {
         if (cartIdList.isEmpty()) {
             cartIdList = mutableListOf(cart.cartItemId.toInt())
@@ -159,7 +162,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         OrderServer.getOrderForm(OnServerListener { success, o ->
             executeByResultCode(success, o,
                     successTask = {
-                        this.order = (o as BaseModel<*>).data as Order
+                        val order = (o as BaseModel<*>).data as Order
+                        this.order = order
                         this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
                         notifyPropertyChanged(BR.order)
                         notifyPropertyChanged(BR.shippingAddressText)
@@ -305,7 +309,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
                             RequestOrder().apply {
-                              //  this.user = this@PaymentViewModel.user.get()!!
+                                //  this.user = this@PaymentViewModel.user.get()!!
                                 this.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
                                 this.parentMethodCd = selectedMethod.methodCode
                             }.let { requestOrder ->

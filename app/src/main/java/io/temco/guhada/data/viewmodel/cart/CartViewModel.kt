@@ -134,6 +134,7 @@ class CartViewModel : BaseObservableViewModel() {
                 list.add(it)
             }
         }
+
         if (::clickPaymentListener.isInitialized)
             clickPaymentListener(list, cartIdList)
     }

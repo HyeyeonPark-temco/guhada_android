@@ -18,7 +18,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.*
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Info
+import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
@@ -35,7 +38,9 @@ import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
-import io.temco.guhada.view.activity.*
+import io.temco.guhada.view.activity.LoginActivity
+import io.temco.guhada.view.activity.PaymentActivity
+import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
@@ -413,6 +418,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 baseProduct.dealOptionId = getSelectedOptionDealId()
                 mViewModel.menuVisibility.set(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
+
                 Intent(context, PaymentActivity::class.java).let { intent ->
                     intent.putExtra("quantity", getSelectedProductQuantity())
                     intent.putExtra("product", baseProduct)
@@ -459,7 +465,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * 검색 화면으로 이동
      */
     override fun showSearchWordActivity() {
-        CommonUtil.startSearchWordActivity(context as Activity,null, true)
+        CommonUtil.startSearchWordActivity(context as Activity, null, true)
     }
 
     companion object {
