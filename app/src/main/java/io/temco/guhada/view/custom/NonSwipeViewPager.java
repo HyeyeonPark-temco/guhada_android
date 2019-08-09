@@ -6,9 +6,13 @@ import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MotionEventCompat;
 import androidx.viewpager.widget.ViewPager;
 
-public class SwipeViewPager extends ViewPager {
+/**
+ *
+ */
+public class NonSwipeViewPager extends ViewPager {
 
     // -------- LOCAL VALUE --------
     private boolean mSwipeEnabled = false;
@@ -18,12 +22,12 @@ public class SwipeViewPager extends ViewPager {
     // CONSTRUCTOR
     ////////////////////////////////////////////////
 
-    public SwipeViewPager(@NonNull Context context) {
+    public NonSwipeViewPager(@NonNull Context context) {
         super(context);
         // setMyScroller();
     }
 
-    public SwipeViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public NonSwipeViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         // setMyScroller();
     }
@@ -34,12 +38,28 @@ public class SwipeViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return !mSwipeEnabled && super.onTouchEvent(event);
+        if(mSwipeEnabled){
+            return mSwipeEnabled && super.onTouchEvent(event);
+        }else {
+            return MotionEventCompat.getActionMasked(event) != MotionEvent.ACTION_MOVE && super.onTouchEvent(event);
+        }
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return !mSwipeEnabled && super.onInterceptTouchEvent(event);
+//        return !mSwipeEnabled && super.onInterceptTouchEvent(event);
+        if (mSwipeEnabled) {
+            return super.onInterceptTouchEvent(event);
+        } else {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_MOVE) {
+                // ignore move action
+            } else {
+                if (super.onInterceptTouchEvent(event)) {
+                    super.onTouchEvent(event);
+                }
+            }
+            return false;
+        }
     }
 
     @Override
