@@ -925,4 +925,7 @@
     <string name="review_activity_edittext_hint">어떤 점이 좋으셨나요?\n사진과 함께 리뷰 작성 시 3,000P 적립!\n상품에 대한 솔직한 리뷰를 작성해주세요.</string>
     <string name="review_activity_desc_end">상품과 관련 없는 내용이 포함될 경우,\n통보 없이 삭제 및 적립 혜택이 회수될 수 있습니다.</string>
 
+    <string name="review_activity_tab2_review_del_desc">작성한 리뷰를 삭제할 경우\n리뷰는 영구적으로 삭제되어 복구할 수 없습니다.\n삭제하시겠습니까?</string>
+
+
 </resources>

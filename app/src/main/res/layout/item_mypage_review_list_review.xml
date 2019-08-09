@@ -49,6 +49,7 @@
             <Button
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_alignParentRight="true"
                 android:onClick="@{clickDelListener}"
                 android:background="@drawable/mypage_icon_delete" />
