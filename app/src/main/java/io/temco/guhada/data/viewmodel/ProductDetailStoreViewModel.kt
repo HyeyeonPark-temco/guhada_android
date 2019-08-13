@@ -11,6 +11,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class ProductDetailStoreViewModel : BaseObservableViewModel() {
     private val UNIT_PER_PAGE = 6
     var mRelatedProductList: MutableLiveData<ProductList> = MutableLiveData()
+    var mRecommendProductList: MutableLiveData<ProductList> = MutableLiveData()
     lateinit var mCriteria: Criteria
     var page = 1
 
@@ -18,6 +19,14 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
         SearchServer.getSellerRelatedProductList(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o, successTask = {
                 this.mRelatedProductList.postValue(it.data as ProductList)
+            })
+        }, criteria = mCriteria, page = page, unitPerPage = UNIT_PER_PAGE)
+    }
+
+    fun getRecommendProductList() {
+        SearchServer.getSellerPopularProductList(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o, successTask = {
+                this.mRecommendProductList.postValue(it.data as ProductList)
             })
         }, criteria = mCriteria, page = page, unitPerPage = UNIT_PER_PAGE)
     }

@@ -26,39 +26,36 @@
 
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <LinearLayout
             android:id="@+id/textview_productdetail_store_brand"
-            style="@style/TextBoldSingleLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@{deal.brandName}"
-            android:textColor="@color/black_four"
-            android:textSize="@dimen/text_14"
-            app:layout_constraintBottom_toTopOf="@+id/textview_productdetail_store_product"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintHorizontal_weight="3"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/textview_productdetail_store_season"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_productdetail_store_product" />
+            app:layout_constraintTop_toBottomOf="@+id/imageview_productdetail_store_product">
 
-        <TextView
-            android:id="@+id/textview_productdetail_store_season"
-            style="@style/TextRegularSingleLine"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginStart="4dp"
-            android:text="@{deal.productSeason}"
-            android:textColor="@color/warm_grey"
-            android:textSize="@dimen/text_11"
+            <TextView
+                style="@style/TextBoldSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{deal.brandName}"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_14" />
 
-            app:layout_constraintBottom_toTopOf="@+id/textview_productdetail_store_product"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@+id/textview_productdetail_store_brand"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_productdetail_store_product"
-            app:layout_constraintVertical_bias="0.6" />
+            <TextView
+                android:id="@+id/textview_productdetail_store_season"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
+                android:text="@{deal.productSeason}"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textview_productdetail_store_product"
@@ -79,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
-            android:text="@{@string/common_price_format(deal.discountPrice.intValue())}"
+            android:text="@{@string/common_price_format(deal.sellPrice.intValue())}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_16"
             app:layout_constraintBottom_toBottomOf="parent"

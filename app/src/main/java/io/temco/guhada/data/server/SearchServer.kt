@@ -192,7 +192,7 @@ class SearchServer {
          */
         @JvmStatic
         fun getSellerPopularProductList(listener: OnServerListener, criteria: Criteria, page: Int, unitPerPage: Int) =
-                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getSellerPopularProductList(criteria = criteria, page = page, unitPerPage = unitPerPage).enqueue(
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java).getSellerPopularProductList(criteria = criteria, page = page, unitPerPage = unitPerPage).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
                 )
 

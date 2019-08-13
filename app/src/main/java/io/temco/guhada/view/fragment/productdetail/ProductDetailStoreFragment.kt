@@ -26,7 +26,17 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
                     (mBinding.recyclerviewProductdetailRelated.adapter as ProductDetailStoreAdapter).setItems(it.deals)
                 }
             })
+            mViewModel.mRecommendProductList.observe(this, Observer {
+                if (mBinding.recyclerviewProductdetailRecommend.adapter == null) {
+                    mBinding.recyclerviewProductdetailRecommend.adapter = ProductDetailStoreAdapter().apply { mList = it.deals }
+                    mBinding.executePendingBindings()
+                } else {
+                    (mBinding.recyclerviewProductdetailRecommend.adapter as ProductDetailStoreAdapter).setItems(it.deals)
+                }
+            })
             mViewModel.getRelatedProductList()
+            mViewModel.getRecommendProductList()
+
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
