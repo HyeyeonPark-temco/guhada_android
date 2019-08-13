@@ -18,7 +18,10 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.*
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Info
+import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
@@ -35,7 +38,9 @@ import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
-import io.temco.guhada.view.activity.*
+import io.temco.guhada.view.activity.LoginActivity
+import io.temco.guhada.view.activity.PaymentActivity
+import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
@@ -62,6 +67,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private lateinit var mHeaderMenuFragment: ProductDetailMenuFragment
     private lateinit var mReviewFragment: ProductDetailReviewFragment
     private lateinit var mAddCartResultFragment: AddCartResultFragment
+    private lateinit var mStoreFragment: ProductDetailStoreFragment
 
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
@@ -113,6 +119,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initOptionMenu()
                 initClaims()
                 initReview()
+                initStore()
             }
             /**
              * @author park jungho
@@ -241,6 +248,20 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+    /**
+     * 셀러 스토어 View 구성
+     * productId 전달
+     */
+    private fun initStore() {
+        mStoreFragment = ProductDetailStoreFragment().apply {
+            this.mProductId = mViewModel.product.value?.productId ?: -1
+        }
+        childFragmentManager.beginTransaction().let {
+            it.add(mBinding.framelayoutProductdetailStore.id, mStoreFragment)
+            it.commitAllowingStateLoss()
+        }
+    }
+
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
             override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
@@ -320,7 +341,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         when (pos) {
             0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
             1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-            2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
+            2 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top
         }
 
         mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
@@ -413,6 +434,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 baseProduct.dealOptionId = getSelectedOptionDealId()
                 mViewModel.menuVisibility.set(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
+
                 Intent(context, PaymentActivity::class.java).let { intent ->
                     intent.putExtra("quantity", getSelectedProductQuantity())
                     intent.putExtra("product", baseProduct)
@@ -459,7 +481,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * 검색 화면으로 이동
      */
     override fun showSearchWordActivity() {
-        CommonUtil.startSearchWordActivity(context as Activity,null, true)
+        CommonUtil.startSearchWordActivity(context as Activity, null, true)
     }
 
     companion object {

@@ -219,7 +219,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         when (pos) {
             0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
             1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-            2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
+            2 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top
         }
 
         mBinding.scrollviewProductdetail.smoothScrollTo(0, h)

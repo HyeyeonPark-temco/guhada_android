@@ -47,15 +47,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         mViewModel = PaymentViewModel(object : OnPaymentListener {
             override fun onClickCloseShippingMemoSpinner() {
-//                if (mViewModel.isOpenShippingMemo) {
-//                    mViewModel.isOpenShippingMemo = false
-//                    mBinding.spinnerPaymentShippingmemo.onDetachedFromWindow()
-//                    Log.e("스피너", "닫힘")
-//                } else {
-//                    Log.e("스피너", "열림")
-//                    mViewModel.isOpenShippingMemo = true
-//                    mBinding.spinnerPaymentShippingmemo.performClick()
-//                }
+
             }
 
             override fun redirectShippingAddressActivity() {

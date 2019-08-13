@@ -5,6 +5,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
 import io.temco.guhada.data.model.search.AutoComplete
 import io.temco.guhada.data.model.search.Popular
+import io.temco.guhada.data.model.seller.Criteria
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -29,7 +30,6 @@ interface SearchService {
                                  @Query("unitPerPage") unit: Int): Call<BaseModel<ProductList>>
 
 
-
     @GET("ps/keyword/popular")
     fun getSearchPopularKeyword(@Query("top") top: Int = 10): Call<BaseModel<Popular>>
 
@@ -37,4 +37,15 @@ interface SearchService {
     @GET("ps/search/autoComplete")
     fun getSearchAutoComplete(@Query("searchQuery") searchQuery: String): Call<BaseModel<AutoComplete>>
 
+    /**
+     * 셀러 연관상품 목록 조회 API
+     */
+    @POST("/ps/search/seller/related")
+    fun getSellerRelatedProductList(@Body criteria: Criteria, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<ProductList>>
+
+    /**
+     * 셀러 추천상품(인기상품) 목록 조회 API
+     */
+    @POST("/ps/search/seller/popular")
+    fun getSellerPopularProductList(@Body criteria: Criteria, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<ProductList>>
 }

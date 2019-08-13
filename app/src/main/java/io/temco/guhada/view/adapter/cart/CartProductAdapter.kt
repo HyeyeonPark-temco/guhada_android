@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.RecyclerView
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
@@ -53,7 +52,6 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
     inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root) {
         fun bind(cart: Cart) {
-            binding.viewModel = mViewModel
             binding.constraintllayoutCartOption.addListener { expansionLayout, expanded ->
                 if (expanded) {
                     if (items[adapterPosition].cartOptionList.isEmpty()) {
@@ -73,6 +71,10 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             binding.amount = cart.tempQuantity
             binding.optionText = cart.getOptionStr()
             binding.checkboxCart.isEnabled = cart.cartValidStatus.status
+
+            if (cart.cartValidStatus.status)
+                mViewModel.totalItemCount = ObservableInt(mViewModel.totalItemCount.get() + 1)
+
             binding.setOnClickAmountPlus {
                 if (cart.tempQuantity < cart.maxQuantity) {
                     cart.tempQuantity += 1
@@ -123,7 +125,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete),
                         cancelButtonVisible = true,
                         confirmTask = {
-                            mViewModel.selectCartItemId = arrayListOf(cart.cartItemId.toInt())
+                            mViewModel.totalItemCount = ObservableInt(0)//mViewModel.totalItemCount.get() - 1)
+                            mViewModel.selectCartItemId = arrayListOf(cart.cartItemId.toInt()) // 삭제할 상품 선택
                             mViewModel.deleteCartItem()
                         }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = CartProductAdapter::class.java.simpleName)
             }
@@ -131,35 +134,29 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 mViewModel.onClickItemPayment(cart = cart)
             }
             binding.checkboxCart.setOnCheckedChangeListener { buttonView, isChecked ->
-                mViewModel.notNotifyAllChecked = false
+                mViewModel.notNotifyAllChecked = true
 
-                if (isChecked) {
-                    mViewModel.selectedCartItem.add(cart)
-                    mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
+                if (cart.cartValidStatus.status) {
+                    if (isChecked) {
+                        mViewModel.selectedCartItem.add(cart)
+                        mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
 
-                    // allChecked notify 가능하도록 변경
-                    if (mViewModel.notNotifyAllChecked) mViewModel.notNotifyAllChecked = false
+                        setTotalPrices(cart = cart, isAdd = true)
+                        mViewModel.notNotifyAllChecked = false
+                    } else {
+                        mViewModel.selectedCartItem.remove(cart)
+                        mViewModel.selectCartItemId.remove(cart.cartItemId.toInt())
+
+                        setTotalPrices(cart = cart, isAdd = false)
+                        mViewModel.notNotifyAllChecked = false
+                    }
+
                     mViewModel.notifyPropertyChanged(BR.selectCartItemId)
-
-                    // 상품 가격 추가
-                    setTotalPrices(cart = cart, isAdd = true)
-                } else {
-                    mViewModel.selectedCartItem.remove(cart)
-                    mViewModel.selectCartItemId.remove(cart.cartItemId.toInt())
-
-                    // notify..(BR.selectCartItemId) 시 allChecked 변경 방지
-                    if (!mViewModel.notNotifyAllChecked) mViewModel.notNotifyAllChecked = true
-                    mViewModel.notifyPropertyChanged(BR.selectCartItemId)
-
-                    // [전체선택] 선택된 상태에서 상품 체크박스 해제 시, [전체선택] 체크박스 해제
-                    if (mViewModel.allChecked.get()) mViewModel.allChecked = ObservableBoolean(false)
-                    else mViewModel.notNotifyAllChecked = false
-
-                    // 상품 가격 제외
-                    setTotalPrices(cart = cart, isAdd = false)
                 }
             }
             binding.cart = cart
+
+            binding.viewModel = mViewModel
             binding.executePendingBindings()
         }
 
@@ -205,7 +202,6 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
         private fun setOptionAdapter(cart: Cart) {
             binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
-//            if (cart.cartOptionList.isNotEmpty())
             (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
         }
 
