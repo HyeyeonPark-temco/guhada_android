@@ -67,6 +67,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private lateinit var mHeaderMenuFragment: ProductDetailMenuFragment
     private lateinit var mReviewFragment: ProductDetailReviewFragment
     private lateinit var mAddCartResultFragment: AddCartResultFragment
+    private lateinit var mStoreFragment: ProductDetailStoreFragment
 
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
@@ -118,6 +119,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initOptionMenu()
                 initClaims()
                 initReview()
+                initStore()
             }
             /**
              * @author park jungho
@@ -246,6 +248,20 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+    /**
+     * 셀러 스토어 View 구성
+     * productId 전달
+     */
+    private fun initStore() {
+        mStoreFragment = ProductDetailStoreFragment().apply {
+            this.mProductId = mViewModel.product.value?.productId ?: -1
+        }
+        childFragmentManager.beginTransaction().let {
+            it.add(mBinding.framelayoutProductdetailStore.id, mStoreFragment)
+            it.commitAllowingStateLoss()
+        }
+    }
+
     private fun initOptionMenu() {
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
             override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) = task()
@@ -325,7 +341,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         when (pos) {
             0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
             1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-            2 -> h = (mBinding.productdetailScrollflagStore.parent as View).top + mBinding.productdetailScrollflagStore.top
+            2 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top
         }
 
         mBinding.scrollviewProductdetail.smoothScrollTo(0, h)

@@ -406,6 +406,9 @@
     <string name="productdetail_notifies_empty">No registered product information</string>
     <string name="productdetail_message_selectoption">Please select one of the options</string>
 
+    <string name="productdetail_store_related">판매자의 연관상품</string>
+    <string name="productdetail_store_recommend">추천상품</string>
+
     <!-- CLAIM -->
     <string name="claim_write_hint">Enter the inquiry content</string>
     <string name="claim_write_private">private</string>

@@ -44,6 +44,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
     override fun getBaseTag(): String = this@SideMenuActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_sidemenu
     override fun getViewType(): Type.View = Type.View.SIDE_MENU
+
+    /**
+     * @exception [IllegalStateException] Only fullscreen opaque activities can request orientation
+     *
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         this.overridePendingTransition(R.anim.left_to_right, R.anim.fade)
         super.onCreate(savedInstanceState)

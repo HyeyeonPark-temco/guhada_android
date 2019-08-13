@@ -93,15 +93,14 @@
                         layout="@layout/layout_productdetail_productnotifies" />
 
                     <View
-                        android:id="@+id/productdetail_scrollflag_store"
+                        android:id="@+id/productdetail_scrollflag_recommend"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:visibility="gone" />
+                        android:layout_height="1dp"/>
 
-                    <include
-                        android:id="@+id/include_productdetail_contentstore"
-                        layout="@layout/layout_productdetail_store"
-                        android:visibility="gone" />
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_store"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -38,14 +38,14 @@ interface SearchService {
     fun getSearchAutoComplete(@Query("searchQuery") searchQuery: String): Call<BaseModel<AutoComplete>>
 
     /**
-     * 셀러 추천상품(인기상품) 목록 조회 API
-     */
-    @GET("/ps/search/seller/popular")
-    fun getSellerPopularProductList(@Body criteria: Criteria, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<ProductList>>
-
-    /**
      * 셀러 연관상품 목록 조회 API
      */
-    @GET("/ps/search/seller/related")
+    @POST("/ps/search/seller/related")
     fun getSellerRelatedProductList(@Body criteria: Criteria, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<ProductList>>
+
+    /**
+     * 셀러 추천상품(인기상품) 목록 조회 API
+     */
+    @POST("/ps/search/seller/popular")
+    fun getSellerPopularProductList(@Body criteria: Criteria, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<ProductList>>
 }
