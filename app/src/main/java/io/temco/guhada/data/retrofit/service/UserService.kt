@@ -7,6 +7,7 @@ import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.MyPageReview
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
+import io.temco.guhada.data.model.review.ReviewWrMdResponse
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.model.seller.SellerSatisfaction
@@ -283,6 +284,7 @@ interface UserService {
     fun deleteBookMarkAll(@Header("Authorization") accessToken: String, @Query("target") target: String): Call<BaseModel<Any>>
 
 
+
     /**
      * 마이페이지 내가 작성한 리뷰 목록
      *
@@ -301,6 +303,32 @@ interface UserService {
      */
     @DELETE("/products/{productId}/reviews/{reviewId}")
     fun deleteReviewData(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Long): Call<BaseModel<Any>>
+
+
+
+
+    /**
+     * 리뷰 작성하기
+     *
+     * park jungho
+     * 19.08.12
+     */
+    @FormUrlEncoded
+    @POST("/products/{productId}/reviews")
+    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @FieldMap param : HashMap<String,Any>): Call<BaseModel<Any>>
+
+
+
+    /**
+     * 리뷰 수정하기
+     *
+     * park jungho
+     * 19.08.12
+     */
+    @FormUrlEncoded
+    @POST("/products/{productId}/reviews/{reviewId}")
+    fun modifyReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Int,
+                     @FieldMap param : HashMap<String,Any>): Call<BaseModel<Any>>
 
 
 

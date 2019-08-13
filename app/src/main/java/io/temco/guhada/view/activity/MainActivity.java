@@ -168,6 +168,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                         mPagerAdapter.setProductSearchData(text);
                     }
                     break;
+
+                case Flag.RequestCode.REVIEW_WRITE:
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_WRITE, null));
+                    break;
+
+                case Flag.RequestCode.REVIEW_MODIFY:
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_MODIFY, null));
+                    break;
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);

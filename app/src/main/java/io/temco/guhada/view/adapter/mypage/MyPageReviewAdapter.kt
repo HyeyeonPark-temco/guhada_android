@@ -22,6 +22,7 @@ import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.review.MyPageReviewBase
 import io.temco.guhada.data.model.review.MyPageReviewContent
 import io.temco.guhada.data.model.review.MyPageReviewType
+import io.temco.guhada.data.model.review.ReviewAvailableOrder
 import io.temco.guhada.data.viewmodel.mypage.MyPageReviewViewModel
 import io.temco.guhada.databinding.ItemMoreListBinding
 import io.temco.guhada.databinding.ItemMypageReviewListAvaiableBinding
@@ -30,6 +31,8 @@ import io.temco.guhada.view.activity.ReviewWriteActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -89,7 +92,31 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
         override fun bind(model : ViewModel, position : Int, data : MyPageReviewBase) {
             if (data != null) {
+                var item = data as ReviewAvailableOrder
+                ImageUtil.loadImage((this@MyPageReviewAdapter.model as MyPageReviewViewModel).mRequestManager, binding.productItemLayout.imageItemmypagereviewlistreviewThumb, item.imageUrl)
 
+                binding.position = position
+                binding.productItemLayout.season = item.season
+                binding.productItemLayout.brand = item.brandName
+                binding.productItemLayout.title = item.prodName
+                var option = (if(!item.optionAttribute1.isNullOrEmpty())item.optionAttribute1 else "")  +
+                        (if(!item.optionAttribute2.isNullOrEmpty())", "+item.optionAttribute2 else "")  +
+                        (if(!item.optionAttribute3.isNullOrEmpty())", "+item.optionAttribute3 else "")
+
+                binding.productItemLayout.option = (if(!option.isNullOrEmpty()) option+", " else "") + item.quantity + "개"
+                binding.productItemLayout.price = item.orderPrice
+
+                if(item.shipCompleteTimestamp.isNullOrEmpty()){
+                    binding.productItemLayout.deliveryComplete = item.purchaseStatusText
+                }else{
+                    var cal = Calendar.getInstance()
+                    binding.productItemLayout.deliveryComplete = item.purchaseStatusText
+                }
+                binding.setClickWriteListener {
+                    var intent = Intent(containerView.context as Activity, ReviewWriteActivity::class.java)
+                    intent.putExtra("reviewData", item)
+                    (containerView.context as Activity).startActivityForResult(intent, Flag.RequestCode.REVIEW_WRITE)
+                }
             }
         }
     }
@@ -113,9 +140,10 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
                 binding.productItemLayout.option = (if(!option.isNullOrEmpty()) option+", " else "") + item.order.quantity + "개"
                 binding.productItemLayout.price = item.order.orderPrice
 
-                if(item.order.shipCompleteDate.isNullOrEmpty()){
+                if(item.order.shipCompleteTimestamp.isNullOrEmpty()){
                     binding.productItemLayout.deliveryComplete = item.order.purchaseStatusText
                 }else{
+                    var cal = Calendar.getInstance()
                     binding.productItemLayout.deliveryComplete = item.order.purchaseStatusText
                 }
 

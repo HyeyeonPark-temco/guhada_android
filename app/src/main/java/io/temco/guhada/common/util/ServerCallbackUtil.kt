@@ -86,7 +86,7 @@ class ServerCallbackUtil {
                                 serverLoginErrorTask: (BaseModel<*>) -> Unit = {},
                                 dataNotFoundTask: () -> Unit = {},
                                 productNotFoundTask: (BaseModel<*>) -> Unit = {},
-                                dataIsNull: (String) -> Unit = {},
+                                dataIsNull: (Any) -> Unit = {},
                                 userLikeNotFoundTask: () -> Unit = {}) {
             if (o != null) {
                 if (success) {
@@ -98,6 +98,7 @@ class ServerCallbackUtil {
                         ResultCode.USER_LIKE_NOT_FOUND.flag -> userLikeNotFoundTask()
                         ResultCode.RUNTIME_EXCEPTION_ERROR.flag -> serverRuntimeErrorTask(model)
                         ResultCode.SERVER_LOGIN_FAILED.flag -> serverLoginErrorTask(model)
+                        else -> dataIsNull(model)
                     }
                 } else {
                     // modify ------------------------------------

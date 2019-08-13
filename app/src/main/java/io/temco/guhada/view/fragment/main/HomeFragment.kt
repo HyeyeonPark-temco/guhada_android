@@ -17,6 +17,7 @@ import io.temco.guhada.view.custom.layout.main.MenListLayout
 import io.temco.guhada.view.custom.layout.main.WomenListLayout
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
+import java.util.*
 
 
 class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListener {
@@ -24,6 +25,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     // -------- LOCAL VALUE --------
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
     private var currentPagerIndex : Int = 0
+    var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>> = WeakHashMap()
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -88,6 +90,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                             // WomenListLayout,KidsListLayout,MenListLayout
                         }
                         if(vw is BaseListLayout<*,*>) lifecycle.addObserver(vw)
+                        customLayoutMap.put(position, vw as BaseListLayout<*, *>)
                         return vw
                     }
                 }
@@ -95,7 +98,15 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         }
         mBinding.viewpager.adapter = viewPagerAdapter
         mBinding.viewpager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutTab))
-        mBinding.viewpager.offscreenPageLimit = 4
+        mBinding.viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageSelected(position: Int) {
+                currentPagerIndex = position
+                if (customLayoutMap.containsKey(currentPagerIndex)) customLayoutMap.get(currentPagerIndex)!!.onFocusView()
+            }
+        })
+        mBinding.viewpager.offscreenPageLimit = 3
         mBinding.viewpager.currentItem = currentPagerIndex
         mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager){
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -152,9 +163,42 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 }), TextView.BufferType.SPANNABLE);*/
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onStart()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onResume()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onPause()
+            }
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         mBinding.layoutAppbar.setExpanded(true,false)
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onStop()
+            }
+        }
     }
 
     ////////////////////////////////////////////////

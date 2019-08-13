@@ -927,5 +927,7 @@
 
     <string name="review_activity_tab2_review_del_desc">작성한 리뷰를 삭제할 경우\n리뷰는 영구적으로 삭제되어 복구할 수 없습니다.\n삭제하시겠습니까?</string>
 
+    <string name="review_activity_btn_write">등록</string>
+    <string name="review_activity_btn_modify">수정</string>
 
 </resources>

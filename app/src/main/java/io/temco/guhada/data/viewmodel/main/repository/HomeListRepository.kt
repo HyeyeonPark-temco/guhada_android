@@ -35,13 +35,13 @@ class HomeListRepository(val context : Context){
         tmpList.add(EventData(0, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/a5e85e5d916e4e1e9d78d0a5e75a7411",
                 R.drawable.main_01, "main_01", "", "", 0, ""))
         tmpList.add(EventData(1, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/Aviator_Polarized_Lens_58mm_Sunglasses_RB3025-001.png",
-                R.drawable.hotkeyword05, "hotkeyword05", "", "", 1, ""))
+                R.drawable.main_02, "hotkeyword05", "", "", 1, ""))
         tmpList.add(EventData(2, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/19c8c40763734103a56bc1e93c26689a",
-                R.drawable.focuson04, "focuson04", "", "", 2, ""))
+                R.drawable.main_03, "focuson04", "", "", 2, ""))
         tmpList.add(EventData(3, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/013c833b13744fadbdebaacc38d968cd",
-                R.drawable.foryou_08, "foryou_08", "", "", 3, ""))
+                R.drawable.main_04, "foryou_08", "", "", 3, ""))
         tmpList.add(EventData(4, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/46b0d03ccb274329b822bba10d138adc",
-                R.drawable.banner09, "banner09", "", "", 4, ""))
+                R.drawable.main_05, "banner09", "", "", 4, ""))
         val event = MainEvent(0, HomeType.MainEvent, tmpList)
         ddd.add(event)
         list.value!!.add(event)
