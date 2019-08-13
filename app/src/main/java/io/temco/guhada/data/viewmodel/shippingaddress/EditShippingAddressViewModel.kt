@@ -24,34 +24,37 @@ class EditShippingAddressViewModel(val mListener: OnEditShippingAddressListener)
     fun onClickCancel() = mListener.closeActivity(Activity.RESULT_CANCELED, false)
     fun onClickSubmit() = checkEmptyField { submitTask() }
 
-     fun checkEmptyField(task: () -> Unit) {
+    fun checkEmptyField(task: () -> Unit) {
         when {
             shippingAddress.shippingName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_shippingname))
             shippingAddress.zip.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_zip))
             shippingAddress.address.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_address))
             shippingAddress.detailAddress.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_detailaddress))
-            shippingAddress.recipientName.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_recipientname))
+            shippingAddress.recipientName.isEmpty() -> ToastUtil.showMessage(
+                    BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_recipientname))
             shippingAddress.recipientMobile.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_empty_recipientmobile))
             else -> task()
         }
     }
 
     fun updateShippingAddress() {
-        val accessToken = Preferences.getToken().accessToken
-        if (accessToken != null) {
-            val userId = JWT(accessToken).getClaim("userId").asInt()
-            if (userId != null) {
-                UserServer.updateUserShippingAddress(OnServerListener { success, o ->
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = { mListener.closeActivity(Activity.RESULT_OK, true) })
-                }, userId, shippingAddress.id, shippingAddress)
+        if (Preferences.getToken() != null) {
+            val accessToken = Preferences.getToken().accessToken
+            if (accessToken != null) {
+                val userId = JWT(accessToken).getClaim("userId").asInt()
+                if (userId != null) {
+                    UserServer.updateUserShippingAddress(OnServerListener { success, o ->
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = { mListener.closeActivity(Activity.RESULT_OK, true) })
+                    }, userId, shippingAddress.id, shippingAddress)
+                } else {
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                    mListener.closeActivity(Activity.RESULT_CANCELED, false)
+                }
             } else {
-                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
                 mListener.closeActivity(Activity.RESULT_CANCELED, false)
             }
-        } else {
-            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
-            mListener.closeActivity(Activity.RESULT_CANCELED, false)
         }
     }
 

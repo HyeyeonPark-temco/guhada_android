@@ -168,6 +168,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         notifyPropertyChanged(BR.order)
                         notifyPropertyChanged(BR.shippingAddressText)
                     },
+
                     failedTask = {
                         if (o != null) listener.showMessage(o as String)
                         else listener.showMessage("orderForm 오류")
