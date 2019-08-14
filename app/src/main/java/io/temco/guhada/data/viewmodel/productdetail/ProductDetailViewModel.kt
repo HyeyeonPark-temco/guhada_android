@@ -10,6 +10,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -22,7 +23,6 @@ import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.seller.Seller
-import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
@@ -75,6 +75,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var mSellerBookMark = BookMark()
         @Bindable
         get() = field
+
+    var notifySellerStoreFollow: (bookMark: BookMark) -> Unit = {}
     /**
      * 북마크 여부 데이터 가져왔는지 여부
      * 처음 상품상세에 진입해서 확인하지 않은 상태에서 북마크 버튼을 누르면
@@ -126,7 +128,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     /**
      * 셀러 팔로잉 여부
      */
-    fun getSellerLike(target: String) {
+    fun getSellerBookMark(target: String) {
         if (product.value?.sellerId != null) {
             ServerCallbackUtil.callWithToken(
                     task = {
@@ -249,6 +251,15 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         listener?.redirectHome()
     }
 
+    fun onClickSellerBookMark() {
+        if (product.value?.sellerId != null) {
+            if (this.mSellerBookMark.content.isEmpty())
+                saveBookMark(target = BookMarkTarget.SELLER.target, targetId = product.value?.sellerId!!)
+            else
+                deleteBookMark(target = BookMarkTarget.SELLER.target, targetId = product.value?.sellerId!!)
+        }
+    }
+
     fun getSellerSatisfaction() {
         val sellerId = product.value?.sellerId
         if (sellerId != null) {
@@ -283,6 +294,17 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = {
                                     if (CustomLog.flag) CustomLog.L("saveBookMark", "successTask")
+
+                                    when (target) {
+                                        BookMarkTarget.SELLER.target -> {
+                                            this.mSellerBookMark.content = mutableListOf(BookMark().Content().apply {
+                                                this.target = target
+                                                this.targetId = targetId
+                                            })
+                                            notifyPropertyChanged(BR.mSellerBookMark)
+                                            notifySellerStoreFollow(mSellerBookMark)
+                                        }
+                                    }
                                 },
                                 dataNotFoundTask = { },
                                 failedTask = { },
@@ -300,6 +322,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = {
                                     if (CustomLog.flag) CustomLog.L("deleteBookMark", "successTask")
+
+                                    when (target) {
+                                        BookMarkTarget.SELLER.target -> {
+                                            this.mSellerBookMark.content = mutableListOf()
+                                            notifyPropertyChanged(BR.mSellerBookMark)
+                                            notifySellerStoreFollow(mSellerBookMark)
+                                        }
+                                    }
                                 },
                                 dataNotFoundTask = { },
                                 failedTask = { },

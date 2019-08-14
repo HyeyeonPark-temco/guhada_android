@@ -3,6 +3,7 @@ package io.temco.guhada.view.fragment.productdetail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
@@ -97,6 +98,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initViewModel() {
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
+        mViewModel.notifySellerStoreFollow = { bookMark ->   mStoreFragment.setSellerBookMark(bookMark)}
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             initSummary()
@@ -110,7 +112,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
-                mViewModel.getSellerLike(Type.BookMarkTarget.SELLER.name)
+                mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
                 /**
                  * 북마크 여부 확인
                  */
@@ -254,9 +256,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      */
     private fun initStore() {
         mStoreFragment = ProductDetailStoreFragment().apply {
-            this.mProductId = mViewModel.product.value?.productId ?: -1
-            this.mSellerId = mViewModel.product.value?.sellerId ?: -1
-            this.mProductDetailViewModel = mViewModel
+            this.mProductId = this@ProductDetailFragment.mViewModel.product.value?.productId ?: -1
+            this.mSellerId = this@ProductDetailFragment.mViewModel.product.value?.sellerId ?: -1
+            this.mProductDetailViewModel = this@ProductDetailFragment.mViewModel
         }
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailStore.id, mStoreFragment)

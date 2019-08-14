@@ -1,5 +1,5 @@
 package io.temco.guhada.common.enum
 
-enum class LikeTarget(val target: String) {
+enum class BookMarkTarget(val target: String) {
     SELLER("SELLER")
 }

@@ -3,7 +3,8 @@ package io.temco.guhada.view.fragment.productdetail
 import androidx.lifecycle.Observer
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.enum.LikeTarget
+import io.temco.guhada.common.enum.BookMarkTarget
+import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.viewmodel.ProductDetailStoreViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
@@ -17,7 +18,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  * @since 2019.08.13
  */
 class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBinding>() {
-    private lateinit var mViewModel: ProductDetailStoreViewModel
+    lateinit var mViewModel: ProductDetailStoreViewModel
     lateinit var mProductDetailViewModel: ProductDetailViewModel
     private val INVALID_ID: Long = -1
     var mProductId: Long = INVALID_ID
@@ -40,15 +41,16 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
                 this.sellerId = this@ProductDetailStoreFragment.mSellerId
             }
         }
-        mViewModel.notifyProductDetailViewModel = {bookMark ->
+        mViewModel.notifyProductDetailViewModel = { bookMark ->
             mProductDetailViewModel.mSellerBookMark = bookMark
-            mProductDetailViewModel.notifyPropertyChanged(BR.mSellerBookMark)}
+            mProductDetailViewModel.notifyPropertyChanged(BR.mSellerBookMark)
+        }
         serObservers()
         mViewModel.getRelatedProductList()
         mViewModel.getRecommendProductList()
         mViewModel.getSellerProductList()
         mViewModel.getSellerInfo()
-        mViewModel.getSellerLike(LikeTarget.SELLER.target)
+        mViewModel.getSellerLike(BookMarkTarget.SELLER.target)
     }
 
     private fun serObservers() {
@@ -80,5 +82,10 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
                 (mBinding.recyclerviewProductdetailSellerstore.adapter as ProductDetailStoreAdapter).setItems(it)
             }
         })
+    }
+
+    fun setSellerBookMark(bookMark: BookMark) {
+        mViewModel.mSellerBookMark = bookMark
+        mViewModel.notifyPropertyChanged(BR.mSellerBookMark)
     }
 }

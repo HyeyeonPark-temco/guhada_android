@@ -6,7 +6,7 @@ import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.enum.LikeTarget
+import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
@@ -34,7 +34,7 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
         get() = field
     lateinit var mCriteria: Criteria
     var mPage = 1
-    var notifyProductDetailViewModel : (bookMark : BookMark) -> Unit = {}
+    var notifyProductDetailViewModel: (bookMark: BookMark) -> Unit = {}
 
     fun getRelatedProductList() {
         SearchServer.getSellerRelatedProductList(OnServerListener { success, o ->
@@ -93,9 +93,9 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                     val userId = JWT(it.split("Bearer ")[1]).getClaim("userId").asLong()
                     if (userId != null) {
                         if (mSellerBookMark.content.isEmpty())
-                            saveBookMark(accessToken = it, target = LikeTarget.SELLER.target, userId = userId)
+                            saveBookMark(accessToken = it, target = BookMarkTarget.SELLER.target, userId = userId)
                         else
-                            deleteBookMark(accessToken = it, target = LikeTarget.SELLER.target, targetId = mCriteria.sellerId)
+                            deleteBookMark(accessToken = it, target = BookMarkTarget.SELLER.target, targetId = mCriteria.sellerId)
                     }
                 },
                 invalidTokenTask = {
