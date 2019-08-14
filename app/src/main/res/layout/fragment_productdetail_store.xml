@@ -86,9 +86,10 @@
                         android:id="@+id/imageview_productdetail_store_seller"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:background="@color/greyish_brown_two"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:ovalImageUrl="@{viewModel.mSeller.user.profileImageUrl}" />
 
                     <FrameLayout
                         android:id="@+id/imageview_productdetail_store_ranking"
@@ -118,7 +119,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
-                        android:text="dummy"
+                        android:text="@{viewModel.mSeller.storeName}"
                         android:textColor="@color/warm_grey_two"
                         android:textSize="@dimen/text_11"
                         app:layout_constraintLeft_toRightOf="@+id/imageview_productdetail_store_ranking"

@@ -135,7 +135,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:src="@color/black_overlay"
-                app:ovalImageUrl="@{viewModel.seller.profileImageUrl}" />
+                app:ovalImageUrl="@{viewModel.seller.user.profileImageUrl}" />
 
             <LinearLayout
                 android:layout_width="match_parent"

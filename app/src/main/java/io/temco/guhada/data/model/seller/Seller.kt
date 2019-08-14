@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.seller
 
+import io.temco.guhada.data.model.user.User
+
 class Seller {
     var id: Long = 0
     var profileImageUrl = ""
@@ -19,6 +21,6 @@ class Seller {
     var createdAt = ""
     var updatedAt: String? = ""
     var updatedBy: String? = ""
-//    var userId : Long =0
+    var user : User = User()
 }
 

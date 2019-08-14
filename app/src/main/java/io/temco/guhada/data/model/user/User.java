@@ -30,6 +30,7 @@ public class User extends Observable {
     private String birth = "";
     private String address = "", roadAddress = "", detailAddress = "", zip;
     private Boolean emailVerify = false;
+    private String profileImageUrl = "";
 
     @SerializedName("temp")
     private int gender = -1; // 1: MALE; 2: FEMALE;
@@ -245,5 +246,13 @@ public class User extends Observable {
 
     public void setEmailVerify(Boolean emailVerify) {
         this.emailVerify = emailVerify;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }
