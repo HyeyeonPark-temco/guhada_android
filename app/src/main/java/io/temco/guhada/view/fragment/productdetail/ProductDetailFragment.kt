@@ -3,7 +3,6 @@ package io.temco.guhada.view.fragment.productdetail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
@@ -98,7 +97,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initViewModel() {
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
-        mViewModel.notifySellerStoreFollow = { bookMark ->   mStoreFragment.setSellerBookMark(bookMark)}
+        mViewModel.notifySellerStoreFollow = { bookMark -> mStoreFragment.setSellerBookMark(bookMark) }
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             initSummary()
@@ -209,7 +208,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.onDestroy()
         if (::mReviewFragment.isInitialized) mReviewFragment.onDestroy()
 
-        (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
+        if (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter != null)
+            (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
 
         try {
             GuhadaDB.destroyInstance()

@@ -21,6 +21,11 @@ import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
+/**
+ * 상품 상세- 셀러스토어 (셀러스토어, 연관상품, 추천상품)
+ * @author Hyeyeon Park
+ * @since 2019.08.13
+ */
 class ProductDetailStoreViewModel : BaseObservableViewModel() {
     private val UNIT_PER_PAGE = 6
     var mRelatedProductList: MutableLiveData<ProductList> = MutableLiveData()
@@ -86,6 +91,23 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                     }
                 })
     }
+
+    /**
+     * 상품 선택 시, validation 체크 목적
+     * @author Hyeyeon Park
+     */
+    fun getDetail(dealId: Long, redirectProductDetailActivity: () -> Unit) {
+        ProductServer.getProductDetail(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        redirectProductDetailActivity()
+                    },
+                    productNotFoundTask = {
+                        ToastUtil.showMessage(it.message)
+                    })
+        }, dealId)
+    }
+
 
     fun onClickSellerBookMark() {
         ServerCallbackUtil.callWithToken(

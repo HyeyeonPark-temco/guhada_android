@@ -13,7 +13,7 @@ import io.temco.guhada.view.adapter.ProductDetailStoreAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 /**
- * 상품 상세- 셀러스토어
+ * 상품 상세- 셀러스토어 (셀러스토어, 연관상품, 추천상품)
  * @author Hyeyeon Park
  * @since 2019.08.13
  */
@@ -56,7 +56,10 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
     private fun serObservers() {
         mViewModel.mRelatedProductList.observe(this, Observer {
             if (mBinding.recyclerviewProductdetailRelated.adapter == null) {
-                mBinding.recyclerviewProductdetailRelated.adapter = ProductDetailStoreAdapter().apply { this.mList = it.deals }
+                mBinding.recyclerviewProductdetailRelated.adapter = ProductDetailStoreAdapter().apply {
+                    this.mList = it.deals
+                    this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+                }
                 mBinding.executePendingBindings()
             } else {
                 (mBinding.recyclerviewProductdetailRelated.adapter as ProductDetailStoreAdapter).setItems(it.deals)
@@ -64,7 +67,10 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
         })
         mViewModel.mRecommendProductList.observe(this, Observer {
             if (mBinding.recyclerviewProductdetailRecommend.adapter == null) {
-                mBinding.recyclerviewProductdetailRecommend.adapter = ProductDetailStoreAdapter().apply { this.mList = it.deals }
+                mBinding.recyclerviewProductdetailRecommend.adapter = ProductDetailStoreAdapter().apply {
+                    this.mList = it.deals
+                    this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+                }
                 mBinding.executePendingBindings()
             } else {
                 (mBinding.recyclerviewProductdetailRecommend.adapter as ProductDetailStoreAdapter).setItems(it.deals)
@@ -76,6 +82,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
                     this.mList = it
                     this.mIsGridLayout = true
                     this.mSpanCount = 3
+                    this.mViewModel = this@ProductDetailStoreFragment.mViewModel
                 }
                 mBinding.executePendingBindings()
             } else {
