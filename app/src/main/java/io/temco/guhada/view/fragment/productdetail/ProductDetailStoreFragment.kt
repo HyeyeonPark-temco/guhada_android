@@ -1,10 +1,12 @@
 package io.temco.guhada.view.fragment.productdetail
 
 import androidx.lifecycle.Observer
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.enum.LikeTarget
 import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.viewmodel.ProductDetailStoreViewModel
+import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.FragmentProductdetailStoreBinding
 import io.temco.guhada.view.adapter.ProductDetailStoreAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -16,6 +18,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  */
 class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBinding>() {
     private lateinit var mViewModel: ProductDetailStoreViewModel
+    lateinit var mProductDetailViewModel: ProductDetailViewModel
     private val INVALID_ID: Long = -1
     var mProductId: Long = INVALID_ID
     var mSellerId: Long = INVALID_ID
@@ -30,13 +33,16 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
         }
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         mViewModel = ProductDetailStoreViewModel().apply {
             this.mCriteria = Criteria().apply {
                 this.productId = this@ProductDetailStoreFragment.mProductId
                 this.sellerId = this@ProductDetailStoreFragment.mSellerId
             }
         }
+        mViewModel.notifyProductDetailViewModel = {bookMark ->
+            mProductDetailViewModel.mSellerBookMark = bookMark
+            mProductDetailViewModel.notifyPropertyChanged(BR.mSellerBookMark)}
         serObservers()
         mViewModel.getRelatedProductList()
         mViewModel.getRecommendProductList()
@@ -45,7 +51,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
         mViewModel.getSellerLike(LikeTarget.SELLER.target)
     }
 
-    private fun serObservers(){
+    private fun serObservers() {
         mViewModel.mRelatedProductList.observe(this, Observer {
             if (mBinding.recyclerviewProductdetailRelated.adapter == null) {
                 mBinding.recyclerviewProductdetailRelated.adapter = ProductDetailStoreAdapter().apply { this.mList = it.deals }

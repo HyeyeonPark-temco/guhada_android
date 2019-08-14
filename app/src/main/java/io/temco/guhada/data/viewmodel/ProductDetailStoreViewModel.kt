@@ -34,6 +34,7 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
         get() = field
     lateinit var mCriteria: Criteria
     var mPage = 1
+    var notifyProductDetailViewModel : (bookMark : BookMark) -> Unit = {}
 
     fun getRelatedProductList() {
         SearchServer.getSellerRelatedProductList(OnServerListener { success, o ->
@@ -96,7 +97,6 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                         else
                             deleteBookMark(accessToken = it, target = LikeTarget.SELLER.target, targetId = mCriteria.sellerId)
                     }
-
                 },
                 invalidTokenTask = {
                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
@@ -114,6 +114,7 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                             this.userId = userId
                         })
                         notifyPropertyChanged(BR.mSellerBookMark)
+                        notifyProductDetailViewModel(mSellerBookMark)
                     }
             )
         }, accessToken = accessToken, response = bookMarkResponse.getProductBookMarkRespose())
@@ -125,6 +126,7 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                     successTask = {
                         this.mSellerBookMark.content = mutableListOf()
                         notifyPropertyChanged(BR.mSellerBookMark)
+                        notifyProductDetailViewModel(mSellerBookMark)
                     }
             )
         }, accessToken = accessToken, target = target, targetId = targetId)

@@ -33,10 +33,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var seller: Seller = Seller()
         @Bindable
         get() = field
-    var sellerFollower = SellerFollower()
-        @Bindable
-        get() = field
-
     var sellerSatisfaction = SellerSatisfaction()
         @Bindable
         get() = field
