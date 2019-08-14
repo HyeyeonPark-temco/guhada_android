@@ -159,18 +159,27 @@
                             android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
-                    <Button
+                    <FrameLayout
                         android:id="@+id/button_productdetail_seller_follow"
-                        style="@style/borderlessStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:background="@color/common_blue_purple"
-                        android:text="@string/productdetail_button_follow"
-                        android:textColor="@color/common_white"
-                        android:textSize="@dimen/text_14"
+                        android:layout_height="wrap_content"
+                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_silver }"
+                        android:paddingLeft="32dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="32dp"
+                        android:paddingBottom="10dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ?@string/productdetail_button_follow : @string/productdetail_button_following }"
+                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/black_four }"
+                            android:textSize="@dimen/text_14" />
+                    </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

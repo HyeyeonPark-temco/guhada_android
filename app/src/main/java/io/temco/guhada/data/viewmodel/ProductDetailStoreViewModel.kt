@@ -2,13 +2,16 @@ package io.temco.guhada.data.viewmodel
 
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
+import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.server.UserServer
@@ -20,6 +23,9 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
     var mRecommendProductList: MutableLiveData<ProductList> = MutableLiveData()
     var mSellerProductList: MutableLiveData<MutableList<Deal>> = MutableLiveData()
     var mSeller: Seller = Seller()
+        @Bindable
+        get() = field
+    var mSellerBookMark: BookMark = BookMark()
         @Bindable
         get() = field
     lateinit var mCriteria: Criteria
@@ -56,6 +62,23 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                         this.mSeller = it.data as Seller
                         notifyPropertyChanged(BR.mSeller)
                     })
-        }, mCriteria.sellerId)
+        }, sellerId = mCriteria.sellerId)
+    }
+
+    fun getSellerFollower(target: String) {
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    val userId = JWT(it.split("Bearer ")[1]).getClaim("userId").asLong()
+                    if (userId != null) {
+                        UserServer.getLike(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = { result ->
+                                        this.mSellerBookMark = result.data as BookMark
+                                        notifyPropertyChanged(BR.mSellerBookMark)
+                                    }
+                            )
+                        }, accessToken = it, target = target, targetId = mCriteria.sellerId, userId = userId)
+                    }
+                })
     }
 }

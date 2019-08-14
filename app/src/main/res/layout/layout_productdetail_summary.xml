@@ -224,9 +224,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:text="@string/productdetail_button_store"
                             android:textColor="@color/common_white"
-                            android:layout_gravity="center"
                             android:textSize="@dimen/text_13" />
                     </FrameLayout>
 

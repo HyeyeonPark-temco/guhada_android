@@ -23,8 +23,8 @@ interface UserService {
     /**
      * 회원 정보 가져오기 API
      */
-    @GET ("/users")
-    fun getUserInfo(@Query("userIds") userIds : IntArray) : Call<BaseModel<User>>
+    @GET("/users")
+    fun getUserInfo(@Query("userIds") userIds: IntArray): Call<BaseModel<User>>
 
     /**
      * 회원가입 API
@@ -230,7 +230,7 @@ interface UserService {
      * like -> bookmarks 로 변경
      */
     @GET("/users/{userId}/bookmarks")
-    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("target") target: String): Call<BaseModel<Any>>
+    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("targetId") targetId: Long, @Query("target") target: String): Call<BaseModel<BookMark>>
 
 
     /**
@@ -244,8 +244,6 @@ interface UserService {
      */
     @GET("/users/{userId}/bookmarks")
     fun getBookMark(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<BookMark>>
-
-
 
 
     /**
@@ -301,10 +299,6 @@ interface UserService {
      */
     @DELETE("/products/{productId}/reviews/{reviewId}")
     fun deleteReviewData(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Long): Call<BaseModel<Any>>
-
-
-
-
 
 
 }

@@ -2,6 +2,7 @@ package io.temco.guhada.view.fragment.productdetail
 
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
+import io.temco.guhada.common.enum.LikeTarget
 import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.viewmodel.ProductDetailStoreViewModel
 import io.temco.guhada.databinding.FragmentProductdetailStoreBinding
@@ -57,6 +58,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
             mViewModel.getRecommendProductList()
             mViewModel.getSellerProductList()
             mViewModel.getSellerInfo()
+            mViewModel.getSellerFollower(LikeTarget.SELLER.target)
 
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
