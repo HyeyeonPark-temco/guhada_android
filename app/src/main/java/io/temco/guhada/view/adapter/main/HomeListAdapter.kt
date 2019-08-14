@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter.main
 
 import android.app.Activity
 import android.content.Context
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,13 @@ import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.listener.OnProductListListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.Deal
@@ -37,11 +39,6 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
 class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
 
-    private var mProductListener: OnProductListListener? = null
-
-    fun setOnProductListListener(listener: OnProductListListener) {
-        mProductListener = listener
-    }
     /**
      * HomeType 에 따른 item view
      */
@@ -87,6 +84,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
     override fun isFooter(position: Int) = false
     override fun getItemCount() = items.size
 
+
     /**
      * 메인 리스트에 사용할 base view holder
      */
@@ -106,10 +104,13 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
      * 메인 리스트에 event viewpager view holder
      */
     inner class MainEventViewHolder(private val containerView: View, val binding: CustomlayoutMainItemMaineventBinding) : ListViewHolder(containerView, binding){
+        var currentAdIndex : Int = -1
+        val mHandler : Handler = Handler((containerView.context as Activity).mainLooper)
+        var eventListSize = 0
+
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
-
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
-
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?) {
+        }
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is MainEvent){
                 var data = item
@@ -118,8 +119,9 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                         override fun getPageView(paramViewGroup: ViewGroup, paramInt: Int, item: EventData): View {
                             val imageView = ImageView(paramViewGroup.context)
                             imageView.setLayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-                            imageView.setScaleType(ImageView.ScaleType.FIT_XY)
-                            ImageUtil.loadImage(Glide.with(containerView.context as Activity),imageView, data.eventList[paramInt].imgPath)
+                            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP)
+                            imageView.setBackgroundResource(data.eventList[paramInt].imgRes)
+                            //ImageUtil.loadImage(Glide.with(containerView.context as Activity),imageView, data.eventList[paramInt].imgPath)
                             return imageView
                         }
                         override fun getPageTitle(position: Int): CharSequence? = ""
@@ -127,9 +129,53 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                         override fun getPagerIconBackground(position: Int): Int = 0
                     }
                     binding.viewPager.adapter = infiniteAdapter
+
+                    if(currentAdIndex == -1){
+                        eventListSize = binding.viewPager.offsetAmount
+                        currentAdIndex = binding.viewPager.currentItem
+                    }
+                    binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+                        override fun onPageScrollStateChanged(state: Int) {
+                            if(state == ViewPager.SCROLL_STATE_IDLE){
+                                homeRolling()
+                            }else{
+                                mHandler.removeCallbacks(homeAdRolling)
+                            }
+                        }
+                        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {  }
+                        override fun onPageSelected(position: Int) {
+                            currentAdIndex = position
+                        }
+                    })
+                    if(position == 0){
+                        homeRolling()
+                    }
                 }
             }
         }
+        var homeAdRolling =  Runnable {
+            try{
+                if(mHandler != null && binding.viewPager!=null){
+                    if(currentAdIndex > (eventListSize * 1000) -100) currentAdIndex = (eventListSize*1000) / 2
+                    binding.viewPager.setCurrentItemSmooth(currentAdIndex+1)
+                }
+            }catch (e:Exception){
+                if(CustomLog.flag)CustomLog.E(e)
+            }
+            homeRolling()
+         }
+
+        fun homeRolling(){
+            try{
+                mHandler.removeCallbacks(homeAdRolling)
+                mHandler.postDelayed(homeAdRolling,5000)
+            }catch (e:Exception){
+                mHandler.removeCallbacks(homeAdRolling)
+                if(CustomLog.flag)CustomLog.E(e)
+            }
+        }
+
+
 
     }
 

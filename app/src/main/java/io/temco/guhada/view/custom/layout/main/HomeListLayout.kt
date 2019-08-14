@@ -57,7 +57,6 @@ class HomeListLayout constructor(
     }
 
     override fun onStart() {
-
     }
 
     override fun onResume() {
@@ -69,7 +68,6 @@ class HomeListLayout constructor(
     }
 
     override fun onStop() {
-
     }
 
     override fun onDestroy() {

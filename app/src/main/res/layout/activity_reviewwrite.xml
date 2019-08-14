@@ -4,6 +4,12 @@
 
     <data>
         <variable
+            name="onClickGetImage"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickReviewWriteOrModify"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="onClickCloseButton"
             type="android.view.View.OnClickListener" />
         <import type="android.view.View" />
@@ -567,12 +573,12 @@
                     android:layout_marginLeft="20dp"
                     android:padding="15dp"
                     android:gravity="start"
+                    android:maxLines="500"
+                    android:maxLength="1000"
                     android:background="@drawable/drawable_border_dsix"
                     android:hint="@string/review_activity_edittext_hint"
-                    android:inputType="text"
-                    android:imeOptions="actionSearch"
                     android:textColorHint="@color/text_7"
-                    android:textColor="@color/text_7"
+                    android:textColor="@color/black_four"
                     android:textSize="@dimen/text_14" />
 
                 <LinearLayout
@@ -586,10 +592,12 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
+                        android:onClick="@{onClickGetImage}"
                         android:orientation="horizontal">
+
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
@@ -616,7 +624,7 @@
                         style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="@{viewModel.editTextReviewTxtCount}"
                         android:textColor="@color/blue_purple"
                         android:textSize="@dimen/text_13" />
                     <TextView
@@ -627,6 +635,22 @@
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"
+                    android:layout_marginTop="20dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:id="@+id/imageview_reviewwrite_img01"
+                            android:layout_width="86dp"
+                            android:layout_height="86dp" />
+                    </LinearLayout>
+                </HorizontalScrollView>
 
                 <View
                     android:layout_width="match_parent"
@@ -666,6 +690,7 @@
                 android:layout_weight="1"
                 android:layout_marginRight="3dp"
                 android:text="취소"
+                android:onClick="@{onClickCloseButton}"
                 android:background="@color/greyish_brown_two"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_18" />
@@ -676,7 +701,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginLeft="3dp"
-                android:text="등록"
+                android:text="@{viewModel.modifyReviewStatus ? @string/review_activity_btn_modify : @string/review_activity_btn_write}"
+                android:onClick="@{onClickReviewWriteOrModify}"
                 android:background="@color/common_blue_purple"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_18"/>

@@ -23,5 +23,7 @@ enum class RequestCode(val flag: Int) {
     SEARCH_ZIP(10014),
     MODIFY_CLAIM(10015),
     PRODUCT_DETAIL(10016),
-    SIDE_MENU(10018)
+    SIDE_MENU(10018),
+    REVIEW_WRITE(10020),
+    REVIEW_MODIFY(10021)
 }

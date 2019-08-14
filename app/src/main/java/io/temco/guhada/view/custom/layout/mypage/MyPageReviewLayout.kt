@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusHelper
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.review.MyPageReviewBase
 import io.temco.guhada.data.viewmodel.mypage.MyPageReviewViewModel
@@ -46,6 +49,7 @@ class MyPageReviewLayout constructor(
 
         mViewModel.listAvailableReviewOrder.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MyPageReviewBase>> {
+                    if(CustomLog.flag)CustomLog.L("MyPageReviewLayout","mViewModel.getAvailableAdapter().items.size" + mViewModel.getAvailableAdapter().items.size)
                     if(mViewModel.getAvailableAdapter().items.size > 0) {
                         mViewModel.tab1EmptyViewVisible.set(false)
                     }else{
@@ -70,6 +74,16 @@ class MyPageReviewLayout constructor(
                 }
         )
 
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                RequestCode.REVIEW_WRITE.flag -> {
+                    mViewModel.reloadRecyclerViewAll()
+                }
+                RequestCode.REVIEW_MODIFY.flag -> {
+                    mViewModel.reloadRecyclerMyReviewList()
+                }
+            }
+        }
 
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
     }

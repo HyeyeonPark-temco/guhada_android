@@ -63,12 +63,12 @@ abstract class InfiniteGeneralFixedPagerAdapter<T> : PagerAdapter {
         if (viewGroup == null) viewGroup = paramViewGroup
         if (isInfinity) {
             val i = paramInt % realCount
-            if (CustomLog.flag) CustomLog.L(
+            /*if (CustomLog.flag) CustomLog.L(
                 "InfiniteGeneralFixedPagerAdapter",
                 "1 instantiateItem getRealCount $realCount"
             )
             if (CustomLog.flag) CustomLog.L("InfiniteGeneralFixedPagerAdapter", "1 instantiateItem paramInt $paramInt")
-            if (CustomLog.flag) CustomLog.L("InfiniteGeneralFixedPagerAdapter", "1 instantiateItem i $i")
+            if (CustomLog.flag) CustomLog.L("InfiniteGeneralFixedPagerAdapter", "1 instantiateItem i $i")*/
             val localBaseFragment = this.getItem(paramViewGroup, i)
             paramViewGroup.addView(localBaseFragment)
             return localBaseFragment
@@ -83,8 +83,8 @@ abstract class InfiniteGeneralFixedPagerAdapter<T> : PagerAdapter {
         if (isDestroyView) {
             if (isInfinity) {
                 val i = paramInt % realCount
-                if (CustomLog.flag) CustomLog.L("InfiniteGeneralFixedPagerAdapter", "destroyItem paramInt $paramInt")
-                if (CustomLog.flag) CustomLog.L("InfiniteGeneralFixedPagerAdapter", "destroyItem i $i")
+                /*if (CustomLog.flag) CustomLog.L("InfiniteGeneralFixedPagerAdapter", "destroyItem paramInt $paramInt")
+                if (CustomLog.flag) CustomLog.L("InfiniteGeneralFixedPagerAdapter", "destroyItem i $i")*/
                 paramViewGroup.removeView(paramObject as View)
                 //this.destroyItem(paramViewGroup, i, paramObject);
             } else {

@@ -108,9 +108,9 @@ interface OrderService {
 
 
     /**
-     * 영수증 주소 조회 API
+     * 리뷰가 작성 가능한 주문아이템 리스트 API
      */
-    @GET("/order-review/available-review-order/")
+    @GET("/order-review/available-review-order/{page}")
     fun getAvailableReviewList(@Header("Authorization") accessToken: String, @Path("page") page: Int): Call<BaseModel<MyPageOrderReview>>
 
 

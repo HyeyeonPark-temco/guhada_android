@@ -210,7 +210,7 @@ class OrderServer {
          * 마이페이지 내가 작성가능한 주문목록
          */
         @JvmStatic
-        fun getMypageReviewAvailableList(listener: OnServerListener, accessToken: String, page: Int, size : Int) {
+        fun getMypageReviewAvailableList(listener: OnServerListener, accessToken: String, page: Int) {
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true)
                     .getAvailableReviewList(accessToken, page).enqueue(object : Callback<BaseModel<MyPageOrderReview>> {
                         override fun onResponse(call: Call<BaseModel<MyPageOrderReview>>, response: Response<BaseModel<MyPageOrderReview>>) {

@@ -16,6 +16,7 @@ import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.MyPageReview
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
+import io.temco.guhada.data.model.review.ReviewWrMdResponse
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.model.seller.SellerSatisfaction
@@ -370,12 +371,11 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             listener.onResult(true, response.body())
                         }
-
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+             )
         }
 
         /**
@@ -388,12 +388,11 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             listener.onResult(true, response.body())
                         }
-
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 
@@ -407,7 +406,6 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             listener.onResult(true, response.body())
                         }
-
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
@@ -449,12 +447,12 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 
         /**
-         * 마이페이지 내가 작성한 리뷰 리스트
+         * 마이페이지 내가 작성한 리뷰 삭제
          */
         @JvmStatic
         fun deleteReviewData(listener: OnServerListener, accessToken: String, productId: Long, reviewId: Long) {
@@ -486,8 +484,87 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
+            )
+        }
+
+
+
+        /**
+         * 마이페이지 리뷰 작성하기
+         */
+        @JvmStatic
+        fun writeReview(listener: OnServerListener, accessToken: String, productId: Long, data : ReviewWrMdResponse) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .writeReview(accessToken, productId, data.setParam()).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(CustomLog.flag)CustomLog.L("writeReview","onResponse body",response.code())
+
+                            if(response.code() in 200..400 && response.body() != null){
+                                if(CustomLog.flag)CustomLog.L("writeReview","onResponse body",response.body().toString())
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag)CustomLog.L("writeReview","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag)CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if(CustomLog.flag)CustomLog.L("writeReview","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
                     )
         }
+
+
+        /**
+         * 마이페이지 리뷰 수정하기
+         */
+        @JvmStatic
+        fun modifyReview(listener: OnServerListener, accessToken: String, productId: Long, reviewId: Int, data : ReviewWrMdResponse) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .modifyReview(accessToken, productId, reviewId,data.setParamModify()).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag)CustomLog.L("modifyReview","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag)CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if(CustomLog.flag)CustomLog.L("modifyReview","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+
 
     }
 

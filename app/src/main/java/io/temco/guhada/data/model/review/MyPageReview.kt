@@ -106,6 +106,28 @@ class ReviewData : Serializable {
     }
 
 
+    fun getColorSatisfaction(): Int = when (colorSatisfaction) {
+        "BRIGHTER" -> 0
+        "SAME" -> 1
+        "DARKER" -> 2
+        else -> 0
+    }
+
+    fun getLengthSatisfaction (): Int = when (lengthSatisfaction) {
+        "SHORT" -> 0
+        "REGULAR" -> 1
+        "LONG" -> 2
+        else -> 0
+    }
+
+    fun getSizeSatisfaction  (): Int = when (sizeSatisfaction) {
+        "SMALL" -> 0
+        "JUST_FIT" -> 1
+        "LARGE" -> 2
+        else -> 0
+    }
+
+
     override fun toString(): String {
         return "ReviewData(userNickname='$userNickname', userId=$userId, createdAt='$createdAt', productId=$productId, textReview='$textReview', productRating='$productRating', orderProductGroupId=$orderProductGroupId, sizeSatisfaction='$sizeSatisfaction', colorSatisfaction='$colorSatisfaction', lengthSatisfaction='$lengthSatisfaction', photoCount=$photoCount, bookmarkCount=$bookmarkCount, profileImageUrl='$profileImageUrl', id=$id)"
     }
@@ -133,8 +155,8 @@ class ReviewOrder : Serializable {
     @SerializedName("productId")
     var productId : Long = 0L
 
-    @SerializedName("orderDate")
-    var orderDate : String = ""
+    /*@SerializedName("orderDate")
+    var orderDate : String = ""*/
 
     @SerializedName("orderTimestamp")
     var orderTimestamp : Long = 0L
@@ -190,8 +212,8 @@ class ReviewOrder : Serializable {
     @SerializedName("statusMessage")
     var statusMessage : String = ""
 
-    @SerializedName("expireDate")
-    var expireDate : String = ""
+    /*@SerializedName("expireDate")
+    var expireDate : String = ""*/
 
     @SerializedName("expireTimestamp")
     var expireTimestamp : String = ""
@@ -202,11 +224,11 @@ class ReviewOrder : Serializable {
     @SerializedName("purchaseConfirm")
     var purchaseConfirm : Boolean = false
 
-    @SerializedName("shipCompleteDate")
-    var shipCompleteDate : String = ""
+    /*@SerializedName("shipCompleteDate")
+    var shipCompleteDate : String = ""*/
 
     @SerializedName("shipCompleteTimestamp")
-    var shipCompleteTimestamp : Any? = null
+    var shipCompleteTimestamp : String = ""
 
     @SerializedName("reviewId")
     var reviewId : Int = 0
@@ -218,8 +240,10 @@ class ReviewOrder : Serializable {
     var purchaseStatusText : String = ""
 
     override fun toString(): String {
-        return "ReviewOrder(purchaseId=$purchaseId, productId=$productId, orderDate='$orderDate', orderTimestamp=$orderTimestamp, brandName='$brandName', season='$season', prodName='$prodName', imageName='$imageName', imageUrl='$imageUrl', optionAttribute1='$optionAttribute1', optionAttribute2='$optionAttribute2', optionAttribute3='$optionAttribute3', quantity=$quantity, discountPrice=$discountPrice, originalPrice=$originalPrice, orderPrice=$orderPrice, shipPrice=$shipPrice, sellerId=$sellerId, sellerName='$sellerName', purchaseStatus='$purchaseStatus', statusMessage='$statusMessage', expireDate='$expireDate', expireTimestamp='$expireTimestamp', orderProdGroupId=$orderProdGroupId, purchaseConfirm=$purchaseConfirm, shipCompleteDate='$shipCompleteDate', shipCompleteTimestamp='$shipCompleteTimestamp', reviewId=$reviewId, dealId=$dealId, purchaseStatusText='$purchaseStatusText')"
+        return "ReviewOrder(purchaseId=$purchaseId, productId=$productId, orderTimestamp=$orderTimestamp, brandName='$brandName', season='$season', prodName='$prodName', imageName='$imageName', imageUrl='$imageUrl', optionAttribute1='$optionAttribute1', optionAttribute2='$optionAttribute2', optionAttribute3='$optionAttribute3', quantity=$quantity, discountPrice=$discountPrice, originalPrice=$originalPrice, orderPrice=$orderPrice, shipPrice=$shipPrice, sellerId=$sellerId, sellerName='$sellerName', purchaseStatus='$purchaseStatus', statusMessage='$statusMessage', expireTimestamp='$expireTimestamp', orderProdGroupId=$orderProdGroupId, purchaseConfirm=$purchaseConfirm, shipCompleteTimestamp=$shipCompleteTimestamp, reviewId=$reviewId, dealId=$dealId, purchaseStatusText='$purchaseStatusText')"
     }
+
+
 }
 
 class ReviewPhotos : Serializable {

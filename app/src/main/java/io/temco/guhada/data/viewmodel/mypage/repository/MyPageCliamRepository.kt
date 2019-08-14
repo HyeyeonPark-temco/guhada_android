@@ -48,7 +48,6 @@ class MyPageCliamRepository (val context : Context) {
                             page.pageNumber = data.pageable.pageNumber
                             data.content.add(page)
                         }
-
                         list!!.value!!.addAll(data.content)
                         list!!.value = list!!.value
                         listener?.run { onResultCallback() }

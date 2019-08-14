@@ -246,6 +246,8 @@ interface UserService {
     fun getBookMark(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<BookMark>>
 
 
+
+
     /**
      * BookMark 정보 추가
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
@@ -299,6 +301,36 @@ interface UserService {
      */
     @DELETE("/products/{productId}/reviews/{reviewId}")
     fun deleteReviewData(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Long): Call<BaseModel<Any>>
+
+
+
+
+    /**
+     * 리뷰 작성하기
+     *
+     * park jungho
+     * 19.08.12
+     */
+    @FormUrlEncoded
+    @POST("/products/{productId}/reviews")
+    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @FieldMap param : HashMap<String,Any>): Call<BaseModel<Any>>
+
+
+
+    /**
+     * 리뷰 수정하기
+     *
+     * park jungho
+     * 19.08.12
+     */
+    @FormUrlEncoded
+    @POST("/products/{productId}/reviews/{reviewId}")
+    fun modifyReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Int,
+                     @FieldMap param : HashMap<String,Any>): Call<BaseModel<Any>>
+
+
+
+
 
 
 }

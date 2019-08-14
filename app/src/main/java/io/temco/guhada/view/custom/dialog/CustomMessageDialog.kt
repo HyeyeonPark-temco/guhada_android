@@ -29,10 +29,7 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
     override fun init() {
         mBinding.textMessage.text = message
         mBinding.setClickListener {
-            if (cancelButtonVisible) {
-                confirmTask()
-            }
-
+            confirmTask()
             dismissAllowingStateLoss()
         }
         mBinding.setCancelClickListener {

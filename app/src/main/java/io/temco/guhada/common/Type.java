@@ -49,7 +49,9 @@ public class Type {
         PRODUCT_LIST,
         CANCEL_ORDER,
         SUCCESS_CANCEL_ORDER,
-        REVIEW_WRITE
+        REVIEW_WRITE,
+        IMAGE_GET,
+        REVIEW_POINT_DIALOG
     }
 
     // Main
@@ -155,7 +157,8 @@ public class Type {
                 return "http://qa.user.guhada.com:8080/";
 
             default:
-                return "http://dev.user.guhada.com:8080/";
+                //return "http://dev.user.guhada.com:8080/";
+                return "http://dev.user.guhada.com/";
         }
     }
 

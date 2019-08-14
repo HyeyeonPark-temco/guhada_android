@@ -40,6 +40,7 @@ import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.view.activity.CartActivity;
+import io.temco.guhada.view.activity.ImageGetActivity;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
 import io.temco.guhada.view.activity.SearchWordActivity;
@@ -321,6 +322,10 @@ public class CommonUtil {
         }
     }
 
+    public static void startImageGallery(Activity act){
+        Intent intent = new Intent(act, ImageGetActivity.class);
+        act.startActivityForResult(intent,Flag.RequestCode.IMAGE_GALLERY);
+    }
 
     public static Boolean checkToken() {
         Token token = Preferences.getToken();

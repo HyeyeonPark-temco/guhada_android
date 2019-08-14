@@ -53,12 +53,17 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId());
-        // Init
-        if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) {
-            initNfc();
+        try{
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"onCreate");
+            mBinding = DataBindingUtil.setContentView(this, getLayoutId());
+            // Init
+            if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) {
+                initNfc();
+            }
+            init();
+        }catch (Exception e){
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
         }
-        init();
     }
 
 
@@ -153,6 +158,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         if (!"MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
             if(((BaseApplication)getApplicationContext()).getMoveToMain() !=null &&
                     ((BaseApplication)getApplicationContext()).getMoveToMain().isMoveToMain()){
+                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("BindActivity",this.getClass().getSimpleName(),"onResume finish");
                 setResult(Flag.RequestCode.GO_TO_MAIN);
                 finish();
             }

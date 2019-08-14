@@ -58,7 +58,7 @@ class InfiniteViewPager : MultiTouchViewPager {
 
 
     override fun setCurrentItem(paramInt: Int) {
-        if (CustomLog.flag) CustomLog.L("InfiniteViewPager", "1 setCurrentItem paramInt $paramInt")
+        //if (CustomLog.flag) CustomLog.L("InfiniteViewPager", "1 setCurrentItem paramInt $paramInt")
         if (isInfinity) {
             if (adapter!!.count === 0) {
                 super.setCurrentItem(paramInt, false)
@@ -68,6 +68,16 @@ class InfiniteViewPager : MultiTouchViewPager {
             super.setCurrentItem(item, false)
         } else {
             super.setCurrentItem(paramInt, false)
+        }
+    }
+
+
+    fun setCurrentItemSmooth(paramInt: Int) {
+        //if (CustomLog.flag) CustomLog.L("InfiniteViewPager", "1 setCurrentItem paramInt $paramInt")
+        if (isInfinity) {
+            super.setCurrentItem(paramInt, true)
+        } else {
+            super.setCurrentItem(paramInt, true)
         }
     }
 
