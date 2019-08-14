@@ -2,6 +2,7 @@ package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
+import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
@@ -36,7 +37,7 @@ interface ProductService {
      * @param unitPerPage 내려받을 페이지 수
      */
     @GET("main-home/deals/new-arrivals")
-    fun getProductByNewArrivals(@Query("unitPerPage") unitPerPage : Int): Call<BaseModel<HomeDeal>>
+    fun getProductByNewArrivals(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<HomeDeal>>
 
     /**
      * @author park jungho
@@ -45,6 +46,14 @@ interface ProductService {
      * @param unitPerPage 내려받을 페이지 수
      */
     @GET("main-home/deals/plus-item")
-    fun getProductByPlusItem(@Query("unitPerPage") unitPerPage : Int): Call<BaseModel<HomeDeal>>
+    fun getProductByPlusItem(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<HomeDeal>>
+
+    /**
+     * 상품 목록 조회
+     * @since 2019.08.14
+     * @author Hyeyeon Park
+     */
+    @GET("deals")
+    fun getProductListBySellerId(@Query("sellerId") sellerId: Long, @Query("pageIndex") page: Int, @Query("unitPerPage") unitPerPage: Int) : Call<BaseModel<MutableList<Deal>>>
 
 }

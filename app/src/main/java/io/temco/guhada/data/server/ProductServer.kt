@@ -4,6 +4,7 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.RetryableCallback
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.model.ProductByList
@@ -19,7 +20,7 @@ import java.io.IOException
 
 class ProductServer {
 
-    companion object{
+    companion object {
 
         @JvmStatic
         fun getCategories(listener: OnServerListener?) {
@@ -43,6 +44,7 @@ class ProductServer {
 
                                 }
                             }
+
                             override fun onFailure(call: Call<BaseModel<Category>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }
@@ -137,13 +139,14 @@ class ProductServer {
          * 신상품 목록 조회
          */
         @JvmStatic
-        fun getProductByNewArrivals(unitPerPage : Int, listener: OnServerListener?) {
+        fun getProductByNewArrivals(unitPerPage: Int, listener: OnServerListener?) {
             if (listener != null) {
                 val call = RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true).getProductByNewArrivals(unitPerPage)
                 RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
                     override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
+
                     override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
@@ -158,13 +161,14 @@ class ProductServer {
          * 플러스 아이템 목록 조회
          */
         @JvmStatic
-        fun getProductByPlusItem(unitPerPage : Int, listener: OnServerListener?) {
+        fun getProductByPlusItem(unitPerPage: Int, listener: OnServerListener?) {
             if (listener != null) {
                 val call = RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true).getProductByPlusItem(unitPerPage)
                 RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
                     override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
+
                     override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
@@ -172,9 +176,16 @@ class ProductServer {
             }
         }
 
-
-
-
+        /**
+         * 상품 목록 조회
+         * @author Hyeyeon Park
+         * @since 201908.14
+         */
+        @JvmStatic
+        fun getProductListBySellerId(listener: OnServerListener, sellerId: Long, page: Int, unitPerPage: Int) =
+            RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getProductListBySellerId(sellerId = sellerId, page = page, unitPerPage = unitPerPage).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
+            )
     }
 
 }

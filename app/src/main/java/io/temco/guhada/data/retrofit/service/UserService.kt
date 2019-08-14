@@ -7,7 +7,6 @@ import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.MyPageReview
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
-import io.temco.guhada.data.model.review.ReviewWrMdResponse
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.model.seller.SellerSatisfaction
@@ -24,8 +23,8 @@ interface UserService {
     /**
      * 회원 정보 가져오기 API
      */
-    @GET ("/users")
-    fun getUserInfo(@Query("userIds") userIds : IntArray) : Call<BaseModel<User>>
+    @GET("/users")
+    fun getUserInfo(@Query("userIds") userIds: IntArray): Call<BaseModel<User>>
 
     /**
      * 회원가입 API
@@ -231,7 +230,7 @@ interface UserService {
      * like -> bookmarks 로 변경
      */
     @GET("/users/{userId}/bookmarks")
-    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("target") target: String): Call<BaseModel<Any>>
+    fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("targetId") targetId: Long, @Query("target") target: String): Call<BaseModel<BookMark>>
 
 
     /**
@@ -282,7 +281,6 @@ interface UserService {
      */
     @DELETE("/users/bookmarks")
     fun deleteBookMarkAll(@Header("Authorization") accessToken: String, @Query("target") target: String): Call<BaseModel<Any>>
-
 
 
     /**

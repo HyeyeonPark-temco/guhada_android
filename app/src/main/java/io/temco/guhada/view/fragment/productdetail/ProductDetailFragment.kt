@@ -97,6 +97,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initViewModel() {
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
+        mViewModel.notifySellerStoreFollow = { bookMark -> mStoreFragment.setSellerBookMark(bookMark) }
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             initSummary()
@@ -110,7 +111,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
-                mViewModel.getLike(Type.BookMarkTarget.SELLER.name)
+                mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
                 /**
                  * 북마크 여부 확인
                  */
@@ -207,7 +208,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.onDestroy()
         if (::mReviewFragment.isInitialized) mReviewFragment.onDestroy()
 
-        (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
+        if (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter != null)
+            (mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.adapter as ImagePagerAdapter).clearItems()
 
         try {
             GuhadaDB.destroyInstance()
@@ -254,7 +256,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      */
     private fun initStore() {
         mStoreFragment = ProductDetailStoreFragment().apply {
-            this.mProductId = mViewModel.product.value?.productId ?: -1
+            this.mProductId = this@ProductDetailFragment.mViewModel.product.value?.productId ?: -1
+            this.mSellerId = this@ProductDetailFragment.mViewModel.product.value?.sellerId ?: -1
+            this.mProductDetailViewModel = this@ProductDetailFragment.mViewModel
         }
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailStore.id, mStoreFragment)

@@ -39,7 +39,7 @@ class UserServer {
          */
         @JvmStatic
         fun getUserInfo(listener: OnServerListener, userId: Int) =
-            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getUserInfo(intArrayOf(userId)).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<User>> { successResponse -> listener.onResult(true, successResponse.body()) })
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getUserInfo(intArrayOf(userId)).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<User>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
 
         /**
@@ -301,9 +301,9 @@ class UserServer {
          * 회원 좋아요 정보 조회 API
          */
         @JvmStatic
-        fun getLike(listener: OnServerListener, accessToken: String, target: String, userId: Long) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getLike(accessToken, userId, target).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
+        fun getLike(listener: OnServerListener, accessToken: String, target: String, userId: Long, targetId: Long) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getLike(accessToken, userId, targetId, target).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<BookMark>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
          * 상품 리뷰 평점 조회 API
@@ -357,7 +357,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-             )
+                    )
         }
 
         /**
@@ -365,7 +365,7 @@ class UserServer {
          * */
         @JvmStatic
         fun saveBookMark(listener: OnServerListener, accessToken: String, response: JsonObject) {
-            if(CustomLog.flag) CustomLog.L("saveBookMark","response",response.toString())
+            if (CustomLog.flag) CustomLog.L("saveBookMark", "response", response.toString())
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .saveBookMark(accessToken, response).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
@@ -410,38 +410,40 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
+
 
         /**
          * 마이페이지 내가 작성한 리뷰 리스트
          */
         @JvmStatic
-        fun getMypageReviewList(listener: OnServerListener, accessToken: String, page: Int, size : Int) {
+        fun getMypageReviewList(listener: OnServerListener, accessToken: String, page: Int, size: Int) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .getMypageReviewList(accessToken, page,size).enqueue(object : Callback<BaseModel<MyPageReview>> {
+                    .getMypageReviewList(accessToken, page, size).enqueue(object : Callback<BaseModel<MyPageReview>> {
                         override fun onResponse(call: Call<BaseModel<MyPageReview>>, response: Response<BaseModel<MyPageReview>>) {
-                            if(response.code() in 200..400 && response.body() != null){
+                            if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
                                         var gson = Gson()
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("getMypageReviewList","onResponse body",error.toString())
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onResponse body", error.toString())
                                     listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag)CustomLog.E(e)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
                                     listener.onResult(false, null)
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<MyPageReview>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("getMypageReviewList","onFailure",t.message.toString())
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
@@ -453,31 +455,32 @@ class UserServer {
          * 마이페이지 내가 작성한 리뷰 삭제
          */
         @JvmStatic
-        fun deleteReviewData(listener: OnServerListener, accessToken: String, productId: Long, reviewId : Long) {
+        fun deleteReviewData(listener: OnServerListener, accessToken: String, productId: Long, reviewId: Long) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .deleteReviewData(accessToken, productId,reviewId).enqueue(object : Callback<BaseModel<Any>> {
+                    .deleteReviewData(accessToken, productId, reviewId).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            if(response.code() in 200..400 && response.body() != null){
+                            if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
                                         var gson = Gson()
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("deleteReviewData","onResponse body",error.toString())
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("deleteReviewData", "onResponse body", error.toString())
                                     listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag)CustomLog.E(e)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
                                     listener.onResult(false, null)
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("deleteReviewData","onFailure",t.message.toString())
+                            if (CustomLog.flag) CustomLog.L("deleteReviewData", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
