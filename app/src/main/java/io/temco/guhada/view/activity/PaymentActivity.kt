@@ -86,6 +86,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             override fun hideLoadingIndicator() {
                 mLoadingIndicatorUtil.hide()
             }
+
+            override fun closeActivity(){
+                finish()
+            }
         })
 
         // [장바구니]에서 진입
@@ -292,5 +296,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun hideLoadingIndicator()
         fun redirectShippingAddressActivity()
         fun onClickCloseShippingMemoSpinner()
+        fun closeActivity()
     }
 }

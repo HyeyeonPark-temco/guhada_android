@@ -599,7 +599,7 @@
     <string name="mypagepoint_more">더보기</string>
     <string name="mypagepoint_enabled">사용 가능한 포인트</string>
     <string name="mypagepoint_expected">적립 예정</string>
-    <string name="mypagepoint_accumulated">누적 포인트</string>
+    <string name="mypagepoint_accumulated">적립 포인트</string>
     <string name="mypagepoint_empty">포인트 내역이 없습니다.</string>
     <string name="mypagepoint_status_used">사용</string>
     <string name="mypagepoint_status_accumulated">적립</string>

@@ -141,7 +141,13 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             executeByResultCode(success, o,
                     successTask = {
                         this.cart = (o as BaseModel<*>).data as Cart
-                        getOrderForm(accessToken)
+                        if (this.cart.cartValidStatus.status)
+                            getOrderForm(accessToken)
+                        else {
+                            listener.showMessage(this.cart.cartValidStatus.cartErrorMessage)
+                            listener.closeActivity()
+                        }
+
                         Log.e("cartItemId", cart.cartItemId.toString())
                     },
                     failedTask = {
