@@ -4,14 +4,18 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.enum.LikeTarget
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BookMark
+import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.model.seller.Seller
-import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.server.UserServer
@@ -80,5 +84,49 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                         }, accessToken = it, target = target, targetId = mCriteria.sellerId, userId = userId)
                     }
                 })
+    }
+
+    fun onClickSellerBookMark() {
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    val userId = JWT(it.split("Bearer ")[1]).getClaim("userId").asLong()
+                    if (userId != null) {
+                        if (mSellerBookMark.content.isEmpty())
+                            saveBookMark(accessToken = it, target = LikeTarget.SELLER.target, userId = userId)
+                        else
+                            deleteBookMark(accessToken = it, target = LikeTarget.SELLER.target, targetId = mCriteria.sellerId)
+                    }
+
+                },
+                invalidTokenTask = {
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+                })
+    }
+
+    private fun saveBookMark(accessToken: String, target: String, userId: Long) {
+        val bookMarkResponse = BookMarkResponse(target, mCriteria.sellerId)
+        UserServer.saveBookMark(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        this.mSellerBookMark.content = mutableListOf(BookMark().Content().apply {
+                            this.target = target
+                            this.targetId = mCriteria.sellerId
+                            this.userId = userId
+                        })
+                        notifyPropertyChanged(BR.mSellerBookMark)
+                    }
+            )
+        }, accessToken = accessToken, response = bookMarkResponse.getProductBookMarkRespose())
+    }
+
+    private fun deleteBookMark(accessToken: String, target: String, targetId: Long) {
+        UserServer.deleteBookMark(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        this.mSellerBookMark.content = mutableListOf()
+                        notifyPropertyChanged(BR.mSellerBookMark)
+                    }
+            )
+        }, accessToken = accessToken, target = target, targetId = targetId)
     }
 }

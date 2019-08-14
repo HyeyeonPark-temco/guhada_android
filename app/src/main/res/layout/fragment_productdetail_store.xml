@@ -160,10 +160,11 @@
                     </LinearLayout>
 
                     <FrameLayout
-                        android:id="@+id/button_productdetail_seller_follow"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_silver }"
+                        android:onClick="@{()->viewModel.onClickSellerBookMark()}"
                         android:paddingLeft="32dp"
                         android:paddingTop="10dp"
                         android:paddingRight="32dp"
