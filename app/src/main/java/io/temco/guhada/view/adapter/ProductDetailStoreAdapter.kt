@@ -10,7 +10,12 @@ import io.temco.guhada.databinding.ItemProductdetailStoreBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailStoreAdapter : RecyclerView.Adapter<ProductDetailStoreAdapter.Holder>() {
+    private val RIGHT_MARGIN = 20
+    private val LAST_RIGHT_MARGIN = 40
+
     var mList: List<Deal> = arrayListOf()
+    var mIsGridLayout = false
+    var mSpanCount = 3
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_store, parent, false))
@@ -33,11 +38,20 @@ class ProductDetailStoreAdapter : RecyclerView.Adapter<ProductDetailStoreAdapter
         }
 
         private fun setSpacing() {
-            (mBinding.constraintlayoutProductdetailStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                rightMargin = if (adapterPosition < mList.size - 1) 20
-                else 40
-            }.let {
-                mBinding.constraintlayoutProductdetailStore.layoutParams = it
+            if (mIsGridLayout) {
+                (mBinding.constraintlayoutProductdetailStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                    rightMargin = if ((adapterPosition + 1) % mSpanCount == 0) 0
+                    else RIGHT_MARGIN
+                }.let {
+                    mBinding.constraintlayoutProductdetailStore.layoutParams = it
+                }
+            } else {
+                (mBinding.constraintlayoutProductdetailStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                    rightMargin = if (adapterPosition < mList.size - 1) RIGHT_MARGIN
+                    else LAST_RIGHT_MARGIN
+                }.let {
+                    mBinding.constraintlayoutProductdetailStore.layoutParams = it
+                }
             }
         }
     }

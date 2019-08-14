@@ -255,6 +255,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initStore() {
         mStoreFragment = ProductDetailStoreFragment().apply {
             this.mProductId = mViewModel.product.value?.productId ?: -1
+            this.mSellerId = mViewModel.product.value?.sellerId ?: -1
         }
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailStore.id, mStoreFragment)
