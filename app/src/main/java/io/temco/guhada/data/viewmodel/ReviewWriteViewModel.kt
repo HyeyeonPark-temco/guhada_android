@@ -5,17 +5,26 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.review.ReviewPhotos
 import io.temco.guhada.data.model.review.ReviewWrMdResponse
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ReviewWriteViewModel (val context : Context) : BaseObservableViewModel() {
+
+    var mReviewEditPhotos: MutableLiveData<MutableList<ReviewPhotos>> = MutableLiveData()
+    var selectedImageIndex = 0
+
+    init {
+        mReviewEditPhotos.value = arrayListOf()
+    }
 
     var editTextReviewTxtCount = ObservableField("0")
         @Bindable

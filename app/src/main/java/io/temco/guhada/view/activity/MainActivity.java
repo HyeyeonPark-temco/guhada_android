@@ -351,13 +351,18 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(1);
                 break;
             case 4: // My Page
-                mPagerAdapter.removeProduct();
-                if (!isReselected) {
-                    if (false) {
-                        // if login
-                    } else {
-                        mBinding.layoutContents.layoutPager.setCurrentItem(2);
+                if(CommonUtil.checkToken()){
+                    mPagerAdapter.removeProduct();
+                    if (!isReselected) {
+                        if (false) {
+                            // if login
+                        } else {
+                            mBinding.layoutContents.layoutPager.setCurrentItem(2);
+                        }
                     }
+                }else{
+                    ToastUtil.showMessage("로그인 후 사용해 주세요.");
+                    selectTab(2,false);
                 }
                 break;
         }

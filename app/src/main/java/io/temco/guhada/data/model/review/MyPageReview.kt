@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.review
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.base.BasePageModel
 import java.io.Serializable

@@ -636,21 +636,15 @@
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
 
-                <HorizontalScrollView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_reviewwrite_imagelist"
                     android:layout_width="match_parent"
                     android:layout_height="86dp"
-                    android:layout_marginTop="20dp">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:id="@+id/imageview_reviewwrite_img01"
-                            android:layout_width="86dp"
-                            android:layout_height="86dp" />
-                    </LinearLayout>
-                </HorizontalScrollView>
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
                 <View
                     android:layout_width="match_parent"

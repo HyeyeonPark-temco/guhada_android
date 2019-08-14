@@ -210,6 +210,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent2"/>
 
+        <!-- Review Point Dialog -->
+        <activity
+            android:name=".view.activity.ReviewPointDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"/>
+
+
+
         <!-- Kakao -->
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"

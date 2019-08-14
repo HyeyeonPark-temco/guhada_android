@@ -43,6 +43,7 @@ import io.temco.guhada.view.activity.CartActivity;
 import io.temco.guhada.view.activity.ImageGetActivity;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
+import io.temco.guhada.view.activity.ReviewPointDialogActivity;
 import io.temco.guhada.view.activity.SearchWordActivity;
 import io.temco.guhada.view.activity.SideMenuActivity;
 
@@ -327,6 +328,19 @@ public class CommonUtil {
         act.startActivityForResult(intent,Flag.RequestCode.IMAGE_GALLERY);
     }
 
+
+    /**
+     *
+     * @param act activity
+     * @param type - 0 : 구매확정, 1 : 리뷰작성, 2 : 사이즈 등록
+     */
+    public static void startPointDialogActivity(Activity act, int type){
+        Intent intent = new Intent(act, ReviewPointDialogActivity.class);
+        intent.putExtra("type", type);
+        act.startActivityForResult(intent,Flag.RequestCode.POINT_RESULT_DIALOG);
+    }
+
+
     public static Boolean checkToken() {
         Token token = Preferences.getToken();
         if(token == null) return false;
@@ -346,5 +360,6 @@ public class CommonUtil {
             }
         }
     }
+
 
 }

@@ -8,6 +8,7 @@ public class Flag {
         public static final int GO_TO_MAIN_COMUNITY = -9996;
         public static final int GO_TO_MAIN_MYPAGE = -9995;
         public static final int IMAGE_GALLERY = 5001;
+        public static final int POINT_RESULT_DIALOG = 5003;
         public static final int VERIFY_PHONE = 10001;
 
         public static final int KAKAO_LOGIN = 10002;

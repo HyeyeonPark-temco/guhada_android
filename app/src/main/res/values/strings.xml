@@ -933,4 +933,15 @@
     <string name="review_activity_btn_write">등록</string>
     <string name="review_activity_btn_modify">수정</string>
 
+    <string name="review_activity_maximage_desc">사진은 최대 10장 까지 등록 가능합니다.</string>
+    <string name="review_result_dialog_point_desc">포인트 1,000</string>
+    <string name="review_result_dialog_subtitle1">구매확정 완료!</string>
+    <string name="review_result_dialog_subtitle2">리뷰작성 완료!</string>
+    <string name="review_result_dialog_subtitle3">사이즈 등록 완료!</string>
+    <string name="review_result_dialog_mypoint">나의 포인트</string>
+    <string name="review_result_dialog_complete_payment_desc"><![CDATA[지금 리뷰 작성하고 포인트<br><font color="#5d2ed1">%s</font> 적립 받으세요!]]></string>
+    <string name="review_result_dialog_complete_payment_btnok">리뷰쓰고 포인트 더 받기</string>
+    <string name="review_result_dialog_complete_payment_btncancle">다음에 쓸게요</string>
+
+
 </resources>
