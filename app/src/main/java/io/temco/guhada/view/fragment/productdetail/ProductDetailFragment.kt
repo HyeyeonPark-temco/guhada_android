@@ -110,7 +110,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
-                mViewModel.getLike(Type.BookMarkTarget.SELLER.name)
+                mViewModel.getSellerLike(Type.BookMarkTarget.SELLER.name)
                 /**
                  * 북마크 여부 확인
                  */

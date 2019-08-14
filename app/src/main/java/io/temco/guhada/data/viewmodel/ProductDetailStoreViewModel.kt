@@ -65,7 +65,7 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
         }, sellerId = mCriteria.sellerId)
     }
 
-    fun getSellerFollower(target: String) {
+    fun getSellerLike(target: String) {
         ServerCallbackUtil.callWithToken(
                 task = {
                     val userId = JWT(it.split("Bearer ")[1]).getClaim("userId").asLong()

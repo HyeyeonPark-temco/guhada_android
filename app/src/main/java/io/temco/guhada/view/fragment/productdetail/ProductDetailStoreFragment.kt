@@ -58,7 +58,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
             mViewModel.getRecommendProductList()
             mViewModel.getSellerProductList()
             mViewModel.getSellerInfo()
-            mViewModel.getSellerFollower(LikeTarget.SELLER.target)
+            mViewModel.getSellerLike(LikeTarget.SELLER.target)
 
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()

@@ -198,7 +198,7 @@
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@{viewModel.sellerFollower.isFollower ? @drawable/background_color_purple : @drawable/border_all_purple_1dp}"
+                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_silver }"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/button4"
                         app:layout_constraintTop_toTopOf="parent">
@@ -207,8 +207,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@{viewModel.sellerFollower.isFollower ?  @string/productdetail_button_following : @string/productdetail_button_follow}"
-                            android:textColor="@{viewModel.sellerFollower.isFollower ? @color/common_white : @color/common_blue_purple}"
+                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ?@string/productdetail_button_follow : @string/productdetail_button_following }"
+                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/black_four }"
                             android:textSize="@dimen/text_13" />
                     </FrameLayout>
 

@@ -75,6 +75,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var advantageInfoExpanded = ObservableBoolean(false)
         @Bindable
         get() = field
+
+    var mSellerBookMark = BookMark()
+        @Bindable
+        get() = field
     /**
      * 북마크 여부 데이터 가져왔는지 여부
      * 처음 상품상세에 진입해서 확인하지 않은 상태에서 북마크 버튼을 누르면
@@ -124,9 +128,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
     /**
-     * 셀러 팔로잉
+     * 셀러 팔로잉 여부
      */
-    fun getLike(target: String) {
+    fun getSellerLike(target: String) {
         if (product.value?.sellerId != null) {
             ServerCallbackUtil.callWithToken(
                     task = {
@@ -134,24 +138,13 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                         if (userId != null) {
                             UserServer.getLike(OnServerListener { success, o ->
                                 ServerCallbackUtil.executeByResultCode(success, o,
-                                        successTask = {
-                                            this.sellerFollower.isFollower = true
-                                            notifyPropertyChanged(BR.sellerFollower)
-                                        },
-                                        userLikeNotFoundTask = {
-                                            this.sellerFollower.isFollower = false
-                                            notifyPropertyChanged(BR.sellerFollower)
+                                        successTask = { result ->
+                                            this.mSellerBookMark = result.data as BookMark
+                                            notifyPropertyChanged(BR.mSellerBookMark)
                                         }
                                 )
-                            }, accessToken = it, target = target, targetId = product.value?.sellerId as Long, userId = userId)
-                        } else {
-                            this.sellerFollower.isFollower = false
-                            notifyPropertyChanged(BR.sellerFollower)
+                            }, accessToken = it, target = target, targetId = product.value?.sellerId!!, userId = userId)
                         }
-                    },
-                    invalidTokenTask = {
-                        this.sellerFollower.isFollower = false
-                        notifyPropertyChanged(BR.sellerFollower)
                     })
         }
     }
