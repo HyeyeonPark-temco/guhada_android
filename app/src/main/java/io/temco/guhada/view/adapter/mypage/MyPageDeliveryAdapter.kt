@@ -23,6 +23,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
  * 마이페이지 주문배송, 취소교환반품 리스트 adapter
+ * [line 87] 시연용 추가 코드 추후 제거
  * @author Hyeyeon Park
  */
 class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
