@@ -52,6 +52,7 @@ public class Type {
         REVIEW_WRITE,
         IMAGE_GET,
         REVIEW_POINT_DIALOG,
+        USER_SIZE_UPDATE,
         CONFIRM_PURCHASE
     }
 
@@ -604,6 +605,56 @@ public class Type {
                 return SELLER;
             } else {
                 return PRODUCT;
+            }
+        }
+    }
+
+
+
+
+    /**
+     * @author park jungho
+     * 19.08.14
+     * <p>
+     * USER BOOKMARK 회원 북마크 target
+     * http://dev.user.guhada.com/swagger-ui.html#/USER_BOOKMARK
+     */
+    public enum PointResultDialogType implements Serializable{
+        COMPLETE_PAYMENT("COMPLETE_PAYMENT"),
+        REVIEW_WRITE("REVIEW_WRITE"),
+        SIZE_UPDATE("SIZE_UPDATE"),
+        NONE("NONE");
+
+
+        private String type;
+
+        PointResultDialogType(String type) {
+            this.type = type;
+        }
+
+        public static String get(PointResultDialogType type) {
+            switch (type) {
+                case COMPLETE_PAYMENT:
+                    return COMPLETE_PAYMENT.type;
+                case REVIEW_WRITE:
+                    return REVIEW_WRITE.type;
+                case SIZE_UPDATE:
+                    return SIZE_UPDATE.type;
+                default:
+                    return NONE.type;
+
+            }
+        }
+
+        public static PointResultDialogType getType(String type) {
+            if (type.equalsIgnoreCase(COMPLETE_PAYMENT.type)) {
+                return COMPLETE_PAYMENT;
+            } else if (type.equalsIgnoreCase(REVIEW_WRITE.type)) {
+                return REVIEW_WRITE;
+            } else if (type.equalsIgnoreCase(SIZE_UPDATE.type)) {
+                return SIZE_UPDATE;
+            } else {
+                return NONE;
             }
         }
     }

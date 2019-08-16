@@ -2,26 +2,23 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
+import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnClickSelectItemListener
 import io.temco.guhada.common.util.*
-import io.temco.guhada.data.model.product.Product
-import io.temco.guhada.data.model.review.MyPageReviewBase
-import io.temco.guhada.data.model.review.MyPageReviewContent
-import io.temco.guhada.data.model.review.ReviewAvailableOrder
-import io.temco.guhada.data.model.review.ReviewWrMdResponse
+import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.viewmodel.ReviewWriteViewModel
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.adapter.ReviewWriteImageAdapter
 import java.util.*
 
 
@@ -29,7 +26,7 @@ import java.util.*
  * 리뷰 작성 & 수정 Activity
  * @author park jungho
  */
-class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityReviewwriteBinding>() {
+class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityReviewwriteBinding>(), OnClickSelectItemListener {
     private val MAX_TXT_LENGTH = 1000
     private lateinit var mRequestManager: RequestManager
     private lateinit var mViewModel : ReviewWriteViewModel
@@ -38,13 +35,12 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
     private var reviewData : MyPageReviewBase? = null
     private var reviewAvailableData : ReviewAvailableOrder ? = null
 
-    private var product : Product? = null
-
     private var ratingBarValue = 0.0f
 
     override fun getBaseTag(): String = ReviewWriteActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_reviewwrite
     override fun getViewType(): Type.View = Type.View.REVIEW_WRITE
+
 
     override fun init() {
         loadingIndicatorUtil = LoadingIndicatorUtil(this)
@@ -54,59 +50,16 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
 
         mBinding.setOnClickCloseButton { finish() }
         mBinding.setOnClickGetImage {
-            CommonUtil.startImageGallery(this)
+            if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","setOnClickGetImage",mViewModel.mReviewEditPhotos.value!!.size)
+            if(mViewModel.mReviewEditPhotos.value!!.size < 10){
+                mViewModel.selectedImageIndex = mViewModel.mReviewEditPhotos.value!!.size
+                CommonUtil.startImageGallery(this)
+            }else{
+                ToastUtil.showMessage(resources.getString(R.string.review_activity_maximage_desc))
+            }
         }
         mBinding.setOnClickReviewWriteOrModify {
-            var data = ReviewWrMdResponse()
-            var txt = mBinding.edittextReviewwriteText.text.toString()
-            if(txt.isNullOrEmpty()){
-                ToastUtil.showMessage("리뷰를 입력해 주세요.")
-                return@setOnClickReviewWriteOrModify
-            }
-            loadingIndicatorUtil.show()
-            var reviewId = 0
-            var productId = 0L
-            if(mViewModel.modifyReviewStatus.get()){
-                var item = reviewData as MyPageReviewContent
-                data.colorSatisfaction = getColorSatisfaction(mViewModel.reviewSelectStatus2.get())
-                data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus1.get())
-                data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus3.get())
-                data.productRating = getRating(ratingBarValue)
-                data.orderProductGroupId = item.order.orderProdGroupId
-                data.sellerId = item.order.sellerId
-                data.productId = item.order.productId
-                data.reviewId = item.review.id.toLong()
-                data.textReview = mBinding.edittextReviewwriteText.text.toString()
-                reviewId = item.review.id
-                productId = item.order.productId
-            }else{
-                var item = reviewAvailableData
-                data.colorSatisfaction = getColorSatisfaction(mViewModel.reviewSelectStatus2.get())
-                data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus1.get())
-                data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus3.get())
-                data.productRating = getRating(ratingBarValue)
-                data.orderProductGroupId = item!!.orderProdGroupId
-                data.sellerId = item!!.sellerId
-                data.productId = item!!.productId
-                data.textReview = mBinding.edittextReviewwriteText.text.toString()
-                reviewId = 0
-                productId = item!!.productId
-            }
-            mViewModel.clickReviewWriteOrModify(data, productId, reviewId , object  : OnCallBackListener{
-                override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    loadingIndicatorUtil.hide()
-                    if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","resultFlag",resultFlag,"value",value)
-                    if(resultFlag){
-                        if(mViewModel.modifyReviewStatus.get()){
-                            ToastUtil.showMessage("리뷰 수정이 완료되었습니다.")
-                            setResult(Activity.RESULT_OK)
-                            finish()
-                        }else{
-
-                        }
-                    }
-                }
-            })
+            clickReviewWriteOrModify()
         }
 
         if(intent.extras != null && intent.extras.containsKey("reviewData")){
@@ -121,6 +74,14 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                 mViewModel.modifyReviewStatus.set(false)
                 setReviewWrite()
             }
+        }
+
+        if (mBinding.recyclerviewReviewwriteImagelist.adapter == null) {
+            mBinding.recyclerviewReviewwriteImagelist.adapter = ReviewWriteImageAdapter().apply { mList = mViewModel.mReviewEditPhotos.value!! }
+           (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).mClickSelectItemListener = this@ReviewWriteActivity
+            mBinding.executePendingBindings()
+        } else {
+            (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).setItems(mViewModel.mReviewEditPhotos.value!!)
         }
 
         mBinding.edittextReviewwriteText.addTextChangedListener(object  : TextWatcher{
@@ -144,8 +105,14 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
     }
 
 
+    /**
+     * 리뷰 수정 데이터 설정
+     */
     private fun setReviewModify(){
         var item = reviewData as MyPageReviewContent
+        if(!item.reviewPhotos.isNullOrEmpty()){
+            mViewModel.mReviewEditPhotos.value!!.addAll(item.reviewPhotos)
+        }
 
         ImageUtil.loadImage(mRequestManager, mBinding.productItemLayout.imageItemmypagereviewlistreviewThumb, item.order.imageUrl)
         mBinding.productItemLayout.season = item.order.season
@@ -182,10 +149,21 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
 
         mBinding.edittextReviewwriteText.text = Editable.Factory.getInstance().newEditable(txt)
         mViewModel.editTextReviewTxtCount.set(txt.length.toString())
+        setImageRecyclerViewVisible()
+    }
+
+    private fun setImageRecyclerViewVisible(){
+        if(mViewModel.mReviewEditPhotos.value!!.size > 0){
+            mBinding.recyclerviewReviewwriteImagelist.visibility = View.VISIBLE
+        }else{
+            mBinding.recyclerviewReviewwriteImagelist.visibility = View.GONE
+        }
     }
 
 
-
+    /**
+     * 리뷰 등록 데이터 설정
+     */
     private fun setReviewWrite(){
         var item = reviewAvailableData
 
@@ -215,39 +193,110 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
 
     }
 
+
+    /**
+     * type - 0 : delete, 1 : click
+     */
+    override fun clickSelectItemListener(type : Int, index: Int, value: Any) {
+        when(type){
+            0 -> {
+                (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).mList.removeAt(index)
+                (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
+                setImageRecyclerViewVisible()
+            }
+            1 -> {
+                if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","clickSelectItemListener","index",index,"value",value)
+                mViewModel.selectedImageIndex = index
+                CommonUtil.startImageGallery(this)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == Flag.RequestCode.IMAGE_GALLERY&& resultCode == Activity.RESULT_OK){
-            var fileNm = data!!.extras.getString("file_name")
-            setPic(mBinding.imageviewReviewwriteImg01, fileNm)
-            if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","fileNm",fileNm)
+        // 갤러리에서 선택된 사진 파일 주소 받아옴
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode){
+                Flag.RequestCode.IMAGE_GALLERY -> {
+                    var fileNm = data!!.extras.getString("file_name")
+                    var imageValue = ReviewPhotos()
+                    if(mViewModel.mReviewEditPhotos.value!!.size > mViewModel.selectedImageIndex){
+                        mViewModel.mReviewEditPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
+                        imageValue.id = -1
+                        imageValue.reviewPhotoUrl = fileNm
+                        mViewModel.mReviewEditPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)
+                        (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
+                    }else{
+                        imageValue.id = -1
+                        imageValue.reviewPhotoUrl = fileNm
+                        mViewModel.mReviewEditPhotos.value!!.add(imageValue)
+                        (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
+                    }
+                    setImageRecyclerViewVisible()
+                    if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","fileNm",fileNm)
+                }
+                Flag.RequestCode.POINT_RESULT_DIALOG ->{
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+            }
         }
     }
 
-    private fun setPic(imageView : ImageView, imgFile : String) {
-        // Get the dimensions of the View
-        val targetW: Int = imageView.width
-        val targetH: Int = imageView.height
-
-        val bmOptions = BitmapFactory.Options().apply {
-            // Get the dimensions of the bitmap
-            inJustDecodeBounds = true
-
-            val photoW: Int = outWidth
-            val photoH: Int = outHeight
-
-            // Determine how much to scale down the image
-            val scaleFactor: Int = Math.min(photoW / targetW, photoH / targetH)
-
-            // Decode the image file into a Bitmap sized to fill the View
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
-            inPurgeable = true
+    private fun clickReviewWriteOrModify(){
+        val data = ReviewWrMdResponse()
+        val txt = mBinding.edittextReviewwriteText.text.toString()
+        if(txt.isNullOrEmpty()){
+            ToastUtil.showMessage("리뷰를 입력해 주세요.")
+            return
         }
-        BitmapFactory.decodeFile(imgFile, bmOptions)?.also { bitmap ->
-            imageView.setImageBitmap(bitmap)
+
+        loadingIndicatorUtil.show()
+        var reviewId = 0
+        var productId = 0L
+        if(mViewModel.modifyReviewStatus.get()){
+            var item = reviewData as MyPageReviewContent
+            data.colorSatisfaction = getColorSatisfaction(mViewModel.reviewSelectStatus2.get())
+            data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus1.get())
+            data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus3.get())
+            data.productRating = getRating(ratingBarValue)
+            data.orderProductGroupId = item.order.orderProdGroupId
+            data.sellerId = item.order.sellerId
+            data.productId = item.order.productId
+            data.reviewId = item.review.id.toLong()
+            data.textReview = mBinding.edittextReviewwriteText.text.toString()
+            reviewId = item.review.id
+            productId = item.order.productId
+        }else{
+            var item = reviewAvailableData
+            data.colorSatisfaction = getColorSatisfaction(mViewModel.reviewSelectStatus2.get())
+            data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus1.get())
+            data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus3.get())
+            data.productRating = getRating(ratingBarValue)
+            data.orderProductGroupId = item!!.orderProdGroupId
+            data.sellerId = item!!.sellerId
+            data.productId = item!!.productId
+            data.textReview = mBinding.edittextReviewwriteText.text.toString()
+            reviewId = 0
+            productId = item!!.productId
         }
+        mViewModel.clickReviewWriteOrModify(data, productId, reviewId , object  : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                loadingIndicatorUtil.hide()
+                if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","resultFlag",resultFlag,"value",value)
+                if(resultFlag){
+                    if(mViewModel.modifyReviewStatus.get()){
+                        ToastUtil.showMessage("리뷰 수정이 완료되었습니다.")
+                        setResult(Activity.RESULT_OK)
+                        finish()
+                    }else{
+                        CommonUtil.startPointDialogActivity(this@ReviewWriteActivity, 1)
+                    }
+                }
+            }
+        })
     }
+
 
     private fun getRating(value : Float): String = when (value) {
         0.5f -> "HALF"

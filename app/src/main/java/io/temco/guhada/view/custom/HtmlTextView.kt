@@ -30,12 +30,12 @@ class HtmlTextView : TextView{
         val a = context?.obtainStyledAttributes(attrs, R.styleable.HtmlTextView, 0, 0)
         try {
             a?.let {
-                val isHtml = a.getBoolean(R.styleable.HtmlTextView_isHtml, false)
+                val isHtml = a.getBoolean(R.styleable.HtmlTextView_isHtml, true)
                 if (isHtml) {
                     val text = a.getString(R.styleable.HtmlTextView_android_text)
                     if (text != null) {
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            setText(Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT))
+                            setText(Html.fromHtml(text.toString(), Html.FROM_HTML_MODE_COMPACT))
                         } else {
                             setText(Html.fromHtml(text))
                         }

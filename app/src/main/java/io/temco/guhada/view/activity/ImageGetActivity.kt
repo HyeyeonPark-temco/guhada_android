@@ -62,25 +62,30 @@ class ImageGetActivity : BindActivity<ActivityImagegetBinding>() {
         super.onActivityResult(requestCode, resultCode, data)
         if(CustomLog.flag)CustomLog.L("ImageGetActivity","onActivityResult",resultCode,requestCode)
         if (requestCode == PICK_FROM_ALBUM) {
-            var photoUri  = data!!.getData()
-            var cursor : Cursor?  = null
-            try {
-                var proj = arrayOf(MediaStore.Images.Media.DATA)
-                cursor = getContentResolver().query(photoUri, proj, null, null, null)
-                var column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                cursor.moveToFirst()
-                var tempFile = File(cursor.getString(column_index))
-                if(CustomLog.flag)CustomLog.L("ImageGetActivity","onActivityResult tempFile",tempFile.absolutePath)
-                data?.apply {
-                    var intent = Intent()
-                    intent.putExtra("file_name",tempFile.absolutePath)
-                    setResult(Activity.RESULT_OK, intent)
-                    finish()
+            if(data != null && data.data != null){
+                var photoUri  = data!!.getData()
+                var cursor : Cursor?  = null
+                try {
+                    var proj = arrayOf(MediaStore.Images.Media.DATA)
+                    cursor = getContentResolver().query(photoUri, proj, null, null, null)
+                    var column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                    cursor.moveToFirst()
+                    var tempFile = File(cursor.getString(column_index))
+                    if(CustomLog.flag)CustomLog.L("ImageGetActivity","onActivityResult tempFile",tempFile.absolutePath)
+                    data?.apply {
+                        var intent = Intent()
+                        intent.putExtra("file_name",tempFile.absolutePath)
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
+                } finally {
+                    if (cursor != null) {
+                        cursor.close()
+                    }
                 }
-            } finally {
-                if (cursor != null) {
-                    cursor.close()
-                }
+            }else{
+                setResult(Activity.RESULT_CANCELED)
+                finish()
             }
         }
     }

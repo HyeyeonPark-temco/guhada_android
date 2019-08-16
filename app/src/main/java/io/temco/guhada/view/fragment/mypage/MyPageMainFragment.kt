@@ -46,6 +46,8 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
     val mDisposable: CompositeDisposable = CompositeDisposable()
     var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>> = WeakHashMap()
+
+    var initView = false
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -56,7 +58,6 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun getLayoutId() = R.layout.fragment_main_mypagehome
     override fun init() {
         mViewModel = MyPageViewModel(context ?: mBinding.root.context)
-        initHeader()
     }
 
     private fun initShippingAddressButtons() {
@@ -101,8 +102,9 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
     private fun initHeader() {
         mBinding.layoutHeader.clickListener = this
-
+        initView = true
         // Tab
+
         setTabLayout()
         setViewPager()
     }
@@ -215,6 +217,9 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
     override fun onStart() {
         super.onStart()
+        if(CommonUtil.checkToken() && !initView){
+            initHeader()
+        }
         if (customLayoutMap.isNotEmpty()) {
             for (v in customLayoutMap) {
                 v.value.onStart()
