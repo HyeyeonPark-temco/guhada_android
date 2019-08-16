@@ -21,6 +21,7 @@ import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerSatisfaction
@@ -278,7 +279,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.addCartItem(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = { listener?.showAddCartResult() })
+                        successTask = {
+                            val cart = it.data as Cart
+                            if (cart.cartValidStatus.status)
+                                listener?.showAddCartResult()
+                            else {
+                                ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
+                            }
+                        })
             }, accessToken = accessToken, quantity = listener?.getSelectedProductQuantity()!!, dealId = dealId, dealOptionId = listener.getSelectedOptionDealId())
         }, invalidTokenTask = {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))

@@ -6,13 +6,11 @@ import android.view.View
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.R
 import io.temco.guhada.common.*
-import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.view.activity.base.ActivityManager
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
 
@@ -20,7 +18,6 @@ import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
  * @author park jungho
  * 19.08.05
  * 상품 상세 Activity
- *
  */
 class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.ActivityProductdetailfragmentBinding>(), OnMainListener {
 
