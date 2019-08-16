@@ -11,4 +11,10 @@ class Option {
     var label: String = ""
     var attributes: List<String> = ArrayList()
     var rgb: List<String> = ArrayList()
+    var attributeItems : List<AttributeItem> = arrayListOf()
+
+    inner class AttributeItem {
+        var name = ""
+        var enabled = true
+    }
 }

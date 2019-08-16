@@ -20,6 +20,14 @@
         android:background="@drawable/border_all_whitethree">
 
         <ImageView
+            android:id="@+id/imageview_productdetail_soldout"
+            android:visibility="gone"
+            android:src="@drawable/bag_icon_delete"
+            android:layout_width="34dp"
+            android:layout_gravity="center"
+            android:layout_height="34dp" />
+
+        <ImageView
             android:id="@+id/imageview_productdetail_optionattr"
             android:layout_width="34dp"
             android:layout_height="34dp" />

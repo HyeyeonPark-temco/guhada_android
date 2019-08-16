@@ -14,4 +14,7 @@ class OptionAttr : Serializable {
 
     @Expose
     var label: String = ""
+
+    @Expose
+    var enabled = true
 }
