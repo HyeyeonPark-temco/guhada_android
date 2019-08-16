@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.NFC" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -32,8 +32,8 @@
             android:name=".view.activity.base.TestListActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
 
@@ -163,7 +163,8 @@
             android:name=".view.activity.ReceiptActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".view.activity.ConfirmPurchaseActivity"
+        <activity
+            android:name=".view.activity.ConfirmPurchaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
@@ -201,7 +202,7 @@
 
         <!-- Cancel Order -->
         <activity
-            android:name=".view.activity.CancelOrderActivity"
+            android:name=".view.activity.RequestCancelOrderActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
@@ -209,19 +210,24 @@
             android:name=".view.activity.SuccessCancelOrderActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Exchange -->
+        <activity
+            android:name=".view.activity.RequestExchangeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
 
         <!-- get gallery Image file -->
         <activity
             android:name=".view.activity.ImageGetActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent2"/>
+            android:theme="@style/Theme.Transparent2" />
 
         <!-- Review Point Dialog -->
         <activity
             android:name=".view.activity.ReviewPointDialogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Transparent"/>
+            android:theme="@style/Theme.Transparent" />
 
 
         <!-- User Size Update -->

@@ -2,7 +2,23 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="title"
+            type="String" />
+
+
+
+        <variable
+            name="isRefund"
+            type="Boolean" />
+    </data>
+
     <FrameLayout
+        android:id="@+id/framelayout_requestorderstatus_shippingpayment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/pale_grey">
@@ -20,29 +36,27 @@
                 style="@style/RequestOrderStatusBlackSubTitleTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/requestorderstatus_common_collection_title"
+                android:text="@{title}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingpayment_subtitle1"
+            <io.temco.guhada.view.custom.HtmlTextView
+                android:id="@+id/textview_requestorderstatus_shippingpayment_description1"
                 style="@style/RequestOrderStatusBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="@string/requestorderstatus_exchange_shipping_description1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_title" />
 
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingpayment_subtitle2"
+            <io.temco.guhada.view.custom.HtmlTextView
+                android:id="@+id/textview_requestorderstatus_shippingpayment_description2"
                 style="@style/RequestOrderStatusBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="@string/requestorderstatus_exchange_shipping_description2"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_subtitle1" />
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description1" />
 
             <RadioButton
                 android:id="@+id/radiobutton_requestorderstatus_shippingpayment_true"
@@ -51,8 +65,9 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/selector_ovalradiobutton_all"
                 android:button="@null"
+                android:visibility="@{isRefund ? View.VISIBLE : View.GONE, default= gone}"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_subtitle2" />
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description2" />
 
             <TextView
                 android:id="@+id/textview_requestorderstatus_shippingpayment1"
@@ -62,9 +77,9 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="30dp"
                 android:text="@string/requestorderstatus_refund_shipping_radio"
+                android:visibility="@{isRefund ? View.VISIBLE : View.GONE, default= gone}"
                 app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_shippingpayment_true"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_subtitle2" />
-
+                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description2" />
 
             <RadioButton
                 android:id="@+id/radiobutton_requestorderstatus_shippingpayment2"

@@ -11,7 +11,7 @@ import io.temco.guhada.R
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryBinding
-import io.temco.guhada.view.activity.CancelOrderActivity
+import io.temco.guhada.view.activity.RequestCancelOrderActivity
 import io.temco.guhada.view.adapter.mypage.MyPageDeliveryAdapter
 import io.temco.guhada.view.custom.CustomCalendarFilter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
@@ -107,7 +107,7 @@ class MyPageDeliveryLayout constructor(
     }
 
     private fun redirectCancelOrderActivity(purchaseOrder: PurchaseOrder) {
-        val intent = Intent(context, CancelOrderActivity::class.java)
+        val intent = Intent(context, RequestCancelOrderActivity::class.java)
         intent.putExtra("purchaseOrder", purchaseOrder)
         context.startActivity(intent)
     }

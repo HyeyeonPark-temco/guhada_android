@@ -15,21 +15,20 @@ import io.temco.guhada.data.viewmodel.CancelOrderViewModel
 import io.temco.guhada.databinding.ActivityRequestcancelorderBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.OrderChangeCauseAdapter
-import io.temco.guhada.view.adapter.payment.PaymentSpinnerAdapter
 
 /**
  * 주문 취소 신청 Activity
  * @author Hyeyeon Park
  * @since 2019.08.07
  */
-class CancelOrderActivity : BindActivity<ActivityRequestcancelorderBinding>() {
+class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBinding>() {
     private lateinit var mViewModel: CancelOrderViewModel
 
-    override fun getBaseTag(): String = CancelOrderActivity::class.java.simpleName
+    override fun getBaseTag(): String = RequestCancelOrderActivity::class.java.simpleName
 
     override fun getLayoutId(): Int = R.layout.activity_requestcancelorder
 
-    override fun getViewType(): Type.View = Type.View.CANCEL_ORDER
+    override fun getViewType(): Type.View = Type.View.REQUEST_CANCEL_ORDER
 
     override fun init() {
         initViewModel()

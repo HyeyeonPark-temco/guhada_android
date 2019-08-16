@@ -735,7 +735,7 @@
     <string name="requestorderstatus_common_collection_true">네</string>
     <string name="requestorderstatus_common_collection_false">아니요</string>
     <string name="requestorderstatus_common_courier_hint1">택배 업체를 선택하세요.</string>
-    <string name="requestorderstatus_common_courier_hint2">운송장 번호를 입력하세요.</string>
+    <string name="requestorderstatus_common_courier_hint2">송장 번호를 입력하세요.</string>
 
     <string name="requestorderstatus_common_message_overmaxquantity">최대 수량을 초과하였습니다.</string>
     <string name="requestorderstatus_common_message_overminquantity">최소 수량은 1개입니다.</string>
@@ -754,12 +754,14 @@
     <string name="requestorderstatus_exchange_cause">교환 사유를 선택해주세요.</string>
     <string name="requestorderstatus_exchange_hint_cause">교환 사유를 간략히 적어주세요.</string>
     <string name="requestorderstatus_exchange_button_submit">교환 신청</string>
-    <string name="requestorderstatus_exchange_address">교환상품 반송지</string>
+    <string name="requestorderstatus_exchange_address">교환상품 배송지</string>
     <string name="requestorderstatus_exchange_selleraddress">교환상품 반송지</string>
+    <string name="requestorderstatus_exchange_way_title">교환 발송 여부</string>
     <string name="requestorderstatus_exchange_way_description">교환상품을 이미 발송하셨습니까?</string>
     <string name="requestorderstatus_exchange_shipping_title">교환배송비 결제</string>
-    <string name="requestorderstatus_exchange_shipping_description1">구매자 책임사유에 의한 교환이므로</string>
-    <string name="requestorderstatus_exchange_shipping_description2">교환배송비 5,000원을 구매자가 부담합니다.</string>
+    <string name="requestorderstatus_exchange_shipping_description1"><![CDATA[<font color="#5d2ed1">교환사유</font>로 인해 <font color="#5d2ed1">교환배송비 5,000</font>을]]></string>
+    <string name="requestorderstatus_exchange_shipping_description2"><![CDATA[<font color="#5d2ed1">구매자가 부담</font>합니다.]]></string>
+    <string name="requestorderstatus_exchange_warning">송장번호 미입력시 교환 처리가 늦어질 수 있습니다.</string>
 
     <string name="requestorderstatus_refund_title">반품 신청</string>
     <string name="requestorderstatus_refund_quantity">반품 수량</string>
@@ -772,6 +774,7 @@
     <string name="requestorderstatus_refund_shipping_description1">구매자 책임사유에 의한 교환이므로</string>
     <string name="requestorderstatus_refund_shipping_description2">반품배송비 5,000원을 구매자가 부담합니다.</string>
     <string name="requestorderstatus_refund_shipping_radio">환불금액에서 차감</string>
+    <string name="requestorderstatus_refund_warning">송장번호 미입력시 반품 처리가 늦어질 수 있습니다.</string>
 
     <!-- SUCCESS CANCEL ORDER -->
     <string name="successcancelorder_title1">주문상품의 </string>

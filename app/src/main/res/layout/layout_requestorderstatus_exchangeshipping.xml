@@ -2,191 +2,210 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="defaultName"
+            type="String" />
+
+        <variable
+            name="defaultAddress"
+            type="String" />
+
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:background="@color/pale_grey"
-        android:layout_height="wrap_content">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@color/common_white"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:layout_marginTop="8dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="30dp">
-
-        <LinearLayout
-            android:id="@+id/linearlayout_requestorderstatus_shipping"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingtitle"
-                style="@style/RequestOrderStatusBlackSubTitleTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/requestorderstatus_exchange_address"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingchange"
-                style="@style/RequestOrderStatusBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/payment_text_changedestination" />
-
-            <ImageButton
-                android:id="@+id/imagebutton_requestorderstatus_shipping"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="3dp"
-                android:src="@drawable/payment_link_arrow" />
-        </LinearLayout>
+        android:background="@color/pale_grey">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearlayout_requestorderstatus_shipping">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/common_white"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="30dp">
 
-            <TextView
-                android:id="@+id/textView23"
-                style="@style/RequestOrderStatusBlackTextStyle"
+            <LinearLayout
+                android:id="@+id/linearlayout_requestorderstatus_shipping"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_14"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/payment_icon_basic_delivery"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/textView23"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!--android:visibility="@{viewModel.order.shippingAddress != null &amp;&amp; viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"-->
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingaddress"
-                style="@style/PaymentContentGreyTextStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textSize="@dimen/text_14"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
-            <!--android:text="@{viewModel.shippingAddressText}"-->
-            <FrameLayout
-                android:id="@+id/framelayout_requestorderstatus_shippingmemo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingaddress">
-
-                <Spinner
-                    android:id="@+id/spinner_requestorderstatus_shippingmemo"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/border_all_whitethree"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@null"
-                    android:spinnerMode="dropdown"/>
-
-                <!--android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"-->
-                <!--app:userShippingMemo="@{viewModel.shippingMessages}"-->
-                <FrameLayout
-                    android:id="@+id/framelayout_requestorderstatus_shippingmemobutton"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textview_requestorderstatus_shippingtitle"
+                    style="@style/RequestOrderStatusBlackSubTitleTextStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/white_three"
-                    android:padding="1dp">
+                    android:text="@string/requestorderstatus_exchange_address"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
-                        android:id="@+id/linearlayout_requestorderstatus_shippingmemo"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@color/common_white"
-                        android:orientation="horizontal"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="15dp"
-                        android:popupBackground="@null">
+            </LinearLayout>
 
-                        <TextView
-                            style="@style/RequestOrderStatusWarmGreyTextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/text_13" />
 
-                        <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
+            <LinearLayout
+                android:id="@+id/linearLayout10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageView
-                            android:id="@+id/imageview_requestorderstatus_shippingmemo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/payment_icon_selectbox_open" />
-                    </LinearLayout>
-                </FrameLayout>
+                <TextView
+                    android:id="@+id/textview_requestorderstatus_shippingchange"
+                    style="@style/RequestOrderStatusBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/payment_text_changedestination" />
 
-            </FrameLayout>
+                <ImageButton
+                    android:id="@+id/imagebutton_requestorderstatus_shipping"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="3dp"
+                    android:src="@drawable/payment_link_arrow" />
+            </LinearLayout>
 
-            <EditText
-                style="@style/TextRegular"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/border_all_whitethree"
-                android:gravity="start"
-                android:hint="@string/payment_hint_textshippingmemo"
-                android:padding="15dp"
-                android:textColor="@color/warm_grey_two"
-                android:textColorHint="@color/white_three"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/text_13"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_requestorderstatus_shippingmemo" />
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout_requestorderstatus_shipping">
 
-            <!--android:visibility="@{viewModel.shippingMemoVisible ? View.VISIBLE : View.GONE, default = gone}"-->
-            <!--android:text="@={viewModel.shippingMessage}"-->
+                <TextView
+                    android:id="@+id/textView23"
+                    style="@style/RequestOrderStatusBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:text="@{defaultName}"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/payment_icon_basic_delivery"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/textView23"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--android:visibility="@{viewModel.order.shippingAddress != null &amp;&amp; viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"-->
+                <TextView
+                    android:id="@+id/textview_requestorderstatus_shippingaddress"
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="@{defaultAddress}"
+                    app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+                <!--android:text="@{viewModel.shippingAddressText}"-->
+                <FrameLayout
+                    android:id="@+id/framelayout_requestorderstatus_shippingmemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingaddress">
+
+                    <Spinner
+                        android:id="@+id/spinner_requestorderstatus_shippingmemo"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@null"
+                        android:spinnerMode="dropdown" />
+
+                    <!--android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"-->
+                    <!--app:userShippingMemo="@{viewModel.shippingMessages}"-->
+                    <FrameLayout
+                        android:id="@+id/framelayout_requestorderstatus_shippingmemobutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white_three"
+                        android:padding="1dp">
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_requestorderstatus_shippingmemo"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/common_white"
+                            android:orientation="horizontal"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/RequestOrderStatusWarmGreyTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:text="@string/payment_hint_shippingmemo"
+                                android:textSize="@dimen/text_13" />
+
+                            <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
+
+                            <ImageView
+                                android:id="@+id/imageview_requestorderstatus_shippingmemo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                </FrameLayout>
+
+                <EditText
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:gravity="start"
+                    android:hint="@string/payment_hint_textshippingmemo"
+                    android:padding="15dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:textColorHint="@color/white_three"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/framelayout_requestorderstatus_shippingmemo" />
+
+                <!--android:visibility="@{viewModel.shippingMemoVisible ? View.VISIBLE : View.GONE, default = gone}"-->
+                <!--android:text="@={viewModel.shippingMessage}"-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
 </layout>
