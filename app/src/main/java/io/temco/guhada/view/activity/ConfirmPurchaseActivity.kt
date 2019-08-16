@@ -1,11 +1,18 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Flag.RequestCode.POINT_RESULT_DIALOG
+import io.temco.guhada.common.enum.PointDialogFlag
+import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.ConfirmPurchaseViewModel
 import io.temco.guhada.databinding.ActivityConfirmpurchaseBinding
@@ -37,10 +44,21 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
         mViewModel = ConfirmPurchaseViewModel()
         mViewModel.closeActivityTask = { finish() }
         mViewModel.successConfirmPurchaseTask = {
-
+            val intent = Intent(this, ReviewPointDialogActivity::class.java)
+            intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
+            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
+            startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
         }
         intent.getSerializableExtra("purchaseOrder").let {
             if (it != null) mViewModel.purchaseOrder = it as PurchaseOrder
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RequestCode.POINT_RESULT_DIALOG.flag && resultCode == Activity.RESULT_OK) {
+            finish()
         }
     }
 }

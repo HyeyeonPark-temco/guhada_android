@@ -17,10 +17,7 @@ class ConfirmPurchaseViewModel : BaseObservableViewModel() {
         ServerCallbackUtil.callWithToken(task = {
             OrderServer.confirmPurchase(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = { model ->
-                            val result = (model.data as Boolean)
-                            if (result) successConfirmPurchaseTask()
-                        })
+                        successTask = { successConfirmPurchaseTask() })
             }, accessToken = it, orderProdGroupId = purchaseOrder.orderProdGroupId)
         })
     }

@@ -244,7 +244,7 @@ class OrderServer {
         @JvmStatic
         fun confirmPurchase(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).confirmPurchase(accessToken, orderProdGroupId).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Boolean?>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Any?>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
     }
 }

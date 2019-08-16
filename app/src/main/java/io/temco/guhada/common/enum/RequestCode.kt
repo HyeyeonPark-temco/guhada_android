@@ -25,5 +25,6 @@ enum class RequestCode(val flag: Int) {
     PRODUCT_DETAIL(10016),
     SIDE_MENU(10018),
     REVIEW_WRITE(10020),
-    REVIEW_MODIFY(10021)
+    REVIEW_MODIFY(10021),
+    POINT_RESULT_DIALOG(5003)
 }

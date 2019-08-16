@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout  xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="onClickOk"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="onClickClose"
             type="android.view.View.OnClickListener" />
-        <variable name="maxPoint" type="String" />
-        <variable name="myPoint" type="String" />
+
+        <variable
+            name="maxPoint"
+            type="Integer" />
+
+        <variable
+            name="myPoint"
+            type="String" />
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.ReviewPointDialogViewModel" />
@@ -21,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/transparent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="320dp"
@@ -31,29 +42,29 @@
             <LinearLayout
                 android:layout_width="320dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
                 android:background="@color/common_white"
                 android:orientation="vertical"
-                android:paddingTop="180dp"
-                android:paddingBottom="30dp"
                 android:paddingLeft="20dp"
+                android:paddingTop="180dp"
                 android:paddingRight="20dp"
-                android:layout_marginTop="60dp">
+                android:paddingBottom="30dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="18dp"
                     android:gravity="center"
-                    android:layout_marginBottom="18dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:text="@string/review_result_dialog_point_desc"
                         android:textColor="@color/blue_purple"
-                        android:textSize="@dimen/text_27"
-                        android:text="@string/review_result_dialog_point_desc" />
+                        android:textSize="@dimen/text_27" />
 
                     <TextView
                         style="@style/TextBold"
@@ -62,9 +73,9 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="3dp"
                         android:gravity="center"
+                        android:text="원"
                         android:textColor="@color/blue_purple"
-                        android:textSize="@dimen/text_16"
-                        android:text="원" />
+                        android:textSize="@dimen/text_16" />
                 </LinearLayout>
 
                 <TextView
@@ -78,68 +89,70 @@
                     android:textSize="@dimen/text_16"
                     android:textStyle="bold" />
 
-                <io.temco.guhada.view.custom.HtmlTextView
+                <TextView
+                    android:id="@+id/textview_reviewpointdialog_complete"
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:gravity="center"
-                    android:visibility="@{viewModel.MTypeNotPresentException == 0 ? View.VISIBLE : View.GONE, default = gone}"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_14"
-                    android:text="@{@string/review_result_dialog_complete_payment_desc(maxPoint)}" />
+                    android:visibility="@{viewModel.MTypeNotPresentException == 0 ? View.VISIBLE : View.GONE, default = gone}"
+                    app:isHtml="true" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:visibility="@{viewModel.MTypeNotPresentException == 0 ? View.GONE : View .VISIBLE, default = visible}"
                     android:layout_height="45dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
                     android:layout_marginTop="15dp"
-                    android:paddingRight="20dp"
-                    android:paddingLeft="20dp"
-                    android:weightSum="1"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/drawable_disable_inputform"
-                    android:layout_marginBottom="8dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:weightSum="1">
 
                     <TextView
                         style="@style/TextRegular"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@string/review_result_dialog_mypoint"
                         android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14"
-                        android:text="@string/review_result_dialog_mypoint" />
+                        android:textSize="@dimen/text_14" />
 
                     <TextView
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textStyle="bold"
+                        android:text="@{@string/common_price_format(viewModel.pointSummary.totalFreePoint) + @string/common_unit_point}"
                         android:textColor="@color/blue_purple"
                         android:textSize="@dimen/text_14"
-                        android:text="@{@string/common_price_format(viewModel.pointSummary.totalFreePoint) + @string/common_unit_point}" />
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/common_blue_purple"
-                    android:textColor="@color/common_white"
                     android:onClick="@{onClickOk}"
                     android:text="@{viewModel.MTypeNotPresentException == 0 ? @string/review_result_dialog_complete_payment_btnok : @string/common_confirm, default = @string/common_confirm}"
-                    android:textSize="@dimen/text_13"/>
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_13" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
-                    android:onClick="@{onClickClose}"
-                    android:visibility="@{viewModel.MTypeNotPresentException == 0 ? View.VISIBLE : View.GONE, default = gone}"
-                    android:text="@string/review_result_dialog_complete_payment_btncancle"
                     android:background="@color/greyish_brown_two"
+                    android:onClick="@{onClickClose}"
+                    android:text="@string/review_result_dialog_complete_payment_btncancle"
                     android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_13" />
+                    android:textSize="@dimen/text_13"
+                    android:visibility="@{viewModel.MTypeNotPresentException == 0 ? View.VISIBLE : View.GONE, default = gone}" />
 
             </LinearLayout>
 
@@ -147,19 +160,19 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="218dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp"
-                android:background="@drawable/icon_point_bomb"/>
+                android:layout_marginRight="30dp"
+                android:background="@drawable/icon_point_bomb" />
 
             <Button
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:padding="5dp"
-                android:onClick="@{onClickClose}"
+                android:layout_alignParentRight="true"
                 android:layout_marginTop="90dp"
                 android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/close_btn"/>
+                android:background="@drawable/close_btn"
+                android:onClick="@{onClickClose}"
+                android:padding="5dp" />
 
         </RelativeLayout>
     </RelativeLayout>

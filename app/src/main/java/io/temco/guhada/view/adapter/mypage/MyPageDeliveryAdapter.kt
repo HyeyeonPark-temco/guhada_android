@@ -79,13 +79,18 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.COMPLETE_PAYMENT.status -> {
                     buttons.add(DeliveryButton().apply {
                         text = "주문내역"
+                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId) }
+                    })
+                    buttons.add(DeliveryButton().apply {
+                        text = "주문수정"
+
+                        ///// TEMP TEMP TEMP [2019.08.16 시연용]
                         task = View.OnClickListener {
                             val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
                             intent.putExtra("purchaseOrder", item)
                             (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
                         }
                     })
-                    buttons.add(DeliveryButton().apply { text = "주문수정" })
                     buttons.add(DeliveryButton().apply {
                         text = "주문취소"
                         task = View.OnClickListener { requestCancelOrderTask(item) }
@@ -98,7 +103,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
                 PurchaseStatus.SELLER_IDENTIFIED.status,
                 PurchaseStatus.RELEASE_PRODUCT.status -> {
-                    buttons.add(DeliveryButton().apply { text = "주문내역" })
+                    buttons.add(DeliveryButton().apply {
+                        text = "주문내역"
+                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId) }
+                    })
                 }
 
                 PurchaseStatus.RESEND_EXCHANGE.status,
@@ -111,7 +119,14 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
                     if (item.purchaseConfirm) {
                         if (item.reviewId != null) buttons.add(DeliveryButton().apply { text = "리뷰수정" })
-                        else buttons.add(DeliveryButton().apply { text = "리뷰작성" })
+                        else buttons.add(DeliveryButton().apply {
+                            text = "리뷰작성"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                            }
+                        })
                     } else {
                         buttons.add(DeliveryButton().apply {
                             text = "구매확정"

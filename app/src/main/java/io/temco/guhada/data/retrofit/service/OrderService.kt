@@ -117,5 +117,5 @@ interface OrderService {
      * 구매 확정 API
      */
     @POST("/order/order-prod-confirm")
-    fun confirmPurchase(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<Boolean?>>
+    fun confirmPurchase(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<Any?>>
 }
