@@ -337,8 +337,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         if (position >= 2) currentViewPagerIndex = position;
         switch (position) {
             case 0: // Category
-                //showCategoryListDialog();
-                startActivity(new Intent(MainActivity.this, UserSizeUpdateActivity.class));
+                showCategoryListDialog();
+                //startActivity(new Intent(MainActivity.this, UserSizeUpdateActivity.class));
                 break;
             case 1: // Brand
                 showBrandListDialog();

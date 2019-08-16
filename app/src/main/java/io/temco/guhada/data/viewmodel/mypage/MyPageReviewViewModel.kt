@@ -259,7 +259,7 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                                     serverRuntimeErrorTask = {  if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getUserMyPageReviewMore serverRuntimeErrorTask ") },
                                     dataIsNull = {listener?.onResultCallback()}
                             )
-                        }, accessToken = it, page = page, size = 4)
+                        }, accessToken = it, page = page, size = 20)
                     }
                 }, invalidTokenTask = {
                     if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getUserMyPageReviewMore invalidTokenTask ")
