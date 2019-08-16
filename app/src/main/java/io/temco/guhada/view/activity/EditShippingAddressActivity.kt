@@ -25,11 +25,7 @@ class EditShippingAddressActivity : AppCompatActivity(), OnEditShippingAddressLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        this@EditShippingAddressActivity.requestWindowFeature(Window.FEATURE_NO_TITLE)
-
         mBinding = DataBindingUtil.setContentView(this, R.layout.dialog_editshippingaddress)
-//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
         mViewModel = EditShippingAddressViewModel(this)
 
         val orderShippingAddress = intent.getSerializableExtra("orderShippingAddress")

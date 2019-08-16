@@ -95,7 +95,7 @@ interface OrderService {
 
     /**
      * 주문 배송지 수정 API
-     * response type : Boolean
+     * response type: Boolean
      */
     @POST("/order/order-update/shipping-address")
     fun updateOrderShippingAddress(@Header("Authorization") accessToken: String, @Query("purchaseId") purchaseId: Long, @Body shippingAddress: UserShipping, @Query("addShippingAddress") addShippingAddress: Boolean): Call<BaseModel<Any>>
@@ -113,5 +113,9 @@ interface OrderService {
     @GET("/order-review/available-review-order/{page}")
     fun getAvailableReviewList(@Header("Authorization") accessToken: String, @Path("page") page: Int): Call<BaseModel<MyPageOrderReview>>
 
-
+    /**
+     * 구매 확정 API
+     */
+    @POST("/order/order-prod-confirm")
+    fun confirmPurchase(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<Boolean?>>
 }
