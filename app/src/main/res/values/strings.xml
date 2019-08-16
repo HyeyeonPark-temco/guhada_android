@@ -673,7 +673,6 @@
 
     <!-- MYPAGE DELIVERY -->
     <string name="mypage_price_format">%,2d원</string>
-
     <string name="mypage_delivery_button_claim">%s에 문의하기</string>
     <string name="mypage_delivery_button_claim_empty">문의하기</string>
     <string name="mypage_delivery_button_purchaseconfirm">구매확정</string>

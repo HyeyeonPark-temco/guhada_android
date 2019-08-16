@@ -1,6 +1,7 @@
 package io.temco.guhada.view.adapter.productdetail
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,10 @@ import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionattrBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
-class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Option) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
+/**
+ * @param optionPos 몇번째 option 인지 (ProductDetailOptionAdapter의 adapterPosition)
+ */
+class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Option, var optionPos : Int) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
     var list: List<OptionAttr> = ArrayList()
     private var prevSelectedPos: Int = -1
     private var selectedPos: Int = -1
@@ -74,7 +78,6 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
                 this@ProductDetailOptionAttrAdapter.selectedPos = adapterPosition
 
                 // SELECT ATTR
-//                selectListener.onClickAttr(prevSelectedPos, this@ProductDetailOptionAttrAdapter.selectedPos)
                 viewModel.onSelectAttr(optionAttr, option.type, adapterPosition)
                 notifyItemChanged(this@ProductDetailOptionAttrAdapter.selectedPos)
                 notifyItemChanged(prevSelectedPos)
@@ -89,8 +92,23 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
                 viewModel.getExtraPrice()
             }
 
+            // CHECK SOLD OUT
+            if(!isOptionEnabled(optionAttr)){
+                mBinding.imageviewProductdetailSoldout.bringToFront()
+                mBinding.imageviewProductdetailSoldout.visibility = View.VISIBLE
+                mBinding.textviewProductdetailOptionattr.setTextColor(binding.root.context.resources.getColor(R.color.warm_grey))
+                mBinding.framelayoutProductdetailOptionattr.setOnClickListener {}
+            }
+
             binding.optionAttr = optionAttr
             binding.executePendingBindings()
+        }
+
+        private fun isOptionEnabled(optionAttr: OptionAttr): Boolean {
+            for (item in option.attributeItems) {
+                if (item.name == optionAttr.name) return item.enabled
+            }
+            return false
         }
     }
 

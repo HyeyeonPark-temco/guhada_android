@@ -34,7 +34,8 @@
             app:layout_constraintEnd_toStartOf="@+id/linearLayout9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:productOptionAttr="@{option}"/>
+            app:productOptionAttr="@{option}" />
+
         <LinearLayout
             android:id="@+id/linearLayout9"
             android:layout_width="wrap_content"
@@ -52,6 +53,7 @@
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_12"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="@{option.type.equals(@string/productdetail_option_type_custom) ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

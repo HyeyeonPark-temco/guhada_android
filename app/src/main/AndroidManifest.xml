@@ -163,6 +163,12 @@
             android:name=".view.activity.ReceiptActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".view.activity.ConfirmPurchaseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleBarDialog"
+            android:windowSoftInputMode="adjustResize" />
+
+
         <!-- Search -->
         <activity
             android:name=".view.activity.SearchWordActivity"
@@ -202,6 +208,7 @@
         <activity
             android:name=".view.activity.SuccessCancelOrderActivity"
             android:screenOrientation="portrait" />
+
 
 
         <!-- get gallery Image file -->

@@ -57,8 +57,6 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
                         successTask = {
                             this.pointSummary = ObservableField(it.data as PointSummary)
                             notifyPropertyChanged(BR.pointSummary)
-//                            this.pointSummary.apply { it.data as PointSummary }
-//                            this.pointSummary.postValue(it.data as PointSummary)
                         })
             }, token, expireDays = 30)
         })

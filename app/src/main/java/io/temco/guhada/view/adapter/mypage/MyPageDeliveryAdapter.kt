@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +18,12 @@ import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.activity.DeliveryDetailActivity
 import io.temco.guhada.view.activity.WriteClaimActivity
+import io.temco.guhada.view.activity.ConfirmPurchaseActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
  * 마이페이지 주문배송, 취소교환반품 리스트 adapter
+ * [line 87] 시연용 추가 코드 추후 제거
  * @author Hyeyeon Park
  */
 class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>() {
@@ -75,8 +78,20 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             when (item.purchaseStatus) {
                 PurchaseStatus.WAITING_PAYMENT.status,
                 PurchaseStatus.COMPLETE_PAYMENT.status -> {
-                    buttons.add(DeliveryButton().apply { text = "주문내역" })
-                    buttons.add(DeliveryButton().apply { text = "주문수정" })
+                    buttons.add(DeliveryButton().apply {
+                        text = "주문내역"
+                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId) }
+                    })
+                    buttons.add(DeliveryButton().apply {
+                        text = "주문수정"
+
+                        ///// TEMP TEMP TEMP [2019.08.16 시연용]
+                        task = View.OnClickListener {
+                            val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
+                            intent.putExtra("purchaseOrder", item)
+                            (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                        }
+                    })
                     buttons.add(DeliveryButton().apply {
                         text = "주문취소"
                         task = View.OnClickListener { requestCancelOrderTask(item) }
@@ -89,7 +104,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
                 PurchaseStatus.SELLER_IDENTIFIED.status,
                 PurchaseStatus.RELEASE_PRODUCT.status -> {
-                    buttons.add(DeliveryButton().apply { text = "주문내역" })
+                    buttons.add(DeliveryButton().apply {
+                        text = "주문내역"
+                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId) }
+                    })
                 }
 
                 PurchaseStatus.RESEND_EXCHANGE.status,
@@ -102,9 +120,19 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
                     if (item.purchaseConfirm) {
                         if (item.reviewId != null) buttons.add(DeliveryButton().apply { text = "리뷰수정" })
-                        else buttons.add(DeliveryButton().apply { text = "리뷰작성" })
+                        else buttons.add(DeliveryButton().apply {
+                            text = "리뷰작성"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                            }
+                        })
                     } else {
-                        buttons.add(DeliveryButton().apply { text = "구매확정" })
+                        buttons.add(DeliveryButton().apply {
+                            text = "구매확정"
+
+                        })
                         buttons.add(DeliveryButton().apply { text = "교환신청" })
                         buttons.add(DeliveryButton().apply { text = "반품신청" })
                     }

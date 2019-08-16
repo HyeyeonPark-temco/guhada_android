@@ -340,7 +340,6 @@ public class CommonUtil {
         act.startActivityForResult(intent,Flag.RequestCode.POINT_RESULT_DIALOG);
     }
 
-
     public static Boolean checkToken() {
         Token token = Preferences.getToken();
         if(token == null) return false;

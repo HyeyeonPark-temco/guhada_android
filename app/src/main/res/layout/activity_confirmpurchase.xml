@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ConfirmPurchaseViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/common_white"
+            android:paddingLeft="20dp"
+            android:paddingTop="30dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="30dp">
+
+            <ImageButton
+                android:id="@+id/imagebutton_confirmpurchase_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:onClick="@{()->viewModel.onClickCancel()}"
+                android:src="@drawable/bag_icon_delete"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_title"
+                style="@style/ConfirmPurchaseTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirmpurchase_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagebutton_confirmpurchase_close" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_description"
+                style="@style/ConfirmPurchaseDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/confirmpurchase_description"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_title" />
+
+            <View
+                android:id="@+id/view_confirmpurchase_line1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/black_four"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_description" />
+
+            <ImageView
+                android:id="@+id/imageview_confirmpurchase_product"
+                android:layout_width="70dp"
+                android:layout_height="92dp"
+                android:layout_marginTop="20dp"
+                android:src="@color/black_four"
+                app:imageUrl="@{viewModel.purchaseOrder.imageUrl}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_confirmpurchase_line1" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_brandname"
+                style="@style/ConfirmPurchaseSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@{viewModel.purchaseOrder.brandName}"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_confirmpurchase_product"
+                app:layout_constraintTop_toBottomOf="@+id/view_confirmpurchase_line1" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_productname"
+                style="@style/ConfirmPurchaseSubTitleTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:singleLine="true"
+                android:text="@{viewModel.purchaseOrder.season + ` ` + viewModel.purchaseOrder.productName }"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_confirmpurchase_product"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_brandname" />
+
+            <LinearLayout
+
+                android:id="@+id/linearlayout_confirmpurchase_confirmpoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_confirmpurchase_product"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_productname">
+
+                <TextView
+                    style="@style/ConfirmPurchaseDescriptionTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirmpurchase_point_confirm1" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/white_three" />
+
+                <TextView
+                    style="@style/ConfirmPurchasePointTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/confirmpurchase_point_confirm2 + @string/common_priceunit_format(12345)}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_confirmpurchase_reviewpoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_confirmpurchase_product"
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout_confirmpurchase_confirmpoint">
+
+                <TextView
+                    style="@style/ConfirmPurchaseDescriptionTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirmpurchase_point_review1" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/white_three" />
+
+                <TextView
+                    style="@style/ConfirmPurchasePointTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/confirmpurchase_point_review2 + @string/common_priceunit_format(12345)}" />
+
+                <FrameLayout
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="6dp"
+                    android:background="@drawable/border_all_whitethree">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/common_question_mark"
+                        android:textColor="@color/black_four"
+                        android:textSize="8sp" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_confirmpurchase_line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/white_five"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout_confirmpurchase_reviewpoint" />
+
+            <LinearLayout
+                android:id="@+id/linearlayout_confirmpurchase_pointtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_confirmpurchase_line2">
+
+                <FrameLayout
+
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/border_all_whitethree_r11">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/common_exclamation_mark"
+                        android:textColor="@color/black_four"
+                        android:textSize="8sp" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/textview_confirmpurchase_point_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/confirmpurchase_point_title"
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_14" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_dot1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/common_dot"
+                android:textColor="@color/pinkish_grey"
+                android:textSize="@dimen/text_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout_confirmpurchase_pointtitle" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_pointdesc1"
+                style="@style/ConfirmPurchaseDescriptionTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="18dp"
+                android:lineHeight="19sp"
+                android:text="@string/confirmpurchase_point_description1"
+                app:layout_constraintLeft_toRightOf="@+id/textview_confirmpurchase_dot1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout_confirmpurchase_pointtitle" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_dot2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/common_dot"
+                android:textColor="@color/pinkish_grey"
+                android:textSize="@dimen/text_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_pointdesc1" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_pointdesc2"
+                style="@style/ConfirmPurchaseDescriptionTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:lineHeight="19sp"
+                android:text="@string/confirmpurchase_point_description2"
+                app:layout_constraintLeft_toRightOf="@+id/textview_confirmpurchase_dot1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_pointdesc1" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_dot3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/common_dot"
+                android:textColor="@color/pinkish_grey"
+                android:textSize="@dimen/text_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_pointdesc2" />
+
+            <TextView
+                android:id="@+id/textview_confirmpurchase_pointdesc3"
+                style="@style/ConfirmPurchaseDescriptionTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:lineHeight="19sp"
+                android:text="@string/confirmpurchase_point_description3"
+                app:layout_constraintLeft_toRightOf="@+id/textview_confirmpurchase_dot1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_pointdesc2" />
+
+            <Button
+                android:id="@+id/button_confirmpurchase_cancel"
+                style="@style/ConfirmPurchaseButtonStyle"
+                android:layout_width="0dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="3dp"
+                android:background="@color/greyish_brown_two"
+                android:onClick="@{()->viewModel.onClickCancel()}"
+                android:text="@string/common_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/button_confirmpurchase_confirm"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_pointdesc3" />
+
+            <Button
+                android:id="@+id/button_confirmpurchase_confirm"
+                style="@style/ConfirmPurchaseButtonStyle"
+                android:layout_width="0dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/common_blue_purple"
+                android:onClick="@{()->viewModel.onClickConfirmPurchase()}"
+                android:text="@string/confirmpurchase_button_confirm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@+id/button_confirmpurchase_cancel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_pointdesc3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

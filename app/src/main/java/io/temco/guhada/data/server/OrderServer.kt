@@ -203,9 +203,6 @@ class OrderServer {
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getReceiptUrl(tId).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
-
-
-
         /**
          * 마이페이지 내가 작성가능한 주문목록
          */
@@ -214,32 +211,40 @@ class OrderServer {
             RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true)
                     .getAvailableReviewList(accessToken, page).enqueue(object : Callback<BaseModel<MyPageOrderReview>> {
                         override fun onResponse(call: Call<BaseModel<MyPageOrderReview>>, response: Response<BaseModel<MyPageOrderReview>>) {
-                            if(response.code() in 200..400 && response.body() != null){
+                            if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
-                            }else{
-                                try{
-                                    var msg  = Message()
-                                    var errorBody : String? = response.errorBody()?.string() ?: null
-                                    if(!errorBody.isNullOrEmpty()){
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
                                         var gson = Gson()
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
-                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag) CustomLog.L("getMypageReviewList","onResponse body",error.toString())
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onResponse body", error.toString())
                                     listener.onResult(false, error)
-                                }catch (e : Exception){
-                                    if(CustomLog.flag) CustomLog.E(e)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
                                     listener.onResult(false, null)
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<MyPageOrderReview>>, t: Throwable) {
-                            if(CustomLog.flag) CustomLog.L("getMypageReviewList","onFailure",t.message.toString())
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
-                    }
-            )
+                    })
         }
+
+        /**
+         * 구매 확정
+         */
+        @JvmStatic
+        fun confirmPurchase(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).confirmPurchase(accessToken, orderProdGroupId).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Any?>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
     }
 }

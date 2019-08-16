@@ -2,16 +2,14 @@ package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
-import io.temco.guhada.data.model.point.Point
 import io.temco.guhada.data.model.point.PointHistory
 import io.temco.guhada.data.viewmodel.mypage.MyPagePointViewModel
 import io.temco.guhada.databinding.CustomlayoutMypagePointBinding
-import io.temco.guhada.view.adapter.MyPagePointAdapter
+import io.temco.guhada.view.adapter.mypage.MyPagePointAdapter
 import io.temco.guhada.view.custom.CustomCalendarFilter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
@@ -51,6 +49,7 @@ class MyPagePointLayout constructor(
     override fun onRefresh() {
         mViewModel.page = 1
         onClickCheck()
+        mViewModel.getPointSummary()
         mBinding.swipeRefreshLayout.isRefreshing = false
     }
 

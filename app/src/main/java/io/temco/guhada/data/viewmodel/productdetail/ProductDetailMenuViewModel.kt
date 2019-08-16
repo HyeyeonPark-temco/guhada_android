@@ -113,4 +113,12 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
         }
     }
 
+//    private fun getOptionStock(optionPos: Int): Int {
+//        if (product.optionInfos != null) {
+//            for (item in product.optionInfos!!) {
+//                if(optionPos == 0)
+//            }
+//        }
+//    }
+
 }

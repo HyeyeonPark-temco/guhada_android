@@ -52,7 +52,8 @@ public class Type {
         REVIEW_WRITE,
         IMAGE_GET,
         REVIEW_POINT_DIALOG,
-        USER_SIZE_UPDATE
+        USER_SIZE_UPDATE,
+        CONFIRM_PURCHASE
     }
 
     // Main

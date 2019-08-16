@@ -48,8 +48,9 @@ class ProductDetailOptionAdapter(val viewModel: ProductDetailMenuViewModel) : Re
 
             binding.viewModel = viewModel
             binding.option = option
-            binding.recyclerviewProductdetailOptionattr.adapter = ProductDetailOptionAttrAdapter(viewModel, option)
+            binding.recyclerviewProductdetailOptionattr.adapter = ProductDetailOptionAttrAdapter(viewModel, option, adapterPosition)
             binding.recyclerviewProductdetailOptionattr.layoutManager = LinearLayoutManager(BaseApplication.getInstance().applicationContext, RecyclerView.HORIZONTAL, false)
+
             binding.executePendingBindings()
         }
     }

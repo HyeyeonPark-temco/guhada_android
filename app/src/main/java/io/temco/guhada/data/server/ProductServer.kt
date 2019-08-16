@@ -84,7 +84,7 @@ class ProductServer {
 
         /**
          * 상품 상세 조회
-         *
+         * @author Hyeyeon Park
          * @param listener OnServerListener
          * @param id       dealId
          */
