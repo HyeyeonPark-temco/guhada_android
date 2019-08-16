@@ -46,6 +46,9 @@ class ReviewPointDialogActivity : BindActivity<io.temco.guhada.databinding.Activ
         }
     }
 
+    override fun onBackPressed() {
+        //super.onBackPressed()
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
 }

@@ -51,7 +51,8 @@ public class Type {
         SUCCESS_CANCEL_ORDER,
         REVIEW_WRITE,
         IMAGE_GET,
-        REVIEW_POINT_DIALOG
+        REVIEW_POINT_DIALOG,
+        USER_SIZE_UPDATE
     }
 
     // Main

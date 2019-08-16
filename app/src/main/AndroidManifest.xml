@@ -217,6 +217,12 @@
             android:theme="@style/Theme.Transparent"/>
 
 
+        <!-- User Size Update -->
+        <activity
+            android:name=".view.activity.UserSizeUpdateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleBarDialog"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Kakao -->
         <activity

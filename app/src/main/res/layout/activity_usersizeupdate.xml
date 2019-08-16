@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="onClickCloseButton"
+            type="android.view.View.OnClickListener" />
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.UserSizeUpdateViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_usersizeupdate_parent"
+        android:layout_width="match_parent"
+        android:minWidth="320dp"
+        android:weightSum="1"
+        android:layout_height="match_parent"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="67dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/common_white"
+                android:paddingTop="30dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    style="@style/HeaderTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_size_update_title"
+                    android:layout_marginLeft="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/button_header_back"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:onClick="@{onClickCloseButton}"
+                    android:src="@drawable/bag_icon_delete"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/black_four"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/user_size_update_subtitle1" />
+
+                <FrameLayout
+                    android:id="@+id/framelayout_usersizeupdate_sub1"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@color/common_white"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp" >
+
+                    <Spinner
+                        android:id="@+id/spinner_usersizeupdate_sub1"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub1Selected(pos)}"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@null"
+                        android:spinnerMode="dropdown"
+                        app:bindClaimStatusSpinner="@{viewModel.userHeightTxtList}" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/white_three"
+                        android:padding="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="43dp"
+                            android:background="@color/common_white"
+                            android:orientation="horizontal"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/PaymentContentGreyTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13"
+                                android:text="@{viewModel.userSizeUpdateHeight >= 0 ? @string/user_size_update_sub1_value(viewModel.userSizeUpdateHeight) : @string/common_select_spinner , default = @string/common_select_spinner}" />
+
+                            <ImageView
+                                android:id="@+id/imageview_usersizeupdate_sub1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/user_size_update_subtitle2" />
+
+                <FrameLayout
+                    android:id="@+id/framelayout_usersizeupdate_sub2"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@color/common_white"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp" >
+
+                <Spinner
+                    android:id="@+id/spinner_usersizeupdate_sub2"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub2Selected(pos)}"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown"
+                    app:bindClaimStatusSpinner="@{viewModel.userWeightTxtList}" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/white_three"
+                        android:padding="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="43dp"
+                            android:background="@color/common_white"
+                            android:orientation="horizontal"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/PaymentContentGreyTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13"
+                                android:text="@{viewModel.userSizeUpdateWeight >= 0 ? @string/user_size_update_sub2_value(viewModel.userSizeUpdateWeight) : @string/common_select_spinner , default = @string/common_select_spinner}"/>
+
+                            <ImageView
+                                android:id="@+id/imageview_usersizeupdate_sub2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                </FrameLayout>
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/user_size_update_subtitle3" />
+
+
+                <FrameLayout
+                    android:id="@+id/framelayout_usersizeupdate_sub3"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@color/common_white"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp">
+
+                <Spinner
+                    android:id="@+id/spinner_usersizeupdate_sub3"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub3Selected(pos)}"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown"
+                    app:bindClaimStatusSpinner="@{viewModel.userFootTxtList}" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/white_three"
+                        android:padding="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="43dp"
+                            android:background="@color/common_white"
+                            android:orientation="horizontal"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/PaymentContentGreyTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13"
+                                android:text="@{viewModel.userSizeUpdateShoe >= 0 ? @string/user_size_update_sub3_value(viewModel.userSizeUpdateShoe) : @string/common_select_spinner , default = @string/common_select_spinner}" />
+
+                            <ImageView
+                                android:id="@+id/imageview_usersizeupdate_sub3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                </FrameLayout>
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/user_size_update_subtitle4" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:padding="1dp"
+                    android:background="@color/disable_border">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/user_size_update_sub4_array_1"
+                            android:textColor="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_1) ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeTop(@string/user_size_update_sub4_array_1)}"
+                            android:background="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_1) ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/user_size_update_sub4_array_2"
+                            android:onClick="@{()-> viewModel.clickUserSizeTop(@string/user_size_update_sub4_array_2)}"
+                            android:textColor="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_2) ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:background="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_2) ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/user_size_update_sub4_array_3"
+                            android:onClick="@{()-> viewModel.clickUserSizeTop(@string/user_size_update_sub4_array_3)}"
+                            android:textColor="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_3) ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:background="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_3) ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="1dp"
+                        android:paddingBottom="1dp"
+                        android:background="@color/disable_border">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/user_size_update_sub4_array_4"
+                            android:onClick="@{()-> viewModel.clickUserSizeTop(@string/user_size_update_sub4_array_4)}"
+                            android:textColor="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_4) ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:background="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_4) ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/disable_border"/>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingBottom="1dp"
+                        android:background="@color/disable_border">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/user_size_update_sub4_array_5"
+                            android:onClick="@{()-> viewModel.clickUserSizeTop(@string/user_size_update_sub4_array_5)}"
+                            android:textColor="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_5) ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:background="@{viewModel.userSizeUpdateTop.equals(@string/user_size_update_sub4_array_5) ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/disable_border"/>
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:visibility="invisible"
+                        android:background="@color/common_white"
+                        android:textSize="@dimen/text_13"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14"
+                    android:text="@string/user_size_update_subtitle5" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:padding="1dp"
+                    android:background="@color/disable_border">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="23"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 23 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(23)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 23 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="24"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 24 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(24)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 24 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="25"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 25 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(25)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 25 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="26"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 26 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(26)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 26 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    android:background="@color/disable_border">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="27"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 27 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(27)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 27 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="28"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 28 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(28)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 28 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="29"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 29 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(29)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 29 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="30"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 30 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(30)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 30 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    android:background="@color/disable_border">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="31"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 31 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(31)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 31 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="32"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 32 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(32)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 32 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="33"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 33 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(33)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 33 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="34"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 34 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(34)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 34 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    android:background="@color/disable_border">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="35"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 35 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(35)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 35 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="36"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 36 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(36)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 36 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="38"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 38 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(38)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 38 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="40"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 40 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(40)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 40 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    android:background="@color/disable_border">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:weightSum="4">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="42"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 42 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(42)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 42 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="44"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 44 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(44)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 44 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="46"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 46 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(46)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 46 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/disable_border"/>
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="48 이상"
+                            android:textColor="@{viewModel.userSizeUpdateBottom == 48 ? @color/common_white : @color/black_four, default= @color/black_four}"
+                            android:onClick="@{()-> viewModel.clickUserSizeBottom(48)}"
+                            android:background="@{viewModel.userSizeUpdateBottom == 48 ? @color/greyish_brown_two : @color/common_white, default= @color/common_white}"
+                            android:textSize="@dimen/text_13"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:onClick="@{()-> viewModel.clickUserSizeCheck()}"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginRight="15dp"
+                        android:src="@{viewModel.userSizeUpdateCheckTerm ? @drawable/checkbox_select_15 : @color/transparent, default=@color/transparent}"
+                        android:background="@drawable/checkbox_select_15"/>
+
+                    <io.temco.guhada.view.custom.HtmlTextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/warm_grey_two"
+                        android:textSize="@dimen/text_12"
+                        android:text="@string/user_size_update_desc" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:weightSum="2"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_addshippingaddress_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="3dp"
+                android:text="@string/common_cancel"
+                android:onClick="@{onClickCloseButton}"
+                android:background="@color/greyish_brown_two"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18" />
+
+            <Button
+                android:id="@+id/button_addshippingaddress_confirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="3dp"
+                android:onClick="@{()-> viewModel.onClickUpdate()}"
+                android:text="@string/review_activity_btn_write"
+                android:background="@color/common_blue_purple"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>
