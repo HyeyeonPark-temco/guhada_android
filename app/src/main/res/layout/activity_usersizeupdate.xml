@@ -131,7 +131,7 @@
                                 android:layout_weight="1"
                                 android:textColor="@color/black_four"
                                 android:textSize="@dimen/text_13"
-                                android:text="@{viewModel.userSizeUpdateHeight >= 0 ? @string/user_size_update_sub1_value(viewModel.userSizeUpdateHeight) : @string/common_select_spinner , default = @string/common_select_spinner}" />
+                                android:text="@{viewModel.userSizeUpdateHeight > 0 ? @string/user_size_update_sub1_value(viewModel.userSizeUpdateHeight) : @string/common_select_spinner , default = @string/common_select_spinner}" />
 
                             <ImageView
                                 android:id="@+id/imageview_usersizeupdate_sub1"
@@ -201,7 +201,7 @@
                                 android:layout_weight="1"
                                 android:textColor="@color/black_four"
                                 android:textSize="@dimen/text_13"
-                                android:text="@{viewModel.userSizeUpdateWeight >= 0 ? @string/user_size_update_sub2_value(viewModel.userSizeUpdateWeight) : @string/common_select_spinner , default = @string/common_select_spinner}"/>
+                                android:text="@{viewModel.userSizeUpdateWeight > 0 ? @string/user_size_update_sub2_value(viewModel.userSizeUpdateWeight) : @string/common_select_spinner , default = @string/common_select_spinner}"/>
 
                             <ImageView
                                 android:id="@+id/imageview_usersizeupdate_sub2"
@@ -273,7 +273,7 @@
                                 android:layout_weight="1"
                                 android:textColor="@color/black_four"
                                 android:textSize="@dimen/text_13"
-                                android:text="@{viewModel.userSizeUpdateShoe >= 0 ? @string/user_size_update_sub3_value(viewModel.userSizeUpdateShoe) : @string/common_select_spinner , default = @string/common_select_spinner}" />
+                                android:text="@{viewModel.userSizeUpdateFoot > 0 ? @string/user_size_update_sub3_value(viewModel.userSizeUpdateFoot) : @string/common_select_spinner , default = @string/common_select_spinner}" />
 
                             <ImageView
                                 android:id="@+id/imageview_usersizeupdate_sub3"
@@ -882,8 +882,8 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_marginRight="15dp"
-                        android:src="@{viewModel.userSizeUpdateCheckTerm ? @drawable/checkbox_select_15 : @color/transparent, default=@color/transparent}"
-                        android:background="@drawable/checkbox_select_15"/>
+                        android:onClick="@{()-> viewModel.clickUserSizeCheck()}"
+                        android:background="@{viewModel.userSizeUpdateCheckTerm ? @drawable/checkbox_checked_15 : @drawable/checkbox_select_15, default = @drawable/checkbox_select_15}"/>
 
                     <io.temco.guhada.view.custom.HtmlTextView
                         style="@style/TextRegular"
@@ -927,7 +927,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="3dp"
                 android:onClick="@{()-> viewModel.onClickUpdate()}"
-                android:text="@string/review_activity_btn_write"
+                android:text="@{viewModel.userSizeUpdateisNew ? @string/review_activity_btn_write : @string/review_activity_btn_modify}"
                 android:background="@color/common_blue_purple"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_18"/>

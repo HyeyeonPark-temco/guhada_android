@@ -3,6 +3,7 @@ package io.temco.guhada.data.model.review
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.base.BasePageModel
+import io.temco.guhada.data.model.user.UserSize
 import java.io.Serializable
 
 class MyPageReview : BasePageModel(){
@@ -36,7 +37,7 @@ class MyPageReviewContent : MyPageReviewBase(){
     var productOption = ProductOption()
 
     @SerializedName("userSize")
-    var userSize = UserSize()
+    var userSize : UserSize? = UserSize()
 
     /*@SerializedName("bookmarksUserIds")
     var bookmarksUserIds = JSONObject()*/
@@ -275,26 +276,6 @@ class ProductOption : Serializable {
     }
 }
 
-class UserSize : Serializable {
-    @SerializedName("height")
-    var height : Int = 0
-
-    @SerializedName("weight")
-    var weight : Int = 0
-
-    @SerializedName("top")
-    var top : String = ""
-
-    @SerializedName("bottom")
-    var bottom : Int = 0
-
-    @SerializedName("shoe")
-    var shoe : Int = 0
-
-    override fun toString(): String {
-        return "UserSize(height=$height, weight=$weight, top='$top', bottom=$bottom, shoe=$shoe)"
-    }
-}
 
 class BookmarksUserIds {
 

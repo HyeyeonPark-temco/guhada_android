@@ -22,6 +22,7 @@ import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
+import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.UserService
 import org.json.JSONObject
@@ -563,6 +564,114 @@ class UserServer {
             )
         }
 
+
+
+        /**
+         * 회원 신체 사이즈 정보 가져오기
+         */
+        @JvmStatic
+        fun getUserSize(listener: OnServerListener, accessToken: String) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .getUserSize(accessToken).enqueue(object : Callback<BaseModel<UserSize>> {
+                        override fun onResponse(call: Call<BaseModel<UserSize>>, response: Response<BaseModel<UserSize>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag)CustomLog.L("getUserSize","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag)CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<UserSize>>, t: Throwable) {
+                            if(CustomLog.flag)CustomLog.L("getUserSize","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 회원 신체 사이즈 정보 저장하기
+         */
+        @JvmStatic
+        fun saveUserSize(listener: OnServerListener, accessToken: String, data : UserSize) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .saveUserSize(accessToken, data).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag)CustomLog.L("saveUserSize","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag)CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if(CustomLog.flag)CustomLog.L("saveUserSize","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 회원 신체 사이즈 정보 수정하기
+         */
+        @JvmStatic
+        fun modifyUserSize(listener: OnServerListener, accessToken: String, data : UserSize) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .modifyUserSize(accessToken, data).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    if(CustomLog.flag)CustomLog.L("modifyUserSize","onResponse body",error.toString())
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag)CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if(CustomLog.flag)CustomLog.L("modifyUserSize","onFailure",t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
 
 
 

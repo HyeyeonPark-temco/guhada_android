@@ -12,6 +12,7 @@ import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
+import io.temco.guhada.data.model.user.UserSize
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -330,7 +331,32 @@ interface UserService {
 
 
 
+    /**
+     * 회원 신체 사이즈 정보 가져오기
+     *
+     * park jungho
+     * 19.08.16
+     */
+    @GET("/users/user-size")
+    fun getUserSize(@Header("Authorization") accessToken: String): Call<BaseModel<UserSize>>
 
 
+    /**
+     * 회원 신체 사이즈 정보 저장하기
+     *
+     * park jungho
+     * 19.08.16
+     */
+    @POST("/users/user-size")
+    fun saveUserSize(@Header("Authorization") accessToken: String, @Body response: UserSize): Call<BaseModel<Any>>
 
+
+    /**
+     * 회원 신체 사이즈 정보 수정하기
+     *
+     * park jungho
+     * 19.08.16
+     */
+    @PUT("/users/user-size")
+    fun modifyUserSize(@Header("Authorization") accessToken: String, @Body response: UserSize): Call<BaseModel<Any>>
 }

@@ -32,6 +32,7 @@ public class Flag {
         public static final int SIDE_MENU_FROM_PRODUCT_FILTER = 10019;
         public static final int REVIEW_WRITE = 10020;
         public static final int REVIEW_MODIFY = 10021;
+        public static final int USER_SIZE = 10022;
     }
 
     public static class ResultCode {

@@ -16,6 +16,7 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnClickSelectItemListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.review.*
+import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.viewmodel.ReviewWriteViewModel
 import io.temco.guhada.data.viewmodel.UserSizeUpdateViewModel
 import io.temco.guhada.view.activity.base.BindActivity
@@ -31,6 +32,7 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
     private lateinit var mRequestManager: RequestManager
     private lateinit var loadingIndicatorUtil : LoadingIndicatorUtil
     private lateinit var mViewModel : UserSizeUpdateViewModel
+
 
     override fun getBaseTag(): String = ReviewWriteActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_usersizeupdate
@@ -49,10 +51,25 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
         val height = dm.heightPixels - CommonViewUtil.convertDpToPixel(60,this)
         mBinding.linearlayoutUsersizeupdateParent.layoutParams = FrameLayout.LayoutParams(width,height)
 
+        if(intent != null && intent.extras != null && intent.extras.containsKey("userSize")){
+            var userSize = intent.extras.getSerializable("userSize") as UserSize
+            mViewModel.setUserSize(false, userSize)
+        }
+
         mBinding.setOnClickCloseButton { finish() }
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == Flag.RequestCode.POINT_RESULT_DIALOG && resultCode == Activity.RESULT_OK){
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
+    }
 
+    override fun onBackPressed() {
+        //super.onBackPressed()
+    }
 
 }

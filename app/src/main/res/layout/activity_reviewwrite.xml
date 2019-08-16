@@ -12,6 +12,9 @@
         <variable
             name="onClickCloseButton"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickUserSize"
+            type="android.view.View.OnClickListener" />
         <import type="android.view.View" />
         <variable
             name="viewModel"
@@ -67,17 +70,78 @@
             android:layout_height="2dp"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="30dp"
             android:background="@color/black_four"/>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="98dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:onClick="@{onClickUserSize}"
+                    android:gravity="center"
+                    android:visibility="@{viewModel.reviewUserSizeStatus ? View.VISIBLE : View.GONE , default = gone}"
+                    android:background="@color/blue_purple"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center_vertical"
+                        android:background="@color/blue_purple"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginRight="7dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/blue_purple"
+                            android:textSize="@dimen/text_10"
+                            android:background="@drawable/round_circle"
+                            android:text="!" />
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/common_white"
+                            android:textSize="@dimen/text_13"
+                            android:text="@string/user_size_update_recommend_desc" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="23dp"
+                        android:paddingRight="23dp"
+                        android:gravity="center"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_13"
+                        android:background="@drawable/round_btn_innerpuple"
+                        android:text="내 사이즈 등록" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"/>
 
                 <include android:id="@+id/product_item_layout"
                     layout="@layout/product_item_layout"/>

@@ -16,6 +16,7 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnClickSelectItemListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.review.*
+import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.viewmodel.ReviewWriteViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ReviewWriteImageAdapter
@@ -71,6 +72,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             }else{
                 reviewAvailableData = intent.extras.getSerializable("reviewData") as ReviewAvailableOrder
                 if(CustomLog.flag)CustomLog.L("ReviewWriteActivity",reviewAvailableData!!.toString())
+                mViewModel.getUserSize()
                 mViewModel.modifyReviewStatus.set(false)
                 setReviewWrite()
             }
@@ -97,11 +99,20 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                 }
             }
         })
+
+        // 화면 외각 Padding
         val dm = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(dm)
         val width = dm.widthPixels - CommonViewUtil.convertDpToPixel(40,this)
         val height = dm.heightPixels - CommonViewUtil.convertDpToPixel(60,this)
         mBinding.linearlayoutReivewwriteParent.layoutParams = FrameLayout.LayoutParams(width,height)
+
+        // 내 사이즈 등록/수정
+        mBinding.setOnClickUserSize {
+            var intent = Intent(this@ReviewWriteActivity, UserSizeUpdateActivity::class.java)
+            if(mViewModel.userSize != null) intent.putExtra("userSize", mViewModel.userSize)
+            this@ReviewWriteActivity.startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
+        }
     }
 
 
@@ -150,6 +161,10 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         mBinding.edittextReviewwriteText.text = Editable.Factory.getInstance().newEditable(txt)
         mViewModel.editTextReviewTxtCount.set(txt.length.toString())
         setImageRecyclerViewVisible()
+
+        if(item.userSize != null){
+            mViewModel.setUserSize(true, item.userSize)
+        }
     }
 
     private fun setImageRecyclerViewVisible(){
@@ -238,6 +253,9 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                 Flag.RequestCode.POINT_RESULT_DIALOG ->{
                     setResult(Activity.RESULT_OK)
                     finish()
+                }
+                Flag.RequestCode.USER_SIZE -> {
+                    mViewModel.getUserSize()
                 }
             }
         }

@@ -978,6 +978,10 @@
     <string name="user_size_update_sub4_array_5">XL</string>
 
     <string name="user_size_update_check_desc">필수 항목 확인이 필요합니다.</string>
+    <string name="user_size_update_save_dialog_desc">내 사이즈가 등록되었습니다.</string>
+    <string name="user_size_update_modify_dialog_desc">내 사이즈가 수정되었습니다.</string>
+
+    <string name="user_size_update_recommend_desc">내 사이즈 등록하면 적립금 1,000원 적립!</string>
 
 
 </resources>
