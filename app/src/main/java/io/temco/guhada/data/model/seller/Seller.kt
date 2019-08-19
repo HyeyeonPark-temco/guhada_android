@@ -22,5 +22,6 @@ class Seller {
     var updatedAt: String? = ""
     var updatedBy: String? = ""
     var user : User = User()
+
 }
 

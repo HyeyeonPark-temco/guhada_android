@@ -470,7 +470,7 @@
     <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
     <string name="shippingmemo_security">경비실에 맡겨주세요.</string>
     <string name="shippingmemo_call_if_absent">부재시 휴대폰으로 연락바랍니다.</string>
-    <string name="shippingmemo_postbox">택배함에 넣어주세요</string>
+    <string name="shippingmemo_postbox">택배함에 넣어주세요.</string>
     <string name="shippingmemo_self">Please enter your shipping message</string>
     <string name="shippingmemo_put_door">문 앞에 놓아주세요.</string>
 

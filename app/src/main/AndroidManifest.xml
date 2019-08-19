@@ -215,7 +215,7 @@
         <activity
             android:name=".view.activity.RequestExchangeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="adjustResize"  />
 
 
         <!-- get gallery Image file -->

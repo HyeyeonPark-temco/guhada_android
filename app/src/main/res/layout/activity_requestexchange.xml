@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.core.widget.NestedScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include
+            android:id="@+id/include_requestexchange_header"
+            layout="@layout/header_common_backbutton" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
-            <include
-                android:id="@+id/include_requestexchange_header"
-                layout="@layout/header_common_backbutton" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <include
-                android:id="@+id/include_requestexchange_orderinfo"
-                layout="@layout/layout_requestorderstatus_orderinfo" />
+                <include
+                    android:id="@+id/include_requestexchange_orderinfo"
+                    layout="@layout/layout_requestorderstatus_orderinfo" />
 
-            <include
-                android:id="@+id/include_requestexchange_productinfo"
-                layout="@layout/layout_requestorderstatus_productinfo" />
+                <include
+                    android:id="@+id/include_requestexchange_productinfo"
+                    layout="@layout/layout_requestorderstatus_productinfo" />
 
-            <include
-                android:id="@+id/include_requestexchange_cause"
-                layout="@layout/layout_requestorderstatus_cause" />
+                <include
+                    android:id="@+id/include_requestexchange_cause"
+                    layout="@layout/layout_requestorderstatus_cause" />
 
-            <include
-                android:id="@+id/include_requestexchange_sellershipping"
-                layout="@layout/layout_requestorderstatus_sellershipping" />
+                <include
+                    android:id="@+id/include_requestexchange_sellershipping"
+                    layout="@layout/layout_requestorderstatus_sellershipping" />
 
-            <include
-                android:id="@+id/include_requestexchange_collection"
-                layout="@layout/layout_requestorderstatus_way" />
+                <include
+                    android:id="@+id/include_requestexchange_collection"
+                    layout="@layout/layout_requestorderstatus_way" />
 
-            <include
-                android:id="@+id/include_requestexchange_shippingpayment"
-                layout="@layout/layout_requestorderstatus_shippingpayment" />
+                <include
+                    android:id="@+id/include_requestexchange_shippingpayment"
+                    layout="@layout/layout_requestorderstatus_shippingpayment" />
 
-            <include
-                android:id="@+id/include_requestexchange_exchangeshipping"
-                layout="@layout/layout_requestorderstatus_exchangeshipping" />
+                <include
+                    android:id="@+id/include_requestexchange_exchangeshipping"
+                    layout="@layout/layout_requestorderstatus_exchangeshipping" />
 
-            <include
-                android:id="@+id/include_requestexchange_button"
-                layout="@layout/layout_requestorderstatus_button" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <include
+                    android:id="@+id/include_requestexchange_button"
+                    layout="@layout/layout_requestorderstatus_button" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </layout>
