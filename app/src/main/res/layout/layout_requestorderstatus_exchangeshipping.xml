@@ -4,17 +4,23 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="title"
             type="String" />
 
         <variable
-            name="defaultName"
+            name="name"
+            type="String" />
+
+        <variable
+            name="address"
             type="String" />
 
         <variable
             name="defaultAddress"
-            type="String" />
+            type="Boolean" />
 
     </data>
 
@@ -92,8 +98,8 @@
                     android:id="@+id/textView23"
                     style="@style/RequestOrderStatusBlackTextStyle"
                     android:layout_width="wrap_content"
-                    android:text="@{defaultName}"
                     android:layout_height="wrap_content"
+                    android:text="@{name}"
                     android:textSize="@dimen/text_14"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -105,21 +111,21 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
                     android:src="@drawable/payment_icon_basic_delivery"
+                    android:visibility="@{defaultAddress ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/textView23"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!--android:visibility="@{viewModel.order.shippingAddress != null &amp;&amp; viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"-->
                 <TextView
                     android:id="@+id/textview_requestorderstatus_shippingaddress"
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:text="@{address}"
                     android:textSize="@dimen/text_14"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:text="@{defaultAddress}"
                     app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
                 <!--android:text="@{viewModel.shippingAddressText}"-->

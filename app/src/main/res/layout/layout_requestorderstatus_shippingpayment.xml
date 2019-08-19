@@ -59,7 +59,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description1" />
 
             <RadioButton
-                android:id="@+id/radiobutton_requestorderstatus_shippingpayment_true"
+                android:id="@+id/radiobutton_requestorderstatus_shippingpayment1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -78,7 +78,7 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/requestorderstatus_refund_shipping_radio"
                 android:visibility="@{isRefund ? View.VISIBLE : View.GONE, default= gone}"
-                app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_shippingpayment_true"
+                app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_shippingpayment1"
                 app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description2" />
 
             <RadioButton
@@ -89,7 +89,7 @@
                 android:background="@drawable/selector_ovalradiobutton_all"
                 android:button="@null"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radiobutton_requestorderstatus_shippingpayment_true" />
+                app:layout_constraintTop_toBottomOf="@+id/radiobutton_requestorderstatus_shippingpayment1" />
 
             <TextView
                 android:id="@+id/textview_requestorderstatus_shippingpayment2"

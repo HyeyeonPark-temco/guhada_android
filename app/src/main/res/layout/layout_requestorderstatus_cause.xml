@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="java.util.List" />
+
         <import type="io.temco.guhada.data.model.OrderChangeCause" />
 
         <variable
@@ -142,16 +144,15 @@
             <Spinner
                 android:id="@+id/spinner_requestorderstatus_cause"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:background="@drawable/border_all_whitethree"
-                app:cause="@{causeList}"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
                 android:overlapAnchor="false"
                 android:popupBackground="@null"
-                android:spinnerMode="dropdown" />
-            <!--android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"-->
-            <!--app:userShippingMemo="@{viewModel.shippingMessages}"-->
+                android:spinnerMode="dropdown"
+                app:cause="@{causeList}" />
+
             <FrameLayout
                 android:id="@+id/framelayout_requestorderstatus_causebutton"
                 android:layout_width="match_parent"
@@ -162,7 +163,7 @@
                 <LinearLayout
                     android:id="@+id/linearlayout_requestorderstatus_cause"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="45dp"
                     android:background="@color/common_white"
                     android:orientation="horizontal"
                     android:paddingStart="15dp"
@@ -177,6 +178,7 @@
                         android:layout_weight="1"
                         android:text="@{defaultMessage}"
                         android:textSize="@dimen/text_13" />
+
                     <ImageView
                         android:id="@+id/imageview_requestorderstatus_cause"
                         android:layout_width="wrap_content"
@@ -197,11 +199,11 @@
             android:layout_marginBottom="40dp">
 
             <EditText
+                android:id="@+id/edittext_requestorderstatus_cause"
                 style="@style/MypageDeliveryWarmGreyTextStyle"
                 android:layout_width="match_parent"
-                android:id="@+id/edittext_requestorderstatus_cause"
                 android:layout_height="match_parent"
-                android:background="@drawable/border_all_silver"
+                android:background="@drawable/border_all_whitethree"
                 android:gravity="left|top"
                 android:hint="@{hintMessage}"
                 android:padding="15dp" />

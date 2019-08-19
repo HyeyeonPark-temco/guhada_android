@@ -101,7 +101,7 @@
                 <Spinner
                     android:id="@+id/spinner_requestorderstatus_shippingmemo"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="45dp"
                     android:background="@drawable/border_all_whitethree"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
@@ -109,8 +109,6 @@
                     android:popupBackground="@null"
                     android:spinnerMode="dropdown" />
 
-                <!--android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"-->
-                <!--app:userShippingMemo="@{viewModel.shippingMessages}"-->
                 <FrameLayout
                     android:id="@+id/framelayout_requestorderstatus_shippingmemobutton"
                     android:layout_width="match_parent"
@@ -121,7 +119,7 @@
                     <LinearLayout
                         android:id="@+id/linearlayout_requestorderstatus_shippingmemo"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="45dp"
                         android:background="@color/common_white"
                         android:orientation="horizontal"
                         android:paddingStart="15dp"
@@ -156,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/border_all_silver"
+                android:background="@drawable/border_all_whitethree"
                 android:hint="@string/requestorderstatus_common_courier_hint2"
                 android:paddingStart="15dp"
                 android:textColorHint="@color/warm_grey"
