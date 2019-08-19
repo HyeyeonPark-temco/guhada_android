@@ -19,6 +19,7 @@ import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.activity.DeliveryDetailActivity
 import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.activity.ConfirmPurchaseActivity
+import io.temco.guhada.view.activity.RequestExchangeActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -87,7 +88,8 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
                         ///// TEMP TEMP TEMP [2019.08.16 시연용]
                         task = View.OnClickListener {
-                            val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
+                           // val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
+                            val intent = Intent(binding.root.context, RequestExchangeActivity::class.java)
                             intent.putExtra("purchaseOrder", item)
                             (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
                         }

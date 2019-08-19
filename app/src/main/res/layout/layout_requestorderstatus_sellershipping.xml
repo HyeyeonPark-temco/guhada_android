@@ -2,6 +2,25 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="address"
+            type="String" />
+
+        <variable
+            name="sellerName"
+            type="String" />
+
+        <variable
+            name="sellerPhone"
+            type="String" />
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -9,9 +28,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="@color/common_white"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:background="@color/common_white"
             android:padding="20dp">
 
             <TextView
@@ -19,7 +38,7 @@
                 style="@style/RequestOrderStatusBlackSubTitleTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/requestorderstatus_exchange_address"
+                android:text="@{title}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:singleLine="false"
-                android:text="[06247] 서울시 강남구 논현로 75길 8 비드빌딩 6층"
+                android:text="@{address}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_sellershipping_address_title" />
@@ -41,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="구하다  010-5278-7366"
+                android:text="@{sellerName + ` ` + sellerPhone}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_sellershipping_address_content" />
