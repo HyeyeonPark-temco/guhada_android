@@ -77,7 +77,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     @Override
     protected void init() {
         mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
-
+        CommonUtil.getUserIp();
         initMainPager();
         setEventBus();
     }
@@ -246,7 +246,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         // Pager
         mBinding.layoutContents.layoutPager.setAdapter(mPagerAdapter);
-        mBinding.layoutContents.layoutPager.setSwipeLocked(true);
+        mBinding.layoutContents.layoutPager.setSwipeEnabled(false);
         mBinding.layoutContents.layoutPager.setOffscreenPageLimit(mPagerAdapter.getCount());
         // Tab
         addCustomTabs(currentViewPagerIndex); // Home

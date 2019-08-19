@@ -80,7 +80,7 @@ class UserSizeUpdateViewModel (val context : Context) : BaseObservableViewModel(
             notifyPropertyChanged(BR.userSizeUpdateFoot)
         }
 
-    var userSizeUpdateTop = ObservableField("L")
+    var userSizeUpdateTop = ObservableField("XS")
         @Bindable
         get() = field
         set(value) {

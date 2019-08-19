@@ -10,10 +10,10 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
+import io.temco.guhada.view.fragment.community.CommunityMainFragment;
+import io.temco.guhada.view.fragment.main.HomeFragment;
 import io.temco.guhada.view.fragment.mypage.MyPageMainFragment;
 import io.temco.guhada.view.fragment.product.ProductFragment;
-import io.temco.guhada.view.fragment.main.CommunityFragment;
-import io.temco.guhada.view.fragment.main.HomeFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
@@ -22,7 +22,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private final String TAG_PRODUCT = "product";
     private FragmentManager mFragmentManager;
     private HomeFragment mHomeFragment;
-    private CommunityFragment mCommunityFragment;
+    private CommunityMainFragment mCommunityFragment;
     private MyPageMainFragment mMyPageFragment;
     private ProductFragment mProductFragment;
     // -----------------------------
@@ -58,7 +58,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
             case 1: // Community
                 if (mCommunityFragment == null) {
-                    mCommunityFragment = new CommunityFragment();
+                    mCommunityFragment = new CommunityMainFragment();
                     //mCommunityFragment.setOnDrawerLayoutListener(mDrawerListener);
                 }
                 return mCommunityFragment;
