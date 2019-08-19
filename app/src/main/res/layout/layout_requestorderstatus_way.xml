@@ -90,16 +90,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_way_true" />
 
             <FrameLayout
-                android:id="@+id/framelayout_requestorderstatus_shippingmemo"
+                android:id="@+id/framelayout_requestorderstatus_shippingcompany"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_way_false">
 
                 <Spinner
-                    android:id="@+id/spinner_requestorderstatus_shippingmemo"
+                    android:id="@+id/spinner_requestorderstatus_shippingcompany"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:background="@drawable/border_all_whitethree"
@@ -110,14 +111,15 @@
                     android:spinnerMode="dropdown" />
 
                 <FrameLayout
-                    android:id="@+id/framelayout_requestorderstatus_shippingmemobutton"
+                    android:id="@+id/framelayout_requestorderstatus_shippingcompanybutton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white_three"
+
                     android:padding="1dp">
 
                     <LinearLayout
-                        android:id="@+id/linearlayout_requestorderstatus_shippingmemo"
+                        android:id="@+id/linearlayout_requestorderstatus_shippingcompany"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@color/common_white"
@@ -128,6 +130,7 @@
 
                         <TextView
                             style="@style/RequestOrderStatusWarmGreyTextStyle"
+                            android:id="@+id/textview_requestorderstatus_shippingcompany"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -138,7 +141,7 @@
                         <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
 
                         <ImageView
-                            android:id="@+id/imageview_requestorderstatus_shippingmemo"
+                            android:id="@+id/imageview_requestorderstatus_shippingcompany"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -152,6 +155,7 @@
                 android:id="@+id/edittext_requestorderstatus_shippingid"
                 style="@style/RequestOrderStatusWarmGreyTextStyle"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border_all_whitethree"
@@ -160,11 +164,12 @@
                 android:textColorHint="@color/warm_grey"
                 android:textSize="@dimen/text_13"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_requestorderstatus_shippingmemo" />
+                app:layout_constraintTop_toBottomOf="@+id/framelayout_requestorderstatus_shippingcompany" />
 
             <ImageView
                 android:id="@+id/imageview_requestorderstatus_warning"
                 android:layout_width="wrap_content"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21dp"
                 android:layout_marginBottom="10dp"
@@ -177,6 +182,7 @@
                 android:id="@+id/textview_requestorderstatus_warning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginStart="7dp"
                 android:layout_marginTop="21dp"
                 android:layout_marginBottom="10dp"

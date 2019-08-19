@@ -85,14 +85,6 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     })
                     buttons.add(DeliveryButton().apply {
                         text = "주문수정"
-
-                        ///// TEMP TEMP TEMP [2019.08.16 시연용]
-                        task = View.OnClickListener {
-                           // val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
-                            val intent = Intent(binding.root.context, RequestExchangeActivity::class.java)
-                            intent.putExtra("purchaseOrder", item)
-                            (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
-                        }
                     })
                     buttons.add(DeliveryButton().apply {
                         text = "주문취소"
@@ -133,9 +125,20 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     } else {
                         buttons.add(DeliveryButton().apply {
                             text = "구매확정"
-
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                            }
                         })
-                        buttons.add(DeliveryButton().apply { text = "교환신청" })
+                        buttons.add(DeliveryButton().apply {
+                            text = "교환신청"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, RequestExchangeActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                            }
+                        })
                         buttons.add(DeliveryButton().apply { text = "반품신청" })
                     }
                 }

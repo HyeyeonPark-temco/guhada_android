@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.temco.guhada.BR
@@ -9,14 +10,18 @@ import io.temco.guhada.common.enum.ExchangeCause
 import io.temco.guhada.common.enum.ShippingMessageCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.ExchangeRequest
 import io.temco.guhada.data.model.OrderChangeCause
+import io.temco.guhada.data.model.ShippingCompany
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerAddress
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
+import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.server.OrderServer
+import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import java.util.*
@@ -29,9 +34,9 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     }
 
     var mPurchaseOrder = PurchaseOrder()
+    var mExchangeRequest = ExchangeRequest()
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mSellerAddress: MutableLiveData<SellerAddress> = MutableLiveData()
-    var mAlreadySend = false // 교환 상품 발송 여부
     var mShippingPayment = ShippingPayment.INSIDE_BOX.flag
     val mCauseList = mutableListOf(
             OrderChangeCause().apply {
@@ -90,6 +95,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                 isFeeCharged = ExchangeCause.ETC.isFeeCharged
             })
     var mShippingMessageList: MutableLiveData<MutableList<ShippingMessage>> = MutableLiveData(mutableListOf())
+    var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
 
     fun getSellerInfo() {
         if (mPurchaseOrder.sellerId > 0) {
@@ -137,12 +143,36 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                                         mShippingMessageList.value?.add(it)
                                     }
 
+                            if (order.shippingAddress != null) mExchangeRequest.exchangeShippingAddress = order.shippingAddress!!
+
                             mShippingMessageList.value?.add(ShippingMessage().apply {
                                 message = application.getString(R.string.shippingmemo_self)
                             })
                             mShippingMessageList.postValue(mShippingMessageList.value)
                         })
             }, accessToken = accessToken, cartIdList = intArrayOf(0))
+        })
+    }
+
+    fun getShippingCompany() {
+        ProductServer.getShippingCompanyList(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        val companyList = it.data as MutableList<ShippingCompany>
+                        companyList.add(ShippingCompany().apply { this.name = BaseApplication.getInstance().getString(R.string.requestorderstatus_common_courier_hint1) })
+                        mShippingCompanyList.postValue(companyList)
+                    })
+        }, type = ShippingCompany.Type.DOMESTIC.type)
+    }
+
+    fun requestExchange() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            ClaimServer.requestExchange(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            Log.e("ㅇㅇㅇ", "success")
+                        })
+            }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
         })
     }
 }

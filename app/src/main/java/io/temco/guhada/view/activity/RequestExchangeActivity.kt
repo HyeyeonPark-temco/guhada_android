@@ -5,18 +5,21 @@ import android.content.Intent
 import android.text.Html
 import android.view.View
 import android.widget.AdapterView
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.enum.ShippingMessageCode
+import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.RequestExchangeViewModel
 import io.temco.guhada.databinding.ActivityRequestexchangeBinding
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.adapter.ShippingCompanySpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentSpinnerAdapter
 
 /**
@@ -49,7 +52,10 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
     private fun initViewModel() {
         mViewModel = RequestExchangeViewModel()
         intent.getSerializableExtra("purchaseOrder").let {
-            if (it != null) mViewModel.mPurchaseOrder = it as PurchaseOrder
+            if (it != null) {
+                mViewModel.mPurchaseOrder = it as PurchaseOrder
+                mViewModel.mExchangeRequest.orderProdGroupId = it.orderProdGroupId
+            }
         }
     }
 
@@ -81,11 +87,17 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             val quantity = mBinding.includeRequestexchangeCause.quantity ?: 0
             if (quantity - 1 <= 0) ToastUtil.showMessage("교환 가능 최소 수량 1개")
             else mBinding.includeRequestexchangeCause.quantity = quantity - 1
+
+            mViewModel.mExchangeRequest.quantity = mBinding.includeRequestexchangeCause.quantity
+                    ?: 0
         }
         mBinding.includeRequestexchangeCause.setOnClickAmountPlus {
             val quantity = mBinding.includeRequestexchangeCause.quantity ?: 0
             if (quantity + 1 > mViewModel.mPurchaseOrder.quantity) ToastUtil.showMessage("교환 가능 최대 수량 ${mViewModel.mPurchaseOrder.quantity}개")
             else mBinding.includeRequestexchangeCause.quantity = quantity + 1
+
+            mViewModel.mExchangeRequest.quantity = mBinding.includeRequestexchangeCause.quantity
+                    ?: 0
         }
         mBinding.includeRequestexchangeCause.causeList = mViewModel.mCauseList
         mBinding.includeRequestexchangeCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -93,12 +105,19 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                mBinding.includeRequestexchangeCause.defaultMessage = mViewModel.mCauseList[position].label
+                val cause = mViewModel.mCauseList[position]
+                mViewModel.mExchangeRequest.exchangeReason = cause.code
+                mBinding.includeRequestexchangeCause.defaultMessage = cause.label
+
                 mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility =
-                        if (mViewModel.mCauseList[position].isFeeCharged) View.VISIBLE
+                        if (cause.isFeeCharged) View.VISIBLE
                         else View.GONE
-                mBinding.executePendingBindings()
+
+                if (!cause.isFeeCharged) mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
             }
+        }
+        mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.addTextChangedListener {
+            mViewModel.mExchangeRequest.exchangeReasonDetail = it.toString()
         }
     }
 
@@ -127,16 +146,51 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeCollection.description = resources.getString(R.string.requestorderstatus_exchange_way_description)
         mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayTrue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                mViewModel.mAlreadySend = true
+                mViewModel.mExchangeRequest.alreadySend = true
                 mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayFalse.isChecked = false
+
+                // 택배사 및 송장번호 입력 란
+                mBinding.includeRequestexchangeCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.VISIBLE
+                mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.visibility = View.VISIBLE
+                mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.VISIBLE
+                mBinding.includeRequestexchangeCollection.imageviewRequestorderstatusWarning.visibility = View.VISIBLE
             }
         }
         mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayFalse.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                mViewModel.mAlreadySend = false
+                mViewModel.mExchangeRequest.alreadySend = false
                 mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayTrue.isChecked = false
+
+                // 택배사 및 송장번호 입력 란
+                mBinding.includeRequestexchangeCollection.framelayoutRequestorderstatusShippingcompany.visibility = View.GONE
+                mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.visibility = View.GONE
+                mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.GONE
+                mBinding.includeRequestexchangeCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
             }
         }
+
+        mViewModel.mShippingCompanyList.observe(this, Observer {
+            mBinding.includeRequestexchangeCollection.spinnerRequestorderstatusShippingcompany.adapter = ShippingCompanySpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, it)
+            mBinding.includeRequestexchangeCollection.spinnerRequestorderstatusShippingcompany.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val company = mViewModel.mShippingCompanyList.value?.get(position)
+                    if (company != null) mViewModel.mExchangeRequest.shippingCompanyCode = company.code
+                    mBinding.includeRequestexchangeCollection.textviewRequestorderstatusShippingcompany.text = company?.name
+                }
+            }
+            mBinding.includeRequestexchangeCollection.spinnerRequestorderstatusShippingcompany.setSelection(it.size - 1)
+        })
+
+        mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.addTextChangedListener {
+            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = if (it.isNullOrEmpty()) View.VISIBLE
+            else View.GONE
+        }
+
+        mViewModel.getShippingCompany()
     }
 
     private fun initShippingPayment() {
@@ -189,7 +243,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
     private fun initButton() {
         mBinding.includeRequestexchangeButton.confirmText = resources.getString(R.string.requestorderstatus_exchange_button_submit)
         mBinding.includeRequestexchangeButton.cancelText = resources.getString(R.string.common_cancel)
-        mBinding.includeRequestexchangeButton.setOnClickConfirm { }
+        mBinding.includeRequestexchangeButton.setOnClickConfirm { mViewModel.requestExchange() }
         mBinding.includeRequestexchangeButton.setOnClickCancel { finish() }
     }
 
@@ -199,6 +253,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             data?.getSerializableExtra("shippingAddress").let {
                 if (it != null) {
                     val shippingAddress = it as UserShipping
+                    mViewModel.mExchangeRequest.exchangeShippingAddress = shippingAddress
                     mBinding.includeRequestexchangeExchangeshipping.address = "[${shippingAddress.zip}] ${shippingAddress.roadAddress} ${shippingAddress.detailAddress}"
                     mBinding.includeRequestexchangeExchangeshipping.defaultAddress = shippingAddress.defaultAddress
                     mBinding.includeRequestexchangeExchangeshipping.name = shippingAddress.shippingName
