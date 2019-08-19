@@ -83,7 +83,7 @@ public class MyPageFragment extends BaseFragment<FragmentMainMyPageBinding> impl
             mPagerAdapter = new MyPagePagerAdapter(getChildFragmentManager());
         // Pager
         mBinding.pager.setAdapter(mPagerAdapter);
-        mBinding.pager.setSwipeLocked(false);
+        mBinding.pager.setSwipeEnabled(false);
         mBinding.pager.setOffscreenPageLimit(mPagerAdapter.getCount());
         mBinding.pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutTab));
         // Tab

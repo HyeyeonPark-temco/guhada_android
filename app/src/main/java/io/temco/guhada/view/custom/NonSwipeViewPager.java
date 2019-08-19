@@ -96,11 +96,11 @@ public class NonSwipeViewPager extends ViewPager {
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public boolean getSwipeLocked() {
+    public boolean getsetSwipeEnabled() {
         return mSwipeEnabled;
     }
 
-    public void setSwipeLocked(boolean locked) {
+    public void setSwipeEnabled(boolean locked) {
         mSwipeEnabled = locked;
     }
 

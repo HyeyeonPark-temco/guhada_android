@@ -88,7 +88,7 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
         // Pager
         mBinding.layoutPager.apply {
             adapter = mPagerAdapter
-            swipeLocked = true
+            setSwipeEnabled(true)
             offscreenPageLimit = mPagerAdapter?.count ?: 0
         }
         addFragmentList()

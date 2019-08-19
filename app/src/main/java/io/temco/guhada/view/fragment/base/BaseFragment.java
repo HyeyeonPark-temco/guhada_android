@@ -12,6 +12,8 @@ import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
 public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
+    protected boolean isActivated = false;
+    protected int scrollState = 0;
 
     // -------- LOCAL VALUE --------
     protected B mBinding;
@@ -47,6 +49,14 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
+
+    public boolean isActivated() {
+        return isActivated;
+    }
+
+    public void onPageScrollStateChanged(int paramInt) {
+        this.scrollState = paramInt;
+    }
 
     ////////////////////////////////////////////////
 }

@@ -158,7 +158,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
             mListPagerAdapter.setOnChangeTitleListener(this::setTitle);
             // Pager
             mBinding.layoutPager.setAdapter(mListPagerAdapter);
-            mBinding.layoutPager.setSwipeLocked(true);
+            mBinding.layoutPager.setSwipeEnabled(true);
         }
     }
 
