@@ -11,6 +11,7 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.CancelRequest
 import io.temco.guhada.data.model.ExchangeRequest
 import io.temco.guhada.data.model.Inquiry
+import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
@@ -183,6 +184,15 @@ open class ClaimServer {
         fun requestExchange(listener: OnServerListener, accessToken: String, exchangeRequest: ExchangeRequest) =
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
                         .requestExchange(accessToken = accessToken, exchangeRequest = exchangeRequest).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 반품 신청
+         */
+        @JvmStatic
+        fun requestRefund(listener: OnServerListener, accessToken: String, refundRequest: RefundRequest) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .requestRefund(accessToken = accessToken, refundRequest = refundRequest).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
     }
 }

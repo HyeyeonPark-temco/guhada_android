@@ -122,12 +122,23 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     }
 
     companion object {
+
+        /**
+         * requestType: 0 취소, 1 교환, 2 반품
+         */
         @JvmStatic
-        @BindingAdapter("cause")
-        fun Spinner.bindCause(list: MutableList<OrderChangeCause>) {
+        @BindingAdapter(value = ["cause", "requestType"])
+        fun Spinner.bindCause(list: MutableList<OrderChangeCause>, requestType: Int = 0) {
             if (list.isNotEmpty()) {
                 if (list[list.size - 1].label != resources.getString(R.string.payment_hint_shippingmemo))
-                    list.add(OrderChangeCause().apply { this.label = resources.getString(R.string.requestorderstatus_cancel_cause) })
+                    list.add(OrderChangeCause().apply {
+                        this.label = when (requestType) {
+                            0 -> resources.getString(R.string.requestorderstatus_cancel_cause)
+                            1 -> resources.getString(R.string.requestorderstatus_exchange_cause)
+                            2 -> resources.getString(R.string.requestorderstatus_refund_cause)
+                            else -> resources.getString(R.string.requestorderstatus_cancel_cause)
+                        }
+                    })
 
                 if (this.adapter == null) {
                     this.adapter = OrderChangeCauseAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_cancelorder_spinner, list)

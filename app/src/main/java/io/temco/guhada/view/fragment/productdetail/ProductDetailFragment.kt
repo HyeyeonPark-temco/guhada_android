@@ -460,11 +460,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun getSelectedProductQuantity(): Int {
-        return when {
-            mMenuFragment.getSelectedOptionCount() > 0 -> mMenuFragment.getProductCount()
-            mHeaderMenuFragment.getSelectedOptionCount() > 0 -> mHeaderMenuFragment.getProductCount()
-            else -> 1
-        }
+        return if (mViewModel.menuVisibility.get() == View.VISIBLE) mMenuFragment.getProductCount()
+        else mHeaderMenuFragment.getProductCount()
     }
 
     override fun hideLoadingIndicator() {

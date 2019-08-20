@@ -40,6 +40,10 @@
             name="causeList"
             type="List&lt;OrderChangeCause>" />
 
+        <variable
+            name="requestType"
+            type="Integer" />
+
     </data>
 
     <LinearLayout
@@ -151,7 +155,9 @@
                 android:overlapAnchor="false"
                 android:popupBackground="@null"
                 android:spinnerMode="dropdown"
-                app:cause="@{causeList}" />
+                app:cause="@{causeList}"
+                app:requestType="@{requestType}"
+                 />
 
             <FrameLayout
                 android:id="@+id/framelayout_requestorderstatus_causebutton"

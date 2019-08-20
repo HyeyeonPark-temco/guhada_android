@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import io.temco.guhada.data.model.CancelRequest
 import io.temco.guhada.data.model.ExchangeRequest
 import io.temco.guhada.data.model.Inquiry
+import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
@@ -87,4 +88,9 @@ interface ClaimService {
     @POST("/order-claim/order-exchange")
     fun requestExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest) : Call<BaseModel<Any>>
 
+    /**
+     * 반품 신청 API
+     */
+    @POST("/order-claim/order-return")
+    fun requestRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<Any>>
 }

@@ -8,6 +8,11 @@ import io.temco.guhada.data.model.seller.SellerAddress
 import io.temco.guhada.databinding.ActivitySuccessexchangeBinding
 import io.temco.guhada.view.activity.base.BindActivity
 
+/**
+ * 교환 신청 완료
+ * @author Hyeyeon Park
+ * @since 2019.08.17
+ */
 class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBinding>() {
     override fun getBaseTag(): String = SuccessRequestExchangeActivity::class.java.simpleName
 
@@ -26,6 +31,7 @@ class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBindi
             if (it != null) mBinding.exchangeRequest = it as ExchangeRequest
         }
         mBinding.setOnClickClose { finish() }
+        mBinding.executePendingBindings()
     }
 
     private fun initProductInfo(purchaseOrder: PurchaseOrder) {
