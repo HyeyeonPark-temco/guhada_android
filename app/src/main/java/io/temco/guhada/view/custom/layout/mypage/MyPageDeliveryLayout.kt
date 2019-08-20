@@ -1,5 +1,7 @@
 package io.temco.guhada.view.custom.layout.mypage
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
@@ -8,6 +10,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusHelper
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryBinding
@@ -65,13 +69,28 @@ class MyPageDeliveryLayout constructor(
 
         mViewModel.getOrderStatus()
         initCalendarFilter()
+        setEventBus()
 
         mRequestManager = Glide.with(this)
     }
 
-    // CustomCalendarListener
+    @SuppressLint("CheckResult")
+    private fun setEventBus() {
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                RequestCode.CONFIRM_PURCHASE.flag,
+                RequestCode.CANCEL_ORDER.flag -> {
+                    mViewModel.page = 1
+                    mViewModel.getOrders()
+                    mViewModel.getOrderStatus()
+                }
+            }
+        }
+    }
 
+    // CustomCalendarListener
     override fun onClickWeek() = changeDate()
+
     override fun onClickMonth() = changeDate()
     override fun onClickThreeMonth() = changeDate()
     override fun onClickYear() = changeDate()
@@ -109,7 +128,7 @@ class MyPageDeliveryLayout constructor(
     private fun redirectCancelOrderActivity(purchaseOrder: PurchaseOrder) {
         val intent = Intent(context, RequestCancelOrderActivity::class.java)
         intent.putExtra("purchaseOrder", purchaseOrder)
-        context.startActivity(intent)
+        (context as Activity).startActivityForResult(intent, RequestCode.CANCEL_ORDER.flag)
     }
 
 

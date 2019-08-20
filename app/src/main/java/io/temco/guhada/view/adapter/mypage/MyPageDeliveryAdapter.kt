@@ -16,10 +16,7 @@ import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.DeliveryButton
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.databinding.ItemDeliveryBinding
-import io.temco.guhada.view.activity.DeliveryDetailActivity
-import io.temco.guhada.view.activity.WriteClaimActivity
-import io.temco.guhada.view.activity.ConfirmPurchaseActivity
-import io.temco.guhada.view.activity.RequestExchangeActivity
+import io.temco.guhada.view.activity.*
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -113,12 +110,17 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     else buttons.add(DeliveryButton().apply { text = "배송조회" })
 
                     if (item.purchaseConfirm) {
-                        if (item.reviewId != null) buttons.add(DeliveryButton().apply { text = "리뷰수정" })
+                        if (item.reviewId != null) buttons.add(DeliveryButton().apply {
+                            text = "리뷰수정"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                            }
+                        })
                         else buttons.add(DeliveryButton().apply {
                             text = "리뷰작성"
                             task = View.OnClickListener {
-                                val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
-                                intent.putExtra("purchaseOrder", item)
+                                val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
                                 (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
                             }
                         })
@@ -128,7 +130,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
                                 intent.putExtra("purchaseOrder", item)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.CONFIRM_PURCHASE.flag)
                             }
                         })
                         buttons.add(DeliveryButton().apply {

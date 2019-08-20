@@ -90,22 +90,22 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
          *
          * 메인으로 이동해서 선택될 탭 화면
          */
-        if(((BaseApplication)getApplicationContext()).getMoveToMain() !=null &&
-                ((BaseApplication)getApplicationContext()).getMoveToMain().isMoveToMain()){
-            if(((BaseApplication)getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN){
+        if (((BaseApplication) getApplicationContext()).getMoveToMain() != null &&
+                ((BaseApplication) getApplicationContext()).getMoveToMain().isMoveToMain()) {
+            if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN) {
 
-            }else if(((BaseApplication)getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME){
+            } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
                 mBinding.layoutContents.layoutPager.setCurrentItem(2);
-                selectTab(2,false);
-            }else if(((BaseApplication)getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY){
+                selectTab(2, false);
+            } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY) {
                 mBinding.layoutContents.layoutPager.setCurrentItem(3);
-                selectTab(3,false);
-            }else if(((BaseApplication)getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_MYPAGE){
+                selectTab(3, false);
+            } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_MYPAGE) {
                 mBinding.layoutContents.layoutPager.setCurrentItem(4);
-                selectTab(4,false);
+                selectTab(4, false);
             }
-            ((BaseApplication)getApplicationContext()).getMoveToMain().clear();
-            ((BaseApplication)getApplicationContext()).setMoveToMain(null);
+            ((BaseApplication) getApplicationContext()).getMoveToMain().clear();
+            ((BaseApplication) getApplicationContext()).setMoveToMain(null);
         }
     }
 
@@ -123,6 +123,14 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                case Flag.RequestCode.CONFIRM_PURCHASE:
+                    EventBusData eventBusData = new EventBusData(Flag.RequestCode.CONFIRM_PURCHASE, null);
+                    EventBusHelper.INSTANCE.sendEvent(eventBusData);
+                    break;
+                case Flag.RequestCode.CANCEL_ORDER:
+                    eventBusData = new EventBusData(Flag.RequestCode.CANCEL_ORDER, null);
+                    EventBusHelper.INSTANCE.sendEvent(eventBusData);
+                    break;
                 case REQUEST_CODE_LOGIN:
                     //changeLoginStatus(checkToken());
                     break;
@@ -132,7 +140,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                         mPagerAdapter.removeAll();
                         Type.Category type = (Type.Category) data.getSerializableExtra(Info.INTENT_CATEGORY_TYPE);
                         int[] hierarchies = data.getIntArrayExtra(Info.INTENT_CATEGORY_HIERARCHIES);
-                        CommonUtil.startCategoryScreen(this,type, hierarchies,false);
+                        CommonUtil.startCategoryScreen(this, type, hierarchies, false);
                     }
                     break;
 
@@ -142,7 +150,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                         Brand b = (Brand) data.getSerializableExtra(Info.INTENT_BRAND_DATA);
                         mPagerAdapter.setProductBrandData(b);*/
                         Brand b = (Brand) data.getSerializableExtra(Info.INTENT_BRAND_DATA);
-                        CommonUtil.startBrandScreen(this, b,true);
+                        CommonUtil.startBrandScreen(this, b, true);
                     }
                     break;
 
@@ -164,7 +172,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if (data != null) {
                         mPagerAdapter.removeAll();
                         String text = data.getExtras().getString("search_word");
-                        if (CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
+                        if (CustomLog.INSTANCE.getFlag())
+                            CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
                         mPagerAdapter.setProductSearchData(text);
                     }
                     break;
@@ -352,7 +361,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(1);
                 break;
             case 4: // My Page
-                if(CommonUtil.checkToken()){
+                if (CommonUtil.checkToken()) {
                     mPagerAdapter.removeProduct();
                     if (!isReselected) {
                         if (false) {
@@ -361,9 +370,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                             mBinding.layoutContents.layoutPager.setCurrentItem(2);
                         }
                     }
-                }else{
+                } else {
                     ToastUtil.showMessage("로그인 후 사용해 주세요.");
-                    selectTab(2,false);
+                    selectTab(2, false);
                 }
                 break;
         }
@@ -375,7 +384,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         if (getSupportFragmentManager() != null) {
             if (mCategoryListDialog == null) {
                 mCategoryListDialog = new CategoryListDialog();
-                mCategoryListDialog.setOnCategoryListener(category -> CommonUtil.startCategoryScreen(this,category.type, category.hierarchies,false));
+                mCategoryListDialog.setOnCategoryListener(category -> CommonUtil.startCategoryScreen(this, category.type, category.hierarchies, false));
             }
             mCategoryListDialog.show(getSupportFragmentManager(), getBaseTag());
         }
@@ -385,7 +394,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         if (getSupportFragmentManager() != null) {
             if (mBrandListDialog == null) {
                 mBrandListDialog = new BrandListDialog();
-                mBrandListDialog.setOnBrandListener(brand -> CommonUtil.startBrandScreen(this,brand,false));
+                mBrandListDialog.setOnBrandListener(brand -> CommonUtil.startBrandScreen(this, brand, false));
             }
             mBrandListDialog.show(getSupportFragmentManager(), getBaseTag());
         }

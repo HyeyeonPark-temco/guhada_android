@@ -56,6 +56,7 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RequestCode.POINT_RESULT_DIALOG.flag && resultCode == Activity.RESULT_OK) {
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }
