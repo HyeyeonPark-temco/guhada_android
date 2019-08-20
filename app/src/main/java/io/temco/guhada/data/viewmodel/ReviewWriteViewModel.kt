@@ -14,10 +14,12 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.review.ReviewPhotos
 import io.temco.guhada.data.model.review.ReviewWrMdResponse
 import io.temco.guhada.data.model.user.UserSize
+import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
@@ -171,4 +173,22 @@ class ReviewWriteViewModel (val context : Context) : BaseObservableViewModel() {
         }
     }
 
+    fun uploadImage(fileNm : String, index : Int,listener : OnCallBackListener){
+        GatewayServer.uploadImage(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var data = (o as BaseModel<*>).data as ImageResponse
+                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "uploadImage failedTask ",data.toString())
+                        data.index = index
+                        listener.callBackListener(true,data)
+                    },
+                    dataNotFoundTask = { listener.callBackListener(false,"dataNotFoundTask") },
+                    failedTask = { listener.callBackListener(false,"failedTask") },
+                    userLikeNotFoundTask = { listener.callBackListener(false,"userLikeNotFoundTask") },
+                    serverRuntimeErrorTask = {  listener.callBackListener(false,"serverRuntimeErrorTask") },
+                    dataIsNull = { listener.callBackListener(false,"dataIsNull") }
+            )
+        },"REVIEW",fileNm)
+
+    }
 }

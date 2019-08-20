@@ -1,9 +1,12 @@
 package io.temco.guhada.view.fragment.community
 
 
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.disposables.CompositeDisposable
@@ -11,7 +14,9 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.viewmodel.community.CommunityMainViewPagerViewModel
 import io.temco.guhada.databinding.FragmentMainCommunityBinding
+import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.adapter.CommunityPagerAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -25,8 +30,10 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  *
  *
  */
+
 class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View.OnClickListener {
     private var viewPagerAdapter : CommunityPagerAdapter? = null
+    private lateinit var mViewModel : CommunityMainViewPagerViewModel
 
     var currentPagerIndex : Int = 0
     // -----------------------------
@@ -38,19 +45,26 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
     override fun getBaseTag() = CommunityMainFragment::class.java.simpleName
     override fun getLayoutId() = R.layout.fragment_main_community
     override fun init() {
-        initHeader()
+        mViewModel = CommunityMainViewPagerViewModel(context = context!!)
+        mBinding.viewModel = mViewModel
+        mViewModel.communityInfoList.observe(this, Observer {
+            if(CustomLog.flag)CustomLog.L("CommunityMainFragment",it.toString())
+            initHeader()
+        })
+        mViewModel.getCommunityInfo()
     }
 
 
     override fun onClick(v: View) {
         when (v.id) {
-            // @TODO MENU
-            R.id.image_side_menu -> CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
-
+            R.id.image_side_menu -> {
+                //CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
+                var intent = Intent(context as Activity, CommunityDetailActivity::class.java)
+                intent.putExtra("bbsId", 282300L)
+                (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
+            }
             R.id.image_search -> CommonUtil.startSearchWordActivity(context as MainActivity,null, true)
-
             R.id.image_shop_cart -> CommonUtil.startCartActivity(context as MainActivity)
-
         }
     }
 
@@ -65,17 +79,19 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
 
     private fun initHeader() {
         mBinding.layoutHeader.clickListener = this
-
         // Tab
-        var tabtitle = resources.getStringArray(R.array.community_titles)
-        setTabLayout(tabtitle)
-        setViewPager(tabtitle)
+        var tabtitle = mutableListOf<String>()
+        for (tab in mViewModel.communityInfoList.value!!){
+            tabtitle.add(tab.communityCategoryName)
+        }
+        setTabLayout(tabtitle.toTypedArray())
+        setViewPager(tabtitle.toTypedArray())
     }
 
     private fun setViewPager(tabtitle : Array<String>) {
         if (viewPagerAdapter == null) {
             if(CustomLog.flag)CustomLog.L("CommunityMainFragment","tabtitle.size",tabtitle.size)
-            viewPagerAdapter = CommunityPagerAdapter(childFragmentManager,tabtitle.size)
+            viewPagerAdapter = CommunityPagerAdapter(childFragmentManager,mViewModel.communityInfoList.value!!)
         }
         mBinding.viewpager.adapter = viewPagerAdapter
         mBinding.viewpager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutTab))

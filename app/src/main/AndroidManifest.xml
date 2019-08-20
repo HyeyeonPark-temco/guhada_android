@@ -231,6 +231,14 @@
             android:name=".view.activity.SuccessRequestRefundActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Community -->
+        <activity
+            android:name=".view.activity.CommunityDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+
+
         <!-- get gallery Image file -->
         <activity
             android:name=".view.activity.ImageGetActivity"

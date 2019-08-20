@@ -1005,22 +1005,10 @@
 
     <string name="user_size_update_recommend_desc">내 사이즈 등록하면 적립금 1,000원 적립!</string>
 
-    <!-- Community FRAGMENT -->
-    <string-array name="community_titles">
-        <item>메인</item>
-        <item>인기글</item>
-        <item>공지사항</item>
-        <item>패션문답</item>
-        <item>패션토크</item>
-        <item>패션추천</item>
-        <item>회원패션</item>
-        <item>소장품</item>
-        <item>비디오 쇼핑</item>
-        <item>포토 쇼핑</item>
-        <item>진품가품</item>
-        <item>쇼핑후기</item>
-        <item>세일정보</item>
-    </string-array>
+    <!-- Community Title -->
+    <string name="community_titles_main">메인</string>
+    <string name="community_titles_popular">인기글</string>
+    <string name="community_titles_noti">공지사항</string>
 
 
 </resources>

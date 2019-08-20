@@ -1,6 +1,8 @@
 package io.temco.guhada.view.fragment.community
 
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.databinding.FragmentCommunitySubNotiBinding
 import io.temco.guhada.view.fragment.base.BaseFragment
 
@@ -13,7 +15,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  *
  *
  */
-class CommunitySubNotiFragment : BaseFragment<FragmentCommunitySubNotiBinding>() {
+class CommunitySubNotiFragment(val info : CommunityInfo) : BaseFragment<FragmentCommunitySubNotiBinding>() {
 
     // -------- LOCAL VALUE --------
     // -----------------------------
@@ -31,6 +33,7 @@ class CommunitySubNotiFragment : BaseFragment<FragmentCommunitySubNotiBinding>()
     }
 
     override fun init() {
+        if(CustomLog.flag) CustomLog.L(getBaseTag(),info.toString())
 
     }
 

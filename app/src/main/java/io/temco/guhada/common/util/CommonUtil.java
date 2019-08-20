@@ -31,8 +31,10 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -382,6 +384,7 @@ public class CommonUtil {
             }
         } catch (SocketException ex) {
             if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(ex);
+            return "111.111.111.111";
         }
         return null;
     }

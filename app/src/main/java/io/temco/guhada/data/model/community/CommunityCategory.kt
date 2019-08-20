@@ -1,0 +1,25 @@
+package io.temco.guhada.data.model.community
+
+/**
+ * /community/all or /community
+ *
+ * 커뮤니티 대분류 정보
+ *
+ */
+class CommunityCategory {
+    var id = 0
+    var priority = 0
+    var use = false
+    var name = ""
+    var imageUr = ""
+    var desc = ""
+    var createdAt = ""
+    var createdBy = ""
+    var updatedAt = ""
+    var updatedBy = ""
+
+    override fun toString(): String {
+        return "CommunityCategory(id=$id, priority=$priority, use=$use, name='$name', imageUr='$imageUr', desc='$desc', createdAt='$createdAt', createdBy='$createdBy', updatedAt='$updatedAt', updatedBy='$updatedBy')"
+    }
+
+}

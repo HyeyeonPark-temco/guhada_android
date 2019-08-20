@@ -15,6 +15,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnClickSelectItemListener
 import io.temco.guhada.common.util.*
+import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.viewmodel.ReviewWriteViewModel
@@ -31,7 +32,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
     private val MAX_TXT_LENGTH = 1000
     private lateinit var mRequestManager: RequestManager
     private lateinit var mViewModel : ReviewWriteViewModel
-    private lateinit var loadingIndicatorUtil : LoadingIndicatorUtil
+    private var loadingIndicatorUtil : LoadingIndicatorUtil? = null
 
     private var reviewData : MyPageReviewBase? = null
     private var reviewAvailableData : ReviewAvailableOrder ? = null
@@ -59,9 +60,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                 ToastUtil.showMessage(resources.getString(R.string.review_activity_maximage_desc))
             }
         }
-        mBinding.setOnClickReviewWriteOrModify {
-            clickReviewWriteOrModify()
-        }
+        mBinding.setOnClickReviewWriteOrModify { imageCheck() }
 
         if(intent.extras != null && intent.extras.containsKey("reviewData")){
             if(intent.extras.getSerializable("reviewData") is MyPageReviewContent){
@@ -263,13 +262,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
 
     private fun clickReviewWriteOrModify(){
         val data = ReviewWrMdResponse()
-        val txt = mBinding.edittextReviewwriteText.text.toString()
-        if(txt.isNullOrEmpty()){
-            ToastUtil.showMessage("리뷰를 입력해 주세요.")
-            return
-        }
 
-        loadingIndicatorUtil.show()
         var reviewId = 0
         var productId = 0L
         if(mViewModel.modifyReviewStatus.get()){
@@ -300,7 +293,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         }
         mViewModel.clickReviewWriteOrModify(data, productId, reviewId , object  : OnCallBackListener{
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-                loadingIndicatorUtil.hide()
+                loadingIndicatorUtil?.hide()
                 if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","resultFlag",resultFlag,"value",value)
                 if(resultFlag){
                     if(mViewModel.modifyReviewStatus.get()){
@@ -313,6 +306,48 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                 }
             }
         })
+    }
+
+    private var totalImageSize = 0
+    private fun imageCheck(){
+        val txt = mBinding.edittextReviewwriteText.text.toString()
+        if(txt.isNullOrEmpty()){
+            ToastUtil.showMessage("리뷰를 입력해 주세요.")
+            return
+        }
+        loadingIndicatorUtil?.show()
+        var imageMap = mutableMapOf<Int,String>()
+        for (i:Int in 0 until mViewModel.mReviewEditPhotos.value!!.size){
+            var image = mViewModel.mReviewEditPhotos.value!![i]
+            if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify image",image.toString())
+            if(image.id < 0){
+                imageMap.put(i,image.reviewPhotoUrl)
+            }else{
+                if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify url",image.reviewPhotoUrl)
+            }
+        }
+        clickReviewWriteOrModify()
+        /*if(imageMap.isNotEmpty()){
+            totalImageSize = imageMap.size
+            for (key in imageMap.keys){
+                var index = key
+                mViewModel.uploadImage(imageMap.get(key)!!, index, object : OnCallBackListener{
+                    override fun callBackListener(resultFlag: Boolean, value: Any) {
+                        totalImageSize -= 1
+                        if (CustomLog.flag) CustomLog.L("clickReviewWriteOrModify", "totalImageSize",totalImageSize,"uploadImage", resultFlag, "value", value)
+                        var image = value as ImageResponse
+                        var index = image.index
+                        mViewModel.mReviewEditPhotos.value!!.removeAt(image.index)
+                        var reviewPhotos = ReviewPhotos()
+                        if(totalImageSize == 0){
+                            clickReviewWriteOrModify()
+                        }
+                    }
+                })
+            }
+        }else{
+            clickReviewWriteOrModify()
+        }*/
     }
 
 
@@ -353,4 +388,11 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
     }
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if(loadingIndicatorUtil!=null) {
+            loadingIndicatorUtil?.hide()
+            loadingIndicatorUtil = null
+        }
+    }
 }
