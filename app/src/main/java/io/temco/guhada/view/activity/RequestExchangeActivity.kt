@@ -130,9 +130,9 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 if (!cause.isFeeCharged) mViewModel.mExchangeRequest.claimShippingPriceType = ShippingPaymentType.NONE.type
             }
         }
-//        mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.addTextChangedListener {
-//            mViewModel.mExchangeRequest.exchangeReasonDetail = it.toString()
-//        }
+        mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.addTextChangedListener {
+            mViewModel.mExchangeRequest.exchangeReasonDetail = it.toString()
+        }
     }
 
     private fun initSellerShipping() {
@@ -199,10 +199,10 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             mBinding.includeRequestexchangeCollection.spinnerRequestorderstatusShippingcompany.setSelection(it.size - 1)
         })
 
-        mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.addTextChangedListener {
-            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = if (it.isNullOrEmpty()) View.VISIBLE
-            else View.GONE
-        }
+//        mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.addTextChangedListener {
+//            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = if (it.isNullOrEmpty()) View.VISIBLE
+//            else View.GONE
+//        }
 
         mViewModel.getShippingCompany()
     }

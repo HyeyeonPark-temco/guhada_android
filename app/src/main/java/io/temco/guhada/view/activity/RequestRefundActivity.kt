@@ -12,8 +12,6 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.ExchangeRequest
-import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.delivery.RequestRefundViewModel
 import io.temco.guhada.view.activity.base.BindActivity
@@ -32,6 +30,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     override fun getViewType(): Type.View = Type.View.REQUEST_REFUND
     override fun init() {
         initViewModel()
+        initHeader()
         initOrderInfo()
         initProductInfo()
         initCause()
@@ -42,6 +41,12 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         initButton()
     }
 
+    private fun initHeader() {
+        mBinding.includeRequestrefundHeader.title = resources.getString(R.string.requestorderstatus_refund_title)
+        mBinding.includeRequestrefundHeader.setOnClickBackButton { finish() }
+    }
+
+
     // TODO 환불 계좌 정보
     private fun initBank() {
 
@@ -50,7 +55,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     private fun initViewModel() {
         mViewModel = RequestRefundViewModel()
         intent.getSerializableExtra("purchaseOrder").let {
-            if (it != null){
+            if (it != null) {
                 mViewModel.mPurchaseOrder = it as PurchaseOrder
                 mViewModel.mRefundRequest.orderProdGroupId = it.orderProdGroupId
             }
@@ -226,8 +231,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundButton.confirmText = getString(R.string.requestorderstatus_refund_button_submit)
         mBinding.includeRequestrefundButton.setOnClickCancel { finish() }
         mBinding.includeRequestrefundButton.setOnClickConfirm {
-            val invoiceId =  mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.text.toString()
-            if(invoiceId.isNotEmpty())
+            val invoiceId = mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.text.toString()
+            if (invoiceId.isNotEmpty())
                 mViewModel.mRefundRequest.invoiceNo = mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.text.toString().toLong()
             mViewModel.mCause = mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.text.toString()
             mViewModel.requestRefund()

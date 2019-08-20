@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.view.custom.spinner.CustomSpinnerViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_customspinner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->viewModel.onClickContainer()}">
+
+        <FrameLayout
+            android:id="@+id/framelayout_customspinner_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_all_whitethree"
+            android:onClick="@{()->viewModel.onClickContainer()}"
+            android:padding="1dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@color/common_white"
+
+                android:orientation="horizontal"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:popupBackground="@null">
+
+                <TextView
+                    style="@style/PaymentContentGreyTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{viewModel.selectedItem}"
+                    android:textSize="@dimen/text_13" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/payment_icon_selectbox_open" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <Spinner
+            android:id="@+id/spinner_customspinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/border_all_whitethree"
+            android:onItemSelected="@{(p,v,pos,id)->viewModel.onItemSelected(pos)}"
+            android:orientation="horizontal"
+            android:overlapAnchor="false"
+            android:popupBackground="@null"
+            android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
