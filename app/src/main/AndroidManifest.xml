@@ -217,6 +217,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
+        <!-- Community -->
+        <activity
+            android:name=".view.activity.CommunityDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+
 
         <!-- get gallery Image file -->
         <activity

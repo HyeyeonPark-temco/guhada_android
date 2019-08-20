@@ -118,8 +118,8 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
     private fun initExchangeShipping() {
         mBinding.includeRequestexchangeExchangeshipping.title = resources.getString(R.string.requestorderstatus_exchange_address)
-        mBinding.includeRequestexchangeExchangeshipping.defaultAddress = "기본 배송지 주소"
-        mBinding.includeRequestexchangeExchangeshipping.defaultName = "기본 배송지 명"
+        //mBinding.includeRequestexchangeExchangeshipping.defaultAddress = "기본 배송지 주소"
+        //mBinding.includeRequestexchangeExchangeshipping.defaultName = "기본 배송지 명"
     }
 
     private fun initButton() {
