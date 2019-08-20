@@ -33,7 +33,13 @@ public class Flag {
         public static final int REVIEW_WRITE = 10020;
         public static final int REVIEW_MODIFY = 10021;
         public static final int USER_SIZE = 10022;
-        public static final int COMMUNITY_DETAIL = 10023;
+
+        public static final int CONFIRM_PURCHASE = 10023;
+        public static final int CANCEL_ORDER = 10024;
+        public static final int EXCHANGE = 10025;
+        public static final int DELIVERY = 10026;
+
+        public static final int COMMUNITY_DETAIL = 10027;
     }
 
     public static class ResultCode {

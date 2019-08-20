@@ -1,9 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
-import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.Category
-import io.temco.guhada.data.model.Deal
-import io.temco.guhada.data.model.ProductByList
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.product.Product
@@ -49,11 +46,19 @@ interface ProductService {
     fun getProductByPlusItem(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<HomeDeal>>
 
     /**
-     * 상품 목록 조회
+     * 상품 목록 조회 API
      * @since 2019.08.14
      * @author Hyeyeon Park
      */
     @GET("deals")
-    fun getProductListBySellerId(@Query("sellerId") sellerId: Long, @Query("pageIndex") page: Int, @Query("unitPerPage") unitPerPage: Int) : Call<BaseModel<MutableList<Deal>>>
+    fun getProductListBySellerId(@Query("sellerId") sellerId: Long, @Query("pageIndex") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<MutableList<Deal>>>
+
+    /**
+     * 택배사 조회 API
+     * @since 2019.08.19
+     * @author Hyeyeon Park
+     */
+    @GET("/common/ship-companies")
+    fun getShippingCompanies(@Query("type") type: String): Call<BaseModel<MutableList<ShippingCompany>>>
 
 }

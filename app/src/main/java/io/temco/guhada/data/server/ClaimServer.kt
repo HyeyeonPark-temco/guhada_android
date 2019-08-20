@@ -9,6 +9,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.CancelRequest
+import io.temco.guhada.data.model.ExchangeRequest
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
@@ -112,7 +113,7 @@ open class ClaimServer {
                 // 로그인 팝업 노출
                 Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
             } else {
-                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true).editClaim(accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).editClaim(accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
                     override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
@@ -173,6 +174,15 @@ open class ClaimServer {
         fun cancelOrder(listener: OnServerListener, accessToken: String, cancelRequest: CancelRequest) =
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
                         .cancelOrder(accessToken = accessToken, cancelRequest = cancelRequest).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 교환 신청
+         */
+        @JvmStatic
+        fun requestExchange(listener: OnServerListener, accessToken: String, exchangeRequest: ExchangeRequest) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .requestExchange(accessToken = accessToken, exchangeRequest = exchangeRequest).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
     }
 }

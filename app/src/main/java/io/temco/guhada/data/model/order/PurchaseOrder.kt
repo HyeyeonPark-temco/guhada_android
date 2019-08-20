@@ -12,11 +12,7 @@ import java.io.Serializable
  */
 class PurchaseOrder : OrderItemResponse(), Serializable {
     var purchaseId: Long = 0
-
-    // var expireDate = ""
     var expireTimestamp: Long = 0
-
-   //  var orderDate = intArrayOf() // 2019,5,14
     var orderTimestamp: Long = 0
 
     var optionAttribute1: String? = ""

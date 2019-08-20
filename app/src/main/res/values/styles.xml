@@ -411,5 +411,33 @@
         <item name="android:layout_height">45dp</item>
     </style>
 
+    <style name="WarningTextStyle" parent="@style/TextMedium">
+        <item name="android:textColor">@color/brick</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
 
+    <style name="SuccessRequestExchangeTitleTextStyle" parent="@style/TextLight">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_22</item>
+    </style>
+
+    <style name="SuccessRequestExchangeSubTitleTextStyle" parent="@style/TextBold">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_15</item>
+    </style>
+
+    <style name="SuccessRequestExchangeContentTextStyle" parent="@style/TextRegular">
+        <item name="android:textColor">@color/warm_grey</item>
+        <item name="android:textSize">@dimen/text_14</item>
+    </style>
+
+    <style name="SuccessRequestExchangeButtonStyle" parent="@style/borderlessStyle">
+        <item name="android:textSize">@dimen/text_18</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:background">@color/common_blue_purple</item>
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:text">@string/common_confirm</item>
+    </style>
 </resources>

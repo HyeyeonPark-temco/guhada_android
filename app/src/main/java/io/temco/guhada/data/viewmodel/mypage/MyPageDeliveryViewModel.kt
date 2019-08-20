@@ -56,10 +56,6 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
         ServerCallbackUtil.callWithToken(
                 task = {
                     if (startDate > 0 && endDate > 0) {
-                        //  val convertedStartDate = CommonUtil.convertDateToTimeStamp(startDate, ".")
-                        // val convertedEndDate = CommonUtil.convertDateToTimeStamp(endDate, ".")
-//
-//                        if (convertedStartDate > 0 && convertedEndDate > 0)
                         ServerCallbackUtil.callWithToken(task = {
                             OrderServer.getOrders(OnServerListener { success, o ->
                                 ServerCallbackUtil.executeByResultCode(success, o,
@@ -77,14 +73,12 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
                                         })
                             }, accessToken = it, startDate = startDate, endDate = endDate, page = page++)
                         })
-//                        }
                     }
                 },
                 invalidTokenTask = {
                     orderHistoryList.postValue(OrderHistoryResponse())
                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
                 })
-
     }
 
     fun getOrderStatus() {

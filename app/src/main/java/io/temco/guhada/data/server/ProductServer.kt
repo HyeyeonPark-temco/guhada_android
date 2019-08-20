@@ -179,13 +179,24 @@ class ProductServer {
         /**
          * 상품 목록 조회
          * @author Hyeyeon Park
-         * @since 201908.14
+         * @since 2019.08.14
          */
         @JvmStatic
         fun getProductListBySellerId(listener: OnServerListener, sellerId: Long, page: Int, unitPerPage: Int) =
-            RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getProductListBySellerId(sellerId = sellerId, page = page, unitPerPage = unitPerPage).enqueue(
-                    ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
-            )
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getProductListBySellerId(sellerId = sellerId, page = page, unitPerPage = unitPerPage).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
+                )
+
+        /**
+         * 택배사 목록 조회
+         * @author Hyeyeon Park
+         * @since 2019.08.18
+         */
+        @JvmStatic
+        fun getShippingCompanyList(listener: OnServerListener, type: String) =
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getShippingCompanies(type = type).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
+                )
     }
 
 }

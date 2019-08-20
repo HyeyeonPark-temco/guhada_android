@@ -1,11 +1,14 @@
 package io.temco.guhada.view.custom.layout.mypage
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusHelper
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryCerViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageDeliveryCerBinding
 import io.temco.guhada.view.adapter.mypage.MyPageDeliveryAdapter
@@ -43,10 +46,10 @@ class MyPageDeliveryCerLayout constructor(
             } else
                 mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply { this.list = it.orderItemList }
 
-            if(it.totalPage == 1 && it.orderItemList.isEmpty()){
+            if (it.totalPage == 1 && it.orderItemList.isEmpty()) {
                 mBinding.imageviewMypagedeliverycerEmpty.visibility = View.VISIBLE
                 mBinding.textviewMypagedeliverycerEmpty.visibility = View.VISIBLE
-            }else {
+            } else {
                 mBinding.imageviewMypagedeliverycerEmpty.visibility = View.GONE
                 mBinding.textviewMypagedeliverycerEmpty.visibility = View.GONE
             }
@@ -55,10 +58,24 @@ class MyPageDeliveryCerLayout constructor(
         })
 
         initCalendarFilter()
+        setEventBus()
         mViewModel.setDate(7) // [default] before 1 week
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+    }
+
+    @SuppressLint("CheckResult")
+    private fun setEventBus() {
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                RequestCode.CONFIRM_PURCHASE.flag -> {
+                    mViewModel.page = 1
+                    mViewModel.getCancelOrderStatus()
+                    mViewModel.getCancelOrderHistories()
+                }
+            }
+        }
     }
 
     override fun onRefresh() {
@@ -122,4 +139,6 @@ class MyPageDeliveryCerLayout constructor(
         mViewModel.getCancelOrderStatus()
         mViewModel.getCancelOrderHistories()
     }
+
+
 }

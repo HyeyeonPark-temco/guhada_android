@@ -1,8 +1,9 @@
 package io.temco.guhada.data.model.seller
 
 import io.temco.guhada.data.model.user.User
+import java.io.Serializable
 
-class Seller {
+class Seller : Serializable {
     var id: Long = 0
     var profileImageUrl = ""
     var managerName = ""
@@ -21,6 +22,7 @@ class Seller {
     var createdAt = ""
     var updatedAt: String? = ""
     var updatedBy: String? = ""
-    var user : User = User()
+    var user: User = User()
+
 }
 

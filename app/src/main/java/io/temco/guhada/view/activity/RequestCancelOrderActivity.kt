@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.view.View
 import android.widget.AdapterView
@@ -11,7 +12,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.OrderChangeCause
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.viewmodel.CancelOrderViewModel
+import io.temco.guhada.data.viewmodel.mypage.delivery.CancelOrderViewModel
 import io.temco.guhada.databinding.ActivityRequestcancelorderBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.OrderChangeCauseAdapter
@@ -51,6 +52,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             val intent = Intent(this, SuccessCancelOrderActivity::class.java)
             intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
             startActivity(intent)
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }
@@ -110,7 +112,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     }
 
     private fun initButton() {
-        mBinding.includeRequestcancelorderButton.cancelText = getString(R.string.requestorderstatus_cancel_button_submit)
+        mBinding.includeRequestcancelorderButton.cancelText = getString(R.string.common_cancel)
         mBinding.includeRequestcancelorderButton.confirmText = getString(R.string.requestorderstatus_cancel_button_submit)
         mBinding.includeRequestcancelorderButton.setOnClickCancel { finish() }
         mBinding.includeRequestcancelorderButton.setOnClickConfirm {

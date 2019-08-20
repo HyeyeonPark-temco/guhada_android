@@ -22,6 +22,10 @@
             name="defaultAddress"
             type="Boolean" />
 
+        <variable
+            name="ChangeShippingListener"
+            type="android.view.View.OnClickListener" />
+
     </data>
 
     <FrameLayout
@@ -64,6 +68,7 @@
                 android:id="@+id/linearLayout10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{ChangeShippingListener}"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -169,6 +174,7 @@
                             android:popupBackground="@null">
 
                             <TextView
+                                android:id="@+id/textview_requestorderstatus_shippingmemo"
                                 style="@style/RequestOrderStatusWarmGreyTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -176,8 +182,6 @@
                                 android:layout_weight="1"
                                 android:text="@string/payment_hint_shippingmemo"
                                 android:textSize="@dimen/text_13" />
-
-                            <!--android:text="@{viewModel.selectedShippingMessage.message}"-->
 
                             <ImageView
                                 android:id="@+id/imageview_requestorderstatus_shippingmemo"
@@ -191,6 +195,7 @@
                 </FrameLayout>
 
                 <EditText
+                    android:id="@+id/edittext_requestorderstatus_shippingmemo"
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"

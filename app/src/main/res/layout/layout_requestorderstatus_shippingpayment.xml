@@ -10,8 +10,6 @@
             name="title"
             type="String" />
 
-
-
         <variable
             name="isRefund"
             type="Boolean" />

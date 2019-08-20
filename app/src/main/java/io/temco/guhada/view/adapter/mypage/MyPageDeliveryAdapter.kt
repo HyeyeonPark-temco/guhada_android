@@ -16,10 +16,7 @@ import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.DeliveryButton
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.databinding.ItemDeliveryBinding
-import io.temco.guhada.view.activity.DeliveryDetailActivity
-import io.temco.guhada.view.activity.WriteClaimActivity
-import io.temco.guhada.view.activity.ConfirmPurchaseActivity
-import io.temco.guhada.view.activity.RequestExchangeActivity
+import io.temco.guhada.view.activity.*
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -85,14 +82,6 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     })
                     buttons.add(DeliveryButton().apply {
                         text = "주문수정"
-
-                        ///// TEMP TEMP TEMP [2019.08.16 시연용]
-                        task = View.OnClickListener {
-                           // val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
-                            val intent = Intent(binding.root.context, RequestExchangeActivity::class.java)
-                            intent.putExtra("purchaseOrder", item)
-                            (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
-                        }
                     })
                     buttons.add(DeliveryButton().apply {
                         text = "주문취소"
@@ -121,22 +110,45 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     else buttons.add(DeliveryButton().apply { text = "배송조회" })
 
                     if (item.purchaseConfirm) {
-                        if (item.reviewId != null) buttons.add(DeliveryButton().apply { text = "리뷰수정" })
+                        if (item.reviewId != null) buttons.add(DeliveryButton().apply {
+                            text = "리뷰수정"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+                            }
+                        })
                         else buttons.add(DeliveryButton().apply {
                             text = "리뷰작성"
                             task = View.OnClickListener {
-                                val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
-                                intent.putExtra("purchaseOrder", item)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                                val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
                             }
                         })
                     } else {
                         buttons.add(DeliveryButton().apply {
                             text = "구매확정"
-
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+                            }
                         })
-                        buttons.add(DeliveryButton().apply { text = "교환신청" })
-                        buttons.add(DeliveryButton().apply { text = "반품신청" })
+                        buttons.add(DeliveryButton().apply {
+                            text = "교환신청"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, RequestExchangeActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+                            }
+                        })
+                        buttons.add(DeliveryButton().apply {
+                            text = "반품신청"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, RequestRefundActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+                            }
+                        })
                     }
                 }
 

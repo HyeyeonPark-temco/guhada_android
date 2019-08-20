@@ -3,6 +3,7 @@ package io.temco.guhada.data.model.user;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Observable;
  *
  * @author Hyeyeon Park
  */
-public class User extends Observable {
+public class User extends Observable implements Serializable {
     // ESSENTIAL TERMS
     private Boolean agreeCollectPersonalInfoTos = false;
     private Boolean agreePurchaseTos = false;

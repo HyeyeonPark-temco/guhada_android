@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.ConfirmPurchaseViewModel" />
+            type="io.temco.guhada.data.viewmodel.mypage.delivery.ConfirmPurchaseViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

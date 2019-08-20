@@ -1,13 +1,17 @@
 package io.temco.guhada.data.retrofit.service
 
 import com.google.gson.JsonObject
-import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.BookMark
+import io.temco.guhada.data.model.Token
+import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.MyPageReview
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerAddress
 import io.temco.guhada.data.model.seller.SellerFollower
 import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.user.SnsUser
@@ -52,6 +56,13 @@ interface UserService {
      */
     @GET("/sellers/{sellerId}")
     fun getSellerById(@Path("sellerId") id: Long): Call<BaseModel<Seller>>
+
+    /**
+     * 셀러 기본 반품지 가져오기 API
+     * @param sellerId
+     */
+    @GET("/sellers/{sellerId}/default-return")
+    fun getSellerDefaultReturnAddress(@Path("sellerId") id: Long): Call<BaseModel<SellerAddress>>
 
     /**
      * 유저 정보 가져오기 API
@@ -247,8 +258,6 @@ interface UserService {
     fun getBookMark(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<BookMark>>
 
 
-
-
     /**
      * BookMark 정보 추가
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
@@ -304,8 +313,6 @@ interface UserService {
     fun deleteReviewData(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Long): Call<BaseModel<Any>>
 
 
-
-
     /**
      * 리뷰 작성하기
      *
@@ -314,8 +321,7 @@ interface UserService {
      */
     @FormUrlEncoded
     @POST("/products/{productId}/reviews")
-    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @FieldMap param : HashMap<String,Any>): Call<BaseModel<Any>>
-
+    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @FieldMap param: HashMap<String, Any>): Call<BaseModel<Any>>
 
 
     /**
@@ -327,8 +333,7 @@ interface UserService {
     @FormUrlEncoded
     @POST("/products/{productId}/reviews/{reviewId}")
     fun modifyReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Int,
-                     @FieldMap param : HashMap<String,Any>): Call<BaseModel<Any>>
-
+                     @FieldMap param: HashMap<String, Any>): Call<BaseModel<Any>>
 
 
     /**

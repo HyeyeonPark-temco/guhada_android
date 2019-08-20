@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.mypage.delivery
 
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
