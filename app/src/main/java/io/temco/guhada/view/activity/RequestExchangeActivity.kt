@@ -57,6 +57,17 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 mViewModel.mExchangeRequest.orderProdGroupId = it.orderProdGroupId
             }
         }
+        mViewModel.mSuccessRequestExchangeTask = {purchaseOrder ->
+            val intent = Intent(this@RequestExchangeActivity, SuccessRequestExchangeActivity::class.java)
+            intent.putExtra("purchaseOrder", purchaseOrder)
+            intent.putExtra("seller", mViewModel.mSeller.value)
+            intent.putExtra("sellerAddress", mViewModel.mSellerAddress.value)
+            intent.putExtra("exchangeRequest", mViewModel.mExchangeRequest)
+
+            startActivity(intent)
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
     }
 
     private fun initHeader() {

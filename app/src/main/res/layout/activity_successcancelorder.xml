@@ -51,15 +51,8 @@
             android:layout_height="match_parent">
 
             <Button
-                style="@style/borderlessStyle"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="bottom"
-                android:background="@color/common_blue_purple"
-                android:onClick="@{onClickClose}"
-                android:text="@string/successcancelorder_button"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_18" />
+                style="@style/SuccessRequestExchangeButtonStyle"
+                android:onClick="@{onClickClose}"/>
         </FrameLayout>
     </LinearLayout>
 

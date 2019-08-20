@@ -1,9 +1,7 @@
 package io.temco.guhada.data.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
-import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ExchangeCause
@@ -24,7 +22,6 @@ import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import java.util.*
 
 class RequestExchangeViewModel : BaseObservableViewModel() {
     enum class ShippingPayment(val flag: Int) {
@@ -96,6 +93,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             })
     var mShippingMessageList: MutableLiveData<MutableList<ShippingMessage>> = MutableLiveData(mutableListOf())
     var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
+    var mSuccessRequestExchangeTask: (purchaseOrder : PurchaseOrder) -> Unit = {}
 
     fun getSellerInfo() {
         if (mPurchaseOrder.sellerId > 0) {
@@ -170,7 +168,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             ClaimServer.requestExchange(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            Log.e("ㅇㅇㅇ", "success")
+                            mSuccessRequestExchangeTask(mPurchaseOrder)
                         })
             }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
         })

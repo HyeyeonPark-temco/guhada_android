@@ -50,6 +50,7 @@ public class Type {
         REQUEST_CANCEL_ORDER,
         REQUEST_EXCHANGE,
         SUCCESS_CANCEL_ORDER,
+        SUCCESS_EXCHANGE,
         REVIEW_WRITE,
         IMAGE_GET,
         REVIEW_POINT_DIALOG,

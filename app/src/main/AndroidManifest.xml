@@ -217,6 +217,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"  />
 
+        <activity
+            android:name=".view.activity.SuccessRequestExchangeActivity"
+            android:screenOrientation="portrait" />
 
         <!-- get gallery Image file -->
         <activity

@@ -1,11 +1,13 @@
 package io.temco.guhada.data.model.seller
 
+import java.io.Serializable
+
 /**
  * 셀러 반품지 정보
  * @author Hyeyeon Park
  * @since 2019.08.19
  */
-class SellerAddress {
+class SellerAddress : Serializable {
     var id : Long = -1
     var userId : Long = -1
     var sellerAddressType = ""

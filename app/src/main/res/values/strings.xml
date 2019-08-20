@@ -783,6 +783,12 @@
     <string name="successcancelorder_title4">되었습니다.</string>
     <string name="successcancelorder_button">확인</string>
 
+    <!-- SUCCESS EXCHANGE -->
+    <string name="successexchange_warning">반드시, 교환 상품 발송 후 송장번호를 등록해주세요.</string>
+    <string name="successexchange_title"><![CDATA[주문상품의 <font color="#5d2ed1">교환신청이<br>완료</font>되었습니다.]]></string>
+    <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 5,000원을\n%s으로 구매자가 부담합니다.</string>
+    <string name="successexchange_address_format">[%s] %s</string>
+
     <!-- MYPAGE COUPON -->
     <string name="mypagecoupon_tab_enabled">사용 가능 쿠폰 %d장</string>
     <string name="mypagecoupon_tab_enabled_temp">사용 가능 쿠폰</string>
