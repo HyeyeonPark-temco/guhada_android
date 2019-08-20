@@ -47,8 +47,13 @@
                     layout="@layout/layout_requestorderstatus_shippingpayment" />
 
                 <include
+                    android:id="@+id/include_requestrefund_bank"
+                    layout="@layout/layout_requestrefund_bank" />
+
+                <include
                     android:id="@+id/include_requestrefund_refund"
                     layout="@layout/layout_deliverydetail_refundinfo" />
+
                 <include
                     android:id="@+id/include_requestrefund_button"
                     layout="@layout/layout_requestorderstatus_button" />

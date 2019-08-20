@@ -1,4 +1,4 @@
-package io.temco.guhada.data.viewmodel
+package io.temco.guhada.data.viewmodel.mypage.delivery
 
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
@@ -6,6 +6,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ExchangeCause
 import io.temco.guhada.common.enum.ShippingMessageCode
+import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.ExchangeRequest
@@ -24,17 +25,20 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class RequestExchangeViewModel : BaseObservableViewModel() {
-    enum class ShippingPayment(val flag: Int) {
-        EXCLUDE_REFUND_PRICE(0), // 환불 금액에서 차감
-        INSIDE_BOX(1), // 박스에 동봉
-        SEND_DIRECTLY(2) // 판매자에게 직접 송금
-    }
+//    enum class ShippingPayment(val flag: Int) {
+//        EXCLUDE_REFUND_PRICE(0), // 환불 금액에서 차감
+//        INSIDE_BOX(1), // 박스에 동봉
+//        SEND_DIRECTLY(2) // 판매자에게 직접 송금
+//    }
 
     var mPurchaseOrder = PurchaseOrder()
     var mExchangeRequest = ExchangeRequest()
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mSellerAddress: MutableLiveData<SellerAddress> = MutableLiveData()
-    var mShippingPayment = ShippingPayment.INSIDE_BOX.flag
+    var mShippingMessageList: MutableLiveData<MutableList<ShippingMessage>> = MutableLiveData(mutableListOf())
+    var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
+    var mSuccessRequestExchangeTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
+    var mShippingPayment: Int = ShippingPaymentType.BOX.pos
     val mCauseList = mutableListOf(
             OrderChangeCause().apply {
                 label = ExchangeCause.COLOR_SIZE_CHANGE.label
@@ -91,9 +95,6 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                 code = ExchangeCause.ETC.code
                 isFeeCharged = ExchangeCause.ETC.isFeeCharged
             })
-    var mShippingMessageList: MutableLiveData<MutableList<ShippingMessage>> = MutableLiveData(mutableListOf())
-    var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
-    var mSuccessRequestExchangeTask: (purchaseOrder : PurchaseOrder) -> Unit = {}
 
     fun getSellerInfo() {
         if (mPurchaseOrder.sellerId > 0) {

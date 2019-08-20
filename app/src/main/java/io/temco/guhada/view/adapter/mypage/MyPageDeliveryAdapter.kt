@@ -141,7 +141,14 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                                 (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
                             }
                         })
-                        buttons.add(DeliveryButton().apply { text = "반품신청" })
+                        buttons.add(DeliveryButton().apply {
+                            text = "반품신청"
+                            task = View.OnClickListener {
+                                val intent = Intent(binding.root.context, RequestRefundActivity::class.java)
+                                intent.putExtra("purchaseOrder", item)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+                            }
+                        })
                     }
                 }
 

@@ -12,7 +12,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.OrderChangeCause
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.viewmodel.CancelOrderViewModel
+import io.temco.guhada.data.viewmodel.mypage.delivery.CancelOrderViewModel
 import io.temco.guhada.databinding.ActivityRequestcancelorderBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.OrderChangeCauseAdapter

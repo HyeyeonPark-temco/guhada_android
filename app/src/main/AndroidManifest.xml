@@ -221,6 +221,12 @@
             android:name=".view.activity.SuccessRequestExchangeActivity"
             android:screenOrientation="portrait" />
 
+        <!-- Refund -->
+        <activity
+            android:name=".view.activity.RequestRefundActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"  />
+
         <!-- get gallery Image file -->
         <activity
             android:name=".view.activity.ImageGetActivity"

@@ -12,7 +12,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.enum.PointDialogFlag
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.viewmodel.ConfirmPurchaseViewModel
+import io.temco.guhada.data.viewmodel.mypage.delivery.ConfirmPurchaseViewModel
 import io.temco.guhada.databinding.ActivityConfirmpurchaseBinding
 
 class ConfirmPurchaseActivity : AppCompatActivity() {

@@ -2,112 +2,123 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
-
-        <FrameLayout
-            android:id="@+id/framelayout_requestorderstatus_cause"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp">
-
-            <Spinner
-                android:id="@+id/spinner_requestorderstatus_cause"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@drawable/border_all_whitethree"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:overlapAnchor="false"
-                android:popupBackground="@null"
-                android:spinnerMode="dropdown"
-                />
-            <!--app:cause="@{causeList}"-->
-            <FrameLayout
-                android:id="@+id/framelayout_requestorderstatus_causebutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white_three"
-                android:padding="1dp">
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_requestorderstatus_cause"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@color/common_white"
-                    android:orientation="horizontal"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
-                    android:popupBackground="@null">
-
-                    <TextView
-                        style="@style/MypageDeliveryWarmGreyTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:text="@string/requestorderstatus_refund_bankhint1"
-                        android:textSize="@dimen/text_13" />
-
-                    <ImageView
-                        android:id="@+id/imageview_requestorderstatus_cause"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/payment_icon_selectbox_open" />
-                </LinearLayout>
-            </FrameLayout>
-
-        </FrameLayout>
-
-        <EditText
-
-
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/border_all_whitethree"
-            android:hint="@string/requestorderstatus_refund_bankhint2"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:textColor="@color/black_four"
-            android:textColorHint="@color/warm_grey"
-            android:textSize="@dimen/text_13" />
-
+        android:background="@color/pale_grey"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/common_white"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:padding="20dp">
+
+            <TextView
+                style="@style/SuccessRequestExchangeSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:text="@string/requestorderstatus_refund_banktitle"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@+id/framelayout_requestorderstatus_cause"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+
+                <Spinner
+                    android:id="@+id/spinner_requestorderstatus_cause"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown"
+                    />
+                <!--app:cause="@{causeList}"-->
+                <FrameLayout
+                    android:id="@+id/framelayout_requestorderstatus_causebutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white_three"
+                    android:padding="1dp">
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_requestorderstatus_cause"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            style="@style/MypageDeliveryWarmGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/requestorderstatus_refund_bankhint1"
+                            android:textSize="@dimen/text_13" />
+
+                        <ImageView
+                            android:id="@+id/imageview_requestorderstatus_cause"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+                </FrameLayout>
+
+            </FrameLayout>
 
             <EditText
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_weight="1"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/border_all_whitethree"
-                android:hint="@string/requestorderstatus_refund_bankhint3"
+                android:hint="@string/requestorderstatus_refund_bankhint2"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
+                android:textColor="@color/black_four"
                 android:textColorHint="@color/warm_grey"
                 android:textSize="@dimen/text_13" />
 
-            <Button
-                style="@style/borderlessStyle"
-                android:layout_width="90dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/border_all_whitethree"
-                android:text="@string/requestorderstatus_refund_checkbank"
-                android:textColor="@color/black_four"
-                android:textSize="@dimen/text_13"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border_all_whitethree"
+                    android:hint="@string/requestorderstatus_refund_bankhint3"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColorHint="@color/warm_grey"
+                    android:textSize="@dimen/text_13" />
+
+                <Button
+                    style="@style/borderlessStyle"
+                    android:layout_width="90dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:text="@string/requestorderstatus_refund_checkbank"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
         </LinearLayout>
+    </FrameLayout>
 
-
-    </LinearLayout>
 </layout>

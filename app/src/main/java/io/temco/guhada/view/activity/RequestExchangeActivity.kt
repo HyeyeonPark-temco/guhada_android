@@ -16,7 +16,7 @@ import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.viewmodel.RequestExchangeViewModel
+import io.temco.guhada.data.viewmodel.mypage.delivery.RequestExchangeViewModel
 import io.temco.guhada.databinding.ActivityRequestexchangeBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ShippingCompanySpinnerAdapter
@@ -57,7 +57,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 mViewModel.mExchangeRequest.orderProdGroupId = it.orderProdGroupId
             }
         }
-        mViewModel.mSuccessRequestExchangeTask = {purchaseOrder ->
+        mViewModel.mSuccessRequestExchangeTask = { purchaseOrder ->
             val intent = Intent(this@RequestExchangeActivity, SuccessRequestExchangeActivity::class.java)
             intent.putExtra("purchaseOrder", purchaseOrder)
             intent.putExtra("seller", mViewModel.mSeller.value)
@@ -96,7 +96,8 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeCause.quantity = 1
         mBinding.includeRequestexchangeCause.setOnClickAmountMinus {
             val quantity = mBinding.includeRequestexchangeCause.quantity ?: 0
-            if (quantity - 1 <= 0) ToastUtil.showMessage("교환 가능 최소 수량 1개")
+            if (quantity - 1 <= 0)
+                ToastUtil.showMessage("교환 가능 최소 수량 1개")
             else mBinding.includeRequestexchangeCause.quantity = quantity - 1
 
             mViewModel.mExchangeRequest.quantity = mBinding.includeRequestexchangeCause.quantity
@@ -211,13 +212,13 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
         mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                mViewModel.mShippingPayment = RequestExchangeViewModel.ShippingPayment.INSIDE_BOX.flag
+                mViewModel.mShippingPayment = ShippingPaymentType.BOX.pos
                 mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = false
             }
         }
         mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment3.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                mViewModel.mShippingPayment = RequestExchangeViewModel.ShippingPayment.SEND_DIRECTLY.flag
+                mViewModel.mShippingPayment = ShippingPaymentType.DIRECT_SEND.pos
                 mBinding.includeRequestexchangeShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
             }
         }

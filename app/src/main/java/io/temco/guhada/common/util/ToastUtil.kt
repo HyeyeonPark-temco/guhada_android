@@ -15,8 +15,6 @@ import io.temco.guhada.databinding.ViewToastBinding
  * call ToastUtil.showMessage(message)
  * @author Hyeyeon Park
  */
-
-@SuppressLint("ViewConstructor")
 object ToastUtil : FrameLayout(BaseApplication.getInstance().applicationContext) {
     private lateinit var mBinding: ViewToastBinding
 

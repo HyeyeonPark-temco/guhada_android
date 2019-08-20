@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.CancelOrderViewModel" />
+            type="io.temco.guhada.data.viewmodel.mypage.delivery.CancelOrderViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

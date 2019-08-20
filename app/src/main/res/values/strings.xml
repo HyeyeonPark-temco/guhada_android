@@ -770,6 +770,7 @@
     <string name="requestorderstatus_refund_button_submit">반품 신청</string>
     <string name="requestorderstatus_refund_selleraddress">반품상품 반송지</string>
     <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨나요?</string>
+    <string name="requestorderstatus_refund_way_title">반품 발송 여부</string>
     <string name="requestorderstatus_refund_shipping_title">반품배송비 결제</string>
     <string name="requestorderstatus_refund_shipping_description1">구매자 책임사유에 의한 교환이므로</string>
     <string name="requestorderstatus_refund_shipping_description2">반품배송비 5,000원을 구매자가 부담합니다.</string>
@@ -792,8 +793,15 @@
     <string name="successexchange_warning">반드시, 교환 상품 발송 후 송장번호를 등록해주세요.</string>
     <string name="successexchange_title"><![CDATA[주문상품의 <font color="#5d2ed1">교환신청이<br>완료</font>되었습니다.]]></string>
     <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 5,000원을\n%s으로 구매자가 부담합니다.</string>
-    <string name="successexchange_notsend">미발송</string>
+    <string name="successexchange_notsend">아니요</string>
     <string name="successexchange_address_format">[%s] %s</string>
+
+    <!-- SUCCESS REFUND -->
+    <string name="successrefund_warning">반드시, 반품 상품 발송 후 송장번호를 등록해주세요.</string>
+    <string name="successrefund_title"><![CDATA[주문상품의 <font color="#5d2ed1">반품신청이<br>완료</font>되었습니다.]]></string>
+    <string name="successrefund_shippingpayment">반품 사유로 인해 반품배송비 5,000원을\n%s으로 구매자가 부담합니다.</string>
+    <string name="successrefund_notsend">아니요</string>
+    <string name="successrefund_address_format">[%s] %s</string>
 
     <!-- MYPAGE COUPON -->
     <string name="mypagecoupon_tab_enabled">사용 가능 쿠폰 %d장</string>
