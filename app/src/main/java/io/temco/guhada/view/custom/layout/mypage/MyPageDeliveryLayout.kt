@@ -78,6 +78,7 @@ class MyPageDeliveryLayout constructor(
     private fun setEventBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
+                RequestCode.DELIVERY.flag,
                 RequestCode.CONFIRM_PURCHASE.flag,
                 RequestCode.CANCEL_ORDER.flag -> {
                     mViewModel.page = 1

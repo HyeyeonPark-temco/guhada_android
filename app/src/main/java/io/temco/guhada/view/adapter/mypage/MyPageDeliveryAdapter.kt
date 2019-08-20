@@ -114,14 +114,14 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                             text = "리뷰수정"
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
                             }
                         })
                         else buttons.add(DeliveryButton().apply {
                             text = "리뷰작성"
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
                             }
                         })
                     } else {
@@ -130,7 +130,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
                                 intent.putExtra("purchaseOrder", item)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.CONFIRM_PURCHASE.flag)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
                             }
                         })
                         buttons.add(DeliveryButton().apply {
@@ -138,7 +138,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, RequestExchangeActivity::class.java)
                                 intent.putExtra("purchaseOrder", item)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, 0)
+                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
                             }
                         })
                         buttons.add(DeliveryButton().apply { text = "반품신청" })

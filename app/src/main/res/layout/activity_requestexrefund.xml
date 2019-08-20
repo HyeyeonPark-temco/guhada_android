@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include_requestrefund_header"
+            layout="@layout/header_common_backbutton" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/include_requestrefund_orderinfo"
+                    layout="@layout/layout_requestorderstatus_orderinfo" />
+
+                <include
+                    android:id="@+id/include_requestrefund_productinfo"
+                    layout="@layout/layout_requestorderstatus_productinfo" />
+
+                <include
+                    android:id="@+id/include_requestrefund_cause"
+                    layout="@layout/layout_requestorderstatus_cause" />
+
+                <include
+                    android:id="@+id/include_requestrefund_sellershipping"
+                    layout="@layout/layout_requestorderstatus_sellershipping" />
+
+                <include
+                    android:id="@+id/include_requestrefund_collection"
+                    layout="@layout/layout_requestorderstatus_way" />
+
+                <include
+                    android:id="@+id/include_requestrefund_shippingpayment"
+                    layout="@layout/layout_requestorderstatus_shippingpayment" />
+
+                <include
+                    android:id="@+id/include_requestrefund_refund"
+                    layout="@layout/layout_deliverydetail_refundinfo" />
+                <include
+                    android:id="@+id/include_requestrefund_button"
+                    layout="@layout/layout_requestorderstatus_button" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

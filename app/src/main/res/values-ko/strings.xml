@@ -775,6 +775,11 @@
     <string name="requestorderstatus_refund_shipping_description2">반품배송비 5,000원을 구매자가 부담합니다.</string>
     <string name="requestorderstatus_refund_shipping_radio">환불금액에서 차감</string>
     <string name="requestorderstatus_refund_warning">송장번호 미입력시 반품 처리가 늦어질 수 있습니다.</string>
+    <string name="requestorderstatus_refund_banktitle">환불 계좌정보</string>
+    <string name="requestorderstatus_refund_checkbank">계좌 확인</string>
+    <string name="requestorderstatus_refund_bankhint1">은행명을 선택해주세요.</string>
+    <string name="requestorderstatus_refund_bankhint2">계좌번호를 입력해주세요.</string>
+    <string name="requestorderstatus_refund_bankhint3">예금주명 (본인명)을 입력해주세요.</string>
 
     <!-- SUCCESS CANCEL ORDER -->
     <string name="successcancelorder_title1">주문상품의 </string>
@@ -787,6 +792,7 @@
     <string name="successexchange_warning">반드시, 교환 상품 발송 후 송장번호를 등록해주세요.</string>
     <string name="successexchange_title"><![CDATA[주문상품의 <font color="#5d2ed1">교환신청이<br>완료</font>되었습니다.]]></string>
     <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 5,000원을\n박스에 동봉으로 구매자가 부담합니다.</string>
+    <string name="successexchange_notsend">미발송</string>
     <string name="successexchange_address_format">[%s] %s</string>
 
     <!-- MYPAGE COUPON -->

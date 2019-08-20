@@ -36,6 +36,8 @@ public class Flag {
 
         public static final int CONFIRM_PURCHASE = 10023;
         public static final int CANCEL_ORDER = 10024;
+        public static final int EXCHANGE = 10025;
+        public static final int DELIVERY = 10026;
     }
 
     public static class ResultCode {

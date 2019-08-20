@@ -123,14 +123,13 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                case Flag.RequestCode.DELIVERY:
                 case Flag.RequestCode.CONFIRM_PURCHASE:
-                    EventBusData eventBusData = new EventBusData(Flag.RequestCode.CONFIRM_PURCHASE, null);
-                    EventBusHelper.INSTANCE.sendEvent(eventBusData);
-                    break;
                 case Flag.RequestCode.CANCEL_ORDER:
-                    eventBusData = new EventBusData(Flag.RequestCode.CANCEL_ORDER, null);
+                    EventBusData eventBusData = new EventBusData(requestCode, null);
                     EventBusHelper.INSTANCE.sendEvent(eventBusData);
                     break;
+
                 case REQUEST_CODE_LOGIN:
                     //changeLoginStatus(checkToken());
                     break;

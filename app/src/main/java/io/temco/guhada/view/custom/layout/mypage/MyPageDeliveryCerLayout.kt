@@ -68,8 +68,12 @@ class MyPageDeliveryCerLayout constructor(
     @SuppressLint("CheckResult")
     private fun setEventBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
-            if (requestCode.requestCode == RequestCode.CONFIRM_PURCHASE.flag) {
-              mViewModel.getCancelOrderHistories()
+            when (requestCode.requestCode) {
+                RequestCode.CONFIRM_PURCHASE.flag -> {
+                    mViewModel.page = 1
+                    mViewModel.getCancelOrderStatus()
+                    mViewModel.getCancelOrderHistories()
+                }
             }
         }
     }
