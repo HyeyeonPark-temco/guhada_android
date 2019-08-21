@@ -1,10 +1,12 @@
 package io.temco.guhada.data.model.community
 
+import java.io.Serializable
+
 /**
  *
  * 커뮤니티 소분류 정보
  */
-class CommunityCategorySub {
+class CommunityCategorySub : Serializable {
 
     var id = 0
     var communityId = 0

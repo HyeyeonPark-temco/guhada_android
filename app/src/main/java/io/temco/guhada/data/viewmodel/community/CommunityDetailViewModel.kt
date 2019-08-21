@@ -8,6 +8,7 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.community.CommunityDetail
+import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.server.CommunityServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
@@ -15,8 +16,7 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
 
     var bbsId = 0L
     var communityDetail: MutableLiveData<CommunityDetail> = MutableLiveData()
-
-
+    var info : CommunityInfo = CommunityInfo()
 
 
     fun getDetaileData(){

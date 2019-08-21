@@ -7,7 +7,7 @@ class CommunityDetail {
 
     var id = 0L
     var categoryId = 0
-    var categoryFilterId = 0
+    var categoryFilterId = -1
     var imageUrl : String? = null
     var title : String? = null
     var contents : String? = null

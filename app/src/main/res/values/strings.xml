@@ -1018,5 +1018,9 @@
     <string name="community_format_likecount">좋아요 %d</string>
     <string name="community_format_viewcount">조회 %d</string>
 
-    <string name="temp_image_url">https://tinyjpg.com/images/social/website.jpg</string>
+
+    <string name="community_detail_hitcount">조회 %d</string>
+    <string name="community_detail_likecount">좋아요 %d</string>
+    <string name="community_detail_commentcount">댓글 %d</string>
+
 </resources>

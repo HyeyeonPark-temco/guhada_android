@@ -21,25 +21,109 @@
             type="io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/common_white">
-
-        <TextView
-            style="@style/TextRegular"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:gravity="center"
-            android:text="@{title}"
-            android:textSize="@dimen/text_17" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/common_white">
 
+            <TextView
+                android:id="@+id/textview_communitydetailcontents_title"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_18" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <TextView
+                    style="@style/MainHomeListProductItemSellerRateTextStyle"
+                    android:layout_marginRight="6dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_8"
+                    android:text="1" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="18dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:text="@{item.createUserInfo.nickname}"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/warm_grey_two"
+                    android:text="@{item.dspCreatedAt}"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:textColor="@color/pinkish_grey"
+                    android:text="@{@string/community_detail_hitcount(item.hitCount)}"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:textColor="@color/pinkish_grey"
+                    android:text="@{@string/community_detail_likecount(item.likeCount)}"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/pinkish_grey"
+                    android:text="@{@string/community_detail_commentcount(item.commentCount)}"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white_four"/>
+
+            <WebView
+                android:id="@+id/webview_communitydetail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -1,10 +1,12 @@
 package io.temco.guhada.data.model.community
 
+import java.io.Serializable
+
 enum class CommunityType {
     MAIN,POPULAR,NOTIFICATION,LIST,
 }
 
-class CommunityInfo {
+class CommunityInfo : Serializable {
 
     constructor()
     constructor(type : CommunityType, communityCategoryName: String) {
