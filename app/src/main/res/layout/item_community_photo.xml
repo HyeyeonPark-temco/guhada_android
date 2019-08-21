@@ -2,60 +2,77 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:paddingBottom="15dp"
-        android:layout_height="wrap_content">
+    <data>
 
-        <ImageView
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.community.CommunityBoard" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_communityphoto_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="20dp">
+
+        <io.temco.guhada.common.SquareImageView
             android:id="@+id/imageview_communityphoto_thumbnail"
-            android:layout_width="165dp"
-            android:layout_height="165dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@{@color/white_three}"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:roundCornerImageUrl="https://tinyjpg.com/images/social/website.jpg"
+            app:roundCornerImageUrl="@{item.imageUrl}"
             app:roundCornerRadius="@{5}" />
 
-        <TextView
-            android:id="@+id/textview_communityphoto_title"
-            style="@style/CommunityTitleTextStyle"
+        <LinearLayout
+            android:id="@+id/linearlayout_communityphoto_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="구찌 마몬트 반지갑 구매 진가품구찌 마몬트 반지갑 구매 진가품구찌 마몬트 반지갑 구매 진가품"
-            app:layout_constraintHorizontal_weight="1"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_commentcount"
-            app:layout_constraintTop_toBottomOf="@id/imageview_communityphoto_thumbnail"
-            app:layout_constraintVertical_bias="0" />
-
-        <TextView
-            android:id="@+id/textview_communityphoto_commentcount"
-            style="@style/CommunityTitleCategoryTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="16dp"
-            android:text="(30)"
-            android:textSize="@dimen/text_13"
-            app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_title"
-            app:layout_constraintRight_toLeftOf="@+id/imageview_communityphoto_new"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_communityphoto_thumbnail"
-            app:layout_constraintVertical_bias="0" />
-
-        <ImageView
-            android:id="@+id/imageview_communityphoto_new"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/com_icon_new"
-            app:layout_constraintBottom_toTopOf="@+id/textview_communityphoto_name"
-            app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_commentcount"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageview_communityphoto_thumbnail" />
+            app:layout_constraintTop_toBottomOf="@id/imageview_communityphoto_thumbnail">
+
+            <TextView
+                style="@style/CommunityTitleTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:text="@{item.title}" />
+
+            <TextView
+                android:id="@+id/textview_communityphoto_commentcount"
+                style="@style/CommunityTitleCategoryTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:text="@{@string/community_format_commentcount(item.comments)}"
+                android:textSize="@dimen/text_13" />
+
+            <ImageView
+                android:id="@+id/imageview_communityphoto_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/com_icon_new"
+                android:visibility="@{item.newlyCreated ? View.VISIBLE : View.GONE, default= gone}" />
+        </LinearLayout>
+
 
         <FrameLayout
             android:id="@+id/framelayout_communityphoto_rank"
@@ -66,7 +83,7 @@
             android:background="@drawable/border_all_whitethree_r11"
             app:layout_constraintBottom_toTopOf="@+id/textview_communityphoto_like"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_title">
+            app:layout_constraintTop_toBottomOf="@id/linearlayout_communityphoto_title">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -84,10 +101,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginTop="7dp"
-            android:text="구하다"
+            android:text="@{item.userName}"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@+id/framelayout_communityphoto_rank"
-            app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_title" />
+            app:layout_constraintTop_toBottomOf="@id/linearlayout_communityphoto_title" />
 
         <TextView
             android:id="@+id/textview_communityphoto_like"
@@ -95,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            android:text="좋아요 25"
+            android:text="@{@string/community_format_likecount(item.likes)}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -119,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            android:text="조회 7"
+            android:text="@{@string/community_format_viewcount(item.views)}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_dot1"
@@ -135,6 +152,7 @@
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_view"
+            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_date"
             app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
 
         <TextView
@@ -143,7 +161,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            android:text="10분 전"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{String.valueOf(item.date)}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_dot2"
