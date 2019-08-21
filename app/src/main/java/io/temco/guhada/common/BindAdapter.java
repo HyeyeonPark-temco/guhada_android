@@ -8,6 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.databinding.BindingAdapter;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
 import io.temco.guhada.common.util.GlideApp;
@@ -29,6 +32,12 @@ public class BindAdapter {
     @BindingAdapter("ovalImageUrl")
     public static void loadOvalImage(ImageView view, String url) {
         GlideApp.with(view.getContext()).load(url).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(view);
+    }
+
+    @BindingAdapter(value = {"roundCornerImageUrl", "roundCornerRadius"})
+    public static void loadRoundCornerImage(ImageView view, String url, int radius) {
+        if(url != null && !url.equals(""))
+            GlideApp.with(view.getContext()).load(url).thumbnail(0.9f).apply(new RequestOptions().transform(new FitCenter(), new RoundedCorners(radius))).into(view);
     }
 
     @BindingAdapter("android:visibility")

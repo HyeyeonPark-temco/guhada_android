@@ -7,6 +7,7 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
+import io.temco.guhada.data.model.community.CommunityCriteria
 import io.temco.guhada.data.model.search.AutoComplete
 import io.temco.guhada.data.model.search.Popular
 import io.temco.guhada.data.model.seller.Criteria
@@ -193,8 +194,7 @@ class SearchServer {
         @JvmStatic
         fun getSellerPopularProductList(listener: OnServerListener, criteria: Criteria, page: Int, unitPerPage: Int) =
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java).getSellerPopularProductList(criteria = criteria, page = page, unitPerPage = unitPerPage).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
-                )
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
 
         /**
@@ -203,8 +203,15 @@ class SearchServer {
         @JvmStatic
         fun getSellerRelatedProductList(listener: OnServerListener, criteria: Criteria, page: Int, unitPerPage: Int) =
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getSellerRelatedProductList(criteria = criteria, page = page, unitPerPage = unitPerPage).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
-                )
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 커뮤니티 게시판 검색
+         */
+        @JvmStatic
+        fun getCommunityBoardList(listener: OnServerListener, criteria: CommunityCriteria, order: String, page: Int, unitPerPage: Int) =
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getCommunityList(criteria = criteria, order = order, page = page, unitPerPage = unitPerPage).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
     }
 
