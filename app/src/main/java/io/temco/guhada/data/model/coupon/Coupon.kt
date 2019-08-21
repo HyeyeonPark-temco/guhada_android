@@ -1,8 +1,8 @@
 package io.temco.guhada.data.model.coupon
 
 class Coupon {
-    var couponWalletKey: CouponWalletKey = CouponWalletKey()
     var couponId: Long? = 0
+    var userId: Long = 0
     var couponSaveId: Long? = 0
     var couponType: String? = ""
     var couponTitle: String? = ""
@@ -13,16 +13,16 @@ class Coupon {
     var maximumDiscountPrice: String? = ""
     var startAt: String? = ""
     var endAt: String? = ""
-    var sellerId: Long? = 0
-    var sellerImgUrl: String? = ""
-    var sellerName: String? = ""
     var status: String? = ""
     var createdAt: String? = ""
     var serviceType: String? = ""
     var applyType: String? = ""
+    var expireDueDay: Int = 0
+    var couponNumber = ""
 
-    inner class CouponWalletKey {
-        var userId: Long = 0
-        var couponNumber = ""
-    }
+    // Seller
+    var sellerId: Long? = 0
+    var sellerImgUrl: String? = ""
+    var sellerName: String? = ""
+
 }
