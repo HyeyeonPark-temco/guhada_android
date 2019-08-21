@@ -156,6 +156,7 @@
                 style="@style/RequestOrderStatusWarmGreyTextStyle"
                 android:layout_width="match_parent"
                 android:visibility="gone"
+                android:inputType="number"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border_all_whitethree"

@@ -94,6 +94,8 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeCause.hintMessage = resources.getString(R.string.requestorderstatus_exchange_hint_cause)
         mBinding.includeRequestexchangeCause.quantityTitle = resources.getString(R.string.requestorderstatus_exchange_quantity)
         mBinding.includeRequestexchangeCause.quantity = 1
+        mBinding.includeRequestexchangeCause.requestType = 1
+
         mBinding.includeRequestexchangeCause.setOnClickAmountMinus {
             val quantity = mBinding.includeRequestexchangeCause.quantity ?: 0
             if (quantity - 1 <= 0)
@@ -197,10 +199,10 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             mBinding.includeRequestexchangeCollection.spinnerRequestorderstatusShippingcompany.setSelection(it.size - 1)
         })
 
-        mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.addTextChangedListener {
-            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = if (it.isNullOrEmpty()) View.VISIBLE
-            else View.GONE
-        }
+//        mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.addTextChangedListener {
+//            mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = if (it.isNullOrEmpty()) View.VISIBLE
+//            else View.GONE
+//        }
 
         mViewModel.getShippingCompany()
     }
@@ -255,7 +257,12 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
     private fun initButton() {
         mBinding.includeRequestexchangeButton.confirmText = resources.getString(R.string.requestorderstatus_exchange_button_submit)
         mBinding.includeRequestexchangeButton.cancelText = resources.getString(R.string.common_cancel)
-        mBinding.includeRequestexchangeButton.setOnClickConfirm { mViewModel.requestExchange() }
+        mBinding.includeRequestexchangeButton.setOnClickConfirm {
+            val invoiceId =  mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.text.toString()
+            if(invoiceId.isNotEmpty())
+                mViewModel.mExchangeRequest.invoiceNo = mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.text.toString().toLong()
+            mViewModel.requestExchange()
+        }
         mBinding.includeRequestexchangeButton.setOnClickCancel { finish() }
     }
 

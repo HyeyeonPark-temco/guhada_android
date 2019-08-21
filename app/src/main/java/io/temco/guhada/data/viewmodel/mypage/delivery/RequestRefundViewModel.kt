@@ -7,8 +7,8 @@ import io.temco.guhada.common.enum.RefundCause
 import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.ExchangeRequest
 import io.temco.guhada.data.model.OrderChangeCause
+import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.ShippingCompany
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.seller.Seller
@@ -20,7 +20,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class RequestRefundViewModel : BaseObservableViewModel() {
     var mPurchaseOrder = PurchaseOrder()
-    var mExchangeRequest = ExchangeRequest()
+    var mRefundRequest = RefundRequest()
     var mSellerAddress: MutableLiveData<SellerAddress> = MutableLiveData()
     var mSeller : MutableLiveData<Seller> = MutableLiveData()
     var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
@@ -116,12 +116,12 @@ class RequestRefundViewModel : BaseObservableViewModel() {
 
     fun requestRefund() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
-            ClaimServer.requestExchange(OnServerListener { success, o ->
+            ClaimServer.requestRefund(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             mSuccessRequestRefundTask(mPurchaseOrder)
                         })
-            }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
+            }, accessToken = accessToken, refundRequest = mRefundRequest)
         })
     }
 }

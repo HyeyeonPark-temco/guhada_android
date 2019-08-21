@@ -227,6 +227,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"  />
 
+        <activity
+            android:name=".view.activity.SuccessRequestRefundActivity"
+            android:screenOrientation="portrait" />
+
         <!-- Community -->
         <activity
             android:name=".view.activity.CommunityDetailActivity"
