@@ -1,14 +1,10 @@
 package io.temco.guhada.data.retrofit.service
 
-import io.temco.guhada.data.model.BookMarkProduct
-import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.community.CommunityCategory
 import io.temco.guhada.data.model.community.CommunityCategorySub
 import io.temco.guhada.data.model.community.CommunityCategoryfilter
 import io.temco.guhada.data.model.community.CommunityDetail
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -5,6 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Typeface
 import android.text.InputFilter
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ImageSpan
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
@@ -75,6 +78,14 @@ object CommonViewUtil{
 
     fun getFindView(context:Context, view:View, name:String) : View{
         return view.findViewById(context!!.resources.getIdentifier(name,"id",context.packageName))
+    }
+
+    fun setTextViewImageTextEnd(context: Context, res : Int, text : String, textview : TextView){
+        val image = context.resources.getDrawable(res, null)
+        image.setBounds(0, 0, image.intrinsicWidth, image.intrinsicHeight)
+        var span = SpannableStringBuilder(text+"n")
+        span.setSpan(ImageSpan(image), text.length, text.length+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        textview.text = span
     }
 
 }

@@ -61,7 +61,7 @@ class HomeListRepository(val context : Context){
                                 "NEW ARRIVALS", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
                         list.value!!.add(subTitle)
                         list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.focuson04, 556))
-                        if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
+                        //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
                         getNewArrivalsDummy()
                     },
                     dataNotFoundTask = {
@@ -125,7 +125,7 @@ class HomeListRepository(val context : Context){
     }
 
     /**
-     * new-arrivals    신상품 목록 조회 더미
+     * new-arrivals    신상품 목록 조회 더미 community/all
      */
     private fun getNewArrivalsDummy1() {
         ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->

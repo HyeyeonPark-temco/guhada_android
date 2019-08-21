@@ -57,12 +57,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.image_side_menu -> {
-                //CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
-                var intent = Intent(context as Activity, CommunityDetailActivity::class.java)
-                intent.putExtra("bbsId", 282300L)
-                (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
-            }
+            R.id.image_side_menu -> CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
             R.id.image_search -> CommonUtil.startSearchWordActivity(context as MainActivity,null, true)
             R.id.image_shop_cart -> CommonUtil.startCartActivity(context as MainActivity)
         }

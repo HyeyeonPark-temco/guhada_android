@@ -9,10 +9,12 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.fragment.comment.CommentListFragment
 import io.temco.guhada.view.fragment.community.detail.CommunityDetailContentsFragment
+import java.lang.Exception
 
 class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.ActivityCommunitydetailBinding>(), View.OnClickListener {
     private lateinit var mRequestManager: RequestManager
@@ -39,6 +41,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private fun initIntent(){
         if(intent?.extras?.containsKey("bbsId")!!){
             mViewModel.bbsId = intent.extras.getLong("bbsId")
+            mViewModel.info = intent.getSerializableExtra("info") as CommunityInfo
+            if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.info ",mViewModel.info.toString())
         }
     }
 
@@ -52,6 +56,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
             initComment()
         })
         mViewModel.getDetaileData()
+        mBinding.headerTitle = mViewModel.info.communityCategoryName
     }
 
     private fun initDetail() {
@@ -81,5 +86,14 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         }
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try{
+            if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+        }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
+    }
 
 }

@@ -1010,5 +1010,8 @@
     <string name="community_titles_popular">인기글</string>
     <string name="community_titles_noti">공지사항</string>
 
+    <string name="community_detail_hitcount">조회 %d</string>
+    <string name="community_detail_likecount">좋아요 %d</string>
+    <string name="community_detail_commentcount">댓글 %d</string>
 
 </resources>
