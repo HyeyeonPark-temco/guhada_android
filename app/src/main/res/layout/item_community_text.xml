@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:paddingStart="5dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp">
+
+            <ImageView
+                android:id="@+id/imageview_communitytext_thumbnail"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="15dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:roundCornerImageUrl="https://tinyjpg.com/images/social/website.jpg"
+                app:roundCornerRadius="@{5}" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_category"
+                style="@style/CommunityTitleCategoryTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="의류"
+                app:layout_constraintBottom_toTopOf="@id/textview_communitytext_like"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_communitytext_thumbnail"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_title"
+                style="@style/CommunityTitleTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="구찌 마몬트 반지갑 구매 진가품구찌 마몬트 반지갑 구매 진가품구찌 마몬트 반지갑 구매 진가품"
+                app:layout_constraintBottom_toTopOf="@id/textview_communitytext_like"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_category"
+                app:layout_constraintRight_toLeftOf="@+id/textview_communitytext_commentcount"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_commentcount"
+                style="@style/CommunityTitleCategoryTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="(30)"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintBottom_toTopOf="@id/textview_communitytext_like"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_title"
+                app:layout_constraintRight_toLeftOf="@+id/imageview_communitytext_new"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0" />
+
+            <ImageView
+                android:id="@+id/imageview_communitytext_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/com_icon_new"
+                app:layout_constraintBottom_toTopOf="@id/textview_communitytext_name"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_commentcount"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.2" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_like"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="7dp"
+                android:text="좋아요 25"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_communitytext_thumbnail"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_dot1"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/common_dot"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_like"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_view"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="조회 7"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_dot1"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_dot2"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/common_dot"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_view"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_date"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="10.20"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_dot2"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category" />
+
+            <TextView
+                android:id="@+id/textview_communitytext_dot3"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:text="@string/common_dot"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_date"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category" />
+
+            <FrameLayout
+                android:id="@+id/framelayout_communitytext_rank"
+                android:layout_width="19dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/border_all_whitethree_r11"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_dot3"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="1"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_6" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/textview_communitytext_name"
+                style="@style/CommunityDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="7dp"
+                android:text="구하다"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/framelayout_communitytext_rank"
+                app:layout_constraintTop_toBottomOf="@id/textview_communitytext_category" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_6"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
+
+</layout>
