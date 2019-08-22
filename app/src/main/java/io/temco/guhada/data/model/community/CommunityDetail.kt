@@ -29,10 +29,10 @@ class CommunityDetail {
     var currentTimestamp : Long? = null
     var userId = 0L
     var createUserInfo = CreateUserInfo()
-
     var userDetail : UserDetail = UserDetail()
+
     override fun toString(): String {
-        return "CommunityDetail(id=$id, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, contents=$contents, use=$use, delete=$delete, deletedAt=$deletedAt, deletedTimestamp=$deletedTimestamp, like=$like, bookmark=$bookmark, commentCount=$commentCount, hitCount=$hitCount, likeCount=$likeCount, brandId=$brandId, brandName=$brandName, dealId=$dealId, dealName=$dealName, dspCreatedAt=$dspCreatedAt, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId, createUserInfo=$createUserInfo)"
+        return "CommunityDetail(id=$id, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, contents=$contents, use=$use, delete=$delete, deletedAt=$deletedAt, deletedTimestamp=$deletedTimestamp, like=$like, bookmark=$bookmark, commentCount=$commentCount, hitCount=$hitCount, likeCount=$likeCount, brandId=$brandId, brandName=$brandName, dealId=$dealId, dealName=$dealName, dspCreatedAt=$dspCreatedAt, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId, createUserInfo=$createUserInfo, userDetail=$userDetail)"
     }
 
 }
@@ -60,7 +60,7 @@ class CreateUserInfo {
     var roles : ArrayList<Roles> = arrayListOf()
 
     override fun toString(): String {
-        return "CreateUserInfo(id=$id, email=$email, name=$name, userType=$userType, emailVerify=$emailVerify, nickname=$nickname, mobile=$mobile, profileImageUrl=$profileImageUrl, zip=$zip, address=$address, roadAddress=$roadAddress, detailAddress=$detailAddress, birth=$birth, gender=$gender, userStatus=$userStatus, withdrawalAt=$withdrawalAt, createdAt=${Arrays.toString(createdAt)}, userDetail=$userDetail, roles=$roles)"
+        return "CreateUserInfo(id=$id, email=$email, name=$name, userType=$userType, emailVerify=$emailVerify, nickname=$nickname, mobile=$mobile, profileImageUrl=$profileImageUrl, zip=$zip, address=$address, roadAddress=$roadAddress, detailAddress=$detailAddress, birth=$birth, gender=$gender, userStatus=$userStatus, withdrawalAt=$withdrawalAt, createdAt=${Arrays.toString(createdAt)}, userDetail=$userDetail)"
     }
 
 }
@@ -110,11 +110,6 @@ class Roles {
     var roleName : String? = null
     var description : String? = null
     var authorities : ArrayList<Authorities> = arrayListOf()
-
-    override fun toString(): String {
-        return "Roles(type=$type, roleName=$roleName, description=$description, authorities=$authorities)"
-    }
-
 }
 
 class Authorities {

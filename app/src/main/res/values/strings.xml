@@ -1016,4 +1016,9 @@
     <string name="community_detail_likecount">좋아요 %d</string>
     <string name="community_detail_commentcount">댓글 %d</string>
 
+    <string name="intToStringText">%d</string>
+
+    <string name="community_add_comment_reply">댓글달기</string>
+
+
 </resources>

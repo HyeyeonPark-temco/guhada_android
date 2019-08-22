@@ -149,6 +149,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
     @Override
     protected void onResume() {
         super.onResume();
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"onResume");
         if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) enableNfc();
         /**
          * @author park jungho
@@ -167,6 +168,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
 
     @Override
     protected void onPause() {
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"onPause");
         if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) disableNfc();
         super.onPause();
     }

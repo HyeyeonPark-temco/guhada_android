@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
@@ -23,7 +22,8 @@ import io.temco.guhada.databinding.ItemMypageClaimListBinding
 import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 
-class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageClaim.Content>) : CommonRecyclerAdapter<MyPageClaim.Content, CommonRecyclerAdapter.ListViewHolder>(list) {
+class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageClaim.Content>) :
+        CommonRecyclerAdapter<MyPageClaim.Content, CommonRecyclerAdapter.ListViewHolder<MyPageClaim.Content>>(list) {
 
     override fun getItemViewType(position: Int): Int {
         if(items[position].inquiry.id != 0L){
@@ -33,7 +33,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
         }
     }
 
-    override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+    override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder<MyPageClaim.Content> {
         val layoutInflater = LayoutInflater.from(parent.context)
         when(viewType){
             1 -> {
@@ -51,7 +51,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
         }
     }
 
-    override fun setOnBindViewHolder(viewHolder: ListViewHolder, item: MyPageClaim.Content, position: Int) {
+    override fun setOnBindViewHolder(viewHolder: ListViewHolder<MyPageClaim.Content>, item: MyPageClaim.Content, position: Int) {
         viewHolder.bind(model, position, item)
     }
 
@@ -61,7 +61,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
     /**
      * 마이페이지 상품문의 의 리스트에 사용할 viewholder
      */
-    inner class MyPageClaimListViewHolder(val containerView: View, val binding: ItemMypageClaimListBinding) : ListViewHolder(containerView, binding) {
+    inner class MyPageClaimListViewHolder(val containerView: View, val binding: ItemMypageClaimListBinding) : ListViewHolder<MyPageClaim.Content>(containerView, binding) {
         override fun bind(model: ViewModel, position: Int, data: MyPageClaim.Content) {
             // init
             binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
@@ -217,7 +217,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
     }
 
 
-    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
+    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder<MyPageClaim.Content>(containerView,binding){
         override fun bind(model : ViewModel, position : Int, data: MyPageClaim.Content){
             binding.linearlayoutMoreView.setOnClickListener {
                 (model as MyPageClaimViewModel).getMoreCalimList(data.pageNumber+1)

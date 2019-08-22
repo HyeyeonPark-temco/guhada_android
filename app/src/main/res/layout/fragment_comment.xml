@@ -18,9 +18,44 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:orientation="vertical"
-        android:background="@color/brick">
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:weightSum="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black_four"
+                android:text="@{@string/community_detail_commentcount(viewModel.communityDetailCommentTotalElements)}"
+                android:textSize="@dimen/text_15" />
+
+            <ImageButton
+                style="@style/TextRegular"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="7dp"
+                android:onClick="@{()->viewModel.onClickCommentMore()}"
+                android:src="@drawable/comment_reply"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_comment_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pale_grey"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.os.Handler
 import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -12,28 +13,34 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.fragment.comment.CommentListFragment
+import io.temco.guhada.view.fragment.community.detail.CommentListFragment
 import io.temco.guhada.view.fragment.community.detail.CommunityDetailContentsFragment
 import java.lang.Exception
 
 class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.ActivityCommunitydetailBinding>(), View.OnClickListener {
     private lateinit var mRequestManager: RequestManager
-    private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
+    private var mLoadingIndicatorUtil : LoadingIndicatorUtil? = null
     private lateinit var mViewModel : CommunityDetailViewModel
     private lateinit var mDetailFragment : CommunityDetailContentsFragment
     private lateinit var mCommentFragment : CommentListFragment
+    private lateinit var mHandler: Handler
 
     override fun getBaseTag(): String = CommunityDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_communitydetail
     override fun getViewType(): Type.View = Type.View.REVIEW_WRITE
 
-
     override fun init() {
+        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "init ---------------------")
         mViewModel = CommunityDetailViewModel(this)
         mBinding.viewModel = mViewModel
+        mBinding.clickListener = this
         mRequestManager = Glide.with(this)
-
+        mHandler = Handler(this.mainLooper)
         initIntent()
+        if(mLoadingIndicatorUtil == null){
+            mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
+            mLoadingIndicatorUtil?.show()
+        }
         setDetailView()
     }
 
@@ -47,15 +54,16 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     }
 
     private fun setDetailView(){
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
-        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
+        if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "setDetailView ---------------------")
         mViewModel.communityDetail.observe(this, Observer {
-            mLoadingIndicatorUtil.hide()
-            if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "setDetailView ",it.toString())
+            mLoadingIndicatorUtil?.dismiss()
+            mViewModel.getCommentList()
             initDetail()
-            initComment()
         })
-        mViewModel.getDetaileData()
+        mViewModel.commentList.observe(this, Observer {
+            mHandler.postDelayed({ initComment() },500)
+        })
+        mViewModel.getDetailData()
         mBinding.headerTitle = mViewModel.info.communityCategoryName
     }
 
@@ -86,11 +94,17 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         try{
-            if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+            if (mLoadingIndicatorUtil != null) {
+                mLoadingIndicatorUtil?.dismiss()
+                mLoadingIndicatorUtil = null
+            }
         }catch (e : Exception){
             if(CustomLog.flag)CustomLog.E(e)
         }

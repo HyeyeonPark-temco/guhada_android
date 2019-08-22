@@ -112,6 +112,11 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             if(mViewModel.userSize != null) intent.putExtra("userSize", mViewModel.userSize)
             this@ReviewWriteActivity.startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
         }
+
+        mViewModel.mReviewEditPhotos.observe(this,androidx.lifecycle.Observer {
+            if(it.isNullOrEmpty()) mBinding.recyclerviewReviewwriteImagelist.visibility = View.GONE
+            else mBinding.recyclerviewReviewwriteImagelist.visibility = View.VISIBLE
+        })
     }
 
 

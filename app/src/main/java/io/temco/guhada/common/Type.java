@@ -150,17 +150,17 @@ public class Type {
     private static String getBBSUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://qa.bbs.guhada.com:8081/";
+                return "http://qa.bbs.guhada.com/";
 
             default:
-                return "http://dev.bbs.guhada.com:8081/";
+                return "http://dev.bbs.guhada.com/";
         }
     }
 
     private static String getUserUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://qa.user.guhada.com:8080/";
+                return "http://qa.user.guhada.com/";
 
             default:
                 //return "http://dev.user.guhada.com:8080/";

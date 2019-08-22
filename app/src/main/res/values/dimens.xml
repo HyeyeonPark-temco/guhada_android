@@ -62,4 +62,9 @@
     <!-- MARGIN -->
     <dimen name="margin_grid_space">8dp</dimen>
 
+    <dimen name="comment_list_image_size">243dp</dimen>
+    <dimen name="comment_list_reply_image_size">203dp</dimen>
+
+
+
 </resources>
