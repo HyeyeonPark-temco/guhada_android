@@ -1,9 +1,12 @@
 package io.temco.guhada.view.fragment.community
 
+import android.view.View
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.community.CommunityBoard
@@ -44,6 +47,12 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
         mViewModel.mCommunityInfo = info
         mViewModel.mCommunityResponse.observe(this, Observer {
             initList(it.bbs)
+
+            mBinding.linearlayoutCommunitylistMore.visibility = if (it.bbs.size < it.totalCount) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         })
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()

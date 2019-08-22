@@ -82,6 +82,10 @@ interface OrderService {
 
     /**
      * 주문 리스트 조회 API
+     *
+     * @param unitPerPage 추가 필요 (default 10)
+     * @since 2019.08.22
+     * @author Hyeyeon Park
      */
     @GET("/order/my-order-list")
     fun getOrders(@Header("Authorization") accessToken: String, @Query("startTimestamp") startTimestamp: Long, @Query("endTimestamp") endTimestamp: Long, @Query("page") page: Int): Call<BaseModel<OrderHistoryResponse>>
@@ -89,6 +93,7 @@ interface OrderService {
 
     /**
      * 주문 상태 조회 API
+     * deprecated
      */
     @GET("/order/my-orders-status")
     fun getOrderStatus(@Header("Authorization") accessToken: String): Call<BaseModel<OrderStatus>>

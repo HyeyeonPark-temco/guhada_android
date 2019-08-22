@@ -1,6 +1,9 @@
 package io.temco.guhada.data.viewmodel
 
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
+import io.temco.guhada.BR
 import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -13,18 +16,21 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class CommunitySubListViewModel : BaseObservableViewModel() {
     var mCommunityInfo: CommunityInfo = CommunityInfo()
     var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
-    var mPage = 1
+    var mPage = 0
+    var mFilterId = 0L
     var UNIT_PER_PAGE = 20
 
     fun getCommunityList() {
-        val filterList = mCommunityInfo.communityCategorySub.categoryFilterList
-        val filterId =
-                if (filterList.isEmpty()) 0
-                else filterList[0].id.toLong()
+        // init filter id
+        if (mFilterId <= 0) {
+            val filterList = mCommunityInfo.communityCategorySub.categoryFilterList
+            mFilterId = if (filterList.isEmpty()) 0
+            else filterList[0].id.toLong()
+        }
 
         CommunityCriteria().apply {
             this.categoryId = mCommunityInfo.communityCategoryId.toLong()
-            this.filterId = filterId
+            this.filterId = mFilterId
             this.deleted = false
             this.inUse = true
             this.query = ""
@@ -33,10 +39,17 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
             SearchServer.getCommunityBoardList(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
+                            if (mPage > 1) {
+                                val newList = (it.data as CommunityBoard.CommunityResponse).bbs
+                                this.mCommunityResponse.value?.bbs?.addAll(newList)
+                                this.mCommunityResponse.postValue(this.mCommunityResponse.value)
+                            } else {
+                                this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
+                            }
                         })
-            }, criteria = criteria, order = CommunityOrderType.DATE_DESC.type, page = mPage, unitPerPage = UNIT_PER_PAGE)
+            }, criteria = criteria, order = CommunityOrderType.DATE_DESC.type, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
         }
-
     }
+
+    fun onClickMore() = getCommunityList()
 }

@@ -45,14 +45,13 @@
 
             <TextView
                 style="@style/CommunityTitleTextStyle"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/textview_communityphoto_title"
                 android:layout_marginTop="16dp"
-                android:layout_weight="1"
                 android:text="@{item.title}" />
 
             <TextView
-                android:id="@+id/textview_communityphoto_commentcount"
                 style="@style/CommunityTitleCategoryTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +61,6 @@
                 android:textSize="@dimen/text_13" />
 
             <ImageView
-                android:id="@+id/imageview_communityphoto_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -137,11 +135,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_dot2"
             android:text="@{@string/community_format_viewcount(item.views)}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_dot1"
+            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_dot2"
             app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
 
         <TextView

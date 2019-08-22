@@ -2,6 +2,8 @@ package io.temco.guhada.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -33,10 +35,28 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
 
     class Holder(binding: ViewDataBinding, val type: String) : BaseViewHolder<ViewDataBinding>(binding.root) {
         fun bind(item: CommunityBoard) {
-            if (type == CommunitySubListFragment.CommunityListType.IMAGE.type)
+            if (type == CommunitySubListFragment.CommunityListType.IMAGE.type) {
                 (mBinding as ItemCommunityPhotoBinding).item = item
-            else
+                if (item.title.length > 12) {
+                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                        weight = 1f
+                        topMargin = CommonViewUtil.convertDpToPixel(16, mBinding.root.context)
+                    }.let { layoutParams ->
+                        (mBinding as ItemCommunityPhotoBinding).textviewCommunityphotoTitle.layoutParams = layoutParams
+                    }
+                }
+
+            } else {
                 (mBinding as ItemCommunityTextBinding).item = item
+                if (item.title.length > 24) {
+                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                        weight = 1f
+                        marginStart = CommonViewUtil.convertDpToPixel(5, mBinding.root.context)
+                    }.let { layoutParams ->
+                        (mBinding as ItemCommunityTextBinding).textviewCommunitytextTitle.layoutParams = layoutParams
+                    }
+                }
+            }
 
             setSpacing()
             binding.executePendingBindings()
