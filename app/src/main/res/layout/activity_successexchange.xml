@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text="@{exchangeRequest.alreadySend ? exchangeRequest.shippingCompanyCode + ` ` + exchangeRequest.invoiceNo : @string/successexchange_notsend }" />
+                    android:text="@{exchangeRequest.alreadySend ? exchangeRequest.shippingCompanyName + ` ` + exchangeRequest.invoiceNo : @string/successexchange_notsend }" />
 
                 <View
                     android:layout_width="match_parent"

@@ -188,7 +188,10 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val company = mViewModel.mShippingCompanyList.value?.get(position)
-                    if (company != null) mViewModel.mRefundRequest.shippingCompanyCode = company.code
+                    if (company != null) {
+                        mViewModel.mRefundRequest.shippingCompanyCode = company.code
+                        mViewModel.mRefundRequest.shippingCompanyName = company.name
+                    }
                     mBinding.includeRequestrefundCollection.textviewRequestorderstatusShippingcompany.text = company?.name
                 }
             }

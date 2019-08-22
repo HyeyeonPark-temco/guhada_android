@@ -201,7 +201,10 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val company = mViewModel.mShippingCompanyList.value?.get(position)
-                    if (company != null) mViewModel.mExchangeRequest.shippingCompanyCode = company.code
+                    if (company != null) {
+                        mViewModel.mExchangeRequest.shippingCompanyCode = company.code
+                        mViewModel.mExchangeRequest.shippingCompanyName = company.name
+                    }
                     mBinding.includeRequestexchangeCollection.textviewRequestorderstatusShippingcompany.text = company?.name
                 }
             }

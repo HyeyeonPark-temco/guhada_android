@@ -53,13 +53,13 @@
                 android:orientation="vertical"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:visibility="@{refundRequest.alreadySend &amp;&amp; refundRequest.invoiceNo == 0 ? View.VISIBLE : View.GONE}">
+                android:visibility="@{refundRequest.alreadySend ? View.VISIBLE : View.GONE}">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="@{refundRequest.invoiceNo > 0 ? View.GONE : View.VISIBLE}">
+                    android:visibility="@{refundRequest.invoiceNo != 0 ? View.GONE : View.VISIBLE}">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text="@{refundRequest.alreadySend ? refundRequest.shippingCompanyCode + ` ` + refundRequest.invoiceNo : @string/successrefund_notsend }" />
+                    android:text="@{refundRequest.alreadySend ? refundRequest.shippingCompanyName + ` ` + refundRequest.invoiceNo : @string/successrefund_notsend }" />
 
                 <View
                     android:layout_width="match_parent"
@@ -159,14 +159,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text='@{refundRequest.getShippingPaymentDescription()}' />
+                    android:layout_marginBottom="30dp"
+                    android:text="@{refundRequest.getShippingPaymentDescription()}" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp"
                     android:background="@color/line_6"
+
                     android:visibility="@{purchaseOrder.paymentMethodText.equals(@string/successrefund_vbank) ? View.VISIBLE : View.GONE}" />
 
                 <TextView
