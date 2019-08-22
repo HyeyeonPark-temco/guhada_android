@@ -14,6 +14,10 @@ import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel
 import io.temco.guhada.databinding.ActivityDeliverydetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 
+/**
+ * 주문 상세 내역
+ * @author Hyeyeon Park
+ */
 class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     private lateinit var mViewModel: MyPageDeliveryDetailViewModel
 
@@ -25,9 +29,6 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
 
     override fun init() {
         initHeader()
-
-
-
         mViewModel = MyPageDeliveryDetailViewModel().apply {
             val data = intent.getLongExtra("purchaseId", -1)
             if (data > 0) {
@@ -40,6 +41,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         }
 
         if (::mViewModel.isInitialized) {
+
             mViewModel.getOrder()
             mViewModel.getUser()
             mViewModel.onClickClaimTask = { productId ->
@@ -57,11 +59,12 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailOrderinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailPaymentinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
-//            mBinding.includeDeliverydetailRefundinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
 
+            initRefundInfo()
+
             val receiptButtonVisible = intent.getBooleanExtra("receiptButtonVisible", true)
-            mBinding.includeDeliverydetailOrderinfo.buttonDeliverydetailReceipt.visibility = if(receiptButtonVisible) View.VISIBLE else View.GONE
+            mBinding.includeDeliverydetailOrderinfo.buttonDeliverydetailReceipt.visibility = if (receiptButtonVisible) View.VISIBLE else View.GONE
 
             mBinding.executePendingBindings()
         }
@@ -77,6 +80,12 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         if (requestCode == RequestCode.WRITE_CLAIM.flag && resultCode == Activity.RESULT_OK) {
             ToastUtil.showMessage(getString(R.string.claim_message_add))
         }
+    }
+
+    private fun initRefundInfo() {
+        val isDeliveryCer = intent.getBooleanExtra("isDeliveryCer", false)
+        mViewModel.refundInfoVisible = isDeliveryCer
+        mBinding.includeDeliverydetailRefundinfo.viewModel = mViewModel
     }
 
     companion object {

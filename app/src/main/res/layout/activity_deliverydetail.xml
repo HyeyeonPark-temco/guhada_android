@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
@@ -60,7 +62,8 @@
 
                 <include
                     android:id="@+id/include_deliverydetail_refundinfo"
-                    layout="@layout/layout_deliverydetail_refundinfo" />
+                    layout="@layout/layout_deliverydetail_refundinfo"
+                    android:visibility="@{viewModel.refundInfoVisible ? View.VISIBLE : View.GONE, default= gone}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

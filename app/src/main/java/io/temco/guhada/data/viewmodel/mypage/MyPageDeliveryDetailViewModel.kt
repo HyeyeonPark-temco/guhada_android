@@ -16,6 +16,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
     var purchaseId: Long = -1
+    var refundInfoVisible = false
     var purchaseOrderResponse = PurchaseOrderResponse()
         @Bindable
         get() = field

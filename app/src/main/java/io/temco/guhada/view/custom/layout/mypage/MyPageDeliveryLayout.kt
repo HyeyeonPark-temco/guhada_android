@@ -46,6 +46,7 @@ class MyPageDeliveryLayout constructor(
         mViewModel = MyPageDeliveryViewModel(context)
         mViewModel.orderHistoryList.observe(this, androidx.lifecycle.Observer {
             mBinding.listContents.adapter = MyPageDeliveryAdapter().apply {
+                this.type = MyPageDeliveryAdapter.Type.Delivery.type
                 this.list = it.orderItemList
                 this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
                 this.requestCancelOrderTask = { purchaseOrder -> redirectCancelOrderActivity(purchaseOrder) }

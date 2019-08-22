@@ -707,7 +707,7 @@
     <string name="mypage_deliverydetail_paymentinfo_fiinal2">총 결제금액 (%s)</string>
     <string name="mypage_deliverydetail_paymentinfo_fiinal3">포인트 사용</string>
 
-    <string name="mypage_deliverydetail_reufndinfo_title">환불금액 정보</string>
+    <string name="mypage_deliverydetail_reufndinfo_title">환불예상금액 확인</string>
     <string name="mypage_deliverydetail_reufndinfo_order1">취소 상품 주문금액</string>
     <string name="mypage_deliverydetail_reufndinfo_order2">취소 상품 금액 합계</string>
     <string name="mypage_deliverydetail_reufndinfo_order3">취소 배송비 합계</string>
