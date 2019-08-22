@@ -71,6 +71,13 @@ class CommentListAdapter (private val model: ViewModel) : RecyclerView.Adapter<C
             binding.isReply = data.originCommentId != null
             binding.isLikeComment = false
             binding.likeCount = 0
+            binding.isContent = !"".equals(data.contents)
+            if(data.commentImageList.isNullOrEmpty()){
+                binding.isImage = false
+            }else{
+                binding.isImage = true
+                binding.image = data.commentImageList[0].url
+            }
             binding.viewModel = model as CommunityDetailViewModel
             containerView.setTag(data)
             containerView.setOnClickListener {
