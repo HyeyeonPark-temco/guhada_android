@@ -194,5 +194,14 @@ open class ClaimServer {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
                         .requestRefund(accessToken = accessToken, refundRequest = refundRequest).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 주문교환반품 신청 화면 정보
+         */
+        @JvmStatic
+        fun getClaimForm(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .getClaimForm(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
     }
 }

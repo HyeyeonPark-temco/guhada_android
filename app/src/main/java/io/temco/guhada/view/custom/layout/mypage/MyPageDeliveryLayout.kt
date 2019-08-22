@@ -128,7 +128,7 @@ class MyPageDeliveryLayout constructor(
 
     private fun redirectCancelOrderActivity(purchaseOrder: PurchaseOrder) {
         val intent = Intent(context, RequestCancelOrderActivity::class.java)
-        intent.putExtra("purchaseOrder", purchaseOrder)
+        intent.putExtra("orderProdGroupId", purchaseOrder.orderProdGroupId)
         (context as Activity).startActivityForResult(intent, RequestCode.CANCEL_ORDER.flag)
     }
 

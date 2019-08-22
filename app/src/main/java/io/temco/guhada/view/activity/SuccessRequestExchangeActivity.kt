@@ -39,7 +39,7 @@ class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBindi
         mBinding.includeSuccessexchangeProductinfo.brandName = purchaseOrder.brandName
         mBinding.includeSuccessexchangeProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeSuccessexchangeProductinfo.optionStr = purchaseOrder.getOptionStr()
-        mBinding.includeSuccessexchangeProductinfo.price = purchaseOrder.discountPrice
+        mBinding.includeSuccessexchangeProductinfo.price = purchaseOrder.orderPrice
         mBinding.includeSuccessexchangeProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
     }
 }

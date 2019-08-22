@@ -1,6 +1,7 @@
 package io.temco.guhada.view.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,7 @@ import io.temco.guhada.databinding.ItemPaymentSpinnerBinding
 class OrderChangeCauseAdapter(context: Context, val layout: Int, var list: List<OrderChangeCause> = ArrayList()) : ArrayAdapter<OrderChangeCause>(context, layout, list) {
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
-    override fun getCount(): Int = list.size - 1
+    override fun getCount(): Int = list.size -1
 
     fun setItems(list: List<OrderChangeCause>) {
         this.list = list
@@ -30,7 +31,6 @@ class OrderChangeCauseAdapter(context: Context, val layout: Int, var list: List<
             0 -> binding.framelayoutCancelorderSpinner.setPadding(2, 2, 2, 0)
             else -> binding.framelayoutCancelorderSpinner.setPadding(2, 0, 2, 0)
         }
-
         binding.executePendingBindings()
         return binding.root
     }
