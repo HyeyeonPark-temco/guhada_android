@@ -17,6 +17,7 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
 
     // -------- LOCAL VALUE --------
     protected B mBinding;
+    protected ViewGroup mContainer;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -32,6 +33,7 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        mContainer = container;
         init();
         return mBinding.getRoot();
     }

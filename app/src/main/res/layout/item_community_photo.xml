@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.community.CommunityBoard" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.CommunitySubListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_communityphoto_container"
+        android:layout_width="match_parent"
+        android:onClick="@{()->viewModel.onClickItem(item)}"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="20dp">
+
+        <io.temco.guhada.common.SquareImageView
+            android:id="@+id/imageview_communityphoto_thumbnail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@{@color/white_three}"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:roundCornerImageUrl="@{item.imageUrl}"
+            app:roundCornerRadius="@{5}" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_communityphoto_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageview_communityphoto_thumbnail">
+
+            <TextView
+                style="@style/CommunityTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_communityphoto_title"
+                android:layout_marginTop="16dp"
+                android:text="@{item.title}" />
+
+            <TextView
+                style="@style/CommunityTitleCategoryTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:text="@{@string/community_format_commentcount(item.comments)}"
+                android:textSize="@dimen/text_13" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/com_icon_new"
+                android:visibility="@{item.newlyCreated ? View.VISIBLE : View.GONE, default= gone}" />
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/framelayout_communityphoto_rank"
+            android:layout_width="19dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/border_all_whitethree_r11"
+            app:layout_constraintBottom_toTopOf="@+id/textview_communityphoto_like"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearlayout_communityphoto_title">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="1"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_6" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/textview_communityphoto_name"
+            style="@style/CommunityDescriptionTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="7dp"
+            android:text="@{item.userName}"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintLeft_toRightOf="@+id/framelayout_communityphoto_rank"
+            app:layout_constraintTop_toBottomOf="@id/linearlayout_communityphoto_title" />
+
+        <TextView
+            android:id="@+id/textview_communityphoto_like"
+            style="@style/CommunityDescriptionTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@{@string/community_format_likecount(item.likes)}"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
+
+        <TextView
+            android:id="@+id/textview_communityphoto_dot1"
+            style="@style/CommunityDescriptionTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@string/common_dot"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_like"
+            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_view"
+            app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
+
+        <TextView
+            android:id="@+id/textview_communityphoto_view"
+            style="@style/CommunityDescriptionTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@{@string/community_format_viewcount(item.views)}"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_dot1"
+            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_dot2"
+            app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
+
+        <TextView
+            android:id="@+id/textview_communityphoto_dot2"
+            style="@style/CommunityDescriptionTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@string/common_dot"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_view"
+            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_date"
+            app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
+
+        <TextView
+            android:id="@+id/textview_communityphoto_date"
+            style="@style/CommunityDescriptionTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{item.getDateDiff()}"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_dot2"
+            app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
