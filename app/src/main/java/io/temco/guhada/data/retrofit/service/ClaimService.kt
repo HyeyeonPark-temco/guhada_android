@@ -11,6 +11,7 @@ import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.model.order.CancelOrderStatus
 import io.temco.guhada.data.model.order.OrderHistoryResponse
+import io.temco.guhada.data.model.order.PurchaseOrder
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -80,7 +81,7 @@ interface ClaimService {
      * 주문 취소 신청 API
      */
     @POST("/order-claim/order-cancel")
-    fun cancelOrder(@Header("Authorization") accessToken: String, @Body cancelRequest: CancelRequest): Call<BaseModel<Any>>
+    fun cancelOrder(@Header("Authorization") accessToken: String, @Body cancelRequest: CancelRequest): Call<BaseModel<PurchaseOrder>>
 
     /**
      * 교환 신청 API
@@ -93,4 +94,10 @@ interface ClaimService {
      */
     @POST("/order-claim/order-return")
     fun requestRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<Any>>
+
+    /**
+     * 주문교환반품 신청 화면 정보
+     */
+    @GET("/order-claim/claim-form/{orderProdGroupId}")
+    fun getClaimForm(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<PurchaseOrder>>
 }

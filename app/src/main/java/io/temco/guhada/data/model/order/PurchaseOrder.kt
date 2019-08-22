@@ -2,6 +2,7 @@ package io.temco.guhada.data.model.order
 
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.data.model.OrderChangeCause
 import io.temco.guhada.data.model.order.OrderItemResponse
 import java.io.Serializable
 
@@ -32,12 +33,27 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var purchaseStatusText = ""
 
     var shipCompleteDate = "" // 2019-05-10
-    var shipCompleteTimestamp :String? = ""
+    var shipCompleteTimestamp: String? = ""
     var shipPrice = 0
 
     var statusMessage = "" // 주문 완료 메세지
 
     var reviewId: Int? = null // 리뷰 작성 여부 판단
+
+
+    // 취소교환반품 사유
+    var cancelReasonList: MutableList<OrderChangeCause>? = mutableListOf()
+    var exchangeReasonList: MutableList<OrderChangeCause>? = mutableListOf()
+    var returnReasonList: MutableList<OrderChangeCause>? = mutableListOf()
+
+    // 완료 화면 정보
+    var cancelReason = ""
+    var cancelReasonDetail = ""
+    var orderStatus = ""
+    var claimStatus = ""
+    var claimStatusText = ""
+    var paymentMethodText = ""
+    var orderStatusText = ""
 
     fun getOptionStr(): String {
         var result = ""

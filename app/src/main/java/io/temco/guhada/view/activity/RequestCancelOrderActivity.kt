@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
@@ -34,23 +35,34 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     override fun init() {
         initViewModel()
         initHeader()
-        initOrderInfo()
-        initProductInfo()
-        initCauseInfo()
-        initButton()
-
-        mBinding.viewModel = mViewModel
-        mBinding.executePendingBindings()
     }
 
     private fun initViewModel() {
         mViewModel = CancelOrderViewModel()
-        intent.getSerializableExtra("purchaseOrder").let {
-            if (it != null && ::mViewModel.isInitialized) mViewModel.purchaseOrder = it as PurchaseOrder
+//        intent.getSerializableExtra("purchaseOrder").let {
+//            if (it != null && ::mViewModel.isInitialized) mViewModel.purchaseOrder = it as PurchaseOrder
+//        }
+
+        intent.getLongExtra("orderProdGroupId", 0).let {
+            if (it > 0 && ::mViewModel.isInitialized) {
+                mViewModel.orderProdGroupId = it
+                mViewModel.getClaimForm(it)
+            }
         }
+        mViewModel.purchaseOrder.observe(this, Observer {
+            if (it.purchaseId > 0) {
+                initOrderInfo(it)
+                initProductInfo(it)
+                initCauseInfo(it)
+                initButton()
+                mBinding.viewModel = mViewModel
+                mBinding.executePendingBindings()
+            }
+        })
+
         mViewModel.successCancelOrderTask = {
             val intent = Intent(this, SuccessCancelOrderActivity::class.java)
-            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
+            intent.putExtra("purchaseOrder", it)
             startActivity(intent)
             setResult(Activity.RESULT_OK)
             finish()
@@ -62,29 +74,29 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         mBinding.includeRequestcancelorderHeader.setOnClickBackButton { finish() }
     }
 
-    private fun initOrderInfo() {
-        mBinding.includeRequestcancelorderOrderinfo.orderNumber = mViewModel.purchaseOrder.purchaseId.toInt()
-        mBinding.includeRequestcancelorderOrderinfo.orderTimeStamp = mViewModel.purchaseOrder.orderTimestamp
+    private fun initOrderInfo(purchaseOrder: PurchaseOrder) {
+        mBinding.includeRequestcancelorderOrderinfo.orderNumber = purchaseOrder.purchaseId.toInt()
+        mBinding.includeRequestcancelorderOrderinfo.orderTimeStamp = purchaseOrder.orderTimestamp
     }
 
-    private fun initProductInfo() {
-        mBinding.includeRequestcancelorderProductinfo.imageUrl = mViewModel.purchaseOrder.imageUrl
-        mBinding.includeRequestcancelorderProductinfo.brandName = mViewModel.purchaseOrder.brandName
-        mBinding.includeRequestcancelorderProductinfo.productName = "${mViewModel.purchaseOrder.season} ${mViewModel.purchaseOrder.dealName}"
-        mBinding.includeRequestcancelorderProductinfo.optionStr = mViewModel.purchaseOrder.getOptionStr()
-        mBinding.includeRequestcancelorderProductinfo.price = mViewModel.purchaseOrder.discountPrice
-        mBinding.includeRequestcancelorderProductinfo.purchaseStatusText = mViewModel.purchaseOrder.purchaseStatusText
+    private fun initProductInfo(purchaseOrder: PurchaseOrder) {
+        mBinding.includeRequestcancelorderProductinfo.imageUrl = purchaseOrder.imageUrl
+        mBinding.includeRequestcancelorderProductinfo.brandName = purchaseOrder.brandName
+        mBinding.includeRequestcancelorderProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.dealName}"
+        mBinding.includeRequestcancelorderProductinfo.optionStr = purchaseOrder.getOptionStr()
+        mBinding.includeRequestcancelorderProductinfo.price = purchaseOrder.discountPrice
+        mBinding.includeRequestcancelorderProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
     }
 
-    private fun initCauseInfo() {
-        mBinding.includeRequestcancelorderCause.causeList = mViewModel.causes
+    private fun initCauseInfo(purchaseOrder: PurchaseOrder) {
+        mBinding.includeRequestcancelorderCause.causeList = purchaseOrder.cancelReasonList
         mBinding.includeRequestcancelorderCause.quantityTitle = getString(R.string.requestorderstatus_cancel_quantity)
         mBinding.includeRequestcancelorderCause.quantity = mViewModel.quantity
         mBinding.includeRequestcancelorderCause.defaultMessage = getString(R.string.requestorderstatus_cancel_cause)
         mBinding.includeRequestcancelorderCause.hintMessage = getString(R.string.requestorderstatus_cancel_hint_cause)
-        mBinding.includeRequestcancelorderCause.sellerName = mViewModel.purchaseOrder.sellerName
+        mBinding.includeRequestcancelorderCause.sellerName = purchaseOrder.sellerName
         mBinding.includeRequestcancelorderCause.setOnClickAmountPlus {
-            if (mViewModel.quantity + 1 > mViewModel.purchaseOrder.quantity)
+            if (mViewModel.quantity + 1 > purchaseOrder.quantity)
                 ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overmaxquantity))
             else mViewModel.quantity += 1
             mBinding.includeRequestcancelorderCause.quantity = mViewModel.quantity
@@ -105,7 +117,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 mViewModel.selectedCausePos = position
-                mBinding.includeRequestcancelorderCause.defaultMessage = mViewModel.causes[position].label
+                mBinding.includeRequestcancelorderCause.defaultMessage = mViewModel.purchaseOrder.value?.cancelReasonList?.get(position)?.label
                 mBinding.executePendingBindings()
             }
         }
@@ -128,8 +140,8 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
          */
         @JvmStatic
         @BindingAdapter(value = ["cause", "requestType"])
-        fun Spinner.bindCause(list: MutableList<OrderChangeCause>, requestType: Int = 0) {
-            if (list.isNotEmpty()) {
+        fun Spinner.bindCause(list: MutableList<OrderChangeCause>?, requestType: Int = 0) {
+            if (list?.isNotEmpty() == true) {
                 if (list[list.size - 1].label != resources.getString(R.string.payment_hint_shippingmemo))
                     list.add(OrderChangeCause().apply {
                         this.label = when (requestType) {
@@ -140,11 +152,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
                         }
                     })
 
-                if (this.adapter == null) {
-                    this.adapter = OrderChangeCauseAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_cancelorder_spinner, list)
-                } else {
-                    (this.adapter as OrderChangeCauseAdapter).setItems(list)
-                }
+                this.adapter = OrderChangeCauseAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_cancelorder_spinner, list)
                 this.setSelection(list.size - 1)
             }
         }
