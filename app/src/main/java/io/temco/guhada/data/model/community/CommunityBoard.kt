@@ -1,6 +1,7 @@
 package io.temco.guhada.data.model.community
 
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.DateUtil
 import org.joda.time.DateTime
 
 /**
@@ -32,28 +33,7 @@ class CommunityBoard {
     var comments = 0
 
     fun getDateStr(): String = DateTime(date).toString("MM.dd")
-    fun getDateDiff(): String {
-        val MINUTE_MS = 60 * 1000
-        val HOUR_MS = MINUTE_MS * 60
-        val DAY_MS = HOUR_MS * 24
-        val diffSeconds = (now - date) * 1000
-
-        return when {
-            diffSeconds < MINUTE_MS -> "조금 전"
-            diffSeconds < HOUR_MS -> "${diffSeconds / MINUTE_MS}분 전"
-            diffSeconds < DAY_MS -> "${diffSeconds / HOUR_MS}시간 전"
-            else -> { // 24시간 이상 전
-                val boardDate = DateTime(date)
-                val boardYear = boardDate.year
-                val currentYear = DateTime(now).year
-
-                if (boardYear < currentYear)
-                    boardDate.toString("yyyy년 MM월 dd일")
-                else
-                    boardDate.toString("MM월 dd일")
-            }
-        }
-    }
+    fun getDateDiff(): String = DateUtil.getDateDiff(now = now, date = date)
 
     class CommunityResponse {
         var bbs = mutableListOf<CommunityBoard>()

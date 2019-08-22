@@ -39,13 +39,9 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
 
     private fun initViewModel() {
         mViewModel = CancelOrderViewModel()
-//        intent.getSerializableExtra("purchaseOrder").let {
-//            if (it != null && ::mViewModel.isInitialized) mViewModel.purchaseOrder = it as PurchaseOrder
-//        }
-
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
-                mViewModel.orderProdGroupId = it
+                mViewModel.mOrderProdGroupId = it
                 mViewModel.getClaimForm(it)
             }
         }
