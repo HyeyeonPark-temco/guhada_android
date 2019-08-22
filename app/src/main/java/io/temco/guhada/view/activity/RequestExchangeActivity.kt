@@ -43,13 +43,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
     private fun initViewModel() {
         mViewModel = RequestExchangeViewModel()
-//        intent.getSerializableExtra("purchaseOrder").let {
-//            if (it != null) {
-//                mViewModel.mPurchaseOrder = it as PurchaseOrder
-//                mViewModel.mExchangeRequest.orderProdGroupId = it.orderProdGroupId
-//            }
-//        }
-
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mExchangeRequest.orderProdGroupId = it

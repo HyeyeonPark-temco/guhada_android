@@ -93,7 +93,7 @@ interface ClaimService {
      * 반품 신청 API
      */
     @POST("/order-claim/order-return")
-    fun requestRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<Any>>
+    fun requestRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<PurchaseOrder>>
 
     /**
      * 주문교환반품 신청 화면 정보
