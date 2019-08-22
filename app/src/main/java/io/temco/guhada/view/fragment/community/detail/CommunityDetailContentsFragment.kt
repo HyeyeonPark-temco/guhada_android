@@ -1,15 +1,17 @@
 package io.temco.guhada.view.fragment.community.detail
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.webkit.*
 import io.temco.guhada.R
+import io.temco.guhada.common.Info
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.community.CommunityDetail
 import io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel
 import io.temco.guhada.databinding.FragmentCommunityDetailContentBinding
 import io.temco.guhada.view.fragment.base.BaseFragment
-
 
 
 class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) : BaseFragment<FragmentCommunityDetailContentBinding>() {
@@ -22,13 +24,15 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
     // OVERRIDE
     ////////////////////////////////////////////////
 
-    override fun getBaseTag(): String = CommunityDetailContentsFragment::class.java!!.getSimpleName()
+    override fun getBaseTag(): String = CommunityDetailContentsFragment::class.java!!.simpleName
     override fun getLayoutId(): Int = R.layout.fragment_community_detail_content
     override fun init() {
+        if (CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment", "init ---------------------")
         mBinding.viewModel = viewModel
         mDetail = viewModel.communityDetail.value!!
         mBinding.item = mDetail
         setDetailView()
+        viewModel.getBookMark()
     }
 
     ////////////////////////////////////////////////
@@ -52,6 +56,15 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
         }
         CommonViewUtil.setTextViewImageTextEnd(context!!, R.drawable.drawable_icon_new,
                 (header+mDetail.title!!),mBinding.textviewCommunitydetailcontentsTitle)
+
+        mBinding.setClickShareListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, Info.SHARE_COMMUNITY_URL+mDetail.id)
+                type = "text/plain"
+            }
+            (context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
+        }
 
         mBinding.webviewCommunitydetailContent.settings.apply {
             javaScriptEnabled = true

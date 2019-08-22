@@ -1,22 +1,17 @@
 package io.temco.guhada.view.fragment.community
 
 
-import android.app.Activity
-import android.content.Intent
 import android.view.View
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.viewmodel.community.CommunityMainViewPagerViewModel
 import io.temco.guhada.databinding.FragmentMainCommunityBinding
-import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.adapter.CommunityPagerAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -86,7 +81,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
     private fun setViewPager(tabtitle : Array<String>) {
         if (viewPagerAdapter == null) {
             if(CustomLog.flag)CustomLog.L("CommunityMainFragment","tabtitle.size",tabtitle.size)
-            viewPagerAdapter = CommunityPagerAdapter(childFragmentManager,mViewModel.communityInfoList.value!!)
+            viewPagerAdapter = CommunityPagerAdapter(childFragmentManager, mViewModel.communityInfoList.value!!)
         }
         mBinding.viewpager.adapter = viewPagerAdapter
         mBinding.viewpager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(mBinding.layoutTab))

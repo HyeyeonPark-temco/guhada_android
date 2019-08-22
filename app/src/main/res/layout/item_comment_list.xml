@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable name="userProfile" type="String" />
+        <variable name="userName" type="String" />
+        <variable name="createTime" type="String" />
+        <variable name="contents" type="String" />
+        <variable name="likeCount" type="Integer" />
+        <variable name="isReply" type="Boolean" />
+        <!--<variable name="isReplyListContain" type="Boolean" />-->
+        <variable name="isLikeComment" type="Boolean" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/common_white"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+        
+        <View
+            android:layout_width="47dp"
+            android:layout_height="10dp"
+            android:visibility="@{isReply ? View.VISIBLE : View.GONE , default = gone}"/>
+        
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="30dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{userProfile}"
+                android:background="@color/common_white"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/drawable_transparent_circle" />
+
+            <TextView
+                style="@style/TextMediumSingleLine"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="13dp"
+                android:gravity="center"
+                android:text="99"
+                android:textSize="@dimen/text_8"
+                android:background="@drawable/ceo" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:minHeight="70dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingBottom="7dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:background="@color/white_five"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="@color/black_four"
+                    android:text="@{userName}"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    style="@style/TextMediumSingleLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:text="@{createTime}"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="15dp"
+                android:background="@color/white_five"
+                android:textColor="@color/greyish_brown_two"
+                android:lineSpacingExtra="6sp"
+                android:text="@{contents}"
+                android:textSize="@dimen/text_14" />
+
+            <!--android:layout_width="@{isReply ? @dimen/comment_list_reply_image_size : @dimen/comment_list_image_size}"
+            android:layout_height="@{isReply ? @dimen/comment_list_reply_image_size : @dimen/comment_list_image_size}"-->
+
+            <ImageView
+                android:layout_width="243dp"
+                android:layout_height="243dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{userProfile}"
+                android:visibility="gone"
+                android:background="@color/common_white"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:paddingBottom="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/warm_grey_two"
+                    android:text="@string/community_add_comment_reply"
+                    android:textSize="@dimen/text_12" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/drawble_circle_dot2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/community_detail_likecount(likeCount)}"
+                    android:textColor="@{isLikeComment ? @color/blue_purple :@color/warm_grey_two, default = @color/warm_grey_two}"
+                    android:textSize="@dimen/text_12" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="2dp"
+                    android:visibility="@{isLikeComment ? View.VISIBLE : View.GONE, default = gone}"
+                    android:src="@drawable/detail_icon_thumbsup_on"/>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/drawble_circle_dot2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/productdetail_qna_report"
+                    android:textColor="@color/pinkish_grey"
+                    android:textSize="@dimen/text_12" />
+            </LinearLayout>
+        </LinearLayout>
+
+       <!-- <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_comment_inner_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:overScrollMode="never"
+            android:background="@color/brick"
+            android:visibility="@{isReplyListContain ? View.VISIBLE : View.GONE, default = gone}"/>-->
+
+    </LinearLayout>
+</layout>

@@ -45,8 +45,8 @@ abstract class CommonRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(val items:
     /**
      * 메인 리스트에 사용할 base view holder
      */
-    open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseViewHolder<ViewDataBinding>(containerView){
-        abstract fun bind(viewModel : ViewModel, position : Int, data : MyPageClaim.Content)
+    open abstract class ListViewHolder<T>(containerView: View, binding: ViewDataBinding) : BaseViewHolder<ViewDataBinding>(containerView){
+        abstract fun bind(viewModel : ViewModel, position : Int, data : T)
     }
 
 

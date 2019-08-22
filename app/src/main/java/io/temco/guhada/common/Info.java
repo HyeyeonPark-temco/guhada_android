@@ -28,5 +28,7 @@ public class Info {
     public static final String INTENT_PRODUCT_ID = "productId";
     public static final String INTENT_PRODUCT_DATA = "productData";
 
+    public static final String SHARE_COMMUNITY_URL = "http://dev.guhada.com:8080/community/article/";
+
     ////////////////////////////////////////////////
 }
