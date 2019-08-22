@@ -33,13 +33,19 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     var mShippingPayment: Int = ShippingPaymentType.BOX.pos
     var mOrderProdGroupId = 0L
 
+    // 교환 신청 API 호출 result
+    var mRequestOrderResult = PurchaseOrder()
+
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.getClaimForm(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            if (it.data != null)
+                            if (it.data != null){
+                                (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
                                 this@RequestExchangeViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
+                            }
+
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)
         })
@@ -118,6 +124,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             ClaimServer.requestExchange(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
+                            mRequestOrderResult = it.data as PurchaseOrder
                             mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
                         })
             }, accessToken = accessToken, exchangeRequest = mExchangeRequest)

@@ -1,6 +1,5 @@
 package io.temco.guhada.data.model.community
 
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.DateUtil
 import org.joda.time.DateTime
 

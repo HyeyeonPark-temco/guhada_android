@@ -52,6 +52,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
+                mViewModel.mExchangeRequest.orderProdGroupId = it
                 mViewModel.mOrderProdGroupId = it
                 mViewModel.getClaimForm(it)
             }

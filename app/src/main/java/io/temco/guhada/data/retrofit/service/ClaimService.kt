@@ -87,7 +87,7 @@ interface ClaimService {
      * 교환 신청 API
      */
     @POST("/order-claim/order-exchange")
-    fun requestExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest) : Call<BaseModel<Any>>
+    fun requestExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest) : Call<BaseModel<PurchaseOrder>>
 
     /**
      * 반품 신청 API
