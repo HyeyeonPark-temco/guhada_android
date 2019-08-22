@@ -45,12 +45,12 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
         private fun setSpacing() {
             if (type == CommunitySubListFragment.CommunityListType.IMAGE.type) {
                 ((mBinding as ItemCommunityPhotoBinding).constraintlayoutCommunityphotoContainer.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                    if(adapterPosition % 2 == 0){
-                        leftMargin = CommonViewUtil.convertDpToPixel(dp = 10,  context = mBinding.root.context)
-                        rightMargin = CommonViewUtil.convertDpToPixel(dp = 5,  context = mBinding.root.context)
-                    }else {
-                        leftMargin = CommonViewUtil.convertDpToPixel(dp = 5,  context = mBinding.root.context)
-                        rightMargin = CommonViewUtil.convertDpToPixel(dp = 10,  context = mBinding.root.context)
+                    if (adapterPosition % 2 == 0) {
+                        leftMargin = CommonViewUtil.convertDpToPixel(dp = 10, context = mBinding.root.context)
+                        rightMargin = CommonViewUtil.convertDpToPixel(dp = 5, context = mBinding.root.context)
+                    } else {
+                        leftMargin = CommonViewUtil.convertDpToPixel(dp = 5, context = mBinding.root.context)
+                        rightMargin = CommonViewUtil.convertDpToPixel(dp = 10, context = mBinding.root.context)
                     }
                 }.let {
                     (mBinding as ItemCommunityPhotoBinding).constraintlayoutCommunityphotoContainer.layoutParams = it

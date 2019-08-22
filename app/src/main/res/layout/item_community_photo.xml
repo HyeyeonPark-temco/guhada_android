@@ -15,7 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout_communityphoto_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:paddingBottom="20dp">
@@ -128,6 +128,7 @@
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_like"
+            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_view"
             app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
 
         <TextView
@@ -136,6 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
+            app:layout_constraintRight_toLeftOf="@+id/textview_communityphoto_dot2"
             android:text="@{@string/community_format_viewcount(item.views)}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -163,11 +165,10 @@
             android:layout_marginTop="7dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{String.valueOf(item.date)}"
+            android:text="@{item.getDateDiff()}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/textview_communityphoto_dot2"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_communityphoto_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
