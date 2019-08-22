@@ -1,9 +1,6 @@
 package io.temco.guhada.data.viewmodel
 
-import androidx.databinding.Bindable
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
-import io.temco.guhada.BR
 import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -19,6 +16,8 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
     var mPage = 0
     var mFilterId = 0L
     var UNIT_PER_PAGE = 20
+
+    var redirectDetailTask: (item: CommunityBoard) -> Unit = {}
 
     fun getCommunityList() {
         // init filter id
@@ -52,4 +51,8 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
     }
 
     fun onClickMore() = getCommunityList()
+
+    fun onClickItem(item: CommunityBoard) {
+        redirectDetailTask(item)
+    }
 }

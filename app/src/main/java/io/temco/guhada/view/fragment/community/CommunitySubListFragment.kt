@@ -1,5 +1,7 @@
 package io.temco.guhada.view.fragment.community
 
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
@@ -8,11 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.community.CommunityBoard
 import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.viewmodel.CommunitySubListViewModel
 import io.temco.guhada.databinding.FragmentCommunitySubListBinding
+import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.adapter.CommunityBoardAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
@@ -54,6 +58,12 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
                 View.GONE
             }
         })
+        mViewModel.redirectDetailTask = {
+            val intent = Intent(context, CommunityDetailActivity::class.java)
+            intent.putExtra("bbsId", it.bbsId)
+            intent.putExtra("info", mViewModel.mCommunityInfo)
+            (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
+        }
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
@@ -67,7 +77,10 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
         }
 
         if (mBinding.recyclerviewCommunityist.adapter == null)
-            mBinding.recyclerviewCommunityist.adapter = CommunityBoardAdapter(listType).apply { this.mList = bbs }
+            mBinding.recyclerviewCommunityist.adapter = CommunityBoardAdapter(listType).apply {
+                this.mList = bbs
+                this.mViewModel = this@CommunitySubListFragment.mViewModel
+            }
         else {
             (mBinding.recyclerviewCommunityist.adapter as CommunityBoardAdapter).mList = bbs
             (mBinding.recyclerviewCommunityist.adapter as CommunityBoardAdapter).notifyDataSetChanged()

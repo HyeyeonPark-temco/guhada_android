@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.data.model.community.CommunityBoard
+import io.temco.guhada.data.viewmodel.CommunitySubListViewModel
 import io.temco.guhada.databinding.ItemCommunityPhotoBinding
 import io.temco.guhada.databinding.ItemCommunityTextBinding
 import io.temco.guhada.view.fragment.community.CommunitySubListFragment
@@ -17,6 +18,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBoardAdapter.Holder>() {
     var mList = mutableListOf<CommunityBoard>()
+    lateinit var mViewModel: CommunitySubListViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding =
@@ -24,7 +26,7 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
                     DataBindingUtil.inflate<ItemCommunityPhotoBinding>(LayoutInflater.from(parent.context), R.layout.item_community_photo, parent, false)
                 else
                     DataBindingUtil.inflate<ItemCommunityTextBinding>(LayoutInflater.from(parent.context), R.layout.item_community_text, parent, false)
-        return Holder(binding, type)
+        return Holder(binding, mViewModel, type)
     }
 
     override fun getItemCount(): Int = mList.size
@@ -33,10 +35,12 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
         holder.bind(mList[position])
     }
 
-    class Holder(binding: ViewDataBinding, val type: String) : BaseViewHolder<ViewDataBinding>(binding.root) {
+    class Holder(binding: ViewDataBinding, val mViewModel: CommunitySubListViewModel, val type: String) : BaseViewHolder<ViewDataBinding>(binding.root) {
         fun bind(item: CommunityBoard) {
             if (type == CommunitySubListFragment.CommunityListType.IMAGE.type) {
                 (mBinding as ItemCommunityPhotoBinding).item = item
+                (mBinding as ItemCommunityPhotoBinding).viewModel = mViewModel
+
                 if (item.title.length > 12) {
                     LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                         weight = 1f
@@ -48,6 +52,8 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
 
             } else {
                 (mBinding as ItemCommunityTextBinding).item = item
+                (mBinding as ItemCommunityTextBinding).viewModel = mViewModel
+
                 if (item.title.length > 24) {
                     LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                         weight = 1f
@@ -59,7 +65,7 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
             }
 
             setSpacing()
-            binding.executePendingBindings()
+            mBinding.executePendingBindings()
         }
 
         private fun setSpacing() {

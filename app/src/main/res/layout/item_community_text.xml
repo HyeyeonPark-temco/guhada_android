@@ -9,10 +9,15 @@
         <variable
             name="item"
             type="io.temco.guhada.data.model.community.CommunityBoard" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.CommunitySubListViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:onClick="@{()->viewModel.onClickItem(item)}"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
