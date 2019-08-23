@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.community.CommunityBoard
 import io.temco.guhada.data.model.community.CommunityInfo
@@ -22,7 +23,6 @@ import io.temco.guhada.databinding.FragmentCommunitySubListBinding
 import io.temco.guhada.view.CommunitySpinnerAdapter
 import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.adapter.CommunityBoardAdapter
-import io.temco.guhada.view.adapter.PaymentSpinnerAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 /**
@@ -85,10 +85,12 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
-                mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
-                mViewModel.mPage = 0
-                mViewModel.mFilterId = selectedCategory.id.toLong()
-                mViewModel.getCommunityList()
+                if (selectedCategory.id.toLong() != mViewModel.mFilterId) {
+                    mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
+                    mViewModel.mPage = 0
+                    mViewModel.mFilterId = selectedCategory.id.toLong()
+                    mViewModel.getCommunityList()
+                }
             }
         }
 
@@ -98,11 +100,17 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
-                mBinding.textviewCommunitylistFilter2.text = mViewModel.mSortFilterList[position]
-//                mViewModel.mPage = 0
-//                mViewModel.mFilterId = selectedCategory.id.toLong()
-//                mViewModel.getCommunityList()
+                val selectedSort = mViewModel.mSortFilterList[position]
+                mBinding.textviewCommunitylistFilter2.text = selectedSort
+                mViewModel.mOrder = when (selectedSort) {
+                    CommunityOrderType.DATE_DESC.label -> CommunityOrderType.DATE_DESC.type
+                    CommunityOrderType.VIEW_DESC.label -> CommunityOrderType.VIEW_DESC.type
+                    CommunityOrderType.LIKE_DESC.label -> CommunityOrderType.LIKE_DESC.type
+                    CommunityOrderType.COMMENT_DESC.label -> CommunityOrderType.COMMENT_DESC.type
+                    else -> CommunityOrderType.DATE_DESC.type
+                }
+                mViewModel.mPage = 0
+                mViewModel.getCommunityList()
             }
         }
     }
@@ -147,8 +155,8 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
 
         @JvmStatic
         @BindingAdapter("android:textColor")
-        fun TextView.bindColor(resId : Int?){
-            if(resId != null)
+        fun TextView.bindColor(resId: Int?) {
+            if (resId != null)
                 this.setTextColor(resources.getColor(resId))
             else
                 this.setTextColor(resources.getColor(R.color.warm_grey))
