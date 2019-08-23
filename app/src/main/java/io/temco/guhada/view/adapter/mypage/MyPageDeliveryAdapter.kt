@@ -13,11 +13,16 @@ import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.DeliveryButton
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.review.ReviewAvailableOrder
+import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.activity.*
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -82,22 +87,41 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
         private fun getButtons(item: PurchaseOrder): MutableList<DeliveryButton> {
             val buttons = mutableListOf<DeliveryButton>()
             val status = if (type == Type.Delivery.type) item.purchaseStatus else item.claimStatus
+            val withdrawExchangeListener = View.OnClickListener {
+                CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_exchange), cancelButtonVisible = true,
+                        confirmTask = {
+                            ServerCallbackUtil.callWithToken(task = { token ->
+                                ClaimServer.withdrawExchange(OnServerListener { success, o ->
+                                    ServerCallbackUtil.executeByResultCode(success, o,
+                                            successTask = {
+                                                EventBusData(requestCode = RequestCode.DELIVERY.flag, data = null).let { eventBusData ->
+                                                    EventBusHelper.sendEvent(eventBusData)
+                                                }
+                                            },
+                                            claimNotFoundTask = {
+                                                ToastUtil.showMessage(it.message)
+                                            })
+                                }, accessToken = token, orderProdGroupId = item.orderProdGroupId)
+                            })
+                        }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+            }
+
             when (status) {
                 PurchaseStatus.WAITING_PAYMENT.status,
                 PurchaseStatus.COMPLETE_PAYMENT.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "주문내역"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_orderinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
                     })
                     buttons.add(DeliveryButton().apply {
-                        text = "주문수정"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_ordermodify)
                     })
                     buttons.add(DeliveryButton().apply {
-                        text = "주문취소"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_ordercancel)
                         task = View.OnClickListener { requestCancelOrderTask(item) }
                     })
                     buttons.add(DeliveryButton().apply {
-                        text = "배송지변경"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_changeshipping)
                         task = View.OnClickListener { editShippingAddressTask(item.purchaseId) }
                     })
                 }
@@ -105,7 +129,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.SELLER_IDENTIFIED.status,
                 PurchaseStatus.RELEASE_PRODUCT.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "주문내역"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_orderinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
                     })
                 }
@@ -115,19 +139,19 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.DELIVERING.status,
                 PurchaseStatus.DELIVERED.status -> {
                     if (item.purchaseStatus == PurchaseStatus.RESEND_EXCHANGE.status || item.purchaseStatus == PurchaseStatus.COMPLETE_EXCHANGE.status)
-                        buttons.add(DeliveryButton().apply { text = "재배송조회" })
-                    else buttons.add(DeliveryButton().apply { text = "배송조회" })
+                        buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_reshippinginfo) })
+                    else buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_shippinginfo) })
 
                     if (item.purchaseConfirm) {
                         if (item.reviewId != null) buttons.add(DeliveryButton().apply {
-                            text = "리뷰수정"
+                            text = mBinding.root.context.getString(R.string.mypage_delivery_button_reviewmodify)
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
                                 (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
                             }
                         })
                         else buttons.add(DeliveryButton().apply {
-                            text = "리뷰작성"
+                            text = mBinding.root.context.getString(R.string.mypage_delivery_button_reviewwrite)
                             task = View.OnClickListener {
                                 val review = ReviewAvailableOrder().apply {
                                     this.purchaseId = item.purchaseId
@@ -147,7 +171,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         })
                     } else {
                         buttons.add(DeliveryButton().apply {
-                            text = "구매확정"
+                            text = mBinding.root.context.getString(R.string.mypage_delivery_button_confirmpurchase)
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, ConfirmPurchaseActivity::class.java)
                                 intent.putExtra("purchaseOrder", item)
@@ -155,7 +179,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                             }
                         })
                         buttons.add(DeliveryButton().apply {
-                            text = "교환신청"
+                            text = mBinding.root.context.getString(R.string.mypage_delivery_button_requestexchange)
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, RequestExchangeActivity::class.java)
                                 intent.putExtra("orderProdGroupId", item.orderProdGroupId)
@@ -163,7 +187,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                             }
                         })
                         buttons.add(DeliveryButton().apply {
-                            text = "반품신청"
+                            text = mBinding.root.context.getString(R.string.mypage_delivery_button_requestrefund)
                             task = View.OnClickListener {
                                 val intent = Intent(binding.root.context, RequestRefundActivity::class.java)
                                 intent.putExtra("orderProdGroupId", item.orderProdGroupId)
@@ -175,49 +199,75 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
                 PurchaseStatus.REQUEST_CANCEL.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "취소정보"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_cancelinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId) }
                     })
-                    buttons.add(DeliveryButton().apply { text = "취소철회" })
+                    // buttons.add(DeliveryButton().apply { text = "취소철회" })
                 }
 
                 PurchaseStatus.REQUEST_RETURN.status -> {
-                    buttons.add(DeliveryButton().apply { text = "신청서수정" })
-                    buttons.add(DeliveryButton().apply { text = "반품철회" })
+                    buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify) })
+                    buttons.add(DeliveryButton().apply {
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawrefund)
+                        task = View.OnClickListener {
+                            CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_refund), cancelButtonVisible = true,
+                                    confirmTask = {
+                                        ServerCallbackUtil.callWithToken(task = { token ->
+                                            ClaimServer.withdrawRefund(OnServerListener { success, o ->
+                                                ServerCallbackUtil.executeByResultCode(success, o,
+                                                        successTask = {
+                                                            EventBusData(requestCode = RequestCode.DELIVERY.flag, data = null).let { eventBusData ->
+                                                                EventBusHelper.sendEvent(eventBusData)
+                                                            }
+                                                        },
+                                                        claimNotFoundTask = {
+                                                            ToastUtil.showMessage(it.message)
+                                                        })
+                                            }, accessToken = token, orderProdGroupId = item.orderProdGroupId)
+                                        })
+                                    }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+                        }
+                    })
                 }
 
                 PurchaseStatus.REQUEST_EXCHANGE.status -> {
-                    buttons.add(DeliveryButton().apply { text = "신청서수정" })
-                    buttons.add(DeliveryButton().apply { text = "교환철회" })
+                    buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify) })
+                    buttons.add(DeliveryButton().apply {
+                        text = mBinding.root.context.getString(R.string.mypage_deliverycer_withdraw_exchange)
+                        task = withdrawExchangeListener
+                    })
                 }
 
                 PurchaseStatus.PICKING_EXCHANGE.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "교환정보"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_exchangeinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId) }
                     })
-                    buttons.add(DeliveryButton().apply { text = "교환철회" })
+                    buttons.add(DeliveryButton().apply {
+                        text = mBinding.root.context.getString(R.string.mypage_deliverycer_withdraw_exchange)
+                        task = withdrawExchangeListener
+                    })
                 }
 
                 PurchaseStatus.PICKING_RETURN.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "반품정보"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_refundinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId) }
                     })
-                    buttons.add(DeliveryButton().apply { text = "반품철회" })
+                    buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawrefund) })
                 }
 
                 PurchaseStatus.COMPLETE_CANCEL.status,
                 PurchaseStatus.SALE_CANCEL.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "취소정보"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_cancelinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId) }
                     })
                 }
 
                 PurchaseStatus.COMPLETE_PICK_EXCHANGE.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "교환정보"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_exchangeinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId) }
                     })
                 }
@@ -225,7 +275,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.COMPLETE_RETURN.status,
                 PurchaseStatus.COMPLETE_PICK_RETURN.status -> {
                     buttons.add(DeliveryButton().apply {
-                        text = "반품정보"
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_refundinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId) }
                     })
                 }

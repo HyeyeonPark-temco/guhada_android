@@ -203,5 +203,23 @@ open class ClaimServer {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
                         .getClaimForm(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 반품 철회
+         */
+        @JvmStatic
+        fun withdrawRefund(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .withdrawRefund(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 교환 철회
+         */
+        @JvmStatic
+        fun withdrawExchange(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .withdrawExchange(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
     }
 }

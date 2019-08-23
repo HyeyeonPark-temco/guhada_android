@@ -96,8 +96,20 @@ interface ClaimService {
     fun requestRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<PurchaseOrder>>
 
     /**
-     * 주문교환반품 신청 화면 정보
+     * 주문교환반품 신청 화면 정보 API
      */
     @GET("/order-claim/claim-form/{orderProdGroupId}")
     fun getClaimForm(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<PurchaseOrder>>
+
+    /**
+     * 반품 철회 API
+     */
+    @DELETE("/order-claim/order-return-withdraw")
+    fun withdrawRefund(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<Any>>
+
+    /**
+     * 교환 철회 API
+     */
+    @DELETE("/order-claim/order-exchange-withdraw")
+    fun withdrawExchange(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<Any>>
 }
