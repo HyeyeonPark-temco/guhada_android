@@ -206,6 +206,7 @@ open class ClaimServer {
 
         /**
          * 반품 철회
+         * response type: Boolean
          */
         @JvmStatic
         fun withdrawRefund(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
@@ -215,6 +216,7 @@ open class ClaimServer {
 
         /**
          * 교환 철회
+         * response type: Boolean
          */
         @JvmStatic
         fun withdrawExchange(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =

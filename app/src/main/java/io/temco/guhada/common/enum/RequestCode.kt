@@ -30,5 +30,6 @@ enum class RequestCode(val flag: Int) {
     CONFIRM_PURCHASE(10023),
     CANCEL_ORDER(10024),
     EXCHANGE(10025),
-    DELIVERY(10026)
+    DELIVERY(10026),
+    WITHDRAW(10027)
 }

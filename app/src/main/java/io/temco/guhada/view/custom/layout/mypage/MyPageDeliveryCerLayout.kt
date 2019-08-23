@@ -70,6 +70,7 @@ class MyPageDeliveryCerLayout constructor(
     private fun setEventBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
+                RequestCode.WITHDRAW.flag,
                 RequestCode.CONFIRM_PURCHASE.flag -> {
                     mViewModel.page = 1
                     mViewModel.getCancelOrderStatus()

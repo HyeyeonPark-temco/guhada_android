@@ -60,8 +60,9 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
             // image click listener
             mBinding.imageviewDeliveryProfile.setOnClickListener {
-                val data = EventBusData(requestCode = RequestCode.PRODUCT_DETAIL.flag, data = item.dealId)
-                EventBusHelper.sendEvent(data)
+                EventBusData(requestCode = RequestCode.PRODUCT_DETAIL.flag, data = item.dealId).let { data ->
+                    EventBusHelper.sendEvent(data)
+                }
             }
             mBinding.imageviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
             mBinding.textviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
@@ -84,27 +85,43 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             binding.root.context.startActivity(intent)
         }
 
+        private fun withdrawRefund(orderProdGroupId: Long) =
+                ServerCallbackUtil.callWithToken(task = { token ->
+                    ClaimServer.withdrawExchange(OnServerListener { success, o ->
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = { EventBusData(requestCode = RequestCode.WITHDRAW.flag, data = null).let { data -> EventBusHelper.sendEvent(data) } },
+                                claimNotFoundTask = { ToastUtil.showMessage(it.message) })
+                    }, accessToken = token, orderProdGroupId = orderProdGroupId)
+                })
+
+        private fun withdrawExchange(orderProdGroupId: Long) = ServerCallbackUtil.callWithToken(task = { token ->
+            ClaimServer.withdrawRefund(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = { EventBusData(requestCode = RequestCode.WITHDRAW.flag, data = null).let { data -> EventBusHelper.sendEvent(data) } },
+                        claimNotFoundTask = { ToastUtil.showMessage(it.message) })
+            }, accessToken = token, orderProdGroupId = orderProdGroupId)
+        })
+
+        private fun redirectWriteReviewActivity(item: PurchaseOrder) {
+            val review = ReviewAvailableOrder().apply {
+                this.purchaseId = item.purchaseId
+                this.productId = item.productId
+                this.season = item.season
+                this.brandName = item.brandName
+                this.prodName = item.productName
+                this.quantity = item.quantity
+                this.orderPrice = item.orderPrice
+                this.imageUrl = item.imageUrl
+            }
+
+            val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
+            intent.putExtra("reviewData", review)
+            (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+        }
+
         private fun getButtons(item: PurchaseOrder): MutableList<DeliveryButton> {
             val buttons = mutableListOf<DeliveryButton>()
             val status = if (type == Type.Delivery.type) item.purchaseStatus else item.claimStatus
-            val withdrawExchangeListener = View.OnClickListener {
-                CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_exchange), cancelButtonVisible = true,
-                        confirmTask = {
-                            ServerCallbackUtil.callWithToken(task = { token ->
-                                ClaimServer.withdrawExchange(OnServerListener { success, o ->
-                                    ServerCallbackUtil.executeByResultCode(success, o,
-                                            successTask = {
-                                                EventBusData(requestCode = RequestCode.DELIVERY.flag, data = null).let { eventBusData ->
-                                                    EventBusHelper.sendEvent(eventBusData)
-                                                }
-                                            },
-                                            claimNotFoundTask = {
-                                                ToastUtil.showMessage(it.message)
-                                            })
-                                }, accessToken = token, orderProdGroupId = item.orderProdGroupId)
-                            })
-                        }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
-            }
 
             when (status) {
                 PurchaseStatus.WAITING_PAYMENT.status,
@@ -125,7 +142,6 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         task = View.OnClickListener { editShippingAddressTask(item.purchaseId) }
                     })
                 }
-
                 PurchaseStatus.SELLER_IDENTIFIED.status,
                 PurchaseStatus.RELEASE_PRODUCT.status -> {
                     buttons.add(DeliveryButton().apply {
@@ -152,22 +168,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         })
                         else buttons.add(DeliveryButton().apply {
                             text = mBinding.root.context.getString(R.string.mypage_delivery_button_reviewwrite)
-                            task = View.OnClickListener {
-                                val review = ReviewAvailableOrder().apply {
-                                    this.purchaseId = item.purchaseId
-                                    this.productId = item.productId
-                                    this.season = item.season
-                                    this.brandName = item.brandName
-                                    this.prodName = item.productName
-                                    this.quantity = item.quantity
-                                    this.orderPrice = item.orderPrice
-                                    this.imageUrl = item.imageUrl
-                                }
-
-                                val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
-                                intent.putExtra("reviewData", review)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
-                            }
+                            task = View.OnClickListener { redirectWriteReviewActivity(item) }
                         })
                     } else {
                         buttons.add(DeliveryButton().apply {
@@ -211,21 +212,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawrefund)
                         task = View.OnClickListener {
                             CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_refund), cancelButtonVisible = true,
-                                    confirmTask = {
-                                        ServerCallbackUtil.callWithToken(task = { token ->
-                                            ClaimServer.withdrawRefund(OnServerListener { success, o ->
-                                                ServerCallbackUtil.executeByResultCode(success, o,
-                                                        successTask = {
-                                                            EventBusData(requestCode = RequestCode.DELIVERY.flag, data = null).let { eventBusData ->
-                                                                EventBusHelper.sendEvent(eventBusData)
-                                                            }
-                                                        },
-                                                        claimNotFoundTask = {
-                                                            ToastUtil.showMessage(it.message)
-                                                        })
-                                            }, accessToken = token, orderProdGroupId = item.orderProdGroupId)
-                                        })
-                                    }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+                                    confirmTask = { withdrawExchange(item.orderProdGroupId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
                         }
                     })
                 }
@@ -233,8 +220,11 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.REQUEST_EXCHANGE.status -> {
                     buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify) })
                     buttons.add(DeliveryButton().apply {
-                        text = mBinding.root.context.getString(R.string.mypage_deliverycer_withdraw_exchange)
-                        task = withdrawExchangeListener
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawexchange)
+                        task = View.OnClickListener {
+                            CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_exchange), cancelButtonVisible = true,
+                                    confirmTask = { withdrawRefund(item.orderProdGroupId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+                        }
                     })
                 }
 
@@ -244,8 +234,11 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId) }
                     })
                     buttons.add(DeliveryButton().apply {
-                        text = mBinding.root.context.getString(R.string.mypage_deliverycer_withdraw_exchange)
-                        task = withdrawExchangeListener
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawexchange)
+                        task = View.OnClickListener {
+                            CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_exchange), cancelButtonVisible = true,
+                                    confirmTask = { withdrawRefund(item.orderProdGroupId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+                        }
                     })
                 }
 
