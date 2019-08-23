@@ -1008,7 +1008,7 @@
     <string name="user_size_update_recommend_desc">내 사이즈 등록하면 적립금 1,000원 적립!</string>
 
 
-    <!-- Community Title -->
+    <!-- Community -->
     <string name="community_titles_main">메인</string>
     <string name="community_titles_popular">인기글</string>
     <string name="community_titles_noti">공지사항</string>
@@ -1028,6 +1028,7 @@
     <string name="intToStringText">%d</string>
 
     <string name="community_add_comment_reply">댓글달기</string>
+    <string name="community_empty">등록된게시글이 없습니다.</string>
 
 
 </resources>

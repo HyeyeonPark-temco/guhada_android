@@ -20,6 +20,8 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var optionAttribute3: String? = ""
 
     var orderPrice = 0
+
+
     var orderProdGroupId: Long = 0
     var orderProdId: Long = 0
     var originalPrice = 0

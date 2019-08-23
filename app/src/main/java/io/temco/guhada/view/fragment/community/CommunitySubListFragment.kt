@@ -7,10 +7,12 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
@@ -57,12 +59,16 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
         mViewModel = CommunitySubListViewModel()
         mViewModel.mCommunityInfo = info
         mViewModel.mCommunityResponse.observe(this, Observer {
-            initList(it.bbs)
-
-            mBinding.linearlayoutCommunitylistMore.visibility = if (it.bbs.size < it.totalCount) {
-                View.VISIBLE
+            if (it.bbs.isEmpty()) {
+                mViewModel.mEmptyViewVisible = ObservableBoolean(true)
+                mViewModel.notifyPropertyChanged(BR.mEmptyViewVisible)
             } else {
-                View.GONE
+                initList(it.bbs)
+                mBinding.linearlayoutCommunitylistMore.visibility = if (it.bbs.size < it.totalCount) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             }
         })
         mViewModel.redirectDetailTask = {

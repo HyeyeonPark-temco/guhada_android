@@ -1,5 +1,7 @@
 package io.temco.guhada.data.viewmodel
 
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.listener.OnServerListener
@@ -18,6 +20,9 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
     var mPage = 0
     var mFilterId = -1L
     var mOrder = CommunityOrderType.DATE_DESC.type
+    var mEmptyViewVisible = ObservableBoolean(false)
+        @Bindable
+        get() = field
     var UNIT_PER_PAGE = 10
 
     var redirectDetailTask: (item: CommunityBoard) -> Unit = {}

@@ -134,6 +134,29 @@
                 app:layout_constraintTop_toBottomOf="@id/framelayout_communitylist_filter2" />
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.mEmptyViewVisible? View.VISIBLE: View.GONE, default=gone}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/framelayout_communitylist_filter2">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_no_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/community_empty" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linearlayout_communitylist_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,6 +166,7 @@
                 android:paddingTop="17dp"
                 android:paddingEnd="40dp"
                 android:paddingBottom="17dp"
+                android:visibility="@{viewModel.mEmptyViewVisible? View.GONE: View.VISIBLE}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerview_communityist">
