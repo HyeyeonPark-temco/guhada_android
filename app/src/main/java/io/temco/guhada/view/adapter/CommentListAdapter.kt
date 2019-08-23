@@ -44,7 +44,6 @@ class CommentListAdapter (private val model: ViewModel) : RecyclerView.Adapter<L
     }
 
     override fun onBindViewHolder(holder: ListViewHolder<Comments>, position: Int) {
-        if(CustomLog.flag)CustomLog.L("onBindViewHolder position " + position,mList[position])
         holder.bind(model, position, mList[position])
     }
 
@@ -69,17 +68,9 @@ open abstract class ListViewHolder<T>(containerView: View, binding: ViewDataBind
  */
 class CommentListViewHolder(containerView: View, val binding: ItemCommentListBinding) : ListViewHolder<Comments>(containerView, binding) {
     override fun bind(model: ViewModel, position: Int, data: Comments) {
-        try{
-            if(CustomLog.flag) CustomLog.L("CommentListViewHolder", "position",position)
-            if(CustomLog.flag) CustomLog.L("CommentListViewHolder", "contents",data.contents)
-            if(CustomLog.flag) CustomLog.L("CommentListViewHolder", data.createUserInfo.nickname)
-            binding.userProfile = data.createUserInfo.profileImageUrl?:""
-        }catch (e : Exception){
-            if(CustomLog.flag)CustomLog.E(e)
-        }
         binding.contents = data.contents
         binding.createTime = DateUtil.getDateDiff(data.currentTimestamp,data.createdTimestamp)
-        binding.userName = data.createUserInfo.nickname
+        binding.userName = data.originCreaterUser.nickname
         binding.isReply = data.originCommentId != null
         binding.isLikeComment = false
         binding.likeCount = 0

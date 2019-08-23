@@ -308,8 +308,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                                 }
                                             }
                                         }
-                                        viewModel.getCommentInitList(listener)
-                                        /*
+                                        //viewModel.getCommentInitList(listener)
                                         viewModel.commentAdapter?.notifyDataSetChanged()
                                         if(startIndex == null){
                                             viewModel.getCommentInitList(listener)
@@ -320,7 +319,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                                     getCommentGetIdData(viewModel.commentReplyData?.parentCommentId!! ,startIndex, listener)
                                                 },400)
                                             }
-                                        }*/
+                                        }
                                     },
                                     dataNotFoundTask = { viewModel.initBookMarkData = true; viewModel.bbsBookMark.set(false) },
                                     failedTask = { viewModel.initBookMarkData = true; viewModel.bbsBookMark.set(false) },
