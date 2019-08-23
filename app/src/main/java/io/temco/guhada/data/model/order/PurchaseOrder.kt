@@ -75,5 +75,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     }
 
     fun getDate() = CommonUtil.convertTimeStampToDate(orderTimestamp) ?: ""
+    fun getStatus() : String = if(orderStatus.isEmpty()) claimStatus else orderStatus
 
 }

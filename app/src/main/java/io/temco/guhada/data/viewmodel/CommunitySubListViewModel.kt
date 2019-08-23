@@ -13,6 +13,8 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class CommunitySubListViewModel : BaseObservableViewModel() {
     var mCommunityInfo: CommunityInfo = CommunityInfo()
     var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
+    var mCategoryFilterList : MutableList<String> = mutableListOf()
+    var mSortFilterList : MutableList<String> = mutableListOf("최신순", "조회순", "좋아요순", "댓글순")
     var mPage = 0
     var mFilterId = 0L
     var UNIT_PER_PAGE = 20

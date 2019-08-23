@@ -30,18 +30,25 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     override fun init() {
         initHeader()
         mViewModel = MyPageDeliveryDetailViewModel().apply {
-            val data = intent.getLongExtra("purchaseId", -1)
-            if (data > 0) {
-                this.purchaseId = data
-            } else {
-                ToastUtil.showMessage(getString(R.string.common_message_error))
-                setResult(Activity.RESULT_CANCELED)
-                finish()
+            intent.getLongExtra("purchaseId", 0).let { purchaseId ->
+                if (purchaseId > 0) {
+                    this.purchaseId = purchaseId
+                } else {
+                    ToastUtil.showMessage(getString(R.string.common_message_error))
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
+                }
             }
         }
 
         if (::mViewModel.isInitialized) {
-
+            intent.getLongExtra("orderProdGroupId", 0).let { orderProdGroupId ->
+                if (orderProdGroupId > 0) {
+                    mViewModel.mOrderProdGroupId = orderProdGroupId
+                    mViewModel.getClaimForm()
+                }
+            }
+            
             mViewModel.getOrder()
             mViewModel.getUser()
             mViewModel.onClickClaimTask = { productId ->
@@ -65,7 +72,6 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
 
             val receiptButtonVisible = intent.getBooleanExtra("receiptButtonVisible", true)
             mBinding.includeDeliverydetailOrderinfo.buttonDeliverydetailReceipt.visibility = if (receiptButtonVisible) View.VISIBLE else View.GONE
-
             mBinding.executePendingBindings()
         }
     }
