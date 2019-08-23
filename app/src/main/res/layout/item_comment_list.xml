@@ -4,14 +4,19 @@
 
     <data>
         <import type="android.view.View" />
+        <variable
+            name="clickReplyListener"
+            type="android.view.View.OnClickListener" />
 
         <variable name="userProfile" type="String" />
         <variable name="userName" type="String" />
         <variable name="createTime" type="String" />
         <variable name="contents" type="String" />
+        <variable name="isContent" type="Boolean" />
         <variable name="likeCount" type="Integer" />
         <variable name="isReply" type="Boolean" />
-        <!--<variable name="isReplyListContain" type="Boolean" />-->
+        <variable name="image" type="String" />
+        <variable name="isImage" type="Boolean" />
         <variable name="isLikeComment" type="Boolean" />
 
         <variable
@@ -105,23 +110,38 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingBottom="15dp"
+                android:paddingBottom="5dp"
                 android:background="@color/white_five"
                 android:textColor="@color/greyish_brown_two"
                 android:lineSpacingExtra="6sp"
                 android:text="@{contents}"
+                android:visibility="@{isContent ? View.VISIBLE : View.GONE, default = visible}"
                 android:textSize="@dimen/text_14" />
 
-            <!--android:layout_width="@{isReply ? @dimen/comment_list_reply_image_size : @dimen/comment_list_image_size}"
-            android:layout_height="@{isReply ? @dimen/comment_list_reply_image_size : @dimen/comment_list_image_size}"-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/white_five"/>
 
-            <ImageView
-                android:layout_width="243dp"
-                android:layout_height="243dp"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{userProfile}"
-                android:visibility="gone"
-                android:background="@color/common_white"/>
+            <FrameLayout
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:visibility="@{isImage ? View.VISIBLE : View.GONE, default = gone}">
+
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{image}"
+                    android:background="@color/common_white"/>
+
+                <ImageView
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/drawable_round_corner_5" />
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -136,6 +156,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/warm_grey_two"
                     android:text="@string/community_add_comment_reply"
+                    android:onClick="@{clickReplyListener}"
                     android:textSize="@dimen/text_12" />
 
                 <View

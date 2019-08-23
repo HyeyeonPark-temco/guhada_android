@@ -30,21 +30,17 @@ class ImageGetActivity : BindActivity<ActivityImagegetBinding>() {
     val PERMISSIONS_REQUEST_CODE = 100
     val PICK_FROM_ALBUM = 130
 
-    val REQUIRED_PERMISSIONS = arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    val REQUIRED_PERMISSIONS = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
     override fun getBaseTag(): String = ImageGetActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_imageget
     override fun getViewType(): Type.View = Type.View.IMAGE_GET
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun init() {
-        if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        if (checkPermission(REQUIRED_PERMISSIONS)) {
             galleryAddPic()
         }else{
-            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            requestPermission(REQUIRED_PERMISSIONS)
         }
     }
 
@@ -52,7 +48,6 @@ class ImageGetActivity : BindActivity<ActivityImagegetBinding>() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, PICK_FROM_ALBUM)
     }
-
 
 
     ////////////////////////////////////////////////////////////////////////////////

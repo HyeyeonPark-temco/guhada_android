@@ -5,6 +5,8 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.CommentContent
+import io.temco.guhada.data.model.CommentResponse
+import io.temco.guhada.data.model.Comments
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
@@ -203,6 +205,82 @@ class CommunityServer {
                     }
             )
         }
+
+        /**
+         * 게시글 댓글 Id 정보 가져오기
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun getCommentIdData(listener: OnServerListener, id : Long) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .getCommentId(id).enqueue(object : Callback<BaseModel<Comments>> {
+                        override fun onResponse(call: Call<BaseModel<Comments>>, response: Response<BaseModel<Comments>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Comments>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 게시글 댓글 등록
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun postCommentData(listener: OnServerListener, accessToken: String, body : CommentResponse) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .postCommentData(accessToken, body).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+
+
 
 
     }

@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model
 
+import com.google.gson.annotations.Expose
+
 class ImageResponse {
     var url = ""
     var fileName = ""
@@ -7,7 +9,9 @@ class ImageResponse {
     var fileSize = 0L
     var imageWidth = 0
     var imageHeight = 0
-    var index = 0
+
+    @Expose
+    var index : Int? = 0
 
     override fun toString(): String {
         return "ImageResponse(url='$url', fileName='$fileName', fileContentType='$fileContentType', fileSize=$fileSize, imageWidth=$imageWidth, imageHeight=$imageHeight, index=$index)"

@@ -1053,4 +1053,8 @@
     <string name="community_format_likecount">좋아요 %d</string>
     <string name="community_format_viewcount">조회 %d</string>
     <string name="community_empty">등록된게시글이 없습니다.</string>
+
+    <string name="community_edit_hint">댓글을 입력해주세요</string>
+    <string name="community_reply_data_send_desc">님에게 답글 남기는 중</string>
+
 </resources>

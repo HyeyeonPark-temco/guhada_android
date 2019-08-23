@@ -1,6 +1,8 @@
 package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.CommentContent
+import io.temco.guhada.data.model.CommentResponse
+import io.temco.guhada.data.model.Comments
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.community.CommunityCategory
 import io.temco.guhada.data.model.community.CommunityCategorySub
@@ -37,5 +39,15 @@ interface CommunityService {
     @GET("/comments")
     fun getCommentList(@Query("communityBbsId") communityBbsId : Long, @Query("page") page : Int,
                        @Query("orderType") orderType: String = "DESC", @Query("unitPerPage") unitPerPage : Int=10): Call<BaseModel<CommentContent>>
+
+
+    // 댓글 ID 조회 API
+    @GET("/comments/{id}")
+    fun getCommentId(@Path("id") id : Long): Call<BaseModel<Comments>>
+
+
+    // 커뮤니티 전체 조회 API
+    @POST("/comments")
+    fun postCommentData(@Header("Authorization") accessToken: String, @Body response: CommentResponse): Call<BaseModel<Any>>
 
 }

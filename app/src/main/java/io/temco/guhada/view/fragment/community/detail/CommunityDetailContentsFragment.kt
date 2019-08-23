@@ -44,7 +44,7 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
     // PRIVATE
     ////////////////////////////////////////////////
 
-    fun setDetailView(){
+    private fun setDetailView(){
         var header = ""
         if(mDetail.categoryFilterId > 0){
             loop1@ for (filter in viewModel.info.communityCategorySub.categoryFilterList){
