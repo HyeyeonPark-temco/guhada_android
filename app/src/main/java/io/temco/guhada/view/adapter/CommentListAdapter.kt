@@ -68,6 +68,7 @@ open abstract class ListViewHolder<T>(containerView: View, binding: ViewDataBind
  */
 class CommentListViewHolder(containerView: View, val binding: ItemCommentListBinding) : ListViewHolder<Comments>(containerView, binding) {
     override fun bind(model: ViewModel, position: Int, data: Comments) {
+        binding.userProfile = data.createUserInfo.profileImageUrl
         binding.contents = data.contents
         binding.createTime = DateUtil.getDateDiff(data.currentTimestamp,data.createdTimestamp)
         binding.userName = data.createUserInfo.nickname
