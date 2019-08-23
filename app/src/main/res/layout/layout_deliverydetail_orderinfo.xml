@@ -46,7 +46,7 @@
                 style="@style/MypageDeliveryGreyishBrownTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(viewModel.purchaseOrderResponse.orderNumber)}" />
+                android:text="@{String.valueOf(viewModel.mPurchaseOrder.purchaseId)}" />
         </LinearLayout>
 
 
@@ -79,7 +79,7 @@
                 style="@style/MypageDeliveryGreyishBrownTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:timeStamp="@{viewModel.purchaseOrderResponse.getOrderTimestamp()}" />
+                app:timeStamp="@{viewModel.purchaseOrderResponse.orderTimestamp}" />
         </LinearLayout>
 
         <Button

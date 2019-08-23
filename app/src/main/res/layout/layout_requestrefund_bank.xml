@@ -60,6 +60,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:id="@+id/edittext_requestrefund_bankname"
                             android:layout_weight="1"
                             android:text="@string/requestorderstatus_refund_bankhint1"
                             android:textSize="@dimen/text_13" />
@@ -77,6 +78,7 @@
 
             <EditText
                 android:layout_width="match_parent"
+                android:id="@+id/edittext_requestrefund_banknum"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border_all_whitethree"
@@ -96,6 +98,7 @@
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="45dp"
+                    android:id="@+id/edittext_requestrefund_bankowner"
                     android:layout_weight="1"
                     android:background="@drawable/border_all_whitethree"
                     android:hint="@string/requestorderstatus_refund_bankhint3"

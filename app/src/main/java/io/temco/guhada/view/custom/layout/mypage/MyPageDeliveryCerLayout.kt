@@ -35,6 +35,7 @@ class MyPageDeliveryCerLayout constructor(
         mBinding.lifecycleOwner = this
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply {
+            this.type = MyPageDeliveryAdapter.Type.DeliveryCer.type
             this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
         }
 
