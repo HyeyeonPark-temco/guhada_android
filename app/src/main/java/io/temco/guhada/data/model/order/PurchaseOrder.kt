@@ -20,8 +20,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var optionAttribute3: String? = ""
 
     var orderPrice = 0
-
-
     var orderProdGroupId: Long = 0
     var orderProdId: Long = 0
     var originalPrice = 0
@@ -41,7 +39,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
 
     var reviewId: Int? = null // 리뷰 작성 여부 판단
 
-
     // 취소교환반품 사유
     var cancelReasonList: MutableList<OrderChangeCause>? = mutableListOf()
     var exchangeReasonList: MutableList<OrderChangeCause>? = mutableListOf()
@@ -55,6 +52,20 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var claimStatusText = ""
     var paymentMethodText = ""
     var orderStatusText = ""
+
+    // 신청서 수정 정보
+    var receiverAddress = ""
+    var receiverAddressDetail = ""
+    var receiverAddressName = ""
+    var receiverName = ""
+    var receiverPhone = ""
+    var receiverRoadAddress = ""
+    var receiverZipcode = ""
+    var paymentMethod = ""
+    var pgTid = ""
+    var buyerEmail = ""
+    var buyerName = ""
+    var buyerPhone = ""
 
     fun getOptionStr(): String {
         var result = ""

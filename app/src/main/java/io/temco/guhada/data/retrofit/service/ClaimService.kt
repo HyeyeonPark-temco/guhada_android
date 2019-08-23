@@ -102,6 +102,12 @@ interface ClaimService {
     fun getClaimForm(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<PurchaseOrder>>
 
     /**
+     * 주문교환반품 신청서 수정 화면 정보 API
+     */
+    @GET("/order-claim/claim-update-form/{orderProdGroupId}")
+    fun getUpdateClaimForm(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<PurchaseOrder>>
+
+    /**
      * 반품 철회 API
      */
     @DELETE("/order-claim/order-return-withdraw")
@@ -112,4 +118,6 @@ interface ClaimService {
      */
     @DELETE("/order-claim/order-exchange-withdraw")
     fun withdrawExchange(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<Any>>
+
+
 }

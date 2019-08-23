@@ -45,6 +45,17 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 
     private fun initViewModel() {
         mViewModel = RequestRefundViewModel()
+
+        // 신청서 수정
+        intent.getLongExtra("modifyOrderProdGroupId", 0).let {
+            if (it > 0 && ::mViewModel.isInitialized) {
+                mViewModel.mRefundRequest.orderProdGroupId = it
+                mViewModel.mOrderProdGroupId = it
+                mViewModel.getUpdateClaimForm(it)
+            }
+        }
+
+        // 신규 반품 신청
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mRefundRequest.orderProdGroupId = it
@@ -114,13 +125,13 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             mViewModel.mRefundRequest.quantity = mBinding.includeRequestrefundCause.quantity
                     ?: 0
         }
-        mBinding.includeRequestrefundCause.causeList = mViewModel.mCauseList
+        mBinding.includeRequestrefundCause.causeList = purchaseOrder.returnReasonList
         mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val cause = mViewModel.mCauseList[position]
+                val cause = mViewModel.mPurchaseOrder.value?.returnReasonList!![position]
                 mViewModel.mRefundRequest.refundReason = cause.code
                 mBinding.includeRequestrefundCause.defaultMessage = cause.label
 
