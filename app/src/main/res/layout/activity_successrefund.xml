@@ -59,8 +59,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="@{refundRequest.invoiceNo != 0 ? View.GONE : View.VISIBLE}">
-
+                    >
+                    <!--android:visibility="@{refundRequest.invoiceNo != 0 ? View.GONE : View.VISIBLE}"-->
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

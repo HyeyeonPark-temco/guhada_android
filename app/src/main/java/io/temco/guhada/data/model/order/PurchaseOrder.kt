@@ -45,8 +45,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var returnReasonList: MutableList<OrderChangeCause>? = mutableListOf()
 
     // 완료 화면 정보
-    var cancelReason = ""
-    var cancelReasonDetail = ""
     var orderStatus = ""
     var claimStatus = ""
     var claimStatusText = ""
@@ -66,6 +64,35 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var buyerEmail = ""
     var buyerName = ""
     var buyerPhone = ""
+
+    // 취소 신청 정보
+    var cancelReason = ""
+    var cancelReasonDetail = ""
+
+    // 반품 신청 정보
+    var returnReason = ""
+    var returnReasonDetail = ""
+    var returnPickingShipCompany = ""
+    var returnPickingInvoiceNo = 0
+    var returnShippingPriceType = ""
+    var returnShippingPrice = 0
+    var returnEtcPrice = 0
+
+    // 교환 신청 정
+    var exchangeReason = ""
+    var exchangeReasonDetail = ""
+    var exchangePickingShipCompany = ""
+    var exchangePickingInvoiceNo = 0
+    var exchangeShippingPriceType = ""
+    var exchangeShippingPrice = 0
+    var exchangeEtcPrice = 0
+    var exchangeBuyerRecipientName = ""
+    var exchangeBuyerRecipientMobile = ""
+    var exchangeBuyerZip = ""
+    var exchangeBuyerAddress = ""
+    var exchangeBuyerRoadAddress=  ""
+    var exchangeBuyerDetailAddress = ""
+
 
     fun getOptionStr(): String {
         var result = ""
