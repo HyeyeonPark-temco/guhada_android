@@ -42,12 +42,12 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         }
 
         if (::mViewModel.isInitialized) {
-            intent.getLongExtra("orderProdGroupId", 0).let { orderProdGroupId ->
-                if (orderProdGroupId > 0) {
-                    mViewModel.mOrderProdGroupId = orderProdGroupId
-                    mViewModel.getClaimForm()
-                }
-            }
+//            intent.getLongExtra("orderProdGroupId", 0).let { orderProdGroupId ->
+//                if (orderProdGroupId > 0) {
+//                    mViewModel.mOrderProdGroupId = orderProdGroupId
+//                    mViewModel.getClaimForm()
+//                }
+//            }
             
             mViewModel.getOrder()
             mViewModel.getUser()

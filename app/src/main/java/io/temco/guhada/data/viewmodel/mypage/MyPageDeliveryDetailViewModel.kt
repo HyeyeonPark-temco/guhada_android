@@ -37,6 +37,7 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
+    // 현재 사용 안함
     fun getClaimForm() {
         ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.getClaimForm(OnServerListener { success, o ->
