@@ -309,7 +309,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                             }
                                         }
                                         //viewModel.getCommentInitList(listener)
-                                        viewModel.commentAdapter?.notifyDataSetChanged()
+                                        //viewModel.commentAdapter?.notifyDataSetChanged()
                                         if(startIndex == null){
                                             viewModel.getCommentInitList(listener)
                                         }else{
@@ -349,9 +349,10 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                 listTmp.add(replyData)
                             }
                         }
+                        viewModel.communityDetailCommentTotalElements.set(viewModel.communityDetailCommentTotalElements.get()+1)
                         viewModel.commentAdapter?.mList!!.addAll(addIndex,listTmp)
                         //viewModel.commentAdapter?.notifyItemInserted(addIndex)
-                        //viewModel.commentAdapter?.notifyItemRangeInserted(addIndex+listTmp.size-1,1)
+                        viewModel.commentAdapter?.notifyItemRangeChanged(addIndex,listTmp.size)
                         listener?.callBackListener(true, "")
                     },
                     dataNotFoundTask = { listener?.callBackListener(false, "dataNotFoundTask") },

@@ -70,7 +70,7 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
     override fun bind(model: ViewModel, position: Int, data: Comments) {
         binding.contents = data.contents
         binding.createTime = DateUtil.getDateDiff(data.currentTimestamp,data.createdTimestamp)
-        binding.userName = data.originCreaterUser.nickname
+        binding.userName = data.createUserInfo.nickname
         binding.isReply = data.originCommentId != null
         binding.isLikeComment = false
         binding.likeCount = 0
