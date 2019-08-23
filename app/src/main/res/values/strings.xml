@@ -1027,5 +1027,7 @@
 
     <string name="community_add_comment_reply">댓글달기</string>
 
+    <string name="community_edit_hint">댓글을 입력해주세요</string>
+    <string name="community_reply_data_send_desc">님에게 답글 남기는 중</string>
 
 </resources>

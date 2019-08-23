@@ -27,6 +27,7 @@ class Comments {
     var userId = 0L
     var createUserInfo = CreateUserInfo()
     var commentImageList : ArrayList<CommentImageList> = arrayListOf()
+    var parentIndex : Int? = null // 대댓글에서 갱신하기 위한 상위 댓글 정보
 
     override fun toString(): String {
         return "Comments(id=$id, communityBbsId=$communityBbsId, originCommentId=$originCommentId, originCreaterUserId=$originCreaterUserId, originCreaterUser=$originCreaterUser, parentCommentId=$parentCommentId, contents='$contents', likeCount=$likeCount, like=$like, commentList=$commentList, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId, createUserInfo=$createUserInfo, commentImageList=$commentImageList)"

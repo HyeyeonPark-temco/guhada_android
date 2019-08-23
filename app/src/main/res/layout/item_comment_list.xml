@@ -4,6 +4,9 @@
 
     <data>
         <import type="android.view.View" />
+        <variable
+            name="clickReplyListener"
+            type="android.view.View.OnClickListener" />
 
         <variable name="userProfile" type="String" />
         <variable name="userName" type="String" />
@@ -107,13 +110,18 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:paddingBottom="15dp"
+                android:paddingBottom="5dp"
                 android:background="@color/white_five"
                 android:textColor="@color/greyish_brown_two"
                 android:lineSpacingExtra="6sp"
                 android:text="@{contents}"
                 android:visibility="@{isContent ? View.VISIBLE : View.GONE, default = visible}"
                 android:textSize="@dimen/text_14" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/white_five"/>
 
             <FrameLayout
                 android:layout_width="130dp"
@@ -148,6 +156,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/warm_grey_two"
                     android:text="@string/community_add_comment_reply"
+                    android:onClick="@{clickReplyListener}"
                     android:textSize="@dimen/text_12" />
 
                 <View

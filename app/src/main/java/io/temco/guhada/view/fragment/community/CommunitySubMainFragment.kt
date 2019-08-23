@@ -34,7 +34,7 @@ class CommunitySubMainFragment(val info : CommunityInfo) : BaseFragment<Fragment
         if(CustomLog.flag) CustomLog.L(getBaseTag(),info.toString())
         mBinding.setClickListener {
             var intent = Intent(context as Activity, CommunityDetailActivity::class.java)
-            intent.putExtra("bbsId", 282286L)// 282305L 282287L 282286L 282286L
+            intent.putExtra("bbsId", 282300L)// 282305L 282287L 282286L 282286L
             intent.putExtra("info", info)
             (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
         }

@@ -169,7 +169,7 @@ public class CommonUtil {
     // KEYBOARD
     ////////////////////////////////////////////////
 
-    public void showKeyboard(Context context, View view) {
+    public static void showKeyboard(Context context, View view) {
         if (context != null && view != null) {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(view, 0);
