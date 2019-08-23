@@ -19,13 +19,13 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class RequestRefundViewModel : BaseObservableViewModel() {
-    var mPurchaseOrder = PurchaseOrder()
+    var mPurchaseOrder = MutableLiveData<PurchaseOrder>()
     var mRefundRequest = RefundRequest()
     var mSellerAddress: MutableLiveData<SellerAddress> = MutableLiveData()
-    var mSeller : MutableLiveData<Seller> = MutableLiveData()
+    var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
-    var mShippingPayment : Int = ShippingPaymentType.NONE.pos
-    var mSuccessRequestRefundTask: (purchaseOrder : PurchaseOrder) -> Unit = {}
+    var mShippingPayment: Int = ShippingPaymentType.NONE.pos
+    var mSuccessRequestRefundTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
     var mCause = ""
     val mCauseList = mutableListOf(
             OrderChangeCause().apply {
@@ -78,28 +78,44 @@ class RequestRefundViewModel : BaseObservableViewModel() {
                 code = RefundCause.ETC.code
                 isFeeCharged = RefundCause.ETC.isFeeCharged
             })
+    var mOrderProdGroupId = 0L
+
+    fun getClaimForm(orderProdGroupId: Long) {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            ClaimServer.getClaimForm(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            if (it.data != null) {
+                                (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
+                                this@RequestRefundViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
+                            }
+                        })
+            }, accessToken = token, orderProdGroupId = orderProdGroupId)
+        })
+    }
+
 
     fun getSellerDefaultReturnAddress() {
-        if (mPurchaseOrder.sellerId > 0) {
+        if (mPurchaseOrder.value?.sellerId ?: 0 > 0) {
             UserServer.getSellerDefaultReturnAddress(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             val sellerAddress = it.data as SellerAddress
                             mSellerAddress.postValue(sellerAddress)
                         })
-            }, mPurchaseOrder.sellerId.toLong())
+            }, sellerId = mPurchaseOrder.value?.sellerId?.toLong() ?: 0)
         }
     }
 
     fun getSellerInfo() {
-        if (mPurchaseOrder.sellerId > 0) {
+        if (mPurchaseOrder.value?.sellerId ?: 0 > 0) {
             UserServer.getSellerById(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             val seller = it.data as Seller
                             mSeller.postValue(seller)
                         })
-            }, sellerId = mPurchaseOrder.sellerId.toLong())
+            }, sellerId = mPurchaseOrder.value?.sellerId?.toLong() ?: 0)
         }
     }
 
@@ -119,7 +135,11 @@ class RequestRefundViewModel : BaseObservableViewModel() {
             ClaimServer.requestRefund(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            mSuccessRequestRefundTask(mPurchaseOrder)
+                            val result = it.data as PurchaseOrder
+                            mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
+                            mPurchaseOrder.value?.orderStatusText = result.orderStatusText
+                            mPurchaseOrder.value?.claimStatusText = result.claimStatusText
+                            mSuccessRequestRefundTask(mPurchaseOrder.value!!)
                         })
             }, accessToken = accessToken, refundRequest = mRefundRequest)
         })

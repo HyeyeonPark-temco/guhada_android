@@ -8,7 +8,6 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.EventBusHelper
@@ -20,7 +19,7 @@ import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageClaimBinding
 import io.temco.guhada.view.WrapContentLinearLayoutManager
-import io.temco.guhada.view.adapter.SpinnerAdapter
+import io.temco.guhada.view.adapter.PaymentSpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -76,9 +75,9 @@ class MyPageClaimLayout constructor(
         fun Spinner.bindClaimStatusSpinner(list: MutableList<String>) {
             if (list.isNotEmpty()) {
                 if (this.adapter == null) {
-                    this.adapter = SpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, list)
+                    this.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, list)
                 } else {
-                    (this.adapter as SpinnerAdapter).setItems(list)
+                    (this.adapter as PaymentSpinnerAdapter).setItems(list)
                 }
                 this.setSelection(0)
             }

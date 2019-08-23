@@ -35,6 +35,7 @@ class MyPageDeliveryCerLayout constructor(
         mBinding.lifecycleOwner = this
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply {
+            this.type = MyPageDeliveryAdapter.Type.DeliveryCer.type
             this.editShippingAddressTask = { purchaseId -> mViewModel.editShippingAddress(purchaseId) }
         }
 
@@ -69,6 +70,7 @@ class MyPageDeliveryCerLayout constructor(
     private fun setEventBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
+                RequestCode.WITHDRAW.flag,
                 RequestCode.CONFIRM_PURCHASE.flag -> {
                     mViewModel.page = 1
                     mViewModel.getCancelOrderStatus()

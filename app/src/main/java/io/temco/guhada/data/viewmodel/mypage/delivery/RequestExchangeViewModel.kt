@@ -38,8 +38,11 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             ClaimServer.getClaimForm(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            if (it.data != null)
+                            if (it.data != null){
+                                (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
                                 this@RequestExchangeViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
+                            }
+
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)
         })
@@ -118,6 +121,10 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             ClaimServer.requestExchange(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
+                            val result = it.data as PurchaseOrder
+                            mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
+                            mPurchaseOrder.value?.orderStatusText = result.orderStatusText
+                            mPurchaseOrder.value?.claimStatusText = result.claimStatusText
                             mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
                         })
             }, accessToken = accessToken, exchangeRequest = mExchangeRequest)

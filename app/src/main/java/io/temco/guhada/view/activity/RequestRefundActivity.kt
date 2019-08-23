@@ -31,21 +31,12 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     override fun init() {
         initViewModel()
         initHeader()
-        initOrderInfo()
-        initProductInfo()
-        initCause()
-        initSellerShipping()
-        initCollection()
-        initShippingPayment()
-        initBank()
-        initButton()
     }
 
     private fun initHeader() {
         mBinding.includeRequestrefundHeader.title = resources.getString(R.string.requestorderstatus_refund_title)
         mBinding.includeRequestrefundHeader.setOnClickBackButton { finish() }
     }
-
 
     // TODO 환불 계좌 정보
     private fun initBank() {
@@ -54,12 +45,27 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 
     private fun initViewModel() {
         mViewModel = RequestRefundViewModel()
-        intent.getSerializableExtra("purchaseOrder").let {
-            if (it != null) {
-                mViewModel.mPurchaseOrder = it as PurchaseOrder
-                mViewModel.mRefundRequest.orderProdGroupId = it.orderProdGroupId
+        intent.getLongExtra("orderProdGroupId", 0).let {
+            if (it > 0 && ::mViewModel.isInitialized) {
+                mViewModel.mRefundRequest.orderProdGroupId = it
+                mViewModel.mOrderProdGroupId = it
+                mViewModel.getClaimForm(it)
             }
         }
+        mViewModel.mPurchaseOrder.observe(this, Observer {
+            if (it.purchaseId > 0) {
+                initOrderInfo(it)
+                initProductInfo(it)
+                initCause(it)
+                initSellerShipping()
+                initCollection()
+                initShippingPayment()
+                initBank()
+                initButton()
+                mBinding.executePendingBindings()
+            }
+        })
+
         mViewModel.mSuccessRequestRefundTask = { purchaseOrder ->
             val intent = Intent(this@RequestRefundActivity, SuccessRequestRefundActivity::class.java)
             intent.putExtra("purchaseOrder", purchaseOrder)
@@ -72,21 +78,21 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         }
     }
 
-    private fun initOrderInfo() {
-        mBinding.includeRequestrefundOrderinfo.orderNumber = mViewModel.mPurchaseOrder.purchaseId.toInt()
-        mBinding.includeRequestrefundOrderinfo.orderTimeStamp = mViewModel.mPurchaseOrder.orderTimestamp
+    private fun initOrderInfo(purchaseOrder: PurchaseOrder) {
+        mBinding.includeRequestrefundOrderinfo.orderNumber = purchaseOrder.purchaseId.toInt()
+        mBinding.includeRequestrefundOrderinfo.orderTimeStamp = purchaseOrder.orderTimestamp
     }
 
-    private fun initProductInfo() {
-        mBinding.includeRequestrefundProductinfo.imageUrl = mViewModel.mPurchaseOrder.imageUrl
-        mBinding.includeRequestrefundProductinfo.brandName = mViewModel.mPurchaseOrder.brandName
-        mBinding.includeRequestrefundProductinfo.productName = "${mViewModel.mPurchaseOrder.season} ${mViewModel.mPurchaseOrder.dealName}"
-        mBinding.includeRequestrefundProductinfo.optionStr = mViewModel.mPurchaseOrder.getOptionStr()
-        mBinding.includeRequestrefundProductinfo.price = mViewModel.mPurchaseOrder.discountPrice
-        mBinding.includeRequestrefundProductinfo.purchaseStatusText = mViewModel.mPurchaseOrder.purchaseStatusText
+    private fun initProductInfo(purchaseOrder: PurchaseOrder) {
+        mBinding.includeRequestrefundProductinfo.imageUrl = purchaseOrder.imageUrl
+        mBinding.includeRequestrefundProductinfo.brandName = purchaseOrder.brandName
+        mBinding.includeRequestrefundProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.dealName}"
+        mBinding.includeRequestrefundProductinfo.optionStr = purchaseOrder.getOptionStr()
+        mBinding.includeRequestrefundProductinfo.price = purchaseOrder.discountPrice
+        mBinding.includeRequestrefundProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
     }
 
-    private fun initCause() {
+    private fun initCause(purchaseOrder: PurchaseOrder) {
         mBinding.includeRequestrefundCause.defaultMessage = resources.getString(R.string.requestorderstatus_refund_cause)
         mBinding.includeRequestrefundCause.hintMessage = resources.getString(R.string.requestorderstatus_refund_hint_cause)
         mBinding.includeRequestrefundCause.quantityTitle = resources.getString(R.string.requestorderstatus_refund_quantity)
@@ -102,7 +108,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         }
         mBinding.includeRequestrefundCause.setOnClickAmountPlus {
             val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
-            if (quantity + 1 > mViewModel.mPurchaseOrder.quantity) ToastUtil.showMessage("반품 가능 최대 수량 ${mViewModel.mPurchaseOrder.quantity}개")
+            if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage("반품 가능 최대 수량 ${purchaseOrder.quantity}개")
             else mBinding.includeRequestrefundCause.quantity = quantity + 1
 
             mViewModel.mRefundRequest.quantity = mBinding.includeRequestrefundCause.quantity
@@ -182,7 +188,10 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val company = mViewModel.mShippingCompanyList.value?.get(position)
-                    if (company != null) mViewModel.mRefundRequest.shippingCompanyCode = company.code
+                    if (company != null) {
+                        mViewModel.mRefundRequest.shippingCompanyCode = company.code
+                        mViewModel.mRefundRequest.shippingCompanyName = company.name
+                    }
                     mBinding.includeRequestrefundCollection.textviewRequestorderstatusShippingcompany.text = company?.name
                 }
             }

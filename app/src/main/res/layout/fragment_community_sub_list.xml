@@ -19,59 +19,142 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="20dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textview_communitylist_filter1"
-                style="@style/CommunityTitleTextStyle"
+            <FrameLayout
+                android:id="@+id/framelayout_communitylist_filter1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="@string/community_filter_category"
+                android:orientation="horizontal"
+                android:visibility="@{viewModel.mCategoryFilterList.empty ? View.GONE : View.VISIBLE}"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageButton
-                android:id="@+id/iamgeview_communitylist_filter1"
+                <Spinner
+                    android:id="@+id/spinner_communitylist_filter1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown"
+                    app:communitySpinner="@{viewModel.mCategoryFilterList}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:paddingTop="20dp"
+                    android:popupBackground="@null">
+
+                    <TextView
+                        android:id="@+id/textview_communitylist_filter1"
+                        style="@style/MypageDeliveryWarmGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/community_filter_category"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:src="@drawable/list_btn_lineup" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/framelayout_communitylist_filter2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:src="@drawable/list_btn_lineup"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerview_communityist"
-                app:layout_constraintLeft_toRightOf="@+id/textview_communitylist_filter1"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textview_communitylist_filter2"
-                style="@style/CommunityTitleTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:text="@string/community_filter_sort1"
-                app:layout_constraintRight_toLeftOf="@+id/iamgeview_communitylist_filter2"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/iamgeview_communitylist_filter2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/list_btn_lineup"
-                app:layout_constraintBottom_toTopOf="@+id/recyclerview_communityist"
+                android:orientation="horizontal"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_goneMarginStart="6dp" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <Spinner
+                    android:id="@+id/spinner_communitylist_filter2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown"
+                    app:communitySpinner="@{viewModel.mSortFilterList}"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:paddingTop="20dp"
+                    android:popupBackground="@null">
+
+                    <TextView
+                        android:id="@+id/textview_communitylist_filter2"
+                        style="@style/MypageDeliveryWarmGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/community_filter_sort1"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:src="@drawable/list_btn_lineup" />
+                </LinearLayout>
+            </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_communityist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:overScrollMode="never"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_communitylist_filter1" />
+                app:layout_constraintTop_toBottomOf="@id/framelayout_communitylist_filter2" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.mEmptyViewVisible? View.VISIBLE: View.GONE, default=gone}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/framelayout_communitylist_filter2">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_no_data" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/community_empty" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearlayout_communitylist_more"
@@ -83,6 +166,7 @@
                 android:paddingTop="17dp"
                 android:paddingEnd="40dp"
                 android:paddingBottom="17dp"
+                android:visibility="@{viewModel.mEmptyViewVisible? View.GONE: View.VISIBLE}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerview_communityist">

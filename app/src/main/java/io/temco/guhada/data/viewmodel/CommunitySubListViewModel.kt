@@ -1,5 +1,7 @@
 package io.temco.guhada.data.viewmodel
 
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.listener.OnServerListener
@@ -13,9 +15,15 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class CommunitySubListViewModel : BaseObservableViewModel() {
     var mCommunityInfo: CommunityInfo = CommunityInfo()
     var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
+    var mCategoryFilterList: MutableList<String> = mutableListOf()
+    var mSortFilterList: MutableList<String> = mutableListOf(CommunityOrderType.DATE_DESC.label, CommunityOrderType.VIEW_DESC.label, CommunityOrderType.LIKE_DESC.label, CommunityOrderType.COMMENT_DESC.label)
     var mPage = 0
-    var mFilterId = 0L
-    var UNIT_PER_PAGE = 20
+    var mFilterId = -1L
+    var mOrder = CommunityOrderType.DATE_DESC.type
+    var mEmptyViewVisible = ObservableBoolean(false)
+        @Bindable
+        get() = field
+    var UNIT_PER_PAGE = 10
 
     var redirectDetailTask: (item: CommunityBoard) -> Unit = {}
 
@@ -46,7 +54,7 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
                                 this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
                             }
                         })
-            }, criteria = criteria, order = CommunityOrderType.DATE_DESC.type, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
+            }, criteria = criteria, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
         }
     }
 

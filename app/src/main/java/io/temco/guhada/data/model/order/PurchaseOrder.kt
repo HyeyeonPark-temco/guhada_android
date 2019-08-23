@@ -3,7 +3,6 @@ package io.temco.guhada.data.model.order
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.OrderChangeCause
-import io.temco.guhada.data.model.order.OrderItemResponse
 import java.io.Serializable
 
 /**
@@ -21,6 +20,8 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var optionAttribute3: String? = ""
 
     var orderPrice = 0
+
+
     var orderProdGroupId: Long = 0
     var orderProdId: Long = 0
     var originalPrice = 0
@@ -76,5 +77,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     }
 
     fun getDate() = CommonUtil.convertTimeStampToDate(orderTimestamp) ?: ""
+    fun getStatus() : String = if(orderStatus.isEmpty()) claimStatus else orderStatus
 
 }

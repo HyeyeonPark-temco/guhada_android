@@ -87,7 +87,9 @@ class ServerCallbackUtil {
                                 dataNotFoundTask: () -> Unit = {},
                                 productNotFoundTask: (BaseModel<*>) -> Unit = {},
                                 dataIsNull: (Any) -> Unit = {},
-                                userLikeNotFoundTask: () -> Unit = {}) {
+                                userLikeNotFoundTask: () -> Unit = {},
+                                claimNotFoundTask: (BaseModel<*>) -> Unit = {}
+                                ) {
             if (o != null) {
                 if (success) {
                     val model = o as BaseModel<*>
@@ -98,6 +100,7 @@ class ServerCallbackUtil {
                         ResultCode.USER_LIKE_NOT_FOUND.flag -> userLikeNotFoundTask()
                         ResultCode.RUNTIME_EXCEPTION_ERROR.flag -> serverRuntimeErrorTask(model)
                         ResultCode.SERVER_LOGIN_FAILED.flag -> serverLoginErrorTask(model)
+                        ResultCode.CLAIM_NOT_FOUND_ERROR.flag -> claimNotFoundTask(model)
                         else -> dataIsNull(model)
                     }
                 } else {

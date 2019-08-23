@@ -16,6 +16,7 @@ class ExchangeRequest : Serializable {
     var exchangeReason = ""
     var exchangeReasonDetail = ""
     var shippingCompanyCode = ""
+    var shippingCompanyName = ""
     var invoiceNo = 0L
     var orderProdGroupId = 0L
     var quantity = 1
