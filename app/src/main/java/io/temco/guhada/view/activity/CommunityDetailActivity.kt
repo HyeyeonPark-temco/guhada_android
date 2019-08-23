@@ -200,9 +200,6 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                             for (v in mViewModel.commentAdapter?.mList!!){
                                 if(CustomLog.flag)CustomLog.L("linearlayoutCommunitydetailCommentwrite",v.toString())
                             }
-                            mHandler.postDelayed({
-                                mViewModel.commentAdapter?.notifyDataSetChanged()
-                            },100)
                         }
                     })
                 }else{
