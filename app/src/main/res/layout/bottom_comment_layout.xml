@@ -54,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/warm_grey_two"
                 android:text="@{viewModel.replyUserName}"
+                android:visibility="@{viewModel.modifyComment ? View.GONE : View.VISIBLE , default = gone}"
                 android:textSize="@dimen/text_12"/>
 
             <TextView
@@ -62,9 +63,24 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/warm_grey_two"
                 android:text="@string/community_reply_data_send_desc"
+                android:visibility="@{viewModel.modifyComment ? View.GONE : View.VISIBLE , default = gone}"
+                android:textSize="@dimen/text_12" />
+
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/warm_grey_two"
+                android:text="@string/community_modify_data_send_desc"
+                android:visibility="@{viewModel.modifyComment ? View.VISIBLE : View.GONE , default = gone}"
                 android:textSize="@dimen/text_12" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_four"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,11 +88,6 @@
             android:visibility="@{TextUtils.isEmpty(viewModel.commentRegImage) ? View.GONE : View.VISIBLE, default = gone}"
             android:gravity="center_vertical"
             android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/white_four"/>
 
             <FrameLayout
                 android:layout_width="60dp"
@@ -99,7 +110,7 @@
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginTop="1px"
                     android:layout_marginLeft="42dp"
                     android:onClick="@{clickCommentImageDelListener}"
                     android:src="@drawable/icon_delet"
@@ -115,6 +126,7 @@
                 android:background="@color/white_four"/>
 
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -155,7 +167,7 @@
                 android:padding="10dp"
                 android:onClick="@{clickCommentRegListener}"
                 android:visibility="@{viewModel.commentBtnVisible ? View.VISIBLE : View.GONE, default = gone }"
-                android:text="@string/review_activity_btn_write"
+                android:text="@{viewModel.modifyComment ? @string/review_activity_btn_modify : @string/review_activity_btn_write, default = @string/review_activity_btn_write}"
                 android:textColor="@color/blue_purple"/>
             <!---->
 

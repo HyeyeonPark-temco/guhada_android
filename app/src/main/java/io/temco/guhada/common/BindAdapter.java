@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.databinding.BindingAdapter;
 
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
@@ -53,4 +52,6 @@ public class BindAdapter {
             textView.setTypeface(null, Typeface.NORMAL);
         }
     }
+
+
 }

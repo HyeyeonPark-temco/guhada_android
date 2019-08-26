@@ -1056,5 +1056,25 @@
 
     <string name="community_edit_hint">댓글을 입력해주세요</string>
     <string name="community_reply_data_send_desc">님에게 답글 남기는 중</string>
+    <string name="community_modify_data_send_desc">댓글 수정중...</string>
 
+
+    <string name="report_community_title">게시글/댓글 신고</string>
+    <string name="report_community_text_type0_0">상품번호</string>
+    <string name="report_community_text_type0_1">상품명</string>
+    <string name="report_community_text_type0_2">셀러</string>
+    <string name="report_community_text_type1_0">닉네임</string>
+    <string name="report_community_text_type2_0">게시물번호</string>
+    <string name="report_community_text_type2_1">게시글제목</string>
+    <string name="report_community_text_type2_2">내용</string>
+    <string name="report_community_text_type2_3">작성자</string>
+    <string name="report_community_text_type3_2">댓글내용</string>
+    <string name="report_community_text04">작성자</string>
+    <string name="report_community_text05">허위사실 유포</string>
+    <string name="report_community_text06">제목을 입력해주세요</string>
+    <string name="report_community_text07">내용을 입력해주세요</string>
+    <string name="report_community_text08">첨부파일</string>
+    <string name="report_community_text09">문의하시는 이메일 정보는 문의 접수 및 서비스 개선을 위해 수집하여 5년간 보관합니다.\n(문의 분류에 따라 첨부된 파일 또한 수집될 수 있습니다.) </string>
+    <string name="report_community_text10">개인정보 수집에 동의합니다.</string>
+    <string name="report_community_text11">신고하기</string>
 </resources>

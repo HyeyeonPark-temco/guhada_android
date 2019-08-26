@@ -50,6 +50,7 @@ import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.view.activity.CartActivity;
 import io.temco.guhada.view.activity.ImageGetActivity;
+import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
 import io.temco.guhada.view.activity.ReviewPointDialogActivity;
@@ -390,4 +391,7 @@ public class CommonUtil {
         return null;
     }
 
+    public static void moveLoginPage(Activity activity){
+        activity.startActivityForResult(new Intent(activity, LoginActivity.class), Flag.RequestCode.LOGIN);
+    }
 }

@@ -11,6 +11,9 @@
 
         <import type="android.view.View" />-->
         <variable
+            name="clickBookmarkListener"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="clickShareListener"
             type="android.view.View.OnClickListener" />
         <variable
@@ -170,6 +173,7 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:src="@{viewModel.bbsBookMark ?  @drawable/com_btn_bookmark : @drawable/com_btn_bookmark_none}"
+                    android:onClick="@{clickBookmarkListener}"
                     android:background="@drawable/round_108"/>
 
             </LinearLayout>

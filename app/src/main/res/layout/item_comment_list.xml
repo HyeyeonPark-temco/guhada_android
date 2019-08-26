@@ -7,14 +7,24 @@
         <variable
             name="clickReplyListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="clickClaimListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="clickModifyListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="clickDeleteListener"
+            type="android.view.View.OnClickListener" />
 
         <variable name="userProfile" type="String" />
         <variable name="userName" type="String" />
         <variable name="createTime" type="String" />
-        <variable name="contents" type="String" />
+        <variable name="contents" type="CharSequence" />
         <variable name="isContent" type="Boolean" />
         <variable name="likeCount" type="Integer" />
         <variable name="isReply" type="Boolean" />
+        <variable name="isUserOwnerCheck" type="Boolean" />
         <variable name="image" type="String" />
         <variable name="isImage" type="Boolean" />
         <variable name="isLikeComment" type="Boolean" />
@@ -191,19 +201,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/productdetail_qna_report"
+                    android:onClick="@{clickClaimListener}"
+                    android:visibility="@{isUserOwnerCheck ? View.GONE : View.VISIBLE, default = gone}"
                     android:textColor="@color/pinkish_grey"
                     android:textSize="@dimen/text_12" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shippingaddress_button_edit"
+                    android:onClick="@{clickModifyListener}"
+                    android:visibility="@{isUserOwnerCheck ? View.VISIBLE : View.GONE, default = gone}"
+                    android:textColor="@color/pinkish_grey"
+                    android:textSize="@dimen/text_12" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:visibility="@{isUserOwnerCheck ? View.VISIBLE : View.GONE, default = gone}"
+                    android:background="@drawable/drawble_circle_dot2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shippingaddress_button_delete"
+                    android:onClick="@{clickDeleteListener}"
+                    android:visibility="@{isUserOwnerCheck ? View.VISIBLE : View.GONE, default = gone}"
+                    android:textColor="@color/pinkish_grey"
+                    android:textSize="@dimen/text_12" />
+
             </LinearLayout>
         </LinearLayout>
-
-       <!-- <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_comment_inner_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:overScrollMode="never"
-            android:background="@color/brick"
-            android:visibility="@{isReplyListContain ? View.VISIBLE : View.GONE, default = gone}"/>-->
 
     </LinearLayout>
 </layout>

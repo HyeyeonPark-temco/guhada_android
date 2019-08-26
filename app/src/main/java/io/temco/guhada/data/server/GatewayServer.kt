@@ -85,7 +85,7 @@ class GatewayServer {
                                         msg = gson.fromJson<Message>(errorBody, Message::class.java)
                                     }
                                     var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                                    if(CustomLog.flag)CustomLog.L("getBookMarkProduct","onResponse body",error.toString())
+                                    if(CustomLog.flag)CustomLog.L("uploadImage","onResponse body",error.toString())
                                     listener.onResult(false, error)
                                 }catch (e : Exception){
                                     if(CustomLog.flag)CustomLog.E(e)
@@ -94,7 +94,7 @@ class GatewayServer {
                             }
                         }
                         override fun onFailure(call: Call<BaseModel<ImageResponse>>, t: Throwable) {
-                            if(CustomLog.flag)CustomLog.L("getBookMarkProduct","onFailure",t.message.toString())
+                            if(CustomLog.flag)CustomLog.L("uploadImage","onFailure",t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
