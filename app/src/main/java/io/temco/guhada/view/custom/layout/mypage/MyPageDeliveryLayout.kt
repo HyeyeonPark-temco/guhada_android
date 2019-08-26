@@ -61,17 +61,17 @@ class MyPageDeliveryLayout constructor(
             }
 
             mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage != it.page) View.VISIBLE else View.GONE
-
             mBinding.executePendingBindings()
         })
 
         mBinding.viewModel = mViewModel
         mBinding.includeDeliveryProcess.viewModel = mViewModel
 
-        mViewModel.getOrderStatus()
         initCalendarFilter()
         setEventBus()
 
+        mViewModel.getOrders()
+        mViewModel.getOrderStatus()
         mRequestManager = Glide.with(this)
     }
 

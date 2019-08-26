@@ -66,14 +66,14 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var buyerPhone = ""
 
     // 취소 신청 정보
-    var cancelReason = ""
+    var cancelReason : String?= ""
     var cancelReasonDetail = ""
 
     // 반품 신청 정보
     var returnReason = ""
     var returnReasonDetail = ""
-    var returnPickingShipCompany = ""
-    var returnPickingInvoiceNo = 0
+    var returnPickingShipCompany = ""  // [19.08.26] 택배사 코드
+    var returnPickingInvoiceNo = ""
     var returnShippingPriceType = ""
     var returnShippingPrice = 0
     var returnEtcPrice = 0
@@ -82,7 +82,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var exchangeReason = ""
     var exchangeReasonDetail = ""
     var exchangePickingShipCompany = ""
-    var exchangePickingInvoiceNo = 0
+    var exchangePickingInvoiceNo = ""
     var exchangeShippingPriceType = ""
     var exchangeShippingPrice = 0
     var exchangeEtcPrice = 0

@@ -9,9 +9,9 @@ package io.temco.guhada.common.enum
  * @author Hyeyeon Park
  * @since 2019.08.19
  */
-enum class ShippingPaymentType(val type: String, val pos: Int) {
-    NONE("NONE", -1),
-    BOX("BOX", 1), // 박스에 동봉
-    DIRECT_SEND("DIRECT_SEND", 2),  // 판매자에게 직접 송금
-    EXCLUDE_REFUND_PRICE("EXCLUDE_REFUND_PRICE", 0)  // 환불 금액에서 차감
+enum class ShippingPaymentType(val type: String, val pos: Int, val label: String) {
+    NONE("NONE", -1, "판매자 부담"),
+    BOX("BOX", 1, "박스에 동봉"),
+    DIRECT_SEND("DIRECT_SEND", 2, "판매자에게 직접 송금"),
+    EXCLUDE_REFUND_PRICE("EXCLUDE_REFUND_PRICE", 0, "환불금액에서 차감")
 }
