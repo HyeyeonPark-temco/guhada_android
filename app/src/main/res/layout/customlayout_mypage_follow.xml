@@ -55,6 +55,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    app:followingSeller = "@{viewModel.mSellerList}"
                     android:background="@color/text_5"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -81,6 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="13dp"
                         android:text="@string/mypagefollow_empty" />
 
                 </LinearLayout>

@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="seller"
+            type="io.temco.guhada.data.model.seller.Seller" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,6 +18,7 @@
             android:id="@+id/imageview_mypagefollow_profile"
             android:layout_width="95dp"
             android:layout_height="95dp"
+            app:ovalImageUrl="@{seller.profileImageUrl}"
             android:src="@color/white_three"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="크리스찬 디올크리스찬"
+                android:text="@{seller.storeName}"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_13"
                 app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
@@ -49,14 +57,14 @@
 
         <TextView
             android:id="@+id/textview_mypagefollow_description"
-            style="@style/TextRegular"
+            style="@style/TextRegularSingleLine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="7dp"
             android:maxLines="2"
             android:minHeight="32dp"
-            android:text="압구정 명품 편집샵 크리챤 디올은 해외 명품 직수입 전문 하이 퀄리티 명품 편집샵입니다. 구찌 프라다 발렌시아…"
+            android:text="@{seller.storeIntroduction}"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_12"
             app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
@@ -79,7 +87,7 @@
                 android:id="@+id/textview_mypagefollow_followcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="팔로워 220"
+                android:text="팔로워 777"
                 app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
                 app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
 
@@ -99,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="상품수 1,200"
+                android:text="상품수 7777"
                 app:layout_constraintLeft_toRightOf="@+id/view_mypagefollow_line"
                 app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
         </LinearLayout>
@@ -112,9 +120,10 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/border_all_whitethree"
-            android:text="@string/productdetail_button_follow"
+            android:text="@string/productdetail_button_following"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
             app:layout_constraintTop_toBottomOf="@+id/linearlayout_mypagefollow_count" />
     </androidx.constraintlayout.widget.ConstraintLayout>

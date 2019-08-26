@@ -2,9 +2,14 @@ package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
+import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageFollowBinding
+import io.temco.guhada.view.adapter.mypage.MyPageFollowAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -18,11 +23,21 @@ class MyPageFollowLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMypageFollowBinding, MyPageFollowViewModel>(context, attrs, defStyleAttr) {
-
+) : BaseListLayout<CustomlayoutMypageFollowBinding, MyPageFollowViewModel>(context, attrs, defStyleAttr), SwipeRefreshLayout.OnRefreshListener {
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_follow
     override fun init() {
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+        mViewModel = MyPageFollowViewModel(context)
+        mViewModel.getFollowingSellerIds()
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
+    }
+
+    override fun onRefresh() {
+        mBinding.swipeRefreshLayout.isRefreshing = false
+
+        mViewModel.page = 1
 
     }
 
@@ -48,6 +63,19 @@ class MyPageFollowLayout constructor(
     }
 
     override fun onDestroy() {
+
+    }
+
+    companion object {
+
+        @BindingAdapter("followingSeller")
+        @JvmStatic
+        fun RecyclerView.bindFollowingSeller(list: MutableList<Seller>?) {
+            if (list != null) {
+                if (this.adapter != null) (this.adapter as MyPageFollowAdapter).setItems(list)
+                else this.adapter = MyPageFollowAdapter().apply { mList = list }
+            }
+        }
 
     }
 }

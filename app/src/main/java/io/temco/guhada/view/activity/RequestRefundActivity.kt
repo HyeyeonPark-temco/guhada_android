@@ -225,6 +225,11 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.visibility = View.GONE
                 mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = View.GONE
                 mBinding.includeRequestrefundCollection.imageviewRequestorderstatusWarning.visibility = View.GONE
+
+                // 택배사 및 송장번호 초기화
+                mViewModel.mRefundRequest.shippingCompanyCode = ""
+                mViewModel.mRefundRequest.shippingCompanyName = ""
+                mViewModel.mRefundRequest.invoiceNo = 0L
             }
         }
 
