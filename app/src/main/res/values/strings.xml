@@ -609,6 +609,9 @@
     <string name="mypagepoint_status_recovered">복원</string>
     <string name="mypagepoint_status_expired">소멸</string>
 
+    <!-- MYPAGE FOLLOW -->
+    <string name="mypagefollow_empty">팔로우한 스토어가 없습니다.</string>
+
     <!-- PRODUCT INFO REVIEW -->
     <string name="productdetaininfo_review_sort1">Newly Listed</string>
     <string name="productdetaininfo_review_sort2">Rating</string>
@@ -1047,7 +1050,6 @@
     <string name="community_format_commentcount">(%d)</string>
     <string name="community_format_likecount">좋아요 %d</string>
     <string name="community_format_viewcount">조회 %d</string>
-
 
     <string name="community_detail_hitcount">조회 %d</string>
     <string name="community_detail_likecount">좋아요 %d</string>

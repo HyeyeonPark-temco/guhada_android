@@ -13,6 +13,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  */
 class MyPageFollowViewModel (val context : Context) : BaseObservableViewModel() {
 
+    fun onClickMore(){
 
-
+    }
 }
