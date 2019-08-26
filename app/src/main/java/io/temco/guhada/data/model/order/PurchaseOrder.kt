@@ -20,8 +20,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var optionAttribute3: String? = ""
 
     var orderPrice = 0
-
-
     var orderProdGroupId: Long = 0
     var orderProdId: Long = 0
     var originalPrice = 0
@@ -41,20 +39,60 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
 
     var reviewId: Int? = null // 리뷰 작성 여부 판단
 
-
     // 취소교환반품 사유
     var cancelReasonList: MutableList<OrderChangeCause>? = mutableListOf()
     var exchangeReasonList: MutableList<OrderChangeCause>? = mutableListOf()
     var returnReasonList: MutableList<OrderChangeCause>? = mutableListOf()
 
     // 완료 화면 정보
-    var cancelReason = ""
-    var cancelReasonDetail = ""
     var orderStatus = ""
     var claimStatus = ""
     var claimStatusText = ""
     var paymentMethodText = ""
     var orderStatusText = ""
+
+    // 신청서 수정 정보
+    var receiverAddress = ""
+    var receiverAddressDetail = ""
+    var receiverAddressName = ""
+    var receiverName = ""
+    var receiverPhone = ""
+    var receiverRoadAddress = ""
+    var receiverZipcode = ""
+    var paymentMethod = ""
+    var pgTid = ""
+    var buyerEmail = ""
+    var buyerName = ""
+    var buyerPhone = ""
+
+    // 취소 신청 정보
+    var cancelReason = ""
+    var cancelReasonDetail = ""
+
+    // 반품 신청 정보
+    var returnReason = ""
+    var returnReasonDetail = ""
+    var returnPickingShipCompany = ""
+    var returnPickingInvoiceNo = 0
+    var returnShippingPriceType = ""
+    var returnShippingPrice = 0
+    var returnEtcPrice = 0
+
+    // 교환 신청 정
+    var exchangeReason = ""
+    var exchangeReasonDetail = ""
+    var exchangePickingShipCompany = ""
+    var exchangePickingInvoiceNo = 0
+    var exchangeShippingPriceType = ""
+    var exchangeShippingPrice = 0
+    var exchangeEtcPrice = 0
+    var exchangeBuyerRecipientName = ""
+    var exchangeBuyerRecipientMobile = ""
+    var exchangeBuyerZip = ""
+    var exchangeBuyerAddress = ""
+    var exchangeBuyerRoadAddress=  ""
+    var exchangeBuyerDetailAddress = ""
+
 
     fun getOptionStr(): String {
         var result = ""

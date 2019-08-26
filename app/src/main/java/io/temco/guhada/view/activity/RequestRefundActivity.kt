@@ -45,6 +45,17 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 
     private fun initViewModel() {
         mViewModel = RequestRefundViewModel()
+
+        // 신청서 수정
+        intent.getLongExtra("modifyOrderProdGroupId", 0).let {
+            if (it > 0 && ::mViewModel.isInitialized) {
+                mViewModel.mRefundRequest.orderProdGroupId = it
+                mViewModel.mOrderProdGroupId = it
+                mViewModel.getUpdateClaimForm(it)
+            }
+        }
+
+        // 신규 반품 신청
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mRefundRequest.orderProdGroupId = it
@@ -58,7 +69,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 initProductInfo(it)
                 initCause(it)
                 initSellerShipping()
-                initCollection()
+                initCollection(it)
                 initShippingPayment()
                 initBank()
                 initButton()
@@ -93,8 +104,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     }
 
     private fun initCause(purchaseOrder: PurchaseOrder) {
-        mBinding.includeRequestrefundCause.defaultMessage = resources.getString(R.string.requestorderstatus_refund_cause)
-        mBinding.includeRequestrefundCause.hintMessage = resources.getString(R.string.requestorderstatus_refund_hint_cause)
+        mBinding.includeRequestrefundCause.defaultMessage = if (purchaseOrder.cancelReason.isEmpty()) resources.getString(R.string.requestorderstatus_refund_cause) else purchaseOrder.cancelReason
+        mBinding.includeRequestrefundCause.hintMessage = if (purchaseOrder.cancelReasonDetail.isEmpty()) resources.getString(R.string.requestorderstatus_refund_hint_cause) else purchaseOrder.cancelReasonDetail
         mBinding.includeRequestrefundCause.quantityTitle = resources.getString(R.string.requestorderstatus_refund_quantity)
         mBinding.includeRequestrefundCause.quantity = 1
         mBinding.includeRequestrefundCause.requestType = 2
@@ -114,13 +125,13 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             mViewModel.mRefundRequest.quantity = mBinding.includeRequestrefundCause.quantity
                     ?: 0
         }
-        mBinding.includeRequestrefundCause.causeList = mViewModel.mCauseList
+        mBinding.includeRequestrefundCause.causeList = purchaseOrder.returnReasonList
         mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val cause = mViewModel.mCauseList[position]
+                val cause = mViewModel.mPurchaseOrder.value?.returnReasonList!![position]
                 mViewModel.mRefundRequest.refundReason = cause.code
                 mBinding.includeRequestrefundCause.defaultMessage = cause.label
 
@@ -151,7 +162,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mViewModel.getSellerDefaultReturnAddress()
     }
 
-    private fun initCollection() {
+    private fun initCollection(purchaseOrder: PurchaseOrder) {
         mBinding.includeRequestrefundCollection.title = resources.getString(R.string.requestorderstatus_refund_way_title)
         mBinding.includeRequestrefundCollection.description = resources.getString(R.string.requestorderstatus_refund_way_description)
         mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayTrue.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -202,6 +213,11 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 //            mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = if (it.isNullOrEmpty()) View.VISIBLE
 //            else View.GONE
 //        }
+
+        // 신청수 수정
+        if (purchaseOrder.returnPickingInvoiceNo != null && purchaseOrder.returnPickingInvoiceNo > 0) {
+
+        }
 
         mViewModel.getShippingCompany()
     }

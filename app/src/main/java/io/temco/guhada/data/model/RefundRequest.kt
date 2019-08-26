@@ -6,6 +6,11 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ShippingPaymentType
 import java.io.Serializable
 
+/**
+ * 주문 반품 정보
+ * @see ShippingPaymentType
+ * @author Hyeyeon Park
+ */
 class RefundRequest : Serializable {
     var alreadySend  = false
     var claimShippingPriceType = ""

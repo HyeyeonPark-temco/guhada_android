@@ -27,57 +27,57 @@ class RequestRefundViewModel : BaseObservableViewModel() {
     var mShippingPayment: Int = ShippingPaymentType.NONE.pos
     var mSuccessRequestRefundTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
     var mCause = ""
-    val mCauseList = mutableListOf(
-            OrderChangeCause().apply {
-                label = RefundCause.DAMAGED.label
-                code = RefundCause.DAMAGED.code
-                isFeeCharged = RefundCause.DAMAGED.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.DELIVERY_OMITTED.label
-                code = RefundCause.DELIVERY_OMITTED.code
-                isFeeCharged = RefundCause.DELIVERY_OMITTED.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.DIFFERENT_OPTION.label
-                code = RefundCause.DIFFERENT_OPTION.code
-                isFeeCharged = RefundCause.DIFFERENT_OPTION.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.DIFFERENT_PRODUCT.label
-                code = RefundCause.DIFFERENT_PRODUCT.code
-                isFeeCharged = RefundCause.DIFFERENT_PRODUCT.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.LATE_DELIVERY.label
-                code = RefundCause.LATE_DELIVERY.code
-                isFeeCharged = RefundCause.LATE_DELIVERY.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.MISTAKE_DELIVERY.label
-                code = RefundCause.MISTAKE_DELIVERY.code
-                isFeeCharged = RefundCause.MISTAKE_DELIVERY.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.MISTAKE_ORDER.label
-                code = RefundCause.MISTAKE_ORDER.code
-                isFeeCharged = RefundCause.MISTAKE_ORDER.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.SERVICE_UNSATISFIED.label
-                code = RefundCause.SERVICE_UNSATISFIED.code
-                isFeeCharged = RefundCause.SERVICE_UNSATISFIED.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.SOLD_OUT.label
-                code = RefundCause.SOLD_OUT.code
-                isFeeCharged = RefundCause.SOLD_OUT.isFeeCharged
-            },
-            OrderChangeCause().apply {
-                label = RefundCause.ETC.label
-                code = RefundCause.ETC.code
-                isFeeCharged = RefundCause.ETC.isFeeCharged
-            })
+    val mCauseList = mutableListOf<OrderChangeCause>()
+    //            OrderChangeCause().apply {
+//                label = RefundCause.DAMAGED.label
+//                code = RefundCause.DAMAGED.code
+//                isFeeCharged = RefundCause.DAMAGED.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.DELIVERY_OMITTED.label
+//                code = RefundCause.DELIVERY_OMITTED.code
+//                isFeeCharged = RefundCause.DELIVERY_OMITTED.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.DIFFERENT_OPTION.label
+//                code = RefundCause.DIFFERENT_OPTION.code
+//                isFeeCharged = RefundCause.DIFFERENT_OPTION.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.DIFFERENT_PRODUCT.label
+//                code = RefundCause.DIFFERENT_PRODUCT.code
+//                isFeeCharged = RefundCause.DIFFERENT_PRODUCT.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.LATE_DELIVERY.label
+//                code = RefundCause.LATE_DELIVERY.code
+//                isFeeCharged = RefundCause.LATE_DELIVERY.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.MISTAKE_DELIVERY.label
+//                code = RefundCause.MISTAKE_DELIVERY.code
+//                isFeeCharged = RefundCause.MISTAKE_DELIVERY.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.MISTAKE_ORDER.label
+//                code = RefundCause.MISTAKE_ORDER.code
+//                isFeeCharged = RefundCause.MISTAKE_ORDER.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.SERVICE_UNSATISFIED.label
+//                code = RefundCause.SERVICE_UNSATISFIED.code
+//                isFeeCharged = RefundCause.SERVICE_UNSATISFIED.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.SOLD_OUT.label
+//                code = RefundCause.SOLD_OUT.code
+//                isFeeCharged = RefundCause.SOLD_OUT.isFeeCharged
+//            },
+//            OrderChangeCause().apply {
+//                label = RefundCause.ETC.label
+//                code = RefundCause.ETC.code
+//                isFeeCharged = RefundCause.ETC.isFeeCharged
+//            })
     var mOrderProdGroupId = 0L
 
     fun getClaimForm(orderProdGroupId: Long) {
@@ -94,6 +94,19 @@ class RequestRefundViewModel : BaseObservableViewModel() {
         })
     }
 
+    fun getUpdateClaimForm(orderProdGroupId: Long) {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            ClaimServer.getUpdateClaimForm(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            if (it.data != null) {
+                                (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
+                                this@RequestRefundViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
+                            }
+                        })
+            }, accessToken = token, orderProdGroupId = orderProdGroupId)
+        })
+    }
 
     fun getSellerDefaultReturnAddress() {
         if (mPurchaseOrder.value?.sellerId ?: 0 > 0) {
