@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="type" type="Integer" />
+        <variable name="text01" type="String" />
+        <variable name="text02" type="String" />
+        <variable name="text03" type="String" />
+        <variable name="text04" type="String" />
+
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ReportWriteViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="22dp"
+        android:paddingTop="22dp"
+        android:background="@color/pale_grey"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13"
+                android:text="@string/report_community_text_type2_0" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:background="@color/white_three"/>
+
+            <TextView
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{text01}"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13"
+                android:text="@string/report_community_text_type2_1" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:background="@color/white_three"/>
+
+            <TextView
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{text02}"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:visibility="@{type==2 ? View.VISIBLE : View.GONE, default = visible}"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13"
+                android:text="@string/report_community_text_type2_2" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:background="@color/white_three"/>
+
+            <TextView
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{text03}"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:visibility="@{type==3 ? View.VISIBLE : View.GONE, default = visible}"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13"
+                android:text="@string/report_community_text_type3_2" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:background="@color/white_three"/>
+
+            <TextView
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{text03}"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13"
+                android:text="@string/report_community_text_type2_3" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:background="@color/white_three"/>
+
+            <TextView
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@{text04}"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

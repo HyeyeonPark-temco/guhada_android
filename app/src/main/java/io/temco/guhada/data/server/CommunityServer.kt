@@ -244,6 +244,82 @@ class CommunityServer {
 
 
         /**
+         * 게시글 댓글 Id 정보 가져오기
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun deleteComment(listener: OnServerListener, accessToken: String, id : Long) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .deleteCommentId(accessToken, id).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 게시글 댓글 등록
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun modifyCommentData(listener: OnServerListener, accessToken: String, id : Long, body : CommentResponse) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .modifyCommentId(accessToken, id, body).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+
+
+        /**
          * 게시글 댓글 등록
          *
          * bbsId : 게시글 id

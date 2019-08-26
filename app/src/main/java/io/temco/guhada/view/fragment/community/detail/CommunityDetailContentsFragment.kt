@@ -31,6 +31,10 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
         mBinding.viewModel = viewModel
         mDetail = viewModel.communityDetail.value!!
         mBinding.item = mDetail
+
+        mBinding.setClickBookmarkListener {
+            viewModel.onClickBookMark()
+        }
         setDetailView()
         viewModel.getBookMark()
     }

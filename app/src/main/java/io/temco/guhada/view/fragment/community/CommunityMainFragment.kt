@@ -92,7 +92,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
                 currentPagerIndex = position
             }
         })
-        mBinding.viewpager.offscreenPageLimit = 1
+        mBinding.viewpager.offscreenPageLimit = 3
         mBinding.viewpager.currentItem = currentPagerIndex
         mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager) {
             override fun onTabReselected(tab: TabLayout.Tab?) {

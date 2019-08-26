@@ -7,7 +7,6 @@ import io.temco.guhada.view.adapter.CommentListAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragment<FragmentCommentBinding>() {
-
     // -------- LOCAL VALUE --------
     // -----------------------------
 

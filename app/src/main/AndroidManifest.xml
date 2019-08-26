@@ -177,6 +177,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
 
+        <!-- Search -->
+        <activity
+            android:name=".view.activity.Repo"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
+
         <!-- SideMenu -->
         <activity
             android:name=".view.activity.SideMenuActivity"

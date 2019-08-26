@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="onClickWriteButton"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickCloseButton"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickGetImage"
+            type="android.view.View.OnClickListener" />
+
+        <variable name="type" type="Integer" />
+        <variable name="title" type="String" />
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.ReviewWriteViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_reivewwrite_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:paddingLeft="40dp"
+            android:weightSum="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/HeaderTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/text_17"
+                android:text="@{title}" />
+
+            <ImageButton
+                android:id="@+id/button_header_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="@{onClickCloseButton}"
+                android:src="@drawable/burger_top_close"
+                android:layout_marginRight="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_four"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- 상품 신고 -->
+                <include
+                    android:id="@+id/linearlayout_reportdetail_type0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{type==0 ? View.VISIBLE : View.GONE , default = gone}"
+                    layout="@layout/layout_reportdetail_product"/>
+
+                <!-- 회원 신고 -->
+                <include
+                    android:id="@+id/linearlayout_reportdetail_type1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{type==1 ? View.VISIBLE : View.GONE , default = gone}"
+                    layout="@layout/layout_reportdetail_user"/>
+
+                <!-- 게시글 신고 -->
+                <include
+                    android:id="@+id/linearlayout_reportdetail_type2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{type==2 ? View.VISIBLE : View.GONE , default = gone}"
+                    layout="@layout/layout_reportdetail_community"/>
+
+                <!-- 댓글 신고 -->
+                <include
+                    android:id="@+id/linearlayout_reportdetail_type3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{type==3 ? View.VISIBLE : View.GONE , default = gone}"
+                    layout="@layout/layout_reportdetail_community"/>
+
+                <FrameLayout
+                    android:id="@+id/framelayout_payment_shippingmemo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white_five" >
+
+                    <Spinner
+                        android:id="@+id/spinner_mypageclaim_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@null"
+                        android:spinnerMode="dropdown" />
+                    <!--
+                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"
+                        app:bindClaimStatusSpinner="@{viewModel.claimMessages}"-->
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_mypageclaim_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_mypageclaim_message"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/common_white"
+                            android:orientation="horizontal"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/PaymentContentGreyTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1"
+                                android:textSize="@dimen/text_15" />
+                            <!--
+                                android:text="@{viewModel.selectedStatusMessage}" -->
+
+                            <ImageView
+                                android:id="@+id/imageview_payment_shippingmemo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open"
+                                android:layout_marginRight="20dp"/>
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <EditText
+                    android:id="@+id/edittext_report_title"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center_vertical"
+                    android:maxLines="3"
+                    android:background="@color/common_white"
+                    android:hint="@string/report_community_text06"
+                    android:textColorHint="@color/pinkish_grey"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <EditText
+                    android:id="@+id/edittext_report_text"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:paddingTop="6dp"
+                    android:gravity="start"
+                    android:maxLines="500"
+                    android:maxLength="1000"
+                    android:background="@color/common_white"
+                    android:hint="@string/report_community_text07"
+                    android:textColorHint="@color/pinkish_grey"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="1"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue_purple"
+                        android:textSize="@dimen/text_13" />
+                    <!--
+                        android:text="@{viewModel.editTextReviewTxtCount}" -->
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/1000"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:onClick="@{onClickGetImage}"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/com_btn_photo"/>
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/report_community_text08"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/report_community_text08"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/report_community_text09"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_12" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="15dp"/>
+<!--
+                        android:onClick="@{()-> viewModel.clickUserSizeCheck()}"
+                        android:background="@{viewModel.userSizeUpdateCheckTerm ? @drawable/checkbox_checked_20 : @drawable/checkbox_select_20, default = @drawable/checkbox_select_20}" -->
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/report_community_text10"
+                        android:textColor="@color/warm_grey_two"
+                        android:textSize="@dimen/text_12" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_addshippingaddress_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/mypage_deliverycer_cancel"
+                android:onClick="@{onClickCloseButton}"
+                android:background="@color/greyish_brown_two"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18" />
+
+            <Button
+                android:id="@+id/button_addshippingaddress_confirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/report_community_text11"
+                android:onClick="@{onClickWriteButton}"
+                android:background="@color/common_blue_purple"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

@@ -45,6 +45,13 @@ interface CommunityService {
     @GET("/comments/{id}")
     fun getCommentId(@Path("id") id : Long): Call<BaseModel<Comments>>
 
+    // 댓글 수정
+    @PUT("/comments/{id}")
+    fun modifyCommentId(@Header("Authorization") accessToken: String, @Path("id") id : Long, @Body response: CommentResponse): Call<BaseModel<Any>>
+
+    // 댓글 삭제
+    @DELETE("/comments/{id}")
+    fun deleteCommentId(@Header("Authorization") accessToken: String, @Path("id") id : Long): Call<BaseModel<Any>>
 
     // 커뮤니티 전체 조회 API
     @POST("/comments")

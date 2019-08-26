@@ -8,10 +8,12 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.Observer
+import com.auth0.android.jwt.JWT
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
@@ -23,14 +25,13 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.community.detail.CommentListFragment
 import io.temco.guhada.view.fragment.community.detail.CommunityDetailContentsFragment
-import java.lang.Exception
 
 class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.ActivityCommunitydetailBinding>(), View.OnClickListener {
     private lateinit var mRequestManager: RequestManager
-    private var mLoadingIndicatorUtil : LoadingIndicatorUtil? = null
     private lateinit var mViewModel : CommunityDetailViewModel
     private lateinit var mDetailFragment : CommunityDetailContentsFragment
     private lateinit var mCommentFragment : CommentListFragment
+    private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
     private lateinit var mHandler: Handler
     // -----------------------------
 
@@ -53,10 +54,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         mRequestManager = Glide.with(this)
         mHandler = Handler(this.mainLooper)
         initIntent()
-        if(mLoadingIndicatorUtil == null){
-            mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
-            mLoadingIndicatorUtil?.show()
-        }
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
+        mLoadingIndicatorUtil.show()
 
         mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.addTextChangedListener(object  : TextWatcher {
             override fun afterTextChanged(s: Editable?) { }
@@ -94,6 +93,23 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if(CommonUtil.checkToken()){
+            mViewModel.userLoginCheck.set(true)
+            Preferences.getToken().let { token ->
+                if (token?.accessToken != null) {
+                    mViewModel.userId = JWT(token?.accessToken!!).getClaim("userId").asLong() ?: -1L
+                    if(mViewModel.commentAdapter!=null)mViewModel.commentAdapter?.notifyDataSetChanged()
+                }
+            }
+        }else{
+            mViewModel.userId = -1L
+            mViewModel.userLoginCheck.set(false)
+            if(mViewModel.commentAdapter!=null)mViewModel.commentAdapter?.notifyDataSetChanged()
+        }
+    }
+
     override fun onStop() {
         super.onStop()
     }
@@ -101,9 +117,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     override fun onDestroy() {
         super.onDestroy()
         try{
-            if (mLoadingIndicatorUtil != null) {
-                mLoadingIndicatorUtil?.dismiss()
-                mLoadingIndicatorUtil = null
+            if (::mLoadingIndicatorUtil.isInitialized) {
+                mLoadingIndicatorUtil.dismiss()
             }
         }catch (e : Exception){
             if(CustomLog.flag)CustomLog.E(e)
@@ -114,7 +129,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     // PUBLIC
     ////////////////////////////////////////////////
 
-
+    fun getLoading() : LoadingIndicatorUtil = mLoadingIndicatorUtil
     fun getHandler() : Handler = mHandler
 
     ////////////////////////////////////////////////
@@ -133,14 +148,24 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "setDetailView ---------------------")
         mViewModel.communityDetail.observe(this, Observer {
             mLoadingIndicatorUtil?.dismiss()
-            mViewModel.getCommentList()
-            initDetail()
+            if(it.use && !it.delete){
+                mViewModel.getCommentList()
+                mBinding.layoutAppbar.setExpanded(true,true)
+            }else{
+                if(it.delete){
+                    CustomMessageDialog(message = "삭제된 글입니다.",
+                            cancelButtonVisible = true,
+                            confirmTask = {
+                                finish()
+                            }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
+                }
+            }
         })
         mViewModel.commentList.observe(this, Observer {
             mHandler.postDelayed({
+                initDetail()
                 initComment()
-                mBinding.layoutAppbar.setExpanded(true,true)
-            },500)
+            },100)
         })
         mViewModel.getDetailData()
         mBinding.headerTitle = mViewModel.info.communityCategoryName
@@ -184,6 +209,12 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
             checkRegBtn()
         }
 
+        mBinding.linearlayoutCommunitydetailCommentwrite.setClickCommentReplyClearListener {
+            mViewModel.postCommentDataClear()
+            mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.text = Editable.Factory.getInstance().newEditable("")
+        }
+
+
         // 댓글 등록 하기
         mBinding.linearlayoutCommunitydetailCommentwrite.setClickCommentRegListener {
             if(CommonUtil.checkToken()){
@@ -210,8 +241,9 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                 }
             }else{
                 CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
-                        cancelButtonVisible = false,
+                        cancelButtonVisible = true,
                         confirmTask = {
+                            CommonUtil.moveLoginPage(this@CommunityDetailActivity)
                         }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
             }
         }
