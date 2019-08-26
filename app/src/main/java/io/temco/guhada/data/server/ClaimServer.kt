@@ -232,5 +232,23 @@ open class ClaimServer {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
                         .getUpdateClaimForm(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 반품 신청서 수정
+         */
+        @JvmStatic
+        fun updateRefund(listener: OnServerListener, accessToken: String, refundRequest: RefundRequest) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .updateRefund(accessToken = accessToken, refundRequest = refundRequest).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 교환 신청서 수정
+         */
+        @JvmStatic
+        fun updateExchange(listener: OnServerListener, accessToken: String, exchangeRequest: ExchangeRequest) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .updateExchange(accessToken = accessToken, exchangeRequest = exchangeRequest).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
     }
 }

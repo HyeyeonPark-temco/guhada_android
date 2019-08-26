@@ -781,6 +781,7 @@
     <string name="requestorderstatus_exchange_cause">교환 사유를 선택해주세요.</string>
     <string name="requestorderstatus_exchange_hint_cause">교환 사유를 간략히 적어주세요.</string>
     <string name="requestorderstatus_exchange_button_submit">교환 신청</string>
+    <string name="requestorderstatus_exchange_button_update">교환 신청 수정</string>
     <string name="requestorderstatus_exchange_address">교환상품 배송지</string>
     <string name="requestorderstatus_exchange_selleraddress">교환상품 반송지</string>
     <string name="requestorderstatus_exchange_way_title">교환 발송 여부</string>
@@ -795,6 +796,7 @@
     <string name="requestorderstatus_refund_cause">반품 사유를 선택해주세요.</string>
     <string name="requestorderstatus_refund_hint_cause">반품 사유를 간략히 적어주세요.</string>
     <string name="requestorderstatus_refund_button_submit">반품 신청</string>
+    <string name="requestorderstatus_refund_button_update">반품 신청 수정</string>
     <string name="requestorderstatus_refund_selleraddress">반품상품 반송지</string>
     <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨나요?</string>
     <string name="requestorderstatus_refund_way_title">반품 발송 여부</string>

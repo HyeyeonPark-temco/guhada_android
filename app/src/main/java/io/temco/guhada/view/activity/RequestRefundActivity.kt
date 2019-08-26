@@ -54,6 +54,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mViewModel.mRefundRequest.orderProdGroupId = it
                 mViewModel.mOrderProdGroupId = it
                 mViewModel.getUpdateClaimForm(it)
+                initButton(true)
             }
         }
 
@@ -63,6 +64,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mViewModel.mRefundRequest.orderProdGroupId = it
                 mViewModel.mOrderProdGroupId = it
                 mViewModel.getClaimForm(it)
+                initButton(false)
             }
         }
         mViewModel.mPurchaseOrder.observe(this, Observer {
@@ -74,7 +76,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 initCollection(it)
                 initShippingPayment(it)
                 initBank(it)
-                initButton()
                 mBinding.executePendingBindings()
             }
         })
@@ -86,6 +87,11 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             intent.putExtra("refundRequest", mViewModel.mRefundRequest)
 
             startActivity(intent)
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
+
+        mViewModel.mSuccessUpdateRefundTask = {
             setResult(Activity.RESULT_OK)
             finish()
         }
@@ -110,7 +116,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             mBinding.includeRequestrefundCause.defaultMessage = getReason(purchaseOrder.returnReason)
             mBinding.includeRequestrefundCause.textviewRequestorderstatusCause.text = getReason(purchaseOrder.returnReason)
         }
-        mBinding.includeRequestrefundCause.hintMessage = if (purchaseOrder.returnReasonDetail.isEmpty()) resources.getString(R.string.requestorderstatus_refund_hint_cause) else purchaseOrder.returnReasonDetail
+        mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.setText(purchaseOrder.returnReasonDetail)
+        mBinding.includeRequestrefundCause.hintMessage = resources.getString(R.string.requestorderstatus_refund_hint_cause)
         mBinding.includeRequestrefundCause.quantityTitle = resources.getString(R.string.requestorderstatus_refund_quantity)
         mBinding.includeRequestrefundCause.quantity = 1
         mBinding.includeRequestrefundCause.requestType = 2
@@ -294,16 +301,18 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         }
     }
 
-    private fun initButton() {
+    private fun initButton(isModify: Boolean) {
         mBinding.includeRequestrefundButton.cancelText = getString(R.string.common_cancel)
-        mBinding.includeRequestrefundButton.confirmText = getString(R.string.requestorderstatus_refund_button_submit)
+        mBinding.includeRequestrefundButton.confirmText = if (isModify) getString(R.string.requestorderstatus_refund_button_update) else getString(R.string.requestorderstatus_refund_button_submit)
         mBinding.includeRequestrefundButton.setOnClickCancel { finish() }
         mBinding.includeRequestrefundButton.setOnClickConfirm {
             val invoiceId = mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.text.toString()
             if (invoiceId.isNotEmpty())
                 mViewModel.mRefundRequest.invoiceNo = mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.text.toString().toLong()
             mViewModel.mCause = mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.text.toString()
-            mViewModel.requestRefund()
+
+            if (isModify) mViewModel.updateRefund()
+            else mViewModel.requestRefund()
         }
     }
 
