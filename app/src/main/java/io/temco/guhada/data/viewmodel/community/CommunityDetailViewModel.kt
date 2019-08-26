@@ -188,7 +188,7 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
     fun postCommentData(listener: OnCallBackListener){
         if(modifyComment.get()){
             if(!TextUtils.isEmpty(commentRegImage.get())){
-                if(!"http".startsWith(commentRegImage.get()!!, true)){
+                if(!"http".equals(commentRegImage.get()!!.substring(0,4),true)){
                     repository.uploadImage(commentRegImage.get()!!,0, object : OnCallBackListener{
                         override fun callBackListener(resultFlag: Boolean, value: Any) {
                             var data = value as ImageResponse

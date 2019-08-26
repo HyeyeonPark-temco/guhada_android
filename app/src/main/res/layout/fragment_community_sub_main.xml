@@ -27,7 +27,7 @@
             android:text="삭제글"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
-            android:onClick="@{clickListener}" />
+            android:onClick="@{clickListener2}" />
 
     </LinearLayout>
 
