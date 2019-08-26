@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="seller"
+            type="io.temco.guhada.data.model.seller.Seller" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/imageview_mypagefollow_profile"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            app:ovalImageUrl="@{seller.profileImageUrl}"
+            android:src="@color/white_three"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_mypagefollow_brandname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textview_mypagefollow_brandname"
+                style="@style/TextMediumSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@{seller.storeName}"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_13"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageview_mypagefollow_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="7dp"
+                android:src="@drawable/mypage_icon_new"
+                app:layout_constraintLeft_toRightOf="@+id/textview_mypagefollow_brandname"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textview_mypagefollow_description"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="7dp"
+            android:maxLines="2"
+            android:minHeight="32dp"
+            android:text="@{seller.storeIntroduction}"
+            android:textColor="@color/warm_grey"
+            android:textSize="@dimen/text_12"
+            app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearlayout_mypagefollow_brandname" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_mypagefollow_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description">
+
+            <TextView
+                android:id="@+id/textview_mypagefollow_followcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="팔로워 777"
+                app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
+                app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
+
+            <View
+                android:id="@+id/view_mypagefollow_line"
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:background="@color/white_three"
+                app:layout_constraintLeft_toRightOf="@+id/textview_mypagefollow_followcount"
+                app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <TextView
+                android:id="@+id/textview_mypagefollow_productcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="상품수 7777"
+                app:layout_constraintLeft_toRightOf="@+id/view_mypagefollow_line"
+                app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_mypagefollow_follow"
+            style="@style/borderlessStyle"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/border_all_whitethree"
+            android:text="@string/productdetail_button_following"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
+            app:layout_constraintTop_toBottomOf="@+id/linearlayout_mypagefollow_count" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -206,14 +206,19 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     // buttons.add(DeliveryButton().apply { text = "취소철회" })
                 }
 
-                PurchaseStatus.REQUEST_RETURN.status -> { // 반품 신청서 수정
+                PurchaseStatus.REQUEST_RETURN.status -> {
                     buttons.add(DeliveryButton().apply {
+                        // 반품 신청서 수정
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify)
-                        task = View.OnClickListener { val intent = Intent(mBinding.root.context, RequestRefundActivity::class.java)
+                        task = View.OnClickListener {
+                            val intent = Intent(mBinding.root.context, RequestRefundActivity::class.java)
                             intent.putExtra("modifyOrderProdGroupId", item.orderProdGroupId)
-                            mBinding.root.context.startActivity(intent)}
+                            mBinding.root.context.startActivity(intent)
+                        }
                     })
+
                     buttons.add(DeliveryButton().apply {
+                        // 반품 철회
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawrefund)
                         task = View.OnClickListener {
                             CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_refund), cancelButtonVisible = true,
@@ -222,9 +227,13 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     })
                 }
 
-                PurchaseStatus.REQUEST_EXCHANGE.status -> { // 교환 신청서 수정
-                    buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify) })
+                PurchaseStatus.REQUEST_EXCHANGE.status -> {
                     buttons.add(DeliveryButton().apply {
+                        // 교환 신청서 수정
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify)
+                    })
+                    buttons.add(DeliveryButton().apply {
+                        // 교환 철회
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawexchange)
                         task = View.OnClickListener {
                             CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_exchange), cancelButtonVisible = true,

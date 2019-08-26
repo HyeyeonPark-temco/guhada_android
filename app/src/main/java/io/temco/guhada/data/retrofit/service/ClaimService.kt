@@ -119,5 +119,16 @@ interface ClaimService {
     @DELETE("/order-claim/order-exchange-withdraw")
     fun withdrawExchange(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<Any>>
 
+    /**
+     * 반품 신청서 수정 API
+     */
+    @POST("/order-claim/update-order-return")
+    fun updateRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<Any>>
+
+    /**
+     * 교환 신청서 수정 API
+     */
+    @POST("/order-claim/update-order-exchange")
+    fun updateExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest) : Call<BaseModel<Any>>
 
 }

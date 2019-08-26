@@ -5,7 +5,7 @@ package io.temco.guhada.common.enum
  * @author Hyeyeon Park
  * @since 2019.08.19
  */
-enum class ExchangeCause (val code: String, val label: String, val isFeeCharged: Boolean) {
+enum class ExchangeCause (val code: String, val label: String, val userFault: Boolean) {
     COLOR_SIZE_CHANGE("COLOR_SIZE_CHANGE", "색상 및 사이즈 변경", true),
     MISTAKE_ORDER("MISTAKE_ORDER", "다른 상품 잘못 주문", true),
     SERVICE_UNSATISFIED("SERVICE_UNSATISFIED", "서비스 불만족", false),

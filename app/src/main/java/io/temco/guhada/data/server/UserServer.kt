@@ -283,6 +283,7 @@ class UserServer {
             })
         }
 
+
         /**
          * 셀러 반품지 가져오기
          */
@@ -365,9 +366,14 @@ class UserServer {
                         override fun onFailure(call: Call<BaseModel<BookMark>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
-                    }
-                    )
+                    })
         }
+
+        @JvmStatic
+        fun getBookMarkWithoutTargetId(listener: OnServerListener, accessToken: String, target: String, userId: Int) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                        .getBookMarkWithoutTargetId(accessToken = accessToken, userId = userId, target = target).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback<BaseModel<BookMark>>(successTask = { response -> listener.onResult(true, response.body()) }))
 
         /**
          * 북마크 저장
@@ -384,8 +390,7 @@ class UserServer {
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
-                    }
-                    )
+                    })
         }
 
         /**

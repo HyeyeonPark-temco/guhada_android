@@ -248,6 +248,8 @@ interface UserService {
     /**
      * BookMark 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
+     * @see io.temco.guhada.common.enum.BookMarkTarget
+     * @author Hyeyeon Park
      *
      * park jungho
      * 19.07.31
@@ -257,6 +259,8 @@ interface UserService {
     @GET("/users/{userId}/bookmarks")
     fun getBookMark(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<BookMark>>
 
+    @GET("/users/{userId}/bookmarks")
+    fun getBookMarkWithoutTargetId(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String): Call<BaseModel<BookMark>>
 
     /**
      * BookMark 정보 추가
