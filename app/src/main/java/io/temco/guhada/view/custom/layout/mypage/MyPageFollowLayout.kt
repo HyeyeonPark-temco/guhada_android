@@ -44,7 +44,10 @@ class MyPageFollowLayout constructor(
                     }.subscribe { seller ->
                         mViewModel.mSellerList.add(seller)
                     }
-            mBinding.recyclerviewMypagefollowList.adapter = MyPageFollowAdapter().apply { mList = mViewModel.mSellerList }
+            mBinding.recyclerviewMypagefollowList.adapter = MyPageFollowAdapter().apply {
+                this.mList = this@MyPageFollowLayout.mViewModel.mSellerList
+                this.mViewModel = this@MyPageFollowLayout.mViewModel
+            }
         })
 
         mViewModel.mNotifyDataChangedTask = {
@@ -53,7 +56,6 @@ class MyPageFollowLayout constructor(
         }
 
         mViewModel.mNotifyItemInsertedTask = { startPos, endPos ->
-            Log.e("ㅇㅇㅇ", "$startPos ~ $endPos")
             mBinding.recyclerviewMypagefollowList.recycledViewPool.clear()
             val adapter = (mBinding.recyclerviewMypagefollowList.adapter as MyPageFollowAdapter)
             adapter.addAllItems(mViewModel.mTempSellerList, startPos, endPos)

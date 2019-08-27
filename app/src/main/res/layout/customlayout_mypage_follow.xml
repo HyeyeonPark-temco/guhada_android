@@ -47,6 +47,7 @@
 
                     <Button
                         android:id="@+id/button_mypagefollow_deleteall"
+                        style="@style/borderlessStyle"
                         android:layout_width="80dp"
                         android:layout_height="30dp"
                         android:layout_marginTop="13dp"

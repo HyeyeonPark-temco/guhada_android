@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.seller
 
+import com.google.gson.annotations.Expose
 import io.temco.guhada.data.model.user.User
 import java.io.Serializable
 
@@ -23,6 +24,9 @@ class Seller : Serializable {
     var updatedAt: String? = ""
     var updatedBy: String? = ""
     var user: User = User()
+
+    @Expose
+    var isFollowing = true
 
 }
 

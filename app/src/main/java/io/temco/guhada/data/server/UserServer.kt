@@ -415,6 +415,16 @@ class UserServer {
         }
 
         /**
+         * 북마크 저장 (비동기)
+         * @since 2019.08.27
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun saveBookMarkAsync(accessToken: String, response: JsonObject): Deferred<BaseModel<Any>> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).saveBookMarkAsync(accessToken = accessToken, response = response).await()
+        }
+
+        /**
          * 북마크 삭제
          */
         @JvmStatic
@@ -430,6 +440,16 @@ class UserServer {
                         }
                     }
                     )
+        }
+
+        /**
+         * 북마크 삭제 (비동기)
+         * @since 2019.08.27
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun deleteBookMarkAsync(accessToken: String, target: String, targetId: Long): Deferred<BaseModel<Any>> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).deleteBookMarkAsync(accessToken = accessToken, target = target, targetId = targetId).await()
         }
 
 

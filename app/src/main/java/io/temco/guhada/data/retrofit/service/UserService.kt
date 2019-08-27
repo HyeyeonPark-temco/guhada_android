@@ -277,7 +277,15 @@ interface UserService {
     fun saveBookMark(@Header("Authorization") accessToken: String, @Body response: JsonObject): Call<BaseModel<Any>>
 
     /**
-     * BookMark 정보 추가
+     * BookMark 정보 추가 (비동기)
+     * @author Hyeyeon Park
+     * @since 2019.08.27
+     */
+    @POST("/users/bookmarks")
+    fun saveBookMarkAsync(@Header("Authorization") accessToken: String, @Body response: JsonObject): Deferred<BaseModel<Any>>
+
+    /**
+     * BookMark 정보 삭제
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
      *
      * park jungho
@@ -287,6 +295,13 @@ interface UserService {
     @DELETE("/users/bookmarks")
     fun deleteBookMark(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<Any>>
 
+    /**
+     * BookMark 정보 삭제 (비동기)
+     * @author Hyeyeon Park
+     * @since 2019.08.27
+     */
+    @DELETE("/users/bookmarks")
+    fun deleteBookMarkAsync(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long): Deferred<BaseModel<Any>>
 
     /**
      * BookMark 정보 추가

@@ -7,6 +7,10 @@
         <variable
             name="seller"
             type="io.temco.guhada.data.model.seller.Seller" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -119,9 +123,9 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/border_all_whitethree"
+            android:background="@drawable/background_color_purple"
             android:text="@string/productdetail_button_following"
-            android:textColor="@color/black_four"
+            android:textColor="@color/common_white"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
