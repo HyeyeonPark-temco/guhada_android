@@ -21,6 +21,10 @@ class PurchaseOrderResponse : Serializable{
     var totalProdPrice = 0
     var totalShipPrice = 0
 
+    var buyerName = ""
+    var buyerEmail = ""
+    var buyerPhone = ""
+
     fun getOrderTimestamp() : Long {
         return if(orderList.isNotEmpty())
             orderList[0].orderTimestamp

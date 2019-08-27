@@ -25,12 +25,8 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
     var purchaseOrderResponse = PurchaseOrderResponse()
         @Bindable
         get() = field
-    var user: User = User()
-        @Bindable
-        get() = field
     var onClickClaimTask: (productId: Long) -> Unit = {}
     var onClickReceiptTask: (tId: String) -> Unit = {}
-
 
     ///
     var mPurchaseOrder = ObservableField<PurchaseOrder>(PurchaseOrder())
@@ -64,22 +60,6 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
                             notifyPropertyChanged(BR.purchaseOrderResponse)
                         })
             }, accessToken = token, purchaseId = purchaseId.toDouble())
-        })
-    }
-
-    fun getUser() {
-        ServerCallbackUtil.callWithToken(task = { token ->
-            val userId = JWT(token.split("Bearer ")[1]).getClaim("userId").asInt()
-            if (userId != null)
-                UserServer.getUserInfo(OnServerListener { success, o ->
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                val data = it.list[0] as User
-                                this.user = data
-                                notifyPropertyChanged(BR.user)
-                            })
-                }, userId)
-            else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
         })
     }
 

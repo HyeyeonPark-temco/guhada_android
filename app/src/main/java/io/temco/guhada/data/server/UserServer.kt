@@ -2,6 +2,7 @@ package io.temco.guhada.data.server
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import io.reactivex.Observable
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -26,10 +27,14 @@ import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.UserService
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 /**
  * BASE URL: dev.user.guhada.com/
@@ -283,6 +288,13 @@ class UserServer {
             })
         }
 
+        /**
+         * 셀러 정보 가져오기 (비동기)
+         */
+        @JvmStatic
+        suspend fun getSellerByIdAsync(sellerId: Long): Deferred<BaseModel<Seller>> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getSellerByIdAsync(sellerId).await()
+        }
 
         /**
          * 셀러 반품지 가져오기
@@ -306,6 +318,15 @@ class UserServer {
         fun getSellerFollowers(listener: OnServerListener, accessToken: String, sellerId: Long) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java).getSellerFollowers(accessToken, sellerId).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerFollower>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
+         * 북마크 카운트 조회 (비동기)
+         */
+        @JvmStatic
+        fun getBookMarkCountAsync(target: String, targetId: Long): Deferred<BaseModel<BookMarkCountResponse>> =
+                GlobalScope.async {
+                    RetrofitManager.createService(Type.Server.USER, UserService::class.java).getBookMarkCountAsync(target = target, targetId = targetId).await()
+                }
 
         /**
          * 회원 좋아요 정보 조회
@@ -394,6 +415,16 @@ class UserServer {
         }
 
         /**
+         * 북마크 저장 (비동기)
+         * @since 2019.08.27
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun saveBookMarkAsync(accessToken: String, response: JsonObject): Deferred<BaseModel<Any>> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).saveBookMarkAsync(accessToken = accessToken, response = response).await()
+        }
+
+        /**
          * 북마크 삭제
          */
         @JvmStatic
@@ -409,6 +440,16 @@ class UserServer {
                         }
                     }
                     )
+        }
+
+        /**
+         * 북마크 삭제 (비동기)
+         * @since 2019.08.27
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun deleteBookMarkAsync(accessToken: String, target: String, targetId: Long): Deferred<BaseModel<Any>> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).deleteBookMarkAsync(accessToken = accessToken, target = target, targetId = targetId).await()
         }
 
 

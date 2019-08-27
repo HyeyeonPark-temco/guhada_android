@@ -1,10 +1,7 @@
 package io.temco.guhada.data.retrofit.service
 
 import com.google.gson.JsonObject
-import io.temco.guhada.data.model.BookMark
-import io.temco.guhada.data.model.Token
-import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.model.Verification
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.MyPageReview
@@ -17,6 +14,7 @@ import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -56,6 +54,12 @@ interface UserService {
      */
     @GET("/sellers/{sellerId}")
     fun getSellerById(@Path("sellerId") id: Long): Call<BaseModel<Seller>>
+
+    /**
+     * 셀러 정보 가져오기 API (비동기)
+     */
+    @GET("/sellers/{sellerId}")
+    fun getSellerByIdAsync(@Path("sellerId") id: Long): Deferred<BaseModel<Seller>>
 
     /**
      * 셀러 기본 반품지 가져오기 API
@@ -244,7 +248,6 @@ interface UserService {
     @GET("/users/{userId}/bookmarks")
     fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("targetId") targetId: Long, @Query("target") target: String): Call<BaseModel<BookMark>>
 
-
     /**
      * BookMark 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
@@ -274,7 +277,15 @@ interface UserService {
     fun saveBookMark(@Header("Authorization") accessToken: String, @Body response: JsonObject): Call<BaseModel<Any>>
 
     /**
-     * BookMark 정보 추가
+     * BookMark 정보 추가 (비동기)
+     * @author Hyeyeon Park
+     * @since 2019.08.27
+     */
+    @POST("/users/bookmarks")
+    fun saveBookMarkAsync(@Header("Authorization") accessToken: String, @Body response: JsonObject): Deferred<BaseModel<Any>>
+
+    /**
+     * BookMark 정보 삭제
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
      *
      * park jungho
@@ -284,6 +295,13 @@ interface UserService {
     @DELETE("/users/bookmarks")
     fun deleteBookMark(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long): Call<BaseModel<Any>>
 
+    /**
+     * BookMark 정보 삭제 (비동기)
+     * @author Hyeyeon Park
+     * @since 2019.08.27
+     */
+    @DELETE("/users/bookmarks")
+    fun deleteBookMarkAsync(@Header("Authorization") accessToken: String, @Query("target") target: String, @Query("targetId") targetId: Long): Deferred<BaseModel<Any>>
 
     /**
      * BookMark 정보 추가
@@ -295,6 +313,15 @@ interface UserService {
      */
     @DELETE("/users/bookmarks")
     fun deleteBookMarkAll(@Header("Authorization") accessToken: String, @Query("target") target: String): Call<BaseModel<Any>>
+
+    /**
+     * BookMark Count 조회 API
+     * @see io.temco.guhada.common.enum.BookMarkTarget
+     * @since 2019.08.27
+     * @author Hyeyeon Park
+     */
+    @GET("/users/bookmarks/{target}/{targetId}/count")
+    fun getBookMarkCountAsync(@Path("target") target: String, @Path("targetId") targetId: Long): Deferred<BaseModel<BookMarkCountResponse>>
 
 
     /**

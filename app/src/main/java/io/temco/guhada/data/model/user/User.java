@@ -34,6 +34,7 @@ public class User extends Observable implements Serializable {
     private String address = "", roadAddress = "", detailAddress = "", zip;
     private Boolean emailVerify = false;
     private String profileImageUrl = "";
+    private String nickname = "";
 
     // 임시 userDetail 정보
     private UserDetail userDetail = new UserDetail();
@@ -263,6 +264,14 @@ public class User extends Observable implements Serializable {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public UserDetail getUserDetail() {
         return userDetail;
     }
@@ -295,4 +304,5 @@ public class User extends Observable implements Serializable {
                 ", confirmPassword='" + confirmPassword + '\'' +
                 '}';
     }
+
 }
