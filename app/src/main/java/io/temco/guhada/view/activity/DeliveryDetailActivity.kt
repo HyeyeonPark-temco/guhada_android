@@ -50,7 +50,6 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
 //            }
             
             mViewModel.getOrder()
-            mViewModel.getUser()
             mViewModel.onClickClaimTask = { productId ->
                 val intent = Intent(this, WriteClaimActivity::class.java)
                 intent.putExtra("productId", productId)
