@@ -1,18 +1,19 @@
 package io.temco.guhada.data.server
 
 import android.widget.Toast
+import com.google.gson.Gson
 import com.google.gson.JsonObject
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.CancelRequest
-import io.temco.guhada.data.model.ExchangeRequest
-import io.temco.guhada.data.model.Inquiry
-import io.temco.guhada.data.model.RefundRequest
+import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.claim.MyPageClaim
@@ -68,7 +69,8 @@ open class ClaimServer {
                 // 로그인 팝업 노출
                 Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
             } else {
-                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(
+                        accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
                     override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
@@ -250,5 +252,81 @@ open class ClaimServer {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
                         .updateExchange(accessToken = accessToken, exchangeRequest = exchangeRequest).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
+
+
+
+        /**
+         * 신고하기 유형 가져오기
+         */
+        @JvmStatic
+        fun getReportTypeList(listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                    .getReportType().enqueue(object : Callback<BaseModel<ReportTypeData>> {
+                        override fun onResponse(call: Call<BaseModel<ReportTypeData>>, response: Response<BaseModel<ReportTypeData>>) {
+                            listener.onResult(response.isSuccessful, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<ReportTypeData>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 신고하기 유저 이미지 업로드 URL 가져오기
+         */
+        @JvmStatic
+        fun getReportUserPhotoUrl(listener: OnServerListener, accessToken: String) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                    .getReportUserPhotoUrl(accessToken).enqueue(object : Callback<BaseModel<JsonObject>> {
+                        override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                            listener.onResult(response.isSuccessful, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+
+        /**
+         * 신고하기 작성
+         */
+        @JvmStatic
+        fun saveReport(listener: OnServerListener, accessToken : String, report: ReportResponse) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true).saveReport(
+                    accessToken = accessToken, report = report).enqueue(object : Callback<BaseModel<Any>> {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    if(response.code() in 200..400 && response.body() != null){
+                        listener.onResult(true, response.body())
+                    }else{
+                        try{
+                            var msg  = Message()
+                            var errorBody : String? = response.errorBody()?.string() ?: null
+                            if(!errorBody.isNullOrEmpty()){
+                                var gson = Gson()
+                                msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                            }
+                            var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                            if(CustomLog.flag) CustomLog.L("saveReport","onResponse body",error.toString())
+                            listener.onResult(false, error)
+                        }catch (e : Exception){
+                            if(CustomLog.flag) CustomLog.E(e)
+                            listener.onResult(false, null)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                    if(CustomLog.flag) CustomLog.L("saveReport","onFailure",t.message.toString())
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+
+
     }
 }

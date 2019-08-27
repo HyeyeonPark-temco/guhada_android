@@ -1,9 +1,10 @@
 package io.temco.guhada.data.model.community
 
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CommunityDetail {
+class CommunityDetail : Serializable {
 
     var id = 0L
     var categoryId = 0
@@ -29,15 +30,20 @@ class CommunityDetail {
     var userId = 0L
     var createUserInfo = CreateUserInfo()
     var userDetail : UserDetail = UserDetail()
+    var bbsImageList : Array<String> = arrayOf()
 
     override fun toString(): String {
-        return "CommunityDetail(id=$id, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, contents=$contents, use=$use, delete=$delete, deletedTimestamp=$deletedTimestamp, like=$like, bookmark=$bookmark, commentCount=$commentCount, hitCount=$hitCount, likeCount=$likeCount, brandId=$brandId, brandName=$brandName, dealId=$dealId, dealName=$dealName, dspCreatedAt=$dspCreatedAt, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId, createUserInfo=$createUserInfo, userDetail=$userDetail)"
+        return "CommunityDetail(id=$id, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, " +
+                "contents=$contents, use=$use, delete=$delete, deletedTimestamp=$deletedTimestamp, like=$like, bookmark=$bookmark, " +
+                "commentCount=$commentCount, hitCount=$hitCount, likeCount=$likeCount, brandId=$brandId, brandName=$brandName, dealId=$dealId, " +
+                "dealName=$dealName, dspCreatedAt=$dspCreatedAt, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId," +
+                " createUserInfo=$createUserInfo, userDetail=$userDetail, bbsImageList=$bbsImageList)"
     }
 
 }
 
 
-class CreateUserInfo {
+class CreateUserInfo : Serializable {
     var id = 0L
     var email : String? = null
     var name : String? = null
@@ -65,25 +71,31 @@ class CreateUserInfo {
 }
 
 
-class UserDetail {
+/**
+ * field At 관련 주석처리 날자 처리 형식이 서로달라 사용하기 힘들어 일단 막아둠....
+ * agreeCollectPersonalInfoTosAt, adultCertificationExpireAt, agreePurchaseTosAt, agreeSaleTosAt
+ * createdAt, updatedAt, updatedBy - [Array<Int> -> Any]  변경
+ *
+ */
+class UserDetail : Serializable {
     var id = 0L
     var verifiedIdentity = false
     var verifiedName : String? = null
     var identityVerifyMethod : String? = null
-    var identityVerifiedAt : Array<Int>? = null
+    //var identityVerifiedAt : Array<Int>? = null
     var adult = false
-    var adultCertificationAt : Array<Int>? = null
-    var adultCertificationExpireAt : Array<Int>? = null
+    //var adultCertificationAt : Array<Int>? = null
+    //var adultCertificationExpireAt : Array<Int>? = null
     var agreeCollectPersonalInfoTos = false
-    var agreeCollectPersonalInfoTosAt : Array<Int>? = null
+    //var agreeCollectPersonalInfoTosAt : Array<Int>? = null
     var agreePurchaseTos = false
-    var agreePurchaseTosAt : Array<Int>? = null
+    //var agreePurchaseTosAt : Array<Int>? = null
     var agreeSaleTos = false
-    var agreeSaleTosAt : Array<Int>? = null
+    //var agreeSaleTosAt : Array<Int>? = null
     var agreeSmsReception = false
-    var smsAgreementUpdatedAt : Array<Int>? = null
+    //var smsAgreementUpdatedAt : Array<Int>? = null
     var agreeEmailReception = false
-    var emailAgreementUpdatedAt : Array<Int>? = null
+    //var emailAgreementUpdatedAt : Array<Int>? = null
     var interestLocation1 : String? = null
     var interestLocation2 : String? = null
     var interestLocation3 : String? = null
@@ -94,24 +106,25 @@ class UserDetail {
     var adultProductOpen = false
     var ciCode : String? = null
     var diCode : String? = null
-    var createdAt = arrayOf<Int>()
-    var updatedAt = arrayOf<Int>()
-    var updatedBy : Array<Int>? = null
+    var createdAt: Any? = null
+    var updatedAt: Any? = null
+    var updatedBy: Any? = null
 
     override fun toString(): String {
-        return "UserDetail(id=$id, verifiedIdentity=$verifiedIdentity, verifiedName=$verifiedName, identityVerifyMethod=$identityVerifyMethod, identityVerifiedAt=$identityVerifiedAt, adult=$adult, adultCertificationAt=$adultCertificationAt, adultCertificationExpireAt=$adultCertificationExpireAt, agreeCollectPersonalInfoTos=$agreeCollectPersonalInfoTos, agreeCollectPersonalInfoTosAt=${Arrays.toString(agreeCollectPersonalInfoTosAt)}, agreePurchaseTos=$agreePurchaseTos, agreePurchaseTosAt=${Arrays.toString(agreePurchaseTosAt)}, agreeSaleTos=$agreeSaleTos, agreeSaleTosAt=${Arrays.toString(agreeSaleTosAt)}, agreeSmsReception=$agreeSmsReception, smsAgreementUpdatedAt=${Arrays.toString(smsAgreementUpdatedAt)}, agreeEmailReception=$agreeEmailReception, emailAgreementUpdatedAt=${Arrays.toString(emailAgreementUpdatedAt)}, interestLocation1=$interestLocation1, interestLocation2=$interestLocation2, interestLocation3=$interestLocation3, agreeSavingAccount=$agreeSavingAccount, bankCode=$bankCode, bankName=$bankName, accountHolder=$accountHolder, adultProductOpen=$adultProductOpen, ciCode=$ciCode, diCode=$diCode, createdAt=${Arrays.toString(createdAt)}, updatedAt=${Arrays.toString(updatedAt)}, updatedBy=$updatedBy)"
+        return "UserDetail(id=$id, verifiedIdentity=$verifiedIdentity, verifiedName=$verifiedName, identityVerifyMethod=$identityVerifyMethod, adult=$adult, agreeCollectPersonalInfoTos=$agreeCollectPersonalInfoTos, agreePurchaseTos=$agreePurchaseTos, agreeSaleTos=$agreeSaleTos, agreeSmsReception=$agreeSmsReception, agreeEmailReception=$agreeEmailReception, interestLocation1=$interestLocation1, interestLocation2=$interestLocation2, interestLocation3=$interestLocation3, agreeSavingAccount=$agreeSavingAccount, bankCode=$bankCode, bankName=$bankName, accountHolder=$accountHolder, adultProductOpen=$adultProductOpen, ciCode=$ciCode, diCode=$diCode, createdAt=$createdAt, updatedAt=$updatedAt, updatedBy=$updatedBy)"
     }
+
 
 }
 
-class Roles {
+class Roles : Serializable {
     var type : String? = null
     var roleName : String? = null
     var description : String? = null
     var authorities : ArrayList<Authorities> = arrayListOf()
 }
 
-class Authorities {
+class Authorities : Serializable {
     var id = 0L
     var type : String? = null
     var description : String? = null

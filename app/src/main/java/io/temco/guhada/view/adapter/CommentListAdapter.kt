@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
@@ -25,6 +27,7 @@ import io.temco.guhada.data.model.Comments
 import io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel
 import io.temco.guhada.databinding.ItemCommentListBinding
 import io.temco.guhada.databinding.ItemMoreListBinding
+import io.temco.guhada.view.activity.ReportActivity
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
@@ -108,6 +111,16 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
         }
 
         binding.setClickClaimListener{
+            if(CommonUtil.checkToken()){
+                CommonUtil.startReportActivity((model.context as AppCompatActivity), 3, data, model.communityDetail.value)
+                //CommonUtil.startReportActivity((model.context as AppCompatActivity), 2, model.communityDetail.value, null)
+            }else{
+                CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                        cancelButtonVisible = true,
+                        confirmTask = {
+                            CommonUtil.moveLoginPage(model.context as AppCompatActivity)
+                        }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+            }
         }
 
         binding.setClickDeleteListener{
@@ -140,6 +153,7 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
                         }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
             }
         }
+
         if(data.originCreaterUser != null){
             var modifyContents = "@"+data.originCreaterUser.nickname + " " + data.contents
 

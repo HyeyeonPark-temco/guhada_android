@@ -13,12 +13,13 @@
             name="onClickGetImage"
             type="android.view.View.OnClickListener" />
 
+        <variable name="email" type="String" />
         <variable name="type" type="Integer" />
         <variable name="title" type="String" />
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.ReviewWriteViewModel" />
+            type="io.temco.guhada.data.viewmodel.ReportWriteViewModel" />
     </data>
 
     <LinearLayout
@@ -123,10 +124,9 @@
                         android:overScrollMode="never"
                         android:overlapAnchor="false"
                         android:popupBackground="@null"
-                        android:spinnerMode="dropdown" />
-                    <!--
-                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"
-                        app:bindClaimStatusSpinner="@{viewModel.claimMessages}"-->
+                        android:spinnerMode="dropdown"
+                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onReportTypeSelected(pos)}"
+                        app:bindClaimStatusSpinner="@{viewModel.reportTypeMessages}" />
 
                     <FrameLayout
                         android:id="@+id/framelayout_mypageclaim_button"
@@ -142,15 +142,15 @@
                             android:popupBackground="@null">
 
                             <TextView
-                                style="@style/PaymentContentGreyTextStyle"
+                                style="@style/TextRegular"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
+                                android:textColor="@color/black_four"
+                                android:text="@{viewModel.reportTypeMessage}"
                                 android:textSize="@dimen/text_15" />
-                            <!--
-                                android:text="@{viewModel.selectedStatusMessage}" -->
 
                             <ImageView
                                 android:id="@+id/imageview_payment_shippingmemo"
@@ -227,9 +227,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/blue_purple"
+                        android:text="@{viewModel.editTextReportTxtCount}"
                         android:textSize="@dimen/text_13" />
-                    <!--
-                        android:text="@{viewModel.editTextReviewTxtCount}" -->
 
                     <TextView
                         style="@style/TextRegular"
@@ -270,6 +269,17 @@
 
                 </LinearLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_reportwrite_imagelist"
+                    android:layout_width="match_parent"
+                    android:layout_height="86dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -282,7 +292,7 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:gravity="center_vertical"
-                    android:text="@string/report_community_text08"
+                    android:text="@{email}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_15" />
 
@@ -309,6 +319,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
+                    android:layout_marginBottom="20dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:orientation="horizontal">
@@ -316,15 +327,19 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginRight="15dp"/>
-<!--
-                        android:onClick="@{()-> viewModel.clickUserSizeCheck()}"
-                        android:background="@{viewModel.userSizeUpdateCheckTerm ? @drawable/checkbox_checked_20 : @drawable/checkbox_select_20, default = @drawable/checkbox_select_20}" -->
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/checkbox_select_20"
+                        android:padding="1dp"
+                        android:onClick="@{()-> viewModel.clickheckTermReport()}"
+                        android:src="@{viewModel.checkTermReport ? @drawable/checkbox_selected : @drawable/drawable_transparent_image , default = @drawable/drawable_transparent_image }"/>
+
                     <TextView
                         style="@style/TextRegular"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:gravity="center_vertical"
+                        android:onClick="@{()-> viewModel.clickheckTermReport()}"
                         android:text="@string/report_community_text10"
                         android:textColor="@color/warm_grey_two"
                         android:textSize="@dimen/text_12" />
