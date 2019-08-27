@@ -3,6 +3,8 @@ package io.temco.guhada.data.retrofit.manager;
 import android.app.Application;
 import android.os.Build;
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory;
+
 import java.util.concurrent.TimeUnit;
 
 import io.temco.guhada.BuildConfig;
@@ -123,6 +125,7 @@ public class RetrofitManager {
         return new Retrofit.Builder()
                 .baseUrl(Type.Server.getUrl(mCurrentType))
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory.create())
                 .client(okHttpClient)
                 .build();
     }

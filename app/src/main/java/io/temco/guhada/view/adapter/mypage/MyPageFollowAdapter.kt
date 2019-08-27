@@ -5,11 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.request.RequestOptions
 import io.temco.guhada.R
-import io.temco.guhada.data.model.BookMark
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.util.GlideApp
 import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.server.UserServer
+import io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel
 import io.temco.guhada.databinding.ItemMypageFollowBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * 마이페이지 팔로우한 스토어 어댑터
@@ -18,7 +26,6 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
     var mList = mutableListOf<Seller>()
-    var UNIT_PER_PAGE = 6
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_mypage_follow, parent, false))
@@ -30,20 +37,34 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
     }
 
     fun setItems(list: MutableList<Seller>) {
-        this@MyPageFollowAdapter.mList = list
+        this.mList = list
         notifyDataSetChanged()
     }
 
-    fun addItem(item: Seller) {
-        mList.add(item)
-        notifyItemInserted(mList.size - 1)
+    fun addAllItems(items: MutableList<Seller>, startPos: Int, endPos: Int) {
+        mList.addAll(items)
+        notifyItemRangeInserted(startPos, endPos)
     }
 
     inner class Holder(binding: ItemMypageFollowBinding) : BaseViewHolder<ItemMypageFollowBinding>(binding.root) {
         fun bind(seller: Seller) {
-            Log.e("ㅇㅇㅇ", seller.profileImageUrl)
-            mBinding.seller = seller
-            mBinding.executePendingBindings()
+            val scope = CoroutineScope(Dispatchers.Main)
+            scope.launch {
+                UserServer.getSellerByIdAsync(seller.id).await().let {
+                    val item = it.data as Seller
+                    mBinding.seller = item
+                    mBinding.executePendingBindings()
+
+                    if(item.user.profileImageUrl.isEmpty()){
+                        val drawable =  mBinding.root.context.resources.getDrawable(R.drawable.background_color_search)
+                        GlideApp.with(mBinding.root.context).load(drawable).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
+                    }else {
+                        GlideApp.with(mBinding.root.context).load(item.user.profileImageUrl).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
+                    }
+                    Log.e("셀러", "${item.id}  ${item.user.profileImageUrl}")
+                }
+            }
         }
     }
 }
+

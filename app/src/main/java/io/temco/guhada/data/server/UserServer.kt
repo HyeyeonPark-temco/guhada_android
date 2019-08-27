@@ -2,6 +2,7 @@ package io.temco.guhada.data.server
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import io.reactivex.Observable
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -26,10 +27,14 @@ import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.UserService
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 /**
  * BASE URL: dev.user.guhada.com/
@@ -283,6 +288,13 @@ class UserServer {
             })
         }
 
+        /**
+         * 셀러 정보 가져오기 (비동기)
+         */
+        @JvmStatic
+        suspend fun getSellerByIdAsync(sellerId: Long): Deferred<BaseModel<Seller>> =  GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getSellerByIdAsync(sellerId).await()
+        }
 
         /**
          * 셀러 반품지 가져오기

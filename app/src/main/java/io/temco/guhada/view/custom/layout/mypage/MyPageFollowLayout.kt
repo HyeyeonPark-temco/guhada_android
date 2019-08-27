@@ -1,12 +1,12 @@
 package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
+import android.text.Html
 import android.util.AttributeSet
 import android.util.Log
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import io.reactivex.Observable
 import io.temco.guhada.R
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel
@@ -19,28 +19,48 @@ import io.temco.guhada.view.custom.layout.common.BaseListLayout
  * @author park jungho
  *
  * 마이페이지 - 팔로우한 스토어 화면
- *
+ * @author Hyeyeon Park
+ * @since 2019.08.26
  */
 class MyPageFollowLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : BaseListLayout<CustomlayoutMypageFollowBinding, MyPageFollowViewModel>(context, attrs, defStyleAttr), SwipeRefreshLayout.OnRefreshListener {
-    private val mAdapter = MyPageFollowAdapter()
-
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_follow
     override fun init() {
+        mBinding.lifecycleOwner = this
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         mViewModel = MyPageFollowViewModel(context)
         mViewModel.getFollowingSellerIds()
 
-        mViewModel.mSeller.observe(this, Observer {
-            (mBinding.recyclerviewMypagefollowList.adapter as MyPageFollowAdapter).addItem(it)
-            mBinding.textviewMypagefollowTotalcount.text = "총 ${mViewModel.mSellerList.value?.size}개"
+        mViewModel.mFollowList.observe(this, Observer {
+            mBinding.textviewMypagefollowTotalcount.text = Html.fromHtml(resources.getString(R.string.mypagefollow_totalcount, it.size))
+
+            Observable.fromIterable(it)
+                    .map {
+                        Seller().apply { id = it.targetId }
+                    }.subscribe { seller ->
+                        mViewModel.mSellerList.add(seller)
+                    }
+            mBinding.recyclerviewMypagefollowList.adapter = MyPageFollowAdapter().apply { mList = mViewModel.mSellerList }
         })
 
-        mBinding.recyclerviewMypagefollowList.adapter = mAdapter
+        mViewModel.mNotifyDataChangedTask = {
+            val adapter = (mBinding.recyclerviewMypagefollowList.adapter as MyPageFollowAdapter)
+            adapter.setItems(mViewModel.mSellerList)
+        }
+
+        mViewModel.mNotifyItemInsertedTask = { startPos, endPos ->
+            Log.e("ㅇㅇㅇ", "$startPos ~ $endPos")
+            mBinding.recyclerviewMypagefollowList.recycledViewPool.clear()
+            val adapter = (mBinding.recyclerviewMypagefollowList.adapter as MyPageFollowAdapter)
+            adapter.addAllItems(mViewModel.mTempSellerList, startPos, endPos)
+            mViewModel.mTempSellerList = mutableListOf()
+        }
+
+//        mBinding.recyclerviewMypagefollowList.adapter = MyPageFollowAdapter()
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
@@ -76,16 +96,4 @@ class MyPageFollowLayout constructor(
 
     }
 
-    companion object {
-
-        @BindingAdapter("followingSeller")
-        @JvmStatic
-        fun RecyclerView.bindFollowingSeller(list: MutableList<Seller>?) {
-            if (list != null) {
-                if (this.adapter != null) (this.adapter as MyPageFollowAdapter).setItems(list)
-                else this.adapter = MyPageFollowAdapter().apply { mList = list }
-            }
-        }
-
-    }
 }

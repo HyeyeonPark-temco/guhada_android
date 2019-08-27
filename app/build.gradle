@@ -121,7 +121,9 @@ dependencies {
     implementation libraryDependencies.jwtDecode
 
     // COROUTINE
-    implementation libraryDependencies.coroutine
+    implementation libraryDependencies.coroutineCore
+    implementation libraryDependencies.coroutineAndroid
+    implementation libraryDependencies.retrofitCoroutineAdapter
 
     // OKHTTP INTEGRATION FOR GLIDE
     implementation libraryDependencies.okhttp
@@ -139,7 +141,6 @@ dependencies {
 
     // JODA
 //    implementation libraryDependencies.joda
-
 
     // ----------------------------------------------------------
     /**
@@ -159,7 +160,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     // ----------------------------------------------------------
 
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
     ////////////////////////////////////////////////
 }
 

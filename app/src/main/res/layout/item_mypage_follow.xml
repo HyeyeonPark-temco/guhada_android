@@ -18,10 +18,10 @@
             android:id="@+id/imageview_mypagefollow_profile"
             android:layout_width="95dp"
             android:layout_height="95dp"
-            app:ovalImageUrl="@{seller.user.profileImageUrl}"
             android:src="@color/white_three"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <LinearLayout
             android:id="@+id/linearlayout_mypagefollow_brandname"
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="@{seller.storeName}"
+                android:text="@{seller.user.nickname}"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_13"
                 app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"

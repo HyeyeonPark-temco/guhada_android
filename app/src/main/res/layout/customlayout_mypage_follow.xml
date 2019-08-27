@@ -22,117 +22,124 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:overScrollMode="never">
 
-                <TextView
-                    android:id="@+id/textview_mypagefollow_totalcount"
-                    style="@style/TextMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="총 40개"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13"
-                    app:layout_constraintBottom_toTopOf="@+id/recyclerview_mypagefollow_list"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/button_mypagefollow_deleteall"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/border_all_whitethree"
-                    android:text="@string/btn_delete_all"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_mypagefollow_list"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="vertical"
-                    app:followingSeller="@{viewModel.mSellerList}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_mypagefollow_deleteall" />
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_mypagefollow_empty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.mEmptyViewVisible ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_mypagefollow_deleteall">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/icon_no_data" />
-
-                    <TextView
-                        style="@style/CommonEmptyTextViewStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="13dp"
-                        android:text="@string/mypagefollow_empty" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/view_mypagefollow_line"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="40dp"
-                    android:background="@color/white_three"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagefollow_list" />
+                    android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:id="@+id/linearlayout_mypagefollow_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:onClick="@{()->viewModel.onClickMore()}"
-                    android:orientation="horizontal"
-                    android:paddingStart="40dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="40dp"
-                    android:paddingBottom="16dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_mypagefollow_line">
-                    <!--android:visibility="@{viewModel.orderHistoryList.page == viewModel.orderHistoryList.totalPage || viewModel.orderHistoryList.orderItemList.size () > 0 ? View.GONE : View.VISIBLE, default=visible}"-->
                     <TextView
+                        android:id="@+id/textview_mypagefollow_totalcount"
                         style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/mypage_deliverycer_more"
+                        android:layout_marginStart="20dp"
+                        android:text="총 40개"
                         android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14" />
+                        android:textSize="@dimen/text_13"
+                        app:layout_constraintBottom_toTopOf="@+id/recyclerview_mypagefollow_list"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageButton
+                    <Button
+                        android:id="@+id/button_mypagefollow_deleteall"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:text="@string/btn_delete_all"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_mypagefollow_list"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="vertical"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button_mypagefollow_deleteall" />
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypagefollow_empty"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/detail_btn_more_open" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.mEmptyViewVisible ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/button_mypagefollow_deleteall">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/icon_no_data" />
 
+                        <TextView
+                            style="@style/CommonEmptyTextViewStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="13dp"
+                            android:text="@string/mypagefollow_empty" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view_mypagefollow_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@color/white_three"
+                        android:visibility="@{viewModel.mMoreButtonVisible ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagefollow_list" />
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_mypagefollow_more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:paddingStart="40dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="40dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="@{viewModel.mMoreButtonVisible ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view_mypagefollow_line">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mypage_deliverycer_more"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_14" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/detail_btn_more_open" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>

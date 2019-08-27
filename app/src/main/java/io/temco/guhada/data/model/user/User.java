@@ -9,6 +9,7 @@ import java.util.Observable;
 /**
  * 유저 정보 클래스
  *
+ * - [19.08.27] nickname 필드 추가
  * @author Hyeyeon Park
  */
 public class User extends Observable implements Serializable {
@@ -32,6 +33,7 @@ public class User extends Observable implements Serializable {
     private String address = "", roadAddress = "", detailAddress = "", zip;
     private Boolean emailVerify = false;
     private String profileImageUrl = "";
+    private String nickname = "";
 
     @SerializedName("temp")
     private int gender = -1; // 1: MALE; 2: FEMALE;
@@ -255,5 +257,13 @@ public class User extends Observable implements Serializable {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

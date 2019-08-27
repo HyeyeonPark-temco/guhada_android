@@ -16,7 +16,7 @@ class Seller : Serializable {
     var accountNumber = ""
     var accountHolder = ""
 
-    var storeName = ""
+    var storeName = "" // [19.08.27] 미사용 데이터
     var storeIntroduction = ""
     var claimTelephone = ""
     var createdAt = ""
