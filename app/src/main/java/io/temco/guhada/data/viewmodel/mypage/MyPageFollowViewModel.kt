@@ -10,7 +10,6 @@ import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.BookMark
-import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -26,8 +25,6 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  */
 class MyPageFollowViewModel(val context: Context) : BaseObservableViewModel() {
     var mFollowList: MutableLiveData<MutableList<BookMark.Content>> = MutableLiveData(mutableListOf())
-    var page = 1
-    var UNIT_PER_PAGE = 1
     var mSellerList: MutableList<Seller> = mutableListOf()
     var mTempSellerList: MutableList<Seller> = mutableListOf()
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
@@ -49,15 +46,14 @@ class MyPageFollowViewModel(val context: Context) : BaseObservableViewModel() {
                             successTask = {
                                 val list = (it.data as BookMark).content
                                 mFollowList.postValue(list)
-                                setEmptyViewVisible()
-
+                                setEmptyViewVisible(list)
                             })
                 }, accessToken = token, target = BookMarkTarget.SELLER.target, userId = userId)
         })
     }
 
-    private fun setEmptyViewVisible() {
-        mEmptyViewVisible = ObservableBoolean(mFollowList.value?.isNotEmpty() ?: true)
+    private fun setEmptyViewVisible(list: MutableList<BookMark.Content>) {
+        mEmptyViewVisible = ObservableBoolean(list.isEmpty())
         notifyPropertyChanged(BR.mEmptyViewVisible)
     }
 

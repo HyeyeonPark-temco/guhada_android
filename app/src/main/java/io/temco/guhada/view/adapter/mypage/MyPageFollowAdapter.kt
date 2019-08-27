@@ -1,8 +1,6 @@
 package io.temco.guhada.view.adapter.mypage
 
-import android.content.SharedPreferences
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -12,9 +10,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ResultCode
-import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.GlideApp
-import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BookMarkCountResponse
 import io.temco.guhada.data.model.BookMarkResponse

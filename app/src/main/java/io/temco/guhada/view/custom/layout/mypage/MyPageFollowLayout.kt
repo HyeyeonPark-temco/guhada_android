@@ -30,20 +30,24 @@ class MyPageFollowLayout constructor(
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_follow
     override fun init() {
-        mBinding.lifecycleOwner = this
+        initViewModel()
+
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
+    }
+
+    private fun initViewModel() {
         mViewModel = MyPageFollowViewModel(context)
-        mViewModel.getFollowingSellerIds()
-
         mViewModel.mFollowList.observe(this, Observer {
-            mBinding.textviewMypagefollowTotalcount.text = Html.fromHtml(resources.getString(R.string.mypagefollow_totalcount, it.size))
-
             Observable.fromIterable(it)
                     .map {
                         Seller().apply { id = it.targetId }
                     }.subscribe { seller ->
                         mViewModel.mSellerList.add(seller)
                     }
+
+            mBinding.textviewMypagefollowTotalcount.text = Html.fromHtml(resources.getString(R.string.mypagefollow_totalcount, it.size))
             mBinding.recyclerviewMypagefollowList.adapter = MyPageFollowAdapter().apply {
                 this.mList = this@MyPageFollowLayout.mViewModel.mSellerList
                 this.mViewModel = this@MyPageFollowLayout.mViewModel
@@ -62,15 +66,13 @@ class MyPageFollowLayout constructor(
             mViewModel.mTempSellerList = mutableListOf()
         }
 
-//        mBinding.recyclerviewMypagefollowList.adapter = MyPageFollowAdapter()
-        mBinding.viewModel = mViewModel
-        mBinding.executePendingBindings()
+        mViewModel.getFollowingSellerIds()
     }
 
     override fun onRefresh() {
         mBinding.swipeRefreshLayout.isRefreshing = false
-
-        mViewModel.page = 1
+        mViewModel.mSellerList.clear()
+        mViewModel.getFollowingSellerIds()
     }
 
 
