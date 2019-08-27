@@ -1,10 +1,7 @@
 package io.temco.guhada.data.retrofit.service
 
 import com.google.gson.JsonObject
-import io.temco.guhada.data.model.BookMark
-import io.temco.guhada.data.model.Token
-import io.temco.guhada.data.model.UserShipping
-import io.temco.guhada.data.model.Verification
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.MyPageReview
@@ -251,7 +248,6 @@ interface UserService {
     @GET("/users/{userId}/bookmarks")
     fun getLike(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Query("targetId") targetId: Long, @Query("target") target: String): Call<BaseModel<BookMark>>
 
-
     /**
      * BookMark 정보 조회 API
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER
@@ -302,6 +298,15 @@ interface UserService {
      */
     @DELETE("/users/bookmarks")
     fun deleteBookMarkAll(@Header("Authorization") accessToken: String, @Query("target") target: String): Call<BaseModel<Any>>
+
+    /**
+     * BookMark Count 조회 API
+     * @see io.temco.guhada.common.enum.BookMarkTarget
+     * @since 2019.08.27
+     * @author Hyeyeon Park
+     */
+    @GET("/users/bookmarks/{target}/{targetId}/count")
+    fun getBookMarkCountAsync(@Path("target") target: String, @Path("targetId") targetId: Long): Deferred<BaseModel<BookMarkCountResponse>>
 
 
     /**

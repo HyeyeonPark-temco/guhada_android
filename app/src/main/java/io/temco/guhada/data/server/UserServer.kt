@@ -292,7 +292,7 @@ class UserServer {
          * 셀러 정보 가져오기 (비동기)
          */
         @JvmStatic
-        suspend fun getSellerByIdAsync(sellerId: Long): Deferred<BaseModel<Seller>> =  GlobalScope.async {
+        suspend fun getSellerByIdAsync(sellerId: Long): Deferred<BaseModel<Seller>> = GlobalScope.async {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getSellerByIdAsync(sellerId).await()
         }
 
@@ -318,6 +318,15 @@ class UserServer {
         fun getSellerFollowers(listener: OnServerListener, accessToken: String, sellerId: Long) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java).getSellerFollowers(accessToken, sellerId).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerFollower>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+        /**
+         * 북마크 카운트 조회 (비동기)
+         */
+        @JvmStatic
+        fun getBookMarkCountAsync(target: String, targetId: Long): Deferred<BaseModel<BookMarkCountResponse>> =
+                GlobalScope.async {
+                    RetrofitManager.createService(Type.Server.USER, UserService::class.java).getBookMarkCountAsync(target = target, targetId = targetId).await()
+                }
 
         /**
          * 회원 좋아요 정보 조회

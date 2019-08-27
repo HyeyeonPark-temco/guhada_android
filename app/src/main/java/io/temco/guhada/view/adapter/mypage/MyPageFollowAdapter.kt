@@ -7,16 +7,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.util.GlideApp
+import io.temco.guhada.data.model.BookMarkCountResponse
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.server.UserServer
-import io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel
 import io.temco.guhada.databinding.ItemMypageFollowBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
@@ -50,20 +49,30 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
         fun bind(seller: Seller) {
             val scope = CoroutineScope(Dispatchers.Main)
             scope.launch {
-                UserServer.getSellerByIdAsync(seller.id).await().let {
-                    val item = it.data as Seller
-                    mBinding.seller = item
-                    mBinding.executePendingBindings()
-
-                    if(item.user.profileImageUrl.isEmpty()){
-                        val drawable =  mBinding.root.context.resources.getDrawable(R.drawable.background_color_search)
-                        GlideApp.with(mBinding.root.context).load(drawable).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
-                    }else {
-                        GlideApp.with(mBinding.root.context).load(item.user.profileImageUrl).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
-                    }
-                    Log.e("셀러", "${item.id}  ${item.user.profileImageUrl}")
-                }
+                val sellerId = seller.id
+                getSeller(sellerId)
+                getFollowerCount(sellerId)
             }
+        }
+
+        private suspend fun getSeller(sellerId: Long) = UserServer.getSellerByIdAsync(sellerId).await().let {
+            val item = it.data as Seller
+            mBinding.seller = item
+            mBinding.executePendingBindings()
+
+            if (item.user.profileImageUrl.isEmpty()) {
+                val drawable = mBinding.root.context.resources.getDrawable(R.drawable.background_color_search)
+                GlideApp.with(mBinding.root.context).load(drawable).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
+            } else {
+                GlideApp.with(mBinding.root.context).load(item.user.profileImageUrl).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
+            }
+            Log.e("셀러 정보", "${item.id}  ${item.user.profileImageUrl}")
+        }
+
+        private suspend fun getFollowerCount(sellerId: Long) = UserServer.getBookMarkCountAsync(target = BookMarkTarget.SELLER.target, targetId = sellerId).await().let {
+            val item = it.data as BookMarkCountResponse
+            mBinding.textviewMypagefollowFollowcount.text = String.format(mBinding.root.context.getString(R.string.mypagefollow_followcount), item.bookmarkCount)
+            Log.e("셀러 팔로우 카운트", "${item.bookmarkCount}")
         }
     }
 }

@@ -612,6 +612,8 @@
     <!-- MYPAGE FOLLOW -->
     <string name="mypagefollow_empty">팔로우한 스토어가 없습니다.</string>
     <string name="mypagefollow_totalcount"><![CDATA[총 <font color="#5d2ed1">%d</font>개]]></string>
+    <string name="mypagefollow_followcount">팔로우 %d개</string>
+    <string name="mypagefollow_productcount">상품수 %d개</string>
 
     <!-- PRODUCT INFO REVIEW -->
     <string name="productdetaininfo_review_sort1">최신순</string>
