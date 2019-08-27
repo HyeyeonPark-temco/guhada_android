@@ -273,6 +273,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             val invoiceId = mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.text.toString()
             if (invoiceId.isNotEmpty())
                 mViewModel.mExchangeRequest.invoiceNo = mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.text.toString().toLong()
+            mViewModel.mExchangeRequest.exchangeReasonDetail = mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.text.toString()
             mViewModel.requestExchange()
         }
         mBinding.includeRequestexchangeButton.setOnClickCancel { finish() }

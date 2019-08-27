@@ -315,6 +315,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             if (invoiceId.isNotEmpty())
                 mViewModel.mRefundRequest.invoiceNo = mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.text.toString().toLong()
             mViewModel.mCause = mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.text.toString()
+            mViewModel.mRefundRequest.refundReasonDetail = mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.text.toString()
 
             if (isModify) mViewModel.updateRefund()
             else mViewModel.requestRefund()
