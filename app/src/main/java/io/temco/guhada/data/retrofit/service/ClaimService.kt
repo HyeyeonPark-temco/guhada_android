@@ -1,10 +1,7 @@
 package io.temco.guhada.data.retrofit.service
 
 import com.google.gson.JsonObject
-import io.temco.guhada.data.model.CancelRequest
-import io.temco.guhada.data.model.ExchangeRequest
-import io.temco.guhada.data.model.Inquiry
-import io.temco.guhada.data.model.RefundRequest
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
@@ -130,5 +127,26 @@ interface ClaimService {
      */
     @POST("/order-claim/update-order-exchange")
     fun updateExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest) : Call<BaseModel<Any>>
+
+
+    /**
+     * 신고하기 유형 가져오기 API
+     */
+    @GET("users/report/report-types")
+    fun getReportType(): Call<BaseModel<ReportTypeData>>
+
+
+    /**
+     * 신고하기 이미지 업로드 URL 가져오기 API
+     */
+    @GET("users/report/photo-upload-url"/*"users/report/image-upload-url"*/)
+    fun getReportUserPhotoUrl(@Header("Authorization") accessToken: String): Call<BaseModel<JsonObject>>
+
+
+    /**
+     * 신고하기 작성하기 API
+     */
+    @POST("users/report")
+    fun saveReport(@Header("Authorization") accessToken: String, @Body report: ReportResponse): Call<BaseModel<Any>>
 
 }

@@ -189,7 +189,7 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
         if(modifyComment.get()){
             if(!TextUtils.isEmpty(commentRegImage.get())){
                 if(!"http".equals(commentRegImage.get()!!.substring(0,4),true)){
-                    repository.uploadImage(commentRegImage.get()!!,0, object : OnCallBackListener{
+                    repository.uploadImage(commentRegImage.get()!!,"COMMENT",0, object : OnCallBackListener{
                         override fun callBackListener(resultFlag: Boolean, value: Any) {
                             var data = value as ImageResponse
                             if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "uploadImage postCommentData ",data.toString())
@@ -214,7 +214,7 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
             }
         }else{
             if(!TextUtils.isEmpty(commentRegImage.get())){
-                repository.uploadImage(commentRegImage.get()!!,0, object : OnCallBackListener{
+                repository.uploadImage(commentRegImage.get()!!,"COMMENT",0, object : OnCallBackListener{
                     override fun callBackListener(resultFlag: Boolean, value: Any) {
                         if(resultFlag){
                             var data = value as ImageResponse
@@ -506,7 +506,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
-    fun uploadImage(fileNm : String, index : Int, listener : OnCallBackListener){
+    fun uploadImage(fileNm : String, cloudResourceList : String, index : Int, listener : OnCallBackListener){
         GatewayServer.uploadImage(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -521,7 +521,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                     serverRuntimeErrorTask = { listener?.callBackListener(false, "serverRuntimeErrorTask") },
                     dataIsNull = { listener?.callBackListener(false, "dataIsNull") }
             )
-        },"REVIEW",fileNm)
+        },cloudResourceList,fileNm)
 
     }
 

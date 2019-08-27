@@ -179,9 +179,9 @@
 
         <!-- Search -->
         <activity
-            android:name=".view.activity.Repo"
+            android:name=".view.activity.ReportActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!-- SideMenu -->
         <activity

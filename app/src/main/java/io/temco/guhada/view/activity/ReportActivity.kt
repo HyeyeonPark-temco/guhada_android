@@ -1,19 +1,47 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import com.bumptech.glide.RequestManager
+import androidx.lifecycle.Observer
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnClickSelectItemListener
+import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.Comments
+import io.temco.guhada.data.model.ImageResponse
+import io.temco.guhada.data.model.ReportResponse
+import io.temco.guhada.data.model.ReportTarget
+import io.temco.guhada.data.model.community.CommunityDetail
+import io.temco.guhada.data.model.product.Product
+import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.viewmodel.ReportWriteViewModel
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.adapter.CommonImageAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import java.util.logging.Handler
 
-class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBinding>(), View.OnClickListener {
-    private lateinit var mRequestManager: RequestManager
+/**
+ *
+ *
+ * type : 0, productData - 상품 신고
+ * type : 1, userData - 회원 신고
+ * type : 2, communityData - 게시글/댓글 신고
+ * type : 3, commentData - 게시글/댓글 신고
+ *
+ */
+class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBinding>(), View.OnClickListener , OnClickSelectItemListener {
     private lateinit var mViewModel : ReportWriteViewModel
     private lateinit var mHandler: Handler
-    // -----------------------------
+    private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
+    // ----------------------------------------------------------
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -24,6 +52,89 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
     override fun getViewType(): Type.View = Type.View.REPORT_WRITE
 
     override fun init() {
+        mViewModel = ReportWriteViewModel(this)
+        mBinding.viewModel = mViewModel
+
+        if(intent?.extras?.containsKey("type")!!){
+            mViewModel.reportType = intent?.extras?.getInt("type")!!
+            when(mViewModel.reportType){
+                0->{
+                    mViewModel.productData = intent?.extras?.getSerializable("data") as Product
+                    mViewModel.reportTarget = ReportTarget.PRODUCT
+                }
+                1->{
+                    mViewModel.userData = intent?.extras?.getSerializable("data") as User
+                    mViewModel.reportTarget = ReportTarget.USER
+                }
+                2->{
+                    mViewModel.communityData = intent?.extras?.getSerializable("data") as CommunityDetail
+                    mViewModel.reportTarget = ReportTarget.BOARD
+
+                    mBinding.linearlayoutReportdetailType2.type = mViewModel.reportType
+                    mBinding.linearlayoutReportdetailType2.text01 = mViewModel.communityData?.id.toString()
+                    mBinding.linearlayoutReportdetailType2.text02 = mViewModel.communityData?.title
+                    mBinding.linearlayoutReportdetailType2.text03 = mViewModel.communityData?.contents
+                    mBinding.linearlayoutReportdetailType2.text04 = mViewModel.communityData?.createUserInfo?.nickname
+                }
+                3->{
+                    mViewModel.commentData = intent?.extras?.getSerializable("data") as Comments
+                    mViewModel.communityData = intent?.extras?.getSerializable("communityDetail") as CommunityDetail
+                    mViewModel.reportTarget = ReportTarget.COMMENT
+
+                    mBinding.linearlayoutReportdetailType3.type = mViewModel.reportType
+                    mBinding.linearlayoutReportdetailType3.text01 = mViewModel.communityData?.id.toString()
+                    mBinding.linearlayoutReportdetailType3.text02 = mViewModel.communityData?.title
+                    mBinding.linearlayoutReportdetailType3.text03 = mViewModel.commentData?.contents
+                    mBinding.linearlayoutReportdetailType3.text04 = mViewModel.commentData?.createUserInfo?.nickname
+                }
+            }
+            mBinding.title = resources.getStringArray(R.array.report_header_title)[mViewModel.reportType]
+            mBinding.type = mViewModel.reportType
+
+            mViewModel.setInit()
+        }
+
+        mViewModel.writeUserInfo.observe(this, Observer {
+            if(CustomLog.flag)CustomLog.L("ReportActivity",it.toString())
+            mBinding.email = it.email
+        })
+
+        mBinding.edittextReportText.addTextChangedListener(object  : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(s.isNullOrEmpty() || s.isNullOrBlank()){
+                    mViewModel.editTextReportTxtCount.set("0")
+                }else{
+                    if(s != null && s.isNotEmpty()){
+                        mViewModel.editTextReportTxtCount.set(s!!.length.toString())
+                    }
+                }
+            }
+        })
+
+
+        if (mBinding.recyclerviewReportwriteImagelist.adapter == null) {
+            mBinding.recyclerviewReportwriteImagelist.adapter = CommonImageAdapter().apply { mList = mViewModel.reportPhotos.value!! }
+            (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).mClickSelectItemListener = this@ReportActivity
+            mBinding.executePendingBindings()
+        } else {
+            (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).setItems(mViewModel.reportPhotos.value!!)
+        }
+
+        mBinding.setOnClickGetImage {
+            if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","setOnClickGetImage",mViewModel.reportPhotos.value!!.size)
+            if(mViewModel.reportPhotos.value!!.size < 10){
+                mViewModel.selectedImageIndex = mViewModel.reportPhotos.value!!.size
+                CommonUtil.startImageGallery(this)
+            }else{
+                ToastUtil.showMessage(resources.getString(R.string.review_activity_maximage_desc))
+            }
+        }
+
+        mBinding.setOnClickWriteButton {
+            sendReportData()
+        }
     }
 
 
@@ -31,8 +142,51 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
 
     }
 
+
+    /**
+     * type - 0 : delete, 1 : click
+     */
+    override fun clickSelectItemListener(type : Int, index: Int, value: Any) {
+        when(type){
+            0 -> {
+                (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).mList.removeAt(index)
+                (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).notifyDataSetChanged()
+                setImageRecyclerViewVisible()
+            }
+            1 -> {
+                if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","clickSelectItemListener","index",index,"value",value)
+                mViewModel.selectedImageIndex = index
+                CommonUtil.startImageGallery(this)
+            }
+        }
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        // 갤러리에서 선택된 사진 파일 주소 받아옴
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode){
+                Flag.RequestCode.IMAGE_GALLERY -> {
+                    var fileNm = data!!.extras.getString("file_name")
+                    var imageValue = ""
+                    if(mViewModel.reportPhotos.value!!.size > mViewModel.selectedImageIndex){
+                        mViewModel.reportPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
+                        imageValue = fileNm
+                        mViewModel.reportPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)
+                        (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).notifyDataSetChanged()
+                    }else{
+                        imageValue = fileNm
+                        mViewModel.reportPhotos.value!!.add(imageValue)
+                        (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).notifyDataSetChanged()
+                    }
+                    setImageRecyclerViewVisible()
+                    if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","fileNm",fileNm)
+                }
+            }
+        }else{
+            mViewModel.selectedImageIndex = -1
+        }
     }
 
     override fun onStart() {
@@ -45,7 +199,17 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
 
     override fun onDestroy() {
         super.onDestroy()
+        try{
+            if (::mLoadingIndicatorUtil.isInitialized) {
+                mLoadingIndicatorUtil.dismiss()
+            }
+        }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
     }
+    ////////////////////////////////////////////////
+
+
 
     ////////////////////////////////////////////////
     // PUBLIC
@@ -59,6 +223,81 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
     // PRIVATE
     ////////////////////////////////////////////////
 
+    private fun setImageRecyclerViewVisible(){
+        if(mViewModel.reportPhotos.value!!.size > 0){
+            mBinding.recyclerviewReportwriteImagelist.visibility = View.VISIBLE
+        }else{
+            mBinding.recyclerviewReportwriteImagelist.visibility = View.GONE
+        }
+    }
+
+    private fun sendReportData(){
+        if(mBinding.edittextReportTitle.text.isNullOrEmpty()) {
+            showDialog("제목을 입력해 주세요.", false)
+            return
+        }
+        if(mBinding.edittextReportText.text.isNullOrEmpty()) {
+            showDialog("내용을 입력해 주세요.", false)
+            return
+        }
+        if(!mViewModel.checkTermReport.get()) {
+            showDialog(resources.getString(R.string.user_size_update_check_desc), false)
+            return
+        }
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
+        var response = ReportResponse()
+        response.content = mBinding.edittextReportText.text.toString()
+        response.title = mBinding.edittextReportTitle.text.toString()
+        when(mViewModel.reportType){
+            0->response.targetId = mViewModel.productData!!.productId
+            1->response.targetId = mViewModel.userData!!.userDetail.id
+            2->response.targetId = mViewModel.communityData!!.id
+            3->response.targetId = mViewModel.commentData!!.id
+        }
+        response.reporter = mViewModel.writeUserInfo.value!!.userDetail.id
+        response.reportType = mViewModel.reportTypeList.value!![mViewModel.selectReportTypeIndex].name
+        response.reportTarget = mViewModel.reportTarget.name
+
+        mLoadingIndicatorUtil.show()
+        if(mViewModel.reportPhotos.value.isNullOrEmpty()){
+            if(CustomLog.flag)CustomLog.L("setOnClickWriteButton isNullOrEmpty","response", response)
+            mViewModel.saveReport(response, object : OnCallBackListener{
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    mLoadingIndicatorUtil.dismiss()
+                    if(resultFlag)showDialog("신고하기를 완료하였습니다.", true)
+                    else showDialog("신고하기를 실패하였습니다.\n잠시 후 다시 시도해 주세요."+value.toString(), false)
+                }
+            })
+        }else{
+            for((index,file) in mViewModel.reportPhotos.value!!.iterator().withIndex()){
+                if(CustomLog.flag)CustomLog.L("setOnClickWriteButton","file", file)
+                mViewModel.imageUpload(file,index,object : OnCallBackListener{
+                    override fun callBackListener(resultFlag: Boolean, value: Any) {
+                        if(CustomLog.flag)CustomLog.L("setOnClickWriteButton callBackListener","resultFlag", resultFlag, "value", value)
+                        var data = value as ImageResponse
+                        response.imageUrls.add(data.url)
+                        if(response.imageUrls.size == mViewModel.reportPhotos.value!!.size){
+                            if(CustomLog.flag)CustomLog.L("setOnClickWriteButton isNullOrEmpty not","response", response)
+                            mViewModel.saveReport(response, object : OnCallBackListener{
+                                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                                    mLoadingIndicatorUtil.dismiss()
+                                    if(resultFlag)showDialog("신고하기를 완료하였습니다.", true)
+                                    else showDialog("신고하기를 실패하였습니다.\n잠시 후 다시 시도해 주세요."+value.toString(), false)
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        }
+    }
+
+    private fun showDialog(msg : String, isFinish : Boolean){
+        CustomMessageDialog(message = msg, cancelButtonVisible = false,
+                confirmTask = {
+                    if(isFinish)finish()
+                }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
+    }
 
     ////////////////////////////////////////////////
 

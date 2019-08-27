@@ -2,6 +2,7 @@ package io.temco.guhada.data.model
 
 import io.temco.guhada.data.model.base.BasePageModel
 import io.temco.guhada.data.model.community.CreateUserInfo
+import java.io.Serializable
 
 class CommentContent : BasePageModel() {
     var content : ArrayList<Comments> = arrayListOf()
@@ -11,7 +12,7 @@ class CommentContent : BasePageModel() {
     }
 }
 
-class Comments {
+class Comments : Serializable {
     var id = 0L
     var communityBbsId = 0L
     var originCommentId : Long? = null
@@ -28,7 +29,7 @@ class Comments {
     var createUserInfo = CreateUserInfo()
     var commentImageList : ArrayList<CommentImageList> = arrayListOf()
     var parentIndex : Int? = null // 대댓글에서 갱신하기 위한 상위 댓글 정보
-    var isModify = false
+    var isModify = false // 게시글 상세 댓글 리스트에서 수정을 판단하기 위한 정보
 
     override fun toString(): String {
         return "Comments(id=$id, isModify=$isModify, communityBbsId=$communityBbsId, originCommentId=$originCommentId, originCreaterUserId=$originCreaterUserId, originCreaterUser=$originCreaterUser, parentCommentId=$parentCommentId, contents='$contents', likeCount=$likeCount, like=$like, commentList=$commentList, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId, createUserInfo=$createUserInfo, commentImageList=$commentImageList)"
@@ -36,7 +37,7 @@ class Comments {
 }
 
 
-class CommentImageList {
+class CommentImageList : Serializable {
     var id = 0L
     var commentId = 0L
     var url = ""

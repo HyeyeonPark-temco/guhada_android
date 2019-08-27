@@ -18,6 +18,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.auth0.android.jwt.Claim;
 import com.auth0.android.jwt.JWT;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -27,6 +29,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -53,6 +56,7 @@ import io.temco.guhada.view.activity.ImageGetActivity;
 import io.temco.guhada.view.activity.LoginActivity;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity;
+import io.temco.guhada.view.activity.ReportActivity;
 import io.temco.guhada.view.activity.ReviewPointDialogActivity;
 import io.temco.guhada.view.activity.SearchWordActivity;
 import io.temco.guhada.view.activity.SideMenuActivity;
@@ -391,7 +395,29 @@ public class CommonUtil {
         return null;
     }
 
+
     public static void moveLoginPage(Activity activity){
         activity.startActivityForResult(new Intent(activity, LoginActivity.class), Flag.RequestCode.LOGIN);
     }
+
+
+    /**
+     *
+     * @param activity current Activity notNull
+     * @param type report type notNull
+     * @param data report data notNull
+     * @param communityDetail nullable report communityDetail (type:3 게시글상세)
+     */
+    public static void startReportActivity(Activity activity, int type, Serializable data, @Nullable Serializable communityDetail){
+        Intent intent = new Intent(activity, ReportActivity.class);
+        intent.putExtra("type", type);
+        intent.putExtra("data", data);
+        if(communityDetail!=null) intent.putExtra("communityDetail", communityDetail);
+        activity.startActivityForResult(intent,Flag.RequestCode.REPORT);
+    }
+
+
+
+
+
 }

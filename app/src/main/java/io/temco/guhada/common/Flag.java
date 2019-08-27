@@ -40,6 +40,7 @@ public class Flag {
         public static final int DELIVERY = 10026;
 
         public static final int COMMUNITY_DETAIL = 10027;
+        public static final int REPORT = 10029;
     }
 
     public static class ResultCode {

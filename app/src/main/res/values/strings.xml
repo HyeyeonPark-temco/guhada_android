@@ -1084,4 +1084,14 @@
     <string name="report_community_text10">개인정보 수집에 동의합니다.</string>
     <string name="report_community_text11">신고하기</string>
 
+
+
+    <!-- 신고 화면 타이틀 -->
+    <string-array name="report_header_title">
+        <item>상품 신고</item>
+        <item>회원 신고</item>
+        <item>게시글/댓글 신고</item>
+        <item>게시글/댓글 신고</item>
+    </string-array>
+
 </resources>

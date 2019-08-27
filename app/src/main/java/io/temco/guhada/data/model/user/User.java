@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Observable;
 
+import io.temco.guhada.data.model.community.UserDetail;
+
 /**
  * 유저 정보 클래스
  *
@@ -32,6 +34,10 @@ public class User extends Observable implements Serializable {
     private String address = "", roadAddress = "", detailAddress = "", zip;
     private Boolean emailVerify = false;
     private String profileImageUrl = "";
+
+    // 임시 userDetail 정보
+    private UserDetail userDetail = new UserDetail();
+
 
     @SerializedName("temp")
     private int gender = -1; // 1: MALE; 2: FEMALE;
@@ -255,5 +261,38 @@ public class User extends Observable implements Serializable {
 
     public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "agreeCollectPersonalInfoTos=" + agreeCollectPersonalInfoTos +
+                ", agreePurchaseTos=" + agreePurchaseTos +
+                ", agreeSaleTos=" + agreeSaleTos +
+                ", agreeSmsReception=" + agreeSmsReception +
+                ", agreeEmailReception=" + agreeEmailReception +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", joinAt='" + joinAt + '\'' +
+                ", withdrawalAt='" + withdrawalAt + '\'' +
+                ", birth='" + birth + '\'' +
+                ", address='" + address + '\'' +
+                ", roadAddress='" + roadAddress + '\'' +
+                ", detailAddress='" + detailAddress + '\'' +
+                ", zip='" + zip + '\'' +
+                ", emailVerify=" + emailVerify +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", gender=" + gender +
+                ", mobileCarriers=" + mobileCarriers +
+                ", nationality=" + nationality +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                '}';
     }
 }

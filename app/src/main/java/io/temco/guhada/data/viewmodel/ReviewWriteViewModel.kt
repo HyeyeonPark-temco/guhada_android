@@ -15,6 +15,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.ImageResponse
+import io.temco.guhada.data.model.ReportResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.review.ReviewPhotos
 import io.temco.guhada.data.model.review.ReviewWrMdResponse
@@ -30,6 +31,8 @@ class ReviewWriteViewModel (val context : Context) : BaseObservableViewModel() {
     var selectedImageIndex = 0
 
     var userSize : UserSize? = null
+
+    var reportResponse : ReportResponse = ReportResponse()
 
     init {
         mReviewEditPhotos.value = arrayListOf()
