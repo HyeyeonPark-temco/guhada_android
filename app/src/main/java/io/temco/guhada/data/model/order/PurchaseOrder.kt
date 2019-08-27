@@ -59,6 +59,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var receiverPhone = ""
     var receiverRoadAddress = ""
     var receiverZipcode = ""
+    var receiverMessage = ""
     var paymentMethod = ""
     var pgTid = ""
     var buyerEmail = ""

@@ -113,6 +113,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 
     private fun initCause(purchaseOrder: PurchaseOrder) {
         if (!purchaseOrder.returnReason.isNullOrEmpty()) {
+            mViewModel.mRefundRequest.refundReason = purchaseOrder.returnReason
             mBinding.includeRequestrefundCause.defaultMessage = getReason(purchaseOrder.returnReason)
             mBinding.includeRequestrefundCause.textviewRequestorderstatusCause.text = getReason(purchaseOrder.returnReason)
         }
@@ -271,6 +272,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundShippingpayment.textviewRequestorderstatusShippingpaymentDescription2.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_refund_shipping_description2))
         mBinding.includeRequestrefundShippingpayment.isRefund = true
 
+        // [신청서 수정] 배송지 결제 방법
         if (purchaseOrder.returnShippingPriceType != null && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
             when (purchaseOrder.returnShippingPriceType) {
                 ShippingPaymentType.EXCLUDE_REFUND_PRICE.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = true

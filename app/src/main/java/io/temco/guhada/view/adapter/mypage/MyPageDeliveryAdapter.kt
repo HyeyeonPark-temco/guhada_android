@@ -231,6 +231,11 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     buttons.add(DeliveryButton().apply {
                         // 교환 신청서 수정
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify)
+                        task = View.OnClickListener {
+                            val intent = Intent(mBinding.root.context, RequestExchangeActivity::class.java)
+                            intent.putExtra("modifyOrderProdGroupId", item.orderProdGroupId)
+                            mBinding.root.context.startActivity(intent)
+                        }
                     })
                     buttons.add(DeliveryButton().apply {
                         // 교환 철회
