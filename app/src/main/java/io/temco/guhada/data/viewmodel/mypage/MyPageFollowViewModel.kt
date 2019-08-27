@@ -52,6 +52,25 @@ class MyPageFollowViewModel(val context: Context) : BaseObservableViewModel() {
         })
     }
 
+    fun onClickDeleteAll() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            for (item in mFollowList.value ?: mutableListOf()) {
+                UserServer.deleteBookMark(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                mFollowList.value?.remove(item)
+
+                                if(mFollowList.value?.isEmpty() == true){
+                                    mEmptyViewVisible = ObservableBoolean(true)
+                                    mFollowList.postValue(mutableListOf())
+                                    notifyPropertyChanged(BR.mEmptyViewVisible)
+                                }
+                            })
+                }, accessToken = accessToken, target = BookMarkTarget.SELLER.target, targetId = item.targetId)
+            }
+        })
+    }
+
     private fun setEmptyViewVisible(list: MutableList<BookMark.Content>) {
         mEmptyViewVisible = ObservableBoolean(list.isEmpty())
         notifyPropertyChanged(BR.mEmptyViewVisible)
