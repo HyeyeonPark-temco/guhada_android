@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter.mypage
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -17,6 +18,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
     var mList = mutableListOf<Seller>()
+    var UNIT_PER_PAGE = 6
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_mypage_follow, parent, false))
@@ -27,13 +29,19 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
         holder.bind(mList[position])
     }
 
-    fun setItems(list : MutableList<Seller>){
+    fun setItems(list: MutableList<Seller>) {
         this@MyPageFollowAdapter.mList = list
         notifyDataSetChanged()
     }
 
+    fun addItem(item: Seller) {
+        mList.add(item)
+        notifyItemInserted(mList.size - 1)
+    }
+
     inner class Holder(binding: ItemMypageFollowBinding) : BaseViewHolder<ItemMypageFollowBinding>(binding.root) {
         fun bind(seller: Seller) {
+            Log.e("ㅇㅇㅇ", seller.profileImageUrl)
             mBinding.seller = seller
             mBinding.executePendingBindings()
         }

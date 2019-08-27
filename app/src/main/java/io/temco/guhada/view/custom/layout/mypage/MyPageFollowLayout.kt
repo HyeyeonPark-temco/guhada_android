@@ -2,7 +2,9 @@ package io.temco.guhada.view.custom.layout.mypage
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
@@ -24,12 +26,21 @@ class MyPageFollowLayout constructor(
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : BaseListLayout<CustomlayoutMypageFollowBinding, MyPageFollowViewModel>(context, attrs, defStyleAttr), SwipeRefreshLayout.OnRefreshListener {
+    private val mAdapter = MyPageFollowAdapter()
+
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_follow
     override fun init() {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         mViewModel = MyPageFollowViewModel(context)
         mViewModel.getFollowingSellerIds()
+
+        mViewModel.mSeller.observe(this, Observer {
+            (mBinding.recyclerviewMypagefollowList.adapter as MyPageFollowAdapter).addItem(it)
+            mBinding.textviewMypagefollowTotalcount.text = "총 ${mViewModel.mSellerList.value?.size}개"
+        })
+
+        mBinding.recyclerviewMypagefollowList.adapter = mAdapter
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
@@ -38,7 +49,6 @@ class MyPageFollowLayout constructor(
         mBinding.swipeRefreshLayout.isRefreshing = false
 
         mViewModel.page = 1
-
     }
 
 

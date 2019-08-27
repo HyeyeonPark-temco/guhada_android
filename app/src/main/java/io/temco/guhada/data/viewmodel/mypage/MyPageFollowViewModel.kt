@@ -1,8 +1,8 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
@@ -27,8 +27,9 @@ import kotlinx.coroutines.launch
 class MyPageFollowViewModel(val context: Context) : BaseObservableViewModel() {
     var mFollowList: MutableLiveData<MutableList<BookMark.Content>> = MutableLiveData(mutableListOf())
     var page = 1
-    var UNIT_PER_PAGE = 6
-    var mSellerList: MutableList<Seller> = mutableListOf()
+    var mSellerList: MutableLiveData<MutableList<Seller>> = MutableLiveData(mutableListOf())
+    var mSeller: MutableLiveData<Seller> = MutableLiveData()
+    var mEmptyViewVisible = ObservableBoolean(false)
         @Bindable
         get() = field
 
@@ -45,6 +46,8 @@ class MyPageFollowViewModel(val context: Context) : BaseObservableViewModel() {
                             successTask = {
                                 val list = (it.data as BookMark).content
                                 mFollowList.postValue(list)
+                                mEmptyViewVisible = ObservableBoolean(list.isEmpty())
+                                notifyPropertyChanged(BR.mEmptyViewVisible)
 
                                 for (item in list) {
                                     getSeller(item.targetId)
@@ -55,17 +58,13 @@ class MyPageFollowViewModel(val context: Context) : BaseObservableViewModel() {
     }
 
     fun getSeller(sellerId: Long) {
-        //  GlobalScope.launch {
-        UserServer.getSellerById(OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        Log.e("ㅇㅇㅇ4", "${(it.data as Seller).id} / ${(it.data as Seller).storeName}")
-                        mSellerList.add(it.data as Seller)
-
-                        if (mSellerList.size < UNIT_PER_PAGE || (mSellerList.size >= UNIT_PER_PAGE && mSellerList.size % UNIT_PER_PAGE == 0))
-                            notifyPropertyChanged(BR.mSellerList)
-                    })
-        }, sellerId = sellerId)
-        // }
+        GlobalScope.launch {
+            UserServer.getSellerById(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            mSeller.postValue(it.data as Seller)
+                        })
+            }, sellerId = sellerId)
+        }
     }
 }
