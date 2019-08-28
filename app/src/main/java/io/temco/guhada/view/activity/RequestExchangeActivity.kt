@@ -3,7 +3,6 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
@@ -321,21 +320,45 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 } else {
                     val shippingMessage = mViewModel.mShippingMessageList.value?.get(position)
                     mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = shippingMessage?.message
-                    mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility =
-                            if (shippingMessage?.type == ShippingMessageCode.SELF.code) View.VISIBLE
-                            else View.GONE
-                    mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = shippingMessage?.message
-                            ?: ""
+
+                    if (shippingMessage?.type == ShippingMessageCode.SELF.code) {
+                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
+                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.addTextChangedListener {
+                            mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = it.toString()
+                        }
+                    } else {
+                        mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = shippingMessage?.message
+                                ?: ""
+                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.removeTextChangedListener(null)
+                        mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.GONE
+                    }
                 }
             }
         }
 
+        // 배송지 변경
         mBinding.includeRequestexchangeExchangeshipping.setChangeShippingListener {
             val intent = Intent(this@RequestExchangeActivity, ShippingAddressActivity::class.java)
             startActivityForResult(intent, RequestCode.SHIPPING_ADDRESS.flag)
         }
 
-        mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = purchaseOrder.exchangeBuyerShippingMessage?:""
+        // 배송 메세지
+        for (i in 0 until purchaseOrder.shippingMessageList.size) {
+            val shippingMessage = purchaseOrder.shippingMessageList[i]
+            if (shippingMessage.message == purchaseOrder.exchangeBuyerShippingMessage) {
+                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = purchaseOrder.exchangeBuyerShippingMessage
+                        ?: ""
+                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.GONE
+                break
+            } else if (i == purchaseOrder.shippingMessageList.size - 1) {
+                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.setText(purchaseOrder.exchangeBuyerShippingMessage
+                        ?: "")
+                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
+            }
+        }
+
+        // 배송 메세지 리스트
         mViewModel.mShippingMessageList.observe(this, Observer {
             mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, it)
             if (it.isNotEmpty()) {

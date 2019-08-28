@@ -2,7 +2,6 @@ package io.temco.guhada.data.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import java.io.Serializable
 
 /**

@@ -65,6 +65,8 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                                 purchaseOrder.orderProdGroupId = mOrderProdGroupId
                                 this.mPurchaseOrder.postValue(purchaseOrder)
 
+                                mExchangeRequest.claimShippingPriceType = purchaseOrder.exchangeShippingPriceType
+
                                 // shipping address
                                 mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName?:""
                                 mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.exchangeBuyerRecipientMobile?:""
