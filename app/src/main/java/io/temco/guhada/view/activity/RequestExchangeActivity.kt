@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
@@ -56,7 +57,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             }
         }
 
-        // 신규 교환 신청
+        // 신규 교환 신청g
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mExchangeRequest.orderProdGroupId = it
@@ -116,6 +117,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
     }
 
     private fun initCause(purchaseOrder: PurchaseOrder) {
+        Log.e("ㅇㅇㅇ", purchaseOrder.exchangeReason)
         if (!purchaseOrder.exchangeReason.isNullOrEmpty()) {
             mViewModel.mExchangeRequest.exchangeReason = purchaseOrder.exchangeReason
             mBinding.includeRequestexchangeCause.defaultMessage = getReason(purchaseOrder.exchangeReason)

@@ -112,6 +112,8 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 this.quantity = item.quantity
                 this.orderPrice = item.orderPrice
                 this.imageUrl = item.imageUrl
+                this.orderProdGroupId = item.orderProdGroupId.toInt()
+                this.sellerId = item.sellerId.toLong()
             }
 
             val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
