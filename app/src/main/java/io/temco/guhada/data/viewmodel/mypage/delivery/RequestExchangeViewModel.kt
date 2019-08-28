@@ -66,12 +66,12 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                                 this.mPurchaseOrder.postValue(purchaseOrder)
 
                                 // shipping address
-                                mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName
-                                mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.exchangeBuyerRecipientMobile
-                                mExchangeRequest.exchangeShippingAddress.zip = purchaseOrder.exchangeBuyerZip
-                                mExchangeRequest.exchangeShippingAddress.address = purchaseOrder.exchangeBuyerAddress
-                                mExchangeRequest.exchangeShippingAddress.roadAddress = purchaseOrder.exchangeBuyerRoadAddress
-                                mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.exchangeBuyerDetailAddress
+                                mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName?:""
+                                mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.exchangeBuyerRecipientMobile?:""
+                                mExchangeRequest.exchangeShippingAddress.zip = purchaseOrder.exchangeBuyerZip?:""
+                                mExchangeRequest.exchangeShippingAddress.address = purchaseOrder.exchangeBuyerAddress?:""
+                                mExchangeRequest.exchangeShippingAddress.roadAddress = purchaseOrder.exchangeBuyerRoadAddress?:""
+                                mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.exchangeBuyerDetailAddress?:""
                                 mExchangeRequest.exchangeShippingAddress.shippingMessage = purchaseOrder.exchangeBuyerShippingMessage?:""
 
                                 val list = purchaseOrder.shippingMessageList

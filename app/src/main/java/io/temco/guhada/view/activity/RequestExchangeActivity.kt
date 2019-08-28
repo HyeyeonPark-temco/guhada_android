@@ -117,7 +117,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
     }
 
     private fun initCause(purchaseOrder: PurchaseOrder) {
-        Log.e("ㅇㅇㅇ", purchaseOrder.exchangeReason)
         if (!purchaseOrder.exchangeReason.isNullOrEmpty()) {
             mViewModel.mExchangeRequest.exchangeReason = purchaseOrder.exchangeReason
             mBinding.includeRequestexchangeCause.defaultMessage = getReason(purchaseOrder.exchangeReason)
