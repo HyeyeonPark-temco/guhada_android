@@ -8,6 +8,7 @@ ext {
     // LIBRARY
     glideVersion = '4.9.0'
     retrofitVersion = '2.5.0'
+    retrofitCoroutineAdapter = '0.9.2'
     googlePlayServiceVersion = '16.0.1'
     facebookLoginVersion = '[5,6)'
     jsoupVersion = '1.12.1'
@@ -16,7 +17,8 @@ ext {
     compiler_version = '3.1.3'
     kotlinVersion = '1.3.31'
     jwtDecodeVersion = '1.3.0'
-    coroutineVersion = '1.3.0-M1'
+    coroutineCoreVersion = '1.3.0-M1'
+    coroutineAndroidVersion = '1.1.0'
     okhttpIntegrationVersion = '4.9.0'
     okhttpVersion = '3.12.0'
     firebaseCoreVersion = '17.0.0'
@@ -34,25 +36,27 @@ ext {
     ]
 
     libraryDependencies = [
-            glide                : "com.github.bumptech.glide:glide:${glideVersion}",
-            glideCompiler        : "com.github.bumptech.glide:compiler:${glideVersion}",
-            retrofit             : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
-            retrofitConverter    : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
-            googlePlayServiceAuth: "com.google.android.gms:play-services-auth:${googlePlayServiceVersion}",
-            facebookLogin        : "com.facebook.android:facebook-login:${facebookLoginVersion}",
-            jsoup                : "org.jsoup:jsoup:${jsoupVersion}",
-            stringUtils          : "org.apache.commons:commons-text:${stringUtilsVersion}",
-            loggingInterceptor   : "com.squareup.okhttp3:logging-interceptor:${logginInterceptorVersion}",
-            kotlinJdk7           : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
-            jwtDecode            : "com.auth0.android:jwtdecode:${jwtDecodeVersion}",
-            coroutine            : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutineVersion}",
-            okhttp               : "com.squareup.okhttp3:okhttp:${okhttpVersion}",
-            okhttpIntegration    : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}",
-            firebaseAnalytics         : "com.google.firebase:firebase-core:${firebaseCoreVersion}",
-            firebaseMessaging         : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
-            appCenterAnalytics   : "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}",
-            appCenterCrashes     : "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}",
-            joda : "net.danlew:android.joda:${jodaVersion}"
+            glide                   : "com.github.bumptech.glide:glide:${glideVersion}",
+            glideCompiler           : "com.github.bumptech.glide:compiler:${glideVersion}",
+            retrofit                : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitConverter       : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            googlePlayServiceAuth   : "com.google.android.gms:play-services-auth:${googlePlayServiceVersion}",
+            facebookLogin           : "com.facebook.android:facebook-login:${facebookLoginVersion}",
+            jsoup                   : "org.jsoup:jsoup:${jsoupVersion}",
+            stringUtils             : "org.apache.commons:commons-text:${stringUtilsVersion}",
+            loggingInterceptor      : "com.squareup.okhttp3:logging-interceptor:${logginInterceptorVersion}",
+            kotlinJdk7              : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
+            jwtDecode               : "com.auth0.android:jwtdecode:${jwtDecodeVersion}",
+            coroutineCore           : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutineCoreVersion}",
+            okhttp                  : "com.squareup.okhttp3:okhttp:${okhttpVersion}",
+            okhttpIntegration       : "com.github.bumptech.glide:okhttp3-integration:${okhttpIntegrationVersion}",
+            firebaseAnalytics       : "com.google.firebase:firebase-core:${firebaseCoreVersion}",
+            firebaseMessaging       : "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}",
+            appCenterAnalytics      : "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}",
+            appCenterCrashes        : "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}",
+            joda                    : "net.danlew:android.joda:${jodaVersion}",
+            coroutineAndroid        : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutineAndroidVersion}",
+            retrofitCoroutineAdapter: "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${retrofitCoroutineAdapter}"
     ]
-}
 
+}
