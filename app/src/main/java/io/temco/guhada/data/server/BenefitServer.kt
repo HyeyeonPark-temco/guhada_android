@@ -65,6 +65,15 @@ class BenefitServer {
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
         /**
+         * 쿠폰 삭제 (비동기)
+         * @author Hyeyeon Park
+         * @since 2019.08.28
+         */
+        fun deleteCouponAsync(accessToken: String, couponNumber: String) = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).deleteCouponAsync(accessToken, couponNumber)
+        }
+
+        /**
          * 포인트 기록 삭제
          * @author Hyeyeon Park
          * @since 2019.08.28

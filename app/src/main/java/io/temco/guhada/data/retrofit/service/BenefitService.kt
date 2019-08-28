@@ -45,6 +45,12 @@ interface BenefitService {
     fun deleteCoupon(@Header("Authorization") accessToken: String, @Path("couponNumber") couponNumber: String): Call<BaseModel<Any?>>
 
     /**
+     * 쿠폰 삭제 API (비동기)
+     */
+    @DELETE("/coupon/wallet/{couponNumber}")
+    fun deleteCouponAsync(@Header("Authorization") accessToken: String, @Path("couponNumber") couponNumber: String): Deferred<BaseModel<Any?>>
+
+    /**
      * 포인트 기록 삭제 API
      */
     @DELETE("/histories/{id}")
