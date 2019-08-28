@@ -3,6 +3,7 @@ package io.temco.guhada.data.model.order
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.OrderChangeCause
+import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import java.io.Serializable
 
 /**
@@ -66,6 +67,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var buyerName = ""
     var buyerPhone = ""
 
+
     // 취소 신청 정보
     var cancelReason : String?= ""
     var cancelReasonDetail = ""
@@ -79,7 +81,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var returnShippingPrice = 0
     var returnEtcPrice = 0
 
-    // 교환 신청 정
+    // 교환 신청 정보
     var exchangeReason = ""
     var exchangeReasonDetail = ""
     var exchangePickingShipCompany = ""
@@ -93,7 +95,9 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var exchangeBuyerAddress = ""
     var exchangeBuyerRoadAddress=  ""
     var exchangeBuyerDetailAddress = ""
+    var exchangeBuyerShippingMessage = ""
 
+    var shippingMessageList = mutableListOf<ShippingMessage>()
 
     fun getOptionStr(): String {
         var result = ""

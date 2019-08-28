@@ -41,9 +41,15 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                         successTask = {
                             if (it.data != null) {
                                 (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
+                                (it.data as PurchaseOrder).receiverMessage = ""
                                 this@RequestExchangeViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
-                            }
 
+                                val list = (it.data as PurchaseOrder).shippingMessageList
+                                list.add(ShippingMessage().apply {
+                                    message = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+                                })
+                                mShippingMessageList.postValue(list)
+                            }
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)
         })
@@ -55,8 +61,24 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             if (it.data != null) {
-                                (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
-                                this@RequestExchangeViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
+                                val purchaseOrder =  (it.data as PurchaseOrder)
+                                purchaseOrder.orderProdGroupId = mOrderProdGroupId
+                                this.mPurchaseOrder.postValue(purchaseOrder)
+
+                                // shipping address
+                                mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName
+                                mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.exchangeBuyerRecipientMobile
+                                mExchangeRequest.exchangeShippingAddress.zip = purchaseOrder.exchangeBuyerZip
+                                mExchangeRequest.exchangeShippingAddress.address = purchaseOrder.exchangeBuyerAddress
+                                mExchangeRequest.exchangeShippingAddress.roadAddress = purchaseOrder.exchangeBuyerRoadAddress
+                                mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.exchangeBuyerDetailAddress
+                                mExchangeRequest.exchangeShippingAddress.shippingMessage = purchaseOrder.exchangeBuyerShippingMessage?:""
+
+                                val list = purchaseOrder.shippingMessageList
+                                list.add(ShippingMessage().apply {
+                                    message = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+                                })
+                                mShippingMessageList.postValue(list)
                             }
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)

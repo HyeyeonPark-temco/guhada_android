@@ -57,7 +57,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             }
         }
 
-        // 신규 교환 신청g
+        // 신규 교환 신청
         intent.getLongExtra("orderProdGroupId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
                 mViewModel.mExchangeRequest.orderProdGroupId = it
@@ -317,28 +317,33 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val shippingMessage = mViewModel.mShippingMessageList.value?.get(position)
-                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = shippingMessage?.message
-                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility =
-                        if (shippingMessage?.type == ShippingMessageCode.SELF.code) View.VISIBLE
-                        else View.GONE
-                mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = shippingMessage?.message
-                        ?: ""
+                if (purchaseOrder.receiverMessage.isNotEmpty() && position > (purchaseOrder.shippingMessageList.size - 2)) {
+
+                } else {
+                    val shippingMessage = mViewModel.mShippingMessageList.value?.get(position)
+                    mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = shippingMessage?.message
+                    mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility =
+                            if (shippingMessage?.type == ShippingMessageCode.SELF.code) View.VISIBLE
+                            else View.GONE
+                    mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage = shippingMessage?.message
+                            ?: ""
+                }
             }
         }
-
-        mViewModel.mShippingMessageList.observe(this, Observer {
-            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, it)
-            if (it.isNotEmpty()) mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setSelection(it.size - 1)
-        })
 
         mBinding.includeRequestexchangeExchangeshipping.setChangeShippingListener {
             val intent = Intent(this@RequestExchangeActivity, ShippingAddressActivity::class.java)
             startActivityForResult(intent, RequestCode.SHIPPING_ADDRESS.flag)
         }
 
-        mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = if (purchaseOrder.receiverMessage != null) purchaseOrder.receiverMessage else ""
-        mViewModel.getShippingMessageByOrderForm()
+        mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = purchaseOrder.exchangeBuyerShippingMessage?:""
+        mViewModel.mShippingMessageList.observe(this, Observer {
+            mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, it)
+            if (it.isNotEmpty()) {
+                mBinding.includeRequestexchangeExchangeshipping.spinnerRequestorderstatusShippingmemo.setSelection(it.size - 1)
+            }
+        })
+        // mViewModel.getShippingMessageByOrderForm()
     }
 
     private fun initButton(isModify: Boolean) {
