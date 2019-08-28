@@ -14,10 +14,7 @@ import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.naver.NaverResponse
-import io.temco.guhada.data.model.review.MyPageReview
-import io.temco.guhada.data.model.review.ReviewResponse
-import io.temco.guhada.data.model.review.ReviewSummary
-import io.temco.guhada.data.model.review.ReviewWrMdResponse
+import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerAddress
 import io.temco.guhada.data.model.seller.SellerFollower
@@ -30,6 +27,7 @@ import io.temco.guhada.data.retrofit.service.UserService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -733,6 +731,17 @@ class UserServer {
                     )
         }
 
+        /**
+         * 특정 리뷰 조회 (비동기)
+         * @author Hyeyeon Park
+         * @since 2019.08.28
+         */
+        @JvmStatic
+        fun getReviewAsync(productId: Long, reviewId: Long): Deferred<BaseModel<MyPageReviewContent>> =
+                GlobalScope.async {
+                    RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                            .getReviewAsync(productId = productId, reviewId = reviewId).await()
+                }
 
     }
 

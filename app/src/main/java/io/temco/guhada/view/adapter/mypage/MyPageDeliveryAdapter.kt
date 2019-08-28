@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter.mypage
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -18,12 +19,18 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.DeliveryButton
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.review.MyPageReviewContent
 import io.temco.guhada.data.model.review.ReviewAvailableOrder
+import io.temco.guhada.data.model.review.ReviewOrder
 import io.temco.guhada.data.server.ClaimServer
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.databinding.ItemDeliveryBinding
 import io.temco.guhada.view.activity.*
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * 마이페이지 주문배송, 취소교환반품 리스트 adapter
@@ -121,6 +128,50 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
         }
 
+        private fun redirectWriteReviewActivityForModify(item: PurchaseOrder){
+            if (item.reviewId != null) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val reviewContent = getReviewAsync(item.productId, item.reviewId?.toLong()
+                            ?: 0)
+                    reviewContent.review.profileImageUrl = item.imageUrl
+                    reviewContent.order = ReviewOrder().apply {
+                        this.purchaseId = item.purchaseId
+                        this.productId = item.productId
+                        this.orderTimestamp = item.orderTimestamp
+                        this.brandName = item.brandName?:""
+                        this.season = item.season?:""
+                        this.prodName = item.productName?:""
+                        this.imageName = item.imageName?:""
+                        this.imageUrl = item.imageUrl?:""
+                        this.optionAttribute1 = item.optionAttribute1 ?: ""
+                        this.optionAttribute2 = item.optionAttribute2 ?: ""
+                        this.optionAttribute3 = item.optionAttribute3 ?: ""
+                        this.quantity = item.quantity
+                        this.discountPrice = item.discountPrice
+                        this.originalPrice = item.originalPrice
+                        this.orderPrice = item.orderPrice
+                        this.shipPrice = item.shipPrice
+                        this.sellerId = item.sellerId.toLong()
+                        this.sellerName = item.sellerName?:""
+                        this.purchaseStatus = item.purchaseStatus?:""
+                        this.purchaseStatusText = item.purchaseStatusText?:""
+                        this.statusMessage = item.statusMessage?:""
+                        this.orderProdGroupId = item.orderProdGroupId.toInt()
+                        this.purchaseConfirm = item.purchaseConfirm
+                        //     this.expireTimestamp = item.expireTimestamp
+                        //     this.shipCompleteTimestamp = item.shipCompleteTimestamp
+                        this.reviewId = item.reviewId ?: 0
+                        this.dealId = item.dealId
+                    }
+                    val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
+                    intent.putExtra("reviewData", reviewContent)
+                    (binding.root.context as Activity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+                }
+            }
+        }
+
+        private suspend fun getReviewAsync(productId: Long, reviewId: Long): MyPageReviewContent = UserServer.getReviewAsync(productId, reviewId).await().data
+
         private fun getButtons(item: PurchaseOrder): MutableList<DeliveryButton> {
             val buttons = mutableListOf<DeliveryButton>()
             val status = if (type == Type.Delivery.type) item.purchaseStatus else item.claimStatus
@@ -164,8 +215,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         if (item.reviewId != null) buttons.add(DeliveryButton().apply {
                             text = mBinding.root.context.getString(R.string.mypage_delivery_button_reviewmodify)
                             task = View.OnClickListener {
-                                val intent = Intent(binding.root.context, ReviewWriteActivity::class.java)
-                                (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
+                                redirectWriteReviewActivityForModify(item)
                             }
                         })
                         else buttons.add(DeliveryButton().apply {
