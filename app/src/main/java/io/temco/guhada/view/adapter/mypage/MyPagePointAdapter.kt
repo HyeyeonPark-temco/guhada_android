@@ -6,11 +6,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.PointStatus
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.data.model.point.PointHistory
+import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.viewmodel.mypage.MyPagePointViewModel
 import io.temco.guhada.databinding.ItemMypagePointBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MyPagePointAdapter(val mViewModel: MyPagePointViewModel) : RecyclerView.Adapter<MyPagePointAdapter.Holder>() {
     private var list = mutableListOf<PointHistory.PointHistoryContent>()
@@ -47,7 +53,24 @@ class MyPagePointAdapter(val mViewModel: MyPagePointViewModel) : RecyclerView.Ad
                 else -> BaseApplication.getInstance().resources.getColor(R.color.perrywinkle)
             }
 
+            mBinding.imagebuttonMypagepointDelete.setOnClickListener {
+                CoroutineScope(Dispatchers.Main).launch {
+                    Preferences.getToken().let {
+                        if (it.accessToken != null) {
+                            val model = deletePointAsync("Bearer ${it.accessToken}", item.id).await()
+                            if (model.resultCode == ResultCode.SUCCESS.flag) {
+                                this@MyPagePointAdapter.list.removeAt(adapterPosition)
+                                notifyItemRemoved(adapterPosition)
+                            }
+                        }
+                    }
+                }
+            }
+
+            mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
+
+        private suspend fun deletePointAsync(accessToken: String, pointId: Long) = BenefitServer.deletePointAsync(accessToken, pointId).await()
     }
 }

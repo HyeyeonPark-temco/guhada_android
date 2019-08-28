@@ -168,14 +168,14 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
             }
         }
 
-        @JvmStatic
-        @BindingAdapter("android:textColor")
-        fun TextView.bindColor(resId: Int?) {
-            if (resId != null)
-                this.setTextColor(resources.getColor(resId))
-            else
-                this.setTextColor(resources.getColor(R.color.warm_grey))
-        }
+//        @JvmStatic
+//        @BindingAdapter("android:textColor")
+//        fun TextView.bindColor(resId: Int?) {
+//            if (resId != null)
+//                this.setTextColor(resources.getColor(resId))
+//            else
+//                this.setTextColor(resources.getColor(R.color.warm_grey))
+//        }
     }
 
 }
