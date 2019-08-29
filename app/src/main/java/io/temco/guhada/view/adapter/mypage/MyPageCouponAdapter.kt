@@ -6,12 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
+import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.databinding.ItemCouponBinding
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * 마이페이지 - 쿠폰 리스트 Adapter
@@ -46,7 +52,24 @@ class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
                     ToastUtil.showMessage("쿠폰 삭제 미구현")
                 }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = CartProductAdapter::class.java.simpleName)
             }
+
+            mBinding.imagebuttonCouponDelete.setOnClickListener {
+                CoroutineScope(Dispatchers.Main).launch {
+                    Preferences.getToken().let {
+                        if (it.accessToken != null) {
+                            val model = deleteCouponAsync("Bearer ${it.accessToken}", item.couponNumber).await()
+                            if (model.resultCode == ResultCode.SUCCESS.flag) {
+                                this@MyPageCouponAdapter.list.removeAt(adapterPosition)
+                                notifyItemRemoved(adapterPosition)
+                            }
+                        }
+                    }
+                }
+            }
             mBinding.executePendingBindings()
         }
+
+        private suspend fun deleteCouponAsync(accessToken: String, couponNumber: String) =  BenefitServer.deleteCouponAsync(accessToken, couponNumber).await()
+
     }
 }

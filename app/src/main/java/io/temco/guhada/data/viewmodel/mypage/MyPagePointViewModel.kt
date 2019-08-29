@@ -45,7 +45,7 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
     var toDate = ""
     var page = 1
 
-    private val UNIT_PER_PAGE = 10
+    private val UNIT_PER_PAGE = 8
     private val ORDER_TYPE_DESC = "DESC"
     private val ORDER_TYPE_ASC = "ASC"
     private val SORT_TYPE = "CREATED"
@@ -88,11 +88,22 @@ class MyPagePointViewModel(val context: Context) : BaseObservableViewModel() {
                             }
                             notifyPropertyChanged(BR.pointHistory)
                         })
-            }, accessToken = token, fromAt = fromDate, toAt = toDate, historyStatus = "", charge = false, sortType = SORT_TYPE, orderType = ORDER_TYPE_DESC, page = page++, unitPerPage = 3, userId = userId)
+            }, accessToken = token, fromAt = fromDate, toAt = toDate, historyStatus = "", charge = false, sortType = SORT_TYPE, orderType = ORDER_TYPE_DESC, page = page++, unitPerPage = UNIT_PER_PAGE, userId = userId)
         })
     }
 
-    fun onClickMore() {
-        getPointHistories()
+    fun onClickMore() = getPointHistories()
+
+    // 미사용
+    fun onClickDelete(pointId: Long) {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            BenefitServer.deletePoint(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            page = 1
+                            getPointHistories()
+                        })
+            }, accessToken = accessToken, pointId = pointId)
+        })
     }
 }

@@ -48,8 +48,10 @@ class RequestRefundViewModel : BaseObservableViewModel() {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             if (it.data != null) {
-                                (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
-                                this@RequestRefundViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
+                                val purchaseOrder = (it.data as PurchaseOrder)
+                                purchaseOrder.orderProdGroupId = mOrderProdGroupId
+                                mRefundRequest.claimShippingPriceType = purchaseOrder.returnShippingPriceType
+                                this@RequestRefundViewModel.mPurchaseOrder.postValue(purchaseOrder)
                             }
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)

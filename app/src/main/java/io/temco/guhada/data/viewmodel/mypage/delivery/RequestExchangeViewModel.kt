@@ -30,6 +30,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     var mShippingMessageList: MutableLiveData<MutableList<ShippingMessage>> = MutableLiveData(mutableListOf())
     var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
     var mSuccessRequestExchangeTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
+    var mSuccessUpdateExchangeTask : () -> Unit = {}
     var mShippingPayment: Int = ShippingPaymentType.BOX.pos
     var mOrderProdGroupId = 0L
 
@@ -38,11 +39,49 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
             ClaimServer.getClaimForm(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            if (it.data != null){
+                            if (it.data != null) {
                                 (it.data as PurchaseOrder).orderProdGroupId = mOrderProdGroupId
+                                (it.data as PurchaseOrder).receiverMessage = ""
                                 this@RequestExchangeViewModel.mPurchaseOrder.postValue(it.data as PurchaseOrder)
-                            }
 
+                                val list = (it.data as PurchaseOrder).shippingMessageList
+                                list.add(ShippingMessage().apply {
+                                    message = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+                                })
+                                mShippingMessageList.postValue(list)
+                            }
+                        })
+            }, accessToken = token, orderProdGroupId = orderProdGroupId)
+        })
+    }
+
+    fun getUpdateClaimForm(orderProdGroupId: Long) {
+        ServerCallbackUtil.callWithToken(task = { token ->
+            ClaimServer.getUpdateClaimForm(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            if (it.data != null) {
+                                val purchaseOrder =  (it.data as PurchaseOrder)
+                                purchaseOrder.orderProdGroupId = mOrderProdGroupId
+                                this.mPurchaseOrder.postValue(purchaseOrder)
+
+                                mExchangeRequest.claimShippingPriceType = purchaseOrder.exchangeShippingPriceType
+
+                                // shipping address
+                                mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName?:""
+                                mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.exchangeBuyerRecipientMobile?:""
+                                mExchangeRequest.exchangeShippingAddress.zip = purchaseOrder.exchangeBuyerZip?:""
+                                mExchangeRequest.exchangeShippingAddress.address = purchaseOrder.exchangeBuyerAddress?:""
+                                mExchangeRequest.exchangeShippingAddress.roadAddress = purchaseOrder.exchangeBuyerRoadAddress?:""
+                                mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.exchangeBuyerDetailAddress?:""
+                                mExchangeRequest.exchangeShippingAddress.shippingMessage = purchaseOrder.exchangeBuyerShippingMessage?:""
+
+                                val list = purchaseOrder.shippingMessageList
+                                list.add(ShippingMessage().apply {
+                                    message = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+                                })
+                                mShippingMessageList.postValue(list)
+                            }
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)
         })
@@ -126,6 +165,17 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                             mPurchaseOrder.value?.orderStatusText = result.orderStatusText
                             mPurchaseOrder.value?.claimStatusText = result.claimStatusText
                             mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
+                        })
+            }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
+        })
+    }
+
+    fun updateExchange() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            ClaimServer.updateExchange(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            mSuccessUpdateExchangeTask()
                         })
             }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
         })

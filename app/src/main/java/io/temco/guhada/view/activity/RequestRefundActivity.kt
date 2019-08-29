@@ -113,6 +113,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
 
     private fun initCause(purchaseOrder: PurchaseOrder) {
         if (!purchaseOrder.returnReason.isNullOrEmpty()) {
+            mViewModel.mRefundRequest.refundReason = purchaseOrder.returnReason
             mBinding.includeRequestrefundCause.defaultMessage = getReason(purchaseOrder.returnReason)
             mBinding.includeRequestrefundCause.textviewRequestorderstatusCause.text = getReason(purchaseOrder.returnReason)
         }
@@ -271,13 +272,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundShippingpayment.textviewRequestorderstatusShippingpaymentDescription2.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_refund_shipping_description2))
         mBinding.includeRequestrefundShippingpayment.isRefund = true
 
-        if (purchaseOrder.returnShippingPriceType != null && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
-            when (purchaseOrder.returnShippingPriceType) {
-                ShippingPaymentType.EXCLUDE_REFUND_PRICE.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = true
-                ShippingPaymentType.BOX.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
-                ShippingPaymentType.DIRECT_SEND.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = true
-            }
-        }
+        // [신청서 수정] 배송지 결제 방법
+        setShippingPayment(purchaseOrder)
 
         mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
@@ -298,8 +294,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 mViewModel.mShippingPayment = ShippingPaymentType.DIRECT_SEND.pos
-                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.DIRECT_SEND
-                        .type
+                mViewModel.mRefundRequest.claimShippingPriceType = ShippingPaymentType.DIRECT_SEND.type
                 mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = false
                 mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
             }
@@ -315,9 +310,20 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             if (invoiceId.isNotEmpty())
                 mViewModel.mRefundRequest.invoiceNo = mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.text.toString().toLong()
             mViewModel.mCause = mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.text.toString()
+            mViewModel.mRefundRequest.refundReasonDetail = mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.text.toString()
 
             if (isModify) mViewModel.updateRefund()
             else mViewModel.requestRefund()
+        }
+    }
+
+    private fun setShippingPayment(purchaseOrder: PurchaseOrder){
+        if (purchaseOrder.returnShippingPriceType != null && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
+            when (purchaseOrder.returnShippingPriceType) {
+                ShippingPaymentType.EXCLUDE_REFUND_PRICE.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = true
+                ShippingPaymentType.BOX.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = true
+                ShippingPaymentType.DIRECT_SEND.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment3.isChecked = true
+            }
         }
     }
 

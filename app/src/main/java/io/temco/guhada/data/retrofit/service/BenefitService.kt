@@ -6,10 +6,9 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.coupon.CouponResponse
 import io.temco.guhada.data.model.point.Point
 import io.temco.guhada.data.model.point.PointHistory
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface BenefitService {
     /**
@@ -39,4 +38,28 @@ interface BenefitService {
     @GET("/coupon/wallet")
     fun getCoupons(@Header("Authorization") accessToken: String, @Query("isAvailable") isAvailable: Boolean, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<CouponResponse>>
 
+    /**
+     * 쿠폰 삭제 API
+     */
+    @DELETE("/coupon/wallet/{couponNumber}")
+    fun deleteCoupon(@Header("Authorization") accessToken: String, @Path("couponNumber") couponNumber: String): Call<BaseModel<Any?>>
+
+    /**
+     * 쿠폰 삭제 API (비동기)
+     */
+    @DELETE("/coupon/wallet/{couponNumber}")
+    fun deleteCouponAsync(@Header("Authorization") accessToken: String, @Path("couponNumber") couponNumber: String): Deferred<BaseModel<Any?>>
+
+    /**
+     * 포인트 기록 삭제 API
+     */
+    @DELETE("/histories/{id}")
+    fun deletePoint(@Header("Authorization") accessToken: String, @Path("id") pointId: Long): Call<BaseModel<Any?>>
+
+
+    /**
+     * 포인트 기록 삭제 API (비동기)
+     */
+    @DELETE("/histories/{id}")
+    fun deletePointAsync(@Header("Authorization") accessToken: String, @Path("id") pointId: Long): Deferred<BaseModel<Any?>>
 }

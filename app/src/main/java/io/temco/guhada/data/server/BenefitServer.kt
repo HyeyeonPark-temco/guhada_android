@@ -5,6 +5,8 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.BenefitService
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class BenefitServer {
     companion object {
@@ -52,6 +54,42 @@ class BenefitServer {
         fun getCoupons(listener: OnServerListener, accessToken: String, isAvailable: Boolean, page: Int, unitPerPage: Int) =
                 RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getCoupons(accessToken, isAvailable, page, unitPerPage).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 쿠폰 삭제
+         * @author Hyeyeon Park
+         * @since 2019.08.28
+         */
+        fun deleteCoupon(listener: OnServerListener, accessToken: String, couponNumber: String) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).deleteCoupon(accessToken, couponNumber).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 쿠폰 삭제 (비동기)
+         * @author Hyeyeon Park
+         * @since 2019.08.28
+         */
+        fun deleteCouponAsync(accessToken: String, couponNumber: String) = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).deleteCouponAsync(accessToken, couponNumber)
+        }
+
+        /**
+         * 포인트 기록 삭제
+         * @author Hyeyeon Park
+         * @since 2019.08.28
+         */
+        fun deletePoint(listener: OnServerListener, accessToken: String, pointId: Long) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).deletePoint(accessToken, pointId).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 포인트 기록 삭제 (비동기)
+         * @author Hyeyeon Park
+         * @since 2019.08.28
+         */
+        fun deletePointAsync(accessToken: String, pointId: Long) = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).deletePointAsync(accessToken, pointId)
+        }
 
     }
 }

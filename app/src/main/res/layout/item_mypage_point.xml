@@ -11,6 +11,10 @@
         <variable
             name="item"
             type="io.temco.guhada.data.model.point.PointHistory.PointHistoryContent" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.mypage.MyPagePointViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

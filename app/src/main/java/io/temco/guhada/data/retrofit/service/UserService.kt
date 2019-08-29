@@ -5,6 +5,7 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.MyPageReview
+import io.temco.guhada.data.model.review.MyPageReviewContent
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.seller.Seller
@@ -366,6 +367,14 @@ interface UserService {
     fun modifyReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Int,
                      @FieldMap param: HashMap<String, Any>): Call<BaseModel<Any>>
 
+
+    /**
+     * 특정 리뷰 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.08.28
+     */
+    @GET("/products/{productId}/reviews/{reviewId}")
+    fun getReviewAsync(@Path("productId") productId : Long, @Path("reviewId") reviewId : Long) : Deferred<BaseModel<MyPageReviewContent>>
 
     /**
      * 회원 신체 사이즈 정보 가져오기

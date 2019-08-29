@@ -3,7 +3,7 @@ package io.temco.guhada.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +16,10 @@ import io.temco.guhada.databinding.ItemCommunityTextBinding
 import io.temco.guhada.view.fragment.community.CommunitySubListFragment
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 커뮤니티 게시판 어댑터
+ * @author Hyeyeon Park
+ */
 class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBoardAdapter.Holder>() {
     var mList = mutableListOf<CommunityBoard>()
     lateinit var mViewModel: CommunitySubListViewModel
@@ -40,32 +44,46 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
             if (type == CommunitySubListFragment.CommunityListType.IMAGE.type) {
                 (mBinding as ItemCommunityPhotoBinding).item = item
                 (mBinding as ItemCommunityPhotoBinding).viewModel = mViewModel
-
-                if (item.title.length > 12) {
-                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                        weight = 1f
-                        topMargin = CommonViewUtil.convertDpToPixel(16, mBinding.root.context)
-                    }.let { layoutParams ->
-                        (mBinding as ItemCommunityPhotoBinding).textviewCommunityphotoTitle.layoutParams = layoutParams
-                    }
-                }
-
+                checkEllipsized(isTextType = false)
             } else {
                 (mBinding as ItemCommunityTextBinding).item = item
                 (mBinding as ItemCommunityTextBinding).viewModel = mViewModel
-
-                if (item.title.length > 24) {
-                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                        weight = 1f
-                        marginStart = CommonViewUtil.convertDpToPixel(5, mBinding.root.context)
-                    }.let { layoutParams ->
-                        (mBinding as ItemCommunityTextBinding).textviewCommunitytextTitle.layoutParams = layoutParams
-                    }
-                }
+                checkEllipsized(isTextType = true)
             }
 
             setSpacing()
             mBinding.executePendingBindings()
+        }
+
+        private fun checkEllipsized(isTextType: Boolean) {
+            val titleTextView: TextView
+            val margin: Int
+
+            if (isTextType) {
+                titleTextView = (mBinding as ItemCommunityTextBinding).textviewCommunitytextTitle
+                margin = CommonViewUtil.convertDpToPixel(5, mBinding.root.context)
+            } else {
+                titleTextView = (mBinding as ItemCommunityPhotoBinding).textviewCommunityphotoTitle
+                margin = CommonViewUtil.convertDpToPixel(16, mBinding.root.context)
+            }
+
+            titleTextView.viewTreeObserver.addOnGlobalLayoutListener {
+                if (titleTextView.layout != null) {
+                    val isEllipsized = titleTextView.layout.getEllipsisCount(titleTextView.lineCount - 1) > 0
+
+                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                        if (isEllipsized) {
+                            weight = 1f
+                            titleTextView.viewTreeObserver.removeOnGlobalLayoutListener { }
+                        }
+
+                        if (isTextType) marginStart = margin
+                        else topMargin = margin
+                    }.let { layoutParams ->
+                        titleTextView.layoutParams = layoutParams
+                    }
+                }
+            }
         }
 
         private fun setSpacing() {

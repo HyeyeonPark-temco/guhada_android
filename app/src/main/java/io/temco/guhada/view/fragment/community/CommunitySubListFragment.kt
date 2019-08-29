@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -34,7 +35,8 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  * @author Hyeyeon Park
  * @since 2019.08.21
  */
-class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<FragmentCommunitySubListBinding>() {
+class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<FragmentCommunitySubListBinding>(), SwipeRefreshLayout.OnRefreshListener {
+
     private lateinit var mViewModel: CommunitySubListViewModel
 
     override fun getBaseTag(): String {
@@ -48,11 +50,18 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
     override fun init() {
         if (CustomLog.flag) CustomLog.L(getBaseTag(), info.communityCategorySub.toString())
 
+        mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         initViewModel()
         initSpinner()
 
         mViewModel.getCommunityList()
         mBinding.executePendingBindings()
+    }
+
+    override fun onRefresh() {
+        mBinding.swipeRefreshLayout.isRefreshing = false
+        mViewModel.mPage = 0
+        mViewModel.getCommunityList()
     }
 
     private fun initViewModel() {
@@ -159,14 +168,14 @@ class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<F
             }
         }
 
-        @JvmStatic
-        @BindingAdapter("android:textColor")
-        fun TextView.bindColor(resId: Int?) {
-            if (resId != null)
-                this.setTextColor(resources.getColor(resId))
-            else
-                this.setTextColor(resources.getColor(R.color.warm_grey))
-        }
+//        @JvmStatic
+//        @BindingAdapter("android:textColor")
+//        fun TextView.bindColor(resId: Int?) {
+//            if (resId != null)
+//                this.setTextColor(resources.getColor(resId))
+//            else
+//                this.setTextColor(resources.getColor(R.color.warm_grey))
+//        }
     }
 
 }
