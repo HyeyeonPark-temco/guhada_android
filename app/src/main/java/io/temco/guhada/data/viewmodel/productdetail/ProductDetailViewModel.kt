@@ -22,9 +22,13 @@ import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.coupon.Coupon
+import io.temco.guhada.data.model.order.OrderItemResponse
+import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerSatisfaction
+import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
@@ -74,6 +78,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         get() = field
 
     var mSellerBookMark = BookMark()
+        @Bindable
+        get() = field
+
+    var mExpectedCouponList = MutableLiveData<MutableList<Coupon>>()
         @Bindable
         get() = field
 
@@ -187,6 +195,39 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 }, invalidTokenTask = { productBookMark.set(false) })
     }
 
+    /**
+     * 발급 가능한 쿠폰 조회
+     * @author Hyeyeon Park
+     * @since 2019.08.29
+     */
+    fun getExpectedCoupon() {
+        ServerCallbackUtil.callWithToken(
+                task = { accessToken ->
+                    OrderItemResponse().apply {
+                        this.dCategoryId = product.value?.dCategoryId ?: 0
+                        this.lCategoryId = product.value?.lCategoryId ?: 0
+                        this.mCategoryId = product.value?.mCategoryId ?: 0
+                        this.sCategoryId = product.value?.sCategoryId ?: 0
+                        this.dealId = product.value?.dealId ?: 0
+                        this.sellerId = product.value?.sellerId?.toInt() ?: 0
+                    }.let { orderItemResponse ->
+                        BenefitServer.getExpectedCoupon(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        val list = it.data as MutableList<Coupon>
+                                        val tempList = mutableListOf<Coupon>()
+                                        for (item in list)
+                                            if (item.saveType == PointRequest.SaveType.DOWNLOAD.type)
+                                                tempList.add(item)
+
+                                        this@ProductDetailViewModel.mExpectedCouponList.postValue(tempList)
+                                    })
+                        }, accessToken = accessToken, item = orderItemResponse, saveActionType = PointRequest.ActionType.BUY.type, serviceType = PointRequest.ServiceType.AOS.type)
+                    }
+                },
+                invalidTokenTask = {}
+        )
+    }
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
     fun onClickTab(view: View) {

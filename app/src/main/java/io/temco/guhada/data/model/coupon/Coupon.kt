@@ -15,6 +15,7 @@ class Coupon {
     var couponNumber = ""
     var couponTitle: String? = ""
     var couponType: String? = ""
+    var saveType = ""
     var status: String? = ""
 
     // PRICE

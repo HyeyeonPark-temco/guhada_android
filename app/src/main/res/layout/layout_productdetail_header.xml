@@ -146,8 +146,8 @@
                 android:layout_marginEnd="20dp">
 
                 <TextView
-                    style="@style/TextBold"
                     android:id="@+id/textview_productdetail_unit"
+                    style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/common_unit_krw"
@@ -258,6 +258,36 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayout_productdetail_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textview_productdetail_coupon"
+                    style="@style/TextRegularSingleLine"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/coupon_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="15dp"
+                    android:text="5000원 할인 쿠폰"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_13" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/coupon_download" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <FrameLayout

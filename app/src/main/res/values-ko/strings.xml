@@ -412,6 +412,9 @@
     <string name="productdetail_store_related">판매자의 연관상품</string>
     <string name="productdetail_store_recommend">추천상품</string>
 
+    <string name="productdetail_coupon_price">%d원 할인 쿠폰</string>
+    <string name="productdetail_coupon_rate">%s 할인 쿠폰</string>
+
     <!-- CLAIM -->
     <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
     <string name="claim_write_private">비공개글 설정</string>
