@@ -35,7 +35,8 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  * @author Hyeyeon Park
  * @since 2019.08.21
  */
-class CommunitySubListFragment(private val info: CommunityInfo) : BaseFragment<FragmentCommunitySubListBinding>(), SwipeRefreshLayout.OnRefreshListener {
+class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>(), SwipeRefreshLayout.OnRefreshListener {
+    lateinit var info: CommunityInfo
 
     private lateinit var mViewModel: CommunitySubListViewModel
 
