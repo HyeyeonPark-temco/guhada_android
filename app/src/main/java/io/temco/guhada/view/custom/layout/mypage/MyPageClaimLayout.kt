@@ -3,13 +3,10 @@ package io.temco.guhada.view.custom.layout.mypage
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.Spinner
-import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
@@ -19,7 +16,6 @@ import io.temco.guhada.data.model.claim.MyPageClaim
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageClaimBinding
 import io.temco.guhada.view.WrapContentLinearLayoutManager
-import io.temco.guhada.view.adapter.PaymentSpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -65,21 +61,6 @@ class MyPageClaimLayout constructor(
                    mViewModel.getListAdapter().items[mViewModel.selectedIndex].inquiry.inquiry = (requestCode.data as Claim).inquiry
                    mViewModel.getListAdapter().notifyItemChanged(mViewModel.selectedIndex)
                }
-            }
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        @BindingAdapter("bindClaimStatusSpinner")
-        fun Spinner.bindClaimStatusSpinner(list: MutableList<String>) {
-            if (list.isNotEmpty()) {
-                if (this.adapter == null) {
-                    this.adapter = PaymentSpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_payment_spinner, list)
-                } else {
-                    (this.adapter as PaymentSpinnerAdapter).setItems(list)
-                }
-                this.setSelection(0)
             }
         }
     }

@@ -113,7 +113,6 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
         binding.setClickClaimListener{
             if(CommonUtil.checkToken()){
                 CommonUtil.startReportActivity((model.context as AppCompatActivity), 3, data, model.communityDetail.value)
-                //CommonUtil.startReportActivity((model.context as AppCompatActivity), 2, model.communityDetail.value, null)
             }else{
                 CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                         cancelButtonVisible = true,

@@ -172,10 +172,10 @@ public class Type {
     private static String getClaimUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://qa.claim.guhada.com:8081/";
+                return "http://qa.claim.guhada.com/";//:8081
 
             default:
-                return "http://dev.claim.guhada.com:8081/";
+                return "http://dev.claim.guhada.com/";//:8081
         }
     }
 

@@ -45,7 +45,7 @@
                         android:overlapAnchor="false"
                         android:popupBackground="@null"
                         android:spinnerMode="dropdown"
-                        app:bindClaimStatusSpinner="@{viewModel.claimMessages}" />
+                        app:bindCommonSpinner="@{viewModel.claimMessages}" />
 
                     <FrameLayout
                         android:id="@+id/framelayout_mypageclaim_button"

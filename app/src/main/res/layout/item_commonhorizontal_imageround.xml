@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="onClickImageModify"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickImageDel"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="imagePath"
+            type="String" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_reviewwrite_layout"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:onClick="@{onClickImageModify}">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{imagePath}"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/drawable_round_topright_corner_5"/>
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="15.5dp"
+            android:layout_marginLeft="32dp"
+            android:onClick="@{onClickImageDel}"
+            android:src="@drawable/icon_delet"
+            android:background="@drawable/drawable_topright_round_del"/>
+    </RelativeLayout>
+</layout>

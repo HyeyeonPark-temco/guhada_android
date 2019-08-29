@@ -106,7 +106,7 @@
                         android:overlapAnchor="false"
                         android:popupBackground="@null"
                         android:spinnerMode="dropdown"
-                        app:bindClaimStatusSpinner="@{viewModel.userHeightTxtList}" />
+                        app:bindCommonSpinner="@{viewModel.userHeightTxtList}" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -176,7 +176,7 @@
                     android:overlapAnchor="false"
                     android:popupBackground="@null"
                     android:spinnerMode="dropdown"
-                    app:bindClaimStatusSpinner="@{viewModel.userWeightTxtList}" />
+                    app:bindCommonSpinner="@{viewModel.userWeightTxtList}" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -248,7 +248,7 @@
                     android:overlapAnchor="false"
                     android:popupBackground="@null"
                     android:spinnerMode="dropdown"
-                    app:bindClaimStatusSpinner="@{viewModel.userFootTxtList}" />
+                    app:bindCommonSpinner="@{viewModel.userFootTxtList}" />
 
                     <FrameLayout
                         android:layout_width="match_parent"

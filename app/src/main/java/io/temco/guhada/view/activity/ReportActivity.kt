@@ -26,10 +26,11 @@ import io.temco.guhada.data.viewmodel.ReportWriteViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonImageAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
-import java.util.logging.Handler
 
 /**
+ * @author park jungho
  *
+ * 신고하기 등록화면
  *
  * type : 0, productData - 상품 신고
  * type : 1, userData - 회원 신고
@@ -39,7 +40,6 @@ import java.util.logging.Handler
  */
 class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBinding>(), View.OnClickListener , OnClickSelectItemListener {
     private lateinit var mViewModel : ReportWriteViewModel
-    private lateinit var mHandler: Handler
     private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
     // ----------------------------------------------------------
 
@@ -90,7 +90,7 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
             }
             mBinding.title = resources.getStringArray(R.array.report_header_title)[mViewModel.reportType]
             mBinding.type = mViewModel.reportType
-
+            mBinding.setOnClickCloseButton { finish() }
             mViewModel.setInit()
         }
 

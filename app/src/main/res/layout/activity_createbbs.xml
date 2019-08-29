@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="onClickWriteButton"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickCloseButton"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickGetImage"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickTempSave"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickTempList"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.CreateBbsViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_reivewwrite_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:weightSum="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                style="@style/TextRegular"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:onClick="@{onClickCloseButton}"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:textSize="@dimen/text_15"
+                android:gravity="center"
+                android:text="@string/common_cancel"
+                android:textColor="@color/warm_grey_six"
+                android:background="@color/transparent"/>
+
+            <Button
+                style="@style/TextRegular"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:onClick="@{onClickTempSave}"
+                android:textSize="@dimen/text_15"
+                android:text="@string/common_temp"
+                android:textColor="@color/warm_grey_six"
+                android:background="@color/transparent"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="1">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true" >
+
+                    <Spinner
+                        android:id="@+id/spinner_createbbs_filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@null"
+                        android:spinnerMode="dropdown"
+                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onBbsCategorySelected(pos)}"
+                        app:bindCreateBbsSpinner="@{viewModel.categoryList}"/>
+
+                    <!---->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp"
+                            android:background="@color/common_white"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:layout_marginRight="10dp"
+                                android:textColor="@color/black_four"
+                                android:text="@{viewModel.categoryTitle}"
+                                android:textSize="@dimen/text_17" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/payment_icon_selectbox_open"/>
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+            </RelativeLayout>
+
+            <Button
+                style="@style/TextRegular"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:onClick="@{onClickWriteButton}"
+                android:textSize="@dimen/text_15"
+                android:layout_marginRight="10dp"
+                android:text="@string/common_register"
+                android:textColor="@color/blue_purple"
+                android:background="@color/transparent"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_four"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:weightSum="1"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:visibility="@{viewModel.filterListVisible ? View.VISIBLE : View.GONE , default = gone}" >
+
+                    <io.temco.guhada.view.CustomSpinner
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:overlapAnchor="false"
+                        android:popupBackground="@null"
+                        android:spinnerMode="dropdown"
+                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onFilterSelect(pos)}"
+                        app:bindCreateBbsSpinner="@{viewModel.filterList}" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/common_white"
+                            android:orientation="horizontal"
+                            android:popupBackground="@null">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    style="@style/TextRegular"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:textColor="@color/black_four"
+                                    android:text="@{viewModel.filterTitle}"
+                                    android:visibility="@{TextUtils.isEmpty(viewModel.filterTitle) ? View.GONE : View.VISIBLE, default = gone}"
+                                    android:textSize="@dimen/text_15" />
+
+                                <TextView
+                                    style="@style/TextRegular"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center_vertical"
+                                    android:textColor="@color/black_four"
+                                    android:visibility="@{TextUtils.isEmpty(viewModel.filterTitle) ? View.VISIBLE : View.GONE, default = gone}"
+                                    android:text="@string/create_bbs_header_select_desc"
+                                    android:textSize="@dimen/text_15" />
+                            </RelativeLayout>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open"
+                                android:layout_marginRight="20dp"/>
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <EditText
+                    android:id="@+id/edittext_report_title"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center_vertical"
+                    android:maxLines="3"
+                    android:background="@color/common_white"
+                    android:hint="@string/report_community_text06"
+                    android:textColorHint="@color/pinkish_grey"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <EditText
+                    android:id="@+id/edittext_report_text"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:paddingTop="6dp"
+                    android:gravity="start"
+                    android:maxLines="500"
+                    android:maxLength="1000"
+                    android:background="@color/common_white"
+                    android:hint="@string/report_community_text07"
+                    android:textColorHint="@color/pinkish_grey"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <EditText
+                    android:id="@+id/edittext_report_brand"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center_vertical"
+                    android:maxLines="3"
+                    android:background="@color/common_white"
+                    android:hint="@string/report_community_text12"
+                    android:textColorHint="@color/pinkish_grey"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four"/>
+
+                <EditText
+                    android:id="@+id/edittext_report_product"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:gravity="center_vertical"
+                    android:maxLines="3"
+                    android:background="@color/common_white"
+                    android:hint="@string/report_community_text13"
+                    android:textColorHint="@color/pinkish_grey"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:visibility="@{viewModel.visibleImageCheckLayout ? View.VISIBLE : View.GONE , default = gone}"
+                android:background="@color/white_four"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_createbbs_imagelist"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:visibility="@{viewModel.visibleImageCheckLayout ? View.VISIBLE : View.GONE , default = gone}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white_four"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:onClick="@{onClickGetImage}"
+                    android:src="@drawable/com_btn_photo"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white_four" />
+
+                <RelativeLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:onClick="@{onClickTempSave}"
+                        android:src="@drawable/com_btn_storage"/>
+
+                    <TextView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:background="@drawable/drawable_transparent_image"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

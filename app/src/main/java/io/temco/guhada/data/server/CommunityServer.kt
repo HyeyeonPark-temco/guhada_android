@@ -7,6 +7,7 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.CommentContent
 import io.temco.guhada.data.model.CommentResponse
 import io.temco.guhada.data.model.Comments
+import io.temco.guhada.data.model.CreateBbsResponse
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
@@ -171,10 +172,10 @@ class CommunityServer {
 
 
         /**
-         * 게시글 상세 정보 가져오기
+         * 게시글 상세의 댓글 리스트
          *
          * bbsId : 게시글 id
-         * userIp : 유져 ip
+         *
          */
         @JvmStatic
         fun getCommentList(listener: OnServerListener, bbsId : Long, page: Int, orderType : String, unitPerPage : Int) {
@@ -207,10 +208,9 @@ class CommunityServer {
         }
 
         /**
-         * 게시글 댓글 Id 정보 가져오기
+         * 댓글 가져오기
          *
-         * bbsId : 게시글 id
-         * userIp : 유져 ip
+         * id : 댓글 id
          */
         @JvmStatic
         fun getCommentIdData(listener: OnServerListener, id : Long) {
@@ -244,10 +244,9 @@ class CommunityServer {
 
 
         /**
-         * 게시글 댓글 Id 정보 가져오기
+         * 댓글 삭제
          *
-         * bbsId : 게시글 id
-         * userIp : 유져 ip
+         * id : 댓글 id
          */
         @JvmStatic
         fun deleteComment(listener: OnServerListener, accessToken: String, id : Long) {
@@ -281,7 +280,7 @@ class CommunityServer {
 
 
         /**
-         * 게시글 댓글 등록
+         * 게시글 댓글 수정
          *
          * bbsId : 게시글 id
          * userIp : 유져 ip
@@ -355,6 +354,229 @@ class CommunityServer {
                     )
         }
 
+
+
+
+
+        /**
+         * 게시글  등록
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun postBbsData(listener: OnServerListener, accessToken: String, body : CreateBbsResponse) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .postBbsData(accessToken, body).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+        /**
+         * 게시글 수정
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun modifyBbsData(listener: OnServerListener, accessToken: String, id : Long, body : CreateBbsResponse) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .modifyBbsData(accessToken, id, body).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+
+
+        /**
+         * 게시글 삭제
+         *
+         * id : 댓글 id
+         */
+        @JvmStatic
+        fun deleteBbsData(listener: OnServerListener, accessToken: String, id : Long) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .deleteBbsData(accessToken, id).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+
+        /**
+         * 게시글 임시 등록
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun postBbsTempData(listener: OnServerListener, accessToken: String, body : CreateBbsResponse) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .postBbsTempData(accessToken, body).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+        /**
+         * 게시글 임시 수정
+         *
+         * bbsId : 게시글 id
+         * userIp : 유져 ip
+         */
+        @JvmStatic
+        fun modifyBbsTempData(listener: OnServerListener, accessToken: String, id : Long, body : CreateBbsResponse) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .modifyBbsTempData(accessToken, id, body).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+
+
+        /**
+         * 게시글 임시 삭제
+         *
+         * id : 댓글 id
+         */
+        @JvmStatic
+        fun deleteBbsTempData(listener: OnServerListener, accessToken: String, id : Long) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .deleteBbsTempData(accessToken, id).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
 
 
 

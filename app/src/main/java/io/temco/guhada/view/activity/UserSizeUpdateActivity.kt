@@ -25,8 +25,10 @@ import java.util.*
 
 
 /**
- * 리뷰 작성 & 수정 Activity
  * @author park jungho
+ *
+ * 유저 사이즈 등록
+ *
  */
 class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.ActivityUsersizeupdateBinding>() {
     private lateinit var mRequestManager: RequestManager

@@ -3,6 +3,7 @@ package io.temco.guhada.data.retrofit.service
 import io.temco.guhada.data.model.CommentContent
 import io.temco.guhada.data.model.CommentResponse
 import io.temco.guhada.data.model.Comments
+import io.temco.guhada.data.model.CreateBbsResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.community.CommunityCategory
 import io.temco.guhada.data.model.community.CommunityCategorySub
@@ -31,7 +32,7 @@ interface CommunityService {
     @GET("/category/filter")
     fun getCategoryFilter(@Query("communityCategoryId") communityCategoryId: Int): Call<BaseModel<CommunityCategoryfilter>>
 
-    // 커뮤니티 전체 조회 API
+    // 게시글 조회
     @GET("/bbses/{id}")
     fun getBbsDetail(@Path("id") id: Long, @Query("userIp") userIp: String): Call<BaseModel<CommunityDetail>>
 
@@ -53,8 +54,39 @@ interface CommunityService {
     @DELETE("/comments/{id}")
     fun deleteCommentId(@Header("Authorization") accessToken: String, @Path("id") id : Long): Call<BaseModel<Any>>
 
-    // 커뮤니티 전체 조회 API
+    // 댓글 전송
     @POST("/comments")
     fun postCommentData(@Header("Authorization") accessToken: String, @Body response: CommentResponse): Call<BaseModel<Any>>
+
+
+    // 게시글 작성
+    @POST("/bbses")
+    fun postBbsData(@Header("Authorization") accessToken: String, @Body response: CreateBbsResponse): Call<BaseModel<Any>>
+
+
+    // 게시글 수정
+    @PUT("/bbses/{id}")
+    fun modifyBbsData(@Header("Authorization") accessToken: String, @Path("id") id : Long, @Body response: CreateBbsResponse): Call<BaseModel<Any>>
+
+
+    // 게시글 삭제
+    @POST("/bbses/{id}")
+    fun deleteBbsData(@Header("Authorization") accessToken: String,  @Path("id") id : Long): Call<BaseModel<Any>>
+
+
+
+    // 게시글 임시 작성
+    @POST("/bbses/temp")
+    fun postBbsTempData(@Header("Authorization") accessToken: String, @Body response: CreateBbsResponse): Call<BaseModel<Any>>
+
+
+    // 게시글 임시 수정
+    @PUT("/bbses/temp/{id}")
+    fun modifyBbsTempData(@Header("Authorization") accessToken: String, @Path("id") id : Long, @Body response: CreateBbsResponse): Call<BaseModel<Any>>
+
+
+    // 게시글 임시 삭제
+    @POST("/bbses/temp/{id}")
+    fun deleteBbsTempData(@Header("Authorization") accessToken: String,  @Path("id") id : Long): Call<BaseModel<Any>>
 
 }

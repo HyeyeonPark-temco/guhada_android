@@ -139,7 +139,7 @@ interface ClaimService {
     /**
      * 신고하기 이미지 업로드 URL 가져오기 API
      */
-    @GET("users/report/photo-upload-url"/*"users/report/image-upload-url"*/)
+    @GET(/*"users/report/image-upload-url"*/"/users/report/photo-upload-url")
     fun getReportUserPhotoUrl(@Header("Authorization") accessToken: String): Call<BaseModel<JsonObject>>
 
 

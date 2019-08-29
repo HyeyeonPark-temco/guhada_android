@@ -1,8 +1,10 @@
 package io.temco.guhada.view.fragment.community
 
 
+import android.content.Intent
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -10,11 +12,14 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.viewmodel.community.CommunityMainViewPagerViewModel
 import io.temco.guhada.databinding.FragmentMainCommunityBinding
+import io.temco.guhada.view.activity.CreateBbsActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.adapter.CommunityPagerAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
+import java.util.ArrayList
 
 /**
  * 19.08.19
@@ -47,6 +52,11 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
             initHeader()
         })
         mViewModel.getCommunityInfo()
+        mBinding.setOnClickCreateBbs {
+            var intent = Intent((context as AppCompatActivity), CreateBbsActivity::class.java)
+            intent.putExtra("currentIndex",(if(currentPagerIndex<3) 0 else currentPagerIndex-3))
+            (context as AppCompatActivity).startActivityForResult(intent, 0)
+        }
     }
 
 
@@ -62,6 +72,9 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
     // PUBLIC
     ////////////////////////////////////////////////
 
+    fun getViewModel() : CommunityMainViewPagerViewModel{
+        return mViewModel
+    }
 
     ////////////////////////////////////////////////
     // PRIVATE

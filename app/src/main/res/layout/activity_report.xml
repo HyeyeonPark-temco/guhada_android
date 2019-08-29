@@ -108,13 +108,11 @@
                     layout="@layout/layout_reportdetail_community"/>
 
                 <FrameLayout
-                    android:id="@+id/framelayout_payment_shippingmemo"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/white_five" >
 
                     <Spinner
-                        android:id="@+id/spinner_mypageclaim_status"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginLeft="20dp"
@@ -126,15 +124,13 @@
                         android:popupBackground="@null"
                         android:spinnerMode="dropdown"
                         android:onItemSelected="@{(p, v, pos, id) -> viewModel.onReportTypeSelected(pos)}"
-                        app:bindClaimStatusSpinner="@{viewModel.reportTypeMessages}" />
+                        app:bindCommonSpinner="@{viewModel.reportTypeMessages}" />
 
                     <FrameLayout
-                        android:id="@+id/framelayout_mypageclaim_button"
                         android:layout_width="match_parent"
                         android:layout_height="50dp">
 
                         <LinearLayout
-                            android:id="@+id/linearlayout_mypageclaim_message"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:background="@color/common_white"
@@ -153,7 +149,6 @@
                                 android:textSize="@dimen/text_15" />
 
                             <ImageView
-                                android:id="@+id/imageview_payment_shippingmemo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"

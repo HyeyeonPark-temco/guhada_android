@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.community
 
+import io.temco.guhada.data.model.CreateBbsResponse
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,6 +32,22 @@ class CommunityDetail : Serializable {
     var createUserInfo = CreateUserInfo()
     var userDetail : UserDetail = UserDetail()
     var bbsImageList : Array<String> = arrayOf()
+
+
+    fun setBbsResponse() : CreateBbsResponse {
+        var data = CreateBbsResponse()
+        data.categoryFilterId = categoryFilterId.toLong()
+        data.dealName = dealName ?: ""
+        data.contents = contents ?: ""
+        data.brandName = brandName ?: ""
+        data.imageUrl = imageUrl ?: ""
+        data.categoryId = categoryId.toLong()
+        data.dealId = dealId
+        data.delete = delete
+        data.title = title ?: ""
+
+        return data
+    }
 
     override fun toString(): String {
         return "CommunityDetail(id=$id, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, " +

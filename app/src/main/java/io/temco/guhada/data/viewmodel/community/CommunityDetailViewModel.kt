@@ -13,6 +13,7 @@ import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.BookMarkTarget
+import io.temco.guhada.common.enum.ImageUploadTarget
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -33,6 +34,8 @@ import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 
 class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel() {
     val repository = CommunityDetailRepository(this)
+
+    var infoList : ArrayList<CommunityInfo> = arrayListOf()
 
     var userId = -1L
     var bbsId = 0L
@@ -114,6 +117,8 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
             notifyPropertyChanged(BR.communityDetailCommentTotalElements)
         }
 
+
+
     fun onClickLike() {
 
     }
@@ -157,28 +162,24 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
     }
 
 
-    fun onClickCommentMore() {
-
-    }
-
     fun getDetailData(){
         repository.getDetailData()
     }
 
     var totalPageCount = -1
-    var currrentPage = 0
+    var currentPage = 0
 
     fun getCommentList(){
-        if(totalPageCount == -1 || (totalPageCount-1 > currrentPage)){
-            currrentPage += 1
-            repository.getCommentList(currrentPage,"DESC", null)
+        if(totalPageCount == -1 || (totalPageCount-1 > currentPage)){
+            currentPage += 1
+            repository.getCommentList(currentPage,"DESC", null)
         }
     }
 
     fun getCommentInitList(listener: OnCallBackListener?){
-        currrentPage = 1
+        currentPage = 1
         commentList.value!!.clear()
-        repository.getCommentList(currrentPage,"DESC",listener)
+        repository.getCommentList(currentPage,"DESC",listener)
     }
 
     fun getBookMark() {
@@ -214,7 +215,7 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
             }
         }else{
             if(!TextUtils.isEmpty(commentRegImage.get())){
-                repository.uploadImage(commentRegImage.get()!!,"COMMENT",0, object : OnCallBackListener{
+                repository.uploadImage(commentRegImage.get()!!,ImageUploadTarget.IMAGE_BBS_COMMENT.name,0, object : OnCallBackListener{
                     override fun callBackListener(resultFlag: Boolean, value: Any) {
                         if(resultFlag){
                             var data = value as ImageResponse
@@ -323,7 +324,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                             }
                         }
                         viewModel.communityDetailCommentTotalElements.set(data.totalElements)
-                        viewModel.currrentPage = data.pageable.pageNumber+1
+                        viewModel.currentPage = data.pageable.pageNumber+1
                         var listTmp : ArrayList<Comments> = arrayListOf()
                         for (vlu in data.content){
                             listTmp.add(vlu)
@@ -335,9 +336,9 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                 }
                             }
                         }
-                        if (CustomLog.flag) CustomLog.L("getCommentList", "currrentPage", viewModel.currrentPage)
+                        if (CustomLog.flag) CustomLog.L("getCommentList", "currentPage", viewModel.currentPage)
                         if (CustomLog.flag) CustomLog.L("getCommentList", "totalPages", data.totalPages)
-                        if(data.totalPages > viewModel.currrentPage){
+                        if(data.totalPages > viewModel.currentPage){
                             var more = Comments()
                             more.id = -1
                             listTmp.add(more)

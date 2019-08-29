@@ -177,12 +177,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
 
-        <!-- Search -->
-        <activity
-            android:name=".view.activity.ReportActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-
         <!-- SideMenu -->
         <activity
             android:name=".view.activity.SideMenuActivity"
@@ -240,6 +234,17 @@
         <!-- Community -->
         <activity
             android:name=".view.activity.CommunityDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <activity
+            android:name=".view.activity.CreateBbsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <!-- Report  -->
+        <activity
+            android:name=".view.activity.ReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 

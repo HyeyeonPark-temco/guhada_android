@@ -2,8 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <data>
+        <variable
+            name="onClickCreateBbs"
+            type="android.view.View.OnClickListener" />
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.community.CommunityMainViewPagerViewModel" />
@@ -89,6 +91,15 @@
                     android:overScrollMode="never"/>
             </RelativeLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_margin="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/com_btn_editor"
+            android:onClick="@{onClickCreateBbs}"/>
 
     </RelativeLayout>
 </layout>

@@ -25,7 +25,12 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.community.detail.CommentListFragment
 import io.temco.guhada.view.fragment.community.detail.CommunityDetailContentsFragment
-
+/**
+ * @author park jungho
+ *
+ * 게시글 상세
+ *
+ */
 class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.ActivityCommunitydetailBinding>(), View.OnClickListener {
     private lateinit var mRequestManager: RequestManager
     private lateinit var mViewModel : CommunityDetailViewModel
@@ -139,8 +144,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private fun initIntent(){
         if(intent?.extras?.containsKey("bbsId")!!){
             mViewModel.bbsId = intent.extras.getLong("bbsId")
-            mViewModel.info = intent.getSerializableExtra("info") as CommunityInfo
-            if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.info ",mViewModel.info.toString())
+            mViewModel.info = intent.extras.getSerializable("info") as CommunityInfo
+            if(CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.info ",mViewModel.info.toString())
         }
     }
 

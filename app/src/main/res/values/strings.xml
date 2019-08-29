@@ -1086,7 +1086,8 @@
     <string name="report_community_text09">문의하시는 이메일 정보는 문의 접수 및 서비스 개선을 위해 수집하여 5년간 보관합니다.\n(문의 분류에 따라 첨부된 파일 또한 수집될 수 있습니다.) </string>
     <string name="report_community_text10">개인정보 수집에 동의합니다.</string>
     <string name="report_community_text11">신고하기</string>
-
+    <string name="report_community_text12">브랜드명을 입력해주세요</string>
+    <string name="report_community_text13">상품명을 입력해주세요</string>
 
 
     <!-- 신고 화면 타이틀 -->
@@ -1096,5 +1097,16 @@
         <item>게시글/댓글 신고</item>
         <item>게시글/댓글 신고</item>
     </string-array>
+
+
+    <string name="common_temp">임시</string>
+    <string name="common_register">등록</string>
+    <string name="common_save">저장</string>
+    <string name="common_ok">확인</string>
+    <string name="common_done">완료</string>
+    <string name="create_bbs_header_select_desc">말머리를 선택해주세요</string>
+    <string name="create_bbs_temp_save_done">임시저장이 완료되었습니다.</string>
+    <string name="create_bbs_temp_list_title">임시저장함</string>
+
 
 </resources>
