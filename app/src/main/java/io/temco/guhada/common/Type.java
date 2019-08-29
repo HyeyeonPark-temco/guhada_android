@@ -58,7 +58,8 @@ public class Type {
         REVIEW_POINT_DIALOG,
         USER_SIZE_UPDATE,
         REPORT_WRITE,
-        CONFIRM_PURCHASE
+        CONFIRM_PURCHASE,
+        COUPON_DOWNLOAD
     }
 
     // Main

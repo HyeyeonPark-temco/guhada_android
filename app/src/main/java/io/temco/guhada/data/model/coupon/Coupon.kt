@@ -1,10 +1,13 @@
 package io.temco.guhada.data.model.coupon
 
+import android.os.Parcel
+import android.os.Parcelable
+
 /**
  * 쿠폰 model
  * @author Hyeyeon Park
  */
-class Coupon {
+class Coupon() : Parcelable {
     var userId: Long = 0L
     var serviceType: String? = ""
     var applyType: String? = ""
@@ -35,4 +38,68 @@ class Coupon {
     var sellerId: Long? = 0
     var sellerImgUrl: String? = ""
     var sellerName: String? = ""
+
+    constructor(parcel: Parcel) : this() {
+        userId = parcel.readLong()
+        serviceType = parcel.readString()
+        applyType = parcel.readString()
+        couponId = parcel.readValue(Long::class.java.classLoader) as? Long
+        couponSaveId = parcel.readValue(Long::class.java.classLoader) as? Long
+        couponNumber = parcel.readString()
+        couponTitle = parcel.readString()
+        couponType = parcel.readString()
+        saveType = parcel.readString()
+        status = parcel.readString()
+        discountType = parcel.readString()
+        discountRate = parcel.readDouble()
+        discountPrice = parcel.readInt()
+        minimumPrice = parcel.readInt()
+        maximumDiscountPrice = parcel.readString()
+        startAt = parcel.readString()
+        endAt = parcel.readString()
+        createdAt = parcel.readString()
+        expireDueDay = parcel.readInt()
+        sellerId = parcel.readValue(Long::class.java.classLoader) as? Long
+        sellerImgUrl = parcel.readString()
+        sellerName = parcel.readString()
+    }
+
+
+    // PARCELABLE
+    override fun writeToParcel(dest: Parcel?, flags: Int) {
+        dest?.writeLong(userId)
+        dest?.writeString(serviceType)
+        dest?.writeString(applyType)
+        dest?.writeValue(couponId)
+        dest?.writeValue(couponSaveId)
+        dest?.writeString(couponNumber)
+        dest?.writeString(couponTitle)
+        dest?.writeString(couponType)
+        dest?.writeString(saveType)
+        dest?.writeString(status)
+        dest?.writeString(discountType)
+        dest?.writeDouble(discountRate)
+        dest?.writeInt(discountPrice)
+        dest?.writeInt(minimumPrice)
+        dest?.writeString(maximumDiscountPrice)
+        dest?.writeString(startAt)
+        dest?.writeString(endAt)
+        dest?.writeString(createdAt)
+        dest?.writeInt(expireDueDay)
+        dest?.writeValue(sellerId)
+        dest?.writeString(sellerImgUrl)
+        dest?.writeString(sellerName)
+    }
+
+    override fun describeContents(): Int = 0
+
+    companion object CREATOR : Parcelable.Creator<Coupon> {
+        override fun createFromParcel(parcel: Parcel): Coupon {
+            return Coupon(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Coupon?> {
+            return arrayOfNulls(size)
+        }
+    }
 }
