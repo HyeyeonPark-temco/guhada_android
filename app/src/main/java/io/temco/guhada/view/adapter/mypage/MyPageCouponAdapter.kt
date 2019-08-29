@@ -48,28 +48,24 @@ class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
         fun bind(item: Coupon) {
             mBinding.coupon = item
             mBinding.imagebuttonCouponDelete.setOnClickListener {
-                CustomMessageDialog(binding.root.context.getString(R.string.mypagecoupon_message_delete), true, confirmTask = {
-                    ToastUtil.showMessage("쿠폰 삭제 미구현")
-                }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = CartProductAdapter::class.java.simpleName)
-            }
-
-            mBinding.imagebuttonCouponDelete.setOnClickListener {
-                CoroutineScope(Dispatchers.Main).launch {
-                    Preferences.getToken().let {
-                        if (it.accessToken != null) {
-                            val model = deleteCouponAsync("Bearer ${it.accessToken}", item.couponNumber).await()
-                            if (model.resultCode == ResultCode.SUCCESS.flag) {
-                                this@MyPageCouponAdapter.list.removeAt(adapterPosition)
-                                notifyItemRemoved(adapterPosition)
+                CustomMessageDialog(mBinding.root.context.resources.getString(R.string.mypagecoupon_message_delete), true) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Preferences.getToken().let {
+                            if (it.accessToken != null) {
+                                val model = deleteCouponAsync("Bearer ${it.accessToken}", item.couponNumber).await()
+                                if (model.resultCode == ResultCode.SUCCESS.flag) {
+                                    this@MyPageCouponAdapter.list.removeAt(adapterPosition)
+                                    notifyItemRemoved(adapterPosition)
+                                }
                             }
                         }
                     }
-                }
+                }.show(manager = (mBinding.root.context as AppCompatActivity).supportFragmentManager, tag = "MyPageCouponAdapter")
             }
             mBinding.executePendingBindings()
         }
 
-        private suspend fun deleteCouponAsync(accessToken: String, couponNumber: String) =  BenefitServer.deleteCouponAsync(accessToken, couponNumber).await()
+        private suspend fun deleteCouponAsync(accessToken: String, couponNumber: String) = BenefitServer.deleteCouponAsync(accessToken, couponNumber).await()
 
     }
 }
