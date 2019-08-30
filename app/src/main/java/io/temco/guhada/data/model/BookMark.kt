@@ -16,10 +16,13 @@ class BookMark : BasePageModel() {
 
     @SerializedName("result")
     var result : String = ""
+
     @SerializedName("data")
     var data : String = ""
+
     @SerializedName("message")
     var message : String = ""
+
     @SerializedName("resultCode")
     var resultCode : Int = 0
 

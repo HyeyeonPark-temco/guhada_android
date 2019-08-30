@@ -248,7 +248,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
-
+        <!-- Coupon -->
+        <activity
+            android:name=".view.activity.CouponDownloadDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoTitleBarDialog"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- get gallery Image file -->
         <activity

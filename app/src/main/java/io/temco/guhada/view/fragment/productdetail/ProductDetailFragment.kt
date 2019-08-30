@@ -3,6 +3,7 @@ package io.temco.guhada.view.fragment.productdetail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
@@ -32,12 +33,14 @@ import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.model.Brand
+import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
+import io.temco.guhada.view.activity.CouponDownloadDialogActivity
 import io.temco.guhada.view.activity.LoginActivity
 import io.temco.guhada.view.activity.PaymentActivity
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity
@@ -98,8 +101,37 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
         mViewModel.notifySellerStoreFollow = { bookMark -> mStoreFragment.setSellerBookMark(bookMark) }
+        mViewModel.mExpectedCouponList.observe(this, Observer {list ->
+            if (list.isEmpty()) {
+                mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.GONE
+            } else {
+                var highestPrice = 0
+                for (coupon in list)
+                    if (coupon.discountPrice > highestPrice)
+                        highestPrice = coupon.discountPrice
+
+                // 정률 할인 쿠폰만 있는 경우
+                var highestRate = 0.0
+                if (highestPrice == 0)
+                    for (coupon in list)
+                        if (coupon.discountRate > highestRate)
+                            highestRate = coupon.discountRate
+
+                mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.VISIBLE
+                mBinding.includeProductdetailContentheader.textviewProductdetailCoupon.text =
+                        if (highestPrice > 0) String.format(context?.getString(R.string.productdetail_coupon_price)!!, highestPrice)
+                        else String.format(context?.getString(R.string.productdetail_coupon_rate)!!, "$highestRate%")
+
+                mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {
+                    val intent = Intent(context, CouponDownloadDialogActivity::class.java)
+                    intent.putParcelableArrayListExtra("couponList", ArrayList(list))
+                    startActivity(intent)
+                }
+            }
+        })
         mViewModel.product.observe(this, Observer<Product> { product ->
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
+            mViewModel.getExpectedCoupon()
             initSummary()
             initContentHeader()
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)

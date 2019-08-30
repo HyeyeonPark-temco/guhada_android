@@ -30,7 +30,7 @@ open class ClaimServer {
          */
         @JvmStatic
         fun getClaims(listener: OnServerListener, productId: Long, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
-            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaims(productId = productId, isMyInquiry = isMyInquiry,
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false).getClaims(productId = productId, isMyInquiry = isMyInquiry,
                     pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}").enqueue(object : Callback<BaseModel<ClaimResponse>> {
                 override fun onResponse(call: Call<BaseModel<ClaimResponse>>, response: Response<BaseModel<ClaimResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())
@@ -47,7 +47,7 @@ open class ClaimServer {
          */
         @JvmStatic
         fun getClaimsForGuest(listener: OnServerListener, productId: Long, pageNo: Int, size: Int, status: String) {
-            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).getClaimsForQuest(productId = productId,
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false).getClaimsForQuest(productId = productId,
                     pageNo = pageNo, size = size, status = status).enqueue(object : Callback<BaseModel<ClaimResponse>> {
                 override fun onResponse(call: Call<BaseModel<ClaimResponse>>, response: Response<BaseModel<ClaimResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())
@@ -254,7 +254,6 @@ open class ClaimServer {
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
 
 
-
         /**
          * 신고하기 유형 가져오기
          */
@@ -265,11 +264,12 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<ReportTypeData>>, response: Response<BaseModel<ReportTypeData>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<ReportTypeData>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -283,49 +283,49 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
-
 
 
         /**
          * 신고하기 작성
          */
         @JvmStatic
-        fun saveReport(listener: OnServerListener, accessToken : String, report: ReportResponse) {
-            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java,true).saveReport(
+        fun saveReport(listener: OnServerListener, accessToken: String, report: ReportResponse) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).saveReport(
                     accessToken = accessToken, report = report).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    if(response.code() in 200..400 && response.body() != null){
+                    if (response.code() in 200..400 && response.body() != null) {
                         listener.onResult(true, response.body())
-                    }else{
-                        try{
-                            var msg  = Message()
-                            var errorBody : String? = response.errorBody()?.string() ?: null
-                            if(!errorBody.isNullOrEmpty()){
+                    } else {
+                        try {
+                            var msg = Message()
+                            var errorBody: String? = response.errorBody()?.string() ?: null
+                            if (!errorBody.isNullOrEmpty()) {
                                 var gson = Gson()
                                 msg = gson.fromJson<Message>(errorBody, Message::class.java)
                             }
-                            var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
-                            if(CustomLog.flag) CustomLog.L("saveReport","onResponse body",error.toString())
+                            var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                            if (CustomLog.flag) CustomLog.L("saveReport", "onResponse body", error.toString())
                             listener.onResult(false, error)
-                        }catch (e : Exception){
-                            if(CustomLog.flag) CustomLog.E(e)
+                        } catch (e: Exception) {
+                            if (CustomLog.flag) CustomLog.E(e)
                             listener.onResult(false, null)
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
-                    if(CustomLog.flag) CustomLog.L("saveReport","onFailure",t.message.toString())
+                    if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
                     listener.onResult(false, t.message)
                 }
             })
         }
-
 
 
     }

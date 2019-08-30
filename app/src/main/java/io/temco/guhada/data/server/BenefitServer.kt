@@ -3,6 +3,8 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.order.OrderItemResponse
+import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.BenefitService
 import kotlinx.coroutines.GlobalScope
@@ -91,5 +93,24 @@ class BenefitServer {
             RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).deletePointAsync(accessToken, pointId)
         }
 
+        /**
+         * 적립 예정 포인트 조회
+         * @author Hyeyeon Park
+         * @since 2019.08.28
+         */
+        fun getExpectedPoint(listener: OnServerListener, accessToken: String, pointRequest: PointRequest) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getExpectedPoint(accessToken = accessToken, pointRequest = pointRequest).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 발급 가능한 쿠폰 조회
+         * @author Hyeyeon Park
+         * @since 2019.08.29
+         */
+        fun getExpectedCoupon(listener: OnServerListener, accessToken: String, item: OrderItemResponse, saveActionType: String, serviceType: String) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true, false).getExpectedCoupon(
+                        accessToken = accessToken, DCategoryId = item.dCategoryId.toLong(), LCategoryId = item.lCategoryId.toLong(), MCategoryId = item.mCategoryId.toLong(), SCategoryId = item.sCategoryId.toLong(),
+                        dealId = item.dealId, sellerId = item.sellerId.toLong(), paymentPrice = item.sellPrice, saveActionType = saveActionType, serviceType = serviceType).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
     }
 }

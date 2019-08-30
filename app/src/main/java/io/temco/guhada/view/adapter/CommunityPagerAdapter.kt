@@ -25,7 +25,7 @@ class CommunityPagerAdapter(private val mFragmentManager: FragmentManager, val t
             CommunityType.MAIN-> frg = CommunitySubMainFragment(tabInfo.get(position))
             CommunityType.POPULAR-> frg = CommunitySubPopularFragment(tabInfo.get(position))
             CommunityType.NOTIFICATION-> frg = CommunitySubNotiFragment(tabInfo.get(position))
-            else ->  frg = CommunitySubListFragment(tabInfo.get(position))
+            else ->  frg = CommunitySubListFragment().apply { info = tabInfo.get(position) }
         }
         frg?.let {customLayoutMap.put(position, it) }
         return frg?: Fragment()
