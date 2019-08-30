@@ -21,3 +21,21 @@ class CreateBbsResponse : Serializable{
         return "CreateBbsResponse(brandId=$brandId, brandName='$brandName', categoryFilterId=$categoryFilterId, categoryId=$categoryId, contents='$contents', dealId=$dealId, dealName='$dealName', delete=$delete, imageList=$imageList, imageUrl='$imageUrl', title='$title', use=$use)"
     }
 }
+
+
+
+class CreateBbsTempResponse : Serializable{
+
+    var brandId : Long? = null
+    var brandName = ""
+    var contents = ""
+    var dealId : Long? = null
+    var dealName = ""
+    var title = ""
+    override fun toString(): String {
+        return "CreateBbsTempResponse(brandId=$brandId, brandName='$brandName', contents='$contents', dealId=$dealId, dealName='$dealName', title='$title')"
+    }
+
+}
+
+

@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
@@ -53,7 +54,7 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
                                     intent.putExtra("currentIndex",0)
                                     intent.putExtra("modifyData",viewModel.communityDetail.value!!.setBbsResponse())
                                     intent.putExtra("bbsId",viewModel.bbsId)
-                                    (context as AppCompatActivity).startActivityForResult(intent, 0)
+                                    (context as AppCompatActivity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL_WRT_MOD)
                                 }else{
                                     CustomMessageDialog(message = "모바일에서 등록된 글만 수정이 가능합니다.",
                                             cancelButtonVisible = true,

@@ -44,11 +44,11 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
             if (type == CommunitySubListFragment.CommunityListType.IMAGE.type) {
                 (mBinding as ItemCommunityPhotoBinding).item = item
                 (mBinding as ItemCommunityPhotoBinding).viewModel = mViewModel
-                checkEllipsized(isTextType = false)
+                //checkEllipsized(isTextType = false)
             } else {
                 (mBinding as ItemCommunityTextBinding).item = item
                 (mBinding as ItemCommunityTextBinding).viewModel = mViewModel
-                checkEllipsized(isTextType = true)
+                //checkEllipsized(isTextType = true)
             }
 
             setSpacing()

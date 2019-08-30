@@ -242,6 +242,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
+        <activity
+            android:name=".view.activity.TempBbsListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <!-- Report  -->
         <activity
             android:name=".view.activity.ReportActivity"

@@ -102,7 +102,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                         showDialog("외부 이미지 링크가 아닌 파일만 등록 가능합니다.",false)
                     }
                 }
-                Flag.RequestCode.COMMUNITY_DETAIL -> {
+                Flag.RequestCode.COMMUNITY_DETAIL_WRT_MOD -> {
                     detailReload = true
                     mViewModel.getDetailData()
                 }

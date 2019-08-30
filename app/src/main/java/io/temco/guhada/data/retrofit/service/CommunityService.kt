@@ -1,14 +1,8 @@
 package io.temco.guhada.data.retrofit.service
 
-import io.temco.guhada.data.model.CommentContent
-import io.temco.guhada.data.model.CommentResponse
-import io.temco.guhada.data.model.Comments
-import io.temco.guhada.data.model.CreateBbsResponse
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.community.CommunityCategory
-import io.temco.guhada.data.model.community.CommunityCategorySub
-import io.temco.guhada.data.model.community.CommunityCategoryfilter
-import io.temco.guhada.data.model.community.CommunityDetail
+import io.temco.guhada.data.model.community.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -76,7 +70,7 @@ interface CommunityService {
 
     // 게시글 임시 작성
     @POST("/bbses/temp")
-    fun postBbsTempData(@Header("Authorization") accessToken: String, @Body response: CreateBbsResponse): Call<BaseModel<Any>>
+    fun postBbsTempData(@Header("Authorization") accessToken: String, @Body response: CreateBbsTempResponse): Call<BaseModel<Any>>
 
 
     // 게시글 임시 수정
@@ -85,7 +79,12 @@ interface CommunityService {
 
 
     // 게시글 임시 삭제
-    @POST("/bbses/temp/{id}")
+    @DELETE("/bbses/temp/{id}")
     fun deleteBbsTempData(@Header("Authorization") accessToken: String,  @Path("id") id : Long): Call<BaseModel<Any>>
+
+
+    // 게시글 임시 삭제
+    @GET("/bbses/temp/all")
+    fun getBbsTempListData(@Header("Authorization") accessToken: String): Call<BaseModel<CommunityTempInfo>>
 
 }

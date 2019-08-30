@@ -197,7 +197,7 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
         if(modifyComment.get()){
             if(!TextUtils.isEmpty(commentRegImage.get())){
                 if(!"http".equals(commentRegImage.get()!!.substring(0,4),true)){
-                    repository.uploadImage(commentRegImage.get()!!,"COMMENT",0, object : OnCallBackListener{
+                    repository.uploadImage(commentRegImage.get()!!,ImageUploadTarget.IMAGE_BBS_COMMENT.name,0, object : OnCallBackListener{
                         override fun callBackListener(resultFlag: Boolean, value: Any) {
                             var data = value as ImageResponse
                             if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "uploadImage postCommentData ",data.toString())
@@ -542,7 +542,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
     fun uploadImage(fileNm : String, cloudResourceList : String, index : Int, listener : OnCallBackListener){
-        GatewayServer.uploadImage(OnServerListener { success, o ->
+        GatewayServer.uploadImagePath2(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var data = (o as BaseModel<*>).data as ImageResponse

@@ -13,12 +13,10 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.CreateBbsResponse
+import io.temco.guhada.data.model.CreateBbsTempResponse
 import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.community.CommunityCategory
-import io.temco.guhada.data.model.community.CommunityCategorySub
-import io.temco.guhada.data.model.community.CommunityCategoryfilter
-import io.temco.guhada.data.model.community.CommunityInfo
+import io.temco.guhada.data.model.community.*
 import io.temco.guhada.data.server.CommunityServer
 import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -31,7 +29,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
     var communityCategoryMap : SortedMap<Int, SortedMap<Int,CommunityCategorySub>> = sortedMapOf()
     var totalCategoryCount = 0
     var bbsId = 0L
-
+    var bbsTempId = 0L
 
     val repository = CreateBbsRepository(this)
     var modifyBbsData = CreateBbsResponse()
@@ -146,8 +144,6 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
 
 
 
-
-
     /**
      * @author park jungho
      *
@@ -256,6 +252,16 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
         repository.uploadImage(file, ImageUploadTarget.IMAGE_BBS.name, index, listener = listener)
     }
 
+
+    fun postTempBbs(response: CreateBbsTempResponse, listener: OnCallBackListener){
+        repository.postTempBbs(response, listener)
+    }
+
+    fun getBbsTempListData(listener: OnCallBackListener){
+        repository.getBbsTempListData(listener)
+    }
+
+
 }
 
 
@@ -304,6 +310,52 @@ class CreateBbsRepository(val viewModel: CreateBbsViewModel){
                     }
                 }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
+
+
+    fun postTempBbs(response: CreateBbsTempResponse, listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = { token ->
+                    if (token != null) {
+                        CommunityServer.postBbsTempData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var value = (it as BaseModel<Any>).data
+                                        if(CustomLog.flag) CustomLog.L("postBbs value",value)
+                                        listener.callBackListener(true, "successTask")
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                                    failedTask = { listener.callBackListener(false, "failedTask") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") }
+                            )
+                        },token, response)
+                    }
+                }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
+    }
+
+
+
+    fun getBbsTempListData(listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = { token ->
+                    if (token != null) {
+                        CommunityServer.getBbsTempListData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var value = (it as BaseModel<CommunityTempInfo>).list
+                                        if(CustomLog.flag) CustomLog.L("getBbsTempListData value",it)
+                                        listener.callBackListener(true, value)
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                                    failedTask = { listener.callBackListener(false, "failedTask") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") }
+                            )
+                        },token)
+                    }
+                }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
+    }
+
 
     fun uploadImage(fileNm : String, imageType : String, index : Int,listener : OnCallBackListener){
         GatewayServer.uploadImagePath2(OnServerListener { success, o ->

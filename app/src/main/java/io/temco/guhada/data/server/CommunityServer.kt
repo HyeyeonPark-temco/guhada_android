@@ -4,17 +4,11 @@ import com.google.gson.Gson
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.data.model.CommentContent
-import io.temco.guhada.data.model.CommentResponse
-import io.temco.guhada.data.model.Comments
-import io.temco.guhada.data.model.CreateBbsResponse
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
-import io.temco.guhada.data.model.community.CommunityCategory
-import io.temco.guhada.data.model.community.CommunityCategorySub
-import io.temco.guhada.data.model.community.CommunityCategoryfilter
-import io.temco.guhada.data.model.community.CommunityDetail
+import io.temco.guhada.data.model.community.*
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.CommunityService
 import retrofit2.Call
@@ -476,7 +470,7 @@ class CommunityServer {
          * userIp : 유져 ip
          */
         @JvmStatic
-        fun postBbsTempData(listener: OnServerListener, accessToken: String, body : CreateBbsResponse) {
+        fun postBbsTempData(listener: OnServerListener, accessToken: String, body : CreateBbsTempResponse) {
             RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
                     .postBbsTempData(accessToken, body).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
@@ -579,6 +573,40 @@ class CommunityServer {
         }
 
 
+        /**
+         * 게시글 임시 삭제
+         *
+         * id : 댓글 id
+         */
+        @JvmStatic
+        fun getBbsTempListData(listener: OnServerListener, accessToken: String) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .getBbsTempListData(accessToken).enqueue(object : Callback<BaseModel<CommunityTempInfo>> {
+                        override fun onResponse(call: Call<BaseModel<CommunityTempInfo>>, response: Response<BaseModel<CommunityTempInfo>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<CommunityTempInfo>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
 
 
     }

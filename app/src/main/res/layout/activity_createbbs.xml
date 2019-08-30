@@ -374,13 +374,22 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:padding="10dp"
-                        android:onClick="@{onClickTempSave}"
+                        android:onClick="@{onClickTempList}"
                         android:src="@drawable/com_btn_storage"/>
 
                     <TextView
+                        android:id="@+id/textview_createbbs_tmplist"
+                        style="@style/TextBold"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
-                        android:background="@drawable/drawable_transparent_image"/>
+                        android:gravity="center"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginRight="9dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_9"
+                        android:background="@drawable/circle_puple"/>
                 </RelativeLayout>
 
             </LinearLayout>
