@@ -22,6 +22,9 @@
         <import type="android.view.View" />
         <import type="android.text.TextUtils" />
         <variable
+            name="item"
+            type="io.temco.guhada.data.model.CreateBbsResponse" />
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.CreateBbsViewModel" />
     </data>
@@ -128,7 +131,7 @@
                 android:onClick="@{onClickWriteButton}"
                 android:textSize="@dimen/text_15"
                 android:layout_marginRight="10dp"
-                android:text="@string/common_register"
+                android:text="@{viewModel.communityDetailModifyData ? @string/common_modify : @string/common_register, default = @string/common_register}"
                 android:textColor="@color/blue_purple"
                 android:background="@color/transparent"/>
 
@@ -236,6 +239,7 @@
                     android:maxLines="3"
                     android:background="@color/common_white"
                     android:hint="@string/report_community_text06"
+                    android:text="@{item.title}"
                     android:textColorHint="@color/pinkish_grey"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_15" />
@@ -261,6 +265,7 @@
                     android:maxLength="1000"
                     android:background="@color/common_white"
                     android:hint="@string/report_community_text07"
+                    android:text="@{item.contents}"
                     android:textColorHint="@color/pinkish_grey"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_15" />
@@ -281,6 +286,7 @@
                     android:maxLines="3"
                     android:background="@color/common_white"
                     android:hint="@string/report_community_text12"
+                    android:text="@{item.brandName}"
                     android:textColorHint="@color/pinkish_grey"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_15" />
@@ -301,6 +307,7 @@
                     android:maxLines="3"
                     android:background="@color/common_white"
                     android:hint="@string/report_community_text13"
+                    android:text="@{item.dealName}"
                     android:textColorHint="@color/pinkish_grey"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_15" />

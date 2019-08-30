@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.Observer
@@ -169,19 +170,23 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
             when(requestCode){
                 Flag.RequestCode.IMAGE_GALLERY -> {
                     var fileNm = data!!.extras.getString("file_name")
-                    var imageValue = ""
-                    if(mViewModel.reportPhotos.value!!.size > mViewModel.selectedImageIndex){
-                        mViewModel.reportPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
-                        imageValue = fileNm
-                        mViewModel.reportPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)
-                        (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).notifyDataSetChanged()
+                    if(!fileNm.substring(0,4).equals("http",true)){
+                        var imageValue = ""
+                        if(mViewModel.reportPhotos.value!!.size > mViewModel.selectedImageIndex){
+                            mViewModel.reportPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
+                            imageValue = fileNm
+                            mViewModel.reportPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)
+                            (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).notifyDataSetChanged()
+                        }else{
+                            imageValue = fileNm
+                            mViewModel.reportPhotos.value!!.add(imageValue)
+                            (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).notifyDataSetChanged()
+                        }
+                        setImageRecyclerViewVisible()
+                        if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","fileNm",fileNm)
                     }else{
-                        imageValue = fileNm
-                        mViewModel.reportPhotos.value!!.add(imageValue)
-                        (mBinding.recyclerviewReportwriteImagelist.adapter as CommonImageAdapter).notifyDataSetChanged()
+                        showDialog("외부 이미지 링크가 아닌 파일만 등록 가능합니다.",false)
                     }
-                    setImageRecyclerViewVisible()
-                    if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","fileNm",fileNm)
                 }
             }
         }else{

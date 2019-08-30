@@ -376,6 +376,29 @@ public class CommonUtil {
     }
 
 
+
+    public static long checkUserId() {
+        Token token = Preferences.getToken();
+        if(token == null) return -1;
+        else{
+            int current = (int) (System.currentTimeMillis() / 1000L);
+            try{
+                Claim exp = new JWT(token.getAccessToken()).getClaim("exp");
+                if (exp.asInt() > current) {
+                    String id =  new JWT(token.getAccessToken()).getClaim("userId").asString();
+                    return Long.parseLong(id);
+                } else {
+                    Preferences.clearToken();
+                    return -1;
+                }
+            }catch (Exception e){
+                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+                Preferences.clearToken();
+                return -1;
+            }
+        }
+    }
+
     public static String getUserIp(){
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {

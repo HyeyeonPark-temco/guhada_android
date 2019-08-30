@@ -38,6 +38,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private lateinit var mCommentFragment : CommentListFragment
     private lateinit var mLoadingIndicatorUtil : LoadingIndicatorUtil
     private lateinit var mHandler: Handler
+
+    private var detailReload = false
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -58,6 +60,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         mBinding.clickListener = this
         mRequestManager = Glide.with(this)
         mHandler = Handler(this.mainLooper)
+        detailReload = false
+
         initIntent()
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mLoadingIndicatorUtil.show()
@@ -91,8 +95,16 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
             when(requestCode){
                 Flag.RequestCode.IMAGE_GALLERY -> {
                     var fileNm = data!!.extras.getString("file_name")
-                    if(!TextUtils.isEmpty(fileNm))  mViewModel.commentRegImage.set(fileNm)
-                    checkRegBtn()
+                    if(!fileNm.substring(0,4).equals("http",true)){
+                        if(!TextUtils.isEmpty(fileNm))  mViewModel.commentRegImage.set(fileNm)
+                        checkRegBtn()
+                    }else{
+                        showDialog("외부 이미지 링크가 아닌 파일만 등록 가능합니다.",false)
+                    }
+                }
+                Flag.RequestCode.COMMUNITY_DETAIL -> {
+                    detailReload = true
+                    mViewModel.getDetailData()
                 }
             }
         }
@@ -154,8 +166,12 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         mViewModel.communityDetail.observe(this, Observer {
             mLoadingIndicatorUtil?.dismiss()
             if(it.use && !it.delete){
-                mViewModel.getCommentList()
-                mBinding.layoutAppbar.setExpanded(true,true)
+                if(detailReload){
+                    mDetailFragment.setDetailView()
+                }else{
+                    mViewModel.getCommentList()
+                    mBinding.layoutAppbar.setExpanded(true,true)
+                }
             }else{
                 if(it.delete){
                     CustomMessageDialog(message = "삭제된 글입니다.",
@@ -175,6 +191,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         mViewModel.getDetailData()
         mBinding.headerTitle = mViewModel.info.communityCategoryName
     }
+
 
     private fun initDetail() {
         mDetailFragment = CommunityDetailContentsFragment(mViewModel)
@@ -199,6 +216,13 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         }else{
             mViewModel.commentBtnVisible.set(false)
         }
+    }
+
+    private fun showDialog(msg: String, isFinish: Boolean) {
+        CustomMessageDialog(message = msg, cancelButtonVisible = false,
+                confirmTask = {
+                    if (isFinish) finish()
+                }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
     }
 
 

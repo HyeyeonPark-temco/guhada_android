@@ -6,7 +6,6 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
-import io.temco.guhada.R
 import io.temco.guhada.common.enum.ImageUploadTarget
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
@@ -16,7 +15,10 @@ import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.CreateBbsResponse
 import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.community.*
+import io.temco.guhada.data.model.community.CommunityCategory
+import io.temco.guhada.data.model.community.CommunityCategorySub
+import io.temco.guhada.data.model.community.CommunityCategoryfilter
+import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.server.CommunityServer
 import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -27,20 +29,31 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
     var communityInfoList : SingleLiveEvent<ArrayList<CommunityInfo>> = SingleLiveEvent()
     var communityInfoMap : SortedMap<Int, CommunityCategory> = sortedMapOf()
     var communityCategoryMap : SortedMap<Int, SortedMap<Int,CommunityCategorySub>> = sortedMapOf()
-    var totalCatergoyCount = 0
+    var totalCategoryCount = 0
+    var bbsId = 0L
+
 
     val repository = CreateBbsRepository(this)
-    var bbsData = CreateBbsResponse()
+    var modifyBbsData = CreateBbsResponse()
 
     var selectInfoIndex = 0
 
     var selectedImageIndex = -1
 
-    var bbsPhotos: MutableLiveData<MutableList<String>> = MutableLiveData()
+    var bbsPhotos: MutableLiveData<MutableList<ImageResponse>> = MutableLiveData()
 
     init {
         bbsPhotos.value = mutableListOf()
     }
+
+    var communityDetailModifyData = ObservableBoolean(true)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.communityDetailModifyData)
+        }
+
 
     var visibleImageCheckLayout = ObservableBoolean(false) // ObservableInt(View.GONE)
         @Bindable
@@ -79,6 +92,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
         }
 
     fun onBbsCategorySelected(position: Int) {
+        if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "onBbsCategorySelected ", "position -----",position, "selectedCategoryIndex",selectedCategoryIndex)
         if (selectedCategoryIndex != position) {
             selectedCategoryIndex = position
             val message = categoryList.get()!![position]
@@ -140,7 +154,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
      * 커뮤니티 탭 정보 가져오기
      */
     fun getCommunityInfo(){
-        totalCatergoyCount = 0
+        totalCategoryCount = 0
         CommunityServer.getCommunityAll(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -175,7 +189,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
                             }
                             getCommunityCategoryFilter(categoryId, info.id)
                         }
-                        totalCatergoyCount += data.size
+                        totalCategoryCount += data.size
                         if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getCommunityCategory successTask ",communityCategoryMap.toString())
                     },
                     dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataNotFoundTask ") },
@@ -194,8 +208,8 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
                     successTask = {
                         var data = (o as BaseModel<*>).list as List<CommunityCategoryfilter>
                         communityCategoryMap.get(communityId)?.get(categoryId)?.categoryFilterList?.addAll(data)
-                        totalCatergoyCount -= 1
-                        if(totalCatergoyCount == 0){
+                        totalCategoryCount -= 1
+                        if(totalCategoryCount == 0){
                             if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "setDetailView getCommunityCategoryFilter 0 ",communityCategoryMap.toString())
                             var list : ArrayList<CommunityInfo> = arrayListOf()
                             var communityKeys : Iterator<Int> = communityCategoryMap.keys.iterator()
@@ -217,7 +231,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
                             }
                             communityInfoList.value = list
                         }else{
-                            if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getCommunityCategoryFilter totalCatergoyCount ",totalCatergoyCount)
+                            if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getCommunityCategoryFilter totalCategoryCount ",totalCategoryCount)
                         }
                     },
                     dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataNotFoundTask ") },
@@ -231,6 +245,11 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
 
     fun postBbs(response: CreateBbsResponse, listener: OnCallBackListener){
         repository.postBbs(response, listener)
+    }
+
+
+    fun modifyBbs(response: CreateBbsResponse, listener: OnCallBackListener){
+        repository.modifyBbs(bbsId, response, listener)
     }
 
     fun imageUpload(file : String, index : Int, listener : OnCallBackListener){
@@ -265,12 +284,33 @@ class CreateBbsRepository(val viewModel: CreateBbsViewModel){
     }
 
 
+    fun modifyBbs(id : Long, response: CreateBbsResponse, listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = { token ->
+                    if (token != null) {
+                        CommunityServer.modifyBbsData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var value = (it as BaseModel<Any>).data
+                                        if(CustomLog.flag) CustomLog.L("postBbs value",value)
+                                        listener.callBackListener(true, "successTask")
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                                    failedTask = { listener.callBackListener(false, "failedTask") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") }
+                            )
+                        },token, id, response)
+                    }
+                }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
+    }
+
     fun uploadImage(fileNm : String, imageType : String, index : Int,listener : OnCallBackListener){
-        GatewayServer.uploadImage(OnServerListener { success, o ->
+        GatewayServer.uploadImagePath2(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var data = (o as BaseModel<*>).data as ImageResponse
-                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "uploadImage failedTask ",data.toString())
+                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "uploadImage successTask ",data.toString())
                         data.index = index
                         listener.callBackListener(true,data)
                     },

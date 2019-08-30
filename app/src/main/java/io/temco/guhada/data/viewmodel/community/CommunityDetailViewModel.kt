@@ -12,18 +12,17 @@ import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ImageUploadTarget
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.community.CommunityDetail
 import io.temco.guhada.data.model.community.CommunityInfo
+import io.temco.guhada.data.model.community.CommunityMobileDetail
 import io.temco.guhada.data.server.CommunityServer
 import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.server.UserServer
@@ -35,7 +34,7 @@ import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel() {
     val repository = CommunityDetailRepository(this)
 
-    var infoList : ArrayList<CommunityInfo> = arrayListOf()
+    var mobileContentsList : ArrayList<CommunityMobileDetail> = arrayListOf()
 
     var userId = -1L
     var bbsId = 0L
@@ -53,6 +52,14 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
         set(value) {
             field = value
             notifyPropertyChanged(BR.userLoginCheck)
+        }
+
+    var communityDetailClientPlatformWeb = ObservableBoolean(false)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.communityDetailClientPlatformWeb)
         }
 
     var modifyComment = ObservableBoolean(false)
@@ -234,6 +241,10 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
                 sendCommentData(commentReplyData, commentRegText.get(), null, listener)
             }
         }
+    }
+
+    fun deleteDetail(listener: OnCallBackListener){
+        repository.deleteDetail(bbsId, listener)
     }
 
     fun postCommentDataClear(){
@@ -507,6 +518,29 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
     }
 
 
+
+
+    fun deleteDetail(id : Long, listener: OnCallBackListener?){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (it != null) {
+                        CommunityServer.deleteBbsData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var value = (it as BaseModel<Any>).data
+                                        if(CustomLog.flag) CustomLog.L("deleteComment successTask", value.toString())
+                                        listener?.callBackListener(true,"")
+                                    },
+                                    dataNotFoundTask = { listener?.callBackListener(false,"dataNotFoundTask") },
+                                    failedTask = { listener?.callBackListener(false,"failedTask") },
+                                    userLikeNotFoundTask = { listener?.callBackListener(false,"userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = { listener?.callBackListener(false,"serverRuntimeErrorTask") }
+                            )
+                        }, accessToken = it, id = id)
+                    }
+                }, invalidTokenTask = { listener?.callBackListener(false,"invalidTokenTask") })
+    }
+
     fun uploadImage(fileNm : String, cloudResourceList : String, index : Int, listener : OnCallBackListener){
         GatewayServer.uploadImage(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -523,7 +557,6 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                     dataIsNull = { listener?.callBackListener(false, "dataIsNull") }
             )
         },cloudResourceList,fileNm)
-
     }
 
 
@@ -555,6 +588,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                 }, invalidTokenTask = { viewModel.bbsBookMark.set(false) })
     }
 
+
     fun saveBookMark(target: String, targetId: Long) {
         ServerCallbackUtil.callWithToken(
                 task = {
@@ -573,6 +607,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                     }, accessToken = it, response = bookMarkResponse.getProductBookMarkRespose())
                 }, invalidTokenTask = { })
     }
+
 
     fun deleteBookMark(target: String, targetId: Long) {
         ServerCallbackUtil.callWithToken(

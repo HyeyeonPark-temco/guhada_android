@@ -70,9 +70,8 @@ interface CommunityService {
 
 
     // 게시글 삭제
-    @POST("/bbses/{id}")
+    @DELETE("/bbses/{id}")
     fun deleteBbsData(@Header("Authorization") accessToken: String,  @Path("id") id : Long): Call<BaseModel<Any>>
-
 
 
     // 게시글 임시 작성

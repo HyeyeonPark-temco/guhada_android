@@ -1,8 +1,9 @@
 package io.temco.guhada.data.model
 
 import com.google.gson.annotations.Expose
+import java.io.Serializable
 
-class ImageResponse {
+class ImageResponse : Serializable{
     var url = ""
     var fileName = ""
     var fileContentType = ""

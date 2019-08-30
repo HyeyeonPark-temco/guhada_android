@@ -1,6 +1,7 @@
 package io.temco.guhada.data.model.community
 
 import io.temco.guhada.data.model.CreateBbsResponse
+import io.temco.guhada.data.model.ImageResponse
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,8 +32,8 @@ class CommunityDetail : Serializable {
     var userId = 0L
     var createUserInfo = CreateUserInfo()
     var userDetail : UserDetail = UserDetail()
-    var bbsImageList : Array<String> = arrayOf()
-
+    var bbsImageList : ArrayList<ImageResponse> = arrayListOf()
+    var guhadaClientPlatform : String = ""
 
     fun setBbsResponse() : CreateBbsResponse {
         var data = CreateBbsResponse()
@@ -45,12 +46,12 @@ class CommunityDetail : Serializable {
         data.dealId = dealId
         data.delete = delete
         data.title = title ?: ""
-
+        data.imageList = bbsImageList
         return data
     }
 
     override fun toString(): String {
-        return "CommunityDetail(id=$id, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, " +
+        return "CommunityDetail(id=$id, guhadaClientPlatform=$guhadaClientPlatform, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, " +
                 "contents=$contents, use=$use, delete=$delete, deletedTimestamp=$deletedTimestamp, like=$like, bookmark=$bookmark, " +
                 "commentCount=$commentCount, hitCount=$hitCount, likeCount=$likeCount, brandId=$brandId, brandName=$brandName, dealId=$dealId, " +
                 "dealName=$dealName, dspCreatedAt=$dspCreatedAt, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId," +

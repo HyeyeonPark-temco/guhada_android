@@ -30,5 +30,10 @@ interface GatewayService {
     fun uploadImagePath(@Part("uploadPath") cloudResourceList: RequestBody, @Part file : MultipartBody.Part): Call<BaseModel<ImageResponse>>
 
 
+    @Multipart
+    @POST("/upload/image/path/{uploadPath}")
+    fun uploadImagePath2(@Path("uploadPath") uploadPath: String, @Part file : MultipartBody.Part): Call<BaseModel<ImageResponse>>
+
+
 
 }

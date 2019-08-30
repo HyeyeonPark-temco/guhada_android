@@ -13,10 +13,12 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.CreateBbsResponse
+import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.viewmodel.CreateBbsViewModel
 import io.temco.guhada.databinding.ActivityCreatebbsBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonRoundImageAdapter
+import io.temco.guhada.view.adapter.CommonRoundImageResponseAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 
 /**
@@ -45,17 +47,51 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         if(intent.extras != null && intent.extras.containsKey("currentIndex")){
             mViewModel.selectInfoIndex = intent.extras.getInt("currentIndex")
         }
+        if(intent.extras != null && intent.extras.containsKey("modifyData")){
+            mViewModel.modifyBbsData = intent.extras.getSerializable("modifyData") as CreateBbsResponse
+            mViewModel.bbsId = intent.extras.getLong("bbsId")
+            mViewModel.communityDetailModifyData.set(true)
+        }else{
+            mViewModel.modifyBbsData = CreateBbsResponse()
+            mViewModel.communityDetailModifyData.set(false)
+        }
+        mBinding.item = mViewModel.modifyBbsData
+
         mViewModel.getCommunityInfo()
 
         if (mBinding.recyclerviewCreatebbsImagelist.adapter == null) {
-            mBinding.recyclerviewCreatebbsImagelist.adapter = CommonRoundImageAdapter().apply { mList = mViewModel.bbsPhotos.value!! }
-            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).mClickSelectItemListener = this@CreateBbsActivity
+            mBinding.recyclerviewCreatebbsImagelist.adapter = CommonRoundImageResponseAdapter().apply { mList = mViewModel.bbsPhotos.value!! }
+            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageResponseAdapter).mClickSelectItemListener = this@CreateBbsActivity
             mBinding.executePendingBindings()
         } else {
-            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).setItems(mViewModel.bbsPhotos.value!!)
+            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageResponseAdapter).setItems(mViewModel.bbsPhotos.value!!)
         }
         mViewModel.communityInfoList.observe(this, Observer {
-            mViewModel.setCategoryList()
+            synchronized(this){
+                mViewModel.setCategoryList()
+                if(mViewModel.communityDetailModifyData.get()){
+                    if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "init ", "mViewModel.modifyBbsData -----",mViewModel.modifyBbsData)
+                    loop@for ((index, value) in mViewModel.communityInfoList.value!!.iterator().withIndex()){
+                        if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "init ", "communityCategoryId -----",value.communityCategoryId.toLong())
+                        if(value.communityCategoryId.toLong() ==  mViewModel.modifyBbsData.categoryId){
+                            mViewModel.onBbsCategorySelected(index)
+                            if(!value.communityCategorySub.categoryFilterList.isNullOrEmpty() &&
+                                    (mViewModel.modifyBbsData.categoryFilterId != null && mViewModel.modifyBbsData.categoryFilterId!! > 0)){
+                                for ((index2, filter) in value.communityCategorySub.categoryFilterList.iterator().withIndex()){
+                                    if(filter.id.toLong() == mViewModel.modifyBbsData.categoryFilterId!!){
+                                        mViewModel.selectedFilterInit = true
+                                        mViewModel.onFilterSelect(index2)
+                                        break@loop
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    mViewModel.bbsPhotos.value!!.addAll(mViewModel.modifyBbsData.imageList)
+                    (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                    setImageRecyclerViewVisible()
+                }
+            }
         })
 
         setClickEvent()
@@ -89,19 +125,25 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
             when (requestCode) {
                 Flag.RequestCode.IMAGE_GALLERY -> {
                     var fileNm = data!!.extras.getString("file_name")
-                    var imageValue = ""
-                    if (mViewModel.bbsPhotos.value!!.size > mViewModel.selectedImageIndex) {
-                        mViewModel.bbsPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
-                        imageValue = fileNm
-                        mViewModel.bbsPhotos.value!!.add(mViewModel.selectedImageIndex, imageValue)
-                        (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
-                    } else {
-                        imageValue = fileNm
-                        mViewModel.bbsPhotos.value!!.add(imageValue)
-                        (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                    if(!fileNm.substring(0,4).equals("http",true)){
+                        var imageValue = ImageResponse()
+                        if (mViewModel.bbsPhotos.value!!.size > mViewModel.selectedImageIndex) {
+                            mViewModel.bbsPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
+                            imageValue.fileSize = -1
+                            imageValue.url = fileNm
+                            mViewModel.bbsPhotos.value!!.add(mViewModel.selectedImageIndex, imageValue)
+                            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                        } else {
+                            imageValue.fileSize = -1
+                            imageValue.url = fileNm
+                            mViewModel.bbsPhotos.value!!.add(imageValue)
+                            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                        }
+                        setImageRecyclerViewVisible()
+                        if (CustomLog.flag) CustomLog.L("ReviewWriteActivity", "fileNm", fileNm)
+                    }else{
+                        showDialog("외부 이미지 링크가 아닌 파일만 등록 가능합니다.",false, null)
                     }
-                    setImageRecyclerViewVisible()
-                    if (CustomLog.flag) CustomLog.L("ReviewWriteActivity", "fileNm", fileNm)
                 }
             }
         } else {
@@ -164,13 +206,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
 
         mBinding.setOnClickWriteButton {
             mLoadingIndicatorUtil.show()
-            mViewModel.postBbs(setResponseData(), object : OnCallBackListener{
-                override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    if(CustomLog.flag) CustomLog.L("postBbs callBackListener","resultFlag",resultFlag,"value",value)
-                    mLoadingIndicatorUtil.dismiss()
-                }
-            })
-
+            postDetailData()
         }
 
         mBinding.setOnClickTempList{
@@ -182,6 +218,76 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         }
 
     }
+
+    private fun postDetailData(){
+        if(mViewModel.bbsPhotos.value.isNullOrEmpty()){
+            if(mViewModel.communityDetailModifyData.get()) modifyBbs(setResponseData())
+            else createBbs(setResponseData())
+        }else{
+            var response = setResponseData()
+            for ((index,file) in mViewModel.bbsPhotos.value!!.iterator().withIndex()){
+                if(file.fileSize == -1L && !"http".equals(file.url.substring(0,4), true)){
+                    mViewModel.imageUpload(file.url,index, object : OnCallBackListener{
+                        override fun callBackListener(resultFlag: Boolean, value: Any) {
+                            if(resultFlag){
+                                response.imageList.add(value as ImageResponse)
+                                if(response.imageList.size == mViewModel.bbsPhotos.value!!.size){
+                                    if(mViewModel.communityDetailModifyData.get()) modifyBbs(response)
+                                    else createBbs(response)
+                                }
+                            }else{
+                                mLoadingIndicatorUtil.dismiss()
+                                showDialog("이미지 등록중 오류가 발생되었습니다.",false, null)
+                            }
+                        }
+                    })
+                }else{
+                    response.imageList.add(file)
+                    if(response.imageList.size == mViewModel.bbsPhotos.value!!.size){
+                        if(mViewModel.communityDetailModifyData.get()) modifyBbs(response)
+                        else createBbs(response)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun createBbs(res : CreateBbsResponse){
+        mViewModel.postBbs(res, object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag) CustomLog.L("postBbs imageUpload callBackListener","resultFlag",resultFlag,"value",value)
+                mLoadingIndicatorUtil.dismiss()
+                if(resultFlag){
+                    showDialog(getFinishMsg(),true, Activity.RESULT_OK)
+                }else{
+                    showDialog("등록중 오류가 발생되었습니다.",false, null)
+                }
+            }
+        })
+    }
+
+
+    private fun modifyBbs(res : CreateBbsResponse){
+        mViewModel.modifyBbs(res, object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag) CustomLog.L("modifyBbs callBackListener","resultFlag",resultFlag,"value",value)
+                mLoadingIndicatorUtil.dismiss()
+                if(resultFlag){
+                    showDialog(getFinishMsg(),true, Activity.RESULT_OK)
+                }else{
+                    showDialog("등록중 오류가 발생되었습니다.",false, null)
+                }
+            }
+        })
+    }
+
+
+    private fun getFinishMsg() : String =
+        when(mViewModel.communityDetailModifyData.get()){
+            true -> "글이 수정되었습니다."
+            false -> "글이 등록되었습니다."
+        }
+
 
     private fun setResponseData() : CreateBbsResponse{
         var data = CreateBbsResponse()
@@ -201,71 +307,11 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         return data
     }
 
-/*
-    private fun sendReportData() {
-        if (mBinding.edittextReportTitle.text.isNullOrEmpty()) {
-            showDialog("제목을 입력해 주세요.", false)
-            return
-        }
-        if (mBinding.edittextReportText.text.isNullOrEmpty()) {
-            showDialog("내용을 입력해 주세요.", false)
-            return
-        }
-        if (!mViewModel.checkTermReport.get()) {
-            showDialog(resources.getString(R.string.user_size_update_check_desc), false)
-            return
-        }
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
-        var response = ReportResponse()
-        response.content = mBinding.edittextReportText.text.toString()
-        response.title = mBinding.edittextReportTitle.text.toString()
-        when (mViewModel.reportType) {
-            0 -> response.targetId = mViewModel.productData!!.productId
-            1 -> response.targetId = mViewModel.userData!!.userDetail.id
-            2 -> response.targetId = mViewModel.communityData!!.id
-            3 -> response.targetId = mViewModel.commentData!!.id
-        }
-        response.reporter = mViewModel.writeUserInfo.value!!.userDetail.id
-        response.reportType = mViewModel.reportTypeList.value!![mViewModel.selectReportTypeIndex].name
-        response.reportTarget = mViewModel.reportTarget.name
 
-        mLoadingIndicatorUtil.show()
-        if (mViewModel.reportPhotos.value.isNullOrEmpty()) {
-            if (CustomLog.flag) CustomLog.L("setOnClickWriteButton isNullOrEmpty", "response", response)
-            mViewModel.saveReport(response, object : OnCallBackListener {
-                override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    mLoadingIndicatorUtil.dismiss()
-                    if (resultFlag) showDialog("신고하기를 완료하였습니다.", true)
-                    else showDialog("신고하기를 실패하였습니다.\n잠시 후 다시 시도해 주세요." + value.toString(), false)
-                }
-            })
-        } else {
-            for ((index, file) in mViewModel.reportPhotos.value!!.iterator().withIndex()) {
-                if (CustomLog.flag) CustomLog.L("setOnClickWriteButton", "file", file)
-                mViewModel.imageUpload(file, index, object : OnCallBackListener {
-                    override fun callBackListener(resultFlag: Boolean, value: Any) {
-                        if (CustomLog.flag) CustomLog.L("setOnClickWriteButton callBackListener", "resultFlag", resultFlag, "value", value)
-                        var data = value as ImageResponse
-                        response.imageUrls.add(data.url)
-                        if (response.imageUrls.size == mViewModel.reportPhotos.value!!.size) {
-                            if (CustomLog.flag) CustomLog.L("setOnClickWriteButton isNullOrEmpty not", "response", response)
-                            mViewModel.saveReport(response, object : OnCallBackListener {
-                                override fun callBackListener(resultFlag: Boolean, value: Any) {
-                                    mLoadingIndicatorUtil.dismiss()
-                                    if (resultFlag) showDialog("신고하기를 완료하였습니다.", true)
-                                    else showDialog("신고하기를 실패하였습니다.\n잠시 후 다시 시도해 주세요." + value.toString(), false)
-                                }
-                            })
-                        }
-                    }
-                })
-            }
-        }
-    }*/
-
-    private fun showDialog(msg: String, isFinish: Boolean) {
+    private fun showDialog(msg: String, isFinish: Boolean, resultCode : Int?) {
         CustomMessageDialog(message = msg, cancelButtonVisible = false,
                 confirmTask = {
+                    if(resultCode!=null) setResult(resultCode)
                     if (isFinish) finish()
                 }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
     }

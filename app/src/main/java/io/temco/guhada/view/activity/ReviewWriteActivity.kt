@@ -21,6 +21,7 @@ import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.viewmodel.ReviewWriteViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ReviewWriteImageAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import java.util.*
 
 
@@ -238,21 +239,25 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             when(requestCode){
                 Flag.RequestCode.IMAGE_GALLERY -> {
                     var fileNm = data!!.extras.getString("file_name")
-                    var imageValue = ReviewPhotos()
-                    if(mViewModel.mReviewEditPhotos.value!!.size > mViewModel.selectedImageIndex){
-                        mViewModel.mReviewEditPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
-                        imageValue.id = -1
-                        imageValue.reviewPhotoUrl = fileNm
-                        mViewModel.mReviewEditPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)
-                        (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
+                    if(!fileNm.substring(0,4).equals("http",true)){
+                        var imageValue = ReviewPhotos()
+                        if(mViewModel.mReviewEditPhotos.value!!.size > mViewModel.selectedImageIndex){
+                            mViewModel.mReviewEditPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
+                            imageValue.id = -1
+                            imageValue.reviewPhotoUrl = fileNm
+                            mViewModel.mReviewEditPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)
+                            (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
+                        }else{
+                            imageValue.id = -1
+                            imageValue.reviewPhotoUrl = fileNm
+                            mViewModel.mReviewEditPhotos.value!!.add(imageValue)
+                            (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
+                        }
+                        setImageRecyclerViewVisible()
+                        if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","fileNm",fileNm)
                     }else{
-                        imageValue.id = -1
-                        imageValue.reviewPhotoUrl = fileNm
-                        mViewModel.mReviewEditPhotos.value!!.add(imageValue)
-                        (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
+                        showDialog("외부 이미지 링크가 아닌 파일만 등록 가능합니다.",false)
                     }
-                    setImageRecyclerViewVisible()
-                    if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","fileNm",fileNm)
                 }
                 Flag.RequestCode.POINT_RESULT_DIALOG ->{
                     setResult(Activity.RESULT_OK)
@@ -390,6 +395,13 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         1  -> "JUST_FIT"
         2  -> "LARGE"
         else -> "JUST_FIT"
+    }
+
+    private fun showDialog(msg: String, isFinish: Boolean) {
+        CustomMessageDialog(message = msg, cancelButtonVisible = false,
+                confirmTask = {
+                    if (isFinish) finish()
+                }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
     }
 
 

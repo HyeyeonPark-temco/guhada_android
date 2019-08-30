@@ -1,6 +1,8 @@
 package io.temco.guhada.data.model
 
-class CreateBbsResponse {
+import java.io.Serializable
+
+class CreateBbsResponse : Serializable{
 
     var brandId : Long? = null
     var brandName = ""
