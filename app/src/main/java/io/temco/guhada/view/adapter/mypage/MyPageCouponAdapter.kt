@@ -8,11 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.ResultCode
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.databinding.ItemCouponBinding
-import io.temco.guhada.view.adapter.cart.CartProductAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 import kotlinx.coroutines.CoroutineScope

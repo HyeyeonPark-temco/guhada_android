@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -16,7 +15,6 @@
         android:background="@color/common_white"
         android:orientation="vertical"
         android:paddingStart="20dp"
-        android:paddingTop="30dp"
         android:paddingEnd="20dp"
         android:paddingBottom="30dp">
 
@@ -24,7 +22,8 @@
             android:id="@+id/textView15"
             style="@style/ProductDetailTitleBlackTextStyle"
             android:layout_width="wrap_content"
-            android:layout_height="19dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:text="@string/productdetail_info"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:text="@string/productdetail_report"
             android:textColor="@color/greyish_brown_two"
             android:textSize="@dimen/text_12"
@@ -58,28 +58,28 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="1dp"
-                    android:textSize="@dimen/text_13"
                     android:layout_weight="1"
                     android:background="@color/pale_grey"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/productdetail_info_status" />
+                    android:text="@string/productdetail_info_status"
+                    android:textSize="@dimen/text_12" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:textSize="@dimen/text_13"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text='@{viewModel.product.productStatus == "NEW" ? @string/productdetail_info_status_new : @string/productdetail_info_status_used}' />
+                    android:text='@{viewModel.product.productStatus == "NEW" ? @string/productdetail_info_status_new : @string/productdetail_info_status_used}'
+                    android:textSize="@dimen/text_12" />
             </LinearLayout>
 
             <LinearLayout
@@ -91,28 +91,28 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="1dp"
                     android:layout_weight="1"
                     android:background="@color/pale_grey"
-                    android:textSize="@dimen/text_13"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/productdetail_info_number" />
+                    android:text="@string/productdetail_info_number"
+                    android:textSize="@dimen/text_12" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:textSize="@dimen/text_13"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@{viewModel.product.modelNumber}" />
+                    android:text="@{viewModel.product.modelNumber}"
+                    android:textSize="@dimen/text_12" />
             </LinearLayout>
 
             <LinearLayout
@@ -123,17 +123,17 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="1dp"
                     android:layout_weight="1"
-                    android:textSize="@dimen/text_13"
                     android:background="@color/pale_grey"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/productdetail_info_origin" />
+                    android:text="@string/productdetail_info_origin"
+                    android:textSize="@dimen/text_12" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -141,10 +141,10 @@
                     android:layout_weight="2"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
-                    android:textSize="@dimen/text_13"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@{viewModel.product.originValue2}" />
+                    android:text="@{viewModel.product.originValue2}"
+                    android:textSize="@dimen/text_12" />
             </LinearLayout>
         </LinearLayout>
 
@@ -156,19 +156,20 @@
             app:layout_constraintBottom_toTopOf="@+id/recyclerview_productdetail_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-        <androidx.recyclerview.widget.RecyclerView
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
 
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_productdetail_info"
             android:layout_width="match_parent"
-            app:productInfo="@{viewModel.product.filters}"
+
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
-
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            app:productInfo="@{viewModel.product.filters}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
