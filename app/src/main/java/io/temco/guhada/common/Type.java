@@ -59,7 +59,8 @@ public class Type {
         USER_SIZE_UPDATE,
         REPORT_WRITE,
         CONFIRM_PURCHASE,
-        COUPON_DOWNLOAD
+        COUPON_DOWNLOAD,
+        SELLER_INFO
     }
 
     // Main

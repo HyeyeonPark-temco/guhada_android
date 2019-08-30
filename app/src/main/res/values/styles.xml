@@ -456,4 +456,21 @@
         <item name="android:textColor">@color/warm_grey_two</item>
         <item name="android:textSize">@dimen/text_12</item>
     </style>
+
+    <style name="SellerStoreMenuTextStyle" parent="TextMedium">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:paddingStart">30dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
 </resources>

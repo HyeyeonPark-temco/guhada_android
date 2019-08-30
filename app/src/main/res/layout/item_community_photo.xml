@@ -167,7 +167,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:maxLines="1"
             android:text="@{item.getDateDiff()}"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
