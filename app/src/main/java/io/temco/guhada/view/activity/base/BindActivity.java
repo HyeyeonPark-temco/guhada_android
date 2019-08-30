@@ -52,9 +52,9 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"onCreate");
         super.onCreate(savedInstanceState);
         try{
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"onCreate");
             mBinding = DataBindingUtil.setContentView(this, getLayoutId());
             // Init
             if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) {

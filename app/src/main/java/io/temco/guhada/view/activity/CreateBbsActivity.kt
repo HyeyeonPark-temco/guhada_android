@@ -88,7 +88,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                         }
                     }
                     mViewModel.bbsPhotos.value!!.addAll(mViewModel.modifyBbsData.imageList)
-                    (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                    (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageResponseAdapter).notifyDataSetChanged()
                     setImageRecyclerViewVisible()
                 }
             }
@@ -105,8 +105,8 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
     override fun clickSelectItemListener(type: Int, index: Int, value: Any) {
         when (type) {
             0 -> {
-                (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).mList.removeAt(index)
-                (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageResponseAdapter).mList.removeAt(index)
+                (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageResponseAdapter).notifyDataSetChanged()
                 setImageRecyclerViewVisible()
             }
             1 -> {
@@ -132,12 +132,12 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                             imageValue.fileSize = -1
                             imageValue.url = fileNm
                             mViewModel.bbsPhotos.value!!.add(mViewModel.selectedImageIndex, imageValue)
-                            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageResponseAdapter).notifyDataSetChanged()
                         } else {
                             imageValue.fileSize = -1
                             imageValue.url = fileNm
                             mViewModel.bbsPhotos.value!!.add(imageValue)
-                            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageAdapter).notifyDataSetChanged()
+                            (mBinding.recyclerviewCreatebbsImagelist.adapter as CommonRoundImageResponseAdapter).notifyDataSetChanged()
                         }
                         setImageRecyclerViewVisible()
                         if (CustomLog.flag) CustomLog.L("ReviewWriteActivity", "fileNm", fileNm)

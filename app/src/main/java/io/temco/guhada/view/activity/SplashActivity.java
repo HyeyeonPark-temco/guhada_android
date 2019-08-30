@@ -10,6 +10,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.server.ProductServer;
@@ -39,6 +40,7 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
 
     @Override
     protected void init() {
+        if(CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"init");
         BaseApplication.getInstance().setMoveToMain(null);
         getCategories();
     }
