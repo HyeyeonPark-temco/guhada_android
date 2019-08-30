@@ -1117,6 +1117,12 @@
     <string name="sellerstore_satisfaction_good">만족 %d명</string>
     <string name="sellerstore_satisfaction_normal">보통 %d명</string>
     <string name="sellerstore_satisfaction_bad">불만족 %d명</string>
+    <string name="sellerstoree_more1">셀러 스토어</string>
+    <string name="sellerstoree_more2">셀러정보</string>
+    <string name="sellerstoree_more3">상품리뷰</string>
+    <string name="sellerstoree_more4">게시글</string>
+    <string name="sellerstoree_more5">댓글</string>
+    <string name="sellerstoree_more6">신고하기</string>
 
     <string name="common_temp">임시</string>
     <string name="common_register">등록</string>

@@ -28,6 +28,7 @@ import io.temco.guhada.view.activity.PaymentResultActivity;
 import io.temco.guhada.view.activity.PaymentWebViewActivity;
 import io.temco.guhada.view.activity.ProductDetailActivity;
 import io.temco.guhada.view.activity.SearchZipWebViewActivity;
+import io.temco.guhada.view.activity.SellerInfoActivity;
 import io.temco.guhada.view.activity.SplashActivity;
 import io.temco.guhada.view.activity.SuccessCancelOrderActivity;
 import io.temco.guhada.view.activity.TempLogoutActivity;
@@ -138,6 +139,9 @@ public class TestListActivity extends AppCompatActivity {
                 case 19:
                     startActivity(SuccessCancelOrderActivity.class);
                     break;
+                case 20:
+                    startActivity(SellerInfoActivity.class);
+                    break;
             }
         });
         list.setAdapter(adapter);
@@ -167,9 +171,10 @@ public class TestListActivity extends AppCompatActivity {
         list.add("Test Read NFC "); // 14
         list.add("Test Write NFC "); // 15
         list.add("SEARCH_ZIP_WEBVIEW"); // 16
-        list.add("Cart"); // 17
+        list.add("CART"); // 17
         list.add("DELIVERY_DETAIL"); // 18
-        list.add("SUCCESS_CANCEL_ORDER"); // 18
+        list.add("SUCCESS_CANCEL_ORDER"); // 19
+        list.add("SELELR_INFO"); // 20
         return list;
     }
 

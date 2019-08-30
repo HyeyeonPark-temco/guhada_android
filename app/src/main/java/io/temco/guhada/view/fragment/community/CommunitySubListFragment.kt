@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
@@ -69,10 +68,7 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         mViewModel = CommunitySubListViewModel()
         mViewModel.mCommunityInfo = info
         mViewModel.mCommunityResponse.observe(this, Observer {
-            if (it.bbs.isEmpty()) {
-                mViewModel.mEmptyViewVisible = ObservableBoolean(true)
-                mViewModel.notifyPropertyChanged(BR.mEmptyViewVisible)
-            } else {
+            if(it.bbs.isNotEmpty()){
                 initList(it.bbs)
                 mBinding.linearlayoutCommunitylistMore.visibility = if (it.bbs.size < it.totalCount) {
                     View.VISIBLE
@@ -80,6 +76,10 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
                     View.GONE
                 }
             }
+
+            mBinding.recyclerviewCommunityist.visibility = if (it.bbs.isEmpty()) View.GONE else View.VISIBLE
+            mViewModel.mEmptyViewVisible = ObservableBoolean(it.bbs.isEmpty())
+            mViewModel.notifyPropertyChanged(BR.mEmptyViewVisible)
         })
         mViewModel.redirectDetailTask = {
             val intent = Intent(context, CommunityDetailActivity::class.java)
@@ -101,12 +101,10 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
-                if (selectedCategory.id.toLong() != mViewModel.mFilterId) {
-                    mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
-                    mViewModel.mPage = 0
-                    mViewModel.mFilterId = selectedCategory.id.toLong()
-                    mViewModel.getCommunityList()
-                }
+                mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
+                mViewModel.mPage = 0
+                mViewModel.mFilterId = selectedCategory.id.toLong()
+                mViewModel.getCommunityList()
             }
         }
 
