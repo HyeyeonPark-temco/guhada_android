@@ -1106,5 +1106,13 @@
         <item>게시글/댓글 신고</item>
     </string-array>
 
-
+    <!-- SELLER STORE -->
+    <string name="sellerstoree_follower">팔로워</string>
+    <string name="sellerstoree_soldproductcount">판매된 상품</string>
+    <string name="sellerstoree_satisfaction">구매자 만족도</string>
+    <string name="sellerstoree_offlinestore">오프라인 스토어</string>
+    <string name="sellerstoree_sellerinfo">셀러 정보</string>
+    <string name="sellerstore_satisfaction_good">만족 %d명</string>
+    <string name="sellerstore_satisfaction_normal">보통 %d명</string>
+    <string name="sellerstore_satisfaction_bad">불만족 %d명</string>
 </resources>
