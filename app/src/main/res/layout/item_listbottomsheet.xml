@@ -6,9 +6,11 @@
         <variable
             name="text"
             type="String" />
+
     </data>
 
     <LinearLayout
+        android:id="@+id/linearlayout_listbottomsheet_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
