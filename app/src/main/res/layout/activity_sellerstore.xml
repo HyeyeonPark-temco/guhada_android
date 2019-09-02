@@ -416,14 +416,16 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
+                            android:id="@+id/textview_sellerstore_filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="말머리선택"
+                            android:text="신상품순"
                             android:textColor="@color/black_four"
                             android:textSize="@dimen/text_13" />
 
                         <ImageView
                             android:layout_width="wrap_content"
+                            android:layout_marginStart="7dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/list_btn_lineup" />

@@ -4,6 +4,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ActivitySellerstoreBinding
@@ -16,10 +17,11 @@ import io.temco.guhada.view.fragment.ListBottomSheetFragment
  * @author Hyeyeon Park
  * @since 2019.08.30
  */
-class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>(), ListBottomSheetFragment.ListBottomSheetListener {
+class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
     private lateinit var mViewModel: SellerInfoViewModel
+    private lateinit var mFilterFragment: ListBottomSheetFragment
 
-    private lateinit var mListBottomSheetFragment: ListBottomSheetFragment
+    private lateinit var mMenuFragment: ListBottomSheetFragment
 
     override fun getBaseTag(): String = SellerInfoActivity::class.java.simpleName
 
@@ -30,20 +32,84 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>(), ListBotto
     override fun init() {
         initViewModel()
 
-        mListBottomSheetFragment = ListBottomSheetFragment(this).apply {
-            mTitle = this@SellerInfoActivity.getString(R.string.common_more)
-            mList = mutableListOf(
-                    this@SellerInfoActivity.getString(R.string.sellerstore_menu1),
-                    this@SellerInfoActivity.getString(R.string.sellerstore_menu2),
-                    this@SellerInfoActivity.getString(R.string.sellerstore_menu3),
-                    this@SellerInfoActivity.getString(R.string.sellerstore_menu4),
-                    this@SellerInfoActivity.getString(R.string.sellerstore_menu5),
-                    this@SellerInfoActivity.getString(R.string.sellerstore_menu6))
-            mListener = this@SellerInfoActivity
-        }
-
         mBinding.imagebuttonSellerstoreMore.setOnClickListener {
-            mListBottomSheetFragment.show(supportFragmentManager, baseTag)
+            if (!::mMenuFragment.isInitialized) {
+                mMenuFragment = ListBottomSheetFragment(this).apply {
+                    mTitle = this@SellerInfoActivity.getString(R.string.common_more)
+                    mList = mutableListOf(
+                            this@SellerInfoActivity.getString(R.string.sellerstore_menu1),
+                            this@SellerInfoActivity.getString(R.string.sellerstore_menu2),
+                            this@SellerInfoActivity.getString(R.string.sellerstore_menu3),
+                            this@SellerInfoActivity.getString(R.string.sellerstore_menu4),
+                            this@SellerInfoActivity.getString(R.string.sellerstore_menu5),
+                            this@SellerInfoActivity.getString(R.string.sellerstore_menu6))
+                    mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                        override fun onItemClick(position: Int) {
+                            when (position) {
+                                SellerInfoViewModel.SellerInfoMore.SELLER_STORE.pos -> {
+                                }
+                                SellerInfoViewModel.SellerInfoMore.SELLER_INFO.pos -> {
+                                }
+                                SellerInfoViewModel.SellerInfoMore.REVIEW.pos -> {
+                                    ToastUtil.showMessage(getString(R.string.common_message_ing))
+                                }
+                                SellerInfoViewModel.SellerInfoMore.BOARD.pos -> {
+                                    ToastUtil.showMessage(getString(R.string.common_message_ing))
+                                }
+                                SellerInfoViewModel.SellerInfoMore.COMMENT.pos -> {
+                                    ToastUtil.showMessage(getString(R.string.common_message_ing))
+                                }
+                                SellerInfoViewModel.SellerInfoMore.REPORT.pos -> {
+                                    ToastUtil.showMessage(getString(R.string.common_message_ing))
+                                }
+                            }
+                        }
+
+                        override fun onClickClose() {
+                            this@apply.dismiss()
+                        }
+                    }
+                }
+            }
+            mMenuFragment.show(supportFragmentManager, baseTag)
+        }
+        mBinding.linearlayoutSellerstoreFilter.setOnClickListener {
+            if (!::mFilterFragment.isInitialized) {
+                mFilterFragment = ListBottomSheetFragment(this@SellerInfoActivity).apply {
+                    mList = mutableListOf(ProductOrderType.DATE.label, ProductOrderType.SCORE.label, ProductOrderType.PRICE_ASC.label, ProductOrderType.PRICE_DESC.label)
+                    mTitle = this@SellerInfoActivity.getString(R.string.product_order_title)
+                    mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                        override fun onItemClick(position: Int) {
+                            when (position) {
+                                ProductOrderType.DATE.position -> {
+                                    mViewModel.mOrder = ProductOrderType.DATE.type
+                                    mBinding.textviewSellerstoreFilter.text = ProductOrderType.DATE.label
+                                }
+                                ProductOrderType.SCORE.position -> {
+                                    mViewModel.mOrder = ProductOrderType.SCORE.type
+                                    mBinding.textviewSellerstoreFilter.text = ProductOrderType.SCORE.label
+                                }
+                                ProductOrderType.PRICE_ASC.position -> {
+                                    mViewModel.mOrder = ProductOrderType.PRICE_ASC.type
+                                    mBinding.textviewSellerstoreFilter.text = ProductOrderType.PRICE_ASC.label
+                                }
+                                ProductOrderType.PRICE_DESC.position -> {
+                                    mViewModel.mOrder = ProductOrderType.PRICE_DESC.type
+                                    mBinding.textviewSellerstoreFilter.text = ProductOrderType.PRICE_DESC.label
+                                }
+                            }
+
+                            mViewModel.mPage = 1
+                            mViewModel.getSellerProductList()
+                        }
+
+                        override fun onClickClose() {
+                            this@apply.dismiss()
+                        }
+                    }
+                }
+            }
+            mFilterFragment.show(supportFragmentManager, baseTag)
         }
 
         mViewModel.getSellerInfo()
@@ -84,33 +150,6 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>(), ListBotto
                     mBinding.linearlayoutSellerstoreMore.visibility = View.GONE
             }
         })
-    }
-
-
-    // ListBottomSheetListener
-    override fun onItemClick(position: Int) {
-        when (position) {
-            SellerInfoViewModel.SellerInfoMore.SELLER_STORE.pos -> {
-            }
-            SellerInfoViewModel.SellerInfoMore.SELLER_INFO.pos -> {
-            }
-            SellerInfoViewModel.SellerInfoMore.REVIEW.pos -> {
-                ToastUtil.showMessage(getString(R.string.common_message_ing))
-            }
-            SellerInfoViewModel.SellerInfoMore.BOARD.pos -> {
-                ToastUtil.showMessage(getString(R.string.common_message_ing))
-            }
-            SellerInfoViewModel.SellerInfoMore.COMMENT.pos -> {
-                ToastUtil.showMessage(getString(R.string.common_message_ing))
-            }
-            SellerInfoViewModel.SellerInfoMore.REPORT.pos -> {
-                ToastUtil.showMessage(getString(R.string.common_message_ing))
-            }
-        }
-    }
-
-    override fun onClickClose() {
-        mListBottomSheetFragment.dismiss()
     }
 }
 

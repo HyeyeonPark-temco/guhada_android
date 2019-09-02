@@ -19,6 +19,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class SellerInfoViewModel : BaseObservableViewModel() {
     var mSellerId = 0L
+    var mOrder = ProductOrderType.DATE.type
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mSellerBookMark: MutableLiveData<BookMark> = MutableLiveData()
     var mSellerSatisfaction: MutableLiveData<SellerSatisfaction> = MutableLiveData()
@@ -91,7 +92,7 @@ class SellerInfoViewModel : BaseObservableViewModel() {
             ServerCallbackUtil.executeByResultCode(success, o, successTask = {
                 this.mSellerProductList.postValue(it.data as ProductList)
             })
-        }, sellerId = mSellerId, order = ProductOrderType.DATE.type, page = mPage, unitPerPage = UNIT_PER_PAGE)
+        }, sellerId = mSellerId, order = mOrder, page = mPage, unitPerPage = UNIT_PER_PAGE)
     }
 
     fun onClickFollow() {
@@ -111,7 +112,7 @@ class SellerInfoViewModel : BaseObservableViewModel() {
         })
     }
 
-    fun onClickMore(){
+    fun onClickMore() {
         mPage++
         getSellerProductList()
     }
