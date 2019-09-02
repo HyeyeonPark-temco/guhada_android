@@ -9,10 +9,7 @@ import io.temco.guhada.data.model.search.AutoComplete
 import io.temco.guhada.data.model.search.Popular
 import io.temco.guhada.data.model.seller.Criteria
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface SearchService {
 
@@ -62,5 +59,15 @@ interface SearchService {
      * @since 2019.08.21
      */
     @POST("/ps/bbs/search")
-    fun getCommunityList(@Body criteria: CommunityCriteria, @Query("order") order: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int) : Call<BaseModel<CommunityBoard.CommunityResponse>>
+    fun getCommunityList(@Body criteria: CommunityCriteria, @Query("order") order: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<CommunityBoard.CommunityResponse>>
+
+    /**
+     * 셀러별 상품 목록 조회 API
+     * @see io.temco.guhada.common.enum.ProductOrderType
+     *
+     * @author Hyeyeon Park
+     * @since 2019.09.02
+     */
+    @GET("/ps/search/seller/{id}")
+    fun getSellerProductList(@Path("id") sellerId: Long, @Query("order") order: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int) : Call<BaseModel<ProductList>>
 }

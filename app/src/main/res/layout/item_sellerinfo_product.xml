@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="deal"
+            type="io.temco.guhada.data.model.Deal" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_sellerinfo_store"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="40dp"
+        android:layout_height="wrap_content">
+
+        <io.temco.guhada.common.SquareImageView
+            android:id="@+id/imageview_sellerinfo_store_product"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@color/common_white"
+            android:scaleType="centerInside"
+            app:imageUrl="@{deal.productImage.url}"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/textview_sellerinfo_store_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_sellerinfo_store_product">
+
+            <TextView
+                style="@style/TextBoldSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{deal.brandName}"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/textview_sellerinfo_store_season"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
+                android:text="@{deal.productSeason}"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textview_sellerinfo_store_product"
+            style="@style/TextRegularSingleLine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@{deal.productName}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_12"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_sellerinfo_store_brand" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_sellerinfo_store_product">
+
+            <TextView
+                android:id="@+id/textview_sellerinfo_store_discountprice"
+                style="@style/TextBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:text="@{deal.discountPrice.intValue() == 0.0 ? @string/common_price_format(deal.sellPrice.intValue()) : @string/common_price_format(deal.discountPrice.intValue())}"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_15" />
+
+            <TextView
+                android:id="@+id/textview_sellerinfo_store_sellprice"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="9dp"
+                android:text="@{@string/common_price_format(deal.sellPrice.intValue())}"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_11"
+                android:visibility="@{deal.discountPrice.intValue() == 0 ? View.GONE : View.VISIBLE}" />
+
+            <TextView
+                android:id="@+id/textview_sellerinfo_store_discountrate"
+                style="@style/TextBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="9dp"
+                android:text="@{@string/product_price_sale_per(deal.discountRate)}"
+                android:textColor="@color/common_blue_purple"
+                android:textSize="@dimen/text_15"
+                android:visibility="@{deal.discountRate == 0 ? View.GONE : View.VISIBLE}" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

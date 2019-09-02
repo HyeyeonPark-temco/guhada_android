@@ -183,9 +183,9 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_orderinfo)
                         task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
                     })
-                    buttons.add(DeliveryButton().apply {
-                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_ordermodify)
-                    })
+//                    buttons.add(DeliveryButton().apply {
+//                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_ordermodify)
+//                    })
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_ordercancel)
                         task = View.OnClickListener { requestCancelOrderTask(item) }

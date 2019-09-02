@@ -213,6 +213,14 @@ class SearchServer {
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getCommunityList(criteria = criteria, order = order, page = page, unitPerPage = unitPerPage).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
+        /**
+         * 셀러별 상품 목록 조회
+         */
+        @JvmStatic
+        fun getSellerProductList(listener: OnServerListener, sellerId: Long, order: String, page: Int, unitPerPage: Int) =
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getSellerProductList(sellerId = sellerId, order = order, page = page, unitPerPage = unitPerPage).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
     }
 
 }

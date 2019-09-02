@@ -6,7 +6,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.seller.Criteria
-import io.temco.guhada.data.viewmodel.ProductDetailStoreViewModel
+import io.temco.guhada.data.viewmodel.productdetail.ProductDetailStoreViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.FragmentProductdetailStoreBinding
 import io.temco.guhada.view.adapter.ProductDetailStoreAdapter

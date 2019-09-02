@@ -28,7 +28,7 @@ object ToastUtil : FrameLayout(BaseApplication.getInstance().applicationContext)
         }
 
         mBinding.message = message
-        mBinding.executePendingBindings()
+//        mBinding.executePendingBindings()
         Toast(context)
                 .apply {
                     duration = Toast.LENGTH_SHORT

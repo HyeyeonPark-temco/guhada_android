@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailStoreViewModel
-import io.temco.guhada.databinding.ItemProductdetailStoreBinding
+import io.temco.guhada.databinding.ItemSellerinfoProductBinding
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
@@ -18,54 +18,43 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  * @author Hyeyeon Park
  * @since 2019.08.13
  */
-class ProductDetailStoreAdapter : RecyclerView.Adapter<ProductDetailStoreAdapter.Holder>() {
+class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.Holder>() {
     private val RIGHT_MARGIN = 20
-    private val LAST_RIGHT_MARGIN = 40
 
     lateinit var mViewModel: ProductDetailStoreViewModel
-    var mList: List<Deal> = arrayListOf()
-    var mIsGridLayout = false
-    var mSpanCount = 3
+    var mList: MutableList<Deal> = mutableListOf()
+    var mSpanCount = 2
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
-            Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_productdetail_store, parent, false))
+            Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_sellerinfo_product, parent, false))
 
     override fun getItemCount(): Int = mList.size
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(mList[position])
     }
 
-    fun setItems(list: List<Deal>) {
+    fun setItems(list: MutableList<Deal>) {
         this.mList = list
         notifyDataSetChanged()
     }
 
-    inner class Holder(binding: ItemProductdetailStoreBinding) : BaseViewHolder<ItemProductdetailStoreBinding>(binding.root) {
+    inner class Holder(binding: ItemSellerinfoProductBinding) : BaseViewHolder<ItemSellerinfoProductBinding>(binding.root) {
         fun bind(deal: Deal) {
             setSpacing()
             mBinding.deal = deal
-            mBinding.constraintlayoutProductdetailStore.setOnClickListener {
+            mBinding.constraintlayoutSellerinfoStore.setOnClickListener {
                 val dealId = deal.dealId.toLong()
-                this@ProductDetailStoreAdapter.mViewModel.getDetail(dealId = dealId, redirectProductDetailActivity = { this.redirectProductDetailActivity(dealId) })
+                this@SellerInfoProductAdapter.mViewModel.getDetail(dealId = dealId, redirectProductDetailActivity = { this.redirectProductDetailActivity(dealId) })
             }
             mBinding.executePendingBindings()
         }
 
         private fun setSpacing() {
-            if (mIsGridLayout) {
-                (mBinding.constraintlayoutProductdetailStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                    rightMargin = if ((adapterPosition + 1) % mSpanCount == 0) 0
-                    else RIGHT_MARGIN
-                }.let {
-                    mBinding.constraintlayoutProductdetailStore.layoutParams = it
-                }
-            } else {
-                (mBinding.constraintlayoutProductdetailStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                    rightMargin = if (adapterPosition < mList.size - 1) RIGHT_MARGIN
-                    else LAST_RIGHT_MARGIN
-                }.let {
-                    mBinding.constraintlayoutProductdetailStore.layoutParams = it
-                }
+            (mBinding.constraintlayoutSellerinfoStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                rightMargin = if ((adapterPosition + 1) % mSpanCount == 0) 0
+                else RIGHT_MARGIN
+            }.let {
+                mBinding.constraintlayoutSellerinfoStore.layoutParams = it
             }
         }
 
