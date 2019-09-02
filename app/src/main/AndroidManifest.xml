@@ -281,7 +281,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <!-- Seller Info -->
-        <activityㅇ
+        <activity
             android:name=".view.activity.SellerInfoActivity"
             android:screenOrientation="portrait" />
 
