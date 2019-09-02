@@ -1,18 +1,15 @@
 package io.temco.guhada.view.activity
 
+import android.view.View
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.enum.BookMarkTarget
-import io.temco.guhada.common.listener.OnAddCategoryListener
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ActivitySellerstoreBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.SellerInfoProductAdapter
 import io.temco.guhada.view.fragment.ListBottomSheetFragment
-import io.temco.guhada.view.fragment.product.ProductListFragment
 
 /**
  * 셀러 스토어(셀러 회원 정보 화면) Activity
@@ -79,9 +76,12 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>(), ListBotto
         mViewModel.mSellerProductList.observe(this@SellerInfoActivity, Observer {
             if (mViewModel.mPage == 1) // first
                 mBinding.recyclerivewSellerstoreProductlist.adapter = SellerInfoProductAdapter().apply { mList = it.deals }
-            else{
+            else { // more
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).mList.addAll(it.deals)
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).notifyDataSetChanged()
+
+                if ((mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).mList.size == it.countOfDeals)
+                    mBinding.linearlayoutSellerstoreMore.visibility = View.GONE
             }
         })
     }
