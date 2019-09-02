@@ -322,6 +322,15 @@ interface UserService {
      * @author Hyeyeon Park
      */
     @GET("/users/bookmarks/{target}/{targetId}/count")
+    fun getBookMarkCount(@Path("target") target: String, @Path("targetId") targetId: Long): Call<BaseModel<BookMarkCountResponse>>
+
+    /**
+     * BookMark Count 조회 API (비동기)
+     * @see io.temco.guhada.common.enum.BookMarkTarget
+     * @since 2019.08.27
+     * @author Hyeyeon Park
+     */
+    @GET("/users/bookmarks/{target}/{targetId}/count")
     fun getBookMarkCountAsync(@Path("target") target: String, @Path("targetId") targetId: Long): Deferred<BaseModel<BookMarkCountResponse>>
 
 

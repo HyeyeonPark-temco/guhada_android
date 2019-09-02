@@ -318,6 +318,14 @@ class UserServer {
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerFollower>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
+         * 북마크 카운트 조회
+         */
+        @JvmStatic
+        fun getBookMarkCount(listener: OnServerListener, target: String, targetId: Long) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).getBookMarkCount(target = target, targetId = targetId).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<BookMarkCountResponse>>
+                { response -> listener.onResult(true, response.body()) })
+
+        /**
          * 북마크 카운트 조회 (비동기)
          */
         @JvmStatic

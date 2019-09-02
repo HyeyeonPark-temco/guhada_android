@@ -46,6 +46,7 @@
     <string name="common_reset">초기화</string>
     <string name="common_color_white">#ffffff</string>
 
+    <string name="common_format_people">%,2d명</string>
     <string name="common_unit_person">명</string>
     <string name="common_unit_board">건</string>
     <string name="common_unit_price">원</string>
@@ -1109,20 +1110,20 @@
     </string-array>
 
     <!-- SELLER STORE -->
-    <string name="sellerstoree_follower">팔로워</string>
-    <string name="sellerstoree_soldproductcount">판매된 상품</string>
-    <string name="sellerstoree_satisfaction">구매자 만족도</string>
-    <string name="sellerstoree_offlinestore">오프라인 스토어</string>
-    <string name="sellerstoree_sellerinfo">셀러 정보</string>
+    <string name="sellerstore_follower">팔로워</string>
+    <string name="sellerstore_soldproductcount">판매된 상품</string>
+    <string name="sellerstore_satisfaction">구매자 만족도</string>
+    <string name="sellerstore_offlinestore">오프라인 스토어</string>
+    <string name="sellerstore_sellerinfo">셀러 정보</string>
     <string name="sellerstore_satisfaction_good">만족 %d명</string>
     <string name="sellerstore_satisfaction_normal">보통 %d명</string>
     <string name="sellerstore_satisfaction_bad">불만족 %d명</string>
-    <string name="sellerstoree_more1">셀러 스토어</string>
-    <string name="sellerstoree_more2">셀러정보</string>
-    <string name="sellerstoree_more3">상품리뷰</string>
-    <string name="sellerstoree_more4">게시글</string>
-    <string name="sellerstoree_more5">댓글</string>
-    <string name="sellerstoree_more6">신고하기</string>
+    <string name="sellerstore_menu1">셀러 스토어</string>
+    <string name="sellerstore_menu2">셀러정보</string>
+    <string name="sellerstore_menu3">상품리뷰</string>
+    <string name="sellerstore_menu4">게시글</string>
+    <string name="sellerstore_menu5">댓글</string>
+    <string name="sellerstore_menu6">신고하기</string>
 
     <string name="common_temp">임시</string>
     <string name="common_register">등록</string>

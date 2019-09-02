@@ -6,7 +6,6 @@ import java.io.Serializable
 
 class Seller : Serializable {
     var id: Long = 0
-    var profileImageUrl = ""
     var managerName = ""
     var managerEmail = ""
     var managerMobile = ""
@@ -19,6 +18,7 @@ class Seller : Serializable {
 
     var storeName = "" // [19.08.27] 미사용 데이터
     var storeIntroduction = ""
+
     var claimTelephone = ""
     var createdAt = ""
     var updatedAt: String? = ""
