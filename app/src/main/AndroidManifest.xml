@@ -215,7 +215,7 @@
         <activity
             android:name=".view.activity.RequestExchangeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"  />
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".view.activity.SuccessRequestExchangeActivity"
@@ -225,7 +225,7 @@
         <activity
             android:name=".view.activity.RequestRefundActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"  />
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".view.activity.SuccessRequestRefundActivity"
@@ -279,6 +279,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Seller Info -->
+        <activityㅇ
+            android:name=".view.activity.SellerInfoActivity"
+            android:screenOrientation="portrait" />
 
         <!-- Kakao -->
         <activity
@@ -356,7 +361,7 @@
 
         <meta-data
             android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
-            android:value="false"/>
+            android:value="false" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
