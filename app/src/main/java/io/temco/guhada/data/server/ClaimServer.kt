@@ -230,9 +230,9 @@ open class ClaimServer {
          * 신청서 수정 화면 정보
          */
         @JvmStatic
-        fun getUpdateClaimForm(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+        fun getUpdateClaimForm(listener: OnServerListener, accessToken: String, orderClaimId: Long) =
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
-                        .getUpdateClaimForm(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
+                        .getUpdateClaimForm(accessToken = accessToken, orderClaimId = orderClaimId).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
 
         /**

@@ -20,6 +20,7 @@ class ExchangeRequest : Serializable {
     var invoiceNo = 0L
     var orderProdGroupId = 0L
     var quantity = 1
+    var orderClaimId = 0L
     var exchangeShippingAddress: UserShipping = UserShipping()
 
     fun getShippingPaymentDescription(): String {

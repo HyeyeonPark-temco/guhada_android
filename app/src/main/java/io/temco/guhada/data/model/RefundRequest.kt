@@ -19,6 +19,7 @@ class RefundRequest : Serializable {
     var quantity = 1
     var shippingCompanyCode = ""
     var shippingCompanyName = ""
+    var orderClaimId = 0L
 
     @SerializedName("returnReasonDetail")
     var refundReasonDetail = ""

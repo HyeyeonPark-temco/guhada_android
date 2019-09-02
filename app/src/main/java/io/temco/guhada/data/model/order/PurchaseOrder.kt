@@ -35,9 +35,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var shipCompleteDate = "" // 2019-05-10
     var shipCompleteTimestamp: String? = ""
     var shipPrice = 0
-
     var statusMessage = "" // 주문 완료 메세지
-
     var reviewId: Int? = null // 리뷰 작성 여부 판단
 
     // 취소교환반품 사유
@@ -53,6 +51,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var orderStatusText = ""
 
     // 신청서 수정 정보
+    var orderClaimId: Long = 0L
     var receiverAddress = ""
     var receiverAddressDetail = ""
     var receiverAddressName = ""
@@ -66,7 +65,6 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var buyerEmail = ""
     var buyerName = ""
     var buyerPhone = ""
-
 
     // 취소 신청 정보
     var cancelReason : String?= ""

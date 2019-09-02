@@ -30,9 +30,10 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     var mShippingMessageList: MutableLiveData<MutableList<ShippingMessage>> = MutableLiveData(mutableListOf())
     var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
     var mSuccessRequestExchangeTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
-    var mSuccessUpdateExchangeTask : () -> Unit = {}
+    var mSuccessUpdateExchangeTask: () -> Unit = {}
     var mShippingPayment: Int = ShippingPaymentType.BOX.pos
     var mOrderProdGroupId = 0L
+    var mOrderClaimId = 0L
 
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
@@ -55,26 +56,34 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
         })
     }
 
-    fun getUpdateClaimForm(orderProdGroupId: Long) {
+    fun getUpdateClaimForm(orderClaimId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.getUpdateClaimForm(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             if (it.data != null) {
-                                val purchaseOrder =  (it.data as PurchaseOrder)
-                                purchaseOrder.orderProdGroupId = mOrderProdGroupId
+                                val purchaseOrder = (it.data as PurchaseOrder)
+                                purchaseOrder.orderClaimId = mOrderClaimId
+                                // purchaseOrder.orderProdGroupId = mOrderProdGroupId
                                 this.mPurchaseOrder.postValue(purchaseOrder)
 
                                 mExchangeRequest.claimShippingPriceType = purchaseOrder.exchangeShippingPriceType
 
                                 // shipping address
-                                mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName?:""
-                                mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.exchangeBuyerRecipientMobile?:""
-                                mExchangeRequest.exchangeShippingAddress.zip = purchaseOrder.exchangeBuyerZip?:""
-                                mExchangeRequest.exchangeShippingAddress.address = purchaseOrder.exchangeBuyerAddress?:""
-                                mExchangeRequest.exchangeShippingAddress.roadAddress = purchaseOrder.exchangeBuyerRoadAddress?:""
-                                mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.exchangeBuyerDetailAddress?:""
-                                mExchangeRequest.exchangeShippingAddress.shippingMessage = purchaseOrder.exchangeBuyerShippingMessage?:""
+                                mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName
+                                        ?: ""
+                                mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.exchangeBuyerRecipientMobile
+                                        ?: ""
+                                mExchangeRequest.exchangeShippingAddress.zip = purchaseOrder.exchangeBuyerZip
+                                        ?: ""
+                                mExchangeRequest.exchangeShippingAddress.address = purchaseOrder.exchangeBuyerAddress
+                                        ?: ""
+                                mExchangeRequest.exchangeShippingAddress.roadAddress = purchaseOrder.exchangeBuyerRoadAddress
+                                        ?: ""
+                                mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.exchangeBuyerDetailAddress
+                                        ?: ""
+                                mExchangeRequest.exchangeShippingAddress.shippingMessage = purchaseOrder.exchangeBuyerShippingMessage
+                                        ?: ""
 
                                 val list = purchaseOrder.shippingMessageList
                                 list.add(ShippingMessage().apply {
@@ -83,7 +92,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                                 mShippingMessageList.postValue(list)
                             }
                         })
-            }, accessToken = token, orderProdGroupId = orderProdGroupId)
+            }, accessToken = token, orderClaimId = orderClaimId)
         })
     }
 

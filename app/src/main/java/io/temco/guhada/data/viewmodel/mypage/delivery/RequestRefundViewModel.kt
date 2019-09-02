@@ -27,6 +27,7 @@ class RequestRefundViewModel : BaseObservableViewModel() {
     var mSuccessUpdateRefundTask: () -> Unit = {}
     var mCause = ""
     var mOrderProdGroupId = 0L
+    var mOrderClaimId = 0L
 
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
@@ -42,19 +43,19 @@ class RequestRefundViewModel : BaseObservableViewModel() {
         })
     }
 
-    fun getUpdateClaimForm(orderProdGroupId: Long) {
+    fun getUpdateClaimForm(orderClaimId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.getUpdateClaimForm(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             if (it.data != null) {
                                 val purchaseOrder = (it.data as PurchaseOrder)
-                                purchaseOrder.orderProdGroupId = mOrderProdGroupId
+                                purchaseOrder.orderClaimId = mOrderClaimId
                                 mRefundRequest.claimShippingPriceType = purchaseOrder.returnShippingPriceType
                                 this@RequestRefundViewModel.mPurchaseOrder.postValue(purchaseOrder)
                             }
                         })
-            }, accessToken = token, orderProdGroupId = orderProdGroupId)
+            }, accessToken = token, orderClaimId = orderClaimId)
         })
     }
 

@@ -101,8 +101,8 @@ interface ClaimService {
     /**
      * 주문교환반품 신청서 수정 화면 정보 API
      */
-    @GET("/order-claim/claim-update-form/{orderProdGroupId}")
-    fun getUpdateClaimForm(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<PurchaseOrder>>
+    @GET("/order-claim/claim-update-form/{orderClaimId}")
+    fun getUpdateClaimForm(@Header("Authorization") accessToken: String, @Path("orderClaimId") orderClaimId: Long) : Call<BaseModel<PurchaseOrder>>
 
     /**
      * 반품 철회 API

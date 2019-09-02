@@ -49,10 +49,10 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mViewModel = RequestRefundViewModel()
 
         // 신청서 수정
-        intent.getLongExtra("modifyOrderProdGroupId", 0).let {
+        intent.getLongExtra("orderClaimId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
-                mViewModel.mRefundRequest.orderProdGroupId = it
-                mViewModel.mOrderProdGroupId = it
+                mViewModel.mRefundRequest.orderClaimId = it
+                mViewModel.mOrderClaimId = it
                 mViewModel.getUpdateClaimForm(it)
                 initButton(true)
             }

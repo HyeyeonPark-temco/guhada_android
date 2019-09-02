@@ -47,10 +47,10 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mViewModel = RequestExchangeViewModel()
 
         // 신청서 수정
-        intent.getLongExtra("modifyOrderProdGroupId", 0).let {
+        intent.getLongExtra("orderClaimId", 0).let {
             if (it > 0 && ::mViewModel.isInitialized) {
-                mViewModel.mExchangeRequest.orderProdGroupId = it
-                mViewModel.mOrderProdGroupId = it
+                mViewModel.mExchangeRequest.orderClaimId = it
+                mViewModel.mOrderClaimId = it
                 mViewModel.getUpdateClaimForm(it)
                 initButton(true)
             }

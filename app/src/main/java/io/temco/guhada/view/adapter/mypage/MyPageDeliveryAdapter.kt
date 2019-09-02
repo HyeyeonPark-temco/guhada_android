@@ -264,7 +264,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify)
                         task = View.OnClickListener {
                             val intent = Intent(mBinding.root.context, RequestRefundActivity::class.java)
-                            intent.putExtra("modifyOrderProdGroupId", item.orderProdGroupId)
+                            intent.putExtra("orderClaimId", item.orderClaimId)
                             mBinding.root.context.startActivity(intent)
                         }
                     })
@@ -285,7 +285,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_formmodify)
                         task = View.OnClickListener {
                             val intent = Intent(mBinding.root.context, RequestExchangeActivity::class.java)
-                            intent.putExtra("modifyOrderProdGroupId", item.orderProdGroupId)
+                            intent.putExtra("orderClaimId", item.orderClaimId)
                             mBinding.root.context.startActivity(intent)
                         }
                     })
