@@ -40,10 +40,7 @@ import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
-import io.temco.guhada.view.activity.CouponDownloadDialogActivity
-import io.temco.guhada.view.activity.LoginActivity
-import io.temco.guhada.view.activity.PaymentActivity
-import io.temco.guhada.view.activity.ProductFragmentDetailActivity
+import io.temco.guhada.view.activity.*
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
@@ -196,6 +193,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initSummary() {
         mViewModel.getSellerSatisfaction()
         mBinding.includeProductdetailContentsummary.viewModel = mViewModel
+        mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener {
+            val intent = Intent(this@ProductDetailFragment.context, SellerInfoActivity::class.java)
+            intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
+            startActivity(intent)
+        }
     }
 
     private fun initContentHeader() {

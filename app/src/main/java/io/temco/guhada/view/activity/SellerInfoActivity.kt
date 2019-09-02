@@ -6,6 +6,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ActivitySellerstoreBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -124,7 +125,7 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
 
     private fun initViewModel() {
         mViewModel = SellerInfoViewModel().apply {
-            intent.getLongExtra("sellerId", 251).let {
+            intent.getLongExtra("sellerId", -1).let {
                 if (it > 0)
                     this.mSellerId = it
                 else {
@@ -133,7 +134,10 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
                 }
             }
         }
-        mViewModel.mSeller.observe(this@SellerInfoActivity, Observer { mBinding.seller = it })
+        mViewModel.mSeller.observe(this@SellerInfoActivity, Observer {
+            mBinding.seller = it
+            initHeader(it)
+        })
         mViewModel.mSellerBookMark.observe(this@SellerInfoActivity, Observer { mBinding.bookMark = it })
         mViewModel.mSellerSatisfaction.observe(this@SellerInfoActivity, Observer { mBinding.satisfaction = it })
         mViewModel.mSellerFollowerCount.observe(this@SellerInfoActivity, Observer {
@@ -150,6 +154,11 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
                     mBinding.linearlayoutSellerstoreMore.visibility = View.GONE
             }
         })
+    }
+
+    private fun initHeader(seller: Seller) {
+        mBinding.includeSellerstoreHeader.title = seller.user.nickname
+        mBinding.includeSellerstoreHeader.setOnClickBack { finish() }
     }
 }
 

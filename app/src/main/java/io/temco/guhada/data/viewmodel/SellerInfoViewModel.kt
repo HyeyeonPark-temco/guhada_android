@@ -4,6 +4,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
+import io.temco.guhada.BR
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.listener.OnServerListener
@@ -115,6 +116,11 @@ class SellerInfoViewModel : BaseObservableViewModel() {
     fun onClickMore() {
         mPage++
         getSellerProductList()
+    }
+
+    fun onClickTab(pos: Int) {
+        mSelectedTabPos = ObservableInt(pos)
+        notifyPropertyChanged(BR.mSelectedTabPos)
     }
 
 }

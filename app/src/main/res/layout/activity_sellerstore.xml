@@ -366,21 +366,25 @@
                 android:layout_marginEnd="20dp">
 
                 <Button
+                    android:id="@+id/button_sellerstore_productlist"
                     style="@style/TextRegularSingleLine"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
                     android:background="@{viewModel.mSelectedTabPos == 0 ? @drawable/border_all_purple_top : @drawable/border_all_whitesix_top, default =  @drawable/border_all_purple_top }"
+                    android:onClick="@{()->viewModel.onClickTab(0)}"
                     android:text="@string/sellerstore_menu1"
                     android:textColor="@{viewModel.mSelectedTabPos == 0 ? @color/common_blue_purple : @color/greyish_brown_two, default = @color/common_blue_purple }"
                     android:textSize="@dimen/text_15" />
 
                 <Button
+                    android:id="@+id/button_sellerstore_sellerinfo"
                     style="@style/TextRegularSingleLine"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="1"
                     android:background="@{viewModel.mSelectedTabPos == 1 ? @drawable/border_all_purple_top : @drawable/border_all_whitesix_top, default =  @drawable/border_all_whitesix_top}"
+                    android:onClick="@{()->viewModel.onClickTab(1)}"
                     android:text="@string/sellerstore_menu2"
                     android:textColor="@{viewModel.mSelectedTabPos == 1 ? @color/common_blue_purple : @color/greyish_brown_two, default =  @color/greyish_brown_two}"
                     android:textSize="@dimen/text_15" />
@@ -425,9 +429,9 @@
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_marginStart="7dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginStart="7dp"
                             android:src="@drawable/list_btn_lineup" />
                     </LinearLayout>
 

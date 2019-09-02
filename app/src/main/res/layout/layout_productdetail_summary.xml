@@ -130,6 +130,7 @@
             android:paddingBottom="17dp">
 
             <ImageView
+                android:id="@+id/imageview_productdetail_sellerprofile"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
