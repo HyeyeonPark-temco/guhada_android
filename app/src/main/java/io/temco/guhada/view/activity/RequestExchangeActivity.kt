@@ -120,7 +120,11 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             mViewModel.mExchangeRequest.exchangeReason = purchaseOrder.exchangeReason
             mBinding.includeRequestexchangeCause.defaultMessage = getReason(purchaseOrder.exchangeReason)
             mBinding.includeRequestexchangeCause.textviewRequestorderstatusCause.text = getReason(purchaseOrder.exchangeReason)
+        } else {
+            mBinding.includeRequestexchangeCause.textviewRequestorderstatusCause.text = getString(R.string.requestorderstatus_exchange_cause)
+            mBinding.includeRequestexchangeCause.defaultMessage = getString(R.string.requestorderstatus_exchange_cause)
         }
+
         mBinding.includeRequestexchangeCause.hintMessage = resources.getString(R.string.requestorderstatus_exchange_hint_cause)
         mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.setText(purchaseOrder.exchangeReasonDetail)
         mBinding.includeRequestexchangeCause.quantityTitle = resources.getString(R.string.requestorderstatus_exchange_quantity)
@@ -182,11 +186,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         })
         mViewModel.mSellerAddress.observe(this, Observer {
             mBinding.includeRequestexchangeSellershipping.address = "[${it.zip}] ${it.roadAddress} ${it.detailAddress}"
-
-            // 교환상품 배송지
-            mBinding.includeRequestexchangeExchangeshipping.name = it.name
-            mBinding.includeRequestexchangeExchangeshipping.address = "[${it.zip}] ${it.roadAddress} ${it.detailAddress}"
-            mBinding.includeRequestexchangeExchangeshipping.defaultAddress = it.defaultAddress
         })
 
         mViewModel.getSellerInfo()
@@ -210,8 +209,6 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 mBinding.includeRequestexchangeCollection.textviewRequestorderstatusWarning.visibility = View.GONE
                 mBinding.includeRequestexchangeCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.exchangePickingInvoiceNo)
             }
-        } else {
-            mBinding.includeRequestexchangeCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
         }
 
         // LISTENER
@@ -283,6 +280,14 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeShippingpayment.textviewRequestorderstatusShippingpaymentDescription1.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_exchange_shipping_description1))
         mBinding.includeRequestexchangeShippingpayment.textviewRequestorderstatusShippingpaymentDescription2.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_exchange_shipping_description2))
 
+        for (reason in purchaseOrder.exchangeReasonList ?: mutableListOf()) {
+            val returnReason = purchaseOrder.exchangeReason
+            if (returnReason == reason.code && !reason.isFeeCharged) {
+                mBinding.includeRequestexchangeShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
+                break
+            }
+        }
+
         // [신청서 수정] 배송지 결제 방법
         if (purchaseOrder.exchangeShippingPriceType != null && purchaseOrder.exchangeShippingPriceType != ShippingPaymentType.NONE.type) {
             when (purchaseOrder.exchangeShippingPriceType) {
@@ -335,6 +340,11 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 }
             }
         }
+
+        // 교환상품 배송지
+        mBinding.includeRequestexchangeExchangeshipping.name = "교환 배송지 명 추가 예정"
+        mBinding.includeRequestexchangeExchangeshipping.address = "[${purchaseOrder.exchangeBuyerZip}] ${purchaseOrder.exchangeBuyerRoadAddress} ${purchaseOrder.exchangeBuyerDetailAddress}"
+        mBinding.includeRequestexchangeExchangeshipping.defaultAddress = false
 
         // 배송지 변경
         mBinding.includeRequestexchangeExchangeshipping.setChangeShippingListener {
@@ -389,7 +399,8 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             data?.getSerializableExtra("shippingAddress").let {
                 if (it != null) {
                     val shippingAddress = it as UserShipping
-                    mViewModel.mExchangeRequest.exchangeShippingAddress = shippingAddress
+                    val shippingMessage = mViewModel.mExchangeRequest.exchangeShippingAddress.shippingMessage
+                    mViewModel.mExchangeRequest.exchangeShippingAddress = shippingAddress.apply { this.shippingMessage = shippingMessage }
                     mBinding.includeRequestexchangeExchangeshipping.address = "[${shippingAddress.zip}] ${shippingAddress.roadAddress} ${shippingAddress.detailAddress}"
                     mBinding.includeRequestexchangeExchangeshipping.defaultAddress = shippingAddress.defaultAddress
                     mBinding.includeRequestexchangeExchangeshipping.name = shippingAddress.shippingName

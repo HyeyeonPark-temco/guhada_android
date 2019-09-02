@@ -199,8 +199,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mBinding.includeRequestrefundCollection.textviewRequestorderstatusWarning.visibility = View.GONE
                 mBinding.includeRequestrefundCollection.edittextRequestorderstatusShippingid.setText(purchaseOrder.returnPickingInvoiceNo)
             }
-        } else {
-            mBinding.includeRequestrefundCollection.radiobuttonRequestorderstatusWayFalse.isChecked = true
         }
 
         // Listener
@@ -272,9 +270,16 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundShippingpayment.textviewRequestorderstatusShippingpaymentDescription2.text = Html.fromHtml(resources.getString(R.string.requestorderstatus_refund_shipping_description2))
         mBinding.includeRequestrefundShippingpayment.isRefund = true
 
+        for (reason in purchaseOrder.returnReasonList ?: mutableListOf()) {
+            val returnReason = purchaseOrder.returnReason
+            if (returnReason == reason.code && !reason.isFeeCharged) {
+                mBinding.includeRequestrefundShippingpayment.framelayoutRequestorderstatusShippingpaymentContainer.visibility = View.GONE
+                break
+            }
+        }
+
         // [신청서 수정] 배송지 결제 방법
         setShippingPayment(purchaseOrder)
-
         mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 mViewModel.mShippingPayment = ShippingPaymentType.EXCLUDE_REFUND_PRICE.pos
@@ -299,6 +304,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment2.isChecked = false
             }
         }
+
     }
 
     private fun initButton(isModify: Boolean) {
@@ -317,7 +323,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         }
     }
 
-    private fun setShippingPayment(purchaseOrder: PurchaseOrder){
+    private fun setShippingPayment(purchaseOrder: PurchaseOrder) {
         if (purchaseOrder.returnShippingPriceType != null && purchaseOrder.returnShippingPriceType != ShippingPaymentType.NONE.type) {
             when (purchaseOrder.returnShippingPriceType) {
                 ShippingPaymentType.EXCLUDE_REFUND_PRICE.type -> mBinding.includeRequestrefundShippingpayment.radiobuttonRequestorderstatusShippingpayment1.isChecked = true
