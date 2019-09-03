@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
@@ -58,7 +59,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
             mViewModel.modifyBbsData = CreateBbsResponse()
             mViewModel.communityDetailModifyData.set(false)
         }
-
+        mViewModel.bbsTempId = -1
         mViewModel.getCommunityInfo()
         mViewModel.communityInfoList.observe(this, Observer {
             setCategoryData()
@@ -119,10 +120,15 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                     if(data!=null && data!!.extras!!.containsKey("tempData")!!){
                         var value = data!!.extras!!.getSerializable("tempData") as CreateBbsResponse
                         mViewModel.bbsTempId = data!!.extras!!.getLong("tempDataId")!!
-                        mViewModel.selectedCategoryIndex = 0
-                        mViewModel.selectedFilterIndex = 0
+                        /*mViewModel.selectedCategoryIndex = -1
+                        mViewModel.selectedFilterIndex = -1
+                        mViewModel.selectedFilterInit = true*/
                         mViewModel.modifyBbsData = value
                         mViewModel.bbsPhotos.value?.clear()
+                        if(!value.imageList.isNullOrEmpty()){
+                            mViewModel.bbsPhotos.value?.addAll(value.imageList)
+                            setImageRecyclerViewVisible()
+                        }
                         setView(true)
                     }
                 }
@@ -170,7 +176,6 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         mBinding.item = mViewModel.modifyBbsData
         if(reLoad) {
             mBinding.recyclerviewCreatebbsImagelist.adapter = null
-            setCategoryData()
         }
 
         if (mBinding.recyclerviewCreatebbsImagelist.adapter == null) {
@@ -238,8 +243,30 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         }
 
         mBinding.setOnClickWriteButton {
-            mLoadingIndicatorUtil.show()
-            postDetailData()
+            if(mViewModel.filterListVisible.get() && mViewModel.selectedFilterIndex == -1){
+                CustomMessageDialog(message = "말머리를 선택해주세요", cancelButtonVisible = false,
+                        confirmTask = {
+                        }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
+                return@setOnClickWriteButton
+            }
+            if(TextUtils.isEmpty(mBinding.edittextReportTitle.text.toString())){
+                CustomMessageDialog(message = "제목을 입력해주세요", cancelButtonVisible = false,
+                        confirmTask = {
+                        }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
+                return@setOnClickWriteButton
+            }
+
+            if(TextUtils.isEmpty(mBinding.edittextReportText.text.toString())){
+                CustomMessageDialog(message = "내용을 입력해주세요", cancelButtonVisible = false,
+                        confirmTask = {
+                        }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
+                return@setOnClickWriteButton
+            }
+            CustomMessageDialog(message = "등록하시겠습니까?", cancelButtonVisible = true,
+                    confirmTask = {
+                        mLoadingIndicatorUtil.show()
+                        postDetailData()
+                    }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
         }
 
         mBinding.setOnClickTempList{
@@ -247,14 +274,42 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         }
 
         mBinding.setOnClickTempSave{
-            mLoadingIndicatorUtil.show()
-            mViewModel.postTempBbs(setResponseTempData(),object : OnCallBackListener{
-                override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    mLoadingIndicatorUtil.dismiss()
-                    getTmpList()
-                    if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "setOnClickTempList ----- resultFlag",resultFlag,"value",value)
-                }
-            })
+            CustomMessageDialog(message = "임시 저장하시겠습니까?", cancelButtonVisible = true,
+                    confirmTask = {
+                        mLoadingIndicatorUtil.show()
+                        if (CustomLog.flag) CustomLog.L("setOnClickTempSave", "init ", "mViewModel.bbsPhotos.value.isNullOrEmpty()")
+                        if(mViewModel.bbsPhotos.value.isNullOrEmpty()){
+                            if(mViewModel.bbsTempId > 0) modifyBbsTemp(setResponseTempData())
+                            else createBbsTemp(setResponseTempData())
+                        }else{
+                            if (CustomLog.flag) CustomLog.L("setOnClickTempSave", "init ", "mViewModel.bbsPhotos.value.isNullOrEmpty() !!!!!!")
+                            var response = setResponseTempData()
+                            for ((index,file) in mViewModel.bbsPhotos.value!!.iterator().withIndex()){
+                                if(file.fileSize == -1L && !"http".equals(file.url.substring(0,4), true)){
+                                    mViewModel.imageUpload(file.url,index, object : OnCallBackListener{
+                                        override fun callBackListener(resultFlag: Boolean, value: Any) {
+                                            if(resultFlag){
+                                                response.imageList.add(value as ImageResponse)
+                                                if(response.imageList.size == mViewModel.bbsPhotos.value!!.size){
+                                                    if(mViewModel.bbsTempId > 0) modifyBbsTemp(response)
+                                                    else createBbsTemp(response)
+                                                }
+                                            }else{
+                                                mLoadingIndicatorUtil.dismiss()
+                                                showDialog("이미지 등록중 오류가 발생되었습니다.",false, null)
+                                            }
+                                        }
+                                    })
+                                }else{
+                                    response.imageList.add(file)
+                                    if(response.imageList.size == mViewModel.bbsPhotos.value!!.size){
+                                        if(mViewModel.bbsTempId > 0) modifyBbsTemp(response)
+                                        else createBbsTemp(response)
+                                    }
+                                }
+                            }
+                        }
+                    }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
         }
 
     }
@@ -308,6 +363,37 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         })
     }
 
+
+    private fun createBbsTemp(res : CreateBbsTempResponse){
+        mViewModel.postTempBbs(res, object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                mLoadingIndicatorUtil.dismiss()
+                if(resultFlag){
+                    getTmpList()
+                    showDialog("임시 저장이 완료되었습니다.",false, Activity.RESULT_OK)
+                }else{
+                    showDialog("등록중 오류가 발생되었습니다.",false, null)
+                }
+                if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "setOnClickTempList ----- resultFlag",resultFlag,"value",value)
+            }
+        })
+    }
+
+
+    private fun modifyBbsTemp(res : CreateBbsTempResponse){
+        createBbsTemp(res)
+        /*mViewModel.modifyBbsTemp(res, object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag) CustomLog.L("modifyBbs callBackListener","resultFlag",resultFlag,"value",value)
+                mLoadingIndicatorUtil.dismiss()
+                if(resultFlag){
+                    showDialog("임시 저장글이 수정되었습니다.",false, Activity.RESULT_OK)
+                }else{
+                    showDialog("등록중 오류가 발생되었습니다.",false, null)
+                }
+            }
+        })*/
+    }
 
     private fun modifyBbs(res : CreateBbsResponse){
         mViewModel.modifyBbs(res, object : OnCallBackListener{

@@ -3,8 +3,12 @@ package io.temco.guhada.view.fragment.productdetail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.util.Log
 import android.view.View
+import android.webkit.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
@@ -42,6 +46,7 @@ import io.temco.guhada.view.activity.*
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
 import kotlinx.coroutines.GlobalScope
@@ -129,7 +134,39 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             mViewModel.getExpectedCoupon()
             initSummary()
             initContentHeader()
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)
+            /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)*/
+
+
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
+                javaScriptEnabled = true
+                javaScriptCanOpenWindowsAutomatically = true
+                setSupportMultipleWindows(true)
+                loadWithOverviewMode = true
+                useWideViewPort = true
+                allowFileAccess = true
+                pluginState = WebSettings.PluginState.ON
+                pluginState = WebSettings.PluginState.ON_DEMAND
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+                setAppCacheEnabled(true)
+                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+                if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
+            }
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.webViewClient = object  : WebViewClient(){
+                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                    //return super.shouldOverrideUrlLoading(view, request)
+                    view?.webChromeClient = WebChromeClient()
+                    if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment",request?.url!!.toString())
+                    return true
+                }
+            }
+
+            val data = StringBuilder()
+            data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>")
+            data.append(product.desc.replace("\"//www","\"https://www"))
+            data.append("</body></HTML>")
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(),"text/html; video/mpeg", "utf-8", null)
+
+
             hideLoadingIndicator()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
@@ -311,6 +348,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             override fun showMessage(message: String) {
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
+
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
@@ -516,6 +554,18 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      */
     override fun showSearchWordActivity() {
         CommonUtil.startSearchWordActivity(context as Activity, null, true)
+    }
+
+    override fun showReportActivity() {
+        if(CommonUtil.checkToken()){
+            CommonUtil.startReportActivity(context as Activity, 0, mViewModel.product.value, null)
+        }else{
+            CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                    cancelButtonVisible = true,
+                    confirmTask = {
+                        CommonUtil.moveLoginPage(context as AppCompatActivity)
+                    }).show(manager = (context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+        }
     }
 
     companion object {

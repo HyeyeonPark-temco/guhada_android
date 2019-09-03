@@ -45,7 +45,7 @@ class TempBbsListAdapter : RecyclerView.Adapter<TempBbsListAdapter.Holder>() {
                 mClickSelectItemListener?.clickSelectItemListener(0, position, item)
             }
             mBinding.setOnClickTempDelete {
-                CustomMessageDialog(message = "삭제하시겠습니까?", cancelButtonVisible = true,
+                CustomMessageDialog(message = "임시 저장된 글을 삭제하시겠습니까?", cancelButtonVisible = true,
                         confirmTask = {
                             mClickSelectItemListener?.clickSelectItemListener(1, position, item)
                         }).show(manager = (itemView.context as AppCompatActivity).supportFragmentManager, tag = "TempBbsListActivity")

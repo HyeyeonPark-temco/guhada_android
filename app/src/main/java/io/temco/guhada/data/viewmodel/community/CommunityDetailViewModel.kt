@@ -334,7 +334,7 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                                 viewModel.commentList.value!!.removeAt(lastIndex)
                             }
                         }
-                        viewModel.communityDetailCommentTotalElements.set(data.totalElements)
+                        viewModel.communityDetailCommentTotalElements.set(viewModel.communityDetail.value!!.commentCount)
                         viewModel.currentPage = data.pageable.pageNumber+1
                         var listTmp : ArrayList<Comments> = arrayListOf()
                         for (vlu in data.content){

@@ -31,9 +31,11 @@ class CreateBbsTempResponse : Serializable{
     var contents = ""
     var dealId : Long? = null
     var dealName = ""
+    var imageList : ArrayList<ImageResponse> = arrayListOf()
     var title = ""
+
     override fun toString(): String {
-        return "CreateBbsTempResponse(brandId=$brandId, brandName='$brandName', contents='$contents', dealId=$dealId, dealName='$dealName', title='$title')"
+        return "CreateBbsTempResponse(brandId=$brandId, brandName='$brandName', contents='$contents', dealId=$dealId, dealName='$dealName', imageList=$imageList, title='$title')"
     }
 
 }

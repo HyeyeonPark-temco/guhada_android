@@ -55,4 +55,28 @@ class TempBbsListViewModel (val context : Context)  : BaseObservableViewModel() 
                 }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
 
+
+
+    fun getBbsTempData(id : Long, listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = { token ->
+                    if (token != null) {
+                        CommunityServer.getBbsTempData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var value = (it as BaseModel<CommunityTempInfo>).data
+                                        if(CustomLog.flag) CustomLog.L("getBbsTempData value",it)
+                                        listener.callBackListener(true, value)
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                                    failedTask = { listener.callBackListener(false, "failedTask") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") }
+                            )
+                        },token, id)
+                    }
+                }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
+    }
+
+
 }

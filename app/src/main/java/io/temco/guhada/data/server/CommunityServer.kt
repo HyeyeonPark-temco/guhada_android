@@ -506,7 +506,7 @@ class CommunityServer {
          * userIp : 유져 ip
          */
         @JvmStatic
-        fun modifyBbsTempData(listener: OnServerListener, accessToken: String, id : Long, body : CreateBbsResponse) {
+        fun modifyBbsTempData(listener: OnServerListener, accessToken: String, id : Long, body : CreateBbsTempResponse) {
             RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
                     .modifyBbsTempData(accessToken, id, body).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
@@ -532,7 +532,7 @@ class CommunityServer {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 
@@ -582,6 +582,42 @@ class CommunityServer {
         fun getBbsTempListData(listener: OnServerListener, accessToken: String) {
             RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
                     .getBbsTempListData(accessToken).enqueue(object : Callback<BaseModel<CommunityTempInfo>> {
+                        override fun onResponse(call: Call<BaseModel<CommunityTempInfo>>, response: Response<BaseModel<CommunityTempInfo>>) {
+                            if(response.code() in 200..400 && response.body() != null){
+                                listener.onResult(true, response.body())
+                            }else{
+                                try{
+                                    var msg  = Message()
+                                    var errorBody : String? = response.errorBody()?.string() ?: null
+                                    if(!errorBody.isNullOrEmpty()){
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(),response.raw().request().url().toString(),msg)
+                                    listener.onResult(false, error)
+                                }catch (e : Exception){
+                                    if(CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<CommunityTempInfo>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+
+        /**
+         * 게시글 임시 삭제
+         *
+         * id : 댓글 id
+         */
+        @JvmStatic
+        fun getBbsTempData(listener: OnServerListener, accessToken: String, id : Long) {
+            RetrofitManager.createService(Type.Server.BBS, CommunityService::class.java, true)
+                    .getBbsTempData(accessToken, id).enqueue(object : Callback<BaseModel<CommunityTempInfo>> {
                         override fun onResponse(call: Call<BaseModel<CommunityTempInfo>>, response: Response<BaseModel<CommunityTempInfo>>) {
                             if(response.code() in 200..400 && response.body() != null){
                                 listener.onResult(true, response.body())
