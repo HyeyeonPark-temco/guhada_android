@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -10,8 +11,8 @@
             type="io.temco.guhada.data.viewmodel.SellerInfoViewModel" />
 
         <variable
-            name="seller"
-            type="io.temco.guhada.data.model.seller.Seller" />
+            name="businessSeller"
+            type="io.temco.guhada.data.model.seller.BusinessSeller" />
 
         <variable
             name="bookMark"
@@ -22,7 +23,6 @@
             type="io.temco.guhada.data.model.seller.SellerSatisfaction" />
 
     </data>
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
-                        android:text="@{seller.user.nickname}"
+                        android:text="@{businessSeller.sellerUser.user.nickname}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_24"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -102,7 +102,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:src="@drawable/icon_no_data"
-                        app:ovalImageUrl="@{seller.user.profileImageUrl}" />
+                        app:ovalImageUrl="@{businessSeller.sellerUser.user.profileImageUrl}" />
 
                     <FrameLayout
                         android:layout_width="20dp"
@@ -201,7 +201,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="center"
-                    android:text="@{seller.storeIntroduction}"
+                    android:text="@{businessSeller.sellerUser.storeIntroduction}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -345,7 +345,7 @@
                         style="@style/TextRegularSingleLine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{seller.user.roadAddress + ` ` + seller.user.detailAddress}"
+                        android:text="오프라인 스토어 주소"
                         android:textColor="@color/greyish_brown_two"
                         android:textSize="@dimen/text_13" />
 
@@ -396,6 +396,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp">
 
+                <!-- 셀러 스토어 -->
                 <LinearLayout
                     android:id="@+id/linearlayout_sellerstore_productlist"
                     android:layout_width="match_parent"
@@ -496,347 +497,11 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:visibility="@{viewModel.mSelectedTabPos == 1 ? View.VISIBLE : View.GONE, default=gone}"
-                    android:id="@+id/linearlayout_sellerstore_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="600dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@color/white_six"
-                        android:visibility="gone" />
-
-                    <TextView
-                        style="@style/ProductDetailTitleBlackTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:text="@string/sellerstore_sellerinfo" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="20dp"
-                        android:orientation="vertical">
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/white_four" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="3">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/pale_grey"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:text="@string/sellerstore_sellerinfo_title1"
-                                    android:textSize="@dimen/text_12" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:textSize="@dimen/text_12" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/white_four" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="3">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/pale_grey"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:text="@string/sellerstore_sellerinfo_title2"
-                                    android:textSize="@dimen/text_12" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:textSize="@dimen/text_12" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/white_four" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="3">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/pale_grey"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:text="@string/sellerstore_sellerinfo_title3"
-                                    android:textSize="@dimen/text_12" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:textSize="@dimen/text_12" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/white_four" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="3">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/pale_grey"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:text="@string/sellerstore_sellerinfo_title4"
-                                    android:textSize="@dimen/text_12" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:textSize="@dimen/text_12" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/white_four" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="3">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/pale_grey"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:text="@string/sellerstore_sellerinfo_title5"
-                                    android:textSize="@dimen/text_12" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:textSize="@dimen/text_12" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/white_four" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="3">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="40dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/pale_grey"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:text="@string/sellerstore_sellerinfo_title6"
-                                    android:textSize="@dimen/text_12" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="2"
-                                    android:gravity="center_vertical"
-                                    android:paddingStart="10dp"
-                                    android:paddingTop="12dp"
-                                    android:paddingBottom="12dp"
-                                    android:textSize="@dimen/text_12" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/white_four" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <TextView
-                        style="@style/ProductDetailTitleBlackTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="40dp"
-                        android:text="@string/sellerstore_offlinestore" />
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@color/white_six" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/seller_icon_location" />
-
-                        <TextView
-                            style="@style/ProductDetailContentDarkGreyTextStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_gravity="center_vertical"
-                            android:text="서울 강남구 영동대로 513" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="13dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="40dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start"
-                            android:src="@drawable/seller_icon_time" />
-
-                        <TextView
-                            style="@style/ProductDetailContentDarkGreyTextStyle"
-                            android:layout_marginStart="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="월요일 ~ 목요일 : 09:00 ~ 18:00\n금요일 : 09:00 ~ 15:00\n휴무일 : 주말 및 공휴일은 운영하지 않습니다." />
-
-                    </LinearLayout>
-                </LinearLayout>
+                <!-- 셀러 정보 -->
+                <include
+                    android:id="@+id/include_sellerstore_info"
+                    layout="@layout/layout_sellerstore_info"
+                    android:visibility="@{viewModel.mSelectedTabPos == 1 ? View.VISIBLE : View.GONE, default=visible}" />
             </FrameLayout>
 
         </LinearLayout>

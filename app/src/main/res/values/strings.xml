@@ -1118,6 +1118,7 @@
     <string name="sellerstore_soldproductcount">판매된 상품</string>
     <string name="sellerstore_satisfaction">구매자 만족도</string>
     <string name="sellerstore_offlinestore">오프라인 스토어</string>
+    <string name="sellerstore_format_zip">(우: %s) </string>
 
     <string name="sellerstore_satisfaction_good">만족 %d명</string>
     <string name="sellerstore_satisfaction_normal">보통 %d명</string>

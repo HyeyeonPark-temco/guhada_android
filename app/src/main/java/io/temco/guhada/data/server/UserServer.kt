@@ -15,10 +15,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.*
-import io.temco.guhada.data.model.seller.Seller
-import io.temco.guhada.data.model.seller.SellerAddress
-import io.temco.guhada.data.model.seller.SellerFollower
-import io.temco.guhada.data.model.seller.SellerSatisfaction
+import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
@@ -735,8 +732,7 @@ class UserServer {
                             if (CustomLog.flag) CustomLog.L("modifyUserSize", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
-                    }
-                    )
+                    })
         }
 
         /**
@@ -751,6 +747,15 @@ class UserServer {
                             .getReviewAsync(productId = productId, reviewId = reviewId).await()
                 }
 
+        /**
+         * 비즈니스 셀러 조회
+         * @author Hyeyeon Park
+         * @since 2019.09.03
+         */
+        @JvmStatic
+        fun getBusinessSeller(listener: OnServerListener, sellerId: Long) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getBusinessSeller(sellerId = sellerId).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<BusinessSeller>> { successResponse -> listener.onResult(true, successResponse.body()) })
     }
 
 }

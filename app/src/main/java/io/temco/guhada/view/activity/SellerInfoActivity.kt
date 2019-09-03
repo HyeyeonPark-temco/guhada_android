@@ -119,7 +119,8 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
             mFilterFragment.show(supportFragmentManager, baseTag)
         }
 
-        mViewModel.getSellerInfo()
+       // mViewModel.getSellerInfo()
+        mViewModel.getBusinessSellerInfo()
         mViewModel.getSellerBookMark()
         mViewModel.getSellerSatisfaction()
         mViewModel.getSellerFollowCount()
@@ -140,14 +141,19 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
                 }
             }
         }
-        mViewModel.mSeller.observe(this@SellerInfoActivity, Observer {
-            mBinding.seller = it
-            initHeader(it)
-        })
+//        mViewModel.mSeller.observe(this@SellerInfoActivity, Observer {
+//            mBinding.businessSeller = it
+//            initHeader(it)
+//        })
         mViewModel.mSellerBookMark.observe(this@SellerInfoActivity, Observer { mBinding.bookMark = it })
         mViewModel.mSellerSatisfaction.observe(this@SellerInfoActivity, Observer { mBinding.satisfaction = it })
         mViewModel.mSellerFollowerCount.observe(this@SellerInfoActivity, Observer {
             mBinding.textviewSellerstoreFollowercount.text = String.format(this@SellerInfoActivity.getString(R.string.common_format_people), it.bookmarkCount)
+        })
+        mViewModel.mBusinessSeller.observe(this, Observer {
+            mBinding.businessSeller = it
+            mBinding.includeSellerstoreInfo.businessSeller = it
+            initHeader(it.sellerUser)
         })
         mViewModel.mSellerProductList.observe(this@SellerInfoActivity, Observer {
             if (mViewModel.mPage == 1) // first
