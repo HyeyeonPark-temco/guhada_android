@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
@@ -19,12 +20,15 @@ import io.temco.guhada.databinding.ItemProductdetailOptionattrBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
- * @param optionPos 몇번째 option 인지 (ProductDetailOptionAdapter의 adapterPosition)
+ * 상품 상세-옵션 attribute list adapter
+ * @param optionPos 몇번째(row) option 인지 (ProductDetailOptionAdapter의 adapterPosition)
+ * @author Hyeyeon Park
  */
-class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Option, var optionPos : Int) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
+class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, var option: Option, var optionPos: Int) : RecyclerView.Adapter<ProductDetailOptionAttrAdapter.Holder>() {
     var list: List<OptionAttr> = ArrayList()
-    private var prevSelectedPos: Int = -1
-    private var selectedPos: Int = -1
+    var mAttrSelectedListener: (optionAttr: OptionAttr) -> Unit = {}
+     var prevSelectedPos: Int = -1
+     var selectedPos: Int = -1
     private lateinit var mHolder: Holder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -48,18 +52,11 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
     inner class Holder(val binding: io.temco.guhada.databinding.ItemProductdetailOptionattrBinding) : BaseViewHolder<ItemProductdetailOptionattrBinding>(binding.root) {
         fun bind(optionAttr: OptionAttr, selectedPos: Int) {
             // BORDER
-            if (adapterPosition == selectedPos) {
-                binding.framelayoutProductdetailOptionattr.background = BaseApplication.getInstance().applicationContext.resources.getDrawable(R.drawable.border_all_purple_2dp)
-                BaseApplication.getInstance().applicationContext.resources.let {
-                    val padding = (2 * it.displayMetrics.density + 0.5).toInt()
-                    binding.framelayoutProductdetailOptionattr.setPadding(padding)
-                }
-
-            } else {
-                binding.framelayoutProductdetailOptionattr.background = BaseApplication.getInstance().applicationContext.resources.getDrawable(R.drawable.border_all_whitethree)
-                BaseApplication.getInstance().applicationContext.resources.let {
-                    val padding = (1 * it.displayMetrics.density + 0.5).toInt()
-                    binding.framelayoutProductdetailOptionattr.setPadding(padding)
+            if(this@ProductDetailOptionAttrAdapter.selectedPos > -1){
+                if (adapterPosition == selectedPos) {
+                   setSelectedBorder()
+                } else {
+                    setUnselectedBorder()
                 }
             }
 
@@ -73,13 +70,14 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
                 binding.imageviewProductdetailOptionattr.visibility = View.GONE
             }
 
+            // 옵션 선택
             binding.framelayoutProductdetailOptionattr.setOnClickListener {
                 prevSelectedPos = this@ProductDetailOptionAttrAdapter.selectedPos
                 this@ProductDetailOptionAttrAdapter.selectedPos = adapterPosition
 
                 // SELECT ATTR
                 viewModel.onSelectAttr(optionAttr, option.type, adapterPosition)
-                notifyItemChanged(this@ProductDetailOptionAttrAdapter.selectedPos)
+                notifyItemChanged(adapterPosition)
                 notifyItemChanged(prevSelectedPos)
 
                 // TOTAL PRICE
@@ -90,10 +88,20 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
 
                 // EXTRA PRICE
                 viewModel.getExtraPrice()
+
+                /////
+                mAttrSelectedListener(optionAttr)
             }
 
             // CHECK SOLD OUT
-            if(!isOptionEnabled(optionAttr)){
+            Log.e("ATTR 어댑터", "ATTR NAME: ${optionAttr.name}     ENABLED : ${optionAttr.enabled}    isOptionEnabled: ${isOptionEnabled(optionAttr)} ")
+
+            if (!isOptionEnabled(optionAttr)) {
+//                if(selectedPos == adapterPosition){
+//                     setUnselectedBorder()
+//                    ToastUtil.showMessage("선택된 옵션(${optionAttr.name})은 품절입니다")
+//                }
+
                 mBinding.imageviewProductdetailSoldout.bringToFront()
                 mBinding.imageviewProductdetailSoldout.visibility = View.VISIBLE
                 mBinding.textviewProductdetailOptionattr.setTextColor(binding.root.context.resources.getColor(R.color.warm_grey))
@@ -110,6 +118,22 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
             }
             return false
         }
+
+        private fun setSelectedBorder(){
+            binding.framelayoutProductdetailOptionattr.background = BaseApplication.getInstance().applicationContext.resources.getDrawable(R.drawable.border_all_purple_2dp)
+            BaseApplication.getInstance().applicationContext.resources.let {
+                val padding = (2 * it.displayMetrics.density + 0.5).toInt()
+                binding.framelayoutProductdetailOptionattr.setPadding(padding)
+            }
+        }
+        private fun setUnselectedBorder(){
+            binding.framelayoutProductdetailOptionattr.background = BaseApplication.getInstance().applicationContext.resources.getDrawable(R.drawable.border_all_whitethree)
+            BaseApplication.getInstance().applicationContext.resources.let {
+                val padding = (1 * it.displayMetrics.density + 0.5).toInt()
+                binding.framelayoutProductdetailOptionattr.setPadding(padding)
+            }
+        }
+
     }
 
 }

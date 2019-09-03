@@ -24,5 +24,9 @@ class OptionInfo : Serializable {
     var price = 0 // 옵션의 가격(상품의 기본가격에서 해당금액만큼 더해준다. 음수값이 들어올 수도 있다.)
     var stock = 0 // 해당 상품의 재고
     var viewType = "" // 옵션 뷰 타입 ("SEPARATED", "INTEGRATED")
+    override fun toString(): String {
+        return "OptionInfo(attribute1=$attribute1, attribute2=$attribute2, attribute3=$attribute3, label1=$label1, label2=$label2, label3=$label3, rgb1=$rgb1, rgb2=$rgb2, rgb3=$rgb3, dealOptionSelectId=$dealOptionSelectId, price=$price, stock=$stock, viewType='$viewType')"
+    }
+
 
 }

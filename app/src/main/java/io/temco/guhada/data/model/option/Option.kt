@@ -16,5 +16,15 @@ class Option {
     inner class AttributeItem {
         var name = ""
         var enabled = true
+
+        override fun toString(): String {
+            return "AttributeItem(name='$name', enabled=$enabled)"
+        }
     }
+
+    override fun toString(): String {
+        return "Option(type='$type', label='$label', attributes=$attributes, rgb=$rgb, attributeItems=$attributeItems)"
+    }
+
+
 }

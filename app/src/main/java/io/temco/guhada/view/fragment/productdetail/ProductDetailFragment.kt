@@ -3,7 +3,6 @@ package io.temco.guhada.view.fragment.productdetail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
@@ -33,7 +32,6 @@ import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.product.Product
@@ -313,7 +311,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             override fun showMessage(message: String) {
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
-
         }).apply {
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE

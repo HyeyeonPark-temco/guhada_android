@@ -6,18 +6,26 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
+/**
+ * 상품 상세-옵션 선택 view
+ * @author Hyeyeon Park
+ */
 class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>() {
     lateinit var mViewModel: ProductDetailMenuViewModel
     override fun getBaseTag(): String = ProductDetailMenuFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_menu
 
     override fun init() {
-        mBinding.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(mViewModel)
+        mBinding.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(mViewModel).apply {
+            this.mOptionInfoList = mViewModel.product.optionInfos?.toMutableList()
+                    ?: mutableListOf()
+        }
         mBinding.recyclerviewProductdetailMenu.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
@@ -44,11 +52,17 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             if (option != null && this.adapter != null) {
                 val attrList: MutableList<OptionAttr> = ArrayList()
 
-                if (option.type == "COLOR") {
+                if (option.rgb.isNotEmpty()) {
                     for (i in 0 until option.rgb.size) {
                         OptionAttr().apply {
                             rgb = option.rgb[i]
                             name = option.attributes[i]
+
+                            for (item in option.attributeItems) {
+                                enabled = if (item.name == name) item.enabled
+                                else false
+                            }
+
                         }.let {
                             attrList.add(it)
                         }
@@ -57,6 +71,12 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                     for (attr in option.attributes) {
                         OptionAttr().apply {
                             name = attr
+
+                            for (item in option.attributeItems) {
+                                enabled = if (item.name == name) item.enabled
+                                else false
+                            }
+
                         }.let {
                             attrList.add(it)
                         }
