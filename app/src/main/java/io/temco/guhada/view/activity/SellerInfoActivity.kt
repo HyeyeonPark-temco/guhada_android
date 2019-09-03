@@ -30,6 +30,12 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
 
     override fun getViewType(): Type.View = Type.View.SELLER_INFO
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::mMenuFragment.isInitialized) mMenuFragment.dismiss()
+        if (::mFilterFragment.isInitialized) mFilterFragment.dismiss()
+    }
+
     override fun init() {
         initViewModel()
 
@@ -113,7 +119,8 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
             mFilterFragment.show(supportFragmentManager, baseTag)
         }
 
-        mViewModel.getSellerInfo()
+       // mViewModel.getSellerInfo()
+        mViewModel.getBusinessSellerInfo()
         mViewModel.getSellerBookMark()
         mViewModel.getSellerSatisfaction()
         mViewModel.getSellerFollowCount()
@@ -134,18 +141,26 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
                 }
             }
         }
-        mViewModel.mSeller.observe(this@SellerInfoActivity, Observer {
-            mBinding.seller = it
-            initHeader(it)
-        })
+//        mViewModel.mSeller.observe(this@SellerInfoActivity, Observer {
+//            mBinding.businessSeller = it
+//            initHeader(it)
+//        })
         mViewModel.mSellerBookMark.observe(this@SellerInfoActivity, Observer { mBinding.bookMark = it })
         mViewModel.mSellerSatisfaction.observe(this@SellerInfoActivity, Observer { mBinding.satisfaction = it })
         mViewModel.mSellerFollowerCount.observe(this@SellerInfoActivity, Observer {
             mBinding.textviewSellerstoreFollowercount.text = String.format(this@SellerInfoActivity.getString(R.string.common_format_people), it.bookmarkCount)
         })
+        mViewModel.mBusinessSeller.observe(this, Observer {
+            mBinding.businessSeller = it
+            mBinding.includeSellerstoreInfo.businessSeller = it
+            initHeader(it.sellerUser)
+        })
         mViewModel.mSellerProductList.observe(this@SellerInfoActivity, Observer {
             if (mViewModel.mPage == 1) // first
-                mBinding.recyclerivewSellerstoreProductlist.adapter = SellerInfoProductAdapter().apply { mList = it.deals }
+                mBinding.recyclerivewSellerstoreProductlist.adapter = SellerInfoProductAdapter().apply {
+                    mList = it.deals
+                    this@apply.mViewModel = this@SellerInfoActivity.mViewModel
+                }
             else { // more
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).mList.addAll(it.deals)
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).notifyDataSetChanged()

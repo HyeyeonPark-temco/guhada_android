@@ -4,13 +4,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.SellerInfoViewModel" />
 
         <variable
-            name="seller"
-            type="io.temco.guhada.data.model.seller.Seller" />
+            name="businessSeller"
+            type="io.temco.guhada.data.model.seller.BusinessSeller" />
 
         <variable
             name="bookMark"
@@ -21,7 +23,6 @@
             type="io.temco.guhada.data.model.seller.SellerSatisfaction" />
 
     </data>
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -68,7 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14dp"
-                        android:text="@{seller.user.nickname}"
+                        android:text="@{businessSeller.sellerUser.user.nickname}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_24"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -101,7 +102,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:src="@drawable/icon_no_data"
-                        app:ovalImageUrl="@{seller.user.profileImageUrl}" />
+                        app:ovalImageUrl="@{businessSeller.sellerUser.user.profileImageUrl}" />
 
                     <FrameLayout
                         android:layout_width="20dp"
@@ -200,7 +201,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="center"
-                    android:text="@{seller.storeIntroduction}"
+                    android:text="@{businessSeller.sellerUser.storeIntroduction}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -344,7 +345,7 @@
                         style="@style/TextRegularSingleLine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{seller.user.roadAddress + ` ` + seller.user.detailAddress}"
+                        android:text="오프라인 스토어 주소"
                         android:textColor="@color/greyish_brown_two"
                         android:textSize="@dimen/text_13" />
 
@@ -390,103 +391,118 @@
                     android:textSize="@dimen/text_15" />
             </LinearLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <!-- 셀러 스토어 -->
+                <LinearLayout
+                    android:id="@+id/linearlayout_sellerstore_productlist"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.mSelectedTabPos == 0 ? View.VISIBLE : View.GONE, default = visible}">
 
-                    <TextView
-                        android:id="@+id/textview_sellerstore_productcount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:text="@{@string/common_format_totalproduct(1234)}"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_13"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:id="@+id/linearlayout_sellerstore_filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:orientation="horizontal"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/textview_sellerstore_filter"
+                            android:id="@+id/textview_sellerstore_productcount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="신상품순"
+                            android:layout_marginStart="20dp"
+                            android:text="@{@string/common_format_totalproduct(1234)}"
                             android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_13" />
+                            android:textSize="@dimen/text_13"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="7dp"
-                            android:src="@drawable/list_btn_lineup" />
-                    </LinearLayout>
+                            android:layout_marginEnd="20dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerivew_sellerstore_productlist"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="10dp"
-                        android:nestedScrollingEnabled="false"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_productcount"
-                        app:spanCount="2" />
+                            <TextView
+                                android:id="@+id/textview_sellerstore_filter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="신상품순"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13" />
 
-                    <View
-                        android:id="@+id/view_sellerstore_line1"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@color/line_6"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/recyclerivew_sellerstore_productlist" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="7dp"
+                                android:src="@drawable/list_btn_lineup" />
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/linearlayout_sellerstore_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{()->viewModel.onClickMore()}"
-                        android:orientation="horizontal"
-                        android:paddingStart="40dp"
-                        android:paddingTop="17dp"
-                        android:paddingEnd="40dp"
-                        android:paddingBottom="17dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view_sellerstore_line1">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerivew_sellerstore_productlist"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:nestedScrollingEnabled="false"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_productcount"
+                            app:spanCount="2" />
 
-                        <TextView
-                            style="@style/CommonMoreTextViewStyle"
+                        <View
+                            android:id="@+id/view_sellerstore_line1"
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/line_6"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/recyclerivew_sellerstore_productlist" />
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/common_more" />
+                            android:onClick="@{()->viewModel.onClickMore()}"
+                            android:orientation="horizontal"
+                            android:paddingStart="40dp"
+                            android:paddingTop="17dp"
+                            android:paddingEnd="40dp"
+                            android:paddingBottom="17dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/view_sellerstore_line1">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/detail_btn_more_open" />
-                    </LinearLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
+                            <TextView
+                                style="@style/CommonMoreTextViewStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_more" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/detail_btn_more_open" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <!-- 셀러 정보 -->
+                <include
+                    android:id="@+id/include_sellerstore_info"
+                    layout="@layout/layout_sellerstore_info"
+                    android:visibility="@{viewModel.mSelectedTabPos == 1 ? View.VISIBLE : View.GONE, default=visible}" />
+            </FrameLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

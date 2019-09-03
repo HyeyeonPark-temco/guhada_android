@@ -102,7 +102,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
         mViewModel.notifySellerStoreFollow = { bookMark -> mStoreFragment.setSellerBookMark(bookMark) }
-        mViewModel.mExpectedCouponList.observe(this, Observer {list ->
+        mViewModel.mExpectedCouponList.observe(this, Observer { list ->
             if (list.isEmpty()) {
                 mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.GONE
             } else {
@@ -295,7 +295,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * productId 전달
      */
     private fun initClaims() {
-        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId ?: 0)
+        mClaimFragment = ProductDetailClaimFragment().apply {
+            this.productId = mViewModel.product.value?.productId ?: 0
+        }
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
@@ -352,7 +354,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
         }.let { menuViewModel ->
-            mMenuFragment = ProductDetailMenuFragment(menuViewModel)
+            mMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
@@ -369,7 +371,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
         }.let { menuViewModel ->
-            mHeaderMenuFragment = ProductDetailMenuFragment(menuViewModel)
+            mHeaderMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
         }
 
         if (isAdded) {

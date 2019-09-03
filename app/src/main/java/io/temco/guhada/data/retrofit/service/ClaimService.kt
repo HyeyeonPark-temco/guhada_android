@@ -108,13 +108,13 @@ interface ClaimService {
      * 반품 철회 API
      */
     @DELETE("/order-claim/order-return-withdraw")
-    fun withdrawRefund(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<Any>>
+    fun withdrawRefund(@Header("Authorization") accessToken: String, @Query("orderClaimId") orderClaimId: Long) : Call<BaseModel<Any>>
 
     /**
      * 교환 철회 API
      */
     @DELETE("/order-claim/order-exchange-withdraw")
-    fun withdrawExchange(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<Any>>
+    fun withdrawExchange(@Header("Authorization") accessToken: String, @Query("orderClaimId") orderClaimId: Long) : Call<BaseModel<Any>>
 
     /**
      * 반품 신청서 수정 API

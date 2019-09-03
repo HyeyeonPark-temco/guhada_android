@@ -352,7 +352,7 @@
     <string name="productdetail_shipping_refund_content3">교환배송비</string>
     <string name="productdetail_shipping_refund_content4">보내실 곳</string>
 
-    <string name="productdetail_shipping_common_description1_title">- 반품/교환 사유에 따른 요청 가능 기간 곳</string>
+    <string name="productdetail_shipping_common_description1_title">- 반품/교환 사유에 따른 요청 가능 기간</string>
     <string name="productdetail_shipping_common_description1_content1">· 구매자 단순변심은 상품 수령 후 7일 이내 (구매자 반품배송비 부담)</string>
     <string name="productdetail_shipping_common_description1_content2">· 표시/광고와 상이, 상품하자의 경우 상품 수령 후 3개월 이내 혹은 표시/광고와 다른 사실을 안 날로부터 30일 이내 (판매자 반품 배송비
   부담) 둘 중 하나 경과 시 반품/교환 불가</string>
@@ -1115,7 +1115,8 @@
     <string name="sellerstore_soldproductcount">판매된 상품</string>
     <string name="sellerstore_satisfaction">구매자 만족도</string>
     <string name="sellerstore_offlinestore">오프라인 스토어</string>
-    <string name="sellerstore_sellerinfo">셀러 정보</string>
+    <string name="sellerstore_format_zip">(우: %s) </string>
+
     <string name="sellerstore_satisfaction_good">만족 %d명</string>
     <string name="sellerstore_satisfaction_normal">보통 %d명</string>
     <string name="sellerstore_satisfaction_bad">불만족 %d명</string>
@@ -1125,6 +1126,14 @@
     <string name="sellerstore_menu4">게시글</string>
     <string name="sellerstore_menu5">댓글</string>
     <string name="sellerstore_menu6">신고하기</string>
+
+    <string name="sellerstore_sellerinfo">셀러 정보</string>
+    <string name="sellerstore_sellerinfo_title1">상호명</string>
+    <string name="sellerstore_sellerinfo_title2">대표자</string>
+    <string name="sellerstore_sellerinfo_title3">사업자등록번호</string>
+    <string name="sellerstore_sellerinfo_title4">통신판매업번호</string>
+    <string name="sellerstore_sellerinfo_title5">사업장소재지</string>
+    <string name="sellerstore_sellerinfo_title6">고객센터</string>
 
     <string name="common_temp">임시</string>
     <string name="common_register">등록</string>

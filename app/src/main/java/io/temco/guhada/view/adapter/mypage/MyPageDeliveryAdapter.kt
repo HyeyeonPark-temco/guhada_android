@@ -92,21 +92,21 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             binding.root.context.startActivity(intent)
         }
 
-        private fun withdrawRefund(orderProdGroupId: Long) =
+        private fun withdrawRefund(orderClaimId: Long) =
                 ServerCallbackUtil.callWithToken(task = { token ->
                     ClaimServer.withdrawExchange(OnServerListener { success, o ->
                         ServerCallbackUtil.executeByResultCode(success, o,
                                 successTask = { EventBusData(requestCode = RequestCode.WITHDRAW.flag, data = null).let { data -> EventBusHelper.sendEvent(data) } },
                                 claimNotFoundTask = { ToastUtil.showMessage(it.message) })
-                    }, accessToken = token, orderProdGroupId = orderProdGroupId)
+                    }, accessToken = token, orderClaimId = orderClaimId)
                 })
 
-        private fun withdrawExchange(orderProdGroupId: Long) = ServerCallbackUtil.callWithToken(task = { token ->
+        private fun withdrawExchange(orderClaimId: Long) = ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.withdrawRefund(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = { EventBusData(requestCode = RequestCode.WITHDRAW.flag, data = null).let { data -> EventBusHelper.sendEvent(data) } },
                         claimNotFoundTask = { ToastUtil.showMessage(it.message) })
-            }, accessToken = token, orderProdGroupId = orderProdGroupId)
+            }, accessToken = token, orderClaimId = orderClaimId)
         })
 
         private fun redirectWriteReviewActivity(item: PurchaseOrder) {
@@ -274,7 +274,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawrefund)
                         task = View.OnClickListener {
                             CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_refund), cancelButtonVisible = true,
-                                    confirmTask = { withdrawExchange(item.orderProdGroupId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+                                    confirmTask = { withdrawExchange(item.orderClaimId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
                         }
                     })
                 }
@@ -294,7 +294,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawexchange)
                         task = View.OnClickListener {
                             CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_exchange), cancelButtonVisible = true,
-                                    confirmTask = { withdrawRefund(item.orderProdGroupId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+                                    confirmTask = { withdrawRefund(item.orderClaimId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
                         }
                     })
                 }
@@ -308,7 +308,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawexchange)
                         task = View.OnClickListener {
                             CustomMessageDialog(message = binding.root.resources.getString(R.string.mypage_deliverycer_withdraw_exchange), cancelButtonVisible = true,
-                                    confirmTask = { withdrawRefund(item.orderProdGroupId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
+                                    confirmTask = { withdrawRefund(item.orderClaimId) }).show(manager = (binding.root.context as AppCompatActivity).supportFragmentManager, tag = MyPageDeliveryAdapter::class.java.simpleName)
                         }
                     })
                 }

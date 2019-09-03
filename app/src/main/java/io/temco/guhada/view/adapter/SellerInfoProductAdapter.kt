@@ -1,6 +1,5 @@
 package io.temco.guhada.view.adapter
 
-import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.Deal
-import io.temco.guhada.data.viewmodel.productdetail.ProductDetailStoreViewModel
+import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ItemSellerinfoProductBinding
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
@@ -21,7 +20,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.Holder>() {
     private val RIGHT_MARGIN = 20
 
-    lateinit var mViewModel: ProductDetailStoreViewModel
+    lateinit var mViewModel: SellerInfoViewModel
     var mList: MutableList<Deal> = mutableListOf()
     var mSpanCount = 2
 
@@ -62,7 +61,6 @@ class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.H
             val intent = Intent(binding.root.context, ProductFragmentDetailActivity::class.java)
             intent.putExtra("dealId", dealId)
             binding.root.context.startActivity(intent)
-            (binding.root.context as Activity).finish()
         }
     }
 }

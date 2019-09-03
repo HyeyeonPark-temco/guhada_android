@@ -9,8 +9,10 @@ import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.seller.BusinessSeller
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.server.ProductServer
@@ -22,6 +24,7 @@ class SellerInfoViewModel : BaseObservableViewModel() {
     var mSellerId = 0L
     var mOrder = ProductOrderType.DATE.type
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
+    var mBusinessSeller: MutableLiveData<BusinessSeller> = MutableLiveData()
     var mSellerBookMark: MutableLiveData<BookMark> = MutableLiveData()
     var mSellerSatisfaction: MutableLiveData<SellerSatisfaction> = MutableLiveData()
     var mSellerFollowerCount: MutableLiveData<BookMarkCountResponse> = MutableLiveData()
@@ -49,6 +52,17 @@ class SellerInfoViewModel : BaseObservableViewModel() {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             mSeller.postValue(it.data as Seller)
+                        })
+            }, sellerId = mSellerId)
+        }
+    }
+
+    fun getBusinessSellerInfo() {
+        if (mSellerId > 0) {
+            UserServer.getBusinessSeller(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            mBusinessSeller.postValue(it.data as BusinessSeller)
                         })
             }, sellerId = mSellerId)
         }
@@ -94,6 +108,18 @@ class SellerInfoViewModel : BaseObservableViewModel() {
                 this.mSellerProductList.postValue(it.data as ProductList)
             })
         }, sellerId = mSellerId, order = mOrder, page = mPage, unitPerPage = UNIT_PER_PAGE)
+    }
+
+    fun getDetail(dealId: Long, redirectProductDetailActivity: () -> Unit) {
+        ProductServer.getProductDetail(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        redirectProductDetailActivity()
+                    },
+                    productNotFoundTask = {
+                        ToastUtil.showMessage(it.message)
+                    })
+        }, dealId)
     }
 
     fun onClickFollow() {

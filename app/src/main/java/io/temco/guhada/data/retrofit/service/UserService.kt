@@ -8,10 +8,7 @@ import io.temco.guhada.data.model.review.MyPageReview
 import io.temco.guhada.data.model.review.MyPageReviewContent
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
-import io.temco.guhada.data.model.seller.Seller
-import io.temco.guhada.data.model.seller.SellerAddress
-import io.temco.guhada.data.model.seller.SellerFollower
-import io.temco.guhada.data.model.seller.SellerSatisfaction
+import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
@@ -43,24 +40,32 @@ interface UserService {
     fun signIn(@Body user: User): Call<BaseModel<Token>>
 
     /**
-     * 개별 회원 정보 가져오기 API
+     * 개별 회원 정보 조회 API
      * @param userId
      */
     @GET("/users/{userId}")
     fun findUserById(@Path("userId") id: Int): Call<BaseModel<User>>
 
     /**
-     * 셀러 정보 가져오기 API
+     * 셀러 정보 조회 API
      * @param sellerId
      */
     @GET("/sellers/{sellerId}")
     fun getSellerById(@Path("sellerId") id: Long): Call<BaseModel<Seller>>
 
     /**
-     * 셀러 정보 가져오기 API (비동기)
+     * 셀러 정보 조회 API (비동기)
      */
     @GET("/sellers/{sellerId}")
     fun getSellerByIdAsync(@Path("sellerId") id: Long): Deferred<BaseModel<Seller>>
+
+    /**
+     * 비즈니스 셀러 정보 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.03
+     */
+    @GET("/sellers/business-user")
+    fun getBusinessSeller(@Query("seller-id") sellerId : Long) : Call<BaseModel<BusinessSeller>>
 
     /**
      * 셀러 기본 반품지 가져오기 API

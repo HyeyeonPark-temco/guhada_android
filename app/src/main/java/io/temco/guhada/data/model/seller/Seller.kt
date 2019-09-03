@@ -25,6 +25,7 @@ class Seller : Serializable {
     var updatedBy: String? = ""
     var user: User = User()
 
+
     @Expose
     var isFollowing = true
 

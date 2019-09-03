@@ -11,7 +11,8 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
-class ProductDetailMenuFragment(val mViewModel: ProductDetailMenuViewModel) : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>() {
+class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>() {
+    lateinit var mViewModel: ProductDetailMenuViewModel
     override fun getBaseTag(): String = ProductDetailMenuFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_menu
 

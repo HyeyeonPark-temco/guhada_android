@@ -211,9 +211,9 @@ open class ClaimServer {
          * response type: Boolean
          */
         @JvmStatic
-        fun withdrawRefund(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+        fun withdrawRefund(listener: OnServerListener, accessToken: String, orderClaimId: Long) =
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
-                        .withdrawRefund(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
+                        .withdrawRefund(accessToken = accessToken, orderClaimId = orderClaimId).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
 
         /**
@@ -221,9 +221,9 @@ open class ClaimServer {
          * response type: Boolean
          */
         @JvmStatic
-        fun withdrawExchange(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+        fun withdrawExchange(listener: OnServerListener, accessToken: String, orderClaimId: Long) =
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
-                        .withdrawExchange(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(
+                        .withdrawExchange(accessToken = accessToken, orderClaimId = orderClaimId).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
 
         /**

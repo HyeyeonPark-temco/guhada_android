@@ -89,7 +89,7 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
                             )
                         }, accessToken = it, target = target, targetId = mCriteria.sellerId, userId = userId)
                     }
-                })
+                }, invalidTokenTask = {})
     }
 
     /**
