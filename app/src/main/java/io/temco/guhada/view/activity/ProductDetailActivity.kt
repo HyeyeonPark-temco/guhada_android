@@ -361,6 +361,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     }
 
+    override fun showReportActivity() {
+
+    }
+
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {

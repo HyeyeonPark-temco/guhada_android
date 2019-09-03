@@ -408,4 +408,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         listener?.showSearchWordActivity()
     }
 
+
+    fun onClickReport() {
+        listener?.showReportActivity()
+    }
+
 }

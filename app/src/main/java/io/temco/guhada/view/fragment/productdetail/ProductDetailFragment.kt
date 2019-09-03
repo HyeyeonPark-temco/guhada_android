@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
@@ -44,6 +45,7 @@ import io.temco.guhada.view.activity.*
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
 import kotlinx.coroutines.GlobalScope
@@ -517,6 +519,18 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      */
     override fun showSearchWordActivity() {
         CommonUtil.startSearchWordActivity(context as Activity, null, true)
+    }
+
+    override fun showReportActivity() {
+        if(CommonUtil.checkToken()){
+            CommonUtil.startReportActivity(context as Activity, 0, mViewModel.product.value, null)
+        }else{
+            CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                    cancelButtonVisible = true,
+                    confirmTask = {
+                        CommonUtil.moveLoginPage(context as AppCompatActivity)
+                    }).show(manager = (context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
+        }
     }
 
     companion object {

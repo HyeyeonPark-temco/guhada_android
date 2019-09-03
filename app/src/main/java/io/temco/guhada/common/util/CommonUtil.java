@@ -429,13 +429,14 @@ public class CommonUtil {
      * @param activity current Activity notNull
      * @param type report type notNull
      * @param data report data notNull
-     * @param communityDetail nullable report communityDetail (type:3 게시글상세)
+     * @param data2 nullable report communityDetail (type:0 셀러이름, type:3 게시글상세)
      */
-    public static void startReportActivity(Activity activity, int type, Serializable data, @Nullable Serializable communityDetail){
+    public static void startReportActivity(Activity activity, int type, Serializable data, @Nullable Serializable data2){
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("startReportActivity","type",type);
         Intent intent = new Intent(activity, ReportActivity.class);
         intent.putExtra("type", type);
         intent.putExtra("data", data);
-        if(communityDetail!=null) intent.putExtra("communityDetail", communityDetail);
+        if(data2!=null) intent.putExtra("data2", data2);
         activity.startActivityForResult(intent,Flag.RequestCode.REPORT);
     }
 

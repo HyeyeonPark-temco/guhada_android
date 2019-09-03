@@ -9,6 +9,9 @@ import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.databinding.FragmentCommunitySubMainBinding
 import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.fragment.base.BaseFragment
+import android.os.Bundle
+
+
 
 
 /**
@@ -19,19 +22,20 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  *
  *
  */
-class CommunitySubMainFragment(val info : CommunityInfo) : BaseFragment<FragmentCommunitySubMainBinding>() {
+class CommunitySubMainFragment : BaseFragment<FragmentCommunitySubMainBinding>() {
 
     // -------- LOCAL VALUE --------
+    lateinit var info: CommunityInfo
     // -----------------------------
 
     ////////////////////////////////////////////////
     // OVERRIDE
     ////////////////////////////////////////////////
 
+
     override fun getBaseTag(): String = CommunitySubMainFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.fragment_community_sub_main
     override fun init() {
-        if(CustomLog.flag) CustomLog.L(getBaseTag(),info.toString())
         mBinding.setClickListener {
             var intent = Intent(context as Activity, CommunityDetailActivity::class.java)
             intent.putExtra("bbsId", 282333L)// 282305L 282287L 282286L 282286L 282300L

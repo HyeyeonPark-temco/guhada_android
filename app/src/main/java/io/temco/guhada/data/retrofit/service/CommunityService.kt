@@ -75,7 +75,7 @@ interface CommunityService {
 
     // 게시글 임시 수정
     @PUT("/bbses/temp/{id}")
-    fun modifyBbsTempData(@Header("Authorization") accessToken: String, @Path("id") id : Long, @Body response: CreateBbsResponse): Call<BaseModel<Any>>
+    fun modifyBbsTempData(@Header("Authorization") accessToken: String, @Path("id") id : Long, @Body response: CreateBbsTempResponse): Call<BaseModel<Any>>
 
 
     // 게시글 임시 삭제
@@ -83,8 +83,14 @@ interface CommunityService {
     fun deleteBbsTempData(@Header("Authorization") accessToken: String,  @Path("id") id : Long): Call<BaseModel<Any>>
 
 
-    // 게시글 임시 삭제
+    // 게시글 임시 리스트
     @GET("/bbses/temp/all")
     fun getBbsTempListData(@Header("Authorization") accessToken: String): Call<BaseModel<CommunityTempInfo>>
+
+
+
+    // 게시글 임시 삭제
+    @GET("/bbses/temp/{id}")
+    fun getBbsTempData(@Header("Authorization") accessToken: String,  @Path("id") id : Long): Call<BaseModel<CommunityTempInfo>>
 
 }

@@ -3,6 +3,7 @@ package io.temco.guhada.data.model.product
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionInfo
+import java.io.Serializable
 
 /**
  * 상품 정보 클래스
@@ -60,12 +61,12 @@ class Product : BaseProduct() {
     var sCategoryId: Int = 0
     var dCategoryId: Int = 0
 
-    class Item {
+    class Item : Serializable {
         var label: String = ""
         var value: String = ""
     }
 
-    class Shipping {
+    class Shipping : Serializable{
         var shipExpense: Int = 0
         var returnShipExpense: Int = 0
         var exchangeShipExpense: Int = 0

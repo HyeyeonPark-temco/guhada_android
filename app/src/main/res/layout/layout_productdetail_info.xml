@@ -36,6 +36,7 @@
             android:text="@string/productdetail_report"
             android:textColor="@color/greyish_brown_two"
             android:textSize="@dimen/text_12"
+            android:onClick="@{()-> viewModel.onClickReport()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

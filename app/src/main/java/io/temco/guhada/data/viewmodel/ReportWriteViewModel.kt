@@ -27,8 +27,12 @@ class ReportWriteViewModel(val context : Context) : BaseObservableViewModel() {
 
     var reportType = -1
     var reportTarget : ReportTarget = ReportTarget.NONE
+
     var productData : Product? = null
+    var sellerName : String? = null
+
     var userData : User? = null
+
     var communityData : CommunityDetail? = null
     var commentData : Comments? = null
 
@@ -39,6 +43,8 @@ class ReportWriteViewModel(val context : Context) : BaseObservableViewModel() {
     var writeUserInfo: MutableLiveData<User> = MutableLiveData()
     var reportTypeList: MutableLiveData<ArrayList<ReportTypeData>> = MutableLiveData()
     var userImageUrl: String = ""
+
+    var userId : Long = 0L
 
 
     init {

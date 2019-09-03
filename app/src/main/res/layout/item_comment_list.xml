@@ -4,6 +4,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
         <variable
             name="clickReplyListener"
             type="android.view.View.OnClickListener" />
@@ -28,6 +29,8 @@
         <variable name="image" type="String" />
         <variable name="isImage" type="Boolean" />
         <variable name="isLikeComment" type="Boolean" />
+        <variable name="isDelete" type="Boolean" />
+        <variable name="userGrade" type="String" />
 
         <variable
             name="viewModel"
@@ -58,7 +61,7 @@
                 android:layout_height="30dp"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{userProfile}"
-                android:background="@color/common_white"/>
+                android:background="@drawable/profile_non_square"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -72,7 +75,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="13dp"
                 android:gravity="center"
-                android:text="99"
+                android:visibility="@{TextUtils.isEmpty(userGrade) ? View.GONE : View.VISIBLE , default = gone}"
+                android:text="@{userGrade}"
                 android:textSize="@dimen/text_8"
                 android:background="@drawable/ceo" />
 
@@ -85,13 +89,18 @@
             android:minHeight="70dp"
             android:orientation="vertical">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:background="@color/white_five"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="15dp"
                 android:paddingBottom="7dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
+                android:visibility="@{isDelete ? View.GONE : View.VISIBLE, default = visible}"
                 android:background="@color/white_five"
                 android:orientation="horizontal">
 
@@ -158,6 +167,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="6dp"
                 android:paddingBottom="8dp"
+                android:visibility="@{isDelete ? View.GONE : View.VISIBLE, default = visible}"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

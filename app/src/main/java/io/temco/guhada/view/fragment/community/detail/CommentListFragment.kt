@@ -57,9 +57,8 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
                                     (context as AppCompatActivity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL_WRT_MOD)
                                 }else{
                                     CustomMessageDialog(message = "모바일에서 등록된 글만 수정이 가능합니다.",
-                                            cancelButtonVisible = true,
+                                            cancelButtonVisible = false,
                                             confirmTask = {
-                                                CommonUtil.moveLoginPage(viewModel.context as AppCompatActivity)
                                             }).show(manager = (viewModel.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
                                 }
                             }else{

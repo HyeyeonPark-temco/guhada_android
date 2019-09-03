@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.community
 
+import android.os.Bundle
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.community.CommunityInfo
@@ -15,14 +16,17 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  *
  *
  */
-class CommunitySubPopularFragment(val info : CommunityInfo) : BaseFragment<FragmentCommunitySubPopularBinding>() {
+class CommunitySubPopularFragment : BaseFragment<FragmentCommunitySubPopularBinding>() {
 
     // -------- LOCAL VALUE --------
+    lateinit var info: CommunityInfo
     // -----------------------------
+
 
     ////////////////////////////////////////////////
     // OVERRIDE
     ////////////////////////////////////////////////
+
 
     override fun getBaseTag(): String {
         return CommunitySubPopularFragment::class.java!!.getSimpleName()

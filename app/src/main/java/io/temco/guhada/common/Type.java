@@ -12,6 +12,7 @@ public class Type {
 
         DEV,
         QA,
+        STAGE,
         RELEASE
     }
 
@@ -134,7 +135,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.search.guhada.com:9090/";
-
+            case STAGE:
+                return "https://stg.search.guhada.com:9090/";
             default:
                 return "http://dev.search.guhada.com:9090/";
         }
@@ -144,7 +146,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.product.guhada.com:8080/";
-
+            case STAGE:
+                return "https://stg.product.guhada.com:8080/";
             default:
                 return "http://dev.product.guhada.com:8080/";
         }
@@ -154,7 +157,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.bbs.guhada.com/";
-
+            case STAGE:
+                return "https://stg.bbs.guhada.com/";
             default:
                 return "http://dev.bbs.guhada.com/";
         }
@@ -164,7 +168,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.user.guhada.com/";
-
+            case STAGE:
+                return "https://stg.user.guhada.com/";
             default:
                 //return "http://dev.user.guhada.com:8080/";
                 return "http://dev.user.guhada.com/";
@@ -175,7 +180,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.claim.guhada.com/";//:8081
-
+            case STAGE:
+                return "https://stg.claim.guhada.com/";//:8081
             default:
                 return "http://dev.claim.guhada.com/";//:8081
         }
@@ -185,7 +191,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.order.guhada.com:8080/";
-
+            case STAGE:
+                return "https://stg.order.guhada.com/";
             default:
                 return "http://dev.order.guhada.com:8080/";
         }
@@ -195,7 +202,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.payment.guhada.com:8081/";
-
+            case STAGE:
+                return "https://stg.payment.guhada.com/";
             default:
                 return "http://dev.payment.guhada.com:8081/";
         }
@@ -205,7 +213,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.benefit.guhada.com:8080/";
-
+            case STAGE:
+                return "https://stg.benefit.guhada.com:8080/";
             default:
                 return "http://dev.benefit.guhada.com:8080/";
         }
@@ -215,7 +224,8 @@ public class Type {
         switch (BuildConfig.BuildType) {
             case QA:
                 return "http://qa.gateway.guhada.com/";
-
+            case STAGE:
+                return "https://stg.gateway.guhada.com/";
             default:
                 return "http://dev.gateway.guhada.com/";
         }

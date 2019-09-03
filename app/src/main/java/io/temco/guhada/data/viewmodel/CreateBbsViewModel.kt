@@ -248,6 +248,11 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
         repository.modifyBbs(bbsId, response, listener)
     }
 
+
+    fun modifyBbsTemp(response: CreateBbsTempResponse, listener: OnCallBackListener){
+        repository.modifyBbsTempData(bbsTempId, response, listener)
+    }
+
     fun imageUpload(file : String, index : Int, listener : OnCallBackListener){
         repository.uploadImage(file, ImageUploadTarget.IMAGE_BBS.name, index, listener = listener)
     }
@@ -320,7 +325,7 @@ class CreateBbsRepository(val viewModel: CreateBbsViewModel){
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
                                         var value = (it as BaseModel<Any>).data
-                                        if(CustomLog.flag) CustomLog.L("postBbs value",value)
+                                        if(CustomLog.flag) CustomLog.L("postTempBbs value",value)
                                         listener.callBackListener(true, "successTask")
                                     },
                                     dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
@@ -332,6 +337,30 @@ class CreateBbsRepository(val viewModel: CreateBbsViewModel){
                     }
                 }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
+
+
+
+    fun modifyBbsTempData(id : Long, response: CreateBbsTempResponse, listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = { token ->
+                    if (token != null) {
+                        CommunityServer.modifyBbsTempData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var value = (it as BaseModel<Any>).data
+                                        if(CustomLog.flag) CustomLog.L("postBbs value",value)
+                                        listener.callBackListener(true, "successTask")
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                                    failedTask = { listener.callBackListener(false, "failedTask") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") }
+                            )
+                        },token, id, response)
+                    }
+                }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
+    }
+
 
 
 

@@ -62,6 +62,10 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
                 0->{
                     mViewModel.productData = intent?.extras?.getSerializable("data") as Product
                     mViewModel.reportTarget = ReportTarget.PRODUCT
+                    mBinding.linearlayoutReportdetailType0.type = mViewModel.reportType
+                    mBinding.linearlayoutReportdetailType0.text01 = mViewModel.productData?.productId.toString()
+                    mBinding.linearlayoutReportdetailType0.text02 = mViewModel.productData?.name
+                    mBinding.linearlayoutReportdetailType0.text03 = mViewModel.productData?.sellerName
                 }
                 1->{
                     mViewModel.userData = intent?.extras?.getSerializable("data") as User
@@ -79,7 +83,7 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
                 }
                 3->{
                     mViewModel.commentData = intent?.extras?.getSerializable("data") as Comments
-                    mViewModel.communityData = intent?.extras?.getSerializable("communityDetail") as CommunityDetail
+                    mViewModel.communityData = intent?.extras?.getSerializable("data2") as CommunityDetail
                     mViewModel.reportTarget = ReportTarget.COMMENT
 
                     mBinding.linearlayoutReportdetailType3.type = mViewModel.reportType
@@ -94,6 +98,8 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
             mBinding.setOnClickCloseButton { finish() }
             mViewModel.setInit()
         }
+
+        mViewModel.userId = CommonUtil.checkUserId()
 
         mViewModel.writeUserInfo.observe(this, Observer {
             if(CustomLog.flag)CustomLog.L("ReportActivity",it.toString())
@@ -259,7 +265,7 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
             2->response.targetId = mViewModel.communityData!!.id
             3->response.targetId = mViewModel.commentData!!.id
         }
-        response.reporter = mViewModel.writeUserInfo.value!!.userDetail.id
+        response.reporter = mViewModel.userId
         response.reportType = mViewModel.reportTypeList.value!![mViewModel.selectReportTypeIndex].name
         response.reportTarget = mViewModel.reportTarget.name
 

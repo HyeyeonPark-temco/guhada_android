@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.community
 
+import android.os.Bundle
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.community.CommunityInfo
@@ -15,10 +16,12 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  *
  *
  */
-class CommunitySubNotiFragment(val info : CommunityInfo) : BaseFragment<FragmentCommunitySubNotiBinding>() {
+class CommunitySubNotiFragment : BaseFragment<FragmentCommunitySubNotiBinding>() {
 
     // -------- LOCAL VALUE --------
+    lateinit var info: CommunityInfo
     // -----------------------------
+
 
     ////////////////////////////////////////////////
     // OVERRIDE
