@@ -24,7 +24,8 @@ import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.adapter.productdetail.ProductDetailClaimAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
-class ProductDetailClaimFragment(private val productId: Long) : BaseFragment<LayoutProductdetailClaimBinding>() {
+class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>() {
+     var productId: Long = 0L
     private val ALL_CLAIMS = 0
     private val PENDING_CLAIMS = 1
     private val COMPLETED_CLAIMS = 2

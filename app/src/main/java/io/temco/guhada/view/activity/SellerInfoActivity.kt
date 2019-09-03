@@ -30,6 +30,12 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
 
     override fun getViewType(): Type.View = Type.View.SELLER_INFO
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::mMenuFragment.isInitialized) mMenuFragment.dismiss()
+        if (::mFilterFragment.isInitialized) mFilterFragment.dismiss()
+    }
+
     override fun init() {
         initViewModel()
 
@@ -145,7 +151,10 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
         })
         mViewModel.mSellerProductList.observe(this@SellerInfoActivity, Observer {
             if (mViewModel.mPage == 1) // first
-                mBinding.recyclerivewSellerstoreProductlist.adapter = SellerInfoProductAdapter().apply { mList = it.deals }
+                mBinding.recyclerivewSellerstoreProductlist.adapter = SellerInfoProductAdapter().apply {
+                    mList = it.deals
+                    this@apply.mViewModel = this@SellerInfoActivity.mViewModel
+                }
             else { // more
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).mList.addAll(it.deals)
                 (mBinding.recyclerivewSellerstoreProductlist.adapter as SellerInfoProductAdapter).notifyDataSetChanged()

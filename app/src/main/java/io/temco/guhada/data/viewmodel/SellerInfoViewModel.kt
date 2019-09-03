@@ -9,6 +9,7 @@ import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.seller.Seller
@@ -94,6 +95,18 @@ class SellerInfoViewModel : BaseObservableViewModel() {
                 this.mSellerProductList.postValue(it.data as ProductList)
             })
         }, sellerId = mSellerId, order = mOrder, page = mPage, unitPerPage = UNIT_PER_PAGE)
+    }
+
+    fun getDetail(dealId: Long, redirectProductDetailActivity: () -> Unit) {
+        ProductServer.getProductDetail(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        redirectProductDetailActivity()
+                    },
+                    productNotFoundTask = {
+                        ToastUtil.showMessage(it.message)
+                    })
+        }, dealId)
     }
 
     fun onClickFollow() {

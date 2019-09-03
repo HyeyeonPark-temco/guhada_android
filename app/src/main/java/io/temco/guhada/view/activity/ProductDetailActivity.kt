@@ -131,7 +131,9 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initClaims() {
-        mClaimFragment = ProductDetailClaimFragment(mViewModel.product.value?.productId ?: 0)
+        mClaimFragment = ProductDetailClaimFragment().apply {
+            this.productId = mViewModel.product.value?.productId ?: 0
+        }
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
             it.commitAllowingStateLoss()
@@ -168,7 +170,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
         }.let { menuViewModel ->
-            mMenuFragment = ProductDetailMenuFragment(menuViewModel)
+            mMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
@@ -186,7 +188,7 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
         }.let { menuViewModel ->
-            mHeaderMenuFragment = ProductDetailMenuFragment(menuViewModel)
+            mHeaderMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
         }
 
         supportFragmentManager.beginTransaction().let {
