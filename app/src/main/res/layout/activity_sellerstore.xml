@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -400,7 +401,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="@{viewModel.mSelectedTabPos == 0 ? View.VISIBLE : View.GONE, default = visible}">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -496,6 +497,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="@{viewModel.mSelectedTabPos == 1 ? View.VISIBLE : View.GONE, default=gone}"
+                    android:id="@+id/linearlayout_sellerstore_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
