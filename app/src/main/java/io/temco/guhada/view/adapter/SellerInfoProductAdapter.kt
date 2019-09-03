@@ -1,6 +1,5 @@
 package io.temco.guhada.view.adapter
 
-import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
-import io.temco.guhada.data.viewmodel.productdetail.ProductDetailStoreViewModel
 import io.temco.guhada.databinding.ItemSellerinfoProductBinding
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder

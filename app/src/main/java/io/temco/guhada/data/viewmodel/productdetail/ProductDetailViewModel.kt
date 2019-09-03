@@ -152,7 +152,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                 )
                             }, accessToken = it, target = target, targetId = product.value?.sellerId!!, userId = userId)
                         }
-                    })
+                    },
+                    invalidTokenTask = {})
         }
     }
 
