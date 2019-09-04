@@ -89,7 +89,8 @@ public class Type {
         LOCAL, // 핸드폰 인증
         NAVER_PROFILE,
         BENEFIT,
-        GATEWAY;
+        GATEWAY,
+        STG_ORDER;
 
         public static String getUrl(Server type) {
             switch (type) {
@@ -117,6 +118,8 @@ public class Type {
                     return getBenefitUrl();
                 case GATEWAY:
                     return getGatewayUrl();
+                case STG_ORDER:
+                    return "https://stg.order.guhada.com/";
                 default:
                     return "";
             }
@@ -342,7 +345,7 @@ public class Type {
 
     ////////////////////////////////////////////////
     // Category
-    public enum Category implements Serializable{
+    public enum Category implements Serializable {
 
         NORMAL(0), // 일반
         ALL(1), // 전체보기
@@ -630,8 +633,6 @@ public class Type {
     }
 
 
-
-
     /**
      * @author park jungho
      * 19.08.14
@@ -639,7 +640,7 @@ public class Type {
      * USER BOOKMARK 회원 북마크 target
      * http://dev.user.guhada.com/swagger-ui.html#/USER_BOOKMARK
      */
-    public enum PointResultDialogType implements Serializable{
+    public enum PointResultDialogType implements Serializable {
         COMPLETE_PAYMENT("COMPLETE_PAYMENT"),
         REVIEW_WRITE("REVIEW_WRITE"),
         SIZE_UPDATE("SIZE_UPDATE"),
