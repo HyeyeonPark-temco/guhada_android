@@ -88,6 +88,7 @@ class UserServer {
 
         /**
          * 이메일로 인증번호 전송하기
+         * User 중 email, name 필드만 입력
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =

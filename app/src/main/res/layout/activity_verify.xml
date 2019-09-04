@@ -2,6 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.VerifyViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@string/verify_title_mobile" />
+            android:text="@{viewModel.mMobileVerification ? @string/verify_title_mobile : @string/verify_title_mobile + ` ` + @string/verify_notverified}" />
 
         <TextView
             style="@style/VerifyTitleTextStyle"
@@ -164,35 +173,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@string/verify_title_email" />
+            android:text="@{viewModel.mEmailVerification ? @string/verify_title_email : @string/verify_title_email + ` ` + @string/verify_notverified}" />
 
 
-        <io.temco.guhada.view.custom.BorderEditTextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            app:hint="@string/verify_hint_email">
+            android:background="@drawable/border_all_whitethree">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="1dp"
+                android:background="@color/pale_grey"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:text="@{viewModel.mEmail}"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_13" />
 
             <Button
                 style="@style/VerifyButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
+                android:layout_gravity="right"
+                android:onClick="@{()->viewModel.onClickResend()}"
                 android:text="@string/verify_button_resend"
+                android:visibility="@{viewModel.mActiveSendButton ? View.VISIBLE : View.GONE, default = gone}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-        </io.temco.guhada.view.custom.BorderEditTextView>
+        </FrameLayout>
 
 
         <io.temco.guhada.view.custom.BorderEditTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:visibility="gone"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            app:hint="@string/verify_hint_number">
+            android:visibility="@{viewModel.mActiveSendButton ? View.VISIBLE : View.GONE, default = gone}"
+            app:hint="@string/verify_hint_number"
+            app:max="6"
+            app:txt="@={viewModel.mVerificationNumber}"
+            app:type="number">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -207,9 +235,10 @@
                     android:id="@+id/textview_verify_minute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{viewModel.mTimerMinute}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_13" />
-                <!--android:text="@{viewModel.timerMinute}"-->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -223,9 +252,10 @@
                     android:id="@+id/textview_verify_second"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{viewModel.mTimerSecond}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_13" />
-                <!--android:text="@{viewModel.timerSecond}"-->
+
             </LinearLayout>
         </io.temco.guhada.view.custom.BorderEditTextView>
 
@@ -236,7 +266,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/cloudy_blue"
-            android:text="@string/verify_button_send" />
+            android:background="@color/common_blue_purple"
+            android:onClick="@{()->viewModel.onClickSend()}"
+            android:text="@{viewModel.mActiveSendButton ? @string/verify_button_finish : @string/verify_button_send, default = @string/verify_button_send}" />
     </LinearLayout>
 </layout>
