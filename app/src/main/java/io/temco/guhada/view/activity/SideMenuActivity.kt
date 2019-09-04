@@ -139,7 +139,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             if (isLogin) {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out))
                 mBinding.layoutHeader.layoutLogin.setOnClickListener{
-                    Preferences.clearToken()
+                    Preferences.clearToken(true)
                     changeLoginStatus(false)
                 }
             } else {
@@ -158,7 +158,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         if (exp > current) {
             return true
         } else {
-            Preferences.clearToken()
+            Preferences.clearToken(true)
             return false
         }
     }

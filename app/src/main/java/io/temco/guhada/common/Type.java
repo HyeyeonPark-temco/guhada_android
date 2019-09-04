@@ -61,7 +61,8 @@ public class Type {
         REPORT_WRITE,
         CONFIRM_PURCHASE,
         COUPON_DOWNLOAD,
-        SELLER_INFO
+        SELLER_INFO,
+        MYPAGE_TEMP_LOGIN
     }
 
     // Main

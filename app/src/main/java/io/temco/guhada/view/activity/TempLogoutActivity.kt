@@ -30,7 +30,7 @@ class TempLogoutActivity : BindActivity<ActivityTemplogoutBinding>() {
 
         mBinding.onClickClearAccessToken = View.OnClickListener {
             loadingDialog.execute {
-                Preferences.clearToken()
+                Preferences.clearToken(true)
                 loadingDialog.dismiss()
             }
         }

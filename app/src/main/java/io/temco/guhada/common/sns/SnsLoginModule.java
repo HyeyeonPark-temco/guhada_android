@@ -46,6 +46,7 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.sns.kakao.KakaoSessionCallback;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.naver.NaverUser;
@@ -207,6 +208,7 @@ public class SnsLoginModule {
 
     public static void googleLogin(GoogleSignInAccount account, OnServerListener snsLoginListener) {
         if (account != null) {
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("googleLogin","account.getEmail()",account.getEmail(),"account.getId()",account.getId());
             SnsUser user = createSnsUser(account.getEmail(), account.getId(), "GOOGLE", account.getDisplayName(), account.getPhotoUrl() != null ? account.getPhotoUrl().getPath() : "");
             UserServer.googleLogin(snsLoginListener, user);
         }

@@ -14,6 +14,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.FragmentProductBinding;
+import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.ProductListPagerAdapter;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
@@ -89,7 +90,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 break;
 
             case R.id.image_side_menu:
-                CommonUtil.startMenuActivity((Activity) getContext(), Flag.RequestCode.SIDE_MENU_FROM_PRODUCT_FILTER);
+                CommonUtil.startMenuActivity((BindActivity) getContext(), Flag.RequestCode.SIDE_MENU_FROM_PRODUCT_FILTER);
                 break;
 
             case R.id.image_delete:

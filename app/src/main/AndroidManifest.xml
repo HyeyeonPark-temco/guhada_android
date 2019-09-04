@@ -64,7 +64,8 @@
         <!-- Main -->
         <activity
             android:name=".view.activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- Category -->
         <activity
@@ -183,6 +184,13 @@
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".view.activity.MyPageTempLoginActivity"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.Transparent2"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
 
         <!-- Review Write Modify -->
         <activity

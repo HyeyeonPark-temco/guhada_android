@@ -6,6 +6,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
 
     // -------- LOCAL VALUE --------
     public B mBinding;
+    public boolean isClickAble = true;
 
     // NFC
     private NfcAdapter mNfcAdapter;
@@ -44,6 +46,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
     private final String TAG_COMPANY = "TAG_COMPANY";
     private final String TAG_ID = "TAG_ID";
     private final String COMPANY_NAME = "GUHADA";
+    private Handler handler;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -61,6 +64,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
                 initNfc();
             }
             init();
+            handler = new Handler(this.getMainLooper());
         }catch (Exception e){
             if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
         }
@@ -76,10 +80,8 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (mNfcAdapter == null) {
             // 미지원 기기
-            if (CustomLog.INSTANCE.getFlag())
-                CustomLog.INSTANCE.L("BindActivity", this.getClass().getSimpleName());
-            if ("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName()))
-                showToast(R.string.common_message_nfc_unsupported);
+            if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L("BindActivity", this.getClass().getSimpleName());
+            //if ("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())) showToast(R.string.common_message_nfc_unsupported);
         } else {
             if (mNfcAdapter.isEnabled()) {
                 Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -194,5 +196,14 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }*/
+    }
+
+    public void clickCheck(){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isClickAble = true;
+            }
+        },500);
     }
 }
