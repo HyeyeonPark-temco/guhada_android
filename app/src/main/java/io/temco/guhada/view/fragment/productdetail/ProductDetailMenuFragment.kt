@@ -23,6 +23,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
 
     override fun init() {
         mBinding.recyclerviewProductdetailMenu.adapter = ProductDetailOptionAdapter(mViewModel).apply {
+            mViewModel.product.options
             this.mOptionInfoList = mViewModel.product.optionInfos?.toMutableList()
                     ?: mutableListOf()
         }

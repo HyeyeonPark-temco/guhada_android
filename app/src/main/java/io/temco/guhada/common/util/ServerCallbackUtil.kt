@@ -88,8 +88,11 @@ class ServerCallbackUtil {
                                 productNotFoundTask: (BaseModel<*>) -> Unit = {},
                                 dataIsNull: (Any) -> Unit = {},
                                 userLikeNotFoundTask: () -> Unit = {},
-                                claimNotFoundTask: (BaseModel<*>) -> Unit = {}
-                                ) {
+                                claimNotFoundTask: (BaseModel<*>) -> Unit = {},
+                                invalidVerificationNumberTask: (BaseModel<*>) -> Unit = {},
+                                wrongInfoTask: (BaseModel<*>) -> Unit = {}
+
+        ) {
             if (o != null) {
                 if (success) {
                     val model = o as BaseModel<*>
@@ -101,6 +104,8 @@ class ServerCallbackUtil {
                         ResultCode.RUNTIME_EXCEPTION_ERROR.flag -> serverRuntimeErrorTask(model)
                         ResultCode.SERVER_LOGIN_FAILED.flag -> serverLoginErrorTask(model)
                         ResultCode.CLAIM_NOT_FOUND_ERROR.flag -> claimNotFoundTask(model)
+                        ResultCode.INVALID_VERIFICATION_NUMBER.flag -> invalidVerificationNumberTask(model)
+                        ResultCode.WRONG_INFORMATION.flag -> wrongInfoTask(model)
                         else -> dataIsNull(model)
                     }
                 } else {
@@ -116,11 +121,11 @@ class ServerCallbackUtil {
                         }
 
                     } else {
-                        if(o is BaseErrorModel){
+                        if (o is BaseErrorModel) {
                             var base = BaseModel<Any>()
                             base.errorModel = o
                             failedTask(base)
-                        }else{
+                        } else {
                             var base = BaseModel<Any>()
                             base.error = ""
                             failedTask(base)

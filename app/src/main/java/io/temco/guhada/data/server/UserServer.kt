@@ -88,6 +88,7 @@ class UserServer {
 
         /**
          * 이메일로 인증번호 전송하기
+         * User 중 email, name 필드만 입력
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
@@ -125,11 +126,11 @@ class UserServer {
 
         /**
          * 나이스 본인인증 호출 토큰 가져오기
-         * BASE URL: http://13.209.10.68/
+         * BASE URL: https://stg.order.guhada.com
          */
         @JvmStatic
         fun getVerifyPhoneToken(listener: OnServerListener) =
-                RetrofitManager.createService(Type.Server.LOCAL, UserService::class.java, true, false).getVerifyToken().enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<String>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "나이스 본인인증 토큰 호출 오류"))
+                RetrofitManager.createService(Type.Server.STG_ORDER, UserService::class.java, true, false).getVerifyToken().enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<String>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "나이스 본인인증 토큰 호출 오류"))
 
         /**
          * 유저 정보 가져오기
