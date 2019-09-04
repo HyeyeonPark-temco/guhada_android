@@ -5,6 +5,7 @@ import java.io.Serializable
 /**
  * 상품 옵션 정보 클래스
  * 앱에서 사용되는 형태로 생성됨
+ * field: separatedOptions 로 받음
  * @see OptionInfo 웹에서 사용되는 형태의 클래스
  * @author Hyeyeon Park
  */
