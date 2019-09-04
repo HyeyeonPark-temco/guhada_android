@@ -473,4 +473,22 @@
         <item name="android:background">@color/transparent</item>
     </style>
 
+    <!-- VERIFY -->
+    <style name="VerifyTitleTextStyle" parent="TextBold">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_15</item>
+    </style>
+
+    <style name="VerifyDescriptionTextStyle" parent="TextMedium">
+        <item name="android:textColor">@color/warm_grey_three</item>
+        <item name="android:textSize">@dimen/text_12</item>
+    </style>
+
+    <style name="VerifyButtonStyle" parent="borderlessStyle">
+        <item name="android:textColor">@color/common_white</item>
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/common_blue_purple</item>
+    </style>
+
 </resources>

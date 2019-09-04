@@ -77,6 +77,7 @@
     <color name="disable_border">#ebebeb</color>
     <color name="color_dbdbdb">#dbdbdb</color>
     <color name="color_fbfbfb">#fbfbfb</color>
+    <color name="cloudy_blue">#b7bec4</color>
 
 
 </resources>

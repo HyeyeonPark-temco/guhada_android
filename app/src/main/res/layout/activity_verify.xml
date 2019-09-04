@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include_verify_header"
+            layout="@layout/header_common_closebutton" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/line" />
+
+        <TextView
+            style="@style/VerifyTitleTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/verify_title_mobile" />
+
+        <TextView
+            style="@style/VerifyTitleTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="@string/verify_subtitle_mobile"
+            android:textColor="@color/greyish_brown" />
+
+        <Button
+            style="@style/VerifyButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/verify_button_mobile" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/drawble_circle_dot2" />
+
+            <TextView
+                style="@style/VerifyDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/verify_description1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/drawble_circle_dot2" />
+
+            <TextView
+                style="@style/VerifyDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/verify_description2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/drawble_circle_dot2" />
+
+            <TextView
+                style="@style/VerifyDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/verify_description3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/drawble_circle_dot2" />
+
+            <TextView
+                style="@style/VerifyDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/verify_description4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/drawble_circle_dot2" />
+
+            <TextView
+                style="@style/VerifyDescriptionTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/verify_description5" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/line_6" />
+
+        <TextView
+            style="@style/VerifyTitleTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/verify_title_email" />
+
+
+        <io.temco.guhada.view.custom.BorderEditTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:hint="@string/verify_hint_email">
+
+            <Button
+                style="@style/VerifyButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:text="@string/verify_button_resend"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </io.temco.guhada.view.custom.BorderEditTextView>
+
+
+        <io.temco.guhada.view.custom.BorderEditTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:hint="@string/verify_hint_number">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textview_verify_minute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_13" />
+                <!--android:text="@{viewModel.timerMinute}"-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:text=":"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/textview_verify_second"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_13" />
+                <!--android:text="@{viewModel.timerSecond}"-->
+            </LinearLayout>
+        </io.temco.guhada.view.custom.BorderEditTextView>
+
+        <Button
+            style="@style/VerifyButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/cloudy_blue"
+            android:text="@string/verify_button_send" />
+    </LinearLayout>
+</layout>
