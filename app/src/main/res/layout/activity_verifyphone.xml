@@ -6,9 +6,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <WebView
-            android:id="@+id/webview_verifyphone"
+        <include
+            android:id="@+id/include_verifyphone_header"
+            layout="@layout/header_common_closebutton" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:fillViewport="true">
+
+            <WebView
+                android:id="@+id/webview_verifyphone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

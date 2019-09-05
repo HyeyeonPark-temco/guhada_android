@@ -45,6 +45,9 @@ class VerifyViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
+    var mVerifyPhoneTask: () -> Unit = {}
+
+    // 이메일로 인증번호 전송
     fun onClickSend() {
         if (!mActiveSendButton.get()) {
             sendNumber()
@@ -53,9 +56,11 @@ class VerifyViewModel : BaseObservableViewModel() {
         }
     }
 
-    fun onClickResend() {
-        sendNumber()
-    }
+    // 이메일로 인증번호 재전송
+    fun onClickResend() = sendNumber()
+
+    // 휴대폰 본인인증
+    fun onClickVerifyPhone() = mVerifyPhoneTask()
 
     private fun startTimer(minute: String, second: String) {
         CountTimer.startVerifyNumberTimer(second, minute, object : OnTimerListener {
@@ -74,6 +79,7 @@ class VerifyViewModel : BaseObservableViewModel() {
         })
     }
 
+    // 이메일로 인증번호 전송
     private fun sendNumber() {
         UserServer.verifyEmail(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -92,6 +98,7 @@ class VerifyViewModel : BaseObservableViewModel() {
         })
     }
 
+    // TODO 인증 완료 화면 미정 [2019.09.05]
     private fun verifyNumber() {
         UserServer.verifyNumber(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -110,4 +117,5 @@ class VerifyViewModel : BaseObservableViewModel() {
             this.verificationNumber = mVerificationNumber
         })
     }
+
 }

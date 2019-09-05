@@ -41,6 +41,18 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void init() {
+        initHeader();
+        getToken();
+    }
+
+    private void initHeader() {
+        mBinding.includeVerifyphoneHeader.setOnClickCloseButton(v -> {
+            setResult(RESULT_CANCELED);
+            finish();
+        });
+    }
+
+    private void getToken(){
         UserServer.getVerifyPhoneToken((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;

@@ -18,19 +18,33 @@
 
         <include
             android:id="@+id/include_verify_header"
-            layout="@layout/header_common_closebutton" />
+            layout="@layout/header_common_backbutton" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@drawable/line" />
 
-        <TextView
-            style="@style/VerifyTitleTextStyle"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@{viewModel.mMobileVerification ? @string/verify_title_mobile : @string/verify_title_mobile + ` ` + @string/verify_notverified}" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/VerifyTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verify_title_mobile" />
+
+            <TextView
+                style="@style/VerifyTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@{viewModel.mMobileVerification ? @color/common_blue_purple : @color/brick , default = @color/brick}"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.mMobileVerification ? @string/verify_verified : @string/verify_notverified, default = @string/verify_notverified}" />
+        </LinearLayout>
+
 
         <TextView
             style="@style/VerifyTitleTextStyle"
@@ -48,7 +62,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:text="@string/verify_button_mobile" />
+            android:clickable="@{!viewModel.mMobileVerification}"
+            android:onClick="@{()->viewModel.onClickVerifyPhone()}"
+            android:text="@{viewModel.mMobileVerification ? @string/verify_button_finish : @string/verify_button_mobile, default = @string/verify_button_mobile }" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -168,13 +184,25 @@
             android:layout_marginEnd="20dp"
             android:background="@color/line_6" />
 
-        <TextView
-            style="@style/VerifyTitleTextStyle"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@{viewModel.mEmailVerification ? @string/verify_title_email : @string/verify_title_email + ` ` + @string/verify_notverified}" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/VerifyTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verify_title_email" />
 
+            <TextView
+                style="@style/VerifyTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@{viewModel.mEmailVerification ? @color/common_blue_purple : @color/brick}"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.mEmailVerification ? @string/verify_verified : @string/verify_notverified, default = @string/verify_notverified}" />
+        </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -268,6 +296,7 @@
             android:layout_marginEnd="20dp"
             android:background="@color/common_blue_purple"
             android:onClick="@{()->viewModel.onClickSend()}"
-            android:text="@{viewModel.mActiveSendButton ? @string/verify_button_finish : @string/verify_button_send, default = @string/verify_button_send}" />
+            android:clickable="@{!viewModel.mEmailVerification}"
+            android:text="@{viewModel.mEmailVerification || viewModel.mActiveSendButton ? @string/verify_button_finish : @string/verify_button_send, default = @string/verify_button_send}" />
     </LinearLayout>
 </layout>
