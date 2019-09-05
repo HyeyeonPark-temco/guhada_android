@@ -3,13 +3,14 @@ package io.temco.guhada.common
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 
 /**
  * 정사각형 Image View
  * @author HyeyeonPark
  * @since 2019.08.21
  */
-class SquareImageView: ImageView {
+class SquareImageView: AppCompatImageView {
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
