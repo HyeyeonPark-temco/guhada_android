@@ -32,6 +32,8 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
         mViewModel = VerifyViewModel().apply {
             this.mEmail = intent.getStringExtra("email") ?: ""
             this.mName = intent.getStringExtra("name") ?: ""
+            this.mEmailVerification = ObservableBoolean(intent.getBooleanExtra("emailVerification", false))
+            this.mMobileVerification = ObservableBoolean(intent.getBooleanExtra("mobileVerification", false))
             this.mVerifyPhoneTask = {
                 val intent = Intent(this@VerifyActivity, VerifyPhoneActivity::class.java)
                 this@VerifyActivity.startActivityForResult(intent, RequestCode.VERIFY_PHONE.flag)
@@ -41,7 +43,17 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
 
     private fun initHeader() {
         mBinding.includeVerifyHeader.title = resources.getString(R.string.verify_title)
-        mBinding.includeVerifyHeader.onClickBackButton = View.OnClickListener { finish() }
+        mBinding.includeVerifyHeader.onClickBackButton = View.OnClickListener { closeActivity() }
+    }
+
+    override fun onBackPressed() = closeActivity()
+
+    private fun closeActivity() {
+        this@VerifyActivity.intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
+        this@VerifyActivity.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
+
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

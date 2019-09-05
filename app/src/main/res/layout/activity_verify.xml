@@ -62,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:clickable="@{!viewModel.mMobileVerification}"
             android:onClick="@{()->viewModel.onClickVerifyPhone()}"
             android:text="@{viewModel.mMobileVerification ? @string/verify_button_finish : @string/verify_button_mobile, default = @string/verify_button_mobile }" />
 
@@ -295,6 +296,7 @@
             android:layout_marginEnd="20dp"
             android:background="@color/common_blue_purple"
             android:onClick="@{()->viewModel.onClickSend()}"
-            android:text="@{viewModel.mActiveSendButton ? @string/verify_button_finish : @string/verify_button_send, default = @string/verify_button_send}" />
+            android:clickable="@{!viewModel.mEmailVerification}"
+            android:text="@{viewModel.mEmailVerification || viewModel.mActiveSendButton ? @string/verify_button_finish : @string/verify_button_send, default = @string/verify_button_send}" />
     </LinearLayout>
 </layout>

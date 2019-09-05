@@ -18,6 +18,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
@@ -87,10 +88,19 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mLoadingIndicatorUtil.hide()
             }
 
-            override fun closeActivity(){
+            override fun closeActivity() {
                 finish()
             }
-        })
+        }).apply {
+            this.mVerifyTask = {
+                val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
+                intent.putExtra("name", mViewModel.order.user.name)
+                intent.putExtra("email", mViewModel.order.user.email)
+                intent.putExtra("emailVerification", mViewModel.order.user.emailVerify)
+                intent.putExtra("mobileVerification", false) // TODO 휴대폰 본인인증 여부 필드 필요 [2019.09.04]
+                startActivityForResult(intent, RequestCode.VERIFY.flag)
+            }
+        }
 
         // [장바구니]에서 진입
         if (intent.getSerializableExtra("productList") != null) {
@@ -248,6 +258,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     }
                 } else {
                     // 배송지 변경 취소
+                }
+            }
+            RequestCode.VERIFY.flag -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    val mobileVerification = data?.getBooleanExtra("mobileVerification", false)?:false
+                    val emailVerification = data?.getBooleanExtra("emailVerification", false)?:false
+                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification && emailVerification) View.GONE else View.VISIBLE
+                    mBinding.executePendingBindings()
                 }
             }
         }

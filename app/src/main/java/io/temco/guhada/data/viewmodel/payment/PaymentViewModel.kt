@@ -136,6 +136,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 상품 리스트
     var cartIdList: MutableList<Int> = mutableListOf()
 
+    var mVerifyTask: () -> Unit = {}
+
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
             executeByResultCode(success, o,
@@ -344,6 +346,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
         }
     }
+
+    // 본인인증
+    fun onClickVerify() = mVerifyTask()
 
     private fun addShippingAddress(accessToken: String?) {
         if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
