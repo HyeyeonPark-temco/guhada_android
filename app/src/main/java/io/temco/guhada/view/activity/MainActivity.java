@@ -122,6 +122,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("MainActivity", "onActivityResult", "requestCode",requestCode);
+        String msg = "";
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case Flag.RequestCode.DELIVERY:
@@ -180,40 +181,55 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 case Flag.RequestCode.REVIEW_WRITE:
                     EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_WRITE, null));
                     break;
-
                 case Flag.RequestCode.REVIEW_MODIFY:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_MODIFY, resultCode));
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_MODIFY, null));
                     break;
+
                 case Flag.RequestCode.KAKAO_LOGIN:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
-                    if (CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("MainActivity", "RC_GOOGLE_LOGIN", resultCode);
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
             }
         } else {
             switch (requestCode) {
                 case Flag.RequestCode.WRITE_CLAIM:
                     //   ToastUtil.showMessage(getResources().getString(R.string.common_message_error));
                     break;
+
                 case Flag.RequestCode.KAKAO_LOGIN:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
-                    if (CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("MainActivity", "RC_GOOGLE_LOGIN", resultCode);
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, resultCode));
+                    msg = "";
+                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
             }
             super.onActivityResult(requestCode, resultCode, data);
         }

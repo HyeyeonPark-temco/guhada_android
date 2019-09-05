@@ -20,7 +20,7 @@ class TempBbsListActivity : BindActivity<ActivityTempbbslistBinding>(), OnClickS
 
     override fun getBaseTag(): String = this@TempBbsListActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_tempbbslist
-    override fun getViewType(): Type.View = Type.View.SEARCH_WORD
+    override fun getViewType(): Type.View = Type.View.COMMUNITY_TEMP_LIST
 
     override fun init() {
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)

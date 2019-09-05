@@ -92,14 +92,18 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         when (v.id) {
             ////////////////////////////////////////////////
             // Side Menu
-            R.id.image_home -> CommonUtil.debug(baseTag, "image_home")
-
-            R.id.image_setting -> CommonUtil.debug(baseTag, "image_setting")
-
+            R.id.image_home -> {
+                BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true)
+                this@SideMenuActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                this@SideMenuActivity.onBackPressed()
+            }
+            R.id.image_setting -> {
+                CommonUtil.debug(baseTag, "image_setting")
+                startActivityForResult(Intent(this@SideMenuActivity, UserClaimGuhadaActivity::class.java), 9)
+            }
             R.id.image_close -> {
                 onBackPressed()
             }
-
             R.id.layout_brand -> BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND)
 
             // Sub Menu

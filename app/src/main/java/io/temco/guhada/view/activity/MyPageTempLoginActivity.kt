@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import com.auth0.android.jwt.JWT
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.FacebookSdk
@@ -36,7 +36,9 @@ import java.util.*
 
 /**
  *
- * 남은 작업 에러 표시 로그인한 사용자와 다른 sns로 인증 하려 할때 처리
+ * @author park jungho
+ * 19.09.05
+ * 마이페이지 sns 회원정보를 확인 할때 사용하는 Activity
  *
  */
 class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
@@ -63,38 +65,36 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             }
 
             override fun redirectTermsActivity(type: Int, data: Any) {
-                mViewModel.setSnsUser(data)
+                setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                /*mViewModel.setSnsUser(data)
                 val intent = Intent(this@MyPageTempLoginActivity, TermsActivity::class.java)
-                //                intent.putExtra("user", (SnsUser) data);
-                startActivityForResult(intent, type)
+                startActivityForResult(intent, type)*/
             }
 
             override fun redirectMainActivity(data: Token) {
-                Preferences.setToken(data)
-
+                val id = JWT(data.accessToken!!).getClaim("userId").asString()
+                setResultFinish(Activity.RESULT_OK,id+"")
+                /*Preferences.setToken(data)
                 val token = Preferences.getToken()
-                Toast.makeText(this@MyPageTempLoginActivity, "[LOGIN SUCCESS] " + token!!.accessToken!!, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MyPageTempLoginActivity, "[LOGIN SUCCESS] " + token!!.accessToken!!, Toast.LENGTH_SHORT).show()*/
             }
 
             override fun showMessage(message: String) {
-                ToastUtil.showMessage(message)
+                setResultFinish(Activity.RESULT_CANCELED,message)
             }
         }
 
         SnsLoginModule.initFacebookLogin(object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 val graphRequest = GraphRequest.newMeRequest(loginResult.accessToken) { `object`, response -> mViewModel.facebookLogin(`object`, getSnsLoginServerListener()) }
-
                 val bundle = Bundle()
                 bundle.putString("fields", "id,name,email,picture")
                 graphRequest.parameters = bundle
                 graphRequest.executeAsync()
             }
-
             override fun onCancel() {
                 CommonUtil.debug("[FACEBOOK] CANCEL")
             }
-
             override fun onError(error: FacebookException) {
                 CommonUtil.debug("[FACEBOOK] ERROR: $error")
             }
@@ -123,25 +123,23 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             }
 
             override fun redirectJoinActivity() {
-                startActivity(Intent(applicationContext, JoinActivity::class.java))
+                setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
             }
 
             override fun redirectFindAccountActivity() {
-                startActivity(Intent(applicationContext, FindAccountActivity::class.java))
+                setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
             }
 
             override fun showMessage(message: String) {
-                ToastUtil.showMessage(message)
+                setResultFinish(Activity.RESULT_CANCELED,message)
             }
 
             override fun showSnackBar(message: String) {
-                CommonUtil.showSnackBar(mBinding.linearlayoutLogin, message)
+                setResultFinish(Activity.RESULT_CANCELED,message)
             }
 
             override fun closeActivity(resultCode: Int) {
-                setResult(resultCode)
-                this@MyPageTempLoginActivity.overridePendingTransition(0, 0)
-                finish()
+                setResultFinish(resultCode,"")
             }
         })
         mBinding.viewModel = mViewModel
@@ -166,7 +164,6 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         SnsLoginModule.removeKakaoCallback()
-        //        SnsLoginModule.stopFacebookTracking();
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -220,11 +217,8 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
                     Flag.ResultCode.SUCCESS -> {
                         // SNS 로그인
                         val token = model.data as Token
-                        Log.e("TOKEN SNS", token.accessToken)
-                        Preferences.setToken(token)
-                        setResult(Activity.RESULT_OK)
-                        finish()
-                        this@MyPageTempLoginActivity.overridePendingTransition(0, 0)
+                        val id = JWT(token.accessToken!!).getClaim("userId").asString()
+                        setResultFinish(Activity.RESULT_OK,""+id)
                     }
                     Flag.ResultCode.DATA_NOT_FOUND ->
                         // SNS 회원가입
@@ -236,12 +230,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
                                     t.accessToken = m.data.accessToken
                                     t.refreshToken = m.data.refreshToken
                                     t.expiresIn = m.data.expiresIn
-                                    Log.e("TOKEN", t.accessToken)
-
-                                    Preferences.setToken(t)
-                                    setResult(Activity.RESULT_OK)
-                                    this@MyPageTempLoginActivity.overridePendingTransition(0, 0)
-                                    finish()
+                                    setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
                                 } else {
                                     ToastUtil.showMessage(m.message)
                                 }
@@ -259,4 +248,14 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
         this@MyPageTempLoginActivity.overridePendingTransition(0, 0)
         super.onBackPressed()
     }
+
+
+    private fun setResultFinish(resultCode : Int, msg : String){
+        var intent = Intent()
+        intent.putExtra("resultMsg",msg)
+        setResult(resultCode)
+        this@MyPageTempLoginActivity.overridePendingTransition(0, 0)
+        finish()
+    }
+
 }

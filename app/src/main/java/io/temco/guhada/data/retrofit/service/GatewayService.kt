@@ -35,5 +35,4 @@ interface GatewayService {
     fun uploadImagePath2(@Path("uploadPath") uploadPath: String, @Part file : MultipartBody.Part): Call<BaseModel<ImageResponse>>
 
 
-
 }

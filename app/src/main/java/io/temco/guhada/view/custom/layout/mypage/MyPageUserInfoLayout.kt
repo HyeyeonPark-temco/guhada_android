@@ -3,6 +3,7 @@ package io.temco.guhada.view.custom.layout.mypage
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.util.AttributeSet
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
@@ -11,11 +12,9 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnLoginListener
-import io.temco.guhada.common.listener.OnSnsLoginListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.account.LoginViewModel
 import io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageUserinfoBinding
@@ -37,7 +36,6 @@ class MyPageUserInfoLayout constructor(
 ) : BaseListLayout<CustomlayoutMypageUserinfoBinding, MyPageUserInfoViewModel>(context, attrs, defStyleAttr), OnLoginListener {
 
     private lateinit var mUserInfoViewModel: LoginViewModel
-    private lateinit var mLoginListener: OnSnsLoginListener
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_userinfo
@@ -74,8 +72,22 @@ class MyPageUserInfoLayout constructor(
         }
 
         EventBusHelper.mSubject.subscribe {
-            var resultCode = it.data as Int
+            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----",it.data.toString())
+            var result = it.data.toString().split(",")
+            var resultCode = result[0].toInt()
+            var message =  result[1]
             if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----",resultCode,"resultCode",resultCode)
+            if(resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)){
+                var returnId = message.toLong()
+                if(returnId == CommonUtil.checkUserId()){
+                    successLogin()
+                }else{
+                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                }
+            }else{
+                if(TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
+                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
+            }
         }
     }
 
@@ -101,7 +113,7 @@ class MyPageUserInfoLayout constructor(
     override fun redirectFindAccountActivity() {  }
 
     override fun showMessage(message: String) {
-        ToastUtil.showMessage(message)
+        CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
     }
 
     override fun showSnackBar(message: String) {

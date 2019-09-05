@@ -74,8 +74,8 @@ class MyPageReviewLayout constructor(
                 }
         )
 
-        EventBusHelper.mSubject.subscribe { requestCode ->
-            when (requestCode.requestCode) {
+        EventBusHelper.mSubject.subscribe { data ->
+            when (data.requestCode) {
                 RequestCode.REVIEW_WRITE.flag -> {
                     mViewModel.reloadRecyclerViewAll()
                 }

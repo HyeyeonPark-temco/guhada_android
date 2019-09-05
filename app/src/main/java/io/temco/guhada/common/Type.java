@@ -63,6 +63,9 @@ public class Type {
         COUPON_DOWNLOAD,
         SELLER_INFO,
         MYPAGE_TEMP_LOGIN,
+        USERCLAIM_GUHADA,
+        USERCLAIM_SELLER,
+        COMMUNITY_TEMP_LIST,
         VERIFY
     }
 

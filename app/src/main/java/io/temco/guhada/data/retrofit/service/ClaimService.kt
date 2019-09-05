@@ -149,4 +149,46 @@ interface ClaimService {
     @POST("users/report")
     fun saveReport(@Header("Authorization") accessToken: String, @Body report: ReportResponse): Call<BaseModel<Any>>
 
+
+    /**
+     * User 문의하기 type 가져오기 - Guhada 문의
+     */
+    @GET("/users/claims/types")
+    fun getUserClaimGuhadaTypeList(): Call<BaseModel<UserClaimGuhadaType>>
+
+
+    /**
+     * User 문의하기 이미지 업로드 URL 가져오기
+     */
+    @GET("/users/claims/image-upload-url")
+    fun gettUserClaimGuhadaImage(@Header("Authorization") accessToken: String): Call<BaseModel<JsonObject>>
+
+
+    /**
+     * USER 구하다 문의하기
+     */
+    @POST("/users/{userId}/claims")
+    fun saveUserClaimGuhada(@Header("Authorization") accessToken: String, @Path("userId") userId : Long, @Body param: UserClaimGuhadaResponse): Call<BaseModel<Any>>
+
+
+    /**
+     * 판매자 문의하기 type 가져오기
+     */
+    @GET("/users/seller-claims/types")
+    fun getUserClaimSellerTypeList(): Call<BaseModel<SellerClaimType>>
+
+
+    /**
+     * 판매자 문의하기 이미지 업로드 URL 가져오기
+     */
+    @GET("/users/seller-claims/image-upload-url")
+    fun getUserClaimSellerImage(@Header("Authorization") accessToken: String): Call<BaseModel<JsonObject>>
+
+
+    /**
+     * 판매자 문의하기
+     */
+    @POST("/users/{userId}/seller-claims")
+    fun saveUserClaimSeller(@Header("Authorization") accessToken: String, @Path("userId") userId : Long, @Body param : UserClaimSellerResponse): Call<BaseModel<Any>>
+
 }

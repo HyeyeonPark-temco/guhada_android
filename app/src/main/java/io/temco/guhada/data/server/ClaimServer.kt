@@ -269,7 +269,7 @@ open class ClaimServer {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 
@@ -283,12 +283,11 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
-
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 
@@ -319,7 +318,153 @@ open class ClaimServer {
                         }
                     }
                 }
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                    if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
 
+
+
+        /**
+         * User 문의하기 type 가져오기 - Guhada 문의
+         */
+        @JvmStatic
+        fun getUserClaimGuhadaTypeList(listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                    .getUserClaimGuhadaTypeList().enqueue(object : Callback<BaseModel<UserClaimGuhadaType>> {
+                        override fun onResponse(call: Call<BaseModel<UserClaimGuhadaType>>, response: Response<BaseModel<UserClaimGuhadaType>>) {
+                            listener.onResult(response.isSuccessful, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<UserClaimGuhadaType>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * User 문의하기 이미지 업로드 URL 가져오기
+         */
+        @JvmStatic
+        fun gettUserClaimGuhadaImage(listener: OnServerListener, accessToken: String) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                    .gettUserClaimGuhadaImage(accessToken).enqueue(object : Callback<BaseModel<JsonObject>> {
+                        override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                            listener.onResult(response.isSuccessful, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * USER 구하다 문의하기
+         */
+        @JvmStatic
+        fun saveUserClaimGuhada(listener: OnServerListener, accessToken: String, userId: Long, param: UserClaimGuhadaResponse) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).saveUserClaimGuhada(
+                    accessToken=accessToken, userId=userId,  param=param).enqueue(object : Callback<BaseModel<Any>> {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    if (response.code() in 200..400 && response.body() != null) {
+                        listener.onResult(true, response.body())
+                    } else {
+                        try {
+                            var msg = Message()
+                            var errorBody: String? = response.errorBody()?.string() ?: null
+                            if (!errorBody.isNullOrEmpty()) {
+                                var gson = Gson()
+                                msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                            }
+                            var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                            if (CustomLog.flag) CustomLog.L("saveReport", "onResponse body", error.toString())
+                            listener.onResult(false, error)
+                        } catch (e: Exception) {
+                            if (CustomLog.flag) CustomLog.E(e)
+                            listener.onResult(false, null)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                    if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+
+
+
+
+
+        /**
+         * 판매자 문의하기 type 가져오기
+         */
+        @JvmStatic
+        fun getUserClaimSellerTypeList(listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                    .getUserClaimSellerTypeList().enqueue(object : Callback<BaseModel<SellerClaimType>> {
+                        override fun onResponse(call: Call<BaseModel<SellerClaimType>>, response: Response<BaseModel<SellerClaimType>>) {
+                            listener.onResult(response.isSuccessful, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<SellerClaimType>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 판매자 문의하기 이미지 업로드 URL 가져오기
+         */
+        @JvmStatic
+        fun getUserClaimSellerImage(listener: OnServerListener, accessToken: String) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                    .getUserClaimSellerImage(accessToken).enqueue(object : Callback<BaseModel<JsonObject>> {
+                        override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                            listener.onResult(response.isSuccessful, response.body())
+                        }
+                        override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+        /**
+         * 판매자 문의하기
+         */
+        @JvmStatic
+        fun saveUserClaimSeller(listener: OnServerListener, accessToken: String, userId : Long, param: UserClaimSellerResponse) {
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).saveUserClaimSeller(
+                    accessToken = accessToken, userId=userId, param = param).enqueue(object : Callback<BaseModel<Any>> {
+                override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    if (response.code() in 200..400 && response.body() != null) {
+                        listener.onResult(true, response.body())
+                    } else {
+                        try {
+                            var msg = Message()
+                            var errorBody: String? = response.errorBody()?.string() ?: null
+                            if (!errorBody.isNullOrEmpty()) {
+                                var gson = Gson()
+                                msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                            }
+                            var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                            if (CustomLog.flag) CustomLog.L("saveReport", "onResponse body", error.toString())
+                            listener.onResult(false, error)
+                        } catch (e: Exception) {
+                            if (CustomLog.flag) CustomLog.E(e)
+                            listener.onResult(false, null)
+                        }
+                    }
+                }
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                     if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
                     listener.onResult(false, t.message)
@@ -329,4 +474,5 @@ open class ClaimServer {
 
 
     }
+
 }
