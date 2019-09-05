@@ -1,6 +1,17 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableInt
+import io.temco.guhada.BR
+import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.user.User
+import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 /**
@@ -17,7 +28,88 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  *
  */
 class MyPageUserInfoViewModel (val context : Context) : BaseObservableViewModel() {
+    val repository : MyPageUserInfoRepository = MyPageUserInfoRepository(this)
+
+    var userId : Long = 0L
+    var defaultSnsType = "NAVER"
+    var userEmail = ""
+
+    var checkPasswordConfirm = ObservableBoolean(false)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.checkPasswordConfirm)
+        }
+
+    // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
+    var mypageUserInfoLoginCheckType = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mypageUserInfoLoginCheckType)
+        }
 
 
+    fun userCheck(listener : OnCallBackListener){
+        repository.userData(listener)
+    }
+
+}
+
+
+
+
+class MyPageUserInfoRepository(val mViewModel : MyPageUserInfoViewModel){
+
+    fun userLoginTypeCheck(listener : OnCallBackListener){
+        UserServer.checkExistSnsUser2(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var value = (it as BaseModel<Any>).data
+                        if(CustomLog.flag) CustomLog.L("userLoginTypeCheck value",it)
+                        var typeName = (it as BaseModel<Any>).result.split("_")[0]
+                        if(CustomLog.flag) CustomLog.L("userLoginTypeCheck value","typeName", typeName)
+                        if("email".equals(typeName,ignoreCase = true)){
+                            mViewModel.mypageUserInfoLoginCheckType.set(0)
+                        }else if("naver".equals(typeName,ignoreCase = true)){
+                            mViewModel.mypageUserInfoLoginCheckType.set(1)
+                        }else if("kakao".equals(typeName,ignoreCase = true)){
+                            mViewModel.mypageUserInfoLoginCheckType.set(2)
+                        }else if("facebook".equals(typeName,ignoreCase = true)){
+                            mViewModel.mypageUserInfoLoginCheckType.set(3)
+                        }else if("google".equals(typeName,ignoreCase = true)){
+                            mViewModel.mypageUserInfoLoginCheckType.set(4)
+                        }
+                        listener.callBackListener(true, value)
+                    },
+                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                    failedTask = { listener.callBackListener(false, "failedTask") },
+                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask")},
+                    dataIsNull = { listener.callBackListener(false, it)}
+            )
+        },mViewModel.defaultSnsType, mViewModel.userId.toString(), mViewModel.userEmail)
+    }
+
+
+    fun userData(listener : OnCallBackListener){
+        UserServer.getUserById(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var value = (it as BaseModel<User>).data
+                        if(CustomLog.flag) CustomLog.L("userLoginTypeCheck value",it)
+                        mViewModel.userEmail = value.email
+                        listener.callBackListener(true, value)
+                    },
+                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                    failedTask = { listener.callBackListener(false, "failedTask") },
+                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask")},
+                    dataIsNull = { listener.callBackListener(false, it)}
+            )
+        }, mViewModel.userId.toInt())
+    }
 
 }

@@ -43,6 +43,7 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
         if(CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"init");
         BaseApplication.getInstance().setMoveToMain(null);
         getCategories();
+        setPasswordConfirm();
     }
 
     ////////////////////////////////////////////////
@@ -72,6 +73,10 @@ public class SplashActivity extends BindActivity<ActivitySplashBinding> {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }, 1000);
+    }
+
+    private void setPasswordConfirm(){
+        Preferences.setPasswordConfirm(false);
     }
 
     ////////////////////////////////////////////////

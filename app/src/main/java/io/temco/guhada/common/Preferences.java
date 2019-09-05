@@ -31,6 +31,7 @@ public class Preferences {
     private static final String KEY_USER_TOKEN = "token";
     private static final String KEY_IS_ID_SAVED = "is_id_saved";
     private static final String KEY_SAVED_ID = "saved_id";
+    private static final String KEY_USERINFO_PASSWORD_CONFIRM = "userinfo_password_confirm";
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -185,7 +186,7 @@ public class Preferences {
         }.getType());
     }
 
-    public static void clearToken() {
+    public static void clearToken(boolean isShowToast) {
         SharedPreferences pref = getPreferences();
         if (pref == null) {
             return;
@@ -193,8 +194,10 @@ public class Preferences {
         SharedPreferences.Editor editor = pref.edit();
         editor.remove(KEY_USER_TOKEN);
         editor.apply();
-        ToastUtil.showMessage("로그아웃 되었습니다.");
-        CommonUtil.debug("FINISH CLEAR TOKEN");
+        if(isShowToast){
+            ToastUtil.showMessage("로그아웃 되었습니다.");
+            CommonUtil.debug("FINISH CLEAR TOKEN");
+        }
     }
 
     // is id saved
@@ -226,6 +229,16 @@ public class Preferences {
             return Type.Language.get(Type.Language.KOREA);
         }
         return lang;
+    }
+
+
+
+    // is id saved
+    public static void setPasswordConfirm(boolean flag) {
+        putBoolean(KEY_USERINFO_PASSWORD_CONFIRM, flag);
+    }
+    public static boolean getPasswordConfirm() {
+        return getBoolean(KEY_USERINFO_PASSWORD_CONFIRM, false);
     }
 
     ////////////////////////////////////////////////

@@ -84,7 +84,7 @@ class UserServer {
          */
         @JvmStatic
         fun signIn(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).signIn(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true).signIn(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 로그인 오류"))
 
         /**
          * 이메일로 인증번호 전송하기
@@ -163,7 +163,7 @@ class UserServer {
          */
         @JvmStatic
         fun googleLogin(listener: OnServerListener, user: SnsUser) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).googleLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "구글 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true).googleLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "구글 로그인 오류"))
 
         /**
          * 네이버 로그인
@@ -188,7 +188,7 @@ class UserServer {
 
         @JvmStatic
         fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String, email: String?) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkExistSnsUser(snsType, snsId, email
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true).checkExistSnsUser(snsType, snsId, email
                         ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
@@ -513,6 +513,8 @@ class UserServer {
         }
 
 
+
+
         /**
          * 마이페이지 내가 작성한 리뷰 삭제
          */
@@ -757,6 +759,44 @@ class UserServer {
         fun getBusinessSeller(listener: OnServerListener, sellerId: Long) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getBusinessSeller(sellerId = sellerId).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<BusinessSeller>> { successResponse -> listener.onResult(true, successResponse.body()) })
+
+
+
+        /**
+         * 마이페이지 내가 작성한 리뷰 리스트
+         */
+        @JvmStatic
+        fun checkExistSnsUser2(listener: OnServerListener, snsType: String, snsId: String, email: String) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .checkExistSnsUser(snsType, snsId, email).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            if (response.code() in 200..400 && response.body() != null) {
+                                listener.onResult(true, response.body())
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onResponse body", error.toString())
+                                    listener.onResult(false, error)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
     }
 
 }

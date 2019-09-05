@@ -19,6 +19,7 @@ import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnLoginListener;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.naver.NaverUser;
@@ -116,14 +117,17 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickSignIn() {
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("LoginViewModel onClickSignIn","id",id);
         if (CommonUtil.validateEmail(id)) {
             UserServer.signIn((success, o) -> {
+                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("LoginViewModel onClickSignIn","success",success);
                 if (success) {
                     BaseModel model = ((BaseModel) o);
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("LoginViewModel onClickSignIn","model.resultCode",model.resultCode);
                     switch (model.resultCode) {
                         case Flag.ResultCode.SUCCESS:
                             Token token = (Token) model.data;
-                            if (Preferences.getToken() != null) Preferences.clearToken();
+                            if (Preferences.getToken() != null) Preferences.clearToken(false);
                             Preferences.setToken(token);
                             // save id
                             if (isIdSaved) {

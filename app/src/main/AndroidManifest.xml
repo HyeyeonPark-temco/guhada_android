@@ -64,7 +64,8 @@
         <!-- Main -->
         <activity
             android:name=".view.activity.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- Category -->
         <activity
@@ -188,6 +189,13 @@
             android:theme="@style/Theme.Transparent"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <activity
+            android:name=".view.activity.MyPageTempLoginActivity"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.Transparent2"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+
         <!-- Review Write Modify -->
         <activity
             android:name=".view.activity.ReviewWriteActivity"
@@ -288,6 +296,17 @@
         <activity
             android:name=".view.activity.SellerInfoActivity"
             android:screenOrientation="portrait" />
+
+        <!-- User Claim -->
+        <activity
+            android:name=".view.activity.UserClaimGuhadaActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+
+        <activity
+            android:name=".view.activity.UserClaimSellerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <!-- Kakao -->
         <activity

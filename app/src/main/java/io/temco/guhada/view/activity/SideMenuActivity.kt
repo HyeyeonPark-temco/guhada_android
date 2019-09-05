@@ -92,14 +92,18 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         when (v.id) {
             ////////////////////////////////////////////////
             // Side Menu
-            R.id.image_home -> CommonUtil.debug(baseTag, "image_home")
-
-            R.id.image_setting -> CommonUtil.debug(baseTag, "image_setting")
-
+            R.id.image_home -> {
+                BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true)
+                this@SideMenuActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                this@SideMenuActivity.onBackPressed()
+            }
+            R.id.image_setting -> {
+                CommonUtil.debug(baseTag, "image_setting")
+                startActivityForResult(Intent(this@SideMenuActivity, UserClaimGuhadaActivity::class.java), 9)
+            }
             R.id.image_close -> {
                 onBackPressed()
             }
-
             R.id.layout_brand -> BrandSubActivity.startActivityForResult(this, REQUEST_CODE_BRAND)
 
             // Sub Menu
@@ -139,7 +143,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             if (isLogin) {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out))
                 mBinding.layoutHeader.layoutLogin.setOnClickListener{
-                    Preferences.clearToken()
+                    Preferences.clearToken(true)
                     changeLoginStatus(false)
                 }
             } else {
@@ -158,7 +162,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         if (exp > current) {
             return true
         } else {
-            Preferences.clearToken()
+            Preferences.clearToken(true)
             return false
         }
     }

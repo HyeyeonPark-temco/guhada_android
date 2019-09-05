@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.auth0.android.jwt.Claim;
 import com.auth0.android.jwt.JWT;
@@ -60,6 +61,7 @@ import io.temco.guhada.view.activity.ReportActivity;
 import io.temco.guhada.view.activity.ReviewPointDialogActivity;
 import io.temco.guhada.view.activity.SearchWordActivity;
 import io.temco.guhada.view.activity.SideMenuActivity;
+import io.temco.guhada.view.activity.base.BindActivity;
 
 public class CommonUtil {
 
@@ -137,6 +139,40 @@ public class CommonUtil {
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view.getLayoutParams();
         layoutParams.gravity = Gravity.TOP;
         layoutParams.setMargins(0, (int) resources.getDimension(R.dimen.height_header), 0, 0);
+        view.setLayoutParams(layoutParams);
+
+        snackbar.show();
+    }
+
+
+    /**
+     * Show snack bar
+     * <p>
+     * Fix background-color and margin-top of the snack bar
+     *
+     * @param parentView
+     * @param message
+     * @author Hyeyeon Park
+     */
+    public static void showSnackBarCoordinatorLayout(View parentView, String message) {
+        Snackbar snackbar = Snackbar.make(parentView, message, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setDuration(2500);
+        snackbar.setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE);
+
+        Resources resources = BaseApplication.getInstance().getResources();
+        View view = snackbar.getView();
+        view.setBackgroundColor(resources.getColor(R.color.colorPrimary));
+
+        TextView snackBarTextView = view.findViewById(com.google.android.material.R.id.snackbar_text);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            snackBarTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        } else {
+            snackBarTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.gravity = Gravity.TOP;
+        layoutParams.setMargins(0, 0, 0, 0);
         view.setLayoutParams(layoutParams);
 
         snackbar.show();
@@ -297,9 +333,13 @@ public class CommonUtil {
      * @author park jungho
      * 사이드 메뉴 화면
      */
-    public static void startMenuActivity(Activity act, int res) {
-        Intent intent = new Intent(act, SideMenuActivity.class);
-        act.startActivityForResult(intent, res);
+    public static void startMenuActivity(BindActivity act, int res) {
+        if(act.isClickAble){
+            act.isClickAble = false;
+            Intent intent = new Intent(act, SideMenuActivity.class);
+            act.startActivityForResult(intent, res);
+            act.clickCheck();
+        }
     }
 
     /**
@@ -365,11 +405,11 @@ public class CommonUtil {
                 if (exp.asInt() > current) {
                     return true;
                 } else {
-                    Preferences.clearToken();
+                    Preferences.clearToken(false);
                     return false;
                 }
             }catch (Exception e){
-                Preferences.clearToken();
+                Preferences.clearToken(false);
                 return false;
             }
         }
@@ -388,13 +428,36 @@ public class CommonUtil {
                     String id =  new JWT(token.getAccessToken()).getClaim("userId").asString();
                     return Long.parseLong(id);
                 } else {
-                    Preferences.clearToken();
+                    Preferences.clearToken(false);
                     return -1;
                 }
             }catch (Exception e){
                 if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
-                Preferences.clearToken();
+                Preferences.clearToken(false);
                 return -1;
+            }
+        }
+    }
+
+
+    public static String checkUserEmail() {
+        Token token = Preferences.getToken();
+        if(token == null) return "";
+        else{
+            int current = (int) (System.currentTimeMillis() / 1000L);
+            try{
+                Claim exp = new JWT(token.getAccessToken()).getClaim("exp");
+                if (exp.asInt() > current) {
+                    String email =  new JWT(token.getAccessToken()).getClaim("user_name").asString();
+                    return email;
+                } else {
+                    Preferences.clearToken(false);
+                    return "";
+                }
+            }catch (Exception e){
+                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+                Preferences.clearToken(false);
+                return "";
             }
         }
     }

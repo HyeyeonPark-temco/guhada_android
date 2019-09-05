@@ -44,7 +44,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                 if (retryCount++ < totalRetries) {
                     retry()
                 } else {
-                    Preferences.clearToken()
+                    Preferences.clearToken(true)
                     if (::recall.isInitialized) {
                         recall.clone().enqueue(this)
                     }
@@ -74,7 +74,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
                     Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
                     retry()
                 } else {
-                    Preferences.clearToken()
+                    Preferences.clearToken(true)
                     if (::recall.isInitialized) {
                         recall.clone().enqueue(this)
                     }

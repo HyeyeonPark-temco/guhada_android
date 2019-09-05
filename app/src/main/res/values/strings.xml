@@ -1167,5 +1167,12 @@
     <string name="create_bbs_temp_save_done">임시저장이 완료되었습니다.</string>
     <string name="create_bbs_temp_list_title">임시저장함</string>
 
+    <string name="userclaim_guhada_desc1"><![CDATA[상품 관련 배송・반품・교환・취소・환불 문의는<br><font color="#5d2ed1">판매자문의</font>를 이용해주세요.]]></string>
+    <string name="userclaim_guhada_desc2">상품 관련 문의는 판매자에게 직접 문의하시면 빠르고\n정확한 답변이 가능합니다.</string>
+    <string name="userclaim_guhada_desc3">문의하신 내역은 마이페이지 > 나의글 > 문의에서\n확인하실 수 있습니다.</string>
+    <string name="userclaim_guhada_hint1">문의 유형을 선택해주세요</string>
+    <string name="userclaim_guhada_hint2">상세 유형을 선택해주세요</string>
+    <string name="userclaim_guhada">문의하기</string>
+
 
 </resources>

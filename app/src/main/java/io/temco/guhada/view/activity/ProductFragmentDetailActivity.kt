@@ -168,7 +168,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         if (exp > current) {
             return true
         } else {
-            Preferences.clearToken()
+            Preferences.clearToken(false)
             return false
         }
     }

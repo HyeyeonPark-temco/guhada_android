@@ -14,6 +14,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import io.temco.guhada.common.listener.OnBaseDialogListener
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 
 
 object CommonViewUtil{
@@ -86,6 +89,16 @@ object CommonViewUtil{
         var span = SpannableStringBuilder(text+"n")
         span.setSpan(ImageSpan(image), text.length, text.length+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         textview.text = span
+    }
+
+
+
+    fun showDialog(act: AppCompatActivity, mas : String, isCancelBtn : Boolean, listener : OnBaseDialogListener){
+        CustomMessageDialog(message = mas, cancelButtonVisible = isCancelBtn,
+                confirmTask = {
+                    listener.onClickOk()
+                }
+        ).show(manager = act.supportFragmentManager, tag = "ReportActivity")
     }
 
 }
