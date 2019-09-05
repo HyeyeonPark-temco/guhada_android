@@ -491,4 +491,8 @@
         <item name="android:background">@color/common_blue_purple</item>
     </style>
 
+    <style name="CustomDropdown" parent="Widget.AppCompat.Spinner.DropDown">
+        <item name="android:maxHeight">230dp</item>
+    </style>
+
 </resources>

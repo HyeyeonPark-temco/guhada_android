@@ -12,6 +12,10 @@ import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
+/**
+ * 옵션 Grid list ViewModel
+ * @author Hyeyeon Park
+ */
 class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListener) : BaseObservableViewModel() {
     private val EXTRA_PRICE = 1
     private val DEAL_OPTION_ID = 2
@@ -36,7 +40,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
     var extraPrice = ObservableInt(0)
         @Bindable
         get() = field
-    var extraPriceOperator = ObservableField<String>()
+    var extraPriceOperator = ObservableField<String>("+")
         @Bindable
         get() = field
 
