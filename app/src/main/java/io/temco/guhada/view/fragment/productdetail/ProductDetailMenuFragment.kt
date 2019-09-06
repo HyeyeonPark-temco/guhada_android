@@ -67,7 +67,12 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                     mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
                     mBinding.executePendingBindings()
 
-                    //
+                    // INIT OPTION
+                    mViewModel.mSelectedOptionInfo = option
+                    mViewModel.productCount = ObservableInt(1)
+                    mViewModel.notifyPropertyChanged(BR.productCount)
+
+                    // PRICE
                     mViewModel.extraPrice = ObservableInt(option.price)
                     mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice)
                     mViewModel.notifyPropertyChanged(BR.extraPrice)
@@ -107,7 +112,6 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     }
 
     companion object {
-
         // 미사용
         @JvmStatic
         @BindingAdapter("productOption")
