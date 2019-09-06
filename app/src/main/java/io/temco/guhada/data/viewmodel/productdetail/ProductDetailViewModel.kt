@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel.productdetail
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean

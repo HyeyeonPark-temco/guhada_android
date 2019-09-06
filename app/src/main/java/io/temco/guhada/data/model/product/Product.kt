@@ -13,11 +13,9 @@ class Product : BaseProduct() {
     // PRODUCT
     var brandId: Int = 0
     var modelNumber: String = ""
-    var productStatus: String = ""
+    var productStatusName : String = "" // 상품 상태
     var productNumber: String = ""
-    var productOriginType: String = ""
-    var originValue1: String = ""
-    var originValue2: String = ""
+    var originAreaName: String = "" // 원산지
     var totalStock: Int = 0
 
     // SHIPPING
