@@ -23,8 +23,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 style="@style/ProductDetailTitleBlackTextStyle"
@@ -51,6 +50,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="@{viewModel.product.options.isEmpty() ? View.GONE : View.VISIBLE}"
+            android:layout_marginTop="30dp"
             android:orientation="vertical">
 
             <FrameLayout

@@ -477,7 +477,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
         // 변경 중
         val selectedOption: OptionInfo? = if (menuVisibile) mMenuFragment.mViewModel.mSelectedOptionInfo else mHeaderMenuFragment.mViewModel.mSelectedOptionInfo
-        if (selectedOption != null) {
+        val isOptionNone = mViewModel.product.value?.options?.isEmpty() ?: false
+        if (selectedOption != null || isOptionNone) {
 
             // 전달 데이터
             // 1.상품 대표 이미지, 2.상품 명, 3.옵션 선택 항목, 4.판매가, 5.수량
@@ -503,11 +504,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 this.totalCount = count
                 this.totalPrice = price
                 this.season = product?.season ?: ""
-                this.dealOptionId = selectedOption.dealOptionSelectId.toLong()
                 this.optionStr = getOptionText(option = selectedOption, count = count)
+                this.dealOptionId = if (!isOptionNone) selectedOption!!.dealOptionSelectId.toLong() else null
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
-                baseProduct.dealOptionId = selectedOption.dealOptionSelectId.toLong()
                 mViewModel.menuVisibility.set(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
 

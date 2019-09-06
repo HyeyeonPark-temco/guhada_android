@@ -50,7 +50,9 @@ class OrderServer {
          */
         @JvmStatic
         fun addCartItem(listener: OnServerListener, accessToken: String, dealId: Long, dealOptionId: Long?, quantity: Int) {
-            val call = RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).addCartItem(accessToken, dealId, dealOptionId, quantity)
+            val call = if (dealOptionId != null && dealOptionId > 0) RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).addCartItem(accessToken, dealId, dealOptionId, quantity)
+            else RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).addCartItem(accessToken, dealId, quantity)
+
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Cart>> {
                 override fun onResponse(call: Call<BaseModel<Cart>>, response: Response<BaseModel<Cart>>) {
                     listener.onResult(response.isSuccessful, response.body())
@@ -60,6 +62,7 @@ class OrderServer {
                     listener.onResult(false, t.message)
                 }
             })
+
         }
 
         /**
