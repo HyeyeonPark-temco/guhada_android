@@ -43,6 +43,8 @@ public class Flag {
         public static final int REPORT = 10029;
         public static final int COMMUNITY_DETAIL_WRT_MOD = 10031;
         public static final int COMMUNITY_DETAIL_TEMP_LIST = 10032;
+        public static final int USER_CLAIM_GUHADA = 10033;
+        public static final int USER_CLAIM_SELLER = 10034;
     }
 
     public static class ResultCode {

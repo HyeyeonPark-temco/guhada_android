@@ -178,7 +178,7 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
                     var fileNm = data!!.extras.getString("file_name")
                     if(!fileNm.substring(0,4).equals("http",true)){
                         var imageValue = ""
-                        if(mViewModel.reportPhotos.value!!.size > mViewModel.selectedImageIndex){
+                        if(mViewModel.selectedImageIndex != -1 && mViewModel.reportPhotos.value!!.size > mViewModel.selectedImageIndex){
                             mViewModel.reportPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
                             imageValue = fileNm
                             mViewModel.reportPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)

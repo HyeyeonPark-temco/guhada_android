@@ -92,13 +92,35 @@ object CommonViewUtil{
     }
 
 
-
-    fun showDialog(act: AppCompatActivity, mas : String, isCancelBtn : Boolean, listener : OnBaseDialogListener){
+    /***
+     *
+     * @param activity current Activity notNull
+     * @param mas String type notNull
+     * @param isCancelBtn Boolean data notNull
+     * @param listener OnBaseDialogListener nullable
+     */
+    fun showDialog(activity: AppCompatActivity, mas : String, isCancelBtn : Boolean, listener : OnBaseDialogListener?){
         CustomMessageDialog(message = mas, cancelButtonVisible = isCancelBtn,
                 confirmTask = {
-                    listener.onClickOk()
+                    listener?.onClickOk()
                 }
-        ).show(manager = act.supportFragmentManager, tag = "ReportActivity")
+        ).show(manager = activity.supportFragmentManager, tag = activity::class.java.simpleName)
+    }
+
+
+    /***
+     *
+     * @param activity current Activity notNull
+     * @param mas String type notNull
+     * @param isCancelBtn Boolean data notNull
+     * @param isFinish OnBaseDialogListener nullable
+     */
+    fun showDialog(activity: AppCompatActivity, mas : String, isCancelBtn : Boolean, isFinish : Boolean){
+        CustomMessageDialog(message = mas, cancelButtonVisible = isCancelBtn,
+                confirmTask = {
+                    if(isFinish)activity.finish()
+                }
+        ).show(manager = activity.supportFragmentManager, tag = activity::class.java.simpleName)
     }
 
 }

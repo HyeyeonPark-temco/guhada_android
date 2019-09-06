@@ -11,6 +11,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.model.Brand
@@ -98,8 +99,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                 this@SideMenuActivity.onBackPressed()
             }
             R.id.image_setting -> {
-                CommonUtil.debug(baseTag, "image_setting")
-                startActivityForResult(Intent(this@SideMenuActivity, UserClaimGuhadaActivity::class.java), 9)
+                CommonUtilKotlin.startActivityUserClaimGuhada(this@SideMenuActivity)
             }
             R.id.image_close -> {
                 onBackPressed()
