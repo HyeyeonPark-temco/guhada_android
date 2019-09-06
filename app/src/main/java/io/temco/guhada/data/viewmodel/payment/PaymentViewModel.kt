@@ -8,15 +8,16 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.shippingaddress.ShippingMessage
-import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
@@ -27,6 +28,8 @@ import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.model.product.BaseProduct
+import io.temco.guhada.data.model.shippingaddress.ShippingMessage
+import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -63,9 +66,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var product: BaseProduct = BaseProduct()
         set(value) {
             field = value
-            field.optionMap["COLOR"].let { if (it != null) optionStr += "${it.name}, " }
-            field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
-            optionStr += "${field.totalCount} ${BaseApplication.getInstance().getString(R.string.common_unit_product)}"
+//            field.optionMap["COLOR"].let { if (it != null) optionStr += "${it.name}, " }
+//            field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
+//            optionStr += "${field.totalCount} ${BaseApplication.getInstance().getString(R.string.common_unit_product)}"
 
             callWithToken { accessToken ->
                 Log.e("AccessToken", accessToken)
@@ -140,23 +143,29 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
-            executeByResultCode(success, o,
-                    successTask = {
-                        this.cart = (o as BaseModel<*>).data as Cart
-                        if (this.cart.cartValidStatus.status)
-                            getOrderForm(accessToken)
-                        else {
-                            listener.showMessage(this.cart.cartValidStatus.cartErrorMessage)
-                            listener.closeActivity()
-                        }
+            if (success) {
+                val resultCode = (o as BaseModel<*>).resultCode
+                if (resultCode == ResultCode.SUCCESS.flag) {
+                    this.cart = o.data as Cart
+                    if (this.cart.cartValidStatus.status)
+                        getOrderForm(accessToken)
+                    else {
+                        listener.showMessage(this.cart.cartValidStatus.cartErrorMessage)
+                        listener.closeActivity()
+                    }
 
-                        Log.e("cartItemId", cart.cartItemId.toString())
-                    },
-                    failedTask = {
-                        listener.hideLoadingIndicator()
-                        if (o != null) listener.showMessage((o as BaseModel<*>).message)
-                        else listener.showMessage("addCartItem 오류")
-                    })
+                    Log.e("cartItemId", cart.cartItemId.toString())
+                } else {
+                    listener.showMessage(o.message ?: "주문서 조회 오류")
+                    listener.closeActivity()
+                }
+            } else {
+                val json = JsonParser().parse(o as String)
+                val model = Gson().fromJson(json, BaseModel::class.java)
+                listener.showMessage(model.message ?: "주문서 조회 오류")
+                listener.closeActivity()
+            }
+            listener.hideLoadingIndicator()
         }, accessToken = accessToken, dealId = product.dealId, dealOptionId = product.dealOptionId, quantity = quantity)
     }
 
@@ -168,19 +177,24 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             cartIdList = mutableListOf(cart.cartItemId.toInt())
         }
         OrderServer.getOrderForm(OnServerListener { success, o ->
-            executeByResultCode(success, o,
-                    successTask = {
-                        val order = (o as BaseModel<*>).data as Order
-                        this.order = order
-                        this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
-                        notifyPropertyChanged(BR.order)
-                        notifyPropertyChanged(BR.shippingAddressText)
-                    },
-
-                    failedTask = {
-                        if (o != null) listener.showMessage(o as String)
-                        else listener.showMessage("orderForm 오류")
-                    })
+            if (success) {
+                val resultCode = (o as BaseModel<*>).resultCode
+                if (resultCode == ResultCode.SUCCESS.flag) {
+                    val order = o.data as Order
+                    this.order = order
+                    this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
+                    notifyPropertyChanged(BR.order)
+                    notifyPropertyChanged(BR.shippingAddressText)
+                } else {
+                    listener.showMessage(o.message ?: "주문서 조회 오류")
+                    listener.closeActivity()
+                }
+            } else {
+                val json = JsonParser().parse(o as String)
+                val model = Gson().fromJson(json, BaseModel::class.java)
+                listener.showMessage(model.message ?: "주문서 조회 오류")
+                listener.closeActivity()
+            }
             listener.hideLoadingIndicator()
         }, accessToken = accessToken, cartIdList = cartIdList.toIntArray())
     }

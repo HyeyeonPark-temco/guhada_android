@@ -79,13 +79,13 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         when (intent.getStringExtra("payMethod")) {
             "CARD" -> {
                 URL = "https://mobpay.lpay.com/smart/wcard/"
-                //  URL = "https://devmobpay.lpay.com:410/smart/wcard/"
+//                  URL = "https://devmobpay.lpay.com:410/smart/wcard/"
                 params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
             }
             "VBank" -> {
                 // 무통장 입금
-                URL = "https://devmobpay.lpay.com:410/smart/vbank/"
-//                URL = "https://ksmobile.inicis.com/smart/vbank/"
+//                URL = "https://devmobpay.lpay.com:410/smart/vbank/"
+                URL = "https://ksmobile.inicis.com/smart/vbank/"
             }
             "DirectBank" -> {
                 // 실시간 계좌
@@ -178,7 +178,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                             val vbankReceivedNo = document.getElementById("vbankReceivedNo")?.`val`()
                                     ?: ""
 
-                            CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid")
+                            CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid authToken: $authToken")
 
                             PGAuth().apply {
                                 this.resultCode = resultCode

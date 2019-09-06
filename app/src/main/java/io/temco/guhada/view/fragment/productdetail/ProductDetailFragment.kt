@@ -37,6 +37,7 @@ import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
@@ -151,20 +152,20 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
                 if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
             }
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.webViewClient = object  : WebViewClient(){
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                     //return super.shouldOverrideUrlLoading(view, request)
                     view?.webChromeClient = WebChromeClient()
-                    if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment",request?.url!!.toString())
+                    if (CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment", request?.url!!.toString())
                     return true
                 }
             }
 
             val data = StringBuilder()
             data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>")
-            data.append(product.desc.replace("\"//www","\"https://www"))
+            data.append(product.desc.replace("\"//www", "\"https://www"))
             data.append("</body></HTML>")
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(),"text/html; video/mpeg", "utf-8", null)
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(), "text/html; video/mpeg", "utf-8", null)
 
 
             hideLoadingIndicator()
@@ -187,7 +188,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initStore()
             }
             /**
-             * @author park jungho
              * 19.07.25
              * 최근본상품의 상품 DB에 추가
              */
@@ -461,15 +461,86 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel.notifyPropertyChanged(BR.menuVisibility)
     }
 
-    override fun redirectPaymentActivity(isOptionPopupSelected: Boolean) {
-        val optionCount = mViewModel.product.value?.options?.size ?: 0
-        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            mMenuFragment.getSelectedOptionCount()
+//      GRID LIST (DEPRECATED)
+//      override fun redirectPaymentActivity(menuVisibile: Boolean) {
+//        val optionCount = mViewModel.product.value?.options?.size ?: 0
+//        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+//            mMenuFragment.getSelectedOptionCount()
+//        } else {
+//            mHeaderMenuFragment.getSelectedOptionCount()
+//        }
+//
+//        showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
+//    }
+
+    override fun redirectPaymentActivity(menuVisibile: Boolean) {
+
+        // 변경 중
+        val selectedOption: OptionInfo? = if (menuVisibile) mMenuFragment.mViewModel.mSelectedOptionInfo else mHeaderMenuFragment.mViewModel.mSelectedOptionInfo
+        if (selectedOption != null) {
+
+            // 전달 데이터
+            // 1.상품 대표 이미지, 2.상품 명, 3.옵션 선택 항목, 4.판매가, 5.수량
+            val product = mViewModel.product.value
+            val brandName = product?.brandName ?: ""
+            val name = product?.name ?: ""
+            val price: Int
+            val count: Int
+
+            if (menuVisibile) {
+                count = mMenuFragment.getProductCount()
+                price = mMenuFragment.getTotalPrice()
+            } else {
+                count = mHeaderMenuFragment.getProductCount()
+                price = mHeaderMenuFragment.getTotalPrice()
+            }
+
+            BaseProduct().apply {
+                this.dealId = mViewModel.dealId
+                this.profileUrl = product?.imageUrls?.get(0) ?: "" // 대표이미지 임시
+                this.name = name
+                this.brandName = brandName
+                this.totalCount = count
+                this.totalPrice = price
+                this.season = product?.season ?: ""
+                this.dealOptionId = selectedOption.dealOptionSelectId.toLong()
+                this.optionStr = getOptionText(option = selectedOption, count = count)
+            }.let { baseProduct ->
+                // 장바구니 API 파라미터
+                baseProduct.dealOptionId = selectedOption.dealOptionSelectId.toLong()
+                mViewModel.menuVisibility.set(View.GONE)
+                mViewModel.notifyPropertyChanged(BR.menuVisibility)
+
+                Intent(context, PaymentActivity::class.java).let { intent ->
+                    intent.putExtra("quantity", count)
+                    intent.putExtra("product", baseProduct)
+                    startActivityForResult(intent, Flag.RequestCode.PAYMENT)
+                }
+            }
+
         } else {
-            mHeaderMenuFragment.getSelectedOptionCount()
+            setMenuVisible()
+            ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
+        }
+    }
+
+    private fun getOptionText(option: OptionInfo?, count: Int): String {
+        var optionText = ""
+        if (option != null) {
+            if (!option.attribute1.isNullOrEmpty())
+                optionText = "${option.attribute1}"
+
+            if (!option.attribute2.isNullOrEmpty())
+                optionText = "$optionText, ${option.attribute2}"
+
+            if (!option.attribute3.isNullOrEmpty())
+                optionText = "$optionText, ${option.attribute3}"
         }
 
-        showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
+        optionText = if (optionText.isNotEmpty()) "$optionText, ${count}개"
+        else "${count}개"
+
+        return optionText
     }
 
 
@@ -557,9 +628,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun showReportActivity() {
-        if(CommonUtil.checkToken()){
+        if (CommonUtil.checkToken()) {
             CommonUtil.startReportActivity(context as Activity, 0, mViewModel.product.value, null)
-        }else{
+        } else {
             CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                     cancelButtonVisible = true,
                     confirmTask = {

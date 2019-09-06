@@ -25,21 +25,22 @@ open class BaseProduct : Serializable {
     var profileUrl: String = ""
 
     var optionStr: String = ""
-        get() {
-            return if (field.isEmpty()) {
-                var result = ""
-                for (key in optionMap.keys) {
-                    result = if (result.isEmpty()) "${optionMap[key]?.name}"
-                    else "$result, ${optionMap[key]?.name}"
-                }
-
-                result = if (result.isEmpty()) "${totalCount}개"
-                else "$result, ${totalCount}개"
-                result
-            } else {
-                field
-            }
-        }
+//      GRID LIST (DEPRECATED)
+//        get() {
+//            return if (field.isEmpty()) {
+//                var result = ""
+//                for (key in optionMap.keys) {
+//                    result = if (result.isEmpty()) "${optionMap[key]?.name}"
+//                    else "$result, ${optionMap[key]?.name}"
+//                }
+//
+//                result = if (result.isEmpty()) "${totalCount}개"
+//                else "$result, ${totalCount}개"
+//                result
+//            } else {
+//                field
+//            }
+//        }
     @Expose
     var totalPrice: Int = 0
 
