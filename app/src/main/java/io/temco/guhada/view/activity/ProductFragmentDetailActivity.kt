@@ -35,7 +35,6 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         setViewInit()
     }
 
-
     private fun setViewInit() {
         addProductDetailView(dealId)
     }
@@ -132,10 +131,10 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         }
     }
 
-
     override fun onBackPressed() {
         if (mProductDetailFragment != null && mProductDetailFragment!!.isVisible) {
-            finish()
+            if(mProductDetailFragment?.getMenuVisible()?:false)  mProductDetailFragment?.closeMenuPopup() // menu gone
+                else  finish()
         } else {
             finish()
         }

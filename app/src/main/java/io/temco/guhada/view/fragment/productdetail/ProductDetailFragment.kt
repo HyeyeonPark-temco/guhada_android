@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
@@ -65,6 +64,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private val INVALID_DEAL_ID = -1
     private var animFlag = true
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var mClaimFragment: ProductDetailClaimFragment
     private lateinit var mMenuFragment: ProductDetailMenuFragment
@@ -353,7 +353,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
         }.let { menuViewModel ->
-            mMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
+            mMenuFragment = ProductDetailMenuFragment().apply {
+                this.mViewModel = menuViewModel
+                this.mIsBottomPopup = true
+            }
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
@@ -370,7 +373,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
         }.let { menuViewModel ->
-            mHeaderMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
+            mHeaderMenuFragment = ProductDetailMenuFragment().apply {
+                this.mViewModel = menuViewModel
+                this.mIsBottomPopup = false
+            }
         }
 
         if (isAdded) {
@@ -453,12 +459,19 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
-    // 수정 예정 (BottomSheetFragment로 변경 예정)
     private fun setMenuVisible() {
-        ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)
-                ?: BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
+//        ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)
+//                ?: BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
         mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
         mViewModel.notifyPropertyChanged(BR.menuVisibility)
+    }
+
+    fun getMenuVisible(): Boolean = mViewModel.menuVisibility.get() == View.VISIBLE
+    fun closeMenuPopup() {
+        if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+            mViewModel.menuVisibility = ObservableInt(View.GONE)
+            mViewModel.notifyPropertyChanged(BR.menuVisibility)
+        }
     }
 
 //      GRID LIST (DEPRECATED)
@@ -473,9 +486,12 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 //        showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
 //    }
 
+    /**
+     * 옵션 스피너 변경에 맞춰 수정
+     * @since 2019.09.06
+     * @author Hyeyeo Park
+     */
     override fun redirectPaymentActivity(menuVisibile: Boolean) {
-
-        // 변경 중
         val selectedOption: OptionInfo? = if (menuVisibile) mMenuFragment.mViewModel.mSelectedOptionInfo else mHeaderMenuFragment.mViewModel.mSelectedOptionInfo
         val isOptionNone = mViewModel.product.value?.options?.isEmpty() ?: false
         if (selectedOption != null || isOptionNone) {
@@ -517,10 +533,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
                 }
             }
-
         } else {
             setMenuVisible()
-            ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
+         //   ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
         }
     }
 
