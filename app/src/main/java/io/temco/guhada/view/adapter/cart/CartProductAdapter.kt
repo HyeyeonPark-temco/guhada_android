@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter.cart
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
@@ -25,6 +26,7 @@ import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.databinding.ItemCartProductBinding
+import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
@@ -173,6 +175,13 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
                     mViewModel.notifyPropertyChanged(BR.selectCartItemId)
                 }
+            }
+
+            // <상품 보기> 버튼
+            mBinding.buttonCartShow.setOnClickListener {
+                val intent = Intent(mBinding.root.context, ProductFragmentDetailActivity::class.java)
+                intent.putExtra("dealId",cart.dealId)
+                mBinding.root.context.startActivity(intent)
             }
 
             binding.cart = cart

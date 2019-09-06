@@ -268,13 +268,14 @@
                     android:text="@string/cart_button_notiffication"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
-                    android:visibility="@{!cart.cartValidStatus.status &amp;&amp; (cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eos) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eol) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_productsoldout) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_optionsoldout)) ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/view_cart_line"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toRightOf="@id/button_cart_show"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textview_cart_discountprice"
                     app:layout_constraintVertical_bias="0.0" />
+                <!--android:visibility="@{!cart.cartValidStatus.status &amp;&amp; (cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eos) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_eol) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_productsoldout) || cart.cartValidStatus.cartErrorMessage.equals(@string/cart_message_optionsoldout)) ? View.VISIBLE : View.GONE}"-->
 
                 <View
                     android:id="@+id/view_cart_line"
