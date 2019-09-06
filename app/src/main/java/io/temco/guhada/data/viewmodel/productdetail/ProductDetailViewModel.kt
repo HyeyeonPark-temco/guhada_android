@@ -1,16 +1,20 @@
 package io.temco.guhada.data.viewmodel.productdetail
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
+import com.google.gson.Gson
+import com.google.gson.JsonParser
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.BookMarkTarget
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -318,18 +322,46 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     // 장바구니 담기
     fun addCartItem() {
+//        ServerCallbackUtil.callWithToken(task = { accessToken ->
+//            OrderServer.addCartItem(OnServerListener { success, o ->
+//                ServerCallbackUtil.executeByResultCode(success, o,
+//                        successTask = {
+//                            val cart = it.data as Cart
+//                            if (cart.cartValidStatus.status)
+//                                listener?.showAddCartResult()
+//                            else {
+//                                ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
+//                            }
+//                        })
+//            }, accessToken = accessToken, quantity = listener?.getSelectedProductQuantity()!!, dealId = dealId, dealOptionId = listener.getSelectedOptionDealId())
+//        }, invalidTokenTask = {
+//            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
+//            listener?.redirectLoginActivity()
+//        })
+
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.addCartItem(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            val cart = it.data as Cart
-                            if (cart.cartValidStatus.status)
-                                listener?.showAddCartResult()
-                            else {
-                                ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
-                            }
-                        })
-            }, accessToken = accessToken, quantity = listener?.getSelectedProductQuantity()!!, dealId = dealId, dealOptionId = listener.getSelectedOptionDealId())
+                if (success) {
+                    val resultCode = (o as BaseModel<*>).resultCode
+                    if (resultCode == ResultCode.SUCCESS.flag) {
+                        val cart = o.data as Cart
+                        if (cart.cartValidStatus.status)
+                            listener?.showAddCartResult()
+                        else {
+                            ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
+                        }
+                    } else {
+                        ToastUtil.showMessage(o.message ?: "장바구니 담기 오류")
+                        listener?.closeActivity()
+                    }
+                } else {
+                    val json = JsonParser().parse(o as String)
+                    val model = Gson().fromJson(json, BaseModel::class.java)
+                    ToastUtil.showMessage(model.message ?: "장바구니 담기 오류")
+                    listener?.closeActivity()
+                }
+                listener?.hideLoadingIndicator()
+            }, accessToken = accessToken, dealId = dealId, dealOptionId = listener?.getSelectedOptionDealId(), quantity = listener?.getSelectedProductQuantity()!!)
         }, invalidTokenTask = {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             listener?.redirectLoginActivity()

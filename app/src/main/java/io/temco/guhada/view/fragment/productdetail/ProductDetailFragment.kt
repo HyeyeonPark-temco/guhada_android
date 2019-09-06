@@ -444,15 +444,28 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         startActivityForResult(Intent(context, LoginActivity::class.java), Flag.RequestCode.LOGIN)
     }
 
-    override fun showMenu() {
-        val optionCount = mViewModel.product.value?.options?.size
-        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            if (::mMenuFragment.isInitialized) mMenuFragment.getSelectedOptionCount() else 0
-        } else {
-            if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
-        }
+//      GRID LIST (DEPRECATED)
+//    override fun showMenu() {
+//        val optionCount = mViewModel.product.value?.options?.size
+//        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+//            if (::mMenuFragment.isInitialized) mMenuFragment.getSelectedOptionCount() else 0
+//        } else {
+//            if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
+//        }
+//
+//        if (selectedOptionCount == optionCount) {
+//            mViewModel.addCartItem()
+//        } else {
+//            setMenuVisible()
+//        }
+//    }
 
-        if (selectedOptionCount == optionCount) {
+    override fun showMenu() {
+        val menuVisible = mViewModel.menuVisibility.get() == View.VISIBLE
+        val selectedOption: OptionInfo? = if (menuVisible) mMenuFragment.mViewModel.mSelectedOptionInfo else mHeaderMenuFragment.mViewModel.mSelectedOptionInfo
+        val isOptionNone = mViewModel.product.value?.options?.isEmpty() ?: false
+
+        if (selectedOption != null || isOptionNone) {
             mViewModel.addCartItem()
         } else {
             setMenuVisible()
@@ -535,7 +548,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         } else {
             setMenuVisible()
-         //   ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
+            //   ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
         }
     }
 
@@ -609,11 +622,13 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun getSelectedOptionDealId(): Long? {
-        return when {
-            mMenuFragment.getSelectedOptionCount() > 0 -> mMenuFragment.getSelectedOptionDealId()
-            mHeaderMenuFragment.getSelectedOptionCount() > 0 -> mHeaderMenuFragment.getSelectedOptionDealId()
-            else -> null
-        }
+        return if (mViewModel.menuVisibility.get() == View.GONE) mHeaderMenuFragment.mViewModel.mSelectedOptionInfo?.dealOptionSelectId?.toLong()
+        else mMenuFragment.mViewModel.mSelectedOptionInfo?.dealOptionSelectId?.toLong()
+//        return when {
+//            mMenuFragment.getSelectedOptionCount() > 0 -> mMenuFragment.getSelectedOptionDealId()
+//            mHeaderMenuFragment.getSelectedOptionCount() > 0 -> mHeaderMenuFragment.getSelectedOptionDealId()
+//            else -> null
+//        }
     }
 
     override fun getSelectedProductQuantity(): Int {
