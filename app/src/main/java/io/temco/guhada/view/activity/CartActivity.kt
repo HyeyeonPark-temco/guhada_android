@@ -2,8 +2,10 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
@@ -18,10 +20,12 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.CartResponse
+import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.cart.CartOptionAdapter
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.cart.EmptyCartFragment
 
@@ -33,6 +37,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
     private lateinit var mViewModel: CartViewModel
     private lateinit var mCartProductAdapter: CartProductAdapter
     private lateinit var mEmptyCartFragment: EmptyCartFragment
+    private lateinit var mMenuSpinnerAdapter: ProductDetailOptionSpinnerAdapter
 
     override fun getBaseTag(): String = CartActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_cart
@@ -74,11 +79,21 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         })
-        mViewModel.cartOptionList.observe(this, Observer {
-            val holder = mBinding.recyclerviewCartProduct.findViewHolderForAdapterPosition(mViewModel.shownMenuPos) as CartProductAdapter.Holder
+
+//         GRID OPTION LIST
+//        mViewModel.cartOptionList.observe(this, Observer {
+//            val holder = mBinding.recyclerviewCartProduct.findViewHolderForAdapterPosition(mViewModel.shownMenuPos) as CartProductAdapter.Holder
+//            mCartProductAdapter.setCartItemOptionList(it)
+//            (holder.binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(it)
+//        })
+
+        mViewModel.cartOptionListForSpinner.observe(this, Observer {
+           // val holder = mBinding.recyclerviewCartProduct.findViewHolderForAdapterPosition(mViewModel.shownMenuPos) as CartProductAdapter.Holder
             mCartProductAdapter.setCartItemOptionList(it)
-            (holder.binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(it)
+          //  (holder.binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(it)
         })
+
+
         mViewModel.getCart(invalidTokenTask = {
             LoadingIndicatorUtil(BaseApplication.getInstance()).hide()
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
@@ -86,7 +101,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
         })
     }
 
-    private fun initCartAdapter(){
+    private fun initCartAdapter() {
         mCartProductAdapter = CartProductAdapter(mViewModel)
         mBinding.recyclerviewCartProduct.adapter = mCartProductAdapter
         (mBinding.recyclerviewCartProduct.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false

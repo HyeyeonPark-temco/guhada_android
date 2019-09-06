@@ -15,6 +15,7 @@ import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultC
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.*
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -46,6 +47,8 @@ class CartViewModel : BaseObservableViewModel() {
 
     // OPTION
     var cartOptionList: MutableLiveData<MutableList<CartOption>> = MutableLiveData()
+    var cartOptionListForSpinner: MutableLiveData<MutableList<OptionInfo>> = MutableLiveData()
+
     var shownMenuPos = -1
 
     // OPTION ATTR
@@ -158,6 +161,17 @@ class CartViewModel : BaseObservableViewModel() {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             cartOptionList.postValue(contractOptionAttr(cartItemId, it.list as List<LinkedTreeMap<String, Any>>))
+                        })
+            }, accessToken, cartItemId)
+        })
+    }
+
+    fun getCartItemOptionListForSpinner(cartItemId: Long) {
+        callWithToken({ accessToken ->
+            OrderServer.getCartItemOptionListForSpinner(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            cartOptionListForSpinner.postValue(it.data as MutableList<OptionInfo>)
                         })
             }, accessToken, cartItemId)
         })

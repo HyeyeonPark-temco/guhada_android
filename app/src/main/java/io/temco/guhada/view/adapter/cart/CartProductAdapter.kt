@@ -4,7 +4,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableInt
@@ -13,14 +15,22 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartOption
 import io.temco.guhada.data.model.cart.CartValidStatus
+import io.temco.guhada.data.model.option.OptionInfo
+import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.databinding.ItemCartProductBinding
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * 장바구니 상품 리스트 Adapter
@@ -30,6 +40,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartProductAdapter.Holder>() {
     private var items: MutableList<Cart> = mutableListOf()
     private var expansionCollection: ExpansionLayoutCollection = ExpansionLayoutCollection()
+    private var mSelectedOption: OptionInfo? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false))
     override fun getItemCount(): Int = items.size
@@ -43,10 +54,15 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         notifyDataSetChanged()
     }
 
-    fun setCartItemOptionList(cartOptionList: MutableList<CartOption>) {
+    fun setCartItemOptionList(cartOptionList: MutableList<OptionInfo>) {
         if (mViewModel.shownMenuPos > -1) {
-            if (items[mViewModel.shownMenuPos].cartOptionList.isEmpty())
-                items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
+            if (items[mViewModel.shownMenuPos].cartOptionInfoList.isEmpty()) {
+                items[mViewModel.shownMenuPos].cartOptionInfoList = cartOptionList
+                notifyItemChanged(mViewModel.shownMenuPos)
+            }
+
+//            if (items[mViewModel.shownMenuPos].cartOptionList.isEmpty())
+//                items[mViewModel.shownMenuPos].cartOptionList = cartOptionList
         }
     }
 
@@ -54,9 +70,11 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         fun bind(cart: Cart) {
             binding.constraintllayoutCartOption.addListener { expansionLayout, expanded ->
                 if (expanded) {
-                    if (items[adapterPosition].cartOptionList.isEmpty()) {
-                        mViewModel.shownMenuPos = adapterPosition
-                        mViewModel.getCartItemOptionList(items[adapterPosition].cartItemId)
+                    mViewModel.shownMenuPos = adapterPosition
+                    if (cart.cartOptionInfoList.isEmpty()) {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            getCartItemList(cart)
+                        }
                     }
                 }
             }
@@ -104,11 +122,12 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             }
             binding.setOnClickConfirm {
                 // 옵션 변경 클릭
-                val selectedOptionId = getOptionId(cart.cartItemId)
-                if (selectedOptionId != null) {
+                // val selectedOptionId = getOptionId(cart.cartItemId)
+                if (cart.selectedCartOption != null) {
                     // 1. 옵션이 있는 상품
                     if (mViewModel.selectedOptionMap.keys.size == cart.cartOptionList.size)
-                        mViewModel.updateCartItemOption(cartItemId = cart.cartItemId, quantity = cart.tempQuantity, selectDealOptionId = selectedOptionId)
+                        mViewModel.updateCartItemOption(cartItemId = cart.cartItemId, quantity = cart.tempQuantity, selectDealOptionId = cart.selectedCartOption?.dealOptionSelectId?.toInt()
+                                ?: 0)
                     else
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
                 } else {
@@ -117,6 +136,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 }
             }
             binding.setOnClickShowOption {
+                // 옵션 변경 버튼 클릭
                 val expansionLayout = binding.constraintllayoutCartOption
                 if (expansionLayout.isExpanded) expansionLayout.collapse(true)
                 else expansionLayout.expand(true)
@@ -154,8 +174,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                     mViewModel.notifyPropertyChanged(BR.selectCartItemId)
                 }
             }
-            binding.cart = cart
 
+            binding.cart = cart
             binding.viewModel = mViewModel
             binding.executePendingBindings()
         }
@@ -201,8 +221,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         }
 
         private fun setOptionAdapter(cart: Cart) {
-            binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
-            (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
+//            binding.recyclerviewCartOption.adapter = CartOptionAdapter(mViewModel)
+//            (binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(cart.cartOptionList)
         }
 
         private fun setSpacing() {
@@ -248,5 +268,64 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
             return text
         }
+
+
+        /**
+         * 옵션 드롭다운 스피너로 변경
+         * @since 2019.09.05
+         * @author Hyeyeon Park
+         */
+        private fun initMenuSpinner(cart: Cart) {
+            cart.cartOptionInfoList.add(OptionInfo()) // dummy
+
+            val mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
+                    context = mBinding.root.context,
+                    layout = R.layout.item_productdetail_optionspinner,
+                    list = cart.cartOptionInfoList)
+            mBinding.spinnerProductdetailOption.adapter = mMenuSpinnerAdapter
+            mBinding.spinnerProductdetailOption.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val optionList = cart.cartOptionInfoList
+                    if (optionList.size > position && optionList[position].stock > 0) {
+                        val option = optionList[position]
+                      //  mSelectedOption = option
+                        cart.selectedCartOption = option
+                        mBinding.linearlayoutProductdetailOption.visibility = View.GONE
+                        mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                        mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
+                        mBinding.executePendingBindings()
+                    }
+                }
+            }
+
+            val selectedOption = cart.selectedCartOption ?: OptionInfo()
+            val optionInfoList = cart.cartOptionInfoList
+            for (i in 0 until optionInfoList.size) {
+                val option = optionInfoList[i]
+                if (selectedOption.attribute1 == option.attribute1 && selectedOption.attribute2 == option.attribute2 && selectedOption.attribute3 == option.attribute3) {
+                    mBinding.spinnerProductdetailOption.setSelection(i)
+                }
+            }
+
+            mBinding.executePendingBindings()
+        }
+
+        private suspend fun getCartItemList(cart: Cart) {
+            val token = Preferences.getToken().accessToken
+            if (!token.isNullOrEmpty()) {
+                val model = OrderServer.getCartItemOptionListForSpinnerAsync(accessToken = "Bearer $token", cartItemId = cart.cartItemId).await()
+                cart.cartOptionInfoList = model.data
+
+                if (cart.cartOptionInfoList.isNotEmpty()) {
+                    initMenuSpinner(cart)
+                    mBinding.framelayoutProductdetailOption.visibility = View.VISIBLE
+                }
+            }
+        }
     }
+
 }

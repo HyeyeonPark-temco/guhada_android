@@ -12,12 +12,15 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
+import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.model.review.MyPageOrderReview
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.OrderService
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -141,6 +144,30 @@ class OrderServer {
                         listener.onResult(false, t.message)
                     }
                 })
+
+        /**
+         * 장바구니 아이템의 옵션 리스트 조회 API
+         */
+        @JvmStatic
+        fun getCartItemOptionListForSpinner(listener: OnServerListener, accessToken: String, cartItemId: Long) =
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true, false).getCartItemOptionListForSpinner(accessToken, cartItemId).enqueue(object : Callback<BaseModel<MutableList<OptionInfo>>> {
+                    override fun onResponse(call: Call<BaseModel<MutableList<OptionInfo>>>, response: Response<BaseModel<MutableList<OptionInfo>>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+
+                    override fun onFailure(call: Call<BaseModel<MutableList<OptionInfo>>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+
+
+        /**
+         * 장바구니 아이템의 옵션 리스트 조회 API
+         */
+        @JvmStatic
+        fun getCartItemOptionListForSpinnerAsync(accessToken: String, cartItemId: Long) = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true, false).getCartItemOptionListForSpinnerAsync(accessToken, cartItemId).await()
+        }
 
 
         /**
