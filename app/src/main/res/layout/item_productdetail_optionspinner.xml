@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_all_whitefour_leftright"
+        android:orientation="vertical"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp">
+
+        <View
+            android:id="@+id/view_productdetail_optionspinner_line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/line_6" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_productdetail_optionspinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/common_white"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/imageview_productdetail_optionspinner"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_margin="1dp"
+                android:background="@drawable/drawable_transparent_circle" />
+
+            <TextView
+                android:id="@+id/textview_productdetail_optionspinner"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="7dp"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_14" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_productdetail_optionspinner_line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_6" />
+    </LinearLayout>
+
+</layout>
