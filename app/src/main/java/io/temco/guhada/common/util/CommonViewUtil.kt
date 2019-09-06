@@ -107,6 +107,44 @@ object CommonViewUtil{
         ).show(manager = activity.supportFragmentManager, tag = activity::class.java.simpleName)
     }
 
+    /***
+     *
+     * @param activity current Activity notNull
+     * @param mas String type notNull
+     * @param isCancelBtn Boolean data notNull
+     * @param listener OnBaseDialogListener nullable
+     */
+    fun showDialog(activity: AppCompatActivity, mas : String, cancelListener : OnBaseDialogListener?, okListener : OnBaseDialogListener?){
+        CustomMessageDialog(message = mas,
+                cancelTask = {
+                    cancelListener?.onClickOk()
+                },
+                confirmTask = {
+                    okListener?.onClickOk()
+                }
+        ).show(manager = activity.supportFragmentManager, tag = activity::class.java.simpleName)
+    }
+
+    /***
+     *
+     * @param activity current Activity notNull
+     * @param mas String type notNull
+     * @param isCancelBtn Boolean data notNull
+     * @param listener OnBaseDialogListener nullable
+     */
+    fun showDialog(activity: AppCompatActivity, mas : String, cancelListener : OnBaseDialogListener?, okListener : OnBaseDialogListener?, confirmBtnName : String){
+        CustomMessageDialog(message = mas,
+                cancelTask = {
+                    cancelListener?.onClickOk()
+                },
+                confirmTask = {
+                    okListener?.onClickOk()
+                },
+                confirmBtnName = confirmBtnName
+        ).show(manager = activity.supportFragmentManager, tag = activity::class.java.simpleName)
+    }
+
+
 
     /***
      *

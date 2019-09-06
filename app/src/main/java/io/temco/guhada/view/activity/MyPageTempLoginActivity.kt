@@ -253,7 +253,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
     private fun setResultFinish(resultCode : Int, msg : String){
         var intent = Intent()
         intent.putExtra("resultMsg",msg)
-        setResult(resultCode)
+        setResult(resultCode,intent)
         this@MyPageTempLoginActivity.overridePendingTransition(0, 0)
         finish()
     }

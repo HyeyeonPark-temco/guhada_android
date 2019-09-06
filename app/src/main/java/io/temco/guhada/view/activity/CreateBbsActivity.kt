@@ -262,7 +262,10 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                         }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
                 return@setOnClickWriteButton
             }
-            CustomMessageDialog(message = "등록하시겠습니까?", cancelButtonVisible = true,
+            var message = "등록하시겠습니까?"
+            if(mViewModel.communityDetailModifyData.get()) message = "수정하시겠습니까?"
+
+            CustomMessageDialog(message = message, cancelButtonVisible = true,
                     confirmTask = {
                         mLoadingIndicatorUtil.show()
                         postDetailData()
@@ -355,6 +358,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                 if(CustomLog.flag) CustomLog.L("postBbs imageUpload callBackListener","resultFlag",resultFlag,"value",value)
                 mLoadingIndicatorUtil.dismiss()
                 if(resultFlag){
+                    deleteTemp()
                     showDialog(getFinishMsg(),true, Activity.RESULT_OK)
                 }else{
                     showDialog("등록중 오류가 발생되었습니다.",false, null)
@@ -401,12 +405,17 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                 if(CustomLog.flag) CustomLog.L("modifyBbs callBackListener","resultFlag",resultFlag,"value",value)
                 mLoadingIndicatorUtil.dismiss()
                 if(resultFlag){
+                    deleteTemp()
                     showDialog(getFinishMsg(),true, Activity.RESULT_OK)
                 }else{
                     showDialog("등록중 오류가 발생되었습니다.",false, null)
                 }
             }
         })
+    }
+
+    private fun deleteTemp(){
+        mViewModel.repository.deleteTempData(mViewModel.bbsTempId,null)
     }
 
 

@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import io.temco.guhada.data.model.SellerInquireOrder
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
@@ -140,4 +141,12 @@ interface OrderService {
      */
     @POST("/order/order-prod-confirm")
     fun confirmPurchase(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<Any?>>
+
+
+    /**
+     * 내가 주문한 상품에대한 문의
+     */
+    @GET("/order-review/seller-inquire-order")
+    fun getSellerInquireOrder(@Header("Authorization") accessToken: String, @Query("sellerId") sellerId: Long): Call<BaseModel<SellerInquireOrder>>
+
 }

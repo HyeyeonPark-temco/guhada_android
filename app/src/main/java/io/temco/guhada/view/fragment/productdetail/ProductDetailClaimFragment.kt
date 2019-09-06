@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
@@ -25,7 +27,9 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailClaimAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>() {
-     var productId: Long = 0L
+    var productId: Long = 0L
+    // 판매자 문의하기를 위해 셀러 id추가
+    var sellerId: Long = 0L
     private val ALL_CLAIMS = 0
     private val PENDING_CLAIMS = 1
     private val COMPLETED_CLAIMS = 2
@@ -45,6 +49,14 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
                 val intent = Intent(this@ProductDetailClaimFragment.context, WriteClaimActivity::class.java)
                 intent.putExtra("productId", productId)
                 activity?.startActivityForResult(intent, WRITE_CLAIM)
+            }
+
+            /**
+             * @author park jungho
+             * 판매자 문의하기
+             */
+            override fun redirectUserClaimSellerActivity() {
+                CommonUtilKotlin.startActivityUserClaimSeller(context as AppCompatActivity, sellerId, productId,-1)
             }
 
             override fun clearClaims() {
@@ -132,6 +144,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     interface OnProductDetailClaimListener {
         fun showMessage(message: String)
         fun redirectWriteClaimActivity()
+        fun redirectUserClaimSellerActivity()
         fun clearClaims()
         fun redirectLoginActivity()
     }

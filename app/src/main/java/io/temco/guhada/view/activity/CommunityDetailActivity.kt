@@ -256,6 +256,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                         override fun callBackListener(resultFlag: Boolean, value: Any) {
                             mLoadingIndicatorUtil?.dismiss()
                             mViewModel.postCommentDataClear()
+                            mViewModel.communityDetailCommentTotalElements.set(mViewModel.communityDetailCommentTotalElements.get() + 1)
                             mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.text = Editable.Factory.getInstance().newEditable("")
                             for (v in mViewModel.commentAdapter?.mList!!){
                                 if(CustomLog.flag)CustomLog.L("linearlayoutCommunitydetailCommentwrite",v.toString())

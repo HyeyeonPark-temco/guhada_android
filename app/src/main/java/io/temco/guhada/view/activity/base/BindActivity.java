@@ -206,4 +206,5 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
             }
         },500);
     }
+
 }
