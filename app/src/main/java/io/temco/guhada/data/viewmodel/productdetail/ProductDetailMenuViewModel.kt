@@ -8,28 +8,39 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.data.model.product.Product
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.option.OptionInfo
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 /**
- * 옵션 Grid list ViewModel
+ * 상품 옵션 ViewModel
  * @author Hyeyeon Park
  */
 class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListener) : BaseObservableViewModel() {
     private val EXTRA_PRICE = 1
     private val DEAL_OPTION_ID = 2
 
-    var closeButtonVisibility = View.VISIBLE
+    /** COMMON */
     var product: Product = Product()
         set(value) {
             field = value
             totalPrice = ObservableInt(if (product.options?.isEmpty() == true) product.discountPrice else 0)
             notifyPropertyChanged(BR.totalPrice)
         }
+
+    var extraPrice = ObservableInt(0)
+        @Bindable
+        get() = field
+
     var totalPrice = ObservableInt(0)
         @Bindable
         get() = field
+
+    /** GRID LIST (DEPRECATED) */
+    var closeButtonVisibility = View.VISIBLE
+
     var productCount = ObservableInt(1)
         @Bindable
         get() = field
@@ -37,17 +48,55 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
         @Bindable
         get() = field
     var optionMap: MutableMap<String, OptionAttr> = mutableMapOf()
-    var extraPrice = ObservableInt(0)
-        @Bindable
-        get() = field
+
     var extraPriceOperator = ObservableField<String>("+")
         @Bindable
         get() = field
 
-    fun getDealOptionId(): Long? = getOptionInfo(DEAL_OPTION_ID)?.toLong()
+    /** DROP DOWN LIST */
+    var mSelectedOptionInfo: OptionInfo? = null
 
+    fun onClickCloseMenu() = listener.closeMenu()
+
+    fun onClickPlus() = changeProductCount {
+        val plusCount = (productCount.get() + 1)
+        val maxStock = mSelectedOptionInfo?.stock ?: 0
+        if (maxStock < plusCount) ToastUtil.showMessage(String.format(BaseApplication.getInstance().getString(R.string.cart_message_maxquantity), maxStock))
+        else changeTotalPrice(plusCount)
+    }
+
+    fun onClickMinus() = changeProductCount { (productCount.get() - 1).let { count -> if (count > 0) changeTotalPrice(count) } }
+
+    fun getDealOptionId(): Long? = mSelectedOptionInfo?.dealOptionSelectId?.toLong() //getOptionInfo(DEAL_OPTION_ID)?.toLong()
+    private fun changeProductCount(task: () -> Unit) {
+//        if (optionMap.keys.size != product.options?.size) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
+
+        if (mSelectedOptionInfo == null) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
+        else task()
+    }
+
+    private fun changeTotalPrice(count: Int) {
+        productCount = ObservableInt(count)
+        totalPrice = ObservableInt((product.discountPrice + extraPrice.get()) * count)
+        notifyPropertyChanged(BR.productCount)
+        notifyPropertyChanged(BR.totalPrice)
+    }
+
+    fun onSelectAttr(optionAttr: OptionAttr, type: String, position: Int) {
+        optionMap[type] = optionAttr
+        if (type == "COLOR") {
+            listener.setColorName(optionAttr) {
+                colorName = ObservableField(optionAttr.name)
+                notifyPropertyChanged(BR.colorName)
+            }
+        }
+    }
+
+    /**
+     * GRID LIST (DEPRECATED)
+     */
     fun getExtraPrice() {
-        extraPrice = ObservableInt(getOptionInfo(EXTRA_PRICE)?.toInt() ?: 0)
+        extraPrice = ObservableInt(getOptionInfo(EXTRA_PRICE) ?: 0)
         totalPrice = ObservableInt(product.discountPrice + extraPrice.get())
         getExtraPriceOperator()
         notifyPropertyChanged(BR.extraPrice)
@@ -88,41 +137,5 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
             notifyPropertyChanged(BR.extraPriceOperator)
         }
     }
-
-    fun onClickCloseMenu() = listener.closeMenu()
-
-    fun onClickPlus() = changeProductCount { changeTotalPrice((productCount.get() + 1)) }
-
-    fun onClickMinus() = changeProductCount { (productCount.get() - 1).let { count -> if (count > 0) changeTotalPrice(count) } }
-
-    private fun changeProductCount(task: () -> Unit) {
-        if (optionMap.keys.size != product.options?.size) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
-        else task()
-    }
-
-    private fun changeTotalPrice(count: Int) {
-        productCount = ObservableInt(count)
-        totalPrice = ObservableInt((product.discountPrice + extraPrice.get()) * count)
-        notifyPropertyChanged(BR.productCount)
-        notifyPropertyChanged(BR.totalPrice)
-    }
-
-    fun onSelectAttr(optionAttr: OptionAttr, type: String, position: Int) {
-        optionMap[type] = optionAttr
-        if (type == "COLOR") {
-            listener.setColorName(optionAttr) {
-                colorName = ObservableField(optionAttr.name)
-                notifyPropertyChanged(BR.colorName)
-            }
-        }
-    }
-
-//    private fun getOptionStock(optionPos: Int): Int {
-//        if (product.optionInfos != null) {
-//            for (item in product.optionInfos!!) {
-//                if(optionPos == 0)
-//            }
-//        }
-//    }
 
 }

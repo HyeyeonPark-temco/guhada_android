@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
@@ -37,6 +36,7 @@ import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
@@ -64,6 +64,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private val INVALID_DEAL_ID = -1
     private var animFlag = true
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var mClaimFragment: ProductDetailClaimFragment
     private lateinit var mMenuFragment: ProductDetailMenuFragment
@@ -151,20 +152,20 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
                 if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
             }
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.webViewClient = object  : WebViewClient(){
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                     //return super.shouldOverrideUrlLoading(view, request)
                     view?.webChromeClient = WebChromeClient()
-                    if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment",request?.url!!.toString())
+                    if (CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment", request?.url!!.toString())
                     return true
                 }
             }
 
             val data = StringBuilder()
             data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>")
-            data.append(product.desc.replace("\"//www","\"https://www"))
+            data.append(product.desc.replace("\"//www", "\"https://www"))
             data.append("</body></HTML>")
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(),"text/html; video/mpeg", "utf-8", null)
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(), "text/html; video/mpeg", "utf-8", null)
 
 
             hideLoadingIndicator()
@@ -187,7 +188,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initStore()
             }
             /**
-             * @author park jungho
              * 19.07.25
              * 최근본상품의 상품 DB에 추가
              */
@@ -353,7 +353,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.VISIBLE
         }.let { menuViewModel ->
-            mMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
+            mMenuFragment = ProductDetailMenuFragment().apply {
+                this.mViewModel = menuViewModel
+                this.mIsBottomPopup = true
+            }
         }
 
         ProductDetailMenuViewModel(object : OnProductDetailMenuListener {
@@ -370,7 +373,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             product = mViewModel.product.value ?: Product()
             this.closeButtonVisibility = View.GONE
         }.let { menuViewModel ->
-            mHeaderMenuFragment = ProductDetailMenuFragment().apply { this.mViewModel = menuViewModel }
+            mHeaderMenuFragment = ProductDetailMenuFragment().apply {
+                this.mViewModel = menuViewModel
+                this.mIsBottomPopup = false
+            }
         }
 
         if (isAdded) {
@@ -438,38 +444,131 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         startActivityForResult(Intent(context, LoginActivity::class.java), Flag.RequestCode.LOGIN)
     }
 
-    override fun showMenu() {
-        val optionCount = mViewModel.product.value?.options?.size
-        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            if (::mMenuFragment.isInitialized) mMenuFragment.getSelectedOptionCount() else 0
-        } else {
-            if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
-        }
+//      GRID LIST (DEPRECATED)
+//    override fun showMenu() {
+//        val optionCount = mViewModel.product.value?.options?.size
+//        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+//            if (::mMenuFragment.isInitialized) mMenuFragment.getSelectedOptionCount() else 0
+//        } else {
+//            if (::mHeaderMenuFragment.isInitialized) mHeaderMenuFragment.getSelectedOptionCount() else 0
+//        }
+//
+//        if (selectedOptionCount == optionCount) {
+//            mViewModel.addCartItem()
+//        } else {
+//            setMenuVisible()
+//        }
+//    }
 
-        if (selectedOptionCount == optionCount) {
+    override fun showMenu() {
+        val menuVisible = mViewModel.menuVisibility.get() == View.VISIBLE
+        val selectedOption: OptionInfo? = if (menuVisible) mMenuFragment.mViewModel.mSelectedOptionInfo else mHeaderMenuFragment.mViewModel.mSelectedOptionInfo
+        val isOptionNone = mViewModel.product.value?.options?.isEmpty() ?: false
+
+        if (selectedOption != null || isOptionNone) {
             mViewModel.addCartItem()
         } else {
             setMenuVisible()
         }
     }
 
-    // 수정 예정 (BottomSheetFragment로 변경 예정)
     private fun setMenuVisible() {
-        ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)
-                ?: BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
+//        ToastUtil.showMessage(context?.getString(R.string.cart_message_notselectedoption)
+//                ?: BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
         mViewModel.menuVisibility = ObservableInt(View.VISIBLE)
         mViewModel.notifyPropertyChanged(BR.menuVisibility)
     }
 
-    override fun redirectPaymentActivity(isOptionPopupSelected: Boolean) {
-        val optionCount = mViewModel.product.value?.options?.size ?: 0
-        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
-            mMenuFragment.getSelectedOptionCount()
+    fun getMenuVisible(): Boolean = mViewModel.menuVisibility.get() == View.VISIBLE
+    fun closeMenuPopup() {
+        if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+            mViewModel.menuVisibility = ObservableInt(View.GONE)
+            mViewModel.notifyPropertyChanged(BR.menuVisibility)
+        }
+    }
+
+//      GRID LIST (DEPRECATED)
+//      override fun redirectPaymentActivity(menuVisibile: Boolean) {
+//        val optionCount = mViewModel.product.value?.options?.size ?: 0
+//        val selectedOptionCount = if (mViewModel.menuVisibility.get() == View.VISIBLE) {
+//            mMenuFragment.getSelectedOptionCount()
+//        } else {
+//            mHeaderMenuFragment.getSelectedOptionCount()
+//        }
+//
+//        showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
+//    }
+
+    /**
+     * 옵션 스피너 변경에 맞춰 수정
+     * @since 2019.09.06
+     * @author Hyeyeo Park
+     */
+    override fun redirectPaymentActivity(menuVisibile: Boolean) {
+        val selectedOption: OptionInfo? = if (menuVisibile) mMenuFragment.mViewModel.mSelectedOptionInfo else mHeaderMenuFragment.mViewModel.mSelectedOptionInfo
+        val isOptionNone = mViewModel.product.value?.options?.isEmpty() ?: false
+        if (selectedOption != null || isOptionNone) {
+
+            // 전달 데이터
+            // 1.상품 대표 이미지, 2.상품 명, 3.옵션 선택 항목, 4.판매가, 5.수량
+            val product = mViewModel.product.value
+            val brandName = product?.brandName ?: ""
+            val name = product?.name ?: ""
+            val price: Int
+            val count: Int
+
+            if (menuVisibile) {
+                count = mMenuFragment.getProductCount()
+                price = mMenuFragment.getTotalPrice()
+            } else {
+                count = mHeaderMenuFragment.getProductCount()
+                price = mHeaderMenuFragment.getTotalPrice()
+            }
+
+            BaseProduct().apply {
+                this.dealId = mViewModel.dealId
+                this.profileUrl = product?.imageUrls?.get(0) ?: "" // 대표이미지 임시
+                this.name = name
+                this.brandName = brandName
+                this.totalCount = count
+                this.totalPrice = price
+                this.season = product?.season ?: ""
+                this.optionStr = getOptionText(option = selectedOption, count = count)
+                this.dealOptionId = if (!isOptionNone) selectedOption!!.dealOptionSelectId.toLong() else null
+            }.let { baseProduct ->
+                // 장바구니 API 파라미터
+                mViewModel.menuVisibility.set(View.GONE)
+                mViewModel.notifyPropertyChanged(BR.menuVisibility)
+
+                Intent(context, PaymentActivity::class.java).let { intent ->
+                    intent.putExtra("quantity", count)
+                    intent.putExtra("product", baseProduct)
+                    startActivityForResult(intent, Flag.RequestCode.PAYMENT)
+                }
+            }
         } else {
-            mHeaderMenuFragment.getSelectedOptionCount()
+            setMenuVisible()
+            //   ToastUtil.showMessage(resources.getString(R.string.productdetail_message_selectoption))
+        }
+    }
+
+    private fun getOptionText(option: OptionInfo?, count: Int): String {
+        var optionText = ""
+        if (option != null) {
+            if (!option.attribute1.isNullOrEmpty())
+                optionText = "${option.attribute1}"
+
+            if (!option.attribute2.isNullOrEmpty())
+                optionText = "$optionText, ${option.attribute2}"
+
+            if (!option.attribute3.isNullOrEmpty())
+                optionText = "$optionText, ${option.attribute3}"
         }
 
-        showOptionMenu(optionCount = optionCount, selectedOptionCount = selectedOptionCount, isOptionPopupSelected = isOptionPopupSelected)
+        optionText = if (optionText.isNotEmpty()) "$optionText, ${count}개"
+        else "${count}개"
+
+        return optionText
     }
 
 
@@ -523,11 +622,13 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun getSelectedOptionDealId(): Long? {
-        return when {
-            mMenuFragment.getSelectedOptionCount() > 0 -> mMenuFragment.getSelectedOptionDealId()
-            mHeaderMenuFragment.getSelectedOptionCount() > 0 -> mHeaderMenuFragment.getSelectedOptionDealId()
-            else -> null
-        }
+        return if (mViewModel.menuVisibility.get() == View.GONE) mHeaderMenuFragment.mViewModel.mSelectedOptionInfo?.dealOptionSelectId?.toLong()
+        else mMenuFragment.mViewModel.mSelectedOptionInfo?.dealOptionSelectId?.toLong()
+//        return when {
+//            mMenuFragment.getSelectedOptionCount() > 0 -> mMenuFragment.getSelectedOptionDealId()
+//            mHeaderMenuFragment.getSelectedOptionCount() > 0 -> mHeaderMenuFragment.getSelectedOptionDealId()
+//            else -> null
+//        }
     }
 
     override fun getSelectedProductQuantity(): Int {
@@ -557,9 +658,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun showReportActivity() {
-        if(CommonUtil.checkToken()){
+        if (CommonUtil.checkToken()) {
             CommonUtil.startReportActivity(context as Activity, 0, mViewModel.product.value, null)
-        }else{
+        } else {
             CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                     cancelButtonVisible = true,
                     confirmTask = {

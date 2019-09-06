@@ -25,6 +25,12 @@ interface OrderService {
     fun addCartItem(@Header("Authorization") accessToken: String, @Query("dealId") dealId: Long, @Query("dealOptionId") optionId: Long?, @Query("quantity") quantity: Int): Call<BaseModel<Cart>>
 
     /**
+     * 장바구니 상품 담기 API (옵션 없는 상품)
+     */
+    @POST("/cart/addCartItem")
+    fun addCartItem(@Header("Authorization") accessToken: String, @Query("dealId") dealId: Long, @Query("quantity") quantity: Int): Call<BaseModel<Cart>>
+
+    /**
      * 결제창(PG사 화면)을 띄우기위한 데이터 생성 API
      */
     @POST("/order/requestOrder")

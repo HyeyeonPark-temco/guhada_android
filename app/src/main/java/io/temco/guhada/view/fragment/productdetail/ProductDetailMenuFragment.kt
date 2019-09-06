@@ -3,6 +3,7 @@ package io.temco.guhada.view.fragment.productdetail
 import android.graphics.Color
 import android.view.View
 import android.widget.AdapterView
+import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
@@ -17,6 +18,7 @@ import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionListAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
@@ -27,12 +29,14 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>() {
     lateinit var mViewModel: ProductDetailMenuViewModel
     private lateinit var mMenuSpinnerAdapter: ProductDetailOptionSpinnerAdapter
+    var mIsBottomPopup = false
 
     override fun getBaseTag(): String = ProductDetailMenuFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_menu
 
     override fun init() {
-        initMenuSpinner()
+        if (mIsBottomPopup) initMenuList()
+        else initMenuSpinner()
         setSpinnerHeight()
 
         mBinding.viewModel = mViewModel
@@ -67,7 +71,12 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                     mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
                     mBinding.executePendingBindings()
 
-                    //
+                    // INIT OPTION
+                    mViewModel.mSelectedOptionInfo = option
+                    mViewModel.productCount = ObservableInt(1)
+                    mViewModel.notifyPropertyChanged(BR.productCount)
+
+                    // PRICE
                     mViewModel.extraPrice = ObservableInt(option.price)
                     mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice)
                     mViewModel.notifyPropertyChanged(BR.extraPrice)
@@ -75,10 +84,67 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 }
             }
         }
-
         mBinding.spinnerProductdetailOption.setSelection(list.size - 1)
-
+        mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
     }
+
+    private fun initMenuList() {
+        mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
+            val visibility = mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility
+            if (visibility == View.VISIBLE) {
+                mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
+                mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
+            } else {
+                mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour_emptybottom)
+                mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.VISIBLE
+            }
+            mBinding.executePendingBindings()
+        }
+
+        mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
+        mBinding.recyclerviewProductdetailOptionspinner.adapter = ProductDetailOptionListAdapter().apply {
+            this.mList = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
+            this.mItemClickTask = { option ->
+
+                // close list
+                mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
+                mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
+
+                if(option.stock > 0){
+                    mBinding.linearlayoutProductdetailOption.visibility = View.GONE
+                    mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                    mBinding.textviewProductdetailOptionselected.text = getOptionText(option)
+                    mBinding.executePendingBindings()
+
+                    // INIT OPTION
+                    mViewModel.mSelectedOptionInfo = option
+                    mViewModel.productCount = ObservableInt(1)
+                    mViewModel.notifyPropertyChanged(BR.productCount)
+
+                    // PRICE
+                    mViewModel.extraPrice = ObservableInt(option.price)
+                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice)
+                    mViewModel.notifyPropertyChanged(BR.extraPrice)
+                    mViewModel.notifyPropertyChanged(BR.totalPrice)
+                }
+            }
+        }
+    }
+
+    private fun getOptionText(option: OptionInfo): String {
+        var optionText = ""
+        if (!option.attribute1.isNullOrEmpty())
+            optionText = "${option.attribute1}"
+
+        if (!option.attribute2.isNullOrEmpty())
+            optionText = "$optionText / ${option.attribute2}"
+
+        if (!option.attribute3.isNullOrEmpty())
+            optionText = "$optionText / ${option.attribute3}"
+
+        return optionText
+    }
+
 
     // 미사용
     private fun initMenuGrid() {
@@ -107,7 +173,6 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     }
 
     companion object {
-
         // 미사용
         @JvmStatic
         @BindingAdapter("productOption")

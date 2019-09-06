@@ -340,6 +340,8 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         finish()
     }
 
+
+
     override fun setBrandProductList(brand: Brand) {
 
     }
