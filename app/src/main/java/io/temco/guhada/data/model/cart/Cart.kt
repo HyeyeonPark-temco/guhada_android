@@ -53,11 +53,11 @@ class Cart {
         }
 
         if (selectedCartOption?.attribute2 != null) {
-            result = ", $result${selectedCartOption?.attribute2}"
+            result = "$result, ${selectedCartOption?.attribute2}"
         }
 
         if (selectedCartOption?.attribute3 != null) {
-            result = ", $result${selectedCartOption?.attribute3}"
+            result = "$result, ${selectedCartOption?.attribute3}"
         }
 
         result = if(result.isEmpty()) "${currentQuantity}개"
