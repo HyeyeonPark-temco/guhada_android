@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.JsonObject
 import io.temco.guhada.BR
+import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
@@ -25,24 +27,56 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class UserClaimGuhadaViewModel(val context : Context) : BaseObservableViewModel() {
     var repository = UserClaimGuhadaRepository(this)
 
-    var userClaimDescriptionIndex = -1
-    var userClaimDescriptionChildIndex = -1
+
     var userId : Long = 0L
     var userImageUrl: String = ""
+    var selectedImageIndex = -1
 
     var userClaimGuhadaImages: MutableLiveData<MutableList<String>> = MutableLiveData()
 
-    var userClaimDescription = arrayListOf("1","2","3")
-    var userClaimDescriptionChild = arrayListOf("1","2","3")
-    var writeUserInfo: MutableLiveData<User> = MutableLiveData()
+    var userClaimDescriptionData = mutableListOf<UserClaimGuhadaType>()
+    var initUserClaimDescription = false
+    var initUserClaimDescriptionChild = false
+
+    var userClaimDescriptionList = ObservableField<MutableList<String>>(mutableListOf()) // 스피너 표시 메세지
+        @Bindable
+        get() = field
+
+    var userClaimDescriptionChildList = ObservableField<MutableList<String>>(mutableListOf()) // 스피너 표시 메세지
+        @Bindable
+        get() = field
+
+    lateinit var writeUserInfo : User
 
     init {
-        repository.getUserInfo(object : OnCallBackListener{
+        userClaimGuhadaImages.value = arrayListOf()
+        repository.getUserClaimGuhadaTypeList(object : OnCallBackListener{
             override fun callBackListener(resultFlag: Boolean, value: Any) {
+                userClaimDescriptionIndex.set(-1)
+                userClaimDescriptionMessage.set(context.resources.getString(R.string.userclaim_guhada_hint1))
+                notifyPropertyChanged(BR.userClaimDescriptionList)
+                userClaimDescriptionChildIndex.set(-1)
+                userClaimDescriptionChildMessage.set(context.resources.getString(R.string.userclaim_guhada_hint2))
             }
         })
-        repository.getUserClaimGuhadaTypeList()
+        repository.getUserClaimGuhadaImage()
     }
+
+    var userClaimDescriptionIndex = ObservableInt(-1)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.userClaimDescriptionIndex)
+        }
+    var userClaimDescriptionChildIndex = ObservableInt(-1)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.userClaimDescriptionChildIndex)
+        }
+
 
     var editTextUserClaimGuhadaTxtCount = ObservableField<String>("0")
         @Bindable
@@ -76,16 +110,42 @@ class UserClaimGuhadaViewModel(val context : Context) : BaseObservableViewModel(
             notifyPropertyChanged(BR.checkTermUserClaimGuhada)
         }
 
-    fun onUserClaimDescriptionSelected(position : Int){
 
+    fun getUserInfo(listener : OnCallBackListener){
+        repository.getUserInfo(listener)
     }
 
-    fun onUserClaimDescriptionChildSelected(position : Int){
 
+    fun onUserClaimDescriptionSelected(position : Int){
+        if(position != userClaimDescriptionIndex.get() && initUserClaimDescription){
+            userClaimDescriptionMessage.set(userClaimDescriptionList.get()!!.get(position))
+            userClaimDescriptionIndex.set(position)
+            setUserClaimDescriptionChildList()
+        }else initUserClaimDescription = true
+    }
+
+
+    fun onUserClaimDescriptionChildSelected(position : Int){
+        if(position != userClaimDescriptionChildIndex.get() && initUserClaimDescriptionChild){
+            userClaimDescriptionChildMessage.set(userClaimDescriptionChildList.get()!!.get(position))
+            userClaimDescriptionChildIndex.set(position)
+        }else initUserClaimDescriptionChild = true
     }
 
     fun onClickCheckTermUserClaim(){
         checkTermUserClaimGuhada.set(!checkTermUserClaimGuhada.get())
+    }
+
+
+    private fun setUserClaimDescriptionChildList(){
+        if(userClaimDescriptionChildList.get().isNullOrEmpty()) userClaimDescriptionChildList.set(mutableListOf())
+        else userClaimDescriptionChildList.get()!!.clear()
+        for (i in userClaimDescriptionData.get(userClaimDescriptionIndex.get()).children!!){
+            userClaimDescriptionChildList.get()!!.add(i.description)
+        }
+        userClaimDescriptionChildIndex.set(-1)
+        userClaimDescriptionChildMessage.set(context.resources.getString(R.string.userclaim_guhada_hint2))
+        notifyPropertyChanged(BR.userClaimDescriptionChildList)
     }
 
 
@@ -99,11 +159,12 @@ class UserClaimGuhadaRepository(val viewModel : UserClaimGuhadaViewModel){
                 task = { token ->
                     if (token != null) {
                         val userId : Long = JWT(token.substring(7, token.length)).getClaim("userId").asLong()!!
+                        viewModel.userId = userId
                         UserServer.getUserById(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
                                         var value = (it as BaseModel<User>).data
-                                        viewModel.writeUserInfo.value = value
+                                        viewModel.writeUserInfo = value
                                         listener.callBackListener(true, "successTask")
                                         if(CustomLog.flag) CustomLog.L("ReportWriteRepository User",value)
                                     },
@@ -117,17 +178,20 @@ class UserClaimGuhadaRepository(val viewModel : UserClaimGuhadaViewModel){
                 }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
 
-    fun getUserClaimGuhadaTypeList(){
+
+    fun getUserClaimGuhadaTypeList(listener: OnCallBackListener){
         ClaimServer.getUserClaimGuhadaTypeList(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var value = (it as BaseModel<UserClaimGuhadaType>).list
-                        var typeList = arrayListOf<UserClaimGuhadaType>()
                         var nameList = mutableListOf<String>()
                         for (parent in value){
                             nameList.add(parent.description)
                         }
-                        if(CustomLog.flag) CustomLog.L("getReportTypeData typeList size",typeList.size)
+                        viewModel.userClaimDescriptionData = value
+                        viewModel.userClaimDescriptionList.set(nameList)
+                        if(CustomLog.flag) CustomLog.L("getUserClaimGuhadaTypeList nameList size", nameList)
+                        listener.callBackListener(true, "successTask")
                     },
                     dataNotFoundTask = { },
                     failedTask = { },
@@ -138,7 +202,7 @@ class UserClaimGuhadaRepository(val viewModel : UserClaimGuhadaViewModel){
     }
 
 
-    fun gettUserClaimGuhadaImage(){
+    fun getUserClaimGuhadaImage(){
         ServerCallbackUtil.callWithToken(
                 task = { token ->
                     if (token != null) {

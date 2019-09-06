@@ -159,7 +159,7 @@
                     android:layout_height="50dp"
                     android:background="@color/white_five" >
 
-                    <Spinner
+                    <io.temco.guhada.view.CustomSpinner
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginLeft="20dp"
@@ -171,7 +171,7 @@
                         android:popupBackground="@null"
                         android:spinnerMode="dropdown"
                         android:onItemSelected="@{(p, v, pos, id) -> viewModel.onUserClaimDescriptionSelected(pos)}"
-                        app:bindCommonSpinner="@{viewModel.userClaimDescription}" />
+                        app:bindCommonSpinner="@{viewModel.userClaimDescriptionList}" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -191,8 +191,8 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
-                                android:textColor="@color/black_four"
-                                android:text="@{viewModel.userClaimDescriptionChildMessage}"
+                                android:textColor="@{viewModel.userClaimDescriptionIndex == -1 ? @color/pinkish_grey : @color/black_four}"
+                                android:text="@{viewModel.userClaimDescriptionMessage}"
                                 android:textSize="@dimen/text_15" />
 
                             <ImageView
@@ -215,7 +215,7 @@
                     android:layout_height="50dp"
                     android:background="@color/white_five" >
 
-                    <Spinner
+                    <io.temco.guhada.view.CustomSpinner
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginLeft="20dp"
@@ -227,7 +227,7 @@
                         android:popupBackground="@null"
                         android:spinnerMode="dropdown"
                         android:onItemSelected="@{(p, v, pos, id) -> viewModel.onUserClaimDescriptionChildSelected(pos)}"
-                        app:bindCommonSpinner="@{viewModel.userClaimDescriptionChild}" />
+                        app:bindCommonSpinner="@{viewModel.userClaimDescriptionChildList}" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -247,8 +247,8 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
-                                android:textColor="@color/black_four"
-                                android:text="@{viewModel.userClaimDescriptionMessage}"
+                                android:textColor="@{viewModel.userClaimDescriptionChildIndex == -1 ? @color/pinkish_grey : @color/black_four}"
+                                android:text="@{viewModel.userClaimDescriptionChildMessage}"
                                 android:textSize="@dimen/text_15" />
 
                             <ImageView
