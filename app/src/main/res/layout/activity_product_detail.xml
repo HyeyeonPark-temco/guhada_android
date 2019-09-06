@@ -86,7 +86,7 @@
 
                     <include
                         android:id="@+id/include_productdetail_contentshipping"
-                        layout="@layout/layout_productdetail_shipping" />   <!-- 교환/반품 안내 영역 (배송정보, AS안내사항, 교환/반품 안내) -->
+                        layout="@layout/layout_productdetail_shipping" />   <!-- 교환/반품 안내 영역 (배송정보, AS 안내사항, 교환/반품 안내) -->
 
                     <include
                         android:id="@+id/include_productdetail_contentnotifies"

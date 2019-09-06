@@ -25,7 +25,7 @@ class Product : BaseProduct() {
     // AS (배송, 교환, 환불 정보)
     var asInfo: String = ""
     var asTelephone: String = ""
-    var asDesc: String = ""
+    var asDesc: String = "" // 판매자 특이사항
 
     // DESCRIPTION
     var desc: String = ""
