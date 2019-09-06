@@ -28,9 +28,12 @@ object CommonUtilKotlin  {
      * @param activity current Activity notNull
      *
      */
-    fun startActivityUserClaimSeller(activity: AppCompatActivity) {
+    fun startActivityUserClaimSeller(activity: AppCompatActivity, sellerId : Long, productId : Long, orderProdGroupId : Long) {
         if(CommonUtil.checkToken()){
             val intent = Intent(activity, UserClaimSellerActivity::class.java)
+            intent.putExtra("sellerId",sellerId)
+            intent.putExtra("productId",productId)
+            intent.putExtra("orderProdGroupId",orderProdGroupId)
             activity.startActivityForResult(intent, Flag.RequestCode.USER_CLAIM_SELLER)
         }else{
             CommonViewUtil.showDialog(activity,"회원가입한 사용자만 가능합니다.",false,null)

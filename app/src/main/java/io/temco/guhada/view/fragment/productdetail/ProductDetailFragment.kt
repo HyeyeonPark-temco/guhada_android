@@ -296,6 +296,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initClaims() {
         mClaimFragment = ProductDetailClaimFragment().apply {
             this.productId = mViewModel.product.value?.productId ?: 0
+            this.sellerId = mViewModel.product.value?.sellerId ?: 0
         }
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailClaim.id, mClaimFragment)
@@ -668,6 +669,12 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     }).show(manager = (context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
         }
     }
+
+    /**
+     * @author park jungho
+     * get porduct id
+     */
+    fun getProductId() : Long = mViewModel.product.value!!.productId ?: 0L
 
     companion object {
         @JvmStatic

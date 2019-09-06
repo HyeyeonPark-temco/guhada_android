@@ -175,7 +175,7 @@ interface ClaimService {
      * 판매자 문의하기 type 가져오기
      */
     @GET("/users/seller-claims/types")
-    fun getUserClaimSellerTypeList(): Call<BaseModel<SellerClaimType>>
+    fun getUserClaimSellerTypeList(): Call<BaseModel<UserClaimSellerType>>
 
 
     /**

@@ -9,6 +9,8 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
     private var message: String = msg
     private var cancelButtonVisible: Boolean = false
     private lateinit var confirmTask: () -> Unit
+    private lateinit var cancelTask: () -> Unit
+    private var confirmBtnName : String? = null
     override fun getLayoutId(): Int = R.layout.dialog_message
 
     constructor(message: String, cancelButtonVisible: Boolean) : this(message) {
@@ -22,6 +24,24 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
         this.confirmTask = confirmTask
     }
 
+
+    constructor(message: String, cancelTask: () -> Unit, confirmTask: () -> Unit) : this(message) {
+        this.message = message
+        this.cancelButtonVisible = true
+        this.cancelTask = cancelTask
+        this.confirmTask = confirmTask
+    }
+
+
+    constructor(message: String, cancelTask: () -> Unit, confirmTask: () -> Unit, confirmBtnName:String) : this(message) {
+        this.message = message
+        this.cancelButtonVisible = true
+        this.cancelTask = cancelTask
+        this.confirmTask = confirmTask
+        this.confirmBtnName = confirmBtnName
+    }
+
+
     override fun show(manager: FragmentManager, tag: String?) {
         super.show(manager, tag)
     }
@@ -33,9 +53,11 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
             dismissAllowingStateLoss()
         }
         mBinding.setCancelClickListener {
+            cancelTask()
             dismissAllowingStateLoss()
         }
         mBinding.cancelButtonVisible = this.cancelButtonVisible
+        if(confirmBtnName != null) mBinding.buttonConfirm.text = confirmBtnName
         mBinding.executePendingBindings()
     }
 }

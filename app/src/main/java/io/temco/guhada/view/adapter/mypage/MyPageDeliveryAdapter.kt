@@ -73,7 +73,9 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             }
             mBinding.imageviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
             mBinding.textviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
-            mBinding.buttonDeliveryClaim.setOnClickListener { redirectWriteClaimActivity(item.productId) }
+            mBinding.buttonDeliveryClaim.setOnClickListener {
+
+            }
 
             mBinding.executePendingBindings()
         }

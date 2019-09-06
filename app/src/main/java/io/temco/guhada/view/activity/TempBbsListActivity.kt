@@ -71,4 +71,6 @@ class TempBbsListActivity : BindActivity<ActivityTempbbslistBinding>(), OnClickS
             })
         }
     }
+
+
 }

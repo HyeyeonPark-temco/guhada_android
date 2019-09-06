@@ -2,7 +2,9 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
@@ -46,6 +48,20 @@ class UserClaimGuhadaActivity : BindActivity<ActivityUserclaimguhadaBinding>(), 
         } else {
             (mBinding.recyclerviewUserclaimguhadaImagelist.adapter as CommonImageAdapter).setItems(mViewModel.userClaimGuhadaImages.value!!)
         }
+
+        mBinding.edittextUserclaimguhadaText.addTextChangedListener(object  : TextWatcher {
+            override fun afterTextChanged(s: Editable?) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(s.isNullOrEmpty() || s.isNullOrBlank()){
+                    mViewModel.editTextUserClaimGuhadaTxtCount.set("0")
+                }else{
+                    if(s != null && s.isNotEmpty()){
+                        mViewModel.editTextUserClaimGuhadaTxtCount.set(s!!.length.toString())
+                    }
+                }
+            }
+        })
 
         mBinding.setOnClickGetImage {
             if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","setOnClickGetImage",mViewModel.userClaimGuhadaImages.value!!.size)

@@ -306,6 +306,7 @@
         <activity
             android:name=".view.activity.UserClaimSellerActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
         <!-- Kakao -->

@@ -106,6 +106,7 @@
                 android:layout_marginStart="3dp"
                 android:layout_weight="1"
                 android:background="@color/greyish_brown_two"
+                android:onClick="@{()->viewModel.onClickUserClaimSeller()}"
                 android:text="@string/productdetail_qna_button_contactwithseller" />
         </LinearLayout>
 

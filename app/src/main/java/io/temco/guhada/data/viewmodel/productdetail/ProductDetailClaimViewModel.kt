@@ -94,6 +94,15 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         }
     }
 
+    fun onClickUserClaimSeller() {
+        if (Preferences.getToken() != null) {
+            listener.redirectUserClaimSellerActivity()
+        } else {
+            listener.redirectLoginActivity()
+        }
+    }
+
+
     fun onCheckedMine(checked: Boolean) {
         this.isMineChecked = checked
         claimPageSize = 5

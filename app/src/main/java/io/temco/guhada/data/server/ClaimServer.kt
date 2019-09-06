@@ -408,11 +408,11 @@ open class ClaimServer {
         @JvmStatic
         fun getUserClaimSellerTypeList(listener: OnServerListener) {
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
-                    .getUserClaimSellerTypeList().enqueue(object : Callback<BaseModel<SellerClaimType>> {
-                        override fun onResponse(call: Call<BaseModel<SellerClaimType>>, response: Response<BaseModel<SellerClaimType>>) {
+                    .getUserClaimSellerTypeList().enqueue(object : Callback<BaseModel<UserClaimSellerType>> {
+                        override fun onResponse(call: Call<BaseModel<UserClaimSellerType>>, response: Response<BaseModel<UserClaimSellerType>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
-                        override fun onFailure(call: Call<BaseModel<SellerClaimType>>, t: Throwable) {
+                        override fun onFailure(call: Call<BaseModel<UserClaimSellerType>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
