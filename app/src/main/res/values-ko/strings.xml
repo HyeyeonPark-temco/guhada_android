@@ -326,6 +326,7 @@
     <string name="productdetail_info">상품 정보</string>
     <string name="productdetail_info_status">상품상태</string>
     <string name="productdetail_info_number">상품번호</string>
+    <string name="productdetail_info_modelnumber">모델번호</string>
     <string name="productdetail_info_origin">원산지</string>
     <string name="productdetail_info_status_new">새 상품</string>
     <string name="productdetail_info_status_used">중고 상품</string>
@@ -362,6 +363,7 @@
     <string name="productdetail_shipping_as_title">AS안내사항</string>
     <string name="productdetail_shipping_as_content1">AS 안내내용</string>
     <string name="productdetail_shipping_as_content2">AS 전화번호</string>
+    <string name="productdetail_shipping_as_content3">판매자 특이사항</string>
 
     <string name="productdetail_shipping_refund_title">교환/반품 안내</string>
     <string name="productdetail_shipping_refund_description">교환/반품 시 먼저 판매자와 연락하셔서 교환/반품사유, 택배사, 반품지 주소 등을 협의하신 후 교환/반품 상품을 발송해 주시기 바랍니다.</string>

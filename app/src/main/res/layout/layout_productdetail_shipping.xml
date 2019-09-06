@@ -13,9 +13,9 @@
     </data>
 
     <ScrollView
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -124,19 +124,20 @@
                             android:textSize="12dp" />
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_all_whitefour_topbottom"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-
-                            android:layout_marginTop="1dp"
-                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
@@ -159,6 +160,11 @@
                             android:textSize="12dp" />
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -168,8 +174,6 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-
-                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
@@ -192,6 +196,11 @@
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="12dp" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -211,12 +220,14 @@
                         android:layout_marginTop="22dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/productdetail_shipping_as_title"
-                        android:textColor="@color/greyish_brown_two" />
+                        android:textColor="@color/greyish_brown_two"
+                        android:visibility="@{viewModel.product.asInfo.isEmpty() &amp;&amp; viewModel.product.asTelephone.isEmpty() &amp;&amp; viewModel.product.asDesc.isEmpty() ? View.GONE : View.VISIBLE}" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/white_four"
+                        android:visibility="@{viewModel.product.asInfo.isEmpty() &amp;&amp; viewModel.product.asTelephone.isEmpty() &amp;&amp; viewModel.product.asDesc.isEmpty() ? View.GONE : View.VISIBLE}"
                         app:layout_constraintBottom_toTopOf="@+id/recyclerview_productdetail_info"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -225,6 +236,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="@{viewModel.product.asInfo.isEmpty() ? View.GONE : View.VISIBLE}"
                         android:weightSum="3">
 
                         <TextView
@@ -255,13 +267,15 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/white_four" />
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.product.asTelephone.isEmpty() ? View.GONE : View.VISIBLE}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border_all_whitefour_topbottom"
                         android:orientation="horizontal"
+                        android:visibility="@{viewModel.product.asTelephone.isEmpty() ? View.GONE : View.VISIBLE}"
                         android:weightSum="3">
 
                         <TextView
@@ -288,6 +302,51 @@
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="12dp" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.product.asDesc.isEmpty() ? View.GONE : View.VISIBLE}" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="@{viewModel.product.asDesc.isEmpty() ? View.GONE : View.VISIBLE}"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/pale_grey"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:text="@string/productdetail_shipping_as_content3"
+                            android:textSize="@dimen/text_12" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:text="@{viewModel.product.asDesc}"
+                            android:textColor="@color/greyish_brown_two"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.product.asInfo.isEmpty() &amp;&amp; viewModel.product.asTelephone.isEmpty() &amp;&amp; viewModel.product.asDesc.isEmpty() ? View.GONE : View.VISIBLE}" />
+
 
                     <LinearLayout
                         android:id="@+id/linearLayout6"
@@ -322,6 +381,37 @@
                             android:layout_marginTop="20dp"
                             android:background="@color/white_four" />
 
+                        <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:weightSum="3">-->
+
+                        <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@color/pale_grey"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:paddingStart="10dp"-->
+                        <!--android:paddingTop="12dp"-->
+                        <!--android:paddingBottom="12dp"-->
+                        <!--android:text="@string/productdetail_shipping_refund_content1"-->
+                        <!--android:textSize="@dimen/text_12" />-->
+
+                        <!--<TextView-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_weight="2"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:paddingStart="10dp"-->
+                        <!--android:paddingTop="12dp"-->
+                        <!--android:paddingBottom="12dp"-->
+                        <!--android:text="@{viewModel.product.shipping.claimShipCompanyName}"-->
+                        <!--android:textColor="@color/greyish_brown_two"-->
+                        <!--android:textSize="12dp" />-->
+                        <!--</LinearLayout>-->
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -331,41 +421,6 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:background="@color/pale_grey"
-                                android:gravity="center_vertical"
-                                android:paddingStart="10dp"
-
-                                android:paddingTop="12dp"
-                                android:paddingBottom="12dp"
-                                android:text="@string/productdetail_shipping_refund_content1"
-                                android:textSize="@dimen/text_12" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="2"
-                                android:gravity="center_vertical"
-                                android:paddingStart="10dp"
-                                android:paddingTop="12dp"
-                                android:paddingBottom="12dp"
-                                android:text="@{viewModel.product.shipping.claimShipCompanyName}"
-                                android:textColor="@color/greyish_brown_two"
-                                android:textSize="12dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/border_all_whitefour_topbottom"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="1dp"
-                                android:layout_marginBottom="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/pale_grey"
                                 android:gravity="center_vertical"
@@ -405,10 +460,14 @@
 
                         </LinearLayout>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/border_all_whitefour_topbottom"
                             android:orientation="horizontal"
                             android:weightSum="3">
 
@@ -454,18 +513,20 @@
 
                         </LinearLayout>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/border_all_whitefour_topbottom"
                             android:orientation="horizontal"
                             android:weightSum="3">
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="1dp"
-                                android:layout_marginBottom="1dp"
                                 android:layout_weight="1"
                                 android:background="@color/pale_grey"
                                 android:gravity="center_vertical"
@@ -489,6 +550,11 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -623,19 +689,20 @@
                             android:textSize="12dp" />
                     </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_all_whitefour_topbottom"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-
-                            android:layout_marginTop="1dp"
-                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
@@ -657,7 +724,10 @@
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="12dp" />
                     </LinearLayout>
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -667,8 +737,6 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-
-                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
@@ -691,7 +759,10 @@
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="12dp" />
                     </LinearLayout>
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -722,20 +793,19 @@
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="12dp" />
                     </LinearLayout>
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_all_whitefour_topbottom"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-
-                            android:layout_marginTop="1dp"
-                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
@@ -757,7 +827,10 @@
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="12dp" />
                     </LinearLayout>
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -767,8 +840,6 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-
-                            android:layout_marginBottom="1dp"
                             android:layout_weight="1"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
@@ -791,6 +862,11 @@
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="12dp" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/white_four" />
                 </LinearLayout>
             </LinearLayout>
 

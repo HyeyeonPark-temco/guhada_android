@@ -326,9 +326,11 @@
     <string name="productdetail_info">Product Information</string>
     <string name="productdetail_info_status">Product Status</string>
     <string name="productdetail_info_number">Item Number</string>
+    <string name="productdetail_info_modelnumber">Model Number</string>
     <string name="productdetail_info_origin">Origin</string>
     <string name="productdetail_info_status_new">New</string>
     <string name="productdetail_info_status_used">Used goods</string>
+
 
     <string name="productdetail_shipinfo">Shipping</string>
     <string name="productdetail_shipfree">Free Shipping</string>
@@ -362,6 +364,7 @@
     <string name="productdetail_shipping_as_title">A/S</string>
     <string name="productdetail_shipping_as_content1">A/S</string>
     <string name="productdetail_shipping_as_content2">AS contact</string>
+    <string name="productdetail_shipping_as_content3">판매자 특이사항</string>
 
     <string name="productdetail_shipping_refund_title">Return/Exchange</string>
     <string name="productdetail_shipping_refund_description">Please contact the seller to discuss exchange/return terms and send the product</string>

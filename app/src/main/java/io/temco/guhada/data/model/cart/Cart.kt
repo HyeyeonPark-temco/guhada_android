@@ -42,6 +42,9 @@ class Cart {
     @Expose
     var cartOptionList: MutableList<CartOption> = mutableListOf()
 
+    @Expose
+    var cartOptionInfoList : MutableList<OptionInfo> = mutableListOf()
+
     // 상품 수량 변경시 사용되는 더미 필드
     @Expose
     var tempQuantity = 0

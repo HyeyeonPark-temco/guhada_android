@@ -5,10 +5,12 @@ import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
+import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.model.review.MyPageOrderReview
+import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -60,6 +62,15 @@ interface OrderService {
      */
     @GET("/cart/getCartItemOptionList")
     fun getCartItemOptionList(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long): Call<BaseModel<Any>>
+
+    /**
+     * 장바구니 상품의 옵션 리스트 조회 API
+     */
+    @GET("/cart/getCartItemOptionList")
+    fun getCartItemOptionListForSpinner(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long): Call<BaseModel<MutableList<OptionInfo>>>
+
+    @GET("/cart/getCartItemOptionList")
+    fun getCartItemOptionListForSpinnerAsync(@Header("Authorization") accessToken: String, @Query("cartItemId") cartItemId: Long): Deferred<BaseModel<MutableList<OptionInfo>>>
 
     /**
      * 장바구니 상품 옵션 변경 API
