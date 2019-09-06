@@ -32,9 +32,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:nestedScrollingEnabled="false"
-                android:descendantFocusability="blocksDescendants"
                 android:background="@color/common_white"
+                android:descendantFocusability="blocksDescendants"
+                android:nestedScrollingEnabled="false"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,17 +85,17 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="@{viewModel.productVisible ? View.VISIBLE : View.GONE, default = gone}"
                     android:id="@+id/recyclerview_payment_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
-                    android:overScrollMode="never"
                     android:orientation="vertical"
+                    android:overScrollMode="never"
+                    android:visibility="@{viewModel.productVisible ? View.VISIBLE : View.GONE, default = visible}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:paymentProduct="@{viewModel.productList}"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"/>
+                    app:paymentProduct="@{viewModel.productList}" />
 
             </LinearLayout>
 
@@ -119,8 +119,8 @@
                     android:id="@+id/linearlayout_payment_verify"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:onClick="@{()->viewModel.onClickVerify()}"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 

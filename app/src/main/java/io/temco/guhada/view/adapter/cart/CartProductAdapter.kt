@@ -94,12 +94,12 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 mViewModel.totalItemCount = ObservableInt(mViewModel.totalItemCount.get() + 1)
 
             binding.setOnClickAmountPlus {
-                if (cart.tempQuantity < cart.maxQuantity) {
+                if (cart.tempQuantity < cart.totalStock) {
                     cart.tempQuantity += 1
                     binding.amount = cart.tempQuantity
                     binding.executePendingBindings()
                 } else {
-                    val message = String.format(BaseApplication.getInstance().getString(R.string.cart_message_maxquantity), cart.minQuantity)
+                    val message = String.format(BaseApplication.getInstance().getString(R.string.cart_message_maxquantity), cart.totalStock)
                     ToastUtil.showMessage(message)
                 }
             }
