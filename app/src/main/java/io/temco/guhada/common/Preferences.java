@@ -187,6 +187,7 @@ public class Preferences {
     }
 
     public static void clearToken(boolean isShowToast) {
+        Preferences.setPasswordConfirm(false);
         SharedPreferences pref = getPreferences();
         if (pref == null) {
             return;

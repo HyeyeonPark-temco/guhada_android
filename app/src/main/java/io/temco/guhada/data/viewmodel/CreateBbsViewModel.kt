@@ -29,7 +29,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
     var communityCategoryMap : SortedMap<Int, SortedMap<Int,CommunityCategorySub>> = sortedMapOf()
     var totalCategoryCount = 0
     var bbsId = 0L
-    var bbsTempId = 0L
+    var bbsTempId = -1L
 
     val repository = CreateBbsRepository(this)
     var modifyBbsData = CreateBbsResponse()
@@ -403,5 +403,28 @@ class CreateBbsRepository(val viewModel: CreateBbsViewModel){
             )
         },imageType,fileNm)
     }
+
+
+    fun deleteTempData(id : Long, listener: OnCallBackListener?){
+        ServerCallbackUtil.callWithToken(
+                task = { token ->
+                    if (token != null) {
+                        CommunityServer.deleteBbsTempData(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var value = (it as BaseModel<*>).data
+                                        if(CustomLog.flag) CustomLog.L("getBbsTempListData value",value)
+                                        listener?.callBackListener(true, value)
+                                    },
+                                    dataNotFoundTask = { listener?.callBackListener(false, "dataNotFoundTask") },
+                                    failedTask = { listener?.callBackListener(false, "failedTask") },
+                                    userLikeNotFoundTask = { listener?.callBackListener(false, "userLikeNotFoundTask") },
+                                    serverRuntimeErrorTask = { listener?.callBackListener(false, "serverRuntimeErrorTask") }
+                            )
+                        },token, id)
+                    }
+                }, invalidTokenTask = { listener?.callBackListener(false, "invalidTokenTask") })
+    }
+
 
 }
