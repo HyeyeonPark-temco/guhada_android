@@ -326,7 +326,7 @@
     <string name="productdetail_info">Product Information</string>
     <string name="productdetail_info_status">Product Status</string>
     <string name="productdetail_info_number">Item Number</string>
-    <string name="productdetail_info_modelnumber">Model Number</string>
+    <string name="productdetail_info_modelnumber">Product Number</string>
     <string name="productdetail_info_origin">Origin</string>
     <string name="productdetail_info_status_new">New</string>
     <string name="productdetail_info_status_used">Used goods</string>
@@ -460,6 +460,13 @@
     <string name="payment_title_coupon">Coupon</string>
     <string name="payment_title_point">Point</string>
     <string name="payment_title_paymentway">Payment methods</string>
+    <string name="payment_title_receipt">현금영수증</string>
+
+    <string name="payment_title_receipt_issue">신청</string>
+    <string name="payment_title_receipt_unissue">미신청</string>
+    <string name="payment_title_receipt_personal">개인소득공제용</string>
+    <string name="payment_title_receipt_corporation">사업자증빙용 (세금계산서용)</string>
+    <string name="payment_title_receipt_corporationnumber">사업자등록번호</string>
 
     <string name="payment_text_freeshipping">Free shipping</string>
     <string name="payment_text_verify">Identity verification</string>

@@ -16,10 +16,5 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <io.temco.guhada.view.custom.spinner.CustomSpinnerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:spinnerList="@{list}"
-            app:emptyMessage="@{@string/payment_hint_shippingmemo}"/>
     </LinearLayout>
 </layout>

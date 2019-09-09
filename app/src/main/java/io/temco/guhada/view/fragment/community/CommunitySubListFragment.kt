@@ -166,15 +166,6 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
                 this.setSelection(0)
             }
         }
-
-//        @JvmStatic
-//        @BindingAdapter("android:textColor")
-//        fun TextView.bindColor(resId: Int?) {
-//            if (resId != null)
-//                this.setTextColor(resources.getColor(resId))
-//            else
-//                this.setTextColor(resources.getColor(R.color.warm_grey))
-//        }
     }
 
 }

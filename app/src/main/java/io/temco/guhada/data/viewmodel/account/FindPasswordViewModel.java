@@ -4,6 +4,8 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
+import com.google.gson.internal.LinkedTreeMap;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,6 +18,7 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
@@ -242,6 +245,11 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
     /**
      * 이메일로 인증번호 발송
+     *
+     * response 변경 (double -> object)
+     * { data: {data : Double}, .. }
+     * updated 2019.09.09
+     * @author Hyeyeon Park
      */
     public void onClickSendEmail() {
         if (CommonUtil.validateEmail(user.getEmail())) {
@@ -255,7 +263,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             verifyEmailVisibility = View.VISIBLE;
                             notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                            int minute = (int) ((double) ((BaseModel) o).data / 60000);
+                          //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
+                            Double second = Double.parseDouble(((LinkedTreeMap)((BaseModel) o).data).get("data").toString());
+                            int minute = (int) (second / 60000);
                             if (String.valueOf(minute).length() == 1) {
                                 listener.startTimer("0" + (minute - 1), "60");
                             } else {
@@ -333,12 +343,12 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         if (newPassword.equals(newPasswordConfirm)) {
             if (CommonUtil.validatePassword(newPassword)) {
                 Verification verification = new Verification();
-
                 verification.setEmail(user.getEmail());
                 verification.setNewPassword(newPassword);
                 verification.setVerificationNumber(verifyNumber);
                 verification.setDiCode(di);
-                verification.setMobile(mobile);
+                verification.setMobile(user.getMobile());
+                verification.setName(user.getName());
 
                 listener.showLoadingIndicator();
                 user.deleteObserver(this);
@@ -348,7 +358,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                         listener.hideLoadingIndicator();
                         switch (model.resultCode) {
                             case Flag.ResultCode.SUCCESS:
-                                listener.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
+                                ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
+//                                listener.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
                                 // listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
                                 listener.closeActivity();
                                 break;
@@ -373,6 +384,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
                 if (checkedFindPwdByVerifyingPhone) {
                     // 본인인증으로 비밀번호 재설정
+                    verification.setMobile(user.getPhoneNumber());
                     UserServer.changePasswordByIdentifying(serverListener, verification);
                 } else {
                     UserServer.changePassword(serverListener, verification);
@@ -438,7 +450,6 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                     String message = o != null ? (String) o : "잠시 후 다시 시도해주세요.";
                     listener.showSnackBar(message);
                 }
-
                 user.addObserver(this);
             }, user);
         }
