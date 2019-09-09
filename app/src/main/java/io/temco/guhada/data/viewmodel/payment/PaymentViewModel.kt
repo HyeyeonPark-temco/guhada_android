@@ -69,7 +69,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 //            field.optionMap["COLOR"].let { if (it != null) optionStr += "${it.name}, " }
 //            field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
 //            optionStr += "${field.totalCount} ${BaseApplication.getInstance().getString(R.string.common_unit_product)}"
-
             callWithToken { accessToken ->
                 Log.e("AccessToken", accessToken)
                 addCartItem(accessToken)
@@ -123,6 +122,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var savePointInfoVisible = ObservableBoolean(false)
         @Bindable
         get() = field
+
     var paymentWays = arrayOf(false, false, false, false)
         @Bindable
         get() = field
@@ -140,6 +140,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var cartIdList: MutableList<Int> = mutableListOf()
 
     var mVerifyTask: () -> Unit = {}
+
+    // 현금영수증
+    var mRecipientByPhone = ObservableBoolean(true)
+        @Bindable
+        get() = field
+
+    var mRecipientAvailable = ObservableBoolean(false)
+        @Bindable
+        get() = field
 
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
@@ -265,6 +274,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     // LISTENER
+
+    // 결제 수단 checkbox listener
     fun onPaymentWayChecked(view: View, checked: Boolean) {
         val pos = view.tag?.toString()?.toInt()
         if (pos != null) {

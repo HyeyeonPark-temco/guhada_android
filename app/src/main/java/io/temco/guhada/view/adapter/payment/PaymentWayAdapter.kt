@@ -10,6 +10,10 @@ import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ItemPaymentPaymentwayBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 주문결제-결제 수단 list adapter
+ * @author Hyeyeon Park
+ */
 class PaymentWayAdapter : RecyclerView.Adapter<PaymentWayAdapter.Holder>() {
     lateinit var mViewModel: PaymentViewModel
     private var list: MutableList<PaymentMethod> = mutableListOf()
@@ -29,6 +33,14 @@ class PaymentWayAdapter : RecyclerView.Adapter<PaymentWayAdapter.Holder>() {
         notifyDataSetChanged()
     }
 
+    fun getPaymentWay() : String{
+        for(i in 0 until list.size){
+            if(mViewModel.paymentWays[i])
+                return list[i].methodCode
+        }
+        return list[0].methodCode // default: Card
+    }
+
     inner class Holder(val binding: ItemPaymentPaymentwayBinding) : BaseViewHolder<ItemPaymentPaymentwayBinding>(binding.root) {
         fun bind(paymentMethod: PaymentMethod) {
             if (::mViewModel.isInitialized) {
@@ -40,4 +52,5 @@ class PaymentWayAdapter : RecyclerView.Adapter<PaymentWayAdapter.Holder>() {
             }
         }
     }
+
 }

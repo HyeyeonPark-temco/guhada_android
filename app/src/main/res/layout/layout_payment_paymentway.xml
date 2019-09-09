@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -35,13 +38,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:orientation="vertical"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:paymentWay="@{viewModel.order.paymentsMethod}"
             app:spanCount="2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="@{viewModel.mRecipientAvailable ? View.VISIBLE : View.GONE, default = gone}"
+            android:id="@+id/constraintlayout_payment_recipientcontainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@color/pale_grey">
 
             <TextView
@@ -50,9 +57,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:layout_marginBottom="20dp"
                 android:text="@string/payment_title_receipt"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_14"
+                app:layout_constraintBottom_toTopOf="@id/constraintlayout_payment_recipientform"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,6 +73,7 @@
                 android:layout_marginEnd="15dp"
                 android:background="@drawable/selector_ovalradiobutton_all"
                 android:button="@null"
+                android:checked="true"
                 app:layout_constraintRight_toLeftOf="@+id/textview_payment_receiptissue"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -102,201 +112,386 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/view_payment_receiptline"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/white_four"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_payment_receipttitle" />
-
-            <CheckBox
-                android:id="@+id/checkbox_payment_receiptpersonal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_ovalradiobutton_all"
-                android:button="@null"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_payment_receiptline" />
-
-            <TextView
-                android:id="@+id/textview_payment_receiptpersonal"
-                style="@style/TextMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/payment_title_receipt_personal"
-                android:textColor="@color/greyish_brown_two"
-                android:textSize="@dimen/text_14"
-                app:layout_constraintLeft_toRightOf="@+id/checkbox_payment_receiptpersonal"
-                app:layout_constraintTop_toBottomOf="@+id/view_payment_receiptline" />
-
-            <FrameLayout
-                android:id="@+id/framelayout_payment_personaltype"
+            <!-- 입력 폼 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_payment_recipientform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/checkbox_payment_receiptpersonal">
+                app:layout_constraintTop_toBottomOf="@+id/textview_payment_receipttitle">
 
-                <Spinner
-                    android:id="@+id/spinner_payment_personaltype"
+                <View
+                    android:id="@+id/view_payment_receiptline"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@drawable/border_all_whitethree"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@null"
-                    android:spinnerMode="dropdown" />
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/white_four"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <FrameLayout
-                    android:id="@+id/framelayout_payment_personaltypebutton"
-                    android:layout_width="match_parent"
+                <CheckBox
+                    android:id="@+id/checkbox_payment_receiptpersonal"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/white_three"
-                    android:padding="1dp">
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/selector_ovalradiobutton_all"
+                    android:button="@null"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_payment_receiptline" />
 
-                    <LinearLayout
-                        android:id="@+id/linearlayout_payment_personaltype"
+                <TextView
+                    android:id="@+id/textview_payment_receiptpersonal"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/payment_title_receipt_personal"
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintLeft_toRightOf="@+id/checkbox_payment_receiptpersonal"
+                    app:layout_constraintTop_toBottomOf="@+id/view_payment_receiptline" />
+
+                <!-- 개인소득공제용 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintlayout_payment_personal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_payment_receiptpersonal">
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_payment_personaltype"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@color/common_white"
-                        android:orientation="horizontal"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="15dp"
-                        android:popupBackground="@null">
+                        android:layout_height="wrap_content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/textview_payment_personaltype"
-                            style="@style/MypageDeliveryWarmGreyTextStyle"
+                        <Spinner
+                            android:id="@+id/spinner_payment_personaltype"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/border_all_whitethree"
+                            android:orientation="horizontal"
+                            android:overScrollMode="never"
+                            android:overlapAnchor="false"
+                            android:popupBackground="@null"
+                            android:spinnerMode="dropdown" />
+
+                        <FrameLayout
+                            android:id="@+id/framelayout_payment_personaltypebutton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/text_13" />
+                            android:background="@color/white_three"
+                            android:padding="1dp">
 
-                        <ImageView
-                            android:id="@+id/imageview_payment_personaltype"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/payment_icon_selectbox_open" />
-                    </LinearLayout>
-                </FrameLayout>
-            </FrameLayout>
+                            <LinearLayout
+                                android:id="@+id/linearlayout_payment_personaltype"
+                                android:layout_width="373dp"
+                                android:layout_height="47dp"
+                                android:background="@color/common_white"
+                                android:orientation="horizontal"
+                                android:paddingStart="15dp"
+                                android:paddingEnd="15dp"
+                                android:popupBackground="@null">
 
-            <FrameLayout
-                android:id="@+id/framelayout_payment_phone"
-                android:layout_width="82dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype">
+                                <TextView
+                                    android:id="@+id/textview_payment_personaltype"
+                                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:textSize="@dimen/text_13" />
 
-                <Spinner
-                    android:id="@+id/spinner_payment_phone"
-                    android:layout_width="82dp"
-                    android:layout_height="45dp"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@null"
-                    android:spinnerMode="dropdown" />
+                                <ImageView
+                                    android:id="@+id/imageview_payment_personaltype"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@drawable/payment_icon_selectbox_open" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </FrameLayout>
 
-                <FrameLayout
-                    android:layout_width="82dp"
-                    android:layout_height="45dp"
-                    android:background="@color/white_three"
-                    android:padding="1dp">
+                    <!-- 휴대폰 번호 -->
+                    <FrameLayout
+                        android:id="@+id/framelayout_payment_phone"
+                        android:layout_width="82dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                        <Spinner
+                            android:id="@+id/spinner_payment_phone"
+                            android:layout_width="82dp"
+                            android:layout_height="45dp"
+                            android:orientation="horizontal"
+                            android:overScrollMode="never"
+                            android:overlapAnchor="false"
+                            android:popupBackground="@null"
+                            android:spinnerMode="dropdown" />
+
+                        <FrameLayout
+                            android:layout_width="82dp"
+                            android:layout_height="45dp"
+                            android:background="@color/white_three"
+                            android:padding="1dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="45dp"
+                                android:background="@color/common_white"
+                                android:orientation="horizontal"
+                                android:paddingStart="15dp"
+                                android:paddingEnd="15dp"
+                                android:popupBackground="@null">
+
+                                <TextView
+                                    android:id="@+id/textview_payment_phone"
+                                    style="@style/MypageDeliveryWarmGreyTextStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_weight="1"
+                                    android:textSize="@dimen/text_13" />
+
+                                <ImageView
+                                    android:id="@+id/imageview_payment_phone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@drawable/payment_icon_selectbox_open" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/textview_payment_receipthyphen1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="-"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="@dimen/text_13"
+                        android:visibility="@{viewModel.mRecipientByPhone ? View.VISIBLE : View.GONE, default= visible}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/framelayout_payment_phone"
+                        app:layout_constraintRight_toLeftOf="@id/edittext_payment_receiptphone1"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
+
+                    <EditText
+                        android:id="@+id/edittext_payment_receiptphone1"
+                        android:layout_width="95dp"
                         android:layout_height="45dp"
-                        android:background="@color/common_white"
-                        android:orientation="horizontal"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="15dp"
-                        android:popupBackground="@null">
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:padding="15dp"
+                        android:visibility="@{viewModel.mRecipientByPhone ? View.VISIBLE : View.GONE, default= visible}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
 
-                        <TextView
-                            android:id="@+id/textview_payment_phone"
-                            style="@style/MypageDeliveryWarmGreyTextStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/text_13" />
+                    <TextView
+                        android:id="@+id/textview_payment_receipthyphen2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="-"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="@dimen/text_13"
+                        android:visibility="@{viewModel.mRecipientByPhone ? View.VISIBLE : View.GONE, default= visible}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/edittext_payment_receiptphone1"
+                        app:layout_constraintRight_toLeftOf="@id/edittext_payment_receiptphone2"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
 
-                        <ImageView
-                            android:id="@+id/imageview_payment_phone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/payment_icon_selectbox_open" />
-                    </LinearLayout>
-                </FrameLayout>
-            </FrameLayout>
+                    <EditText
+                        android:id="@+id/edittext_payment_receiptphone2"
+                        android:layout_width="95dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:padding="15dp"
+                        android:visibility="@{viewModel.mRecipientByPhone ? View.VISIBLE : View.GONE, default= visible}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
 
-            <TextView
-                android:id="@+id/textview_payment_receipthyphen1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:text="-"
-                android:textColor="@color/warm_grey"
-                android:textSize="@dimen/text_13"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/framelayout_payment_phone"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
+                    <!-- 주민등록번호 -->
+                    <EditText
+                        android:id="@+id/edittext_payment_identification1"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:visibility="@{viewModel.mRecipientByPhone ? View.GONE : View.VISIBLE, default= gone}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/textview_payment_receipthyphen3"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
 
-            <EditText
-                android:id="@+id/edittext_payment_receiptphone1"
-                android:layout_width="95dp"
-                android:layout_marginStart="10dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/border_all_whitethree"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/textview_payment_receipthyphen1"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
+                    <TextView
+                        android:id="@+id/textview_payment_receipthyphen3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="-"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="@dimen/text_13"
+                        android:visibility="@{viewModel.mRecipientByPhone ? View.GONE : View.VISIBLE, default= gone}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
 
-            <TextView
-                android:id="@+id/textview_payment_receipthyphen2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="-"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/warm_grey"
-                android:textSize="@dimen/text_13"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/edittext_payment_receiptphone1"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
+                    <EditText
+                        android:id="@+id/edittext_payment_identification2"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:visibility="@{viewModel.mRecipientByPhone ? View.GONE : View.VISIBLE, default= gone}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/textview_payment_receipthyphen3"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <!-- 사업자 증빙용 -->
 
-            <EditText
-                android:id="@+id/edittext_payment_receiptphone2"
-                android:layout_width="95dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/border_all_whitethree"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/textview_payment_receipthyphen2"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_payment_personaltype" />
+                <CheckBox
+                    android:id="@+id/checkbox_payment_corporation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/selector_ovalradiobutton_all"
+                    android:button="@null"
+                    app:layout_constraintBottom_toTopOf="@+id/constraintlayout_payment_corporation"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintlayout_payment_personal" />
+
+                <TextView
+                    android:id="@+id/textview_payment_corporation"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/payment_title_receipt_corporation"
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_14"
+                    app:layout_constraintLeft_toRightOf="@+id/checkbox_payment_corporation"
+                    app:layout_constraintTop_toBottomOf="@+id/constraintlayout_payment_personal" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintlayout_payment_corporation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/checkbox_payment_corporation">
+
+                    <TextView
+                        android:id="@+id/textviewt_payment_corporationnumber"
+                        style="@style/TextRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_payment_whitefour"
+                        android:gravity="center_vertical"
+                        android:padding="15dp"
+                        android:text="@string/payment_title_receipt_corporationnumber"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/edittext_payment_corporation1"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:padding="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="@+id/textview_payment_receipthyphen4"
+                        app:layout_constraintTop_toBottomOf="@+id/textviewt_payment_corporationnumber" />
+
+                    <TextView
+                        android:id="@+id/textview_payment_receipthyphen4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="-"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="@dimen/text_13"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/edittext_payment_corporation1"
+                        app:layout_constraintRight_toLeftOf="@id/edittext_payment_corporation2"
+                        app:layout_constraintTop_toBottomOf="@+id/textviewt_payment_corporationnumber" />
+
+                    <EditText
+                        android:id="@+id/edittext_payment_corporation2"
+                        android:layout_width="80dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:padding="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textviewt_payment_corporationnumber" />
+
+                    <TextView
+                        android:id="@+id/textview_payment_receipthyphen5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:text="-"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="@dimen/text_13"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/edittext_payment_corporation2"
+                        app:layout_constraintRight_toLeftOf="@id/edittext_payment_corporation3"
+                        app:layout_constraintTop_toBottomOf="@+id/textviewt_payment_corporationnumber" />
+
+                    <EditText
+                        android:id="@+id/edittext_payment_corporation3"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_all_whitethree"
+                        android:padding="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/textview_payment_receipthyphen5"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textviewt_payment_corporationnumber" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout

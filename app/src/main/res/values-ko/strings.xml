@@ -466,6 +466,7 @@
     <string name="payment_title_receipt_unissue">미신청</string>
     <string name="payment_title_receipt_personal">개인소득공제용</string>
     <string name="payment_title_receipt_corporation">사업자증빙용 (세금계산서용)</string>
+    <string name="payment_title_receipt_corporationnumber">사업자등록번호</string>
 
     <string name="payment_text_freeshipping">무료배송</string>
     <string name="payment_text_verify">본인인증</string>

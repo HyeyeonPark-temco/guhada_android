@@ -5,6 +5,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
+import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentResultActivity
@@ -18,18 +19,18 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
             field = value
 
             when (value.payment.parentMethod) {
-                "Card" -> {
-                    paymentMethod = ObservableField("신용/체크카드")
+                PaymentWayType.CARD.code -> {
+                    paymentMethod = ObservableField(PaymentWayType.CARD.label)
                     methodName = ObservableField(value.payment.method)
                     setCreatedAtText(value.payment.completeAt)
                 }
-                "VBank" -> {
-                    paymentMethod = ObservableField("무통장입금")
+                PaymentWayType.VBANK.code -> {
+                    paymentMethod = ObservableField(PaymentWayType.VBANK.label)
                     methodName = ObservableField(value.payment.vbankBankName)
                     setCreatedAtText(value.payment.requestAt)
                 }
-                "DirectBank" -> paymentMethod = ObservableField("실시간 계좌이체")
-                "TOKEN" -> paymentMethod = ObservableField("토큰결제")
+                PaymentWayType.DIRECT_BANK.code -> paymentMethod = ObservableField(PaymentWayType.DIRECT_BANK.label)
+                PaymentWayType.TOKEN.code -> paymentMethod = ObservableField(PaymentWayType.TOKEN.label)
                 else -> paymentMethod = ObservableField("기타")
             }
 
@@ -57,7 +58,7 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
 
     fun onClickContinue() {
         listener.redirectMainActivity()
-       // listener.closeActivity()
+        // listener.closeActivity()
     }
 
     fun onClickPointHistory() {
