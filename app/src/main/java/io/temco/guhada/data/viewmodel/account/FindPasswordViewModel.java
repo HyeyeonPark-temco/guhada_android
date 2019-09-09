@@ -4,6 +4,8 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
+import com.google.gson.internal.LinkedTreeMap;
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -242,6 +244,11 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
     /**
      * 이메일로 인증번호 발송
+     *
+     * response 변경 (double -> object)
+     * { data: {data : Double}, .. }
+     * updated 2019.09.09
+     * @author Hyeyeon Park
      */
     public void onClickSendEmail() {
         if (CommonUtil.validateEmail(user.getEmail())) {
@@ -255,7 +262,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             verifyEmailVisibility = View.VISIBLE;
                             notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                            int minute = (int) ((double) ((BaseModel) o).data / 60000);
+                          //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
+                            Double second = Double.parseDouble(((LinkedTreeMap)((BaseModel) o).data).get("data").toString());
+                            int minute = (int) (second / 60000);
                             if (String.valueOf(minute).length() == 1) {
                                 listener.startTimer("0" + (minute - 1), "60");
                             } else {

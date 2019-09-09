@@ -67,6 +67,8 @@ public class User extends Observable implements Serializable {
         this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos;
         setChanged();
         notifyObservers("agreeCollectPersonalInfoTos");
+
+        userDetail.setAgreeCollectPersonalInfoTos(agreeCollectPersonalInfoTos);
     }
 
     public Boolean getAgreePurchaseTos() {
@@ -77,6 +79,8 @@ public class User extends Observable implements Serializable {
         this.agreePurchaseTos = agreePurchaseTos;
         setChanged();
         notifyObservers("agreePurchaseTos");
+
+        userDetail.setAgreePurchaseTos(agreePurchaseTos);
     }
 
     // OPTIONAL TERMS
@@ -88,6 +92,8 @@ public class User extends Observable implements Serializable {
         this.agreeEmailReception = agreeEmailReception;
         setChanged();
         notifyObservers("agreeEmailReception");
+
+        userDetail.setAgreeEmailReception(agreeEmailReception);
     }
 
     public Boolean getAgreeSaleTos() {
@@ -98,6 +104,8 @@ public class User extends Observable implements Serializable {
         this.agreeSaleTos = agreeSaleTos;
         setChanged();
         notifyObservers("agreeSaleTos");
+
+        userDetail.setAgreeSaleTos(agreeSaleTos);
     }
 
     public Boolean getAgreeSmsReception() {
@@ -108,6 +116,8 @@ public class User extends Observable implements Serializable {
         this.agreeSmsReception = agreeSmsReception;
         setChanged();
         notifyObservers("agreeSmsReception");
+
+        userDetail.setAgreeSmsReception(agreeSmsReception);
     }
 
     // USER INFO
@@ -149,7 +159,7 @@ public class User extends Observable implements Serializable {
     }
 
     public String getJoinAt() {
-        return "(" + joinAt + " 가입)";
+        return joinAt + "가입";
     }
 
     public void setJoinAt(String joinAt) {
