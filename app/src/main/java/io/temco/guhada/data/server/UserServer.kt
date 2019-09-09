@@ -114,7 +114,7 @@ class UserServer {
          */
         @JvmStatic
         fun changePassword(listener: OnServerListener, verification: Verification) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).changePassword(verification).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "인증번호 검증 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).changePassword(verification).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "인증번호 검증 오류"))
 
 
         /**
@@ -122,7 +122,7 @@ class UserServer {
          */
         @JvmStatic
         fun changePasswordByIdentifying(listener: OnServerListener, verification: Verification) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).changePasswordByIdentifying(verification).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "본인인증으로 비밀번호 재설정 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).changePasswordByIdentifying(verification).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "본인인증으로 비밀번호 재설정 오류"))
 
         /**
          * 나이스 본인인증 호출 토큰 가져오기

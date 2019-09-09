@@ -263,6 +263,8 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                             switch (model.resultCode) {
                                 case Flag.ResultCode.SUCCESS:
                                     User user = (User) model.data;
+                                    user.setPhoneNumber(phoneNumber);
+                                    user.setMobile(phoneNumber);
                                     if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
                                         FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
                                         passwordViewModel.setMobile(phoneNumber);
