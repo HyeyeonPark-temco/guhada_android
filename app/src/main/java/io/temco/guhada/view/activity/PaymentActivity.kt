@@ -268,6 +268,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }
 
+        // 개인소득공제용 방식 스피너
         val personalTypeList = listOf("핸드폰 번호", "주민등록번호")
         mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.adapter = CommonSpinnerAdapter(context = this@PaymentActivity, layoutRes = R.layout.item_common_spinner, list = personalTypeList)
         mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -278,6 +279,17 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 mViewModel.notifyPropertyChanged(BR.mRecipientByPhone)
             }
         }
+
+        // 핸드폰 번호 스피너
+        val phoneList = listOf("010", "011", "016", "017", "019")
+        mBinding.includePaymentPaymentway.spinnerPaymentPhone.adapter = CommonSpinnerAdapter(context = this@PaymentActivity, layoutRes = R.layout.item_common_spinner, list = phoneList)
+        mBinding.includePaymentPaymentway.spinnerPaymentPhone.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                mBinding.includePaymentPaymentway.textviewPaymentPhone.text = phoneList[position]
+            }
+        }
+
         mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.setSelection(0)
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptpersonal.isChecked = true
 
