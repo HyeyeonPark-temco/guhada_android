@@ -133,7 +133,6 @@ class UserClaimGuhadaActivity : BindActivity<ActivityUserclaimguhadaBinding>(), 
                 setImageRecyclerViewVisible()
             }
             1 -> {
-                if(CustomLog.flag)CustomLog.L("ReviewWriteActivity","clickSelectItemListener","index",index,"value",value)
                 mViewModel.selectedImageIndex = index
                 CommonUtil.startImageGallery(this)
             }

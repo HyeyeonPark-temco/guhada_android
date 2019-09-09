@@ -2,12 +2,15 @@ package io.temco.guhada.view.adapter.main
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Paint
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
@@ -16,10 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.ImageUtil
-import io.temco.guhada.common.util.TextUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.viewmodel.main.HomeListViewModel
@@ -38,7 +38,6 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
  */
 class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
-
     /**
      * HomeType 에 따른 item view
      */
@@ -188,21 +187,37 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         var tabImg = arrayListOf(binding.tabImg0,binding.tabImg1,binding.tabImg2,binding.tabImg3)
         var tabTitle = arrayListOf(binding.tabTitle0,binding.tabTitle1,binding.tabTitle2,binding.tabTitle3)
         var itemlayout = arrayListOf(binding.itemLayout0,binding.itemLayout1,binding.itemLayout2,binding.itemLayout3,binding.itemLayout4,binding.itemLayout5)
+        var itemrelaytivelayout = arrayListOf(binding.itemRealativelayout0,binding.itemRealativelayout1,binding.itemRealativelayout2,binding.itemRealativelayout3,binding.itemRealativelayout4,binding.itemRealativelayout5)
         var imageThumb = arrayListOf(binding.imageThumb0,binding.imageThumb1,binding.imageThumb2,binding.imageThumb3,binding.imageThumb4,binding.imageThumb5)
         var textBrand = arrayListOf(binding.textBrand0,binding.textBrand1,binding.textBrand2,binding.textBrand3,binding.textBrand4,binding.textBrand5)
         var textSeason = arrayListOf(binding.textSeason0,binding.textSeason1,binding.textSeason2,binding.textSeason3,binding.textSeason4,binding.textSeason5)
         var textTitle = arrayListOf(binding.textTitle0,binding.textTitle1,binding.textTitle2,binding.textTitle3,binding.textTitle4,binding.textTitle5)
         var layoutColor = arrayListOf(binding.layoutColor0,binding.layoutColor1,binding.layoutColor2,binding.layoutColor3,binding.layoutColor4,binding.layoutColor5)
         var textPrice = arrayListOf(binding.textPrice0,binding.textPrice1,binding.textPrice2,binding.textPrice3,binding.textPrice4,binding.textPrice5)
+        var text_pricediscount = arrayListOf(binding.textPricediscount0,binding.textPricediscount1,binding.textPricediscount2,binding.textPricediscount3,binding.textPricediscount4,binding.textPricediscount5)
         var textPriceSalePer = arrayListOf(binding.textPriceSalePer0,binding.textPriceSalePer1,binding.textPriceSalePer2,binding.textPriceSalePer3,binding.textPriceSalePer4,binding.textPriceSalePer5)
         var textShipFree = arrayListOf(binding.textShipFree0,binding.textShipFree1,binding.textShipFree2,binding.textShipFree3,binding.textShipFree4,binding.textShipFree5)
         var textSellerRate = arrayListOf(binding.textSellerRate0,binding.textSellerRate1,binding.textSellerRate2,binding.textSellerRate3,binding.textSellerRate4,binding.textSellerRate5)
         var textSellerName = arrayListOf(binding.textSellerName0,binding.textSellerName1,binding.textSellerName2,binding.textSellerName3,binding.textSellerName4,binding.textSellerName5)
 
+
+        var width = 0
+        var height = 0
+        var layoutHeight = 0
+        var margin = 0
+
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
 
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is SubTitleItemList){
+                if(width == 0){
+                    val matrix = DisplayMetrics()
+                    (viewModel.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                    width = (matrix.widthPixels - CommonViewUtil.dipToPixel(viewModel.context, 13)) / 2
+                    height = width
+                    margin = CommonViewUtil.dipToPixel(viewModel.context, 3)
+                    layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 120)
+                }
                 // Thumbnail
                 var size = item.listSize[item.currentSubTitleIndex] - 1
                 binding.title.text = item.title
@@ -255,8 +270,19 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                             else item.homeDeal.allList!![i]
                         }
                     }
+
                     if(data != null){
                         itemlayout[i].contentDescription = data.dealId.toString()
+                        itemrelaytivelayout[i].layoutParams = LinearLayout.LayoutParams(width,height)
+                        itemlayout[i].layoutParams = LinearLayout.LayoutParams(width,layoutHeight).apply {
+                            if(i % 2 == 1) {
+                                leftMargin = margin
+                                rightMargin = 0
+                            }  else{
+                                leftMargin = 0
+                                rightMargin = margin
+                            }
+                        }
                         itemlayout[i].setOnClickListener{
                             var id = it.contentDescription.toString().toLong()
                             CommonUtil.startProductActivity(viewModel.context as Activity, id)
@@ -290,15 +316,19 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                         }
                         R.layout.layout_tab_innercategory
                         // Price
-                        if (data.setDiscount) {
-                            textPrice[i].setText(String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.toInt())))
-                            textPriceSalePer[i].setText(String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), data.discountRate))
+                        if (data.discountRate > 0) {
+                            textPrice[i].text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.toInt()))
+                            textPriceSalePer[i].text = String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), data.discountRate)
+                            text_pricediscount[i].visibility = View.VISIBLE
+                            text_pricediscount[i].paintFlags = (text_pricediscount[i].paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
+                            text_pricediscount[i].text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
                         } else {
-                            textPrice[i].setText(String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt())))
+                            textPrice[i].text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
+                            text_pricediscount[i].visibility = View.GONE
                         }
                         // Ship
                         //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
-                        textShipFree[i].setVisibility(if (data.isFreeShipping) View.VISIBLE else View.GONE)
+                        textShipFree[i].visibility = (if (data.isFreeShipping) View.VISIBLE else View.GONE)
                     }else{
                         itemlayout[i].visibility = View.INVISIBLE
                         itemlayout[i].setOnClickListener(null)

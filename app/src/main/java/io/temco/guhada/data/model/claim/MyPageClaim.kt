@@ -4,11 +4,12 @@ import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.base.BasePageModel
 import java.io.Serializable
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MyPageClaim : BasePageModel(), Serializable {
 
     @SerializedName("content")
-    var content : MutableList<Content> = mutableListOf()
+    var content : ArrayList<Content> = arrayListOf()
 
     inner class Content {
         @SerializedName("inquiry")

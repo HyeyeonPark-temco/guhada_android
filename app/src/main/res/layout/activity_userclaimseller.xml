@@ -29,7 +29,7 @@
             android:id="@+id/linearlayout_userclaimseller_parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.checkUserClaimSellerOrderList ? View.VISIBLE : View.GONE , default = gone}"
+            android:visibility="@{viewModel.checkUserClaimSellerOrderList ? View.VISIBLE : View.GONE , default = visible}"
             android:weightSum="1"
             android:background="@color/common_white"
             android:orientation="vertical">
@@ -37,10 +37,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
                 android:weightSum="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:onClick="@{onClickCloseButton}"
+                    android:src="@drawable/top_btn_back"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     style="@style/HeaderTextStyle"
@@ -50,16 +60,6 @@
                     android:gravity="center_horizontal"
                     android:textSize="@dimen/text_17"
                     android:text="@string/userclaim_seller" />
-
-                <ImageButton
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:onClick="@{onClickCloseButton}"
-                    android:src="@drawable/burger_top_close"
-                    android:layout_marginRight="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
 
             </LinearLayout>
 
@@ -73,260 +73,302 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_four"/>
-
-                    <!--<FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@color/white_five" >
-
-                        <io.temco.guhada.view.CustomSpinner
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/border_all_whitethree"
-                            android:orientation="horizontal"
-                            android:overScrollMode="never"
-                            android:overlapAnchor="false"
-                            android:popupBackground="@null"
-                            android:spinnerMode="dropdown"
-                            android:onItemSelected="@{(p, v, pos, id) -> viewModel.onUserClaimDescriptionSelected(pos)}"
-                            app:bindCommonSpinner="@{viewModel.userClaimDescriptionList}" />
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@color/common_white"
-                                android:orientation="horizontal"
-                                android:popupBackground="@null">
-
-                                <TextView
-                                    style="@style/TextRegular"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_weight="1"
-                                    android:textColor="@{viewModel.userClaimDescriptionIndex == -1 ? @color/pinkish_grey : @color/black_four}"
-                                    android:text="@{viewModel.userClaimDescriptionMessage}"
-                                    android:textSize="@dimen/text_15" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/payment_icon_selectbox_open"
-                                    android:layout_marginRight="20dp"/>
-                            </LinearLayout>
-                        </FrameLayout>
-                    </FrameLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_four"/>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@color/white_five" >
-
-                        <io.temco.guhada.view.CustomSpinner
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/border_all_whitethree"
-                            android:orientation="horizontal"
-                            android:overScrollMode="never"
-                            android:overlapAnchor="false"
-                            android:popupBackground="@null"
-                            android:spinnerMode="dropdown"
-                            android:onItemSelected="@{(p, v, pos, id) -> viewModel.onUserClaimDescriptionChildSelected(pos)}"
-                            app:bindCommonSpinner="@{viewModel.userClaimDescriptionChildList}" />
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@color/common_white"
-                                android:orientation="horizontal"
-                                android:popupBackground="@null">
-
-                                <TextView
-                                    style="@style/TextRegular"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="20dp"
-                                    android:layout_weight="1"
-                                    android:textColor="@{viewModel.userClaimDescriptionChildIndex == -1 ? @color/pinkish_grey : @color/black_four}"
-                                    android:text="@{viewModel.userClaimDescriptionChildMessage}"
-                                    android:textSize="@dimen/text_15" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/payment_icon_selectbox_open"
-                                    android:layout_marginRight="20dp"/>
-                            </LinearLayout>
-                        </FrameLayout>
-                    </FrameLayout>-->
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_four"/>
-
-                    <EditText
-                        android:id="@+id/edittext_userclaimseller_title"
-                        style="@style/TextRegular"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:gravity="center_vertical"
-                        android:maxLines="3"
-                        android:background="@color/common_white"
-                        android:hint="@string/report_community_text06"
-                        android:textColorHint="@color/pinkish_grey"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_15" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_four"/>
-
-                    <EditText
-                        android:id="@+id/edittext_userclaimseller_text"
-                        style="@style/TextRegular"
-                        android:layout_width="match_parent"
-                        android:layout_height="130dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:paddingTop="6dp"
-                        android:gravity="start"
-                        android:maxLines="500"
-                        android:maxLength="1000"
-                        android:background="@color/common_white"
-                        android:hint="@string/report_community_text07"
-                        android:textColorHint="@color/pinkish_grey"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_15" />
+                    android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:weightSum="1"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"/>
-
-                        <TextView
-                            style="@style/TextRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/blue_purple"
-                            android:text="@{viewModel.editTextUserClaimSellerTxtCount}"
-                            android:textSize="@dimen/text_13" />
-
-                        <TextView
-                            style="@style/TextRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="/1000"
-                            android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_13" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_four"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center_vertical"
-                        android:onClick="@{onClickGetImage}"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:padding="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:src="@drawable/com_btn_photo"/>
-
-                        <TextView
-                            style="@style/TextRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="@string/report_community_text08"
-                            android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_13" />
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerview_userclaimseller_imagelist"
-                        android:layout_width="match_parent"
-                        android:layout_height="86dp"
-                        android:layout_marginBottom="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:visibility="gone"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/white_four"/>
-
-                    <io.temco.guhada.view.custom.HtmlTextView
-                        style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/userclaim_seller_desc"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_12" />
+                        android:orientation="vertical">
 
-                </LinearLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/common_white"
+                            android:onClick="@{() -> viewModel.onClickUserClaimSellerProduct()}"
+                            android:orientation="horizontal"
+                            android:popupBackground="@null">
+
+                            <TextView
+                                style="@style/TextRegularSingleLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="20dp"
+                                android:layout_weight="1"
+                                android:textColor="@{viewModel.userClaimSellerProductIndex == -1 ? @color/pinkish_grey : @color/black_four}"
+                                android:text="@{viewModel.userClaimSellerProductData}"
+                                android:textSize="@dimen/text_15" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/payment_icon_selectbox_open"
+                                android:layout_marginRight="20dp"/>
+                        </LinearLayout>
+
+                        <!--<FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/white_five" >
+
+                            <io.temco.guhada.view.CustomSpinner
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/border_all_whitethree"
+                                android:orientation="horizontal"
+                                android:overScrollMode="never"
+                                android:overlapAnchor="false"
+                                android:popupBackground="@null"
+                                android:spinnerMode="dropdown"
+                                android:onItemSelected="@{(p, v, pos, id) -> viewModel.onUserClaimSellerProductSelected(pos)}"
+                                app:bindUserClaimSellerSpinner="@{viewModel.userSellerInquireOrderList}" />
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:background="@color/common_white"
+                                    android:orientation="horizontal"
+                                    android:popupBackground="@null">
+
+                                    <TextView
+                                        style="@style/TextRegular"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="1"
+                                        android:textColor="@{viewModel.userClaimSellerProductIndex == -1 ? @color/pinkish_grey : @color/black_four}"
+                                        android:text="@{viewModel.userClaimSellerProductData}"
+                                        android:textSize="@dimen/text_15" />
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:src="@drawable/payment_icon_selectbox_open"
+                                        android:layout_marginRight="20dp"/>
+                                </LinearLayout>
+                            </FrameLayout>
+                        </FrameLayout>-->
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four"/>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/white_five" >
+
+                            <io.temco.guhada.view.CustomSpinner
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/border_all_whitethree"
+                                android:orientation="horizontal"
+                                android:overScrollMode="never"
+                                android:overlapAnchor="false"
+                                android:popupBackground="@null"
+                                android:spinnerMode="dropdown"
+                                android:onItemSelected="@{(p, v, pos, id) -> viewModel.userClaimSellerDescriptionMessage(pos)}"
+                                app:bindCommonSpinner="@{viewModel.userClaimSellerDescriptionList}" />
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:background="@color/common_white"
+                                    android:orientation="horizontal"
+                                    android:popupBackground="@null">
+
+                                    <TextView
+                                        style="@style/TextRegular"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="1"
+                                        android:textColor="@{viewModel.userClaimSellerDescriptionIndex == -1 ? @color/pinkish_grey : @color/black_four}"
+                                        android:text="@{viewModel.userClaimSellerDescriptionMessage}"
+                                        android:textSize="@dimen/text_15" />
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:src="@drawable/payment_icon_selectbox_open"
+                                        android:layout_marginRight="20dp"/>
+                                </LinearLayout>
+                            </FrameLayout>
+                        </FrameLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four"/>
+
+
+                        <EditText
+                            android:id="@+id/edittext_userclaimseller_text"
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="192dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:paddingTop="6dp"
+                            android:gravity="start"
+                            android:maxLines="500"
+                            android:maxLength="1000"
+                            android:background="@color/common_white"
+                            android:hint="@string/userclaim_seller_hint2"
+                            android:textColorHint="@color/pinkish_grey"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_15" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:weightSum="1"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/blue_purple"
+                                android:text="@{viewModel.editTextUserClaimSellerTxtCount}"
+                                android:textSize="@dimen/text_13" />
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="/1000"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:gravity="center_vertical"
+                            android:onClick="@{onClickGetImage}"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:padding="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:src="@drawable/com_btn_photo"/>
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="@string/report_community_text08"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerview_userclaimseller_imagelist"
+                            android:layout_width="match_parent"
+                            android:layout_height="86dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:orientation="horizontal"
+                            android:overScrollMode="never"
+                            android:visibility="gone"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four"/>
+
+                        <io.temco.guhada.view.custom.HtmlTextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:gravity="center_vertical"
+                            android:text="@string/userclaim_seller_desc"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_12" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="51dp"
+                        android:visibility="@{viewModel.userClaimSellerProductListShow ? View.VISIBLE : View.GONE , default = gone}"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerview_userclaimseller_productlist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:overScrollMode="never"
+                            android:visibility="visible"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/white_four"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
             </ScrollView>
 
             <LinearLayout
@@ -336,7 +378,6 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button_addshippingaddress_cancel"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -347,7 +388,6 @@
                     android:textSize="@dimen/text_18" />
 
                 <Button
-                    android:id="@+id/button_addshippingaddress_confirm"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

@@ -15,6 +15,7 @@
             android:layout_width="4dp"
             android:layout_height="4dp"
             android:layout_centerInParent="true"
+            android:src="@drawable/drawable_round_corner_5"
             android:background="@drawable/selector_tab_dot_category" />
     </RelativeLayout>
 
