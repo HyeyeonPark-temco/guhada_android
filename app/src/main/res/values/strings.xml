@@ -326,7 +326,7 @@
     <string name="productdetail_info">Product Information</string>
     <string name="productdetail_info_status">Product Status</string>
     <string name="productdetail_info_number">Item Number</string>
-    <string name="productdetail_info_modelnumber">Model Number</string>
+    <string name="productdetail_info_modelnumber">Product Number</string>
     <string name="productdetail_info_origin">Origin</string>
     <string name="productdetail_info_status_new">New</string>
     <string name="productdetail_info_status_used">Used goods</string>

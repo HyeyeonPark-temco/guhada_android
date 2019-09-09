@@ -72,7 +72,7 @@
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/productdetail_info_status"
+                    android:text="@string/productdetail_info_number"
                     android:textSize="@dimen/text_12" />
 
                 <TextView
@@ -83,7 +83,8 @@
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text='@{viewModel.product.productStatusName}'
+                    android:text="@{String.valueOf(viewModel.product.dealId)}"
+
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
 
@@ -107,7 +108,7 @@
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@string/productdetail_info_number"
+                    android:text="@string/productdetail_info_status"
                     android:textSize="@dimen/text_12" />
 
                 <TextView
@@ -118,7 +119,7 @@
                     android:paddingStart="10dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:text="@{String.valueOf(viewModel.product.dealId)}"
+                    android:text='@{viewModel.product.productStatusName}'
                     android:textSize="@dimen/text_12" />
             </LinearLayout>
 

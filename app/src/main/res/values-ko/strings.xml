@@ -326,7 +326,7 @@
     <string name="productdetail_info">상품 정보</string>
     <string name="productdetail_info_status">상품상태</string>
     <string name="productdetail_info_number">상품번호</string>
-    <string name="productdetail_info_modelnumber">모델번호</string>
+    <string name="productdetail_info_modelnumber">제품번호</string>
     <string name="productdetail_info_origin">원산지</string>
     <string name="productdetail_info_status_new">새 상품</string>
     <string name="productdetail_info_status_used">중고 상품</string>
