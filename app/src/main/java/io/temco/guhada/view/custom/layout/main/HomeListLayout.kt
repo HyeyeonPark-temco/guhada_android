@@ -35,13 +35,12 @@ class HomeListLayout constructor(
 
         (recyclerView.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
         (recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
-        (recyclerView.layoutManager as WrapGridLayoutManager).setSpanSizeLookup(
-                object : GridLayoutManager.SpanSizeLookup(){
+        (recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
                     override fun getSpanSize(position: Int): Int {
                         return mViewModel.listData.value!![position].gridSpanCount
                     }
                 }
-        )
+
 
         mViewModel.listData.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {

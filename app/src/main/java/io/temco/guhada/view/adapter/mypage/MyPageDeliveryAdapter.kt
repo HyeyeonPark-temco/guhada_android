@@ -15,6 +15,7 @@ import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.DeliveryButton
@@ -74,7 +75,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             mBinding.imageviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
             mBinding.textviewDeliveryOrdernumber.setOnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId) }
             mBinding.buttonDeliveryClaim.setOnClickListener {
-
+                CommonUtilKotlin.startActivityUserClaimSeller(itemView.context as AppCompatActivity, item.sellerId.toLong(), item.productId, item.orderProdGroupId)
             }
 
             mBinding.executePendingBindings()

@@ -1,12 +1,11 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.google.gson.JsonObject
@@ -15,11 +14,12 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnSwipeRefreshResultListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.MyPageClaim
+import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.data.viewmodel.mypage.repository.MyPageCliamRepository
 import io.temco.guhada.view.adapter.mypage.MyPageClaimAdapter
 
 /**
@@ -33,18 +33,20 @@ import io.temco.guhada.view.adapter.mypage.MyPageClaimAdapter
  */
 class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
     val mRequestManager: RequestManager by lazy { Glide.with(context) }
-    private var repository = MyPageCliamRepository(context)
-    //private val handler : Handler = Handler(context.mainLooper)
+    var repository = MyPageCliamRepository(this)
+    val listData : MutableLiveData<ArrayList<MyPageClaim.Content>> = MutableLiveData()
 
-    private val _listData : SingleLiveEvent<ArrayList<MyPageClaim.Content>> = repository.getList()
-    val listData : LiveData<ArrayList<MyPageClaim.Content>> get() = _listData
-
-    private val adapter = MyPageClaimAdapter(this,listData.value!!)
+    private var adapter : MyPageClaimAdapter
     fun getListAdapter() = adapter
 
     private var selectClaimStatusFilter = 0
     var selectedIndex = 0
 
+    init {
+        listData.value = arrayListOf()
+        adapter = MyPageClaimAdapter(this,listData.value!!)
+        repository.getList()
+    }
 
     var emptyClaimVisible = ObservableBoolean(false) // ObservableInt(View.GONE)
         @Bindable
@@ -53,7 +55,6 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
             field = value
             notifyPropertyChanged(BR.emptyClaimVisible)
         }
-
 
 
     fun reloadRecyclerView(listener : OnSwipeRefreshResultListener?){
@@ -102,4 +103,73 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
 
 
 
+}
+
+
+
+class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
+    // 메인 홈 list data
+
+    fun getList() {
+        setInitData(0,null)
+    }
+
+    fun setInitData(status : Int, listener : OnSwipeRefreshResultListener?) {
+        getMoreClaimList(status, listener)
+    }
+
+    fun getMoreClaimList(status : Int,listener : OnSwipeRefreshResultListener?, nextPage : Int = 1){
+        var statusValue = ""
+        when(status){
+            1->statusValue = "PENDING"
+            2->statusValue = "COMPLETED"
+        }
+        ClaimServer.getMyPageClaimList(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        if(nextPage > 1){
+                            var idx = viewModel.listData!!.value!!.size-1
+                            if(viewModel.listData!!.value!![idx].inquiry.id == 0L){
+                                viewModel.listData!!.value!!.removeAt(idx)
+                            }
+                        }
+                        var data =  (o as BaseModel<*>).data as MyPageClaim
+                        if(data.totalPages > 0 && (data.totalPages-1 > data.pageable.pageNumber)){
+                            var page = MyPageClaim().Content()
+                            page.totalPages = data.totalPages
+                            page.pageNumber = data.pageable.pageNumber
+                            data.content.add(page)
+                        }
+                        if(data.content.size == 0 && data.pageable.pageNumber == 1){
+                            viewModel.emptyClaimVisible.set(true)
+                        } else viewModel.emptyClaimVisible.set(false)
+
+                        viewModel.getListAdapter()!!.items.addAll(data.content)
+                        viewModel.getListAdapter().notifyDataSetChanged()
+                        listener?.run { onResultCallback() }
+                    },
+                    dataNotFoundTask = {
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","dataNotFoundTask")
+                    },
+                    failedTask = {
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","failedTask")
+                    },
+                    serverRuntimeErrorTask = {
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverRuntimeErrorTask")
+                    },
+                    serverLoginErrorTask = {
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverLoginErrorTask")
+                    },
+                    dataIsNull = {
+                        viewModel.listData.value = ArrayList()
+                        viewModel.listData.value = viewModel.listData.value
+                        listener?.run { onResultCallback() }
+                    }
+            )
+        },nextPage,statusValue)
+    }
+
+    fun deleteClaim(productId : Long, inquiryId : Long, listener : OnServerListener){
+        ClaimServer.deleteClaim(listener, productId, inquiryId)
+    }
 }

@@ -38,7 +38,7 @@
             <!-- CATEGORY -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/height_header">
+                android:layout_height="44dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/layout_tab"

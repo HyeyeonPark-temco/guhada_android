@@ -39,6 +39,8 @@ abstract class CommonRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(val items:
 
     }
 
+
+
     abstract fun isFooter(position: Int): Boolean
 
 

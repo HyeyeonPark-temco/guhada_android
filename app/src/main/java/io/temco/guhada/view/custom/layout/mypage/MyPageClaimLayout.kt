@@ -43,16 +43,6 @@ class MyPageClaimLayout constructor(
         (mBinding.recyclerviewMypageclaimlayoutList.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
         (mBinding.recyclerviewMypageclaimlayoutList.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
 
-        mViewModel.listData.observe(this,
-                androidx.lifecycle.Observer<ArrayList<MyPageClaim.Content>> {
-                    if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "observe", it.size)
-                    if(it.size > 0){
-                        mViewModel.emptyClaimVisible.set(false)
-                        mViewModel.getListAdapter().notifyDataSetChanged()
-                    }
-                    else mViewModel.emptyClaimVisible.set(true)
-                }
-        )
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
 
         EventBusHelper.mSubject.subscribe { requestCode ->
