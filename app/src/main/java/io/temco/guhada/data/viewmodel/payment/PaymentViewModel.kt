@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import io.reactivex.Observable
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -348,13 +349,21 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                 this.parentMethodCd = selectedMethod.methodCode
                             }.let { requestOrder ->
                                 if (::cart.isInitialized) {
-                                    requestOrder.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
+                                    requestOrder.cartItemPayments.add(RequestOrder.CartItemPayment().apply { this.cartItemId = this@PaymentViewModel.cart.cartItemId })
+//                                    requestOrder.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
                                 } else {
-                                    val array = arrayOfNulls<Long>(cartIdList.size)
-                                    for (i in 0 until cartIdList.size) {
-                                        array[i] = cartIdList[i].toLong()
-                                    }
-                                    requestOrder.cartItemIdList = array
+//                                    val array = arrayOfNulls<Long>(cartIdList.size)
+//                                    for (i in 0 until cartIdList.size) {
+//                                        array[i] = cartIdList[i].toLong()
+//                                    }
+//                                    requestOrder.cartItemIdList = array
+
+                                    Observable.fromIterable(cartIdList)
+                                            .map {
+                                                RequestOrder.CartItemPayment().apply { this.cartItemId = it.toLong() }
+                                            }.subscribe {
+                                                requestOrder.cartItemPayments.add(it)
+                                            }
                                 }
 
                                 val accessToken = Preferences.getToken().accessToken

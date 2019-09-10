@@ -15,6 +15,7 @@ class Order {
     var orderItemList: List<OrderItemResponse> = ArrayList()
     var paymentsMethod: MutableList<PaymentMethod> = ArrayList()
     var shippingMessage: MutableList<ShippingMessage> = ArrayList()
+    var availablePointResponse = AvailablePoint()
 
     // PRICE
     var totalProdPrice = 0
@@ -34,5 +35,12 @@ class Order {
     inner class AvailableCouponWallet {
         var dealId = 0L
         var couponWalletResponseList = mutableListOf<Coupon>()
+    }
+
+    inner class AvailablePoint {
+        var preAvailablePoint = 0
+        var availableFreePoint = 0
+        var availablePaidPoint = 0
+        var availableTotalPoint = 0
     }
 }

@@ -16,21 +16,23 @@ class RequestOrder {
      */
     var user: User = User()
     var addShippingAddress = false
-    var cartItemIdList: Array<Long?> = arrayOf()
+    // var cartItemIdList: Array<Long?> = arrayOf()
+    var cartItemPayments = mutableListOf<CartItemPayment>()
     var parentMethodCd: String = ""
     var shippingAddress: UserShipping = UserShipping()
 
-    @SerializedName(value="recipientMobile", alternate = ["recepientMobile"])
+    @SerializedName(value = "recipientMobile", alternate = ["recepientMobile"])
     var recipientMobile = ""
 
-    @SerializedName(value="recipientName", alternate = ["recepientName"])
+    @SerializedName(value = "recipientName", alternate = ["recepientName"])
     var recipientName = ""
-
-//    var couponPayments
-//    var pointPayments
 
     // WEB 관련
     var userAgent: String = ""
     var web: Boolean = false
 
+    class CartItemPayment {
+        var cartItemId = 0L
+        var couponNumber = ""
+    }
 }
