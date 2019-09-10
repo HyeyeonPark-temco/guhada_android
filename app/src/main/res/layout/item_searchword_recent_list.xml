@@ -50,11 +50,11 @@
         
         <ImageButton
             android:id="@+id/imagebutton_itemsearchwordrecent_delete"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginRight="20dp"
             android:onClick="@{clickListener}"
-            android:src="@drawable/icon_delet"/>
+            android:background="@drawable/icon_delet"/>
 
     </LinearLayout>
 </layout>

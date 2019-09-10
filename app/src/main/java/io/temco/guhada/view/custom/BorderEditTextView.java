@@ -19,10 +19,12 @@ import androidx.databinding.InverseBindingAdapter;
 import androidx.databinding.InverseBindingListener;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.listener.OnBorderEditTextFocusListener;
 import io.temco.guhada.databinding.ViewBorderedittextBinding;
 
 public class BorderEditTextView extends ConstraintLayout implements View.OnFocusChangeListener {
     private ViewBorderedittextBinding binding;
+    private OnBorderEditTextFocusListener onBorderEditTextFocusListener;
 
     public BorderEditTextView(Context context) {
         super(context);
@@ -67,7 +69,6 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
         binding.editText.setText(text);
         binding.editText.setHint(typedArray.getString(R.styleable.BorderEditTextView_hint));
         binding.editText.setOnFocusChangeListener(this);
-
         binding.executePendingBindings();
 
         switch (inputType) {
@@ -96,6 +97,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
         } else {
             binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(getResources().getColor(R.color.pinkish_grey));
         }
+        if(onBorderEditTextFocusListener!=null)onBorderEditTextFocusListener.onFocusChange(v, hasFocus);
         binding.executePendingBindings();
     }
 
@@ -127,12 +129,10 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 if (listener != null) {
@@ -145,5 +145,9 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
     @InverseBindingAdapter(attribute = "txt", event = "txtAttrChanged")
     public static String getContent(BorderEditTextView view) {
         return view.binding.editText.getText().toString();
+    }
+
+    public void setOnBorderEditTextFocusListener(OnBorderEditTextFocusListener onBorderEditTextFocusListener) {
+        this.onBorderEditTextFocusListener = onBorderEditTextFocusListener;
     }
 }
