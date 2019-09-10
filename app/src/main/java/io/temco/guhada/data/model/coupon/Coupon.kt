@@ -22,11 +22,11 @@ class Coupon() : Parcelable {
     var status: String? = ""
 
     // PRICE
-    var discountType: String? = ""
-    var discountRate: Double = 0.0
-    var discountPrice: Int = 0
-    var minimumPrice: Int = 0
-    var maximumDiscountPrice: String? = ""
+    var discountType: String? = ""          // 할인 방식 (PRICE, RATE)
+    var discountRate: Double = 0.0          // 할인률 (정률인 경우)
+    var discountPrice: Int = 0              // 할인 금액 (정액인 경우)
+    var minimumPrice: Int = 0               // 쿠폰을 적용받기위한 최소 금액 (전체 주문금액이 아닌, 해당 상품금액에만 적용)
+    var maximumDiscountPrice: String? = ""  // 정액인 경우, 최대 할인가능 금액
 
     // DATE
     var startAt: String? = ""
@@ -38,6 +38,11 @@ class Coupon() : Parcelable {
     var sellerId: Long? = 0
     var sellerImgUrl: String? = ""
     var sellerName: String? = ""
+
+    enum class DiscountType(val type : String){
+        RATE("RATE"),   // 정률
+        PRICE("PRICE")  // 정액
+    }
 
     constructor(parcel: Parcel) : this() {
         userId = parcel.readLong()
