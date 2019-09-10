@@ -28,24 +28,25 @@ class CouponDownloadDialogViewModel : BaseObservableViewModel() {
     fun onClickClose() = mOnClickCloseTask()
     fun onClickDownload() {
         ServerCallbackUtil.callWithToken(task = {
-            if (mIsFollowCouponExist) {
-                // 팔로우 + 쿠폰 등록
-                val bookMark = BookMarkResponse(target = BookMarkTarget.SELLER.target, targetId = mSellerId)
-                UserServer.saveBookMark(OnServerListener { success, o ->
-                    if (success) {
-                        saveCoupon(accessToken = it)
-                    } else {
-                        if (o is BaseModel<*>) ToastUtil.showMessage(o.message)
-                        else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
-                    }
-                }, accessToken = it, response = bookMark.getProductBookMarkRespose())
-            } else {
-                // 쿠폰 등록
-                saveCoupon(accessToken = it)
-            }
+            if (mIsFollowCouponExist) saveFollow(accessToken = it, successTask = { saveCoupon(accessToken = it) })
+            else saveCoupon(accessToken = it)
         })
     }
 
+    // 셀러 팔로우 등록
+    private fun saveFollow(accessToken: String, successTask: () -> Unit) {
+        val bookMark = BookMarkResponse(target = BookMarkTarget.SELLER.target, targetId = mSellerId)
+        UserServer.saveBookMark(OnServerListener { success, o ->
+            if (success) {
+                successTask()
+            } else {
+                if (o is BaseModel<*>) ToastUtil.showMessage(o.message)
+                else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+            }
+        }, accessToken = accessToken, response = bookMark.getProductBookMarkRespose())
+    }
+
+    // 쿠폰 발급
     private fun saveCoupon(accessToken: String) {
         Observable.fromIterable(mList)
                 .map {
