@@ -107,10 +107,21 @@ class BenefitServer {
          * @author Hyeyeon Park
          * @since 2019.08.29
          */
-        fun getExpectedCoupon(listener: OnServerListener, accessToken: String, item: OrderItemResponse, saveActionType: String, serviceType: String) =
-                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true, false).getExpectedCoupon(
-                        accessToken = accessToken, DCategoryId = item.dCategoryId.toLong(), LCategoryId = item.lCategoryId.toLong(), MCategoryId = item.mCategoryId.toLong(), SCategoryId = item.sCategoryId.toLong(),
-                        dealId = item.dealId, sellerId = item.sellerId.toLong(), paymentPrice = item.sellPrice, saveActionType = saveActionType, serviceType = serviceType).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+        fun getExpectedCoupon(listener: OnServerListener, accessToken: String, item: OrderItemResponse, saveActionType: String, serviceType: String) {
+            val paymentPrice = if (item.sellPrice > 0) item.sellPrice else item.discountPrice
+            RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true, false).getExpectedCoupon(
+                    accessToken = accessToken,
+                    DCategoryId = item.dCategoryId.toLong(),
+                    LCategoryId = item.lCategoryId.toLong(),
+                    MCategoryId = item.mCategoryId.toLong(),
+                    SCategoryId = item.sCategoryId.toLong(),
+                    dealId = item.dealId,
+                    sellerId = item.sellerId.toLong(),
+                    paymentPrice = paymentPrice,
+                    saveActionType = saveActionType,
+                    serviceType = serviceType).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+        }
+
     }
 }

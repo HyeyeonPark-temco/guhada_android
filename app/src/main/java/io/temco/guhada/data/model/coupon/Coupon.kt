@@ -31,6 +31,7 @@ class Coupon() : Parcelable {
     // DATE
     var startAt: String? = ""
     var endAt: String? = ""
+
     var createdAt: String? = ""
     var expireDueDay: Int = 0
 
@@ -50,10 +51,10 @@ class Coupon() : Parcelable {
         applyType = parcel.readString()
         couponId = parcel.readValue(Long::class.java.classLoader) as? Long
         couponSaveId = parcel.readValue(Long::class.java.classLoader) as? Long
-        couponNumber = parcel.readString()
+        couponNumber = parcel.readString()?:""
         couponTitle = parcel.readString()
         couponType = parcel.readString()
-        saveType = parcel.readString()
+        saveType = parcel.readString()?:""
         status = parcel.readString()
         discountType = parcel.readString()
         discountRate = parcel.readDouble()

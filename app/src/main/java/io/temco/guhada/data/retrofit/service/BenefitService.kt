@@ -71,12 +71,13 @@ interface BenefitService {
 
     /**
      * 발급 가능한 쿠폰 조회 API
+     * [required] DCategoryId, LCategoryId, MCategoryId, SCategoryId, dealId, paymentPrice, saveActionType, serviceType
      * @author Hyeyeon Park
      * @since 2019.08.29
      */
     @GET("/coupons/process/due-save")
     fun getExpectedCoupon(@Header("Authorization") accessToken: String, @Query("DCategoryId") DCategoryId: Long, @Query("LCategoryId") LCategoryId: Long,
                           @Query("MCategoryId") MCategoryId: Long, @Query("SCategoryId") SCategoryId: Long, @Query("dealId") dealId: Long,
-                          @Query("paymentPrice") paymentPrice: Int, @Query("saveActionType") saveActionType: String, @Query("sellerId") sellerId: Long,
-                          @Query("serviceType") serviceType: String): Call<BaseModel<MutableList<Coupon>>>
+                          @Query("paymentPrice") paymentPrice: Int, @Query("saveActionType") saveActionType: String, @Query("serviceType") serviceType: String,
+                          @Query("sellerId") sellerId: Long): Call<BaseModel<MutableList<Coupon>>>
 }

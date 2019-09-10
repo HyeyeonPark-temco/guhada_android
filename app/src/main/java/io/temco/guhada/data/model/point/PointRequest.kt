@@ -9,7 +9,7 @@ import io.temco.guhada.data.model.order.OrderItemResponse
  */
 class PointRequest {
     var bundleList = mutableListOf<PointBundle>()
-    var pointType = ActionType.BUY.type
+    var pointType = SaveActionType.BUY.type
     val serviceType = ServiceType.AOS.type
 
     inner class PointBundle {
@@ -21,10 +21,14 @@ class PointRequest {
         AOS("AOS_APP")
     }
 
-    enum class ActionType(val type: String) {
+    /**
+     * saveActionType BUY == BUY + FOLLOW
+     */
+    enum class SaveActionType(val type: String) {
         BUY("BUY"),
-        TEXT_REVIEW("TEXT_REVIEW"),
-        IMG_REVIEW("IMG_REVIEW")
+        FOLLOW("FOLLOW"),
+        BEST_REVIEW("BEST_REVIEW"),
+        USER_REGISTRATION("USER_REGISTRATION")
     }
 
     enum class SaveType(val type: String) {

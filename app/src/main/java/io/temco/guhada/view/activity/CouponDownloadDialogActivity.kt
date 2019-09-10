@@ -1,25 +1,31 @@
 package io.temco.guhada.view.activity
 
+import android.os.Bundle
+import android.view.ViewGroup
+import android.view.Window
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
-import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.viewmodel.CouponDownloadDialogViewModel
 import io.temco.guhada.databinding.ActivityCoupondownloaddialogBinding
-import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CouponDownloadListAdapter
 
-class CouponDownloadDialogActivity : BindActivity<ActivityCoupondownloaddialogBinding>() {
+/**
+ * 상품상세-쿠폰 다운로드 팝업
+ * @author Hyeyeon Park
+ */
+class CouponDownloadDialogActivity : AppCompatActivity() {
     private lateinit var mViewModel: CouponDownloadDialogViewModel
+    lateinit var mBinding: ActivityCoupondownloaddialogBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_coupondownloaddialog)
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-    override fun getBaseTag(): String = CouponDownloadDialogActivity::class.java.simpleName
-
-    override fun getLayoutId(): Int = R.layout.activity_coupondownloaddialog
-
-    override fun getViewType(): Type.View = Type.View.COUPON_DOWNLOAD
-
-    override fun init() {
         mViewModel = CouponDownloadDialogViewModel().apply { mOnClickCloseTask = { finish() } }
         intent.getParcelableArrayListExtra<Coupon>("couponList").let {
             if (it != null) {
