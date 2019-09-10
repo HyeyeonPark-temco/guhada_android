@@ -9,8 +9,12 @@ import io.temco.guhada.R
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.databinding.ItemImagepagerBinding
 
+/**
+ * Image object view page adapter
+ * @author Hyeyeon Park
+ */
 class ImagePagerAdapter : PagerAdapter() {
-    private var list: MutableList<Product.Image> = ArrayList()
+    var list: MutableList<Product.Image> = ArrayList()
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
     override fun getCount(): Int = list.size
@@ -26,12 +30,12 @@ class ImagePagerAdapter : PagerAdapter() {
         container.removeView(`object` as View)
     }
 
-    fun setItems(list : MutableList<Product.Image>){
+    fun setItems(list: MutableList<Product.Image>) {
         this.list = list
         notifyDataSetChanged()
     }
 
-    fun clearItems(){
+    fun clearItems() {
         this.list.clear()
         notifyDataSetChanged()
     }

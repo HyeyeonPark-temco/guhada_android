@@ -234,7 +234,7 @@
                     android:background="@color/common_white"
                     android:paddingTop="60dp"
                     android:paddingBottom="60dp"
-                    android:visibility="@{viewModel.emptyVisibility, default =gone}">
+                    android:visibility="@{viewModel.emptyVisibility, default =visible}">
 
                     <ImageView
                         android:id="@+id/imageView8"
@@ -325,13 +325,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </FrameLayout>
 
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/border_all_whitethree"
                 android:onClick="@{()->viewModel.onClickMoreReview(5)}"
-                android:visibility="@{viewModel.emptyVisibility == View.VISIBLE || viewModel.reviewResponse.last ? View.GONE : View.VISIBLE}">
+                android:visibility="@{viewModel.emptyVisibility == View.VISIBLE || viewModel.reviewResponse.last ? View.GONE : View.VISIBLE, default = gone}">
 
                 <LinearLayout
                     android:layout_width="wrap_content"

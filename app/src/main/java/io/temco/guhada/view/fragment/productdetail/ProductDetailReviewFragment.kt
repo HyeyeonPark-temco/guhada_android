@@ -86,7 +86,6 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
             } else {
                 adapter.setItems(reviewList)
             }
-
         }
     }
 

@@ -5,9 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
+import io.reactivex.Observable
 import io.temco.guhada.R
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewResponseContent
 import io.temco.guhada.databinding.ItemProductdetailReviewBinding
+import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapter.Holder>() {
@@ -39,6 +43,28 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
         fun bind(reviewContent: ReviewResponseContent) {
             if (adapterPosition == list.size - 1) mBinding.viewProductdetailreviewLine.visibility = View.GONE
             mBinding.reviewContent = reviewContent
+
+            // 리뷰 사진 view pager
+            val list = reviewContent.photoUrls
+            mBinding.viewpagerProductdetailReviewfiles.adapter = ImagePagerAdapter().apply {
+                Observable.fromIterable(list).map {
+                    Product.Image().apply { this.url = it }
+                }.subscribe {
+                    this.list.add(it)
+                }
+            }
+            mBinding.viewpagerProductdetailReviewfiles.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {}
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+                override fun onPageSelected(position: Int) {
+                    mBinding.textviewProductdetailReviewfilespos.text = (position + 1).toString()
+                    mBinding.executePendingBindings()
+                }
+            })
+            mBinding.textviewProductdetailReviewfilescount.text = list.size.toString()
+            mBinding.framelayoutProductdetailReviewfiles.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
+            mBinding.linearlayoutProductdetailReviewfilescount.visibility = if (list.size > 1) View.VISIBLE else View.GONE
+
             mBinding.executePendingBindings()
         }
     }
