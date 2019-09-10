@@ -64,7 +64,7 @@
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{coupon.discountRate > 0 ? String.valueOf(coupon.discountRate) : String.valueOf(coupon.discountPrice) }"
+                        android:text="@{coupon.discountRate > 0 ? String.valueOf(coupon.discountRate) : @string/common_price_format(coupon.discountPrice) }"
                         android:textColor="@color/common_white"
                         android:textSize="32sp"
                         android:visibility="@{coupon.discountRate > 0 || coupon.discountPrice > 0 ? View.VISIBLE : View.INVISIBLE}"

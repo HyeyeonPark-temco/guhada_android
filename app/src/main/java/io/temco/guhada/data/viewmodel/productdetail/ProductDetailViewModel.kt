@@ -15,6 +15,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.enum.SaveActionType
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -229,7 +230,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
                                         this@ProductDetailViewModel.mExpectedCouponList.postValue(tempList)
                                     })
-                        }, accessToken = accessToken, item = orderItemResponse, saveActionType = PointRequest.SaveActionType.BUY.type, serviceType = PointRequest.ServiceType.AOS.type)
+                        }, accessToken = accessToken, item = orderItemResponse, saveActionType = SaveActionType.BUY.type, serviceType = PointRequest.ServiceType.AOS.type)
                     }
                 },
                 invalidTokenTask = {}

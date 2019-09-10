@@ -5,6 +5,7 @@ import android.os.Parcelable
 
 /**
  * 쿠폰 model
+ * @see SaveTargetType
  * @author Hyeyeon Park
  */
 class Coupon() : Parcelable {
@@ -18,8 +19,9 @@ class Coupon() : Parcelable {
     var couponNumber = ""
     var couponTitle: String? = ""
     var couponType: String? = ""
-    var saveType = ""
     var status: String? = ""
+    var saveType = ""
+    var saveTargetType = ""
 
     // PRICE
     var discountType: String? = ""          // 할인 방식 (PRICE, RATE)

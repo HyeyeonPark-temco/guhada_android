@@ -29,11 +29,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textview_coupondownload_title"
+            android:id="@+id/textview_coupondownload_followtitle"
             style="@style/TextLight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/coupondownload_title"
+            android:text="@string/coupondownload_title_unfollow"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_22"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -49,7 +49,7 @@
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_coupondownload_title" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_coupondownload_followtitle" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_coupondownload"
@@ -74,12 +74,12 @@
             android:layout_marginTop="10dp"
             android:background="@color/common_blue_purple"
             android:onClick="@{()->viewModel.onClickDownload()}"
-            android:text="@string/coupondownload_button"
+            android:text="@string/coupondownload_button_follow"
             android:textColor="@color/common_white"
             android:textSize="@dimen/text_13"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerview_coupondownload" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

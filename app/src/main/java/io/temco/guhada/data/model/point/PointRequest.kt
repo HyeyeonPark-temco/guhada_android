@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.point
 
+import io.temco.guhada.common.enum.SaveActionType
 import io.temco.guhada.data.model.order.OrderItemResponse
 
 /**
@@ -21,15 +22,6 @@ class PointRequest {
         AOS("AOS_APP")
     }
 
-    /**
-     * saveActionType BUY == BUY + FOLLOW
-     */
-    enum class SaveActionType(val type: String) {
-        BUY("BUY"),
-        FOLLOW("FOLLOW"),
-        BEST_REVIEW("BEST_REVIEW"),
-        USER_REGISTRATION("USER_REGISTRATION")
-    }
 
     enum class SaveType(val type: String) {
         DOWNLOAD("DOWNLOAD")

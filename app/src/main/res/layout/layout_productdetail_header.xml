@@ -278,7 +278,6 @@
                     android:background="@drawable/coupon_text"
                     android:gravity="center_vertical"
                     android:paddingStart="15dp"
-                    android:text="5000원 할인 쿠폰"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_13" />
 

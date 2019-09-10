@@ -104,6 +104,7 @@ class BenefitServer {
 
         /**
          * 발급 가능한 쿠폰 조회
+         * saveActionType BUY == BUY + FOLLOW
          * @author Hyeyeon Park
          * @since 2019.08.29
          */
