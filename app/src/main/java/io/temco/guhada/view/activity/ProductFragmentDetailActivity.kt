@@ -6,6 +6,7 @@ import android.view.View
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.R
 import io.temco.guhada.common.*
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.util.CommonUtil
@@ -101,6 +102,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
             }*/
             Activity.RESULT_OK -> when (requestCode) {
                 Flag.RequestCode.WRITE_CLAIM -> mProductDetailFragment!!.refreshClaims()
+                RequestCode.COUPON_DOWNLOAD.flag -> mProductDetailFragment!!.setSaveCouponDisabled()
             }
             /**
              * @author park jungho

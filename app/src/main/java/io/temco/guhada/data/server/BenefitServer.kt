@@ -3,6 +3,8 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.coupon.CouponConsumption
+import io.temco.guhada.data.model.coupon.CouponSaveProcess
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
@@ -123,6 +125,22 @@ class BenefitServer {
                     serviceType = serviceType).enqueue(
                     ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
         }
+
+        /**
+         * 쿠폰 사용
+         * @author Hyeyeon Park
+         * @since 2019.09.10
+         */
+        fun useCoupon(listener: OnServerListener, accessToken: String, couponConsumption: CouponConsumption) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).useCoupon(accessToken = accessToken, couponConsumption = couponConsumption).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 쿠폰 발급
+         * @author Hyeyeon Park
+         * @since 2019.09.10
+         */
+        fun saveCoupon(listener: OnServerListener, accessToken: String, couponSaveProcess: CouponSaveProcess) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).saveCoupon(accessToken = accessToken, couponSaveProcess = couponSaveProcess).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
     }
 }

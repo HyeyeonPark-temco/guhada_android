@@ -25,6 +25,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
@@ -49,6 +50,7 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
+import kotlinx.android.synthetic.main.layout_requestrefund_bank.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -126,7 +128,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {
                     val intent = Intent(context, CouponDownloadDialogActivity::class.java)
                     intent.putParcelableArrayListExtra("couponList", ArrayList(list))
-                    startActivity(intent)
+                    intent.putExtra("dCategoryId", mViewModel.product.value?.dCategoryId)
+                    intent.putExtra("lCategoryId", mViewModel.product.value?.lCategoryId)
+                    intent.putExtra("mCategoryId", mViewModel.product.value?.mCategoryId)
+                    intent.putExtra("sCategoryId", mViewModel.product.value?.sCategoryId)
+                    (mBinding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.COUPON_DOWNLOAD.flag)
                 }
             }
         })
@@ -674,7 +680,17 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * @author park jungho
      * get porduct id
      */
-    fun getProductId() : Long = mViewModel.product.value!!.productId ?: 0L
+    fun getProductId(): Long = mViewModel.product.value!!.productId ?: 0L
+
+    /**
+     * 쿠폰 발급 후, 버튼 비활성화
+     */
+    fun setSaveCouponDisabled() {
+        mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {  }
+        mBinding.includeProductdetailContentheader.textviewProductdetailCoupon.setBackgroundResource(R.drawable.coupon_text_disabled)
+        mBinding.includeProductdetailContentheader.imageviewProductdetailCoupon.setImageResource(R.drawable.coupon_comlete_disabled)
+        mBinding.executePendingBindings()
+    }
 
     companion object {
         @JvmStatic

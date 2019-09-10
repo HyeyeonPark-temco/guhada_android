@@ -2,7 +2,9 @@ package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.coupon.Coupon
+import io.temco.guhada.data.model.coupon.CouponConsumption
 import io.temco.guhada.data.model.coupon.CouponResponse
+import io.temco.guhada.data.model.coupon.CouponSaveProcess
 import io.temco.guhada.data.model.point.*
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -47,6 +49,22 @@ interface BenefitService {
      */
     @DELETE("/coupon/wallet/{couponNumber}")
     fun deleteCouponAsync(@Header("Authorization") accessToken: String, @Path("couponNumber") couponNumber: String): Deferred<BaseModel<Any?>>
+
+    /**
+     * 쿠폰 사용 API
+     * @author Hyeyeon Park
+     * @since 2019.09.10
+     */
+    @POST("/coupons/process/consumption")
+    fun useCoupon(@Header("Authorization") accessToken: String, @Body couponConsumption : CouponConsumption) : Call<BaseModel<Any?>>
+
+    /**
+     * 쿠폰 발급 API
+     * @author Hyeyeon Park
+     * @since 2019.09.10
+     */
+    @POST("/coupons/process/save")
+    fun saveCoupon(@Header("Authorization") accessToken: String, @Body couponSaveProcess : CouponSaveProcess) : Call<BaseModel<Any?>>
 
     /**
      * 포인트 기록 삭제 API

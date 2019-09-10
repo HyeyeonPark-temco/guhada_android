@@ -282,6 +282,7 @@
                     android:textSize="@dimen/text_13" />
 
                 <ImageView
+                    android:id="@+id/imageview_productdetail_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/coupon_download" />

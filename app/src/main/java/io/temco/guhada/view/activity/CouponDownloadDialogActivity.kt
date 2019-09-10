@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
@@ -28,7 +29,13 @@ class CouponDownloadDialogActivity : AppCompatActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_coupondownloaddialog)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        mViewModel = CouponDownloadDialogViewModel().apply { mOnClickCloseTask = { finish() } }
+        mViewModel = CouponDownloadDialogViewModel().apply {
+            this.mOnClickCloseTask = { finish() }
+            this.mOnSuccessSaveCouponTask = {
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+        }
         intent.getParcelableArrayListExtra<Coupon>("couponList").let {
             if (it != null) {
                 mViewModel.mList = it as MutableList<Coupon>
@@ -39,6 +46,11 @@ class CouponDownloadDialogActivity : AppCompatActivity() {
                 finish()
             }
         }
+        mViewModel.mCouponSaveProcess.dcategoryId = intent.getIntExtra("dCategoryId", 0).toLong()
+        mViewModel.mCouponSaveProcess.mcategoryId = intent.getIntExtra("mCategoryId", 0).toLong()
+        mViewModel.mCouponSaveProcess.scategoryId = intent.getIntExtra("sCategoryId", 0).toLong()
+        mViewModel.mCouponSaveProcess.lcategoryId = intent.getIntExtra("lCategoryId", 0).toLong()
+
         mBinding.viewModel = mViewModel
     }
 
@@ -48,15 +60,14 @@ class CouponDownloadDialogActivity : AppCompatActivity() {
      * @since 2019.09.10
      */
     private fun setTitleAndButtonText(list: MutableList<Coupon>) {
-        var isFollowExist = false
         for (coupon in list) {
             if (coupon.saveTargetType == SaveActionType.FOLLOW.type) {
-                isFollowExist = true
+                mViewModel.mIsFollowCouponExist = true
                 break
             }
         }
 
-        if (isFollowExist) {
+        if (mViewModel.mIsFollowCouponExist) {
             mBinding.textviewCoupondownloadFollowtitle.text = resources.getString(R.string.coupondownload_title_follow)
             mBinding.buttonCoupondownloadDownload.text =
                     if (list.size > 1) resources.getString(R.string.coupondownload_button_follow_all)
