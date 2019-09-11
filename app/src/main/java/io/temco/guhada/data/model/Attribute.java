@@ -16,4 +16,7 @@ public class Attribute {
 
     @SerializedName("selected")
     public boolean selected;
+
+    @SerializedName("colorName")
+    public String colorName;
 }

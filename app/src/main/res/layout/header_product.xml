@@ -72,8 +72,8 @@
             <ImageView
                 android:id="@+id/image_search"
                 android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/btn_search"
+                android:layout_height="30dp"
+                android:background="@drawable/top_btn_search"
                 android:onClick="@{clickListener}" />
 
             <ImageView
