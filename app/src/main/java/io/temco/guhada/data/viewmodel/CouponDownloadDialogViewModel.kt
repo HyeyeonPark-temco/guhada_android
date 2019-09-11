@@ -46,7 +46,7 @@ class CouponDownloadDialogViewModel : BaseObservableViewModel() {
         }, accessToken = accessToken, response = bookMark.getProductBookMarkRespose())
     }
 
-    // 쿠폰 발급
+    // 쿠폰 발급 [필드 값 정의 후 재작업 예정 09.10]
     private fun saveCoupon(accessToken: String) {
         Observable.fromIterable(mList)
                 .map {
