@@ -27,7 +27,6 @@ class RequestOrder {
     @SerializedName(value = "recipientName", alternate = ["recepientName"])
     var recipientName = ""
 
-
     /** 현금영수증 요청번호(전화번호, 사업자등록번호, 현금영수증 카드번호...etc) */
     var cashReceiptNo = ""
 
@@ -52,14 +51,14 @@ class RequestOrder {
         var couponNumber = ""
     }
 
-    enum class CashReceiptUsage(val usage: String) {
-        PERSONAL("PERSONAL"),
-        BUSINESS("BUSINESS")
+    enum class CashReceiptUsage(val code: String, val label: String) {
+        PERSONAL("PERSONAL", "개인소등공제용"),
+        BUSINESS("BUSINESS", "사업자증빙용")
     }
 
-    enum class CashReceiptType(val type: String) {
-        MOBILE("MOBILE"),
-        CARD("CARD"),
-        BUSINESS("BUSINESS")
+    enum class CashReceiptType(val code: String, val label: String) {
+        MOBILE("MOBILE", "휴대폰번호"),
+        CARD("CARD", "현금영수증카드"),
+        BUSINESS("BUSINESS", "사업자번호")
     }
 }
