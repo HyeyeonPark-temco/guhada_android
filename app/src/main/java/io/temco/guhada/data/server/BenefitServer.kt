@@ -3,6 +3,8 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.coupon.CouponConsumption
+import io.temco.guhada.data.model.coupon.CouponSaveProcess
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
@@ -104,13 +106,41 @@ class BenefitServer {
 
         /**
          * 발급 가능한 쿠폰 조회
+         * saveActionType BUY == BUY + FOLLOW
          * @author Hyeyeon Park
          * @since 2019.08.29
          */
-        fun getExpectedCoupon(listener: OnServerListener, accessToken: String, item: OrderItemResponse, saveActionType: String, serviceType: String) =
-                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true, false).getExpectedCoupon(
-                        accessToken = accessToken, DCategoryId = item.dCategoryId.toLong(), LCategoryId = item.lCategoryId.toLong(), MCategoryId = item.mCategoryId.toLong(), SCategoryId = item.sCategoryId.toLong(),
-                        dealId = item.dealId, sellerId = item.sellerId.toLong(), paymentPrice = item.sellPrice, saveActionType = saveActionType, serviceType = serviceType).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+        fun getExpectedCoupon(listener: OnServerListener, accessToken: String, item: OrderItemResponse, saveActionType: String, serviceType: String) {
+            val paymentPrice = if (item.sellPrice > 0) item.sellPrice else item.discountPrice
+            RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true, false).getExpectedCoupon(
+                    accessToken = accessToken,
+                    DCategoryId = item.dCategoryId.toLong(),
+                    LCategoryId = item.lCategoryId.toLong(),
+                    MCategoryId = item.mCategoryId.toLong(),
+                    SCategoryId = item.sCategoryId.toLong(),
+                    dealId = item.dealId,
+                    sellerId = item.sellerId.toLong(),
+                    paymentPrice = paymentPrice,
+                    saveActionType = saveActionType,
+                    serviceType = serviceType).enqueue(
+                    ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+        }
+
+        /**
+         * 쿠폰 사용
+         * @author Hyeyeon Park
+         * @since 2019.09.10
+         */
+        fun useCoupon(listener: OnServerListener, accessToken: String, couponConsumption: CouponConsumption) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).useCoupon(accessToken = accessToken, couponConsumption = couponConsumption).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 쿠폰 발급
+         * @author Hyeyeon Park
+         * @since 2019.09.10
+         */
+        fun saveCoupon(listener: OnServerListener, accessToken: String, couponSaveProcess: CouponSaveProcess) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).saveCoupon(accessToken = accessToken, couponSaveProcess = couponSaveProcess).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
     }
 }

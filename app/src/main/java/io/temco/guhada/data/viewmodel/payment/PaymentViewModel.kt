@@ -10,10 +10,12 @@ import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import io.reactivex.Observable
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
@@ -149,6 +151,19 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mRecipientAvailable = ObservableBoolean(false)
         @Bindable
         get() = field
+
+    var mRequestOrder = RequestOrder()
+
+    var mRecipientPhone1 = ""
+    var mRecipientPhone2 = ""
+    var mRecipientPhone3 = ""
+
+    var mRecipientIdentification1 = ""
+    var mRecipientIdentification2 = ""
+
+    var mRecipientCorporation1 = ""
+    var mRecipientCorporation2 = ""
+    var mRecipientCorporation3 = ""
 
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
@@ -328,39 +343,51 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
 
         if (termsChecked) {
-            for (i in 0 until paymentWays.size) {
-                if (paymentWays[i]) {
+            for (i in 0 until paymentWays.size)
+                if (paymentWays[i])
                     selectedMethod = order.paymentsMethod[i]
-                }
-            }
 
             if (selectedMethod.methodCode.isNotEmpty()) {
-                if (selectedMethod.methodCode == "TOKEN") {
+                if (selectedMethod.methodCode == PaymentWayType.TOKEN.code) {
                     listener.showMessage(BaseApplication.getInstance().getString(R.string.common_message_ing))
                 } else {
                     if (this.user.get() != null) {
                         if (this@PaymentViewModel.selectedShippingAddress == null) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
-                            RequestOrder().apply {
-                                //  this.user = this@PaymentViewModel.user.get()!!
-                                this.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
-                                this.parentMethodCd = selectedMethod.methodCode
-                            }.let { requestOrder ->
-                                if (::cart.isInitialized) {
-                                    requestOrder.cartItemIdList = arrayOf(this@PaymentViewModel.cart.cartItemId)
-                                } else {
-                                    val array = arrayOfNulls<Long>(cartIdList.size)
-                                    for (i in 0 until cartIdList.size) {
-                                        array[i] = cartIdList[i].toLong()
-                                    }
-                                    requestOrder.cartItemIdList = array
+                            if (selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) {
+                                mRequestOrder.cashReceiptNo = ""
+                                mRequestOrder.cashReceiptType = ""
+                                mRequestOrder.cashReceiptUsage = ""
+                            } else {
+                                mRequestOrder.cashReceiptNo = when (mRequestOrder.cashReceiptType) {
+                                    RequestOrder.CashReceiptType.MOBILE.code -> "$mRecipientPhone1$mRecipientPhone2$mRecipientPhone3"
+                                    RequestOrder.CashReceiptType.BUSINESS.code -> "$mRecipientCorporation1$mRecipientCorporation2$mRecipientCorporation3"
+                                    else -> ""
                                 }
-
-                                val accessToken = Preferences.getToken().accessToken
-                                addShippingAddress(accessToken)
-                                requestOrder("Bearer $accessToken", requestOrder)
+//                                Log.e("현금영수증", "${mRequestOrder.cashReceiptUsage}//${mRequestOrder.cashReceiptType}//${mRequestOrder.cashReceiptNo}")
                             }
+
+                            if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
+                                mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
+                                mRequestOrder.parentMethodCd = selectedMethod.methodCode
+
+                                if (::cart.isInitialized)
+                                    mRequestOrder.cartItemPayments.add(RequestOrder.CartItemPayment().apply { this.cartItemId = this@PaymentViewModel.cart.cartItemId })
+                                else
+                                    Observable.fromIterable(cartIdList)
+                                            .map {
+                                                RequestOrder.CartItemPayment().apply { this.cartItemId = it.toLong() }
+
+
+                                            }.subscribe {
+                                                mRequestOrder.cartItemPayments.add(it)
+                                            }
+                            }
+
+                            val accessToken = Preferences.getToken().accessToken
+                            addShippingAddress(accessToken)
+                            requestOrder("Bearer $accessToken", mRequestOrder)
                         }
                     }
                 }

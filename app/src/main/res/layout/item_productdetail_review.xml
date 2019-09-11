@@ -12,13 +12,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-    >
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="18dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="18dp">
 
             <ImageView
                 android:id="@+id/imageView7"
@@ -162,8 +161,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="18dp">
 
             <LinearLayout
                 android:id="@+id/linearLayout15"
@@ -182,11 +181,11 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="6dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:layout_gravity="center"
                     android:text="@string/productdetail_review_graphsize"
                     android:textColor="@color/greyish_brown_two"
                     android:textSize="@dimen/text_11" />
@@ -225,8 +224,8 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
                     android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="6dp"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -268,10 +267,10 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="6dp"
                     android:layout_weight="1"
-                    android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/productdetail_review_graphlength"
                     android:textColor="@color/greyish_brown_two"
@@ -319,13 +318,61 @@
                 app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_reviewcontent" />
 
             <FrameLayout
-                android:id="@+id/file"
+                android:id="@+id/framelayout_productdetail_reviewfiles"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_productdetail_reviewdate" />
+                app:layout_constraintTop_toBottomOf="@id/textview_productdetail_reviewdate">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewpager_productdetail_reviewfiles"
+                    android:layout_width="match_parent"
+                    android:layout_height="172dp" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_productdetail_reviewfilescount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/background_color_blackoverlay"
+                    android:orientation="horizontal"
+                    android:paddingStart="9dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="9dp"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/textview_productdetail_reviewfilespos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="/"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/textview_productdetail_reviewfilescount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12" />
+
+                </LinearLayout>
+            </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -333,7 +380,7 @@
                 android:layout_marginTop="22dp"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/file">
+                app:layout_constraintTop_toBottomOf="@+id/framelayout_productdetail_reviewfiles">
 
                 <TextView
                     style="@style/TextRegular"
@@ -369,7 +416,7 @@
                 android:layout_marginTop="22dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_reviewdate">
+                app:layout_constraintTop_toBottomOf="@+id/framelayout_productdetail_reviewfiles">
 
                 <TextView
                     style="@style/TextRegular"
@@ -402,6 +449,6 @@
 
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/white_six"/>
+            android:background="@color/white_six" />
     </LinearLayout>
 </layout>

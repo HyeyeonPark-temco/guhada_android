@@ -418,4 +418,12 @@ interface UserService {
      */
     @PUT("/users/user-size")
     fun modifyUserSize(@Header("Authorization") accessToken: String, @Body response: UserSize): Call<BaseModel<Any>>
+
+    /**
+     * 본인인증 정보 업데이트 API
+     * @author Hyeyeon Park
+     * @since 2019.09.11
+     */
+    @PUT("/users/identity-verify")
+    fun updateIdentityVerify(@Header("Authorization") accessToken: String, @Body verification: Verification) : Call<BaseModel<Any>>
 }

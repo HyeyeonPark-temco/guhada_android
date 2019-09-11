@@ -18,19 +18,21 @@ class Coupon() : Parcelable {
     var couponNumber = ""
     var couponTitle: String? = ""
     var couponType: String? = ""
-    var saveType = ""
     var status: String? = ""
+    var saveType = ""
+    var saveTargetType = ""
 
     // PRICE
-    var discountType: String? = ""
-    var discountRate: Double = 0.0
-    var discountPrice: Int = 0
-    var minimumPrice: Int = 0
-    var maximumDiscountPrice: String? = ""
+    var discountType: String? = null          // 할인 방식 (PRICE, RATE)f
+    var discountRate: Double = 0.0          // 할인률 (정률인 경우)
+    var discountPrice: Int = 0              // 할인 금액 (정액인 경우)
+    var minimumPrice: Int = 0               // 쿠폰을 적용받기위한 최소 금액 (전체 주문금액이 아닌, 해당 상품금액에만 적용)
+    var maximumDiscountPrice: Int = 0  // 정액인 경우, 최대 할인가능 금액
 
     // DATE
     var startAt: String? = ""
     var endAt: String? = ""
+
     var createdAt: String? = ""
     var expireDueDay: Int = 0
 
@@ -39,22 +41,29 @@ class Coupon() : Parcelable {
     var sellerImgUrl: String? = ""
     var sellerName: String? = ""
 
+    enum class DiscountType(val type: String) {
+        RATE("RATE"),   // 정률
+        PRICE("PRICE")  // 정액
+    }
+
+
+    // PARCELABLE
     constructor(parcel: Parcel) : this() {
         userId = parcel.readLong()
         serviceType = parcel.readString()
         applyType = parcel.readString()
         couponId = parcel.readValue(Long::class.java.classLoader) as? Long
         couponSaveId = parcel.readValue(Long::class.java.classLoader) as? Long
-        couponNumber = parcel.readString()
+        couponNumber = parcel.readString() ?: ""
         couponTitle = parcel.readString()
         couponType = parcel.readString()
-        saveType = parcel.readString()
+        saveType = parcel.readString() ?: ""
         status = parcel.readString()
         discountType = parcel.readString()
         discountRate = parcel.readDouble()
         discountPrice = parcel.readInt()
         minimumPrice = parcel.readInt()
-        maximumDiscountPrice = parcel.readString()
+        maximumDiscountPrice = parcel.readInt()
         startAt = parcel.readString()
         endAt = parcel.readString()
         createdAt = parcel.readString()
@@ -62,10 +71,9 @@ class Coupon() : Parcelable {
         sellerId = parcel.readValue(Long::class.java.classLoader) as? Long
         sellerImgUrl = parcel.readString()
         sellerName = parcel.readString()
+        saveTargetType = parcel.readString() ?: ""
     }
 
-
-    // PARCELABLE
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeLong(userId)
         dest?.writeString(serviceType)
@@ -81,7 +89,7 @@ class Coupon() : Parcelable {
         dest?.writeDouble(discountRate)
         dest?.writeInt(discountPrice)
         dest?.writeInt(minimumPrice)
-        dest?.writeString(maximumDiscountPrice)
+        dest?.writeInt(maximumDiscountPrice)
         dest?.writeString(startAt)
         dest?.writeString(endAt)
         dest?.writeString(createdAt)
@@ -89,9 +97,13 @@ class Coupon() : Parcelable {
         dest?.writeValue(sellerId)
         dest?.writeString(sellerImgUrl)
         dest?.writeString(sellerName)
+        dest?.writeString(saveTargetType)
     }
 
     override fun describeContents(): Int = 0
+    override fun toString(): String {
+        return "Coupon(userId=$userId, serviceType=$serviceType, applyType=$applyType, couponId=$couponId, couponSaveId=$couponSaveId, couponNumber='$couponNumber', couponTitle=$couponTitle, couponType=$couponType, status=$status, saveType='$saveType', saveTargetType='$saveTargetType', discountType=$discountType, discountRate=$discountRate, discountPrice=$discountPrice, minimumPrice=$minimumPrice, maximumDiscountPrice=$maximumDiscountPrice, startAt=$startAt, endAt=$endAt, createdAt=$createdAt, expireDueDay=$expireDueDay, sellerId=$sellerId, sellerImgUrl=$sellerImgUrl, sellerName=$sellerName)"
+    }
 
     companion object CREATOR : Parcelable.Creator<Coupon> {
         override fun createFromParcel(parcel: Parcel): Coupon {
@@ -102,4 +114,6 @@ class Coupon() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+
 }

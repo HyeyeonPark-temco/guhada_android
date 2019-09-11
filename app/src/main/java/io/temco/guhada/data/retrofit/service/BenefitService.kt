@@ -2,7 +2,9 @@ package io.temco.guhada.data.retrofit.service
 
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.coupon.Coupon
+import io.temco.guhada.data.model.coupon.CouponConsumption
 import io.temco.guhada.data.model.coupon.CouponResponse
+import io.temco.guhada.data.model.coupon.CouponSaveProcess
 import io.temco.guhada.data.model.point.*
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -49,6 +51,22 @@ interface BenefitService {
     fun deleteCouponAsync(@Header("Authorization") accessToken: String, @Path("couponNumber") couponNumber: String): Deferred<BaseModel<Any?>>
 
     /**
+     * 쿠폰 사용 API
+     * @author Hyeyeon Park
+     * @since 2019.09.10
+     */
+    @POST("/coupons/process/consumption")
+    fun useCoupon(@Header("Authorization") accessToken: String, @Body couponConsumption : CouponConsumption) : Call<BaseModel<Any?>>
+
+    /**
+     * 쿠폰 발급 API
+     * @author Hyeyeon Park
+     * @since 2019.09.10
+     */
+    @POST("/coupons/process/save")
+    fun saveCoupon(@Header("Authorization") accessToken: String, @Body couponSaveProcess : CouponSaveProcess) : Call<BaseModel<Any?>>
+
+    /**
      * 포인트 기록 삭제 API
      */
     @DELETE("/histories/{id}")
@@ -71,12 +89,13 @@ interface BenefitService {
 
     /**
      * 발급 가능한 쿠폰 조회 API
+     * [required] DCategoryId, LCategoryId, MCategoryId, SCategoryId, dealId, paymentPrice, saveActionType, serviceType
      * @author Hyeyeon Park
      * @since 2019.08.29
      */
     @GET("/coupons/process/due-save")
     fun getExpectedCoupon(@Header("Authorization") accessToken: String, @Query("DCategoryId") DCategoryId: Long, @Query("LCategoryId") LCategoryId: Long,
                           @Query("MCategoryId") MCategoryId: Long, @Query("SCategoryId") SCategoryId: Long, @Query("dealId") dealId: Long,
-                          @Query("paymentPrice") paymentPrice: Int, @Query("saveActionType") saveActionType: String, @Query("sellerId") sellerId: Long,
-                          @Query("serviceType") serviceType: String): Call<BaseModel<MutableList<Coupon>>>
+                          @Query("paymentPrice") paymentPrice: Int, @Query("saveActionType") saveActionType: String, @Query("serviceType") serviceType: String,
+                          @Query("sellerId") sellerId: Long): Call<BaseModel<MutableList<Coupon>>>
 }

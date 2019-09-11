@@ -121,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{()->viewModel.onClickVerify()}"
                     android:orientation="horizontal"
+                    android:visibility="@{viewModel.order.user.name != null &amp;&amp; viewModel.order.user.mobile != null &amp;&amp; viewModel.order.user.emailVerify ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -137,7 +138,7 @@
                         style="@style/PaymentContentDarkGreyTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/payment_text_verify" />
+                        android:text="@{viewModel.order.user.name != null &amp;&amp; viewModel.order.user.mobile != null &amp;&amp; !viewModel.order.user.emailVerify ? @string/verify_title_email : @string/verify_title_mobile}" />
 
                     <ImageButton
                         android:id="@+id/imagebutton_payment_buyerverify"

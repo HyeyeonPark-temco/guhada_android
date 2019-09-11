@@ -435,7 +435,7 @@
     <string name="productdetail_store_related">판매자의 연관상품</string>
     <string name="productdetail_store_recommend">추천상품</string>
 
-    <string name="productdetail_coupon_price">%d원 할인 쿠폰</string>
+    <string name="productdetail_coupon_price">%,2d원 할인 쿠폰</string>
     <string name="productdetail_coupon_rate">%s 할인 쿠폰</string>
 
     <!-- CLAIM -->
@@ -895,9 +895,13 @@
     <string name="mypagecoupon_message_delete">삭제된 쿠폰은 복구할 수 없습니다.\n정말로 삭제하시겠습니까?</string>
 
     <!-- COUPON DOWNLOAD -->
-    <string name="coupondownload_title">셀러를 팔로우하고\n쿠폰을 받아보세요!</string>
-    <string name="coupondownload_description">팔로우한 셀러는 마이페이지에서 확인할 수 있습니다.</string>
-    <string name="coupondownload_button">팔로우하고 모든 쿠폰 받기</string>
+    <string name="coupondownload_title_follow">셀러를 팔로우하고\n쿠폰을 받아보세요!</string>
+    <string name="coupondownload_title_unfollow">첫 구매 쿠폰을\n받아보세요!</string>
+    <string name="coupondownload_description">받은 쿠폰은 마이페이지에서 확인할 수 있습니다.</string>
+    <string name="coupondownload_button_follow">팔로우하고 쿠폰 받기</string>
+    <string name="coupondownload_button_unfollow">쿠폰 받기</string>
+    <string name="coupondownload_button_follow_all">팔로우하고 모든 쿠폰 받기</string>
+    <string name="coupondownload_button_unfollow_all">모든 쿠폰 받기</string>
     <string name="coupondownload_dicsount_price">원 할인</string>
     <string name="coupondownload_dicsount_rate">% 할인</string>
     <string name="coupondownload_dicsount_condition">%,2d원 이상 결제시 사용 가능</string>
@@ -1189,6 +1193,5 @@
     <string name="userclaim_seller_product">구매한 상품 선택</string>
     <string name="userclaim_seller_hint1">문의 유형을 선택</string>
     <string name="userclaim_seller_hint2">문의하실 내용을 입력하세요.</string>
-
 
 </resources>

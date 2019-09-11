@@ -8,12 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import io.reactivex.Observable
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.enum.SaveActionType
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -214,6 +216,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                         this.sCategoryId = product.value?.sCategoryId ?: 0
                         this.dealId = product.value?.dealId ?: 0
                         this.sellerId = product.value?.sellerId?.toInt() ?: 0
+                        this.sellPrice = product.value?.sellPrice ?: 0
+                        this.discountPrice = product.value?.discountPrice ?: 0
                     }.let { orderItemResponse ->
                         BenefitServer.getExpectedCoupon(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
@@ -226,7 +230,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
                                         this@ProductDetailViewModel.mExpectedCouponList.postValue(tempList)
                                     })
-                        }, accessToken = accessToken, item = orderItemResponse, saveActionType = PointRequest.ActionType.BUY.type, serviceType = PointRequest.ServiceType.AOS.type)
+                        }, accessToken = accessToken, item = orderItemResponse, saveActionType = SaveActionType.BUY.type, serviceType = PointRequest.ServiceType.AOS.type)
                     }
                 },
                 invalidTokenTask = {}

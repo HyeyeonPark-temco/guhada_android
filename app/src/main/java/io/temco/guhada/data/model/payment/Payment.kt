@@ -1,6 +1,8 @@
 package io.temco.guhada.data.model.payment
 
 import com.google.gson.annotations.Expose
+import io.temco.guhada.data.model.order.RequestOrder.CashReceiptType
+import io.temco.guhada.data.model.order.RequestOrder.CashReceiptUsage
 import java.io.Serializable
 
 /**
@@ -13,9 +15,7 @@ class Payment : Serializable {
     var method = ""
     var mobileNo = ""
     var parentMethod = ""
-    var cashReceiptNo: Long = 0
-    var cashReceiptType = ""
-    var cashReceiptUsage = ""
+
     var completeAt = intArrayOf()
     var mobileCorp = ""
     var mobileVanCd = ""
@@ -26,6 +26,22 @@ class Payment : Serializable {
     var vbankExpireAt = intArrayOf()
     var vbankNo = ""
     var vbankRemitterName = ""
+
+    /** 현금영수증 요청번호(전화번호, 사업자등록번호, 현금영수증 카드번호...etc) */
+    var cashReceiptNo = ""
+
+    /**
+     * 현금영수증 용도(PERSONAL:개인소득공제용, BUSINESS:사업자증빙용)
+     * @see CashReceiptUsage
+     */
+    var cashReceiptUsage = ""
+
+    /**
+     * 현금영수증 요청방식 (MOBILE:휴대폰번호, CARD:현금영수증카드, BUSINESS:사업자번호)
+     * @see CashReceiptType
+     */
+    var cashReceiptType = ""
+
 
     @Expose
     var methodName = ""

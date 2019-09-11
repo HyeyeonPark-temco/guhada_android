@@ -44,7 +44,7 @@ object DateUtil {
      * @since 2019.08.22
      */
     @JvmStatic
-    fun getDateDiff(now : Long, date : Long):String{
+    fun getDateDiff(now: Long, date: Long): String {
         val MINUTE_MS = 60 * 1000
         val HOUR_MS = MINUTE_MS * 60
         val DAY_MS = HOUR_MS * 24
@@ -66,4 +66,15 @@ object DateUtil {
             }
         }
     }
+
+    /**
+     * convert timestamp
+     * @param separator 년월일 구분자
+     *
+     * @author Hyeyeon Park
+     * @since 2019.09.11
+     */
+    @JvmStatic
+    fun convertTimestamp(timestamp: Long, separator: String): String = DateTime(timestamp).toString("yyyy${separator}MM${separator}dd")
+
 }
