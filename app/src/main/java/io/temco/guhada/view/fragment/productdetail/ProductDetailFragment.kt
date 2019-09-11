@@ -21,7 +21,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
@@ -29,10 +28,7 @@ import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.LoadingIndicatorUtil
-import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.model.Brand
@@ -50,7 +46,6 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
-import kotlinx.android.synthetic.main.layout_requestrefund_bank.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -126,13 +121,21 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                         else String.format(context?.getString(R.string.productdetail_coupon_rate)!!, "$highestRate%")
 
                 mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {
-                    val intent = Intent(context, CouponDownloadDialogActivity::class.java)
-                    intent.putParcelableArrayListExtra("couponList", ArrayList(list))
-                    intent.putExtra("dCategoryId", mViewModel.product.value?.dCategoryId)
-                    intent.putExtra("lCategoryId", mViewModel.product.value?.lCategoryId)
-                    intent.putExtra("mCategoryId", mViewModel.product.value?.mCategoryId)
-                    intent.putExtra("sCategoryId", mViewModel.product.value?.sCategoryId)
-                    (mBinding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.COUPON_DOWNLOAD.flag)
+                    ServerCallbackUtil.callWithToken(
+                            task = {
+                                val intent = Intent(context, CouponDownloadDialogActivity::class.java)
+                                intent.putParcelableArrayListExtra("couponList", ArrayList(list))
+                                intent.putExtra("dCategoryId", mViewModel.product.value?.dCategoryId)
+                                intent.putExtra("lCategoryId", mViewModel.product.value?.lCategoryId)
+                                intent.putExtra("mCategoryId", mViewModel.product.value?.mCategoryId)
+                                intent.putExtra("sCategoryId", mViewModel.product.value?.sCategoryId)
+                                intent.putExtra("dealId", mViewModel.product.value?.dealId)
+                                intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
+                                (mBinding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.COUPON_DOWNLOAD.flag)
+                            },
+                            invalidTokenTask = {
+                                ToastUtil.showMessage(mBinding.root.context.getString(R.string.login_message_requiredlogin))
+                            })
                 }
             }
         })
@@ -142,7 +145,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             initSummary()
             initContentHeader()
             /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)*/
-
 
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
                 javaScriptEnabled = true
@@ -686,7 +688,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * 쿠폰 발급 후, 버튼 비활성화
      */
     fun setSaveCouponDisabled() {
-        mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {  }
+        mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener { }
         mBinding.includeProductdetailContentheader.textviewProductdetailCoupon.setBackgroundResource(R.drawable.coupon_text_disabled)
         mBinding.includeProductdetailContentheader.imageviewProductdetailCoupon.setImageResource(R.drawable.coupon_comlete_disabled)
         mBinding.executePendingBindings()

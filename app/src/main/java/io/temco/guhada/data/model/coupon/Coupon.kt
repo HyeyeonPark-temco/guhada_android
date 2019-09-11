@@ -23,7 +23,7 @@ class Coupon() : Parcelable {
     var saveTargetType = ""
 
     // PRICE
-    var discountType: String? = ""          // 할인 방식 (PRICE, RATE)f
+    var discountType: String? = null          // 할인 방식 (PRICE, RATE)f
     var discountRate: Double = 0.0          // 할인률 (정률인 경우)
     var discountPrice: Int = 0              // 할인 금액 (정액인 경우)
     var minimumPrice: Int = 0               // 쿠폰을 적용받기위한 최소 금액 (전체 주문금액이 아닌, 해당 상품금액에만 적용)
@@ -101,6 +101,9 @@ class Coupon() : Parcelable {
     }
 
     override fun describeContents(): Int = 0
+    override fun toString(): String {
+        return "Coupon(userId=$userId, serviceType=$serviceType, applyType=$applyType, couponId=$couponId, couponSaveId=$couponSaveId, couponNumber='$couponNumber', couponTitle=$couponTitle, couponType=$couponType, status=$status, saveType='$saveType', saveTargetType='$saveTargetType', discountType=$discountType, discountRate=$discountRate, discountPrice=$discountPrice, minimumPrice=$minimumPrice, maximumDiscountPrice=$maximumDiscountPrice, startAt=$startAt, endAt=$endAt, createdAt=$createdAt, expireDueDay=$expireDueDay, sellerId=$sellerId, sellerImgUrl=$sellerImgUrl, sellerName=$sellerName)"
+    }
 
     companion object CREATOR : Parcelable.Creator<Coupon> {
         override fun createFromParcel(parcel: Parcel): Coupon {
@@ -111,4 +114,6 @@ class Coupon() : Parcelable {
             return arrayOfNulls(size)
         }
     }
+
+
 }

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableBoolean
 import io.temco.guhada.R
 import io.temco.guhada.common.enum.SaveActionType
 import io.temco.guhada.common.util.ToastUtil
@@ -32,6 +31,7 @@ class CouponDownloadDialogActivity : AppCompatActivity() {
         mViewModel = CouponDownloadDialogViewModel().apply {
             this.mOnClickCloseTask = { finish() }
             this.mOnSuccessSaveCouponTask = {
+                ToastUtil.showMessage("쿠폰이 발급되었습니다.")
                 setResult(Activity.RESULT_OK)
                 finish()
             }
@@ -50,7 +50,9 @@ class CouponDownloadDialogActivity : AppCompatActivity() {
         mViewModel.mCouponSaveProcess.mcategoryId = intent.getIntExtra("mCategoryId", 0).toLong()
         mViewModel.mCouponSaveProcess.scategoryId = intent.getIntExtra("sCategoryId", 0).toLong()
         mViewModel.mCouponSaveProcess.lcategoryId = intent.getIntExtra("lCategoryId", 0).toLong()
-
+        mViewModel.mCouponSaveProcess.dealId = intent.getLongExtra("dealId", 0)
+        mViewModel.mCouponSaveProcess.keyId = intent.getLongExtra("dealId", 0)
+        mViewModel.mCouponSaveProcess.sellerId = intent.getLongExtra("sellerId", 0)
         mBinding.viewModel = mViewModel
     }
 
