@@ -1,21 +1,45 @@
-package io.temco.guhada.data.viewmodel.main.repository
+package io.temco.guhada.data.viewmodel.main
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
+import io.temco.guhada.data.db.entity.CategoryEntity
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.ProductServer
+import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import io.temco.guhada.view.adapter.main.WomenListAdapter
+
+/**
+ * @author park jungho
+ * 19.07.18
+ *
+ * 메인 홈 리스트 CustomView ViewModel
+ */
+class WomenListViewModel(val context : Context) : BaseObservableViewModel() {
+    private var repository: WomenListRepository = WomenListRepository(context)
+    var categoryList : MutableList<CategoryEntity>? = null
+
+    private val _listData : SingleLiveEvent<ArrayList<MainBaseModel>> = repository.getList()
+    private val adapter = WomenListAdapter(this,listData.value!!)
+
+    val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
+
+    fun getListAdapter() = adapter
+
+}
+
+
 /**
  * @author park jungho
  * 19.07.18
  *
  * 메인 홈 리스트 server data 연동 Repository
  */
-class HomeListRepository(val context : Context){
+class WomenListRepository(val context : Context){
     // 메인 홈 list data
     private var list = SingleLiveEvent<ArrayList<MainBaseModel>>()
 

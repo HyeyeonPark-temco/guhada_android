@@ -53,10 +53,10 @@
 
             <ImageButton
                 android:id="@+id/imagebutton_headerproductdetail_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/top_btn_search"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/btn_search"
                 android:onClick="@{()->viewModel.onClickSearch()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_bag"

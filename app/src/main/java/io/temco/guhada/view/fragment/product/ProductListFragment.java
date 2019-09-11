@@ -1,13 +1,13 @@
 package io.temco.guhada.view.fragment.product;
 
-import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorListener;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
@@ -22,23 +22,31 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.ActivityMoveToMain;
+import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
+import io.temco.guhada.common.listener.OnBrandListener;
+import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
-import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.data.model.ProductList;
+import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
+import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.adapter.TagListAdapter;
 import io.temco.guhada.view.adapter.product.ProductListAdapter;
+import io.temco.guhada.view.custom.dialog.BrandListDialog;
+import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
@@ -71,6 +79,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private String mText;
     private int mPageNumber = 1;
     private int tabIndex = 0;
+
+    private CategoryListDialog mCategoryListDialog = null;
+    private BrandListDialog mBrandListDialog = null;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -96,6 +107,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
         // Header
         mBinding.layoutHeaderSub.setClickListener(this);
+        mBinding.setClickListener(this);
+
         changeListType(mCurrentGridType);
         changeProductOrder(mCurrentOrderType);
         setTabLayout();
@@ -111,6 +124,15 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
             getProductListBySearch(true);
         }
+
+        if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
+            mBinding.imageviewMaintabIcon1.setBackgroundResource(R.drawable.tool_icon_category_on);
+            mBinding.textviewMaintabTitle1.setTextColor(Color.parseColor("#5d2ed1"));
+        }else if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.BRAND) {
+            mBinding.imageviewMaintabIcon2.setBackgroundResource(R.drawable.tool_icon_brand_on);
+            mBinding.textviewMaintabTitle2.setTextColor(Color.parseColor("#5d2ed1"));
+        }
+
     }
 
     @Override
@@ -171,6 +193,39 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             case R.id.layout_reset:
                 resetTagLayout();
                 break;
+
+            case R.id.layout_maintab_layout1:
+                showCategoryListDialog();
+                break;
+
+            case R.id.layout_maintab_layout2:
+                showBrandListDialog();
+                break;
+
+            case R.id.layout_maintab_layout3:
+                BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN, true));
+                ((ProductFilterListActivity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_HOME);
+                ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
+                ((ProductFilterListActivity)getContext()).finish();
+                ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
+                break;
+
+
+            case R.id.layout_maintab_layout4:
+                BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_COMUNITY, true));
+                ((ProductFilterListActivity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_COMUNITY);
+                ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
+                ((ProductFilterListActivity)getContext()).finish();
+                ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
+                break;
+
+            case R.id.layout_maintab_layout5:
+                BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, true));
+                ((ProductFilterListActivity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_MYPAGE);
+                ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
+                ((ProductFilterListActivity)getContext()).finish();
+                ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
+            break;
         }
     }
 
@@ -491,7 +546,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void changeItemFloatingButton(boolean isShow, boolean animate) {
-      //  changeScaleView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+       changeScaleView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
     }
 
     private void changeTopFloatingButton(boolean isShow, boolean animate) {
@@ -877,5 +932,37 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         });
     }
 
+
+    // Dialog
+    private void showCategoryListDialog() {
+        if (((AppCompatActivity)getContext()).getSupportFragmentManager() != null) {
+            if (mCategoryListDialog == null) {
+                mCategoryListDialog = new CategoryListDialog();
+                mCategoryListDialog.setOnCategoryListener(new OnCategoryListener() {
+                    @Override
+                    public void onEvent(Category category) {
+                        CommonUtil.startCategoryScreen(((AppCompatActivity)getContext()), category.type, category.hierarchies, true);
+                    }
+                });
+            }
+            mCategoryListDialog.show(((AppCompatActivity)getContext()).getSupportFragmentManager(), "ProductFilterListActivity");
+        }
+    }
+
+    private void showBrandListDialog() {
+        if (((AppCompatActivity)getContext()).getSupportFragmentManager() != null) {
+            if (mBrandListDialog == null) {
+                mBrandListDialog = new BrandListDialog();
+                mBrandListDialog.setOnBrandListener(new OnBrandListener() {
+                        @Override
+                        public void onEvent(Brand brand) {
+                            CommonUtil.startBrandScreen(((AppCompatActivity)getContext()), brand, true);
+                        }
+                    }
+                );
+            }
+            mBrandListDialog.show(((AppCompatActivity)getContext()).getSupportFragmentManager(), "ProductFilterListActivity");
+        }
+    }
     ////////////////////////////////////////////////
 }

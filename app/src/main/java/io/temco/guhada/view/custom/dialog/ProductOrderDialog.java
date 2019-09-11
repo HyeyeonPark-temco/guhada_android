@@ -32,6 +32,7 @@ public class ProductOrderDialog extends BaseDialog<DialogProductOrderBinding> im
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_close:
+            case R.id.layout_close:
                 dismiss();
                 break;
 

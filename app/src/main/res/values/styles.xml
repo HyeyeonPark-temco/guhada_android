@@ -302,7 +302,6 @@
     </style>
 
     <style name="ProductImageType">
-        <item name="android:scaleType">centerCrop</item>
     </style>
 
     <style name="borderlessStyle" parent="@style/Widget.AppCompat.Button.Borderless">

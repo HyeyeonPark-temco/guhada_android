@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.main
 
+import android.graphics.Point
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -8,6 +9,7 @@ import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.FragmentMainHomeBinding
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
@@ -80,9 +82,9 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                         var vw : View
                         when(position){
                             0->{vw = HomeListLayout(it)}
-                            1->{vw = HomeListLayout(it)}
-                            2->{vw = HomeListLayout(it)}
-                            3->{vw = HomeListLayout(it)}
+                            1->{vw = WomenListLayout(it)}
+                            2->{vw = MenListLayout(it)}
+                            3->{vw = KidsListLayout(it)}
                             4->{vw = HomeListLayout(it)}
                             5->{vw = HomeListLayout(it)}
                             6->{vw = HomeListLayout(it)}
@@ -114,6 +116,17 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 mBinding.viewpager.setCurrentItem(currentPagerIndex)
             }
         })
+        val windowSize = Point()
+        activity!!.windowManager.defaultDisplay.getSize(windowSize)
+        mBinding.layoutTab.viewTreeObserver.addOnScrollChangedListener{
+            val scrollX = mBinding.layoutTab.getScrollX() // Current x scrolling position
+            if(scrollX >= 190) mBinding.imageviewLayoutTab.visibility = View.GONE
+            else mBinding.imageviewLayoutTab.visibility = View.VISIBLE
+            //if(CustomLog.flag)CustomLog.L("HomeFragment","scrollX",scrollX)
+        }
+        mBinding.imageviewLayoutTab.setOnClickListener {
+            mBinding.viewpager.setCurrentItem(currentPagerIndex+1)
+        }
     }
 
 

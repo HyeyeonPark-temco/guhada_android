@@ -22,7 +22,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
-import io.temco.guhada.data.viewmodel.main.HomeListViewModel
+import io.temco.guhada.data.viewmodel.main.MenListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainItemDummyBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemMaineventBinding
 import io.temco.guhada.databinding.CustomlayoutMainItemPaddingBinding
@@ -36,8 +36,8 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
  * 19.07.18
  * 메인 홈에서 사용했던 recycler adapter
  */
-class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
-        CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
+class MenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
+        CommonRecyclerAdapter<MainBaseModel, MenListAdapter.ListViewHolder>(list){
     /**
      * HomeType 에 따른 item view
      */
@@ -77,7 +77,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
     }
 
     override fun setOnBindViewHolder(viewHolder: ListViewHolder, item: MainBaseModel, position: Int) {
-        viewHolder.bind(model as HomeListViewModel, position, item)
+        viewHolder.bind(model as MenListViewModel, position, item)
     }
 
     override fun isFooter(position: Int) = false
@@ -88,14 +88,14 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
      * 메인 리스트에 사용할 base view holder
      */
     open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseProductViewHolder<ViewDataBinding>(containerView){
-        abstract fun bind(viewModel : HomeListViewModel, position : Int, item : MainBaseModel)
+        abstract fun bind(viewModel : MenListViewModel, position : Int, item : MainBaseModel)
     }
 
     /**
      * 메인 리스트에 빈 화면 view holder
      */
     class PaddingViewHolder(private val containerView: View, val binding: CustomlayoutMainItemPaddingBinding) : ListViewHolder(containerView, binding){
-        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) { }
+        override fun bind(viewModel: MenListViewModel, position: Int, item: MainBaseModel) { }
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
     }
 
@@ -110,7 +110,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) {
         }
-        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+        override fun bind(viewModel: MenListViewModel, position: Int, item: MainBaseModel) {
             if(item is MainEvent){
                 var data = item
                 if(infiniteAdapter == null){
@@ -162,7 +162,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                 if(CustomLog.flag)CustomLog.E(e)
             }
             homeRolling()
-         }
+        }
 
         fun homeRolling(){
             try{
@@ -208,7 +208,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
 
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
 
-        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+        override fun bind(viewModel: MenListViewModel, position: Int, item: MainBaseModel) {
             if(item is SubTitleItemList){
                 if(width == 0){
                     val matrix = DisplayMetrics()
@@ -222,7 +222,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                 var size = item.listSize[item.currentSubTitleIndex] - 1
                 binding.title.text = item.title
                 setTabLayout(position)
-                val model : HomeListViewModel = this@HomeListAdapter.model as HomeListViewModel
+                val model : MenListViewModel = this@MenListAdapter.model as MenListViewModel
                 binding.tab0.setOnClickListener{
                     if((model.getListAdapter().items[position] as SubTitleItemList).currentSubTitleIndex != 0){
                         (model.getListAdapter().items[position] as SubTitleItemList).currentSubTitleIndex = 0
@@ -275,15 +275,13 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                         itemlayout[i].contentDescription = data.dealId.toString()
                         itemrelaytivelayout[i].layoutParams = LinearLayout.LayoutParams(width,height)
                         itemlayout[i].layoutParams = LinearLayout.LayoutParams(width,layoutHeight).apply {
-                            rightMargin = margin
-                            leftMargin = margin
-                            /*if(i % 2 == 0) {
+                            if(i % 2 == 1) {
                                 leftMargin = margin
                                 rightMargin = 0
                             }  else{
                                 leftMargin = 0
                                 rightMargin = margin
-                            }*/
+                            }
                         }
                         itemlayout[i].setOnClickListener{
                             var id = it.contentDescription.toString().toLong()
@@ -332,7 +330,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                             text_pricediscount[i].visibility = View.GONE
                         }
                         // Ship
-                        //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
+                        //if(CustomLog.flag)CustomLog.L("MenListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
                         textShipFree[i].visibility = (if (data.isFreeShipping) View.VISIBLE else View.GONE)
                     }else{
                         itemlayout[i].visibility = View.INVISIBLE
@@ -344,7 +342,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         }
         private fun setTabLayout(position : Int) {
             val size = tabImg.size-1
-            val model : HomeListViewModel = this@HomeListAdapter.model as HomeListViewModel
+            val model : MenListViewModel = this@MenListAdapter.model as MenListViewModel
             for (i in 0..size){
                 if((model.getListAdapter().items[position] as SubTitleItemList).currentSubTitleIndex == i){
                     tabImg[i].setBackgroundResource(R.color.black_four)
@@ -370,7 +368,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
      */
     class DummyViewHolder(private val containerView: View, val binding: CustomlayoutMainItemDummyBinding) : ListViewHolder(containerView, binding){
         override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
-        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+        override fun bind(viewModel: MenListViewModel, position: Int, item: MainBaseModel) {
             if(item is DummyImage){
                 var metrics = DisplayMetrics()
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)

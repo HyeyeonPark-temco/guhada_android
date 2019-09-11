@@ -6,11 +6,12 @@ import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
+import io.temco.guhada.data.db.entity.CategoryEntity
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.adapter.main.HomeListAdapter
+import io.temco.guhada.view.adapter.main.KidsListAdapter
 
 /**
  * @author park jungho
@@ -18,11 +19,12 @@ import io.temco.guhada.view.adapter.main.HomeListAdapter
  *
  * 메인 홈 리스트 CustomView ViewModel
  */
-class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
-    private var repository: HomeListRepository = HomeListRepository(context)
+class KidsListViewModel(val context : Context) : BaseObservableViewModel() {
+    private var repository: KidsListRepository = KidsListRepository(context)
+    var categoryList : MutableList<CategoryEntity>? = null
 
     private val _listData : SingleLiveEvent<ArrayList<MainBaseModel>> = repository.getList()
-    private val adapter = HomeListAdapter(this,listData.value!!)
+    private val adapter = KidsListAdapter(this,listData.value!!)
 
     val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
 
@@ -37,7 +39,7 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
  *
  * 메인 홈 리스트 server data 연동 Repository
  */
-class HomeListRepository(val context : Context){
+class KidsListRepository(val context : Context){
     // 메인 홈 list data
     private var list = SingleLiveEvent<ArrayList<MainBaseModel>>()
 

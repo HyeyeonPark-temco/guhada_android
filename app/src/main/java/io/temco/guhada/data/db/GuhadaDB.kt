@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import io.temco.guhada.data.db.dao.CategoryDao
 import io.temco.guhada.data.db.dao.RecentDealDao
 import io.temco.guhada.data.db.dao.SearchWordDao
+import io.temco.guhada.data.db.entity.CategoryEntity
 import io.temco.guhada.data.db.entity.RecentDealEntity
 import io.temco.guhada.data.db.entity.SearchWordEntity
 
@@ -18,9 +20,10 @@ import io.temco.guhada.data.db.entity.SearchWordEntity
  * searchWord 추가
  *
  */
-@Database(entities = arrayOf(RecentDealEntity::class,SearchWordEntity::class), version = 5, exportSchema = false)
+@Database(entities = arrayOf(RecentDealEntity::class,SearchWordEntity::class,CategoryEntity::class), version = 7, exportSchema = false)
 abstract class GuhadaDB : RoomDatabase(){
 
+    abstract fun categoryDao() : CategoryDao
     abstract fun recentDealDao() : RecentDealDao
     abstract fun searchWordDao() : SearchWordDao
 

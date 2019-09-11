@@ -30,17 +30,16 @@ class HomeListLayout constructor(
         mBinding.viewModel = mViewModel
         if(CustomLog.flag) CustomLog.L("HomeListRepository","HomeListLayout ", "init -----")
 
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2,LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerView.setHasFixedSize(true)
+        mBinding.recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2,LinearLayoutManager.VERTICAL, false)
 
-        (recyclerView.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
-        (recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
-        (recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
+        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
+        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
                     override fun getSpanSize(position: Int): Int {
                         return mViewModel.listData.value!![position].gridSpanCount
                     }
                 }
-
 
         mViewModel.listData.observe(this,
                 androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {

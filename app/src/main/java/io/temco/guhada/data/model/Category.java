@@ -24,6 +24,9 @@ public class Category {
     @SerializedName("title")
     public String title;
 
+    @SerializedName("label")
+    public String label;
+
     @SerializedName("key")
     public String key;
 

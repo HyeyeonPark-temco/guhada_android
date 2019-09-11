@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.main.HomeListViewModel" />
+            type="io.temco.guhada.data.viewmodel.main.KidsListViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
+        android:weightSum="1"
         android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_kidslist"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="9dp"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/common_white"
+            app:setAdapter="@{viewModel.getListAdapter()}"/>
 
     </LinearLayout>
 </layout>

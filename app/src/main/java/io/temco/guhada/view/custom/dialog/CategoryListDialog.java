@@ -40,8 +40,8 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             ////////////////////////////////////////////////
+            case R.id.layout_close:
             case R.id.image_close:
                 dismiss();
                 break;

@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,46 +41,218 @@
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.AppBarLayout>
 
-            <!-- LIST -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_contents"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:padding="5dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintEnd_toStartOf="@+id/list_contents"
+                app:layout_constraintStart_toStartOf="@+id/list_contents">
 
-            <!-- FLOATING -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                <!-- LIST -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_contents"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/layout_productfilter_tab"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_weight="1"
+                    android:overScrollMode="never"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/layout_productfilter_tab"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:gravity="bottom"
+                    android:background="@color/background_default"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/list_contents"
                     android:orientation="vertical">
 
-                    <include
-                        android:id="@+id/button_floating_item"
-                        layout="@layout/layout_floating_button_badge"
-                        android:layout_width="@dimen/view_button_floating"
-                        android:layout_height="@dimen/view_button_floating"
-                        android:visibility="gone" />
+                    <!-- LINE -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/line_1" />
 
-                    <include
-                        android:id="@+id/button_floating_top"
-                        layout="@layout/layout_floating_button_top"
-                        android:layout_width="@dimen/view_button_floating"
-                        android:layout_height="@dimen/view_button_floating"
-                        android:layout_marginTop="7dp"
-                        android:visibility="gone" />
+                    <!-- TAB -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
+
+                        <LinearLayout
+                            android:id="@+id/layout_maintab_layout1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:onClick="@{clickListener}"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/imageview_maintab_icon1"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/tool_icon_category_off"/>
+
+                            <TextView
+                                android:id="@+id/textview_maintab_title1"
+                                style="@style/TextTabStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_category"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_maintab_layout2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:onClick="@{clickListener}"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/imageview_maintab_icon2"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/tool_icon_brand_off" />
+
+                            <TextView
+                                android:id="@+id/textview_maintab_title2"
+                                style="@style/TextTabStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_brand"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_maintab_layout3"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:onClick="@{clickListener}"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/imageview_maintab_icon3"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/tool_icon_home_off" />
+
+                            <TextView
+                                android:id="@+id/textview_maintab_title3"
+                                style="@style/TextTabStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_home"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_maintab_layout4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:onClick="@{clickListener}"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/imageview_maintab_icon4"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/tool_icon_community_off" />
+
+                            <TextView
+                                android:id="@+id/textview_maintab_title4"
+                                style="@style/TextTabStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_community"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_maintab_layout5"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:onClick="@{clickListener}"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/imageview_maintab_icon5"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:background="@drawable/tool_icon_mypage_off" />
+
+                            <TextView
+                                android:id="@+id/textview_maintab_title5"
+                                style="@style/TextTabStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_my_page"
+                                android:layout_marginTop="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
-            </RelativeLayout>
+
+                <!-- FLOATING -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_productfilter_tab">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="72dp"
+                        android:gravity="bottom"
+                        android:orientation="vertical">
+
+                        <include
+                            android:id="@+id/button_floating_item"
+                            layout="@layout/layout_floating_button_badge"
+                            android:layout_width="@dimen/view_button_floating"
+                            android:layout_height="@dimen/view_button_floating"
+                            android:visibility="gone" />
+
+                        <include
+                            android:id="@+id/button_floating_top"
+                            layout="@layout/layout_floating_button_top"
+                            android:layout_width="@dimen/view_button_floating"
+                            android:layout_height="@dimen/view_button_floating"
+                            android:layout_marginTop="7dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </LinearLayout>
 </layout>

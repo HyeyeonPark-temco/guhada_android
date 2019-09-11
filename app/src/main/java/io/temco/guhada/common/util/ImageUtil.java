@@ -150,6 +150,7 @@ public class ImageUtil {
             // options.diskCacheStrategy(DiskCacheStrategy.NONE); // Disk Cache
             // options.skipMemoryCache(true) // Memory Cache
             manager.load(url)
+                    .apply(RequestOptions.fitCenterTransform())
                     .apply(options)
                     .thumbnail(0.9f)
                     .into(view);

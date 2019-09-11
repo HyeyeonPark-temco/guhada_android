@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import io.reactivex.Observer;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
@@ -52,6 +53,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private ImageView imageview_maintab_con[] = null;
     private TextView textview_maintab_title[] = null;
 
+    private CompositeDisposable mDisposable = null;
+
     private int currentViewPagerIndex = 2;
     // -----------------------------
 
@@ -76,6 +79,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     @Override
     protected void init() {
+        mDisposable = new CompositeDisposable();
         mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
         CommonUtil.getUserIp();
         initMainPager();
@@ -464,7 +468,15 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     @Override
     protected void onDestroy() {
         if (mLoadingIndicatorUtil != null) mLoadingIndicatorUtil.dismiss();
+        if(mDisposable != null){
+            mDisposable.dispose();
+            mDisposable = null;
+        }
         super.onDestroy();
         BaseApplication.getInstance().setMoveToMain(null);
+    }
+
+    public CompositeDisposable getmDisposable() {
+        return mDisposable;
     }
 }
