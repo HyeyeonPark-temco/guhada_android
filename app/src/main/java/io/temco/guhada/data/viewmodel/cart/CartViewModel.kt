@@ -127,12 +127,12 @@ class CartViewModel : BaseObservableViewModel() {
 
         for (cart in productList) {
             BaseProduct().apply {
-                this.brandName = cart.brandName
-                this.season = cart.season
-                this.name = cart.dealName
-                this.totalPrice = cart.sellPrice
-                this.profileUrl = cart.imageUrl
-                this.optionStr = cart.getOptionStr()
+                this.brandName = cart.brandName?:""
+                this.season = cart.season?:""
+                this.name = cart.dealName?:""
+                this.totalPrice = cart.sellPrice?:0
+                this.profileUrl = cart.imageUrl?:""
+                this.optionStr = cart.getOptionStr()?:""
             }.let {
                 list.add(it)
             }
@@ -200,6 +200,7 @@ class CartViewModel : BaseObservableViewModel() {
                         successTask = {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_changeselectedoption))
                             setCartItemList(it.data as CartResponse)
+                            selectCartItemId = mutableListOf()
                         })
             }, accessToken = accessToken, cartItemId = cartItemId, selectDealOptionId = selectDealOptionId, quantity = quantity)
         })
@@ -212,6 +213,7 @@ class CartViewModel : BaseObservableViewModel() {
                         successTask = {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_changeselectedoption))
                             setCartItemList(it.data as CartResponse)
+                            selectCartItemId = mutableListOf()
                         })
             }, accessToken = accessToken, cartItemId = cartItemId, quantity = quantity)
         })

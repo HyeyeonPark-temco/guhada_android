@@ -11,7 +11,9 @@ import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.common.util.CommonViewUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.option.OptionInfo
@@ -26,13 +28,21 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  * 상품 상세-옵션 선택 view
  * @author Hyeyeon Park
  */
-class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>() {
-    lateinit var mViewModel: ProductDetailMenuViewModel
+class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.LayoutProductdetailMenuBinding>(), OnProductDetailMenuListener {
+    var mViewModel: ProductDetailMenuViewModel = ProductDetailMenuViewModel(this)
     private lateinit var mMenuSpinnerAdapter: ProductDetailOptionSpinnerAdapter
     var mIsBottomPopup = false
 
     override fun getBaseTag(): String = ProductDetailMenuFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_menu
+
+    // OnProductDetailMenuListener
+    override fun showMessage(message: String) {
+        ToastUtil.showMessage(message)
+    }
+
+    override fun closeMenu() {}
+    override fun setColorName(optionAttr: OptionAttr, task: () -> Unit) {}
 
     override fun init() {
         if (mIsBottomPopup) initMenuList()
@@ -85,6 +95,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             }
         }
         mBinding.spinnerProductdetailOption.setSelection(list.size - 1)
+
         mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
     }
 
@@ -110,7 +121,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
 
-                if(option.stock > 0){
+                if (option.stock > 0) {
                     mBinding.linearlayoutProductdetailOption.visibility = View.GONE
                     mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
                     mBinding.textviewProductdetailOptionselected.text = getOptionText(option)

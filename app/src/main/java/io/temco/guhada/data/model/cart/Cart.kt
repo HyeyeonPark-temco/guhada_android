@@ -32,7 +32,6 @@ class Cart {
     var brandName: String = ""
     var dealName: String = ""
     var season: String = ""
-        get() = if (field == null || field == "null") "" else "$field "
 
     var cartValidStatus: CartValidStatus = CartValidStatus()
     var selectedCartOption: OptionInfo? = OptionInfo()
