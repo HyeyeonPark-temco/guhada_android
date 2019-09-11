@@ -33,15 +33,15 @@ class CartViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
-    var shippingPrice = ObservableInt(0)
-        @Bindable
-        get() = field
-
     var totalDiscountPrice = ObservableInt(0)
         @Bindable
         get() = field
 
     var totalPaymentPrice = ObservableInt(0)
+        @Bindable
+        get() = field
+
+    var totalShipPrice = ObservableInt(0) // 선택상품 배송비
         @Bindable
         get() = field
 

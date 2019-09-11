@@ -155,6 +155,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             binding.setOnClickBuyItem {
                 mViewModel.onClickItemPayment(cart = cart)
             }
+
+            // 장바구니 상품 체크 Listener
             binding.checkboxCart.setOnCheckedChangeListener { buttonView, isChecked ->
                 mViewModel.notNotifyAllChecked = true
 
@@ -162,12 +164,16 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                     if (isChecked) {
                         mViewModel.selectedCartItem.add(cart)
                         mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
+                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() + cart.shipExpense)
+                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
 
                         setTotalPrices(cart = cart, isAdd = true)
                         mViewModel.notNotifyAllChecked = false
                     } else {
                         mViewModel.selectedCartItem.remove(cart)
                         mViewModel.selectCartItemId.remove(cart.cartItemId.toInt())
+                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() - cart.shipExpense)
+                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
 
                         setTotalPrices(cart = cart, isAdd = false)
                         mViewModel.notNotifyAllChecked = false
@@ -180,7 +186,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             // <상품 보기> 버튼
             mBinding.buttonCartShow.setOnClickListener {
                 val intent = Intent(mBinding.root.context, ProductFragmentDetailActivity::class.java)
-                intent.putExtra("dealId",cart.dealId)
+                intent.putExtra("dealId", cart.dealId)
                 mBinding.root.context.startActivity(intent)
             }
 
@@ -301,7 +307,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                     val optionList = cart.cartOptionInfoList
                     if (optionList.size > position && optionList[position].stock > 0) {
                         val option = optionList[position]
-                      //  mSelectedOption = option
+                        //  mSelectedOption = option
                         cart.selectedCartOption = option
                         mBinding.linearlayoutProductdetailOption.visibility = View.GONE
                         mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))

@@ -197,7 +197,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="@{@string/common_plus + ` ` +  @string/cart_result_price(viewModel.shippingPrice)}"
+                            android:text="@{@string/common_plus + ` ` +  @string/cart_result_price(viewModel.totalShipPrice)}"
                             android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_13"
                             app:layout_constraintHorizontal_bias="1"
