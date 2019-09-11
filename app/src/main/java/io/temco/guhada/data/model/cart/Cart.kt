@@ -32,6 +32,8 @@ class Cart {
     var brandName: String = ""
     var dealName: String = ""
     var season: String = ""
+        get() = if (field == null || field == "null") "" else "$field "
+
     var cartValidStatus: CartValidStatus = CartValidStatus()
     var selectedCartOption: OptionInfo? = OptionInfo()
     var dealUrl: String = ""
@@ -43,7 +45,7 @@ class Cart {
     var cartOptionList: MutableList<CartOption> = mutableListOf()
 
     @Expose
-    var cartOptionInfoList : MutableList<OptionInfo> = mutableListOf()
+    var cartOptionInfoList: MutableList<OptionInfo> = mutableListOf()
 
     // 상품 수량 변경시 사용되는 더미 필드
     @Expose
@@ -63,7 +65,7 @@ class Cart {
             result = "$result, ${selectedCartOption?.attribute3}"
         }
 
-        result = if(result.isEmpty()) "${currentQuantity}개"
+        result = if (result.isEmpty()) "${currentQuantity}개"
         else "$result, ${currentQuantity}개"
 
         return result

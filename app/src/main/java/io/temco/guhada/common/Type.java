@@ -5,7 +5,6 @@ import java.io.Serializable;
 import io.temco.guhada.BuildConfig;
 
 public class Type {
-
     ////////////////////////////////////////////////
     // Build
     public enum Build {

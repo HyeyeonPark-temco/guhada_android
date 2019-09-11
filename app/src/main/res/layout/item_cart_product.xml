@@ -164,7 +164,7 @@
                     android:ellipsize="end"
                     android:gravity="start"
                     android:singleLine="true"
-                    android:text="@{cart.season + ` ` + cart.dealName}"
+                    android:text="@{cart.season  + cart.dealName}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
                     app:layout_constraintHorizontal_bias="0"
