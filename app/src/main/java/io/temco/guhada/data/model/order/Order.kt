@@ -32,7 +32,7 @@ class Order {
      * @since 2019.09.10
      * @author Hyeyeon Park
      */
-    inner class AvailableCouponWallet {
+     class AvailableCouponWallet {
         var dealId = 0L
         var couponWalletResponseList = mutableListOf<CouponWallet>()
     }
