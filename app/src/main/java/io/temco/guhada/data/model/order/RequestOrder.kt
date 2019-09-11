@@ -27,6 +27,22 @@ class RequestOrder {
     @SerializedName(value = "recipientName", alternate = ["recepientName"])
     var recipientName = ""
 
+
+    /** 현금영수증 요청번호(전화번호, 사업자등록번호, 현금영수증 카드번호...etc) */
+    var cashReceiptNo = ""
+
+    /**
+     * 현금영수증 용도(PERSONAL:개인소득공제용, BUSINESS:사업자증빙용)
+     * @see CashReceiptUsage
+     */
+    var cashReceiptUsage = ""
+
+    /**
+     * 현금영수증 요청방식 (MOBILE:휴대폰번호, CARD:현금영수증카드, BUSINESS:사업자번호)
+     * @see CashReceiptType
+     */
+    var cashReceiptType = ""
+
     // WEB 관련
     var userAgent: String = ""
     var web: Boolean = false
@@ -34,5 +50,16 @@ class RequestOrder {
     class CartItemPayment {
         var cartItemId = 0L
         var couponNumber = ""
+    }
+
+    enum class CashReceiptUsage(val usage: String) {
+        PERSONAL("PERSONAL"),
+        BUSINESS("BUSINESS")
+    }
+
+    enum class CashReceiptType(val type: String) {
+        MOBILE("MOBILE"),
+        CARD("CARD"),
+        BUSINESS("BUSINESS")
     }
 }
