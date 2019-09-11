@@ -18,4 +18,18 @@ class Verification {
     var verificationNumber = ""
     var verificationTarget = "" // EMAIL ADDRESS
     var verificationTargetType = "" // "EMAIL"
+
+    // UPDATE IDENTITY VERIFY
+    var gender = ""
+    var birth = ""
+    var identityVerifyMethod = IdentityVerifyMethod.MOBILE.code
+
+    enum class IdentityVerifyMethod(val code: String) {
+        MOBILE("MOBILE")
+    }
+
+    enum class Gender(val label: String, val code: String) {
+        FEMALE("FEMALE", "0"),
+        MALE("MALE", "1")
+    }
 }

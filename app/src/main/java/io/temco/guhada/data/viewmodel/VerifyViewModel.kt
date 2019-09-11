@@ -6,6 +6,7 @@ import androidx.databinding.ObservableField
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.enum.VerificationType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnTimerListener
@@ -13,6 +14,8 @@ import io.temco.guhada.common.util.CountTimer
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Verification
+import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -21,9 +24,14 @@ class VerifyViewModel : BaseObservableViewModel() {
     private val START_MINUTE = "02"
     private val START_SECOND = "60"
 
-    var mEmail = ""
-    var mName = ""
-    var mVerificationNumber = ""
+    var mVerificationNumber = "" // 인증번호
+    var mUser = User()
+        set(value) {
+            field = value
+            mEmailVerification = ObservableBoolean(value.emailVerify)
+        }
+
+    var mVerification = Verification()
 
     var mMobileVerification = ObservableBoolean(false)
         @Bindable
@@ -50,7 +58,12 @@ class VerifyViewModel : BaseObservableViewModel() {
     // 이메일로 인증번호 전송
     fun onClickSend() {
         if (!mActiveSendButton.get()) {
-            sendNumber()
+            if (mUser.name.isNullOrEmpty()) {
+                // 본인인증을 안하면 name 필드 값이 없음 (email 인증번호 발송 api에서 name이 필수 값)
+                ToastUtil.showMessage("휴대폰 본인인증을 먼저 진행해주세요.")
+            } else {
+                sendNumber()
+            }
         } else {
             verifyNumber()
         }
@@ -92,10 +105,7 @@ class VerifyViewModel : BaseObservableViewModel() {
                     wrongInfoTask = {
                         ToastUtil.showMessage(it.message)
                     })
-        }, user = User().apply {
-            this.name = mName
-            this.email = mEmail
-        })
+        }, user = mUser)
     }
 
     // TODO 인증 완료 화면 미정 [2019.09.05]
@@ -112,9 +122,24 @@ class VerifyViewModel : BaseObservableViewModel() {
                         ToastUtil.showMessage(it.message)
                     })
         }, verification = Verification().apply {
-            this.verificationTarget = mEmail
+            this.verificationTarget = mUser.email
             this.verificationTargetType = VerificationType.EMAIL.type
             this.verificationNumber = mVerificationNumber
+        })
+    }
+
+    // 본인인증 정보 유저 정보로 업데이트
+    fun updateIdentityVerify() {
+        ServerCallbackUtil.callWithToken(task = {
+            UserServer.updateIdentityVerify(OnServerListener { success, o ->
+                val resultCode = (o as BaseModel<*>).resultCode
+                if (resultCode == ResultCode.SUCCESS.flag) {
+                    mMobileVerification = ObservableBoolean(true)
+                    notifyPropertyChanged(BR.mMobileVerification)
+                } else {
+                    ToastUtil.showMessage(o.message ?: "유저 정보 업데이트 오류")
+                }
+            }, accessToken = it, verification = mVerification)
         })
     }
 

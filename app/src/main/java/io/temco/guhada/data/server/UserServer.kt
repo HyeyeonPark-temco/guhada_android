@@ -2,7 +2,6 @@ package io.temco.guhada.data.server
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import io.reactivex.Observable
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -24,12 +23,9 @@ import io.temco.guhada.data.retrofit.service.UserService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 /**
  * BASE URL: dev.user.guhada.com/
@@ -84,7 +80,7 @@ class UserServer {
          */
         @JvmStatic
         fun signIn(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true).signIn(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).signIn(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일 로그인 오류"))
 
         /**
          * 이메일로 인증번호 전송하기
@@ -163,7 +159,7 @@ class UserServer {
          */
         @JvmStatic
         fun googleLogin(listener: OnServerListener, user: SnsUser) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true).googleLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "구글 로그인 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).googleLogin(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Token>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "구글 로그인 오류"))
 
         /**
          * 네이버 로그인
@@ -188,7 +184,7 @@ class UserServer {
 
         @JvmStatic
         fun checkExistSnsUser(listener: OnServerListener, snsType: String, snsId: String, email: String?) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java,true).checkExistSnsUser(snsType, snsId, email
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).checkExistSnsUser(snsType, snsId, email
                         ?: "").enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
         /**
@@ -513,8 +509,6 @@ class UserServer {
         }
 
 
-
-
         /**
          * 마이페이지 내가 작성한 리뷰 삭제
          */
@@ -761,7 +755,6 @@ class UserServer {
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<BusinessSeller>> { successResponse -> listener.onResult(true, successResponse.body()) })
 
 
-
         /**
          * 마이페이지 내가 작성한 리뷰 리스트
          */
@@ -795,8 +788,17 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
+
+        /**
+         * 본인인증 정보 업데이트
+         * @param verification birth, diCode, gender, identityVerifyMethod, mobile, name 만 사용
+         * @author Hyeyeon Park
+         * @since 2019.09.11
+         */
+        fun updateIdentityVerify(listener: OnServerListener, accessToken: String, verification: Verification) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateIdentityVerify(accessToken, verification)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
     }
 
 }

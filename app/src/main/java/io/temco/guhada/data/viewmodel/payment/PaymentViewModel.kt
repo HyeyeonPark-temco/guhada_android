@@ -378,6 +378,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     Observable.fromIterable(cartIdList)
                                             .map {
                                                 RequestOrder.CartItemPayment().apply { this.cartItemId = it.toLong() }
+
+
                                             }.subscribe {
                                                 mRequestOrder.cartItemPayments.add(it)
                                             }

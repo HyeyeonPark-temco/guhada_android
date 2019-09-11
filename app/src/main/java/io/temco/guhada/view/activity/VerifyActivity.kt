@@ -3,16 +3,18 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.view.View
-import androidx.databinding.ObservableBoolean
-import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
-import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.viewmodel.VerifyViewModel
 import io.temco.guhada.databinding.ActivityVerifyBinding
 import io.temco.guhada.view.activity.base.BindActivity
 
+/**
+ * 주문결제-본인인증 (휴대폰, 이메일)
+ * @author Hyeyeon Park
+ */
 class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
     private lateinit var mViewModel: VerifyViewModel
 
@@ -30,10 +32,11 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
 
     private fun initViewModel() {
         mViewModel = VerifyViewModel().apply {
-            this.mEmail = intent.getStringExtra("email") ?: ""
-            this.mName = intent.getStringExtra("name") ?: ""
-            this.mEmailVerification = ObservableBoolean(intent.getBooleanExtra("emailVerification", false))
-            this.mMobileVerification = ObservableBoolean(intent.getBooleanExtra("mobileVerification", false))
+            intent.getSerializableExtra("user").let {
+                this.mUser =
+                        if (it != null) it as User
+                        else User()
+            }
             this.mVerifyPhoneTask = {
                 val intent = Intent(this@VerifyActivity, VerifyPhoneActivity::class.java)
                 this@VerifyActivity.startActivityForResult(intent, RequestCode.VERIFY_PHONE.flag)
@@ -60,12 +63,11 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RequestCode.VERIFY_PHONE.flag) {
             if (resultCode == Activity.RESULT_OK) {
-                val name = data?.getStringExtra("name")
-                val phoneNumber = data?.getStringExtra("phoneNumber")
-                val di = data?.getStringExtra("di")
-
-                mViewModel.mMobileVerification = ObservableBoolean(true)
-                mViewModel.notifyPropertyChanged(BR.mMobileVerification)
+                mViewModel.mVerification.name = data?.getStringExtra("name")?:""
+                mViewModel.mVerification.mobile = data?.getStringExtra("phoneNumber")?:""
+                mViewModel.mVerification.diCode = data?.getStringExtra("di")?:""
+                mViewModel.mVerification.gender =  data?.getStringExtra("gender")?:""
+                mViewModel.updateIdentityVerify()
             }
         }
     }

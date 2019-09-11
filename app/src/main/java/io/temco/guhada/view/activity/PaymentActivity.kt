@@ -144,10 +144,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }).apply {
             this.mVerifyTask = {
                 val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
-                intent.putExtra("name", mViewModel.order.user.name)
-                intent.putExtra("email", mViewModel.order.user.email)
-                intent.putExtra("emailVerification", mViewModel.order.user.emailVerify)
-                intent.putExtra("mobileVerification", false) // TODO 휴대폰 본인인증 여부 필드 필요 [2019.09.04]
+                intent.putExtra("user", mViewModel.order.user)
                 startActivityForResult(intent, RequestCode.VERIFY.flag)
             }
         }

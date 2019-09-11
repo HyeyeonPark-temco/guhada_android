@@ -10,12 +10,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.kakao.usermgmt.response.model.Gender;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.databinding.ActivityVerifyphoneBinding;
@@ -52,7 +55,7 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
         });
     }
 
-    private void getToken(){
+    private void getToken() {
         UserServer.getVerifyPhoneToken((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
@@ -116,6 +119,7 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
         intent.putExtra("name", name);
         intent.putExtra("phoneNumber", phoneNumber);
         intent.putExtra("di", di);
+        intent.putExtra("gender", gender.equals(Verification.Gender.FEMALE.getCode()) ? Verification.Gender.FEMALE.getLabel() : Verification.Gender.MALE.getLabel());
         setResult(RESULT_OK, intent);
         finish();
     }
