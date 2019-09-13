@@ -503,4 +503,15 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
+    <!-- COUPON SELECT -->
+    <style name="CouponSelectSubtitleTextStyle" parent="TextBold">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/black_four</item>
+    </style>
+
+    <style name="CouponSelectContentTextStyle" parent="TextMedium">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/warm_grey</item>
+    </style>
 </resources>
+
