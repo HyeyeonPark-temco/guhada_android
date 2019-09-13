@@ -906,6 +906,12 @@
     <string name="coupondownload_dicsount_rate">% 할인</string>
     <string name="coupondownload_dicsount_condition">%,2d원 이상 결제시 사용 가능</string>
 
+    <!-- COUPON SELECT -->
+    <string name="couponselect_title">쿠폰 적용</string>
+    <string name="couponselect_totalorderprice">총 주문상품금액</string>
+    <string name="couponselect_totaldiscountprice">총 할인금액</string>
+    <string name="couponselect_totalprice">총 상품금액</string>
+    <string name="couponselect_button">적용하기</string>
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">ALL</string>
