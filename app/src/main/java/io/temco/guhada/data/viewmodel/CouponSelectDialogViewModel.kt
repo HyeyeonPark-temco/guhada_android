@@ -14,8 +14,6 @@ class CouponSelectDialogViewModel : BaseObservable() {
     var mOrder: MutableLiveData<Order> = MutableLiveData()
     val mCouponWalletMap = mutableMapOf<String, MutableList<AvailableCouponWallet>>()
     var mCouponWalletList = mutableListOf<AvailableCouponWallet>()
-    //    var mProductList : ArrayList<BaseProduct> = arrayListOf()
-    var mOptionMap = hashMapOf<Long, String>()
     var mProductList = mutableListOf<BaseProduct>()
 
     fun getOrderForm() {

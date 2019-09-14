@@ -66,7 +66,7 @@
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/common_price_format(77777)}"
+                        android:text="@{@string/common_price_format(product.totalPrice)}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14" />
 

@@ -913,6 +913,8 @@
     <string name="couponselect_totaldiscountprice">총 할인금액</string>
     <string name="couponselect_totalprice">총 상품금액</string>
     <string name="couponselect_button">적용하기</string>
+    <string name="couponselect_productcount_format">총 %d개 상품</string>
+    <string name="couponselect_productcount_default">총 0개 상품</string>
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">전체</string>

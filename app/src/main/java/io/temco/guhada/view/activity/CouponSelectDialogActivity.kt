@@ -23,6 +23,14 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
     override fun getViewType(): Type.View = Type.View.COUPON_SELECT
 
     override fun init() {
+        initViewModel()
+        mBinding.imagebuttonCouponselectClose.setOnClickListener { finish() }
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
+
+    }
+
+    private fun initViewModel() {
         mViewModel = CouponSelectDialogViewModel()
         mViewModel.mOrder.observe(this@CouponSelectDialogActivity, Observer { order ->
             mViewModel.mCouponWalletList = order.availableCouponWalletResponses
@@ -41,12 +49,11 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
                 this.mCouponWalletMap = mViewModel.mCouponWalletMap
             }
 
+            mBinding.totalProductPrice = order.totalProdPrice
         })
 
         intent.getSerializableExtra("productList").let {
-            if (it != null) {
-                mViewModel.mProductList = (it as ArrayList<BaseProduct>).toMutableList()
-            }
+            if (it != null) mViewModel.mProductList = (it as ArrayList<BaseProduct>).toMutableList()
         }
 
         intent.getIntArrayExtra("cartIdList").let {
@@ -55,6 +62,5 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
                 mViewModel.getOrderForm()
             }
         }
-
     }
 }

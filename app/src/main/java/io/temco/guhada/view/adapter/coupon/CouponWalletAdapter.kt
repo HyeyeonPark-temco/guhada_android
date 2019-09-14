@@ -10,6 +10,11 @@ import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.databinding.ItemCouponselectCouponBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
+/**
+ * 쿠폰선택-쿠폰 list adapter
+ * @author Hyeyeon Park
+ * @since 2019.09.13
+ */
 class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
     lateinit var mViewModel : CouponSelectDialogViewModel
     var mList = mutableListOf<CouponWallet>()

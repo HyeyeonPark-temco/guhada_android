@@ -40,7 +40,6 @@ open class BaseProduct : Serializable {
 //            }
 //        }
 
-    @Expose
     var totalPrice: Int = 0
 
     @Expose
