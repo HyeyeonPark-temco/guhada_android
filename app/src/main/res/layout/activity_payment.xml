@@ -366,7 +366,9 @@
 
             <include
                 android:id="@+id/include_payment_discount"
-                layout="@layout/layout_payment_discount" />
+                layout="@layout/layout_payment_discount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <include
                 android:id="@+id/include_payment_discountresult"

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="product"
+            type="io.temco.guhada.data.model.product.BaseProduct" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_couponselect_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <io.temco.guhada.common.SquareImageView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@color/common_white"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{product.profileUrl}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_couponselect_brandname"
+                    style="@style/PaymentContentBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{product.brandName}" />
+
+                <TextView
+                    android:id="@+id/textview_couponselect_name"
+                    style="@style/PaymentContentBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{product.season != null &amp;&amp; !product.season.isEmpty() ? product.season + ` ` + product.name : product.name}" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_couponselect_price"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/common_price_format(77777)}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_14" />
+
+                    <TextView
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/common_unit_price"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_14" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_couponselect_option"
+                        style="@style/PaymentContentGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@{product.optionStr}" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/pinkish_grey" />
+
+        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_couponselect_coupon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintHeight_max="200dp"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+    </LinearLayout>
+</layout>

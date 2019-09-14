@@ -614,7 +614,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 this.season = product?.season ?: ""
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
-                baseProduct.dealOptionId = getSelectedOptionDealId()
+                baseProduct.dealOptionId = getSelectedOptionDealId()?:0
                 mViewModel.menuVisibility.set(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
 

@@ -127,6 +127,7 @@ class CartViewModel : BaseObservableViewModel() {
 
         for (cart in productList) {
             BaseProduct().apply {
+                this.dealId = cart.dealId
                 this.brandName = cart.brandName?:""
                 this.season = cart.season?:""
                 this.name = cart.dealName?:""

@@ -1,7 +1,6 @@
 package io.temco.guhada.data.model.product
 
 import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.option.OptionAttr
 import java.io.Serializable
 
@@ -19,7 +18,6 @@ open class BaseProduct : Serializable {
 
     var brandName: String = ""
 
-    @SerializedName("name")
     var name: String = ""
 
     var profileUrl: String = ""
@@ -41,6 +39,7 @@ open class BaseProduct : Serializable {
 //                field
 //            }
 //        }
+
     @Expose
     var totalPrice: Int = 0
 
@@ -52,5 +51,6 @@ open class BaseProduct : Serializable {
 
     @Expose
     var dealOptionId: Long? = null
+
 
 }

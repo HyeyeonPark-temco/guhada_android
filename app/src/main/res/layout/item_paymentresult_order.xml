@@ -53,7 +53,7 @@
             android:layout_marginStart="25dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@{purchaseOrder.season != null ? purchaseOrder.season + ` ` + purchaseOrder.productName : purchaseOrder.productName}"
+            android:text="@{purchaseOrder.season != null &amp;&amp; !purchaseOrder.season.isEmpty() ? purchaseOrder.season + ` ` + purchaseOrder.productName : purchaseOrder.productName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_paymentresult"

@@ -2,9 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@color/transparent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,145 +54,149 @@
             android:fillViewport="true"
             android:overScrollMode="never">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_couponselect_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                android:layout_marginBottom="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_couyponselect_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pale_grey">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textview_couponselect_totaltitle"
+                    style="@style/CouponSelectSubtitleTextStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/pale_grey">
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="28dp"
+                    android:text="총 3개 상품"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_couponselect_totalorderpricetitle"
+                    style="@style/CouponSelectContentTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/couponselect_totalorderprice"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totaltitle" />
+
+                <TextView
+                    android:id="@+id/textview_couponselect_totalorderpricecontent"
+                    style="@style/CouponSelectContentTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:text="12345원"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totaltitle" />
+
+                <TextView
+                    android:id="@+id/textview_couponselect_totaldiscountpricetitle"
+                    style="@style/CouponSelectContentTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/couponselect_totaldiscountprice"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totalorderpricetitle" />
+
+                <TextView
+                    android:id="@+id/textview_couponselect_totaldiscountpricecontent"
+                    style="@style/CouponSelectContentTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="25dp"
+                    android:text="12345원"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totalorderpricecontent" />
+
+                <View
+                    android:id="@+id/view_couponselect_line2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@color/white_four"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totaldiscountpricetitle" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="23dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="36dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_couponselect_line2">
 
                     <TextView
-                        android:id="@+id/textview_couponselect_totaltitle"
+                        android:id="@+id/textview_couponselect_totalpricetitle"
                         style="@style/CouponSelectSubtitleTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="28dp"
-                        android:text="총 3개 상품"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textview_couponselect_totalorderpricetitle"
-                        style="@style/CouponSelectContentTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/couponselect_totalorderprice"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totaltitle" />
-
-                    <TextView
-                        android:id="@+id/textview_couponselect_totalorderpricecontent"
-                        style="@style/CouponSelectContentTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="25dp"
-                        android:text="12345원"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totaltitle" />
-
-                    <TextView
-                        android:id="@+id/textview_couponselect_totaldiscountpricetitle"
-                        style="@style/CouponSelectContentTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/couponselect_totaldiscountprice"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totalorderpricetitle" />
-
-                    <TextView
-                        android:id="@+id/textview_couponselect_totaldiscountpricecontent"
-                        style="@style/CouponSelectContentTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="25dp"
-                        android:text="12345원"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totalorderpricecontent" />
-
-                    <View
-                        android:id="@+id/view_couponselect_line2"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="25dp"
-                        android:background="@color/white_four"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totaldiscountpricetitle" />
-
-                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="23dp"
-                        android:layout_marginEnd="25dp"
-                        android:layout_marginBottom="36dp"
-                        android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view_couponselect_line2">
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/couponselect_totalprice" />
 
-                        <TextView
-                            android:id="@+id/textview_couponselect_totalpricetitle"
-                            style="@style/CouponSelectSubtitleTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:text="@string/couponselect_totalprice" />
+                    <TextView
+                        android:id="@+id/textview_couponselect_totalpricecontent"
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="123124"
+                        android:textColor="@color/common_blue_purple"
+                        android:textSize="@dimen/text_21" />
 
-                        <TextView
-                            style="@style/TextBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="123124"
-                            android:textColor="@color/common_blue_purple"
-                            android:textSize="@dimen/text_21" />
+                    <TextView
+                        style="@style/TextBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@string/common_unit_price"
+                        android:textColor="@color/common_blue_purple"
+                        android:textSize="@dimen/text_14" />
+                </LinearLayout>
 
-                        <TextView
-                            style="@style/TextBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:text="@string/common_unit_price"
-                            android:textColor="@color/common_blue_purple"
-                            android:textSize="@dimen/text_14" />
-                    </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/button_couponselect"
+                style="@style/TextMedium"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/common_blue_purple"
+                android:text="@string/couponselect_button"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18" />
+        </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-        <Button
-            style="@style/TextMedium"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/common_blue_purple"
-            android:text="@string/couponselect_button"
-            android:textColor="@color/common_white"
-            android:textSize="@dimen/text_18" />
-
     </LinearLayout>
+    </FrameLayout>
 </layout>
 

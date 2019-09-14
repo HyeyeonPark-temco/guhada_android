@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.order
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.OrderChangeCause
@@ -16,9 +17,9 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var expireTimestamp: Long = 0
     var orderTimestamp: Long = 0
 
-    var optionAttribute1: String? = ""
-    var optionAttribute2: String? = ""
-    var optionAttribute3: String? = ""
+    var optionAttribute1: String = ""
+    var optionAttribute2: String = ""
+    var optionAttribute3: String = ""
 
     var orderPrice = 0
     var orderProdGroupId: Long = 0
@@ -33,7 +34,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var purchaseStatusText = ""
 
     var shipCompleteDate = "" // 2019-05-10
-    var shipCompleteTimestamp: String? = ""
+    var shipCompleteTimestamp: String = ""
     var shipPrice = 0
     var statusMessage = "" // 주문 완료 메세지
     var reviewId: Int? = null // 리뷰 작성 여부 판단
@@ -67,7 +68,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var buyerPhone = ""
 
     // 취소 신청 정보
-    var cancelReason : String?= ""
+    var cancelReason : String= ""
     var cancelReasonDetail = ""
 
     // 반품 신청 정보
@@ -119,5 +120,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
 
     fun getDate() = CommonUtil.convertTimeStampToDate(orderTimestamp) ?: ""
     fun getStatus() : String = if(orderStatus.isEmpty()) claimStatus else orderStatus
+
+
 
 }

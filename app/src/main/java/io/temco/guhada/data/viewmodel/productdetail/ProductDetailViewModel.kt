@@ -210,12 +210,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         ServerCallbackUtil.callWithToken(
                 task = { accessToken ->
                     OrderItemResponse().apply {
-                        this.dCategoryId = product.value?.dCategoryId ?: 0
-                        this.lCategoryId = product.value?.lCategoryId ?: 0
-                        this.mCategoryId = product.value?.mCategoryId ?: 0
-                        this.sCategoryId = product.value?.sCategoryId ?: 0
+                        this.dCategoryId = product.value?.dCategoryId?.toLong() ?: 0L
+                        this.lCategoryId = product.value?.lCategoryId?.toLong() ?: 0
+                        this.mCategoryId = product.value?.mCategoryId?.toLong() ?: 0
+                        this.sCategoryId = product.value?.sCategoryId?.toLong() ?: 0
                         this.dealId = product.value?.dealId ?: 0
-                        this.sellerId = product.value?.sellerId?.toInt() ?: 0
+                        this.sellerId = product.value?.sellerId ?: 0
                         this.sellPrice = product.value?.sellPrice ?: 0
                         this.discountPrice = product.value?.discountPrice ?: 0
                     }.let { orderItemResponse ->
