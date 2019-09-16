@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.coupon
 
+import java.io.Serializable
+
 /**
  * orderForm api response의 couponWalletResponseList 모델
  * Coupon과 startAt, endAt 외 모든 필드가 동일하지만, startAt, endAt의 type이 달라서 생성
@@ -8,7 +10,7 @@ package io.temco.guhada.data.model.coupon
  * @author Hyeyeon Park
  * @since 2019.09.11
  */
-class CouponWallet {
+class CouponWallet : Serializable {
     var userId: Long = 0L
     var serviceType: String? = ""
     var applyType: String? = ""

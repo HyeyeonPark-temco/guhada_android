@@ -1,15 +1,19 @@
 package io.temco.guhada.data.model.order
 
+import android.os.Parcel
+import android.os.Parcelable
 import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.coupon.AvailableCouponWallet
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.model.user.User
+import java.io.Serializable
 
 /**
  * 주문 정보 클래스
  * @author Hyeyeon Park
  */
-class Order {
+class Order : Serializable {
     var user: User = User()
     var shippingAddress: UserShipping? = UserShipping()
     var orderItemList: List<OrderItemResponse> = ArrayList()
@@ -26,18 +30,8 @@ class Order {
     // COUPON
     var availableCouponWalletResponses = mutableListOf<AvailableCouponWallet>()
 
-    /**
-     * couponWalletResponseList: 해당 deal에 로그인한 유저가 사용할 수 있는 쿠폰 리스트
-     * Coupon 중 사용필드: couponNumber, couponTitle, discountPrice, discountRate, discountType, maximumDiscountPrice, minimumPrice
-     * @since 2019.09.10
-     * @author Hyeyeon Park
-     */
-    inner class AvailableCouponWallet {
-        var dealId = 0L
-        var couponWalletResponseList = mutableListOf<CouponWallet>()
-    }
 
-    inner class AvailablePoint {
+    inner class AvailablePoint : Serializable {
         var preAvailablePoint = 0
         var availableFreePoint = 0
         var availablePaidPoint = 0

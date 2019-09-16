@@ -269,8 +269,11 @@
         <activity
             android:name=".view.activity.CouponDownloadDialogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoTitleBarDialog"
-            android:windowSoftInputMode="adjustResize" />
+            android:theme="@style/NoTitleBarDialog" />
+        <activity
+            android:name=".view.activity.CouponSelectDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"/>
 
         <!-- get gallery Image file -->
         <activity
@@ -393,4 +396,6 @@
 
         <!-- //////////////////////////////// -->
     </application>
+
+    <!--dddd -->
 </manifest>

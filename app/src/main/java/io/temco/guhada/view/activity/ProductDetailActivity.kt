@@ -303,11 +303,11 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 var quantity: Int = 1
                 when {
                     mMenuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = mMenuFragment.getSelectedOptionDealId()
+                        baseProduct.dealOptionId = mMenuFragment.getSelectedOptionDealId()?:0
                         quantity = mMenuFragment.getProductCount()
                     }
                     mHeaderMenuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = mHeaderMenuFragment.getSelectedOptionDealId()
+                        baseProduct.dealOptionId = mHeaderMenuFragment.getSelectedOptionDealId()?:0
                         quantity = mHeaderMenuFragment.getProductCount()
                     }
                     else -> baseProduct.dealOptionId = null

@@ -164,7 +164,7 @@
                     android:ellipsize="end"
                     android:gravity="start"
                     android:singleLine="true"
-                    android:text="@{cart.season  + cart.dealName}"
+                    android:text="@{cart.season != null &amp;&amp; !cart.season.isEmpty() ? cart.season + ` `  + cart.dealName : cart.dealName}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
                     app:layout_constraintHorizontal_bias="0"
@@ -338,7 +338,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="20dp"
                     android:onClick="@{onClickShowOption}"
-                    android:src="@drawable/bag_btn_option_open"
+                    android:src="@drawable/arrow_r_line_m"
                     android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -351,6 +351,7 @@
             android:id="@+id/constraintllayout_cart_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -361,7 +362,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/pale_grey"
                 android:paddingLeft="20dp"
-                android:paddingTop="30dp"
+                android:paddingTop="15dp"
                 android:paddingRight="20dp"
                 android:paddingBottom="30dp">
 
@@ -369,7 +370,9 @@
                     android:id="@+id/framelayout_productdetail_option"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginBottom="15dp"
+                    android:visibility="@{cart.cartOptionInfoList.isEmpty() ? View.GONE : View.VISIBLE, default = gone}"
+                    app:layout_constraintBottom_toTopOf="@+id/linearlayout_cart_amount"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -382,7 +385,7 @@
                             android:id="@+id/spinner_productdetail_option"
                             style="@style/CustomDropdown"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             android:background="@null"
                             android:minHeight="50dp"
                             android:orientation="horizontal"
@@ -493,7 +496,6 @@
                     style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="30dp"
                     android:text="@string/cart_option_amount"
                     android:textColor="@color/warm_grey_two"
@@ -508,7 +510,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="54dp"
-                    android:layout_marginTop="15dp"
                     android:background="@drawable/border_all_whitethree"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@id/button_cart_cancel"
@@ -590,7 +591,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.github.florent37.expansionpanel.ExpansionLayout>
-
 
     </LinearLayout>
 </layout>

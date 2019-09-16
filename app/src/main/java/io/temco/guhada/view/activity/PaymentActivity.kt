@@ -74,7 +74,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     override fun onPause() {
         super.onPause()
-        mLoadingIndicatorUtil.hide()
+        mLoadingIndicatorUtil.dismiss()
     }
 
     override fun onDestroy() {
@@ -224,18 +224,18 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     private fun initDiscountCouponView() {
         // COUPON
-        val emptyMessage = resources.getString(R.string.payment_hint_coupon)
-        //  val items = listOf<String>("장바구니 3,000원 할인쿠폰", "선착순 5% 할인쿠폰", "웰컴 5,000원 할인쿠폰", emptyMessage)
-        val items = listOf<ShippingMessage>()
-        mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.adapter = PaymentSpinnerAdapter(this@PaymentActivity, R.layout.item_payment_spinner, items)
-        mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                mViewModel.selectedDiscountCoupon = ObservableField(items[position].message)
-                mViewModel.notifyPropertyChanged(BR.selectedDiscountCoupon)
-            }
+        mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setOnClickListener {
+            //
+//            val map = hashMapOf<Long, String>()
+//            for (product in mViewModel.productList)
+//                map[product.dealId] = product.optionStr
+
+            val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
+            intent.putExtra("productList", mViewModel.productList)
+//            intent.putExtra("optionMap", map)
+            intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
+            startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
         }
-        mBinding.includePaymentDiscount.spinnerPaymentShippingmemo.setSelection(items.size - 1)
     }
 
     // 결제 수단

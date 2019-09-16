@@ -60,6 +60,7 @@ public class Type {
         REPORT_WRITE,
         CONFIRM_PURCHASE,
         COUPON_DOWNLOAD,
+        COUPON_SELECT,
         SELLER_INFO,
         MYPAGE_TEMP_LOGIN,
         USERCLAIM_GUHADA,
