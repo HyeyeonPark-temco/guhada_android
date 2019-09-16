@@ -19,6 +19,10 @@ class CouponSelectDialogViewModel : BaseObservable() {
     var mCouponWalletList = mutableListOf<AvailableCouponWallet>()
     var mProductList = mutableListOf<BaseProduct>()
     var mDealId = 0L
+    var mSelectedCouponMap = mutableMapOf<Long, CouponWallet?>()  // dealId, couponNumber
+
+    // PRICE
+//    var mTotalDiscountPrice
 
     var mSelectedCoupon = ObservableField<CouponWallet>(CouponWallet())
         @Bindable

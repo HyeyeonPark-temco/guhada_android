@@ -29,11 +29,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="@{viewModel.mSelectedCoupon.couponId == couponWallet.couponId ? false : true, default = true}"
-            app:selectedDealId= "@{dealId}"
+            android:src="@drawable/radio_select"
+
             app:selectedCouponId="@{couponWallet.couponId}"
-            app:vmDealId="@{viewModel.mDealId}"
-            app:vmCouponId = "@{viewModel.mSelectedCoupon.couponId}"
-            />
+            app:selectedCouponMap="@{viewModel.mSelectedCouponMap}"
+            app:selectedDealId="@{dealId}"
+            app:vmCouponId="@{viewModel.mSelectedCoupon.couponId}"
+            app:vmDealId="@{viewModel.mDealId}" />
+
 
         <TextView
             android:id="@+id/textview_couponselect_couponname"
@@ -43,7 +46,7 @@
             android:layout_marginStart="15dp"
             android:ellipsize="middle"
             android:text="@{couponWallet.couponTitle}"
-            android:textColor="@{dealId != viewModel.mDealId &amp;&amp; viewModel.mSelectedCoupon.couponId == couponWallet.couponId ? @color/pinkish_grey : @color/greyish_brown_two, default = @color/greyish_brown_two}"
+            android:textColor="@{dealId != viewModel.mDealId &amp;&amp; viewModel.mSelectedCoupon.couponId > -1 &amp;&amp; viewModel.mSelectedCoupon.couponId == couponWallet.couponId ? @color/pinkish_grey : @color/greyish_brown_two, default = @color/greyish_brown_two}"
             android:textSize="@dimen/text_13" />
 
     </LinearLayout>

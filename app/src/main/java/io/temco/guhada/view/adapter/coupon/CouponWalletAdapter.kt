@@ -39,6 +39,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 mViewModel.mDealId = mDealId
                 mViewModel.mSelectedCoupon = ObservableField(item)
                 mViewModel.notifyPropertyChanged(BR.mSelectedCoupon)
+                mViewModel.mSelectedCouponMap[mDealId] = item
             }
 
             mBinding.dealId = mDealId
@@ -50,14 +51,31 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
 
     companion object {
         @JvmStatic
-        @BindingAdapter(value = ["selectedDealId", "selectedCouponId", "vmDealId", "vmCouponId"])
-        fun ImageView.bindSelected(selectedDealId: Long, selectedCouponId: Long, vmDealId: Long, vmCouponId: Long) {
-            if (selectedCouponId == vmCouponId) {
-                if (selectedDealId != vmDealId) this.setImageResource(R.drawable.radio_inactive)
-                else this.setImageResource(R.drawable.radio_checked)
+        @BindingAdapter(value = ["selectedDealId", "selectedCouponId", "vmDealId", "vmCouponId", "selectedCouponMap"])
+        fun ImageView.bindSelected(selectedDealId: Long, selectedCouponId: Long, vmDealId: Long, vmCouponId: Long, selectedCouponMap: MutableMap<Long, CouponWallet>) {
+            val NOT_SELECT_COUPON_ID: Long = -1
+            if (selectedDealId != vmDealId) {
+                if (selectedCouponId == vmCouponId && selectedCouponId > NOT_SELECT_COUPON_ID) {
+                    this.setImageResource(R.drawable.radio_inactive)
+                } else {
+                    // 다른 쿠폰
+                    val prevSelectedCoupon = selectedCouponMap[selectedDealId]
+                    if (prevSelectedCoupon == null) {
+                        this.setImageResource(R.drawable.radio_select)
+                    } else {
+                        if (selectedCouponId == prevSelectedCoupon.couponId) {
+                            this.setImageResource(R.drawable.radio_checked)
+                        }
+                    }
+                }
             } else {
-                this.setImageResource(R.drawable.radio_select)
+                if (selectedCouponId == vmCouponId) {
+                    this.setImageResource(R.drawable.radio_checked)
+                } else {
+                    this.setImageResource(R.drawable.radio_select)
+                }
             }
+
         }
     }
 }
