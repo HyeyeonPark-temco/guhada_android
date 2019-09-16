@@ -397,7 +397,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                 serverRuntimeErrorTask = { }
                         )
                     }, accessToken = it, response = bookMarkResponse.getProductBookMarkRespose())
-                }, invalidTokenTask = { })
+                }, invalidTokenTask = { ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin)) })
     }
 
     private fun deleteBookMark(target: String, targetId: Long) {
