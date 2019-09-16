@@ -17,10 +17,8 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
-import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
-import io.temco.guhada.data.model.cart.CartOption
 import io.temco.guhada.data.model.cart.CartValidStatus
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.server.OrderServer
@@ -70,31 +68,79 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
     inner class Holder(val binding: ItemCartProductBinding) : BaseViewHolder<ItemCartProductBinding>(binding.root) {
         fun bind(cart: Cart) {
-            binding.constraintllayoutCartOption.addListener { expansionLayout, expanded ->
-                if (expanded) {
-                    mViewModel.shownMenuPos = adapterPosition
-                    if (cart.cartOptionInfoList.isEmpty()) {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            getCartItemList(cart)
-                        }
-                    }
-                }
-            }
-            binding.constraintllayoutCartOption.collapse(true)
+            cart.tempQuantity = cart.currentQuantity
 
+            initCollapsingView()
             setSpacing()
             setSoldOutOverlay(cart.cartValidStatus)
             addCancelLine(cart)
             setOptionAdapter(cart)
 
-            cart.tempQuantity = cart.currentQuantity
+            initValidCart(cart)
+            setClickListeners(cart)
+            setSelectCartItemListener(cart)
+
             binding.amount = cart.tempQuantity
             binding.optionText = cart.getOptionStr()
             binding.checkboxCart.isEnabled = cart.cartValidStatus.status
+            binding.cart = cart
+            binding.viewModel = mViewModel
+            binding.executePendingBindings()
+        }
 
-            if (cart.cartValidStatus.status)
+        // 장바구니 상품 체크 Listener
+        private fun setSelectCartItemListener(cart: Cart) {
+            binding.checkboxCart.setOnCheckedChangeListener { buttonView, isChecked ->
+                mViewModel.notNotifyAllChecked = true
+
+                if (cart.cartValidStatus.status) {
+                    if (isChecked) {
+                        mViewModel.selectedCartItem.add(cart)
+                        mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
+                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() + cart.shipExpense)
+                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
+
+                        setTotalPrices(cart = cart, isAdd = true)
+                        mViewModel.notNotifyAllChecked = false
+                    } else {
+                        mViewModel.selectedCartItem.remove(cart)
+                        mViewModel.selectCartItemId.remove(cart.cartItemId.toInt())
+                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() - cart.shipExpense)
+                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
+
+                        setTotalPrices(cart = cart, isAdd = false)
+                        mViewModel.notNotifyAllChecked = false
+                    }
+
+                    mViewModel.notifyPropertyChanged(BR.selectCartItemId)
+                }
+            }
+        }
+
+        private fun initCollapsingView() {
+            binding.constraintllayoutCartOption.addListener { expansionLayout, expanded ->
+                if (expanded) mViewModel.shownMenuPos = adapterPosition
+            }
+            binding.constraintllayoutCartOption.collapse(true)
+        }
+
+        private fun initValidCart(cart: Cart) {
+            if (cart.cartValidStatus.status) {
+                // 전체 상품 수
                 mViewModel.totalItemCount = ObservableInt(mViewModel.totalItemCount.get() + 1)
 
+                // 옵션 리스트 조회
+                try {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        getCartItemList(cart)
+                    }
+                } catch (e: Exception) {
+                    ToastUtil.showMessage("옵션 정보 조회 오류")
+                }
+            }
+        }
+
+        private fun setClickListeners(cart: Cart) {
             binding.setOnClickAmountPlus {
                 if (cart.tempQuantity < cart.totalStock) {
                     cart.tempQuantity += 1
@@ -156,43 +202,14 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 mViewModel.onClickItemPayment(cart = cart)
             }
 
-            // 장바구니 상품 체크 Listener
-            binding.checkboxCart.setOnCheckedChangeListener { buttonView, isChecked ->
-                mViewModel.notNotifyAllChecked = true
-
-                if (cart.cartValidStatus.status) {
-                    if (isChecked) {
-                        mViewModel.selectedCartItem.add(cart)
-                        mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
-                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() + cart.shipExpense)
-                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
-
-                        setTotalPrices(cart = cart, isAdd = true)
-                        mViewModel.notNotifyAllChecked = false
-                    } else {
-                        mViewModel.selectedCartItem.remove(cart)
-                        mViewModel.selectCartItemId.remove(cart.cartItemId.toInt())
-                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() - cart.shipExpense)
-                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
-
-                        setTotalPrices(cart = cart, isAdd = false)
-                        mViewModel.notNotifyAllChecked = false
-                    }
-
-                    mViewModel.notifyPropertyChanged(BR.selectCartItemId)
-                }
-            }
-
-            // <상품 보기> 버튼
-            mBinding.buttonCartShow.setOnClickListener {
+            // 상품 사진, 상품 보기 버튼 클릭 시, 상품 상세 화면으로 이동
+            val redirectProductDetailListener = View.OnClickListener {
                 val intent = Intent(mBinding.root.context, ProductFragmentDetailActivity::class.java)
                 intent.putExtra("dealId", cart.dealId)
                 mBinding.root.context.startActivity(intent)
             }
-
-            binding.cart = cart
-            binding.viewModel = mViewModel
-            binding.executePendingBindings()
+            mBinding.imageviewCartProduct.setOnClickListener(redirectProductDetailListener)
+            mBinding.buttonCartShow.setOnClickListener(redirectProductDetailListener)
         }
 
         private fun setTotalPrices(cart: Cart, isAdd: Boolean) {
@@ -334,11 +351,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             if (!token.isNullOrEmpty()) {
                 val model = OrderServer.getCartItemOptionListForSpinnerAsync(accessToken = "Bearer $token", cartItemId = cart.cartItemId).await()
                 cart.cartOptionInfoList = model.data
-
-                if (cart.cartOptionInfoList.isNotEmpty()) {
-                    initMenuSpinner(cart)
-                    mBinding.framelayoutProductdetailOption.visibility = View.VISIBLE
-                }
+                mBinding.framelayoutProductdetailOption.visibility = if (model.data.isEmpty()) View.GONE else View.VISIBLE
+                initMenuSpinner(cart)
             }
         }
     }

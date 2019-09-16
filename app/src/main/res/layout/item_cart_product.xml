@@ -351,6 +351,7 @@
             android:id="@+id/constraintllayout_cart_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="@{cart.cartValidStatus.status ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -362,7 +363,6 @@
                 android:background="@color/pale_grey"
                 android:paddingLeft="20dp"
                 android:paddingTop="15dp"
-
                 android:paddingRight="20dp"
                 android:paddingBottom="30dp">
 
@@ -370,10 +370,10 @@
                     android:id="@+id/framelayout_productdetail_option"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
+                    android:layout_marginBottom="15dp"
+                    android:visibility="@{cart.cartOptionInfoList.isEmpty() ? View.GONE : View.VISIBLE, default = gone}"
                     app:layout_constraintBottom_toTopOf="@+id/linearlayout_cart_amount"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_marginBottom="15dp"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
