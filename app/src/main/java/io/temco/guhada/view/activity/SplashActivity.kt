@@ -3,11 +3,11 @@ package io.temco.guhada.view.activity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
@@ -20,13 +20,6 @@ import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.databinding.ActivitySplashBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import android.content.pm.PackageManager
-import android.widget.Toast
-import android.util.Log
-import io.temco.guhada.R
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
-import java.util.*
 
 
 class SplashActivity : BindActivity<ActivitySplashBinding>() {
@@ -50,21 +43,6 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
     }
 
     override fun init() {
-        try {
-            val info = packageManager.getPackageInfo("com.yjw.android.busanbus", PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
-                val md = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                val str = android.util.Base64.encodeToString(md.digest(), android.util.Base64.DEFAULT)
-                Log.d("KeyHash:", str)
-                Toast.makeText(this, str, Toast.LENGTH_LONG).show()
-            }
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
-
 
         if (CustomLog.flag) CustomLog.L(this.javaClass.simpleName, "init")
         mDisposable = CompositeDisposable()
