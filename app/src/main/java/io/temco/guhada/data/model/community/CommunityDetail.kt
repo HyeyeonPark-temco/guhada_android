@@ -30,7 +30,7 @@ class CommunityDetail : Serializable {
     var createdTimestamp : Long? = null
     var currentTimestamp : Long? = null
     var userId = 0L
-    var createUserInfo = CreateUserInfo()
+    var createUserInfo : CreateUserInfo? = null
     var userDetail : UserDetail = UserDetail()
     var bbsImageList : ArrayList<ImageResponse> = arrayListOf()
     var guhadaClientPlatform : String = ""
@@ -62,7 +62,7 @@ class CommunityDetail : Serializable {
 
 
 class CreateUserInfo : Serializable {
-    var id = 0L
+    var id : Long ?= null
     var email : String? = null
     var name : String? = null
     var userType : String? = null

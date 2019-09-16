@@ -144,6 +144,8 @@ public class Type {
                 return "http://qa.search.guhada.com:9090/";
             case STAGE:
                 return "https://stg.search.guhada.com:9090/";
+            case RELEASE:
+                return "https://search.guhada.com/";
             default:
                 return "http://dev.search.guhada.com:9090/";
         }
@@ -155,6 +157,8 @@ public class Type {
                 return "http://qa.product.guhada.com:8080/";
             case STAGE:
                 return "https://stg.product.guhada.com:8080/";
+            case RELEASE:
+                return "https://product.guhada.com/";
             default:
                 return "http://dev.product.guhada.com:8080/";
         }
@@ -166,6 +170,8 @@ public class Type {
                 return "http://qa.bbs.guhada.com/";
             case STAGE:
                 return "https://stg.bbs.guhada.com/";
+            case RELEASE:
+                return "https://bbs.guhada.com/";
             default:
                 return "http://dev.bbs.guhada.com/";
         }
@@ -177,6 +183,8 @@ public class Type {
                 return "http://qa.user.guhada.com/";
             case STAGE:
                 return "https://stg.user.guhada.com/";
+            case RELEASE:
+                return "https://user.guhada.com/";
             default:
                 //return "http://dev.user.guhada.com:8080/";
                 return "http://dev.user.guhada.com/";
@@ -189,6 +197,8 @@ public class Type {
                 return "http://qa.claim.guhada.com/";//:8081
             case STAGE:
                 return "https://stg.claim.guhada.com/";//:8081
+            case RELEASE:
+                return "https://claim.guhada.com/";
             default:
                 return "http://dev.claim.guhada.com/";//:8081
         }
@@ -200,6 +210,8 @@ public class Type {
                 return "http://qa.order.guhada.com:8080/";
             case STAGE:
                 return "https://stg.order.guhada.com/";
+            case RELEASE:
+                return "https://order.guhada.com/";
             default:
                 return "http://dev.order.guhada.com:8080/";
         }
@@ -211,6 +223,8 @@ public class Type {
                 return "http://qa.payment.guhada.com:8081/";
             case STAGE:
                 return "https://stg.payment.guhada.com/";
+            case RELEASE:
+                return "https://payment.guhada.com/";
             default:
                 return "http://dev.payment.guhada.com:8081/";
         }
@@ -222,6 +236,8 @@ public class Type {
                 return "http://qa.benefit.guhada.com:8080/";
             case STAGE:
                 return "https://stg.benefit.guhada.com:8080/";
+            case RELEASE:
+                return "https://benefit.guhada.com/";
             default:
                 return "http://dev.benefit.guhada.com:8080/";
         }
@@ -233,8 +249,24 @@ public class Type {
                 return "http://qa.gateway.guhada.com/";
             case STAGE:
                 return "https://stg.gateway.guhada.com/";
+            case RELEASE:
+                return "https://gateway.guhada.com/";
             default:
                 return "http://dev.gateway.guhada.com/";
+        }
+    }
+
+
+    private static String getWebUrl() {
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.web.guhada.com/";
+            case STAGE:
+                return "https://stg.web.guhada.com/";
+            case RELEASE:
+                return "https://web.guhada.com/";
+            default:
+                return "http://dev.web.guhada.com/";
         }
     }
 

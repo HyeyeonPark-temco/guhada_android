@@ -90,7 +90,9 @@ class ShippingAddressActivity : BindActivity<io.temco.guhada.databinding.Activit
         finish()
     }
 
-    override fun notifyDeleteItem() = (mFragmentPagerAdapter.getItem(0) as ShippingAddressListFragment).mListAdapter.deleteItem()
+    override fun notifyDeleteItem() {
+        (mFragmentPagerAdapter.getItem(0) as ShippingAddressListFragment).mListAdapter.deleteItem()
+    }
 
     override fun redirectEditShippingAddressActivity(shippingAddress: UserShipping) {
         Intent(this@ShippingAddressActivity, EditShippingAddressActivity::class.java).let {

@@ -3,9 +3,12 @@ package io.temco.guhada.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.listener.OnBaseDialogListener
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.viewmodel.shippingaddress.ShippingAddressViewModel
@@ -72,8 +75,12 @@ class ShippingAddressListAdapter(val mViewModel: ShippingAddressViewModel) : Rec
                 if (mViewModel.prevSelectedItem.id == id) {
                     ToastUtil.showMessage("현재 선택된 배송지입니다.")
                 } else {
-                    deletePos = adapterPosition
-                    mViewModel.deleteShippingAddress(id)
+                    CommonViewUtil.showDialog((binding.root.context as AppCompatActivity),"해당 배송지를 삭제하시겠습니까?",true, object : OnBaseDialogListener{
+                        override fun onClickOk() {
+                            deletePos = adapterPosition
+                            mViewModel.deleteShippingAddress(id)
+                        }
+                    })
                 }
             }
             binding.textviewShippingaddressEdit.setOnClickListener {

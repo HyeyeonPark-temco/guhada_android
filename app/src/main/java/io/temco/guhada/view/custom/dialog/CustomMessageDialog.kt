@@ -16,12 +16,14 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
     constructor(message: String, cancelButtonVisible: Boolean) : this(message) {
         this.message = message
         this.cancelButtonVisible = cancelButtonVisible
+        this.isCancelable = false
     }
 
     constructor(message: String, cancelButtonVisible: Boolean, confirmTask: () -> Unit) : this(message) {
         this.message = message
         this.cancelButtonVisible = cancelButtonVisible
         this.confirmTask = confirmTask
+        this.isCancelable = false
     }
 
 
@@ -30,6 +32,7 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
         this.cancelButtonVisible = true
         this.cancelTask = cancelTask
         this.confirmTask = confirmTask
+        this.isCancelable = false
     }
 
 
@@ -39,6 +42,7 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
         this.cancelTask = cancelTask
         this.confirmTask = confirmTask
         this.confirmBtnName = confirmBtnName
+        this.isCancelable = false
     }
 
 
@@ -53,7 +57,7 @@ class CustomMessageDialog(msg: String) : BaseDialog<DialogMessageBinding>() {
             dismissAllowingStateLoss()
         }
         mBinding.setCancelClickListener {
-            cancelTask()
+            if(::cancelTask.isInitialized) cancelTask()
             dismissAllowingStateLoss()
         }
         mBinding.cancelButtonVisible = this.cancelButtonVisible

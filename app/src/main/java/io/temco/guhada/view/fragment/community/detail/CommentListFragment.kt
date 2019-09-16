@@ -37,7 +37,7 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
         }
         mBinding.setOnClickCommentMore {
             val popup = PopupMenu(this@CommentListFragment.context, it)
-            if(CommonUtil.checkToken() && userCheck(viewModel.userId, viewModel.communityDetail.value?.createUserInfo!!.id)){
+            if(CommonUtil.checkToken() && userCheck(viewModel.userId, viewModel.communityDetail.value?.createUserInfo?.id ?: 0L)){
                 popup.menuInflater.inflate(R.menu.menu_community_detail_owner, popup.menu)
             }else{
                 popup.menuInflater.inflate(R.menu.menu_community_detail_other, popup.menu)
@@ -48,7 +48,7 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
                         R.id.community_detail_owner01 -> {
                             var userId = CommonUtil.checkUserId()
                             if(CustomLog.flag)CustomLog.L("setOnMenuItemClickListener","userId",userId)
-                            if(userId > 0 && userId == viewModel.communityDetail.value!!.createUserInfo.id) {
+                            if(userId > 0 && userId == viewModel.communityDetail.value!!.createUserInfo?.id ?: 0L) {
                                 if("MOBILE".equals(viewModel.communityDetail.value!!.guhadaClientPlatform, true)){
                                     var intent = Intent((context as AppCompatActivity), CreateBbsActivity::class.java)
                                     intent.putExtra("currentIndex",0)

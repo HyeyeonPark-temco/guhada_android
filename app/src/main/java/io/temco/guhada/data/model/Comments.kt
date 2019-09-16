@@ -17,7 +17,7 @@ class Comments : Serializable {
     var communityBbsId = 0L
     var originCommentId : Long? = null
     var originCreaterUserId : Long? = null
-    var originCreaterUser = CreateUserInfo()
+    var originCreaterUser : CreateUserInfo? = null
     var parentCommentId : Long? = null
     var contents :String =  ""
     var likeCount = 0
@@ -26,7 +26,7 @@ class Comments : Serializable {
     var createdTimestamp = 0L
     var currentTimestamp = 0L
     var userId = 0L
-    var createUserInfo = CreateUserInfo()
+    var createUserInfo : CreateUserInfo? = null
     var commentImageList : ArrayList<CommentImageList> = arrayListOf()
     var delete = false
     var parentIndex : Int? = null // 대댓글에서 갱신하기 위한 상위 댓글 정보

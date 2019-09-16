@@ -17,4 +17,14 @@ public class Filter {
 
     @SerializedName("attributes")
     public List<Attribute> attributes;
+
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", viewType='" + viewType + '\'' +
+                ", attributes=" + attributes +
+                '}';
+    }
 }

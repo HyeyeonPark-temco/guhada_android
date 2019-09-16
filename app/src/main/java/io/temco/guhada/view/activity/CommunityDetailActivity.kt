@@ -166,16 +166,24 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         mViewModel.communityDetail.observe(this, Observer {
             mLoadingIndicatorUtil?.dismiss()
             if(it.use && !it.delete){
-                if(detailReload){
-                    mDetailFragment.setDetailView()
+                if(it.createUserInfo == null){
+                    CustomMessageDialog(message = "탈퇴한 유저의 글입니다.",
+                            cancelButtonVisible = false,
+                            confirmTask = {
+                                finish()
+                            }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
                 }else{
-                    mViewModel.getCommentList()
-                    mBinding.layoutAppbar.setExpanded(true,true)
+                    if(detailReload){
+                        mDetailFragment.setDetailView()
+                    }else{
+                        mViewModel.getCommentList()
+                        mBinding.layoutAppbar.setExpanded(true,true)
+                    }
                 }
             }else{
                 if(it.delete){
                     CustomMessageDialog(message = "삭제된 글입니다.",
-                            cancelButtonVisible = true,
+                            cancelButtonVisible = false,
                             confirmTask = {
                                 finish()
                             }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")

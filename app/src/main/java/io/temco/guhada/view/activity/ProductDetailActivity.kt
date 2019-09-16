@@ -369,6 +369,9 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
 
     }
 
+    override fun showShoppingBagActivity() {
+    }
+
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {

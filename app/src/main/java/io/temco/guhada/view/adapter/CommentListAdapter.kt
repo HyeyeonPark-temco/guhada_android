@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
@@ -90,12 +91,24 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
             binding.setClickClaimListener{null}
             binding.setClickDeleteListener{null}
             binding.setClickModifyListener{null}
+        }else if(data.createUserInfo == null){
+            binding.isDelete = true
+            binding.isContent = true
+            binding.isLikeComment = false
+            binding.isImage = false
+            binding.contents = "탈퇴한 유저의 댓글입니다."
+            binding.isReply = data.originCommentId != null
+            binding.userGrade = ""
+            binding.setClickReplyListener{null}
+            binding.setClickClaimListener{null}
+            binding.setClickDeleteListener{null}
+            binding.setClickModifyListener{null}
         }else{
             binding.isDelete = false
             binding.userGrade = "99"
-            binding.userProfile = data.createUserInfo.profileImageUrl
+            binding.userProfile = data.createUserInfo?.profileImageUrl ?: ""
             binding.createTime = DateUtil.getDateDiff(data.currentTimestamp,data.createdTimestamp)
-            binding.userName = data.createUserInfo.nickname
+            binding.userName = data.createUserInfo?.nickname ?: ""
             binding.isReply = data.originCommentId != null
             binding.isLikeComment = false
             binding.likeCount = 0
@@ -163,19 +176,20 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
                 }
             }
 
-            if(data.originCreaterUser != null){
-                var modifyContents = "@"+data.originCreaterUser.nickname + " " + data.contents
+            if(data.originCreaterUser != null && !TextUtils.isEmpty(data.originCreaterUser?.nickname ?: "")){
+                var modifyContents = "@"+data.originCreaterUser?.nickname + " " + data.contents
 
                 val ssb = SpannableStringBuilder(modifyContents)
-                ssb.setSpan(StyleSpan(Typeface.BOLD), 0, data.originCreaterUser.nickname.length+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // Style
+                ssb.setSpan(StyleSpan(Typeface.BOLD), 0, data.originCreaterUser!!.nickname.length+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // Style
                 ssb.setSpan(ForegroundColorSpan(Color.parseColor("#111111")),
-                        0, data.originCreaterUser.nickname.length+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // Color
+                        0, data.originCreaterUser!!.nickname.length+1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // Color
                 binding.contents = ssb
             }else{
                 binding.contents = data.contents
             }
+
             if(CommonUtil.checkToken()){
-                binding.isUserOwnerCheck = userCheck(model.userId, data.createUserInfo.id)
+                binding.isUserOwnerCheck = userCheck(model.userId, data.createUserInfo?.id ?: 0L)
             }else{
                 binding.isUserOwnerCheck = false
             }

@@ -19,4 +19,15 @@ public class Attribute {
 
     @SerializedName("colorName")
     public String colorName;
+
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "type=" + type +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", selected=" + selected +
+                ", colorName='" + colorName + '\'' +
+                '}';
+    }
 }

@@ -678,6 +678,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+    override fun showShoppingBagActivity() {
+        CommonUtil.startCartActivity(context as Activity)
+    }
+
     /**
      * @author park jungho
      * get porduct id

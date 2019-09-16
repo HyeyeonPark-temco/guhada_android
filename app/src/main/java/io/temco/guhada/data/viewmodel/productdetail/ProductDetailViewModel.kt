@@ -445,6 +445,11 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
 
+    fun onClickShoppingBag() {
+        listener?.showShoppingBagActivity()
+    }
+
+
     fun onClickReport() {
         listener?.showReportActivity()
     }

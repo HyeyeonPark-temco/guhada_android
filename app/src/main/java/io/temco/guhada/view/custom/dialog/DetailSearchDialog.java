@@ -14,6 +14,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
@@ -419,6 +420,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             for (Filter f : mFilterList) {
                 if (f.id == id) {
                     f.attributes = attributes;
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("changeFilterData","f.attributes",f.attributes.toString());
                     return true;
                 }
             }

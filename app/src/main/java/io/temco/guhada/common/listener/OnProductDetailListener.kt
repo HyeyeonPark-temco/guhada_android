@@ -10,6 +10,8 @@ interface OnProductDetailListener {
     fun showAddCartResult()
     fun showSideMenu()
     fun showSearchWordActivity()
+    fun showShoppingBagActivity()
+
     fun showReportActivity()
 
     fun hideLoadingIndicator()

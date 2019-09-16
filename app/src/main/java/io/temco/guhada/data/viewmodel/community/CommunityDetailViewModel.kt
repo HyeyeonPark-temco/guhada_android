@@ -146,7 +146,7 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
         commentReplyData = data
         modifyComment.set(data.isModify)
         if(!commentReplyData?.isModify!!){
-            replyUserName.set(data.createUserInfo.nickname)
+            replyUserName.set(data.createUserInfo!!.nickname)
             if(context is CommunityDetailActivity){
                 context.mBinding.layoutAppbar.setExpanded(false,true)
                 context.mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.postDelayed({
