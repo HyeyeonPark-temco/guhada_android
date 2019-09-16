@@ -8,6 +8,10 @@
             name="product"
             type="io.temco.guhada.data.model.product.BaseProduct" />
 
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel" />
+
     </data>
 
     <LinearLayout
@@ -111,9 +115,9 @@
             android:id="@+id/recyclerview_couponselect_coupon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         <!--app:layout_constraintBottom_toBottomOf="parent"-->
         <!--app:layout_constraintHeight_max="200dp"-->

@@ -30,7 +30,7 @@ class CouponWallet : Serializable {
     var discountRate: Double = 0.0          // 할인률 (정률인 경우)
     var discountPrice: Int = 0              // 할인 금액 (정액인 경우)
     var minimumPrice: Int = 0               // 쿠폰을 적용받기위한 최소 금액 (전체 주문금액이 아닌, 해당 상품금액에만 적용)
-    var maximumDiscountPrice: Int = 0  // 정액인 경우, 최대 할인가능 금액
+    var maximumDiscountPrice: Int = 0       // 정액인 경우, 최대 할인가능 금액
 
     // DATE
     var startAt = intArrayOf()

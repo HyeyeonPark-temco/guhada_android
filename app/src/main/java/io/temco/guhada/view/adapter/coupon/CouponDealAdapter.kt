@@ -43,10 +43,14 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
             mBinding.recyclerviewCouponselectCoupon.adapter = CouponWalletAdapter().apply {
                 this.mViewModel = this@CouponDealAdapter.mViewModel
                 this.mList = couponWallet.couponWalletResponseList
+                this.mDealId = couponWallet.dealId
             }
 
             mBinding.product = product
+            mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
     }
+
+
 }

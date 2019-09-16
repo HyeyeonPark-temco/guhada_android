@@ -3,8 +3,11 @@ package io.temco.guhada.view.adapter.coupon
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
 import androidx.recyclerview.widget.RecyclerView
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
@@ -19,8 +22,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
 class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
     lateinit var mViewModel: CouponSelectDialogViewModel
     var mList = mutableListOf<CouponWallet>()
-    var prevPos = -1
-    var selectedPos = -1
+    var mDealId = 0L
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_couponselect_coupon, parent, false))
@@ -34,15 +36,28 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
     inner class Holder(binding: ItemCouponselectCouponBinding) : BaseViewHolder<ItemCouponselectCouponBinding>(binding.root) {
         fun bind(item: CouponWallet) {
             mBinding.imageviewCouponselectCoupon.setOnClickListener {
-                prevPos = selectedPos
-                selectedPos = adapterPosition
-                (it as ImageView).setImageResource(R.drawable.radio_checked)
-                if (prevPos > -1) notifyItemChanged(prevPos)
+                mViewModel.mDealId = mDealId
+                mViewModel.mSelectedCoupon = ObservableField(item)
+                mViewModel.notifyPropertyChanged(BR.mSelectedCoupon)
             }
 
-            mBinding.imageviewCouponselectCoupon.setImageResource(R.drawable.radio_select)
+            mBinding.dealId = mDealId
             mBinding.couponWallet = item
+            mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        @BindingAdapter(value = ["selectedDealId", "selectedCouponId", "vmDealId", "vmCouponId"])
+        fun ImageView.bindSelected(selectedDealId: Long, selectedCouponId: Long, vmDealId: Long, vmCouponId: Long) {
+            if (selectedCouponId == vmCouponId) {
+                if (selectedDealId != vmDealId) this.setImageResource(R.drawable.radio_inactive)
+                else this.setImageResource(R.drawable.radio_checked)
+            } else {
+                this.setImageResource(R.drawable.radio_select)
+            }
         }
     }
 }
