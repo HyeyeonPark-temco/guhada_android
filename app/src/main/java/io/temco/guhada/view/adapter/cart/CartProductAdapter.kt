@@ -208,7 +208,8 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 intent.putExtra("dealId", cart.dealId)
                 mBinding.root.context.startActivity(intent)
             }
-            mBinding.imageviewCartProduct.setOnClickListener(redirectProductDetailListener)
+            if (cart.cartValidStatus.status)
+                mBinding.imageviewCartProduct.setOnClickListener(redirectProductDetailListener)
             mBinding.buttonCartShow.setOnClickListener(redirectProductDetailListener)
         }
 
