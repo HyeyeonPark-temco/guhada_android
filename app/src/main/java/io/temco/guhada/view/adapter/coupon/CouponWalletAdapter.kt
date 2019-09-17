@@ -46,33 +46,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 mViewModel.mSelectedCouponMap[mProduct.dealId] = item
                 mViewModel.notifyPropertyChanged(BR.mSelectedCoupon)
 
-                // 할인 금액 계산
-                var discountPrice = 0
-                for (dealId in mViewModel.mSelectedCouponMap.keys) {
-                    for (product in mViewModel.mProductList) {
-                        if (product.dealId == dealId) {
-                            val couponWallet = mViewModel.mSelectedCouponMap[dealId]
-                                    ?: CouponWallet()
-                            val productPrice = product.totalPrice
-
-                            discountPrice += if (item.discountType == Coupon.DiscountType.PRICE.type) couponWallet?.discountPrice
-                                    ?: 0
-                            else if (item.discountType == Coupon.DiscountType.RATE.type) Math.round(productPrice * couponWallet?.discountRate!!).toInt()
-                            else 0
-
-//                            discountPrice += when {
-//                                item.discountType == Coupon.DiscountType.PRICE.type -> couponWallet?.discountPrice?:0
-//                                item.discountType == Coupon.DiscountType.RATE.type -> Math.round(productPrice * couponWallet?.discountRate!!).toInt()
-//                                else -> 0
-//                            }
-
-//                            Log.e("ㅇㅇㅇ", "${mViewModel.mSelectedCouponMap}    $discountPrice")
-                            break
-                        }
-                    }
-                }
-
-                mViewModel.mTotalDiscountPrice = ObservableInt(discountPrice)
+                mViewModel.mTotalDiscountPrice = ObservableInt(getTotalDiscountPrice())
                 mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
 
                 mBinding.viewModel = mViewModel
@@ -84,6 +58,26 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
             mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
+    }
+
+    private fun getTotalDiscountPrice(): Int {
+        var discountPrice = 0
+        for (dealId in mViewModel.mSelectedCouponMap.keys) {
+            for (product in mViewModel.mProductList) {
+                if (product.dealId == dealId) {
+                    val couponWallet = mViewModel.mSelectedCouponMap[dealId]
+                            ?: CouponWallet()
+                    val productPrice = product.totalPrice
+
+                    discountPrice += when {
+                        couponWallet.discountType == Coupon.DiscountType.PRICE.type -> couponWallet.discountPrice
+                        couponWallet.discountType == Coupon.DiscountType.RATE.type -> Math.round(productPrice * couponWallet.discountRate).toInt()
+                        else -> 0
+                    }
+                }
+            }
+        }
+        return discountPrice
     }
 
     companion object {
@@ -101,10 +95,12 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 this.isClickable = false
                 this.setImageResource(R.drawable.radio_inactive)
             }
+
             fun setButtonActive() {
                 this.isClickable = true
                 this.setImageResource(R.drawable.radio_select)
             }
+
             fun setButtonChecked() {
                 this.isClickable = true
                 this.setImageResource(R.drawable.radio_checked)
@@ -137,7 +133,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                                 setButtonInactive()
                             break
                         } else {
-                                setButtonActive()
+                            setButtonActive()
                         }
                     }
                 }
