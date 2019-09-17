@@ -233,12 +233,15 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     private fun initDiscountCouponView() {
         // COUPON
-        mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setOnClickListener {
-            val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
-            intent.putExtra("productList", mViewModel.productList)
-            intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
-            startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
-        }
+        mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setOnClickListener { redirectCouponSelectDialogActivity() }
+        mBinding.includePaymentDiscountresult.imageviewPaymentChangecoupon.setOnClickListener { redirectCouponSelectDialogActivity() }
+    }
+
+    private fun redirectCouponSelectDialogActivity() {
+        val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
+        intent.putExtra("productList", mViewModel.productList)
+        intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
+        startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
     }
 
     // 결제 수단
@@ -385,9 +388,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
                             data?.getIntExtra("totalDiscountPrice", 0).let { totalDiscountPrice ->
                                 if (totalDiscountPrice != null) {
-                                    if(totalDiscountPrice > 0){
+                                    if (totalDiscountPrice > 0) {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), totalDiscountPrice, couponCount))
-                                    }else {
+                                    } else {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
                                     }
 
