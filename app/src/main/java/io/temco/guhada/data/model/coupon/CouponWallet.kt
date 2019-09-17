@@ -46,4 +46,9 @@ class CouponWallet : Serializable {
     var sellerId: Long? = 0
     var sellerImgUrl: String? = ""
     var sellerName: String? = ""
+
+    override fun toString(): String {
+        return "CouponWallet(couponId=$couponId, couponNumber=$couponNumber, couponTitle=$couponTitle, couponType=$couponType, discountType=$discountType, discountRate=$discountRate, discountPrice=$discountPrice)"
+    }
+
 }

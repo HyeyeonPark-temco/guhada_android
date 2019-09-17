@@ -2,6 +2,9 @@ package io.temco.guhada.data.model.coupon
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.Expose
+import io.temco.guhada.data.model.order.OrderItemResponse
+import io.temco.guhada.data.model.product.BaseProduct
 
 
 /**
@@ -14,6 +17,9 @@ class AvailableCouponWallet() : Parcelable {
     var dealId = 0L
     var couponWalletResponseList = mutableListOf<CouponWallet>()
 
+    @Expose
+    var orderItem  = OrderItemResponse()
+
     constructor(parcel: Parcel) : this() {
         dealId = parcel.readLong()
     }
@@ -21,6 +27,7 @@ class AvailableCouponWallet() : Parcelable {
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeLong(dealId)
         dest?.writeList(couponWalletResponseList)
+
     }
 
     override fun describeContents(): Int = 0

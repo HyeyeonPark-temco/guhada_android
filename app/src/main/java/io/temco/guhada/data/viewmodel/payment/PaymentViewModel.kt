@@ -229,6 +229,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     successTask = {
                         this.pgResponse = (o as BaseModel<*>).data as PGResponse
                         listener.redirectPaymentWebViewActivity()
+                    },
+                    dataIsNull = {
+                        if (it is BaseModel<*>)
+                            ToastUtil.showMessage(it.message)
+                        else
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
                     })
         }, accessToken, requestOrder)
     }

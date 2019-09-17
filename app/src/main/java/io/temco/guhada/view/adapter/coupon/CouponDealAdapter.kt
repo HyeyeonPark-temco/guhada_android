@@ -19,6 +19,7 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
     private val NOT_SELECT_COUPON_ID: Long = -1
+    private val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
     lateinit var mViewModel: CouponSelectDialogViewModel
     var mOrderItemList = mutableListOf<BaseProduct>()
     var mCouponWalletList = mutableListOf<AvailableCouponWallet>()
@@ -43,10 +44,11 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
                 this.mViewModel = this@CouponDealAdapter.mViewModel
                 CouponWallet().apply {
                     this.couponId = NOT_SELECT_COUPON_ID
+                    this.couponNumber = NOT_SELECT_COUPON_NUMBER
                     this.couponTitle = "적용 안함"
                 }.let { couponWallet.couponWalletResponseList.add(it) }
                 this.mList = couponWallet.couponWalletResponseList
-                this.mDealId = couponWallet.dealId
+                this.mProduct = product
             }
 
             mBinding.product = product

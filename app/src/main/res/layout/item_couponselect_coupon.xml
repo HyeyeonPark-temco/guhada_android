@@ -28,16 +28,16 @@
             android:id="@+id/imageview_couponselect_coupon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="@{viewModel.mSelectedCoupon.couponId == couponWallet.couponId ? false : true, default = true}"
             android:src="@drawable/radio_select"
-
-            app:selectedCouponId="@{couponWallet.couponId}"
+            android:clickable="true"
+            android:focusable="true"
+            app:selectedCouponId="@{couponWallet.couponNumber}"
             app:selectedCouponMap="@{viewModel.mSelectedCouponMap}"
             app:selectedDealId="@{dealId}"
-            app:vmCouponId="@{viewModel.mSelectedCoupon.couponId}"
-            app:vmDealId="@{viewModel.mDealId}" />
+            app:vmCouponId="@{viewModel.mSelectedCoupon.couponNumber}"
+            app:vmDealId="@{viewModel.mSelectedProduct.dealId}" />
 
-
+        <!--android:clickable="@{couponWallet.couponId > 0 &amp;&amp; viewModel.mSelectedCoupon.couponId == couponWallet.couponId ? false : true, default = true}"-->
         <TextView
             android:id="@+id/textview_couponselect_couponname"
             style="@style/TextRegularSingleLine"
@@ -46,8 +46,13 @@
             android:layout_marginStart="15dp"
             android:ellipsize="middle"
             android:text="@{couponWallet.couponTitle}"
-            android:textColor="@{dealId != viewModel.mDealId &amp;&amp; viewModel.mSelectedCoupon.couponId > -1 &amp;&amp; viewModel.mSelectedCoupon.couponId == couponWallet.couponId ? @color/pinkish_grey : @color/greyish_brown_two, default = @color/greyish_brown_two}"
-            android:textSize="@dimen/text_13" />
+            android:textSize="@dimen/text_13"
 
+            app:selectedCouponId="@{couponWallet.couponNumber}"
+            app:selectedCouponMap="@{viewModel.mSelectedCouponMap}"
+            app:selectedDealId="@{dealId}"
+            app:vmCouponId="@{viewModel.mSelectedCoupon.couponNumber}"
+            app:vmDealId="@{viewModel.mSelectedProduct.dealId}" />
+        <!--android:textColor="@{dealId != viewModel.mSelectedProduct.dealId &amp;&amp; viewModel.mSelectedCoupon.couponId > -1 &amp;&amp; viewModel.mSelectedCoupon.couponId == couponWallet.couponId ? @color/pinkish_grey : @color/greyish_brown_two, default = @color/greyish_brown_two}"-->
     </LinearLayout>
 </layout>

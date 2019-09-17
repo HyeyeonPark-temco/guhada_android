@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -18,13 +19,16 @@ class CouponSelectDialogViewModel : BaseObservable() {
     val mCouponWalletMap = mutableMapOf<String, MutableList<AvailableCouponWallet>>()
     var mCouponWalletList = mutableListOf<AvailableCouponWallet>()
     var mProductList = mutableListOf<BaseProduct>()
-    var mDealId = 0L
+    //    var mDealId = 0L
     var mSelectedCouponMap = mutableMapOf<Long, CouponWallet?>()  // dealId, couponNumber
 
     // PRICE
-//    var mTotalDiscountPrice
+    var mSelectedProduct = BaseProduct()
+    var mTotalDiscountPrice = ObservableInt(0)
+        @Bindable
+        get() = field
 
-    var mSelectedCoupon = ObservableField<CouponWallet>(CouponWallet())
+    var mSelectedCoupon = ObservableField<CouponWallet>(CouponWallet().apply { this.couponId = -1 })
         @Bindable
         get() = field
 

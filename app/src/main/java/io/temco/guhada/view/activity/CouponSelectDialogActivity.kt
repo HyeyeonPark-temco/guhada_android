@@ -34,13 +34,15 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
         mViewModel = CouponSelectDialogViewModel()
         mViewModel.mOrder.observe(this@CouponSelectDialogActivity, Observer { order ->
             mViewModel.mCouponWalletList = order.availableCouponWalletResponses
-            for (couponWallet in order.availableCouponWalletResponses) {
-                for (coupon in couponWallet.couponWalletResponseList) {
-                    if (mViewModel.mCouponWalletMap[coupon.sellerName] == null)
-                        mViewModel.mCouponWalletMap[coupon.sellerName ?: ""] = mutableListOf()
 
-                    mViewModel.mCouponWalletMap[coupon.sellerName]?.add(couponWallet)
-                    break
+            for (product in order.orderItemList){
+                for (couponWallet in order.availableCouponWalletResponses) {
+                    if(product.dealId == couponWallet.dealId){
+                        if (mViewModel.mCouponWalletMap[product.sellerName?:""] == null)
+                            mViewModel.mCouponWalletMap[product.sellerName?:""] = mutableListOf()
+                        couponWallet.orderItem = product
+                        mViewModel.mCouponWalletMap[product.sellerName?:""]?.add(couponWallet)
+                    }
                 }
             }
 
