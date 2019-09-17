@@ -19,8 +19,7 @@ class CouponSelectDialogViewModel : BaseObservable() {
     val mCouponWalletMap = mutableMapOf<String, MutableList<AvailableCouponWallet>>()
     var mCouponWalletList = mutableListOf<AvailableCouponWallet>()
     var mProductList = mutableListOf<BaseProduct>()
-    //    var mDealId = 0L
-    var mSelectedCouponMap = mutableMapOf<Long, CouponWallet?>()  // dealId, couponNumber
+    var mSelectedCouponMap = hashMapOf<Long, CouponWallet?>()  // dealId, couponNumber
 
     // PRICE
     var mSelectedProduct = BaseProduct()
@@ -42,4 +41,5 @@ class CouponSelectDialogViewModel : BaseObservable() {
             }, accessToken = accessToken, cartIdList = mCartIdList)
         })
     }
+
 }

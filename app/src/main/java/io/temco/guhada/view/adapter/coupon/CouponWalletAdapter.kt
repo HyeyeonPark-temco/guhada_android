@@ -17,6 +17,7 @@ import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.databinding.ItemCouponselectCouponBinding
+import io.temco.guhada.view.activity.CouponSelectDialogActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -90,7 +91,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 vmDealId: 선택된 dealId
                 vmCouponNumber: 선택된 couponId
             */
-            val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
+
             fun setButtonInactive() {
                 this.isClickable = false
                 this.setImageResource(R.drawable.radio_inactive)
@@ -107,7 +108,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
             }
 
             if (selectedDealId != vmDealId) {   // 다른 deal
-                if (vmCouponNumber != NOT_SELECT_COUPON_NUMBER) {
+                if (vmCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER) {
                     val prev = selectedCouponMap[selectedDealId]
                     if (prev?.couponNumber === selectedCouponNumber) {
                         setButtonChecked()
@@ -129,7 +130,7 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                     for (key in selectedCouponMap.keys) {
                         val couponWallet = selectedCouponMap[key]
                         if (couponWallet?.couponNumber == selectedCouponNumber) {
-                            if (selectedCouponNumber != NOT_SELECT_COUPON_NUMBER)
+                            if (selectedCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER)
                                 setButtonInactive()
                             break
                         } else {
@@ -149,14 +150,13 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 vmDealId: 선택된 dealId
                 vmCouponNumber: 선택된 couponId
             */
-            val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
             val inactiveTextColor = BaseApplication.getInstance().resources.getColor(R.color.pinkish_grey)
             val activeTextColor = BaseApplication.getInstance().resources.getColor(R.color.greyish_brown_two)
             fun setTextInactive() = this.setTextColor(inactiveTextColor)
             fun setTextActive() = this.setTextColor(activeTextColor)
 
             if (selectedDealId != vmDealId) {   // 다른 deal
-                if (vmCouponNumber != NOT_SELECT_COUPON_NUMBER) {
+                if (vmCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER) {
                     if (selectedCouponNumber == vmCouponNumber) setTextInactive()   // 선택된 쿠폰과 일치하는지
                     else setTextActive()
                 } else {
@@ -170,14 +170,13 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                     for (key in selectedCouponMap.keys) {
                         val couponWallet = selectedCouponMap[key]
                         if (couponWallet?.couponNumber == selectedCouponNumber) {
-                            if (selectedCouponNumber != NOT_SELECT_COUPON_NUMBER)
+                            if (selectedCouponNumber != CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER)
                                 setTextInactive() // inactive
                             break
                         } else {
                             setTextActive()
                         }
                     }
-
                 }
             }
 

@@ -10,6 +10,7 @@ import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.databinding.ItemCouponselectDealBinding
+import io.temco.guhada.view.activity.CouponSelectDialogActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -18,8 +19,6 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  * @since 2019.09.13
  */
 class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
-    private val NOT_SELECT_COUPON_ID: Long = -1
-    private val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
     lateinit var mViewModel: CouponSelectDialogViewModel
     var mOrderItemList = mutableListOf<BaseProduct>()
     var mCouponWalletList = mutableListOf<AvailableCouponWallet>()
@@ -43,8 +42,8 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
             mBinding.recyclerviewCouponselectCoupon.adapter = CouponWalletAdapter().apply {
                 this.mViewModel = this@CouponDealAdapter.mViewModel
                 CouponWallet().apply {
-                    this.couponId = NOT_SELECT_COUPON_ID
-                    this.couponNumber = NOT_SELECT_COUPON_NUMBER
+                    this.couponId = CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_ID
+                    this.couponNumber = CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER
                     this.couponTitle = "적용 안함"
                 }.let { couponWallet.couponWalletResponseList.add(it) }
                 this.mList = couponWallet.couponWalletResponseList
@@ -56,6 +55,5 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
             mBinding.executePendingBindings()
         }
     }
-
 
 }

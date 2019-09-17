@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
@@ -15,6 +16,12 @@ import io.temco.guhada.view.adapter.coupon.CouponSellerAdapter
  * @since 2019.09.13
  */
 class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBinding>() {
+
+    class CouponFlag {
+        val NOT_SELECT_COUPON_ID: Long = -1
+        val NOT_SELECT_COUPON_NUMBER = "NOT_SELECT"
+    }
+
     private lateinit var mViewModel: CouponSelectDialogViewModel
 
     override fun getBaseTag(): String = CouponSelectDialogActivity::class.java.simpleName
@@ -24,6 +31,12 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
     override fun init() {
         initViewModel()
         mBinding.imagebuttonCouponselectClose.setOnClickListener { finish() }
+        mBinding.buttonCouponselect.setOnClickListener {
+            intent.putExtra("selectedCouponMap", mViewModel.mSelectedCouponMap)
+            intent.putExtra("totalDiscountPrice", mViewModel.mTotalDiscountPrice.get())
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
 
@@ -34,13 +47,13 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
         mViewModel.mOrder.observe(this@CouponSelectDialogActivity, Observer { order ->
             mViewModel.mCouponWalletList = order.availableCouponWalletResponses
 
-            for (product in order.orderItemList){
+            for (product in order.orderItemList) {
                 for (couponWallet in order.availableCouponWalletResponses) {
-                    if(product.dealId == couponWallet.dealId){
-                        if (mViewModel.mCouponWalletMap[product.sellerName?:""] == null)
-                            mViewModel.mCouponWalletMap[product.sellerName?:""] = mutableListOf()
+                    if (product.dealId == couponWallet.dealId) {
+                        if (mViewModel.mCouponWalletMap[product.sellerName ?: ""] == null)
+                            mViewModel.mCouponWalletMap[product.sellerName ?: ""] = mutableListOf()
                         couponWallet.orderItem = product
-                        mViewModel.mCouponWalletMap[product.sellerName?:""]?.add(couponWallet)
+                        mViewModel.mCouponWalletMap[product.sellerName ?: ""]?.add(couponWallet)
                     }
                 }
             }

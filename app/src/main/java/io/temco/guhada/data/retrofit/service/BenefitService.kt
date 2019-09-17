@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import io.temco.guhada.data.model.AvailableBenefitCount
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.coupon.CouponConsumption
@@ -56,7 +57,7 @@ interface BenefitService {
      * @since 2019.09.10
      */
     @POST("/coupons/process/consumption")
-    fun useCoupon(@Header("Authorization") accessToken: String, @Body couponConsumption : CouponConsumption) : Call<BaseModel<Any?>>
+    fun useCoupon(@Header("Authorization") accessToken: String, @Body couponConsumption: CouponConsumption): Call<BaseModel<Any?>>
 
     /**
      * 쿠폰 발급 API
@@ -64,7 +65,7 @@ interface BenefitService {
      * @since 2019.09.10
      */
     @POST("/coupons/process/save")
-    fun saveCoupon(@Header("Authorization") accessToken: String, @Body couponSaveProcess : CouponSaveProcess) : Call<BaseModel<Any?>>
+    fun saveCoupon(@Header("Authorization") accessToken: String, @Body couponSaveProcess: CouponSaveProcess): Call<BaseModel<Any?>>
 
     /**
      * 포인트 기록 삭제 API
@@ -98,4 +99,12 @@ interface BenefitService {
                           @Query("MCategoryId") MCategoryId: Long, @Query("SCategoryId") SCategoryId: Long, @Query("dealId") dealId: Long,
                           @Query("paymentPrice") paymentPrice: Int, @Query("saveActionType") saveActionType: String, @Query("serviceType") serviceType: String,
                           @Query("sellerId") sellerId: Long): Call<BaseModel<MutableList<Coupon>>>
+
+    /**
+     * 사용 가능 포인트, 쿠폰 갯수 조회
+     * @author Hyeyeon Park
+     * @since 2019.09.17
+     */
+    @GET("/benefits/summary")
+    fun getAvailableBenefitCount(@Header("Authorization") accessToken: String): Call<BaseModel<AvailableBenefitCount>>
 }

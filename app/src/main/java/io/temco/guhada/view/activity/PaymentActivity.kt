@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
@@ -23,6 +24,7 @@ import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
+import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
@@ -60,6 +62,13 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         // 현금영수증
         initRecipient()
+
+        // 사용 가능 쿠폰, 포인트 조회
+        mViewModel.getAvailableBenefitCount()
+        mViewModel.mAvailableBenefitCount.observe(this, Observer {
+            mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), 0, it.totalAvailCoupon))
+            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint))
+        })
 
         // 상품 리스트
         mBinding.recyclerviewPaymentProduct.adapter = PaymentProductAdapter()
@@ -225,14 +234,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private fun initDiscountCouponView() {
         // COUPON
         mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setOnClickListener {
-            //
-//            val map = hashMapOf<Long, String>()
-//            for (product in mViewModel.productList)
-//                map[product.dealId] = product.optionStr
-
             val intent = Intent(this@PaymentActivity, CouponSelectDialogActivity::class.java)
             intent.putExtra("productList", mViewModel.productList)
-//            intent.putExtra("optionMap", map)
             intent.putExtra("cartIdList", mViewModel.cartIdList.toIntArray())
             startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
         }
@@ -367,6 +370,37 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                             ?: false
                     mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification && emailVerification) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
+                }
+            }
+            RequestCode.COUPON_SELECT.flag -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    // 쿠폰 선택
+                    data?.getSerializableExtra("selectedCouponMap").let { map ->
+                        if (map != null) {
+                            val selectedCouponMap = map as HashMap<Long, CouponWallet?>
+                            var couponCount = 0
+                            for (key in selectedCouponMap.keys)
+                                if (selectedCouponMap[key]?.couponId ?: -1 > -1)
+                                    couponCount++
+
+                            data?.getIntExtra("totalDiscountPrice", 0).let { totalDiscountPrice ->
+                                if (totalDiscountPrice != null) {
+                                    if(totalDiscountPrice > 0){
+                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), totalDiscountPrice, couponCount))
+                                    }else {
+                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
+                                    }
+
+                                    mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
+                                            totalDiscountPrice, mViewModel.mAvailableBenefitCount.value?.totalAvailCoupon
+                                            ?: 0))
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), totalDiscountPrice)
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), (mViewModel.order.totalPaymentPrice - totalDiscountPrice - mViewModel.order.totalDiscountDiffPrice))
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountprice.text = String.format(getString(R.string.common_price_format), totalDiscountPrice + mViewModel.order.totalDiscountDiffPrice)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

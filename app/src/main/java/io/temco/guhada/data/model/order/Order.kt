@@ -1,10 +1,7 @@
 package io.temco.guhada.data.model.order
 
-import android.os.Parcel
-import android.os.Parcelable
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.coupon.AvailableCouponWallet
-import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.model.user.User
 import java.io.Serializable

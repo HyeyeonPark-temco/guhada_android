@@ -18,8 +18,11 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ServerCallbackUtil.Companion.executeByResultCode
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.AvailableBenefitCount
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
@@ -32,6 +35,7 @@ import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.model.user.User
+import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -59,9 +63,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var selectedMethod: PaymentMethod = PaymentMethod()
     var selectedShippingAddress: UserShipping? = UserShipping()
     var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 스피너 표시 메세지
-        @Bindable
-        get() = field
-    var selectedDiscountCoupon = ObservableField<String>(BaseApplication.getInstance().getString(R.string.payment_hint_coupon))
         @Bindable
         get() = field
 
@@ -164,6 +165,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mRecipientCorporation1 = ""
     var mRecipientCorporation2 = ""
     var mRecipientCorporation3 = ""
+
+    // 쿠폰, 포인트
+    var mAvailableBenefitCount: MutableLiveData<AvailableBenefitCount> = MutableLiveData(AvailableBenefitCount())
 
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
@@ -419,6 +423,21 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
             }
         }
+    }
+
+    // 사용 가능 쿠폰, 포인트 갯수 조회
+    fun getAvailableBenefitCount() {
+        ServerCallbackUtil.callWithToken(task = {
+            BenefitServer.getAvailableBenefitCount(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            this.mAvailableBenefitCount.postValue(it.data as AvailableBenefitCount)
+                        },
+                        dataIsNull = { model ->
+                            CustomLog.L((model as BaseModel<*>).message)
+                        })
+            }, accessToken = it)
+        })
     }
 
     fun onClickChangeShippingAddress() {

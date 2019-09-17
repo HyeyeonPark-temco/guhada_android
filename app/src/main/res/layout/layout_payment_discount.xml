@@ -25,13 +25,28 @@
             android:layout_height="wrap_content"
             android:text="@string/payment_title_discount" />
 
-        <TextView
-            style="@style/PaymentContentBlackTextStyle"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="@string/payment_title_coupon"
-            android:textSize="@dimen/text_14" />
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/PaymentContentBlackTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_title_coupon"
+                android:textSize="@dimen/text_14" />
+
+            <io.temco.guhada.view.custom.HtmlTextView
+                android:id="@+id/textview_payment_discountcouponcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,36 +108,54 @@
             <!--</FrameLayout>-->
             <!--</FrameLayout>-->
 
-            <TextView
+            <EditText
                 android:id="@+id/textview_payment_discountcoupon"
                 style="@style/TextRegular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/box_all_palegrey"
+                android:clickable="false"
+                android:focusable="false"
+                android:hint="@string/payment_coupon_hint"
                 android:padding="15dp"
                 android:textColor="@color/black_four"
-                android:textSize="@dimen/text_14" />
+                android:textColorHint="@color/pinkish_grey"
+                android:textSize="@dimen/text_13" />
 
             <Button
                 android:id="@+id/button_payment_discountcoupon"
-                style="@style/TextBold"
+                style="@style/TextMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="7dp"
-                android:background="@drawable/border_all_purple_1dp"
+                android:background="@drawable/border_all_whitethree"
                 android:text="@string/payment_button_autocoupon"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/black_four"
                 android:textSize="@dimen/text_13" />
         </LinearLayout>
 
-        <TextView
-            style="@style/PaymentContentBlackTextStyle"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:text="@string/payment_title_point"
-            android:textSize="@dimen/text_14" />
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/PaymentContentBlackTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_title_point"
+                android:textSize="@dimen/text_14" />
+
+            <io.temco.guhada.view.custom.HtmlTextView
+                android:id="@+id/textview_payment_availablepoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -169,6 +202,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="@string/common_unit_point"
                     android:textSize="@dimen/text_13"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/textView36"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -184,6 +218,7 @@
                     android:layout_marginEnd="4dp"
                     android:text="@string/common_remaining"
                     android:textSize="@dimen/text_12"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/textView28"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -197,6 +232,7 @@
                     android:text="@{@string/common_price_format(viewModel.holdingPoint)}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_12"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/edittext_payment_totalpoint"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -210,6 +246,7 @@
                     android:text="@string/common_unit_point"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_12"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -217,14 +254,14 @@
 
             <Button
                 android:id="@+id/button_payment_discountpoint"
-                style="@style/TextBold"
+                style="@style/TextMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="7dp"
-                android:background="@drawable/border_all_purple_1dp"
+                android:background="@drawable/border_all_whitethree"
                 android:onClick="@{()->viewModel.onClickUseAllPoint()}"
                 android:text="@string/payment_button_allpoint"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/black_four"
                 android:textSize="@dimen/text_13" />
         </LinearLayout>
     </LinearLayout>

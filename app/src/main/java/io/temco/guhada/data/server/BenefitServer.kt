@@ -142,5 +142,12 @@ class BenefitServer {
         fun saveCoupon(listener: OnServerListener, accessToken: String, couponSaveProcess: CouponSaveProcess) =
                 RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).saveCoupon(accessToken = accessToken, couponSaveProcess = couponSaveProcess).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
+        /**
+         * 사용 가능 포인트, 쿠폰 갯수 조회
+         * @author Hyeyeon Park
+         * @since 2019.09.17
+         */
+        fun getAvailableBenefitCount(listener: OnServerListener, accessToken: String) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getAvailableBenefitCount(accessToken = accessToken).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
     }
 }

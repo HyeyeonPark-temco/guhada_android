@@ -501,6 +501,10 @@
     <string name="payment_button_allpoint">Use All</string>
 
     <string name="payment_message_cancel">Payment canceled</string>
+    <string name="payment_coupon_format">-%,2d원(%d장)</string>
+    <string name="payment_couponcount_format"><![CDATA[(사용가능 <font color="#111111">%d</font>장 / 보유 %d장)]]></string>
+    <string name="payment_availablepoint_format"><![CDATA[(사용가능 <font color="#111111">%d</font>P)]]></string>
+    <string name="payment_coupon_hint">적용 가능한 쿠폰이 없습니다.</string>
 
     <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
     <string name="shippingmemo_security">경비실에 맡겨주세요.</string>
