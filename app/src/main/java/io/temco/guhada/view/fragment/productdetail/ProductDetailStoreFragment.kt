@@ -10,6 +10,7 @@ import io.temco.guhada.data.viewmodel.productdetail.ProductDetailStoreViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.FragmentProductdetailStoreBinding
 import io.temco.guhada.view.adapter.ProductDetailStoreAdapter
+import io.temco.guhada.view.adapter.ProductDetailStoreGridAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
 /**
@@ -78,7 +79,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
         })
         mViewModel.mSellerProductList.observe(this, Observer {
             if (mBinding.recyclerviewProductdetailSellerstore.adapter == null) {
-                mBinding.recyclerviewProductdetailSellerstore.adapter = ProductDetailStoreAdapter().apply {
+                mBinding.recyclerviewProductdetailSellerstore.adapter = ProductDetailStoreGridAdapter().apply {
                     this.mList = it
                     this.mIsGridLayout = true
                     this.mSpanCount = 3
@@ -86,7 +87,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
                 }
                 mBinding.executePendingBindings()
             } else {
-                (mBinding.recyclerviewProductdetailSellerstore.adapter as ProductDetailStoreAdapter).setItems(it)
+                (mBinding.recyclerviewProductdetailSellerstore.adapter as ProductDetailStoreGridAdapter).setItems(it)
             }
         })
     }

@@ -187,7 +187,7 @@
             android:name=".view.activity.SideMenuActivity"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.Transparent"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing" />
 
         <activity
             android:name=".view.activity.MyPageTempLoginActivity"

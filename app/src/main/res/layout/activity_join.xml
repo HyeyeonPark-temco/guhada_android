@@ -26,6 +26,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="1"
         android:orientation="vertical">
 
         <include
@@ -35,10 +36,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--<ScrollView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:scrollbars="none">-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -450,20 +452,20 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/button_join_signup"
-
-                    style="@style/InactivatedButtonStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_margin="20dp"
-                    android:background="@{viewModel.user.email.length() >0 &amp;&amp; viewModel.user.password.length() > 0 &amp;&amp; viewModel.user.confirmPassword.length() > 0  &amp;&amp; viewModel.essentialChecked? @color/colorPrimary : @color/silver, default = @color/silver }"
-                    android:clickable="@{viewModel.user.email.length() >0 &amp;&amp; viewModel.user.password.length() > 0 &amp;&amp; viewModel.user.confirmPassword.length() > 0  &amp;&amp; viewModel.essentialChecked? true : false , default = false}"
-                    android:onClick="@{()->viewModel.onClickSignUp()}"
-                    android:text="@string/join_button_signup" />
             </LinearLayout>
-        <!--</ScrollView>-->
+        </ScrollView>
+
+
+        <Button
+            android:id="@+id/button_join_signup"
+            style="@style/InactivatedButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="20dp"
+            android:background="@{viewModel.user.email.length() >0 &amp;&amp; viewModel.user.password.length() > 0 &amp;&amp; viewModel.user.confirmPassword.length() > 0  &amp;&amp; viewModel.essentialChecked? @color/colorPrimary : @color/silver, default = @color/silver }"
+            android:clickable="@{viewModel.user.email.length() >0 &amp;&amp; viewModel.user.password.length() > 0 &amp;&amp; viewModel.user.confirmPassword.length() > 0  &amp;&amp; viewModel.essentialChecked? true : false , default = false}"
+            android:onClick="@{()->viewModel.onClickSignUp()}"
+            android:text="@string/join_button_signup" />
     </LinearLayout>
 </layout>

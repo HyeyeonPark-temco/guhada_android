@@ -4,6 +4,9 @@
 
     <data>
         <variable
+            name="onClickContinue"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.cart.EmptyCartViewModel" />
     </data>
@@ -39,7 +42,7 @@
             android:background="@color/greyish_brown"
             android:text="@string/cart_button_continue"
             android:textColor="@color/common_white"
-            android:onClick="@{()->viewModel.onClickContinue()}"
+            android:onClick="@{onClickContinue}"
             android:textSize="@dimen/text_14"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
