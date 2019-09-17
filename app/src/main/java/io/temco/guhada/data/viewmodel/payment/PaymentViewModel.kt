@@ -90,8 +90,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var holdingPoint: Long = 0
     var usedPointNumber: Long = 0
         set(value) {
+
+            val prev = usedPointNumber.toInt()
+            val new = if (value > holdingPoint) holdingPoint.toInt() else value.toInt()
+            mTotalDiscountPrice = ObservableInt(mTotalDiscountPrice.get() - prev + new)
+            notifyPropertyChanged(BR.mTotalDiscountPrice)
+
             field = if (value > holdingPoint) {
-                listener.showMessage("${BaseApplication.getInstance().getString(R.string.payment_message_maxusagepoint1)} $holdingPoint ${BaseApplication.getInstance().getString(R.string.payment_message_maxusagepoint2)}")
+                listener.showMessage(String.format(BaseApplication.getInstance().resources.getString(R.string.payment_message_maxusagepoint), holdingPoint))
                 holdingPoint
             } else {
                 value
@@ -105,6 +111,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             } else {
                 field
             }
+        }
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.usedPoint)
         }
     var order: Order = Order()
         @Bindable
@@ -168,6 +178,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 쿠폰, 포인트
     var mAvailableBenefitCount: MutableLiveData<AvailableBenefitCount> = MutableLiveData(AvailableBenefitCount())
+    var mTotalDiscountPrice = ObservableInt(0)
+        @Bindable
+        get() = field
 
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
@@ -213,6 +226,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     this.selectedShippingAddress = order.shippingAddress  // 임시 초기값
                     notifyPropertyChanged(BR.order)
                     notifyPropertyChanged(BR.shippingAddressText)
+
+                    // 사용 가능 포인트
+                     this.holdingPoint = order.availablePointResponse.availableTotalPoint.toLong()
+//                    this.holdingPoint = 10000   // test
+                    this.mTotalDiscountPrice = ObservableInt(order.totalDiscountDiffPrice)
+                    notifyPropertyChanged(BR.mTotalDiscountPrice)
                 } else {
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.closeActivity()

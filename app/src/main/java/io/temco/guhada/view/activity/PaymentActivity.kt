@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -226,6 +227,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     }
                     mViewModel.notifyPropertyChanged(BR.usedPoint)
                     editText.setSelection(editText.length())
+                } else {
+                    mViewModel.usedPointNumber = 0
+                    mViewModel.usedPoint = ObservableField("0")
+                    mViewModel.notifyPropertyChanged(BR.usedPoint)
                 }
             }
         })
@@ -388,18 +393,22 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
                             data?.getIntExtra("totalDiscountPrice", 0).let { totalDiscountPrice ->
                                 if (totalDiscountPrice != null) {
+                                    // 사용가능 n장/보유 m장
+                                    mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
+                                            couponCount, mViewModel.mAvailableBenefitCount.value?.totalAvailCoupon
+                                            ?: 0))
+
+                                    // -n원(m장)
                                     if (totalDiscountPrice > 0) {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), totalDiscountPrice, couponCount))
                                     } else {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
                                     }
 
-                                    mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
-                                            totalDiscountPrice, mViewModel.mAvailableBenefitCount.value?.totalAvailCoupon
-                                            ?: 0))
                                     mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), totalDiscountPrice)
                                     mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), (mViewModel.order.totalPaymentPrice - totalDiscountPrice - mViewModel.order.totalDiscountDiffPrice))
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountprice.text = String.format(getString(R.string.common_price_format), totalDiscountPrice + mViewModel.order.totalDiscountDiffPrice)
+                                    mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt())
+                                    mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
                                 }
                             }
                         }

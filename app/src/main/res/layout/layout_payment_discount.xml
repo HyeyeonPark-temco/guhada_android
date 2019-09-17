@@ -169,31 +169,32 @@
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@drawable/border_all_whitethree"
-                android:onClick="@{()->viewModel.onClickUsedPointView()}"
                 android:orientation="horizontal"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
+                <!--android:onClick="@{()->viewModel.onClickUsedPointView()}"-->
 
                 <EditText
                     android:id="@+id/edittext_payment_discountpoint"
                     style="@style/PaymentContentGreyTextStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:background="@null"
                     android:hint="0"
                     android:inputType="number"
                     android:maxLength="15"
-                    android:text='@{viewModel.usedPoint}'
                     android:textColorHint="@color/warm_grey_two"
                     android:textCursorDrawable="@null"
                     android:textSize="@dimen/text_13"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@={viewModel.usedPoint}" />
 
                 <TextView
                     style="@style/PaymentContentGreyTextStyle"

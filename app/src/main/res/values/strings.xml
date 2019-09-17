@@ -539,8 +539,7 @@
     <string name="paymentreuslt_button_bag">장바구니</string>
     <string name="paymentreuslt_button_continue">쇼핑 계속하기</string>
 
-    <string name="payment_message_maxusagepoint1">The maximum usable point is</string>
-    <string name="payment_message_maxusagepoint2">P</string>
+    <string name="payment_message_maxusagepoint">The maximum usable point is %d P</string>
     <string name="payment_message_selectpaymentway">Please select a payment method</string>
     <string name="payment_message_confirmtemrs">Please agree to the terms and conditions</string>
 
