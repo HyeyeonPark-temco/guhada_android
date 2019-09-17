@@ -49,6 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_marginTop="30dp"
+                    android:visibility="gone"
                     android:background="#005500" />
 
                 <!-- SUB MENU -->
@@ -57,6 +58,7 @@
                     layout="@layout/layout_sub_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="20dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

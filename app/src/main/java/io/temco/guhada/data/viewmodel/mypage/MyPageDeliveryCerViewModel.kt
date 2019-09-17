@@ -1,7 +1,6 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
@@ -54,7 +53,6 @@ class MyPageDeliveryCerViewModel(val context: Context) : BaseObservableViewModel
     }
 
     fun getCancelOrderHistories() {
-        Log.e("취소내역", "start: $startDate, end: $endDate")
         if (startDate > 0 && endDate > 0) {
             ServerCallbackUtil.callWithToken(task = { token ->
                 ClaimServer.getCancelOrders(OnServerListener { success, o ->

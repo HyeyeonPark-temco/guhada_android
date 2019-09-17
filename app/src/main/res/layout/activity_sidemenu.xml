@@ -18,6 +18,7 @@
         android:id="@+id/linearlayout_sidemenu_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="1"
         android:background="@color/background_default"
         android:orientation="vertical">
 
@@ -30,6 +31,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:overScrollMode="never"
             android:scrollbars="none">
 
@@ -72,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_marginTop="30dp"
+                    android:visibility="gone"
                     android:background="@drawable/sidemenu_dummy" />
 
                 <!-- SUB MENU -->
@@ -80,9 +83,19 @@
                     layout="@layout/layout_sub_menu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="20dp" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/app_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_four"
+            android:padding="10dp"
+            android:gravity="right"
+            android:textSize="@dimen/text_14" />
     </LinearLayout>
 
 </layout>

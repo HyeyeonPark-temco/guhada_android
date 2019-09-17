@@ -1,6 +1,5 @@
 package io.temco.guhada.common.util
 
-import android.util.Log
 import io.temco.guhada.common.Preferences
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -40,7 +39,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (!APIHelper.isCallSuccess(response = response)) {
             if (response.code() == 401 || response.code() == 403) {
-                Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
+                //Log.e("RETRYING-onResponse", "$retryCount/$totalRetries")
                 if (retryCount++ < totalRetries) {
                     retry()
                 } else {
@@ -71,7 +70,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
             val errorCode = (t as HttpException).code()
             if (errorCode == 401 || errorCode == 403) {
                 if (retryCount++ < totalRetries) {
-                    Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
+                    //Log.e("RETRYING-onFailure", "$retryCount/$totalRetries")
                     retry()
                 } else {
                     Preferences.clearToken(true)
@@ -89,7 +88,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
     open fun onFinalResponse(call: Call<T>, response: Response<T>) {
         val message = if (response.message().isNullOrBlank()) response.message() else response.errorBody().toString()
         ToastUtil.showMessage(message)
-        Log.e("onFinalResponse", "")
+        //Log.e("onFinalResponse", "")
     }
 
     open fun onFinalFailure(call: Call<T>, t: Throwable) {
@@ -97,7 +96,7 @@ abstract class RetryableCallback<T>(private var call: Call<T>) : Callback<T> {
             val message = if (t.message.isNullOrBlank()) "FAILED API CALL" else t.message
                     ?: "FAILED API CALL"
             ToastUtil.showMessage(message)
-            Log.e("onFinalFailure", "")
+            //Log.e("onFinalFailure", "")
         } catch (e: Exception) {
             CommonUtil.debug(e.message)
         }

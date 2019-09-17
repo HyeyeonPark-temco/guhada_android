@@ -312,6 +312,19 @@
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
+
+        <!-- custom web view activity -->
+        <activity
+            android:name=".view.activity.CustomWebViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
+        <!-- image detail -->
+        <activity
+            android:name=".view.activity.ImageDetailViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <!-- Kakao -->
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"

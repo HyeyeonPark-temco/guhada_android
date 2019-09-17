@@ -33,6 +33,7 @@ import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
@@ -866,6 +867,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null) mProductListData = (ProductList) o;
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.toString());
                 } else {
                     ;
                 }

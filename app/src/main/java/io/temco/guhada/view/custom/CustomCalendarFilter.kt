@@ -193,7 +193,6 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
         startDate = convertDateFormat(calendar, ".")
         startTimeStamp = calendar.timeInMillis
 
-        Log.e("캘린더필터", "start: $startDate($startTimeStamp) , end: $endDate($endTimeStamp)")
     }
 
 

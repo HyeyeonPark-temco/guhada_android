@@ -3,6 +3,7 @@ package io.temco.guhada.data.server
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.base.BaseModel
@@ -29,6 +30,7 @@ class SearchServer {
                 val body = FilterBody()
                 body.categoryIds = intArrayOf(id)
                 body.searchResultOrder = Type.ProductOrder.get(type)
+                if(CustomLog.flag)CustomLog.L("getProductListByCategory","body",body)
                 // Request
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
                         .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
@@ -46,10 +48,8 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
-
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }

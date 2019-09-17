@@ -7,11 +7,11 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.auth0.android.jwt.JWT
 import io.reactivex.disposables.CompositeDisposable
+import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.model.Brand
@@ -19,6 +19,7 @@ import io.temco.guhada.data.viewmodel.SideMenuViewModel
 import io.temco.guhada.databinding.ActivitySidemenuBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.category.SideMenuCategoryFirstListAdapter
+
 
 /**
  * @author park jungho
@@ -60,6 +61,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         mBinding.viewModel = mViewModel
 
         setViewInit()
+        if(CustomLog.flag)setAppInfo()
     }
 
 
@@ -201,6 +203,17 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true)
         this@SideMenuActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
         this@SideMenuActivity.onBackPressed()
+    }
+
+    private fun setAppInfo(){
+        var info = ""
+        if(CommonUtil.checkToken()){
+            info += "userId="+CommonUtil.checkUserId()+", "
+        }
+        val pinfo = packageManager.getPackageInfo(packageName, 0)
+        info += "appVer="+pinfo.versionName
+        info += ", server="+ BuildConfig.BuildType.name
+        mBinding.appInfo.text = info
     }
 
     override fun onResume() {

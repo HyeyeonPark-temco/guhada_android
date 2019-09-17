@@ -4,13 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +19,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
@@ -69,6 +68,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentDiscountresult.viewModel = mViewModel
         mBinding.includePaymentPaymentway.viewModel = mViewModel
         mBinding.viewModel = mViewModel
+        mBinding.includePaymentPaymentway.setPurchaseClickListener { CommonUtilKotlin.startTermsPurchase(this@PaymentActivity) }
         mBinding.executePendingBindings()
     }
 
@@ -326,7 +326,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             Flag.RequestCode.LOGIN -> {
                 if (resultCode == Activity.RESULT_OK) {
                     mViewModel.callWithToken { accessToken ->
-                        Log.e("AccessToken", accessToken)
                         mViewModel.addCartItem(accessToken)
                     }
                 } else {

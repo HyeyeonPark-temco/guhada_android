@@ -2,6 +2,7 @@ package io.temco.guhada.data.model.body;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class FilterBody {
@@ -20,4 +21,15 @@ public class FilterBody {
 
     @SerializedName("searchResultOrder")
     public String searchResultOrder;
+
+    @Override
+    public String toString() {
+        return "FilterBody{" +
+                "brandIds=" + Arrays.toString(brandIds) +
+                ", categoryIds=" + Arrays.toString(categoryIds) +
+                ", filters=" + filters +
+                ", searchQueries=" + Arrays.toString(searchQueries) +
+                ", searchResultOrder='" + searchResultOrder + '\'' +
+                '}';
+    }
 }

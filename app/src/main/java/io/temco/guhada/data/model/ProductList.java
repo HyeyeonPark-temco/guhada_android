@@ -20,4 +20,11 @@ public class ProductList {
 
     @SerializedName("deals")
     public List<Deal> deals;
+
+    @Override
+    public String toString() {
+        return "ProductList{" +
+                ", filters=" + filters +
+                '}';
+    }
 }

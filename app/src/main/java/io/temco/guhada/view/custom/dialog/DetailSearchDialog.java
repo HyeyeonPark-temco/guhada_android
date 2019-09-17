@@ -65,6 +65,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.layout_close:
             case R.id.image_close:
                 dismiss();
                 break;

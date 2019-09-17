@@ -281,7 +281,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                 CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                         cancelButtonVisible = true,
                         confirmTask = {
-                            CommonUtil.moveLoginPage(this@CommunityDetailActivity)
+                            CommonUtil.startLoginPage(this@CommunityDetailActivity)
                         }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
             }
         }

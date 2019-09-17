@@ -99,12 +99,14 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
             // Price
             if (data.discountRate > 0) {
                 mBinding.textPrice.setText(TextUtil.getDecimalFormat(data.discountPrice.intValue()));
+                mBinding.textPriceSalePer.setVisibility(View.VISIBLE);
                 mBinding.textPriceSalePer.setText(String.format(context.getString(R.string.product_price_sale_per), data.discountRate));
                 mBinding.textPricediscount.setVisibility(View.VISIBLE);
                 mBinding.textPricediscount.setPaintFlags(mBinding.textPricediscount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 mBinding.textPricediscount.setText(TextUtil.getDecimalFormat(data.sellPrice.intValue()));
             } else {
                 mBinding.textPrice.setText(TextUtil.getDecimalFormat(data.sellPrice.intValue()));
+                mBinding.textPriceSalePer.setVisibility(View.GONE);
                 mBinding.textPricediscount.setVisibility(View.GONE);
             }
             /*if (data.setDiscount) {
@@ -116,6 +118,7 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
 
             // Ship
             mBinding.textShipFree.setVisibility(data.freeShipping ? View.VISIBLE : View.GONE);
+            mBinding.executePendingBindings();
         }
     }
 

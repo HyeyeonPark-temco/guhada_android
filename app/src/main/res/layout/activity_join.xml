@@ -8,6 +8,16 @@
         <import type="android.text.InputType" />
 
         <variable
+            name="personalClickListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="purchaseClickListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="saleClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.account.JoinViewModel" />
     </data>
@@ -221,6 +231,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="25dp"
+                            android:onClick="@{purchaseClickListener}"
                             android:text="@string/join_show"
                             android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_12"
@@ -264,6 +275,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="25dp"
+                            android:onClick="@{personalClickListener}"
                             android:text="@string/join_show"
                             android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_12"
@@ -355,6 +367,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="25dp"
+                            android:onClick="@{saleClickListener}"
                             android:text="@string/join_show"
                             android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_12"

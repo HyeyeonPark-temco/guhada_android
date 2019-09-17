@@ -53,9 +53,13 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
         })
         mViewModel.getCommunityInfo()
         mBinding.setOnClickCreateBbs {
-            var intent = Intent((context as AppCompatActivity), CreateBbsActivity::class.java)
-            intent.putExtra("currentIndex",(if(currentPagerIndex<3) 0 else currentPagerIndex-3))
-            (context as AppCompatActivity).startActivityForResult(intent, 0)
+            if(CommonUtil.checkToken()){
+                var intent = Intent((context as AppCompatActivity), CreateBbsActivity::class.java)
+                intent.putExtra("currentIndex",(if(currentPagerIndex<3) 0 else currentPagerIndex-3))
+                (context as AppCompatActivity).startActivityForResult(intent, 0)
+            }else{
+                CommonUtil.startLoginPage(context as AppCompatActivity)
+            }
         }
     }
 

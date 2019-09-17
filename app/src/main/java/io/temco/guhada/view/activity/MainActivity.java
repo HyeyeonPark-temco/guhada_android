@@ -419,7 +419,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     }
                 } else {
                     //ToastUtil.showMessage("로그인 후 사용해 주세요.");
-                    CommonUtil.moveLoginPage(MainActivity.this);
+                    CommonUtil.startLoginPage(MainActivity.this);
                     selectTab(2, false);
                 }
                 break;

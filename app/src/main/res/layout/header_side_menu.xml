@@ -66,6 +66,7 @@
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10dp"
+                        android:visibility="gone"
                         android:background="@drawable/burger_top_setting"
                         android:onClick="@{clickListener}" />
 

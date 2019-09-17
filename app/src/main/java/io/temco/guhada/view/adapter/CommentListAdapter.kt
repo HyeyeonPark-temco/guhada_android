@@ -128,7 +128,7 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
                     CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                             cancelButtonVisible = true,
                             confirmTask = {
-                                CommonUtil.moveLoginPage(model.context as AppCompatActivity)
+                                CommonUtil.startLoginPage(model.context as AppCompatActivity)
                             }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
                 }
             }
@@ -139,7 +139,7 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
                     CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                             cancelButtonVisible = true,
                             confirmTask = {
-                                CommonUtil.moveLoginPage(model.context as AppCompatActivity)
+                                CommonUtil.startLoginPage(model.context as AppCompatActivity)
                             }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
                 }
             }
@@ -171,7 +171,7 @@ class CommentListViewHolder(containerView: View, val binding: ItemCommentListBin
                     CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                             cancelButtonVisible = true,
                             confirmTask = {
-                                CommonUtil.moveLoginPage(model.context as AppCompatActivity)
+                                CommonUtil.startLoginPage(model.context as AppCompatActivity)
                             }).show(manager = (model.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
                 }
             }

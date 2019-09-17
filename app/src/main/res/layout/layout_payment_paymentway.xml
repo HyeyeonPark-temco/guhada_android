@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
+        <variable
+            name="purchaseClickListener"
+            type="android.view.View.OnClickListener" />
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.payment.PaymentViewModel" />
@@ -533,10 +534,9 @@
 
             <TextView
                 style="@style/TextMedium"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_weight="1"
                 android:text="@string/payment_text_terms"
                 android:textColor="@color/greyish_brown_two" />
 
@@ -546,6 +546,8 @@
                 android:background="@drawable/border_payment_coolgrey_bottom"
                 android:text="@string/common_show"
                 android:textColor="@color/cool_grey"
+                android:layout_marginLeft="4dp"
+                android:onClick="@{purchaseClickListener}"
                 android:textSize="@dimen/text_12" />
         </LinearLayout>
 

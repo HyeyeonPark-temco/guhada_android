@@ -195,7 +195,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             it.add(mBinding.framelayoutProductdetailMenu.id, mMenuFragment)
             it.add(mBinding.includeProductdetailContentheader.framelayoutProductdetailHeadermenu.id, mHeaderMenuFragment)
             it.commitAllowingStateLoss()
-            Log.e("TASK", "MENU FINISH")
         }
     }
 

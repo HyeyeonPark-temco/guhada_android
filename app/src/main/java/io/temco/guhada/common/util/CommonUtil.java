@@ -484,7 +484,7 @@ public class CommonUtil {
     }
 
 
-    public static void moveLoginPage(Activity activity){
+    public static void startLoginPage(Activity activity){
         activity.startActivityForResult(new Intent(activity, LoginActivity.class), Flag.RequestCode.LOGIN);
     }
 

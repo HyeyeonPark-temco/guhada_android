@@ -21,7 +21,7 @@
             android:id="@+id/layout_close"
             android:layout_width="match_parent"
             android:onClick="@{clickListener}"
-            android:layout_height="90dp">
+            android:layout_height="60dp">
 
             <ImageView
                 android:id="@+id/image_close"
@@ -37,7 +37,7 @@
 
         <!-- TITLE -->
         <TextView
-            style="@style/TextBold"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_dialog_header"
             android:background="@color/background_default"

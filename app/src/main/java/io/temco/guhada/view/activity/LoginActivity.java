@@ -242,7 +242,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     case Flag.ResultCode.SUCCESS:
                         // SNS 로그인
                         Token token = (Token) model.data;
-                        Log.e("TOKEN", token.getAccessToken());
                         Preferences.setToken(token);
                         setResult(RESULT_OK);
                         finish();
@@ -257,7 +256,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                                     t.setAccessToken(m.data.getAccessToken());
                                     t.setRefreshToken(m.data.getRefreshToken());
                                     t.setExpiresIn(m.data.getExpiresIn());
-                                    Log.e("TOKEN", t.getAccessToken());
 
                                     Preferences.setToken(t);
                                     setResult(RESULT_OK);

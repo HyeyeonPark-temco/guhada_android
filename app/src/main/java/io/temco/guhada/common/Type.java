@@ -66,6 +66,8 @@ public class Type {
         USERCLAIM_GUHADA,
         USERCLAIM_SELLER,
         COMMUNITY_TEMP_LIST,
+        IMAGE_DETAIL,
+        CUSTOM_WEBVIEW,
         VERIFY
     }
 
@@ -95,7 +97,8 @@ public class Type {
         NAVER_PROFILE,
         BENEFIT,
         GATEWAY,
-        STG_ORDER;
+        STG_ORDER,
+        WEB;
 
         public static String getUrl(Server type) {
             switch (type) {
@@ -125,6 +128,8 @@ public class Type {
                     return getGatewayUrl();
                 case STG_ORDER:
                     return "https://stg.order.guhada.com/";
+                case WEB:
+                    return getWebUrl();
                 default:
                     return "";
             }
@@ -261,13 +266,13 @@ public class Type {
     private static String getWebUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://qa.web.guhada.com/";
+                return "http://qa.guhada.com/";
             case STAGE:
-                return "https://stg.web.guhada.com/";
+                return "https://stg.guhada.com/";
             case RELEASE:
                 return "https://web.guhada.com/";
             default:
-                return "http://dev.web.guhada.com/";
+                return "http://dev.guhada.com/";
         }
     }
 

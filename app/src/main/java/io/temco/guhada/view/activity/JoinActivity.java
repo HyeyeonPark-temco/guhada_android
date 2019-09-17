@@ -13,6 +13,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBorderEditTextFocusListener;
 import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.viewmodel.account.JoinViewModel;
@@ -61,8 +62,31 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
         mViewModel.setToolBarTitle(getResources().getString(R.string.join_title));
         mBinding.includeJoinHeader.setViewModel(mViewModel);
         mBinding.setViewModel(mViewModel);
+
+        mBinding.setPersonalClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtilKotlin.INSTANCE.startTermsPersonal(JoinActivity.this);
+            }
+        });
+
+        mBinding.setPurchaseClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtilKotlin.INSTANCE.startTermsPurchase(JoinActivity.this);
+            }
+        });
+
+        mBinding.setSaleClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtilKotlin.INSTANCE.startTermsSale(JoinActivity.this);
+            }
+        });
+
         setEditTextFocusListener();
         mBinding.executePendingBindings();
+
     }
 
 
@@ -75,8 +99,15 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
                 if(isEmailFocus && !hasFocus){
                     isEmailFocus = false;
                     if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("JoinActivity","edittextJoinEmail validationCheck",mBinding.edittextJoinEmail.getText());
-                    if(!TextUtils.isEmpty(mBinding.edittextJoinEmail.getText()) && !CommonUtil.validateEmail(mBinding.edittextJoinEmail.getText())) mBinding.textviewJoinEmailfocus.setVisibility(View.VISIBLE);
-                    else mBinding.textviewJoinEmailfocus.setVisibility(View.GONE);
+                    if(TextUtils.isEmpty(mBinding.edittextJoinEmail.getText())){
+                        mBinding.textviewJoinEmailfocus.setText(R.string.findpwd_message_invalidemailformat_none);
+                        mBinding.textviewJoinEmailfocus.setVisibility(View.VISIBLE);
+                    }else{
+                        if(!TextUtils.isEmpty(mBinding.edittextJoinEmail.getText()) && !CommonUtil.validateEmail(mBinding.edittextJoinEmail.getText())) {
+                            mBinding.textviewJoinEmailfocus.setText(R.string.findpwd_message_invalidemailformat);
+                            mBinding.textviewJoinEmailfocus.setVisibility(View.VISIBLE);
+                        }else mBinding.textviewJoinEmailfocus.setVisibility(View.GONE);
+                    }
                 }else mBinding.textviewJoinEmailfocus.setVisibility(View.GONE);
             }
         });

@@ -65,7 +65,7 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
                                 CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                                         cancelButtonVisible = true,
                                         confirmTask = {
-                                            CommonUtil.moveLoginPage(viewModel.context as AppCompatActivity)
+                                            CommonUtil.startLoginPage(viewModel.context as AppCompatActivity)
                                         }).show(manager = (viewModel.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
                             }
                         }
@@ -92,7 +92,7 @@ class CommentListFragment(val viewModel : CommunityDetailViewModel) : BaseFragme
                                 CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                                         cancelButtonVisible = true,
                                         confirmTask = {
-                                            CommonUtil.moveLoginPage(viewModel.context as AppCompatActivity)
+                                            CommonUtil.startLoginPage(viewModel.context as AppCompatActivity)
                                         }).show(manager = (viewModel.context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
                             }
                         }

@@ -673,7 +673,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
                     cancelButtonVisible = true,
                     confirmTask = {
-                        CommonUtil.moveLoginPage(context as AppCompatActivity)
+                        CommonUtil.startLoginPage(context as AppCompatActivity)
                     }).show(manager = (context as AppCompatActivity).supportFragmentManager, tag = "CommunityDetailActivity")
         }
     }

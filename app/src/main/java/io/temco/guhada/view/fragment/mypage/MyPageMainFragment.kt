@@ -117,45 +117,45 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
                     override fun setViewLayout(container: ViewGroup, item: String, position: Int): View {
                         var vw: View
                         when (position) {
-                            0 -> {
+                            /*0 -> {
                                 vw = MyPageMainLayout(it)
-                            }
-                            1 -> {
+                            }*/
+                            0 -> {
                                 vw = MyPageDeliveryLayout(it)
                             }
-                            2 -> {
+                            1 -> {
                                 vw = MyPageDeliveryCerLayout(it)
                             }
-                            3 -> {
+                            2 -> {
                                 vw = MyPagePointLayout(it)
                             }
-                            4 -> {
+                            3 -> {
                                 vw = MyPageCouponLayout(it)
                             }
-                            5 -> {
+                            4 -> {
                                 vw = MyPageBookMarkLayout(it, mDisposable)
                             }
-                            6 -> {
+                            5 -> {
                                 vw = MyPageFollowLayout(it)
                             }
-                            7 -> {
+                            6 -> {
                                 vw = MyPageRecentLayout(it, mDisposable)
                             }
-                            8 -> {
+                            7 -> {
                                 vw = MyPageReviewLayout(it)
                             }
-                            9 -> {
+                            8 -> {
                                 vw = MyPageClaimLayout(it)
                             }
-                            10 -> {
+                            9 -> {
                                 vw = MyPageAddressLayout(it)
                             }
-                            11 -> {
+                            /*11 -> {
                                 vw = MyPageGradeLayout(it)
                             }
-                            12 -> {
+                            10 -> {
                                 vw = MyPageUserInfoLayout(it)
-                            }
+                            }*/
                             else -> {
                                 vw = MyPageMainLayout(it)
                             }

@@ -57,7 +57,6 @@ class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>()
     inner class AndroidBridge {
         @JavascriptInterface
         fun processData(zip: String, address: String) {
-            Log.e("주소 검색 결과", "[$zip] $address")
             intent.putExtra("zip", zip)
             intent.putExtra("address", address)
             setResult(RESULT_OK, intent)
