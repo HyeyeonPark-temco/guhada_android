@@ -180,7 +180,7 @@
                                 style="@style/TextBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="123124"
+                                android:text="@{@string/common_priceunit_format(totalProductPrice - viewModel.mTotalDiscountPrice)}"
                                 android:textColor="@color/common_blue_purple"
                                 android:textSize="@dimen/text_21" />
 

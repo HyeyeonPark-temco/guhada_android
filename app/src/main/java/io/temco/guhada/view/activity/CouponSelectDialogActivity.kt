@@ -7,7 +7,6 @@ import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
 import io.temco.guhada.databinding.ActivityCouponselectdialogBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.coupon.CouponDealAdapter
 import io.temco.guhada.view.adapter.coupon.CouponSellerAdapter
 
 /**
