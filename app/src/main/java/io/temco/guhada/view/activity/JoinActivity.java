@@ -132,6 +132,7 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
                     mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd);
                     mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.VISIBLE);
                 }else mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.GONE);
+                mViewModel.setEssentialChecked(mViewModel.getEssentialChecked().get());
             }
         });
         BorderEditTextView.setInverseBindingListener(mBinding.edittextJoinConfirmpassword, new InverseBindingListener() {
@@ -143,6 +144,7 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
                     mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd);
                     mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.VISIBLE);
                 }else mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.GONE);
+                mViewModel.setEssentialChecked(mViewModel.getEssentialChecked().get());
             }
         });
     }

@@ -242,14 +242,14 @@
     <string name="verifyphone_terms3">통신사 이용약관 동의</string>
     <string name="verifyphone_terms4">서비스 이용약관</string>
     <string name="verifyphone_terms5">본인인증 목적으로 상기 정보를 통신사에 제공함을 동의</string>
-    <string name="verifyphone_content">본인 명의의 휴대폰으로\n아이디 전체를 확인하실 수 있습니다.</string>
-    <string name="verifyphone_button">본인 휴대폰 인증하여 아이디 찾기</string>
+    <string name="verifyphone_content">본인 명의 휴대폰으로 비밀번호를 재설정합니다.</string>
+    <string name="verifyphone_button">본인 명의 휴대폰으로 인증</string>
 
-    <string name="verifyphone_description1">본인명의의 휴대폰으로 본인여부를 확인합니다.</string>
+    <!--<string name="verifyphone_description1">본인명의의 휴대폰으로 본인여부를 확인합니다.</string>
     <string name="verifyphone_description2">본인인증 서비스는 NICE신용평가정보에서 제공합니다.</string>
     <string name="verifyphone_description3">인증수단의 명의가 다를 경우 고객센터로 문의하시기 바랍니다..</string>
-    <string name="verifyphone_description4">본인인증 시 입력한 정보는 본인확인 용도 외에는 사용되거나, 보관되지 않습니다.</string>
-    <string name="verifyphone_description5">본인인증비용은 구하다에서 부담합니다.</string>
+    <string name="verifyphone_description4">본인인증 시 입력한 정보는 본인확인 용도 외에는 사용되거나, 보관되지 않습니다.</string>-->
+    <string name="verifyphone_description5">인증비용은 구하다에서 부담합니다.</string>
 
     <!-- VERIFY -->
     <string name="verify_title">인증하기</string>
@@ -698,7 +698,7 @@
     <string name="cart_message_changeprice">해당 상품의 가격 정보가 변경되었습니다.</string>
     <string name="cart_message_changeselectedoption">상품 옵션이 변경되었습니다.</string>
     <string name="cart_message_notselectedoption">옵션을 선택해주세요</string>
-    <string name="cart_message_delete">선택한 상품을 삭제하시겠습니까?</string>
+    <string name="cart_message_delete">해당 상품을 삭제하시겠습니까?</string>
     <string name="cart_message_deleteempty">삭제할 상품을 선택해주세요</string>
     <string name="cart_message_paymentempty">구매할 상품을 선택해주세요</string>
 

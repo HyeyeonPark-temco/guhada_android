@@ -11,6 +11,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
@@ -63,11 +64,11 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
 
     @Bindable
     public ObservableBoolean getEssentialChecked() {
-        return essentialChecked;
-    }
+        return essentialChecked;    }
 
-    public void setEssentialChecked(ObservableBoolean essentialChecked) {
-        this.essentialChecked = essentialChecked;
+    public void setEssentialChecked(boolean flag) {
+        this.essentialChecked.set(flag);
+        notifyPropertyChanged(BR.essentialChecked);
     }
 
     @Bindable
@@ -75,9 +76,6 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
         return optionalChecked;
     }
 
-    public void setOptionalChecked(ObservableBoolean optionalChecked) {
-        this.optionalChecked = optionalChecked;
-    }
 
     // CLICK LISTENER
     public void onClickBack() {
@@ -206,6 +204,8 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
                     boolean personalInfoTosChecked = user.getAgreeCollectPersonalInfoTos();
                     boolean purchaseTosChecked = user.getAgreePurchaseTos();
                     boolean isEssentialAllChecked = personalInfoTosChecked && purchaseTosChecked;
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("update","isEssentialAllChecked",isEssentialAllChecked);
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("update","essentialChecked.get() ",essentialChecked.get() );
                     if (essentialChecked.get() != isEssentialAllChecked) {
                         essentialChecked = new ObservableBoolean(isEssentialAllChecked);
                         notifyPropertyChanged(BR.essentialChecked);

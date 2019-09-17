@@ -131,6 +131,7 @@
                     android:onClick="@{()->viewModel.onClickGuestOrder()}"
                     android:text="@string/login_button_guestorder"
                     android:textColor="@color/silver"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
