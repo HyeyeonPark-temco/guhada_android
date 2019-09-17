@@ -137,7 +137,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="25dp"
-                            android:text="12345원"
+                            android:text="@{@string/common_priceunit_format(viewModel.mTotalDiscountPrice)}"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textview_couponselect_totalorderpricecontent" />
 
@@ -180,7 +180,7 @@
                                 style="@style/TextBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="123124"
+                                android:text="@{@string/common_priceunit_format(totalProductPrice - viewModel.mTotalDiscountPrice)}"
                                 android:textColor="@color/common_blue_purple"
                                 android:textSize="@dimen/text_21" />
 
