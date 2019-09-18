@@ -26,6 +26,7 @@ import io.temco.guhada.data.model.AvailableBenefitCount
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
+import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
@@ -39,6 +40,7 @@ import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import io.temco.guhada.view.activity.CouponSelectDialogActivity
 import io.temco.guhada.view.activity.PaymentActivity
 import java.text.NumberFormat
 
@@ -106,7 +108,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var usedPoint: ObservableField<String> = ObservableField("")
         @Bindable
         get() {
-            return if (usedPointNumber > 0) {
+            return if (usedPointNumber >= 0) {
                 ObservableField(NumberFormat.getIntegerInstance().format(usedPointNumber))
             } else {
                 field
@@ -178,6 +180,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 쿠폰, 포인트
     var mAvailableBenefitCount: MutableLiveData<AvailableBenefitCount> = MutableLiveData(AvailableBenefitCount())
+    var mSelectedCouponMap: HashMap<Long, CouponWallet?> = hashMapOf() // dealId, couponWallet
     var mTotalDiscountPrice = ObservableInt(0)
         @Bindable
         get() = field
@@ -228,7 +231,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     notifyPropertyChanged(BR.shippingAddressText)
 
                     // 사용 가능 포인트
-                     this.holdingPoint = order.availablePointResponse.availableTotalPoint.toLong()
+                    this.holdingPoint = order.availablePointResponse.availableTotalPoint.toLong()
 //                    this.holdingPoint = 10000   // test
                     this.mTotalDiscountPrice = ObservableInt(order.totalDiscountDiffPrice)
                     notifyPropertyChanged(BR.mTotalDiscountPrice)
@@ -384,6 +387,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         if (this@PaymentViewModel.selectedShippingAddress == null) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
+                            // 현금영수증
                             if (selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) {
                                 mRequestOrder.cashReceiptNo = ""
                                 mRequestOrder.cashReceiptType = ""
@@ -394,7 +398,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     RequestOrder.CashReceiptType.BUSINESS.code -> "$mRecipientCorporation1$mRecipientCorporation2$mRecipientCorporation3"
                                     else -> ""
                                 }
-//                                Log.e("현금영수증", "${mRequestOrder.cashReceiptUsage}//${mRequestOrder.cashReceiptType}//${mRequestOrder.cashReceiptNo}")
                             }
 
                             if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
@@ -405,14 +408,18 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     mRequestOrder.cartItemPayments.add(RequestOrder.CartItemPayment().apply { this.cartItemId = this@PaymentViewModel.cart.cartItemId })
                                 else
                                     Observable.fromIterable(cartIdList)
-                                            .map {
-                                                RequestOrder.CartItemPayment().apply { this.cartItemId = it.toLong() }
-
-
+                                            .map { cartItemId ->
+                                                RequestOrder.CartItemPayment().apply {
+                                                    this.cartItemId = cartItemId.toLong()
+                                                    this.couponNumber = getCouponNumberByCartItemId(cartItemId.toLong())
+                                                }
                                             }.subscribe {
                                                 mRequestOrder.cartItemPayments.add(it)
                                             }
                             }
+
+                            // 사용 포인트
+                            mRequestOrder.consumptionPoint = usedPointNumber.toInt()
 
                             val accessToken = Preferences.getToken().accessToken
                             addShippingAddress(accessToken)
@@ -426,6 +433,17 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         } else {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
         }
+    }
+
+    private fun getCouponNumberByCartItemId(cartItemId: Long): String {
+        for (item in order.orderItemList)
+            if (item.cartItemId == cartItemId) {
+                var couponNumber = mSelectedCouponMap[item.dealId]?.couponNumber ?: ""
+                couponNumber = if (couponNumber == CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER) "" else couponNumber
+                return couponNumber
+            }
+
+        return ""
     }
 
     // 본인인증

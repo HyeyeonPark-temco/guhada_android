@@ -383,9 +383,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             RequestCode.COUPON_SELECT.flag -> {
                 if (resultCode == Activity.RESULT_OK) {
                     // 쿠폰 선택
-                    data?.getSerializableExtra("selectedCouponMap").let { map ->
-                        if (map != null) {
-                            val selectedCouponMap = map as HashMap<Long, CouponWallet?>
+                    data?.getSerializableExtra("selectedCouponMap").let { selectedCouponMap ->
+                        if (selectedCouponMap != null) {
+                            mViewModel.mSelectedCouponMap = selectedCouponMap as HashMap<Long, CouponWallet?>
                             var couponCount = 0
                             for (key in selectedCouponMap.keys)
                                 if (selectedCouponMap[key]?.couponId ?: -1 > -1)
