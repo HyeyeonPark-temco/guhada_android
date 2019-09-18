@@ -25,188 +25,188 @@
             android:textColor="@color/text_3"
             android:textSize="20dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_header"
-        android:gravity="center"
-        android:orientation="horizontal">
-
         <LinearLayout
-            android:id="@+id/tab_0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="12dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="14dp"
-            android:tag="0"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_header"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <!-- DOT -->
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/tab_0"
                 android:layout_width="wrap_content"
-                android:layout_height="10dp">
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="12dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="14dp"
+                android:tag="0"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/tab_img_0"
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/drawable_round_corner_5"
-                    android:background="@drawable/selector_tab_dot_category2" />
-            </RelativeLayout>
+                <!-- DOT -->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp">
 
-            <!-- TITLE -->
-            <TextView
-                android:id="@+id/tab_title_0"
-                style="@style/TextMedium"
+                    <ImageView
+                        android:id="@+id/tab_img_0"
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/drawable_round_corner_5"
+                        android:background="@drawable/selector_tab_dot_category2" />
+                </RelativeLayout>
+
+                <!-- TITLE -->
+                <TextView
+                    android:id="@+id/tab_title_0"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:textColor="@drawable/selector_text_category2"
+                    android:text="@string/mainlistsubtitle_all"
+                    android:textSize="@dimen/text_15" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/tab_1"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:textColor="@drawable/selector_text_category2"
-                android:text="@string/mainlistsubtitle_all"
-                android:textSize="@dimen/text_15" />
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="12dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="14dp"
+                android:tag="0"
+                android:orientation="vertical">
 
-            <Space
+                <!-- DOT -->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp">
+
+                    <ImageView
+                        android:id="@+id/tab_img_1"
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/drawable_round_corner_5"
+                        android:background="@drawable/selector_tab_dot_category2" />
+                </RelativeLayout>
+
+                <!-- TITLE -->
+                <TextView
+                    android:id="@+id/tab_title_1"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:textColor="@drawable/selector_text_category2"
+                    android:text="@string/mainlistsubtitle_women"
+                    android:textSize="@dimen/text_15" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/tab_2"
                 android:layout_width="wrap_content"
-                android:layout_height="14dp" />
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="12dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="14dp"
+                android:tag="0"
+                android:orientation="vertical">
+
+                <!-- DOT -->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp">
+
+                    <ImageView
+                        android:id="@+id/tab_img_2"
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/drawable_round_corner_5"
+                        android:background="@drawable/selector_tab_dot_category2" />
+                </RelativeLayout>
+
+                <!-- TITLE -->
+                <TextView
+                    android:id="@+id/tab_title_2"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:textColor="@drawable/selector_text_category2"
+                    android:text="@string/mainlistsubtitle_men"
+                    android:textSize="@dimen/text_15" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/tab_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="12dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="14dp"
+                android:tag="0"
+                android:orientation="vertical">
+
+                <!-- DOT -->
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="10dp">
+
+                    <ImageView
+                        android:id="@+id/tab_img_3"
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/drawable_round_corner_5"
+                        android:background="@drawable/selector_tab_dot_category2" />
+                </RelativeLayout>
+
+                <!-- TITLE -->
+                <TextView
+                    android:id="@+id/tab_title_3"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center"
+                    android:textColor="@drawable/selector_text_category2"
+                    android:text="@string/mainlistsubtitle_kids"
+                    android:textSize="@dimen/text_15" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp" />
+            </LinearLayout>
+
         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/tab_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="12dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="14dp"
-            android:tag="0"
-            android:orientation="vertical">
-
-            <!-- DOT -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="10dp">
-
-                <ImageView
-                    android:id="@+id/tab_img_1"
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/drawable_round_corner_5"
-                    android:background="@drawable/selector_tab_dot_category2" />
-            </RelativeLayout>
-
-            <!-- TITLE -->
-            <TextView
-                android:id="@+id/tab_title_1"
-                style="@style/TextMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:textColor="@drawable/selector_text_category2"
-                android:text="@string/mainlistsubtitle_women"
-                android:textSize="@dimen/text_15" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="14dp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/tab_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="12dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="14dp"
-            android:tag="0"
-            android:orientation="vertical">
-
-            <!-- DOT -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="10dp">
-
-                <ImageView
-                    android:id="@+id/tab_img_2"
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/drawable_round_corner_5"
-                    android:background="@drawable/selector_tab_dot_category2" />
-            </RelativeLayout>
-
-            <!-- TITLE -->
-            <TextView
-                android:id="@+id/tab_title_2"
-                style="@style/TextMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:textColor="@drawable/selector_text_category2"
-                android:text="@string/mainlistsubtitle_men"
-                android:textSize="@dimen/text_15" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="14dp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/tab_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginRight="12dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="14dp"
-            android:tag="0"
-            android:orientation="vertical">
-
-            <!-- DOT -->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="10dp">
-
-                <ImageView
-                    android:id="@+id/tab_img_3"
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/drawable_round_corner_5"
-                    android:background="@drawable/selector_tab_dot_category2" />
-            </RelativeLayout>
-
-            <!-- TITLE -->
-            <TextView
-                android:id="@+id/tab_title_3"
-                style="@style/TextMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:textColor="@drawable/selector_text_category2"
-                android:text="@string/mainlistsubtitle_kids"
-                android:textSize="@dimen/text_15" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="14dp" />
-        </LinearLayout>
-
-    </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1235,5 +1235,9 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/pale_grey"/>
     </LinearLayout>
 </layout>

@@ -155,7 +155,7 @@
     <string name="detail_search_result_count">검색결과 보기(%s개)</string>
 
     <!-- LOGIN -->
-    <string name="login_hint_email">Email</string>
+    <string name="login_hint_email">아이디(이메일)</string>
     <string name="login_hint_password">Password</string>
     <string name="login_title">Login</string>
     <string name="login_naver">Naver\nlog in</string>
@@ -700,6 +700,7 @@
     <string name="cart_message_changeselectedoption">상품 옵션이 변경되었습니다.</string>
     <string name="cart_message_notselectedoption">옵션을 선택해주세요</string>
     <string name="cart_message_delete">해당 상품을 삭제하시겠습니까?</string>
+    <string name="cart_message_delete_select">선택한 상품을 삭제하시겠습니까?</string>
     <string name="cart_message_deleteempty">삭제할 상품을 선택해주세요</string>
     <string name="cart_message_paymentempty">구매할 상품을 선택해주세요</string>
 

@@ -20,7 +20,6 @@ import io.temco.guhada.view.adapter.main.HomeListAdapter
  */
 class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
     private var repository: HomeListRepository = HomeListRepository(context)
-    var currentSubTitleIndex = 0
 
     private val _listData : SingleLiveEvent<ArrayList<MainBaseModel>> = repository.getList()
     private val adapter = HomeListAdapter(this,listData.value!!)

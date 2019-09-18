@@ -87,8 +87,8 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
                 Intent intent = new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 mPendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
             } else {
-                if ("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName()))
-                    showToast(R.string.common_message_nfc_off);
+                /*if ("MainActivity".equalsIgnoreCase(this.getClass().getSimpleName()))
+                    showToast(R.string.common_message_nfc_off);*/
             }
         }
     }

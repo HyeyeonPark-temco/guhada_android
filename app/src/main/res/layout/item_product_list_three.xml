@@ -9,15 +9,15 @@
         android:padding="5dp">
 
         <io.temco.guhada.view.custom.layout.SameRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="110dp"
+            android:layout_height="110dp">
 
             <!-- THUMBNAIL -->
             <ImageView
                 style="@style/ProductImageType"
                 android:id="@+id/image_thumb"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_width="110dp"
+                android:layout_height="110dp" />
 
             <!-- SHIP -->
             <!--<TextView-->
@@ -63,6 +63,7 @@
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:textColor="@color/text_3"
                 android:textSize="@dimen/text_11" />
 
@@ -75,16 +76,29 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/text_3"
-                android:textSize="@dimen/text_14" />
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:id="@+id/text_title"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="30dp"
+                android:layout_marginTop="3dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/text_3"
+                android:textSize="@dimen/text_12" />
 
             <!-- PRICE -->
             <TextView
                 android:id="@+id/text_price"
-                style="@style/TextBold"
-                android:layout_width="match_parent"
+                style="@style/TextMedium"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:textColor="@color/text_3"
-                android:textSize="@dimen/text_16" />
+                android:textSize="@dimen/text_15"  />
         </LinearLayout>
     </LinearLayout>
 </layout>

@@ -83,10 +83,10 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
             if (data.options != null && data.options.size() > 0) {
                 for (Deal.Option o : data.options) {
                     switch (Type.ProductOption.getType(o.type)) {
+                        case RGB:
                         case COLOR:
                             addColor(context, mBinding.layoutColor, 5, o.attributes); // 5 Units
                             break;
-
                         case TEXT:
                             addText(context, o.attributes);
                             break;

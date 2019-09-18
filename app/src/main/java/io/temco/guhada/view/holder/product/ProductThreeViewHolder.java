@@ -2,6 +2,7 @@ package io.temco.guhada.view.holder.product;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,7 @@ public class ProductThreeViewHolder extends BaseProductViewHolder<ItemProductLis
             mBinding.textSeason.setText(data.productSeason);
 
             // Title
-            // mBinding.textTitle.setText(data.dealName);
+             mBinding.textTitle.setText(data.dealName);
 
             // Size
             // Empty...
@@ -56,6 +57,7 @@ public class ProductThreeViewHolder extends BaseProductViewHolder<ItemProductLis
             if (data.options != null && data.options.size() > 0) {
                 for (Deal.Option o : data.options) {
                     switch (Type.ProductOption.getType(o.type)) {
+                        case RGB:
                         case COLOR:
                             addColor(context, mBinding.layoutColor, 5, o.attributes); // 5 Units
                             break;
@@ -68,12 +70,17 @@ public class ProductThreeViewHolder extends BaseProductViewHolder<ItemProductLis
             }
 
             // Price
-            if (data.setDiscount) {
+            if (data.discountRate > 0) {
+                mBinding.textPrice.setText(TextUtil.getDecimalFormat(data.discountPrice.intValue()));
+            } else {
+                mBinding.textPrice.setText(TextUtil.getDecimalFormat(data.sellPrice.intValue()));
+            }
+            /*if (data.setDiscount) {
                 mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.intValue())));
                 // mBinding.textPriceSalePer.setText(String.format(context.getString(R.string.product_price_sale_per), data.discountRate));
             } else {
                 mBinding.textPrice.setText(String.format(context.getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.intValue())));
-            }
+            }*/
         }
     }
 

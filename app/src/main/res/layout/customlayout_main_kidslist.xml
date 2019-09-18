@@ -8,11 +8,9 @@
             type="io.temco.guhada.data.viewmodel.main.KidsListViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_kidslist"
@@ -28,9 +26,35 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginTop="43dp"
             android:background="@color/common_white"
             app:setAdapter="@{viewModel.getListAdapter()}"/>
 
-    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/button_floating_item"
+                layout="@layout/layout_floating_button_badge"
+                android:layout_width="@dimen/view_button_floating"
+                android:layout_height="@dimen/view_button_floating"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/button_floating_top"
+                layout="@layout/layout_floating_button_top"
+                android:layout_width="@dimen/view_button_floating"
+                android:layout_height="@dimen/view_button_floating"
+                android:layout_marginTop="7dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

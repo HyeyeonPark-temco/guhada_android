@@ -23,6 +23,7 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
+import io.temco.guhada.data.db.GuhadaDB;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.UserShipping;
 import io.temco.guhada.data.model.claim.Claim;
@@ -54,6 +55,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private TextView textview_maintab_title[] = null;
 
     private CompositeDisposable mDisposable = null;
+    private GuhadaDB mDb;
 
     private int currentViewPagerIndex = 2;
     // -----------------------------
@@ -80,6 +82,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     @Override
     protected void init() {
         mDisposable = new CompositeDisposable();
+        mDb = GuhadaDB.Companion.getInstance(this);
         mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
         CommonUtil.getUserIp();
         initMainPager();
@@ -363,7 +366,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         selectTab(current, current == currentViewPagerIndex);
     }
 
-    private void selectTab(int position, boolean isReselected) {
+    public void selectTab(int position, boolean isReselected) {
         int index = currentViewPagerIndex;
         if (position >= 2) index = position;
         for (int i = 0; i < layout_maintab_layout.length; i++) {
@@ -484,5 +487,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     public CompositeDisposable getmDisposable() {
         return mDisposable;
+    }
+
+    public GuhadaDB getmDb() {
+        return mDb;
     }
 }

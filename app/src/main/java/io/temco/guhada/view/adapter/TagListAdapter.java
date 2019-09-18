@@ -68,8 +68,7 @@ public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> impl
 
     @Override
     public void onClick(View v) {
-        if (mTagListener != null &&
-                v.getTag() != null && v.getTag() instanceof Integer) {
+        if (mTagListener != null && v.getTag() != null && v.getTag() instanceof Integer) {
             mTagListener.onClose(getItem((int) v.getTag()).tagData);
         }
     }

@@ -16,12 +16,12 @@
         android:paddingLeft="15dp">
 
         <ImageView
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:background="@drawable/selector_button_filter" />
 
         <TextView
-            style="@style/TextRegularSingleLine"
+            style="@style/TextMediumSingleLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="11dp"
