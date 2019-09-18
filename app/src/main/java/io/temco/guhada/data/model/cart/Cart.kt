@@ -21,6 +21,7 @@ class Cart {
     var sellPrice: Int = 0
     var discountDiffPrice: Int = 0
     var discountPrice: Int = 0
+    var discountRate : Double = 0.0
     var shipExpense: Int = 0
 
     // QUANTITY
