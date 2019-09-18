@@ -4,6 +4,9 @@
 
     <data>
         <variable
+            name="onClickBookmark"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="onClickContinue"
             type="android.view.View.OnClickListener" />
         <variable
@@ -57,6 +60,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
             android:background="@color/common_blue_purple"
+            android:onClick="@{onClickBookmark}"
             android:text="@string/cart_button_like"
             android:textColor="@color/common_white"
             android:textSize="@dimen/text_14"

@@ -144,9 +144,26 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             mViewModel.getExpectedCoupon()
             initSummary()
             initContentHeader()
-            /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(product.desc, "text/html", null)*/
-
+            val data = StringBuilder()
+            data.append("<style>img{display: inline;height: auto;max-width: 100%;}</style>")
+            data.append(product.desc.replace("\"//www", "\"https://www"))
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
+                javaScriptEnabled = true
+                javaScriptCanOpenWindowsAutomatically = true
+                setSupportMultipleWindows(true)
+                allowFileAccess = true
+                pluginState = WebSettings.PluginState.ON
+                pluginState = WebSettings.PluginState.ON_DEMAND
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+                loadsImagesAutomatically = true
+                defaultFontSize = context?.resources?.getDimension(R.dimen.text_4)?.toInt() ?: 20
+                setAppCacheEnabled(true)
+                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+                if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
+            }
+            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
+
+            /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
                 javaScriptEnabled = true
                 javaScriptCanOpenWindowsAutomatically = true
                 setSupportMultipleWindows(true)
@@ -170,12 +187,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
 
             val data = StringBuilder()
-            data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>")
+            data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body><style>img{display: inline;height: auto;max-width: 100%;}</style>")
             data.append(product.desc.replace("\"//www", "\"https://www"))
             data.append("</body></HTML>")
             mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(), "text/html; video/mpeg", "utf-8", null)
-
-
+*/
             hideLoadingIndicator()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display

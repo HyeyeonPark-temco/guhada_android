@@ -9,6 +9,7 @@ import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.data.viewmodel.cart.EmptyCartViewModel
 import io.temco.guhada.databinding.FragmentEmptycartBinding
 import io.temco.guhada.view.fragment.base.BaseFragment
+import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 class EmptyCartFragment : BaseFragment<FragmentEmptycartBinding>() {
     override fun getBaseTag(): String = EmptyCartFragment::class.java.simpleName
@@ -21,6 +22,12 @@ class EmptyCartFragment : BaseFragment<FragmentEmptycartBinding>() {
 
         mBinding.setOnClickContinue {
             BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true)
+            (context as Activity).setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+            (context as Activity).onBackPressed()
+        }
+
+        mBinding.setOnClickBookmark {
+            BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_MYPAGE.flag, MyPageTabType.BOOKMARK.ordinal, true)
             (context as Activity).setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
             (context as Activity).onBackPressed()
         }

@@ -43,7 +43,6 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
     }
 
     override fun init() {
-
         if (CustomLog.flag) CustomLog.L(this.javaClass.simpleName, "init")
         mDisposable = CompositeDisposable()
         db = GuhadaDB.getInstance(this)!!

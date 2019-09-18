@@ -243,6 +243,7 @@
     <string name="verifyphone_terms4">서비스 이용약관</string>
     <string name="verifyphone_terms5">본인인증 목적으로 상기 정보를 통신사에 제공함을 동의</string>
     <string name="verifyphone_content">본인 명의 휴대폰으로 비밀번호를 재설정합니다.</string>
+    <string name="verifyphone_content2">본인 명의 휴대폰으로 아이디를 찾습니다.</string>
     <string name="verifyphone_button">본인 명의 휴대폰으로 인증</string>
 
     <!--<string name="verifyphone_description1">본인명의의 휴대폰으로 본인여부를 확인합니다.</string>
@@ -615,16 +616,16 @@
     <string name="addshippingaddress_description2">배송지 관리</string>
     <string name="addshippingaddress_description3">에서 수정 및 삭제가 가능합니다.</string>
 
-    <!-- HOME FRAGMENT -->
+    <!-- HOME FRAGMENT
+        <item>New Arrivals</item>
+        <item>Power Deals</item>
+        <item>Today’s Deals</item>
+        <item>Limited Offers</item>-->
     <string-array name="main_titles">
         <item>Home</item>
         <item>Women</item>
         <item>Men</item>
         <item>Kids</item>
-        <item>New Arrivals</item>
-        <item>Power Deals</item>
-        <item>Today’s Deals</item>
-        <item>Limited Offers</item>
     </string-array>
 
     <!-- MYPAGE ORDER SHIP -->

@@ -94,19 +94,24 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
          *
          * 메인으로 이동해서 선택될 탭 화면
          */
-        if (((BaseApplication) getApplicationContext()).getMoveToMain() != null &&
-                ((BaseApplication) getApplicationContext()).getMoveToMain().isMoveToMain()) {
-            if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN) {
+        if (((BaseApplication) getApplicationContext()).getMoveToMain() != null && ((BaseApplication) getApplicationContext()).getMoveToMain().isMoveToMain()) {
+            if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() != -1){
+                if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN) {
 
-            } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
-                mBinding.layoutContents.layoutPager.setCurrentItem(2);
-                selectTab(2, false);
-            } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY) {
-                mBinding.layoutContents.layoutPager.setCurrentItem(3);
-                selectTab(3, false);
-            } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_MYPAGE) {
-                mBinding.layoutContents.layoutPager.setCurrentItem(4);
-                selectTab(4, false);
+                } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
+                    mBinding.layoutContents.layoutPager.setCurrentItem(2);
+                    selectTab(2, false);
+                } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY) {
+                    mBinding.layoutContents.layoutPager.setCurrentItem(3);
+                    selectTab(3, false);
+                } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_MYPAGE) {
+                    mBinding.layoutContents.layoutPager.setCurrentItem(4);
+                    selectTab(4, false);
+                    if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1){
+                        EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_MOVE,
+                                ((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex()));
+                    }
+                }
             }
             ((BaseApplication) getApplicationContext()).getMoveToMain().clear();
             ((BaseApplication) getApplicationContext()).setMoveToMain(null);
