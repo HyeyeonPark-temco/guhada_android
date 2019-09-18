@@ -1,9 +1,5 @@
 package io.temco.guhada.data.model.order
 
-import android.os.Parcel
-import android.os.Parcelable
-import androidx.annotation.NonNull
-import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionInfo
 import java.io.Serializable
 
@@ -49,76 +45,15 @@ open class OrderItemResponse : Serializable {
     var orderValidStatus = "" // 상품 상태 ("VALID", "NOT_SALE", "NOT_DISPLAY", "SOLD_OUT", "CHANGE_PRICE", "CHANGE_OPTION")
     var quantity = 0 // 구매 수량
 
-    var optionInfo: OptionInfo = OptionInfo()
+    var itemOptionResponse: OptionInfo? = OptionInfo()
 
-//    constructor(parcel: Parcel) : this() {
-//        cartItemId = parcel.readLong()
-//        sellerId = parcel.readLong()
-//        sellerName = parcel.readString() ?: ""
-//        lcategoryId = parcel.readInt()
-//        mcategoryId = parcel.readInt()
-//        scategoryId = parcel.readInt()
-//        dcategoryId = parcel.readInt()
-//        lCategoryId = parcel.readLong()
-//        mCategoryId = parcel.readLong()
-//        sCategoryId = parcel.readLong()
-//        dCategoryId = parcel.readLong()
-//        brandId = parcel.readLong()
-//        brandName = parcel.readString() ?: ""
-//        productId = parcel.readLong()
-//        season = parcel.readString() ?: ""
-//        dealId = parcel.readLong()
-//        dealName = parcel.readString() ?: ""
-//        imageName = parcel.readString() ?: ""
-//        imageUrl = parcel.readString() ?: ""
-//        totalStock = parcel.readInt()
-//        sellPrice = parcel.readInt()
-//        discountPrice = parcel.readInt()
-//        discountDiffPrice = parcel.readInt()
-//        shipExpense = parcel.readInt()
-//        orderValidStatus = parcel.readString() ?: ""
-//        quantity = parcel.readInt()
-//        optionInfo = parcel.readSerializable() as?OptionInfo ?: OptionInfo()
-//    }
-//
-//    override fun writeToParcel(dest: Parcel?, flags: Int) {
-//        dest?.writeLong(cartItemId)
-//        dest?.writeLong(brandId)
-//        dest?.writeLong(sellerId)
-//        dest?.writeLong(productId)
-//        dest?.writeLong(dealId)
-//        dest?.writeLong(lCategoryId)
-//        dest?.writeLong(mCategoryId)
-//        dest?.writeLong(dCategoryId)
-//        dest?.writeLong(sCategoryId)
-//
-//        dest?.writeString(brandName)
-//        dest?.writeString(season)
-//        dest?.writeString(dealName)
-//        dest?.writeString(imageName)
-//        dest?.writeString(imageUrl)
-//        dest?.writeString(orderValidStatus)
-//
-//        dest?.writeInt(totalStock)
-//        dest?.writeInt(sellPrice)
-//        dest?.writeInt(discountPrice)
-//        dest?.writeInt(discountDiffPrice)
-//        dest?.writeInt(shipExpense)
-//        dest?.writeInt(quantity)
-//
-//        dest?.writeSerializable(optionInfo)
-//    }
-//
-//    override fun describeContents(): Int = 0
-//
-//    companion object CREATOR : Parcelable.Creator<OrderItemResponse> {
-//        override fun createFromParcel(parcel: Parcel): OrderItemResponse {
-//            return OrderItemResponse(parcel)
-//        }
-//
-//        override fun newArray(size: Int): Array<OrderItemResponse?> {
-//            return arrayOfNulls(size)
-//        }
-//    }
+    // 사용 가능 포인트 조회 API param
+    var orderProdList = mutableListOf<OrderOption>()
+    var productPrice = 0
+
+    class OrderOption {
+        var price = 0
+    }
+
 }
 

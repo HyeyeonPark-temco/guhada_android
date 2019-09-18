@@ -429,7 +429,7 @@
                     android:textSize="@dimen/text_12" />
 
                 <TextView
-                    android:id="@+id/textView35"
+                    android:id="@+id/textview_payment_expectedtotalpoint"
                     style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -477,6 +477,7 @@
                     android:text="@string/payment_text_fixbuy" />
 
                 <TextView
+                    android:id="@+id/textview_payment_buypoint"
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -503,6 +504,7 @@
                     android:text="@string/payment_text_textreview" />
 
                 <TextView
+                    android:id="@+id/textview_payment_textreviewpoint"
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -529,6 +531,7 @@
                     android:text="@string/payment_text_photoreview" />
 
                 <TextView
+                    android:id="@+id/textview_payment_photoreviewpoint"
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

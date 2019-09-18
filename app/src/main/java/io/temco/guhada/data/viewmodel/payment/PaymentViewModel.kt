@@ -27,12 +27,12 @@ import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.coupon.CouponWallet
-import io.temco.guhada.data.model.order.Order
-import io.temco.guhada.data.model.order.PaymentMethod
-import io.temco.guhada.data.model.order.PurchaseOrderResponse
-import io.temco.guhada.data.model.order.RequestOrder
+import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
+import io.temco.guhada.data.model.point.ExpectedPointResponse
+import io.temco.guhada.data.model.point.PointProcessParam
+import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.model.user.User
@@ -104,6 +104,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             } else {
                 value
             }
+
+            // 적립 예정 포인트 조회
+            getDueSavePoint()
         }
     var usedPoint: ObservableField<String> = ObservableField("")
         @Bindable
@@ -184,6 +187,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mTotalDiscountPrice = ObservableInt(0)
         @Bindable
         get() = field
+    var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
+        @Bindable
+        get() = field
 
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
@@ -230,11 +236,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     notifyPropertyChanged(BR.order)
                     notifyPropertyChanged(BR.shippingAddressText)
 
-                    // 사용 가능 포인트
+//                     사용 가능 포인트
                     this.holdingPoint = order.availablePointResponse.availableTotalPoint.toLong()
 //                    this.holdingPoint = 10000   // test
                     this.mTotalDiscountPrice = ObservableInt(order.totalDiscountDiffPrice)
                     notifyPropertyChanged(BR.mTotalDiscountPrice)
+
+//                    적립 예정 포인트 조회
+                    getDueSavePoint()
                 } else {
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.closeActivity()
@@ -320,8 +329,60 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
-    // LISTENER
+    private fun getDueSavePoint() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            val pointProcessParam = PointProcessParam()
+            for (item in order.orderItemList) {
+                val orderProd = OrderItemResponse().apply {
+                    this.dcategoryId = item.dcategoryId
+                    this.dealId = item.dealId
+                    this.discountPrice = item.discountPrice
+                    this.lcategoryId = item.lcategoryId
+                    this.mcategoryId = item.mcategoryId
+                    this.productPrice = item.sellPrice
+                    this.scategoryId = item.scategoryId
+                    this.orderProdList.add(OrderItemResponse.OrderOption().apply {
+                        this.price = item.itemOptionResponse?.price ?: 0
+                    })
+                }
 
+                val bundle = PointProcessParam.PointBundle().apply {
+                    this.bundlePrice = item.shipExpense
+                    if (quantity > 1)
+                        for (i in 0 until quantity - 1)
+                            this.orderProdList.add(orderProd)
+                    else
+                        this.orderProdList.add(orderProd)
+                }
+
+                pointProcessParam.bundleList.add(bundle)
+            }
+
+            if (pointProcessParam.bundleList.isNotEmpty()) {
+                pointProcessParam.consumptionPoint = usedPointNumber.toInt()
+                pointProcessParam.consumptionType = PointProcessParam.PointConsumption.BUY.type
+                pointProcessParam.pointType = PointProcessParam.PointSave.BUY.type
+                pointProcessParam.serviceType = PointRequest.ServiceType.AOS.type
+
+                BenefitServer.getDueSavePoint(listener = OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                val expectedPointResponse = it.data as ExpectedPointResponse
+                                this.mExpectedPoint.postValue(expectedPointResponse)
+                            },
+                            dataIsNull = {
+                                if (it is BaseModel<*>) ToastUtil.showMessage(it.message)
+                                else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                            })
+                }, accessToken = accessToken, pointProcessParam = pointProcessParam)
+            }
+        })
+    }
+
+
+    /**
+     * LISTENER
+     */
     // 결제 수단 checkbox listener
     fun onPaymentWayChecked(view: View, checked: Boolean) {
         val pos = view.tag?.toString()?.toInt()
