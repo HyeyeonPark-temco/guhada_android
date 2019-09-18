@@ -1,6 +1,7 @@
 package io.temco.guhada.view.fragment.productdetail
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.FrameLayout
@@ -11,6 +12,7 @@ import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ToastUtil
@@ -60,7 +62,18 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
      */
     private fun initMenuSpinner() {
         val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
-        list.add(OptionInfo().apply { this.attribute1 = resources.getString(R.string.productdetail_message_selectoption) })
+        if (list.isNotEmpty()) {
+            var placeHolder = ""
+            if (!list[0].label1.isNullOrEmpty())
+                placeHolder += list[0].label1
+            if (!list[0].label2.isNullOrEmpty())
+                placeHolder += ", ${list[0].label2}"
+            if (!list[0].label3.isNullOrEmpty())
+                placeHolder += ", ${list[0].label3}"
+
+            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
+            mBinding.textviewProductdetailOption.text = placeHolder
+        }
 
         mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
                 context = mBinding.root.context,
@@ -88,7 +101,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
 
                     // PRICE
                     mViewModel.extraPrice = ObservableInt(option.price)
-                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice)
+                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
                     mViewModel.notifyPropertyChanged(BR.extraPrice)
                     mViewModel.notifyPropertyChanged(BR.totalPrice)
                 }
@@ -100,6 +113,20 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     }
 
     private fun initMenuList() {
+        val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
+        if (list.isNotEmpty()) {
+            var placeHolder = ""
+            if (!list[0].label1.isNullOrEmpty())
+                placeHolder += list[0].label1
+            if (!list[0].label2.isNullOrEmpty())
+                placeHolder += ", ${list[0].label2}"
+            if (!list[0].label3.isNullOrEmpty())
+                placeHolder += ", ${list[0].label3}"
+
+            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
+            mBinding.textviewProductdetailOption.text = placeHolder
+        }
+
         mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
             val visibility = mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility
             if (visibility == View.VISIBLE) {
@@ -134,7 +161,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
 
                     // PRICE
                     mViewModel.extraPrice = ObservableInt(option.price)
-                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice)
+                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
                     mViewModel.notifyPropertyChanged(BR.extraPrice)
                     mViewModel.notifyPropertyChanged(BR.totalPrice)
                 }

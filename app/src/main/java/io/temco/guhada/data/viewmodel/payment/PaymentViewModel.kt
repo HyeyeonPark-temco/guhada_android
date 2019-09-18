@@ -184,9 +184,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 쿠폰, 포인트
     var mAvailableBenefitCount: MutableLiveData<AvailableBenefitCount> = MutableLiveData(AvailableBenefitCount())
     var mSelectedCouponMap: HashMap<Long, CouponWallet?> = hashMapOf() // dealId, couponWallet
-    var mTotalDiscountPrice = ObservableInt(0)
+    var mTotalDiscountPrice = ObservableInt(0)  // 상품 할인 금액 + 쿠폰 할인 금액 + 포인트 사용 금액
         @Bindable
         get() = field
+    var mCouponDiscountPrice = 0
     var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
         @Bindable
         get() = field
@@ -451,11 +452,26 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
                             // 현금영수증
-                            if (selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) {
+                            if ((selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) ||
+                                    (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty())) {
                                 mRequestOrder.cashReceiptNo = ""
                                 mRequestOrder.cashReceiptType = ""
                                 mRequestOrder.cashReceiptUsage = ""
                             } else {
+                                when (mRequestOrder.cashReceiptUsage) {
+                                    RequestOrder.CashReceiptUsage.PERSONAL.code ->
+                                        if (mRequestOrder.cashReceiptType == RequestOrder.CashReceiptType.MOBILE.code)
+                                            if (mRecipientPhone1.isEmpty() || mRecipientPhone2.isEmpty() || mRecipientPhone3.isEmpty()) {
+                                                listener.showMessage("현금영수증을 신청할 핸드폰 번호를 입력하세요")
+                                                return
+                                            }
+                                    RequestOrder.CashReceiptUsage.BUSINESS.code ->
+                                        if (mRecipientCorporation1.isEmpty() || mRecipientCorporation2.isEmpty() || mRecipientCorporation3.isEmpty()) {
+                                            listener.showMessage("현금영수증을 신청할 사업자 등록번호를 입력하세요")
+                                            return
+                                        }
+                                }
+
                                 mRequestOrder.cashReceiptNo = when (mRequestOrder.cashReceiptType) {
                                     RequestOrder.CashReceiptType.MOBILE.code -> "$mRecipientPhone1$mRecipientPhone2$mRecipientPhone3"
                                     RequestOrder.CashReceiptType.BUSINESS.code -> "$mRecipientCorporation1$mRecipientCorporation2$mRecipientCorporation3"

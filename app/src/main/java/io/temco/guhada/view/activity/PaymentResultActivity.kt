@@ -8,6 +8,8 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.point.ExpectedPointResponse
+import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.viewmodel.payment.PaymentResultViewModel
 import io.temco.guhada.databinding.ActivityPaymentResultBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -47,6 +49,29 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
             this.shippingMemo = shippingMemo
             if (purchaseOrderResponse != null) {
                 this.purchaseOrderResponse = purchaseOrderResponse as PurchaseOrderResponse
+            }
+        }
+
+        // 할인 내역
+        mBinding.textviewPaymentresultTotaldiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("totalDiscountPrice", 0))
+        mBinding.textviewPaymentresultCoupondiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("couponDiscountPrice", 0))
+        mBinding.textviewPaymentresultUsedpoint.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("usedPoint", 0))
+
+        // 적립 예정 포인트
+        intent.getSerializableExtra("expectedPoint").let {
+            if (it != null) {
+                val expectedPoint = it as ExpectedPointResponse
+                var dusSaveTotalPoint = 0
+                for (item in expectedPoint.dueSavePointList) {
+                    dusSaveTotalPoint += item.freePoint
+                    when (item.pointType) {
+                        PointProcessParam.PointSave.BUY.type -> mBinding.textviewPaymentresultBuypoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+                        PointProcessParam.PointSave.TEXT_REVIEW.type -> mBinding.textviewPaymentresultTextreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+                        PointProcessParam.PointSave.IMG_REVIEW.type -> mBinding.textviewPaymentresultPhotoreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+                    }
+                }
+
+                mBinding.textviewPaymentresultExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
             }
         }
 

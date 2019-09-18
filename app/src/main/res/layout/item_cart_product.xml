@@ -208,10 +208,11 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="25dp"
-                    android:text="@{cart.discountDiffPrice + @string/common_unit_percent}"
+                    android:text="@{Math.round(cart.DiscountRate) + @string/common_unit_percent}"
                     android:textColor="@color/common_blue_purple"
                     android:textSize="@dimen/text_14"
-                    android:visibility="@{cart.discountDiffPrice == 0 ? View.GONE : View.VISIBLE}"
+
+                    android:visibility="@{cart.DiscountRate == 0 ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toTopOf="@id/button_cart_buy"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toRightOf="@id/textview_cart_productprice"

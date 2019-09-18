@@ -24,7 +24,7 @@ import io.temco.guhada.view.custom.layout.common.BaseListLayout
  * created 19.07.22
  * @author park jungho
  *
- * 마이페이지 - 주문배송 화면
+ * 마이페이지 - 주문 배송 화면
  * @author Hyeyeon Park
  * @since 2019.07.26
  *

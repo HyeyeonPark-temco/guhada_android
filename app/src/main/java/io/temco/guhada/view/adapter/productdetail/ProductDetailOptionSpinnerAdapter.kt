@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.databinding.ItemProductdetailOptionspinnerBinding
@@ -17,7 +18,7 @@ import io.temco.guhada.databinding.ItemProductdetailOptionspinnerBinding
  * @author Hyeyeon Park
  * @since 2019.09.05
  */
-class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var list: List<OptionInfo> = ArrayList(), var mOptionClickTask: (position : Int) -> Unit = {}) : ArrayAdapter<OptionInfo>(context, layout, list) {
+class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var list: List<OptionInfo> = ArrayList()) : ArrayAdapter<OptionInfo>(context, layout, list) {
     private lateinit var mBinding: ItemProductdetailOptionspinnerBinding
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
@@ -36,9 +37,8 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
 
         setOptionRgb(option = option)
         setPadding(position = position)
-        checkSoldOut(option = option, position = position)
+        setOptionText(option = option)
 
-        mBinding.textviewProductdetailOptionspinner.text = getOptionText(option = option)
         mBinding.viewProductdetailOptionspinnerLine1.visibility = if (position == 0) View.VISIBLE else View.GONE
         mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.count() - 1) View.VISIBLE else View.GONE
 
@@ -46,10 +46,17 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         return mBinding.root
     }
 
-    private fun checkSoldOut(option: OptionInfo, position: Int) {
+    private fun setOptionText(option: OptionInfo) {
+        var optionText = getOptionText(option = option)
+
         if (option.stock == 0) {
-            mBinding.textviewProductdetailOptionspinner.text = "${list[position].attribute1} (품절)"
+            mBinding.textviewProductdetailOptionspinner.text = "$optionText ${BaseApplication.getInstance().getString(R.string.productdetail_option_soldout)}"
             mBinding.textviewProductdetailOptionspinner.setTextColor(context.resources.getColor(R.color.pinkish_grey))
+        } else {
+            if (option.price > 0)
+                optionText += " ${String.format(BaseApplication.getInstance().getString(R.string.productdetail_option_extraprice_format), option.price)}"
+            mBinding.textviewProductdetailOptionspinner.text = optionText
+            mBinding.textviewProductdetailOptionspinner.setTextColor(context.resources.getColor(R.color.greyish_brown_two))
         }
     }
 
@@ -64,10 +71,10 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
             optionText = "${option.attribute1}"
 
         if (!option.attribute2.isNullOrEmpty())
-            optionText = "$optionText / ${option.attribute2}"
+            optionText = "$optionText, ${option.attribute2}"
 
         if (!option.attribute3.isNullOrEmpty())
-            optionText = "$optionText / ${option.attribute3}"
+            optionText = "$optionText, ${option.attribute3}"
 
         return optionText
     }
