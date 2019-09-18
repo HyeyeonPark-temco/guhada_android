@@ -37,7 +37,7 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
 
         setOptionRgb(option = option)
         setPadding(position = position)
-        setOptionText(option = option, position = position)
+        setOptionText(option = option)
 
         mBinding.viewProductdetailOptionspinnerLine1.visibility = if (position == 0) View.VISIBLE else View.GONE
         mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.count() - 1) View.VISIBLE else View.GONE
@@ -46,7 +46,7 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         return mBinding.root
     }
 
-    private fun setOptionText(option: OptionInfo, position: Int) {
+    private fun setOptionText(option: OptionInfo) {
         var optionText = getOptionText(option = option)
 
         if (option.stock == 0) {

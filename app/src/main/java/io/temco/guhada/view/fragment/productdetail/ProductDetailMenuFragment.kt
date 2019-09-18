@@ -1,6 +1,7 @@
 package io.temco.guhada.view.fragment.productdetail
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.FrameLayout
@@ -112,6 +113,20 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     }
 
     private fun initMenuList() {
+        val list = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
+        if (list.isNotEmpty()) {
+            var placeHolder = ""
+            if (!list[0].label1.isNullOrEmpty())
+                placeHolder += list[0].label1
+            if (!list[0].label2.isNullOrEmpty())
+                placeHolder += ", ${list[0].label2}"
+            if (!list[0].label3.isNullOrEmpty())
+                placeHolder += ", ${list[0].label3}"
+
+            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
+            mBinding.textviewProductdetailOption.text = placeHolder
+        }
+
         mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
             val visibility = mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility
             if (visibility == View.VISIBLE) {
