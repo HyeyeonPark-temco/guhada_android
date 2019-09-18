@@ -378,11 +378,14 @@
                 layout="@layout/layout_payment_paymentway" />
 
             <Button
-                style="@style/PaymentSubmitButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:background="@{viewModel.termsChecked ? @color/common_blue_purple : @color/cloudy_blue, default = @color/cloudy_blue}"
+                android:clickable="@{viewModel.termsChecked, default = false}"
                 android:onClick="@{()->viewModel.onClickPay()}"
-                android:text="@string/payment_button_submit" />
+                android:text="@string/payment_button_submit"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_18" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

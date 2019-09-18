@@ -152,7 +152,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             else BaseApplication.getInstance().getString(R.string.payment_text_emptyshippingaddress)
         }
 
-    var termsChecked = false
+    var termsChecked = ObservableBoolean(false)
+        @Bindable
+        get() = field
 
     // 상품 리스트
     var cartIdList: MutableList<Int> = mutableListOf()
@@ -438,7 +440,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             return
         }
 
-        if (termsChecked) {
+        if (termsChecked.get()) {
             for (i in 0 until paymentWays.size)
                 if (paymentWays[i])
                     selectedMethod = order.paymentsMethod[i]
@@ -561,7 +563,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onTermsChecked(checked: Boolean) {
-        this.termsChecked = checked
+        this.termsChecked = ObservableBoolean(checked)
+        notifyPropertyChanged(BR.termsChecked)
     }
 
     fun onShippingMemoSelected(position: Int) {
