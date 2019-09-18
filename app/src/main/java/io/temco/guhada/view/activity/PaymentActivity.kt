@@ -30,7 +30,6 @@ import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.point.PointProcessParam
-import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
@@ -174,6 +173,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         // [바로구매]에서 진입
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
+
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
             mLoadingIndicatorUtil.hide()
@@ -181,6 +181,15 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 intent.putExtra("purchaseOrderResponse", mViewModel.purchaseOrderResponse.value)
                 intent.putExtra("shippingMemo", mViewModel.selectedShippingMessage.get()?.message)
                 intent.putExtra("userName", mViewModel.order.user.name ?: "")
+
+                // 할인 내역
+                intent.putExtra("totalDiscountPrice", mViewModel.mTotalDiscountPrice.get())
+                intent.putExtra("couponDiscountPrice", mViewModel.mCouponDiscountPrice)
+                intent.putExtra("usedPoint", mViewModel.usedPointNumber.toInt())
+
+                // 적립 예정 포인트
+                intent.putExtra("expectedPoint", mViewModel.mExpectedPoint.value)
+
                 startActivity(intent)
                 finish()
             }
@@ -418,23 +427,25 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                 if (selectedCouponMap[key]?.couponId ?: -1 > -1)
                                     couponCount++
 
-                            data?.getIntExtra("totalDiscountPrice", 0).let { totalDiscountPrice ->
-                                if (totalDiscountPrice != null) {
+                            data?.getIntExtra("totalDiscountPrice", 0).let { couponDiscountPrice ->
+                                if (couponDiscountPrice != null) {
+                                    mViewModel.mCouponDiscountPrice = couponDiscountPrice
+
                                     // 사용가능 n장/보유 m장
                                     mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
                                             mViewModel.order.availableCouponCount, mViewModel.mAvailableBenefitCount.value?.totalAvailCoupon
                                             ?: 0))
 
                                     // -n원(m장)
-                                    if (totalDiscountPrice > 0) {
-                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), totalDiscountPrice, couponCount))
+                                    if (couponDiscountPrice > 0) {
+                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), couponDiscountPrice, couponCount))
                                     } else {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
                                     }
 
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), totalDiscountPrice)
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), (mViewModel.order.totalPaymentPrice - totalDiscountPrice - mViewModel.order.totalDiscountDiffPrice))
-                                    mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt())
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), couponDiscountPrice)
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), (mViewModel.order.totalPaymentPrice - couponDiscountPrice - mViewModel.order.totalDiscountDiffPrice))
+                                    mViewModel.mTotalDiscountPrice = ObservableInt(couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt())
                                     mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
                                 }
                             }

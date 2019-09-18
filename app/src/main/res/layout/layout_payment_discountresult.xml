@@ -383,6 +383,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:onClick="@{()->viewModel.onClickSavePointInfo()}"
             android:background="@{viewModel.savePointInfoVisible ? @color/pale_grey : @color/common_white}"
             android:paddingStart="20dp"
             android:paddingEnd="20dp">
@@ -392,7 +393,7 @@
                 style="@style/PaymentTitleBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{()->viewModel.onClickSavePointInfo()}"
+
                 android:text="@string/payment_text_expectedpoint"
                 android:textSize="@dimen/text_14"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -403,7 +404,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:onClick="@{()->viewModel.onClickSavePointInfo()}"
+
                 android:src="@{viewModel.savePointInfoVisible ? @drawable/payment_btn_save_close : @drawable/payment_btn_save_open}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView32"

@@ -184,9 +184,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 쿠폰, 포인트
     var mAvailableBenefitCount: MutableLiveData<AvailableBenefitCount> = MutableLiveData(AvailableBenefitCount())
     var mSelectedCouponMap: HashMap<Long, CouponWallet?> = hashMapOf() // dealId, couponWallet
-    var mTotalDiscountPrice = ObservableInt(0)
+    var mTotalDiscountPrice = ObservableInt(0)  // 상품 할인 금액 + 쿠폰 할인 금액 + 포인트 사용 금액
         @Bindable
         get() = field
+    var mCouponDiscountPrice = 0
     var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
         @Bindable
         get() = field

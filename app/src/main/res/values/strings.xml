@@ -439,6 +439,9 @@
     <string name="productdetail_coupon_price">%,2d원 할인 쿠폰</string>
     <string name="productdetail_coupon_rate">%s 할인 쿠폰</string>
 
+    <string name="productdetail_option_extraprice_format">(+%,2d원)</string>
+    <string name="productdetail_option_soldout">(품절)</string>
+
     <!-- CLAIM -->
     <string name="claim_write_hint">Enter the inquiry content</string>
     <string name="claim_write_private">private</string>

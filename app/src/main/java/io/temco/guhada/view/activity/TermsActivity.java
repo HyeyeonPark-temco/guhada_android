@@ -5,7 +5,6 @@ import android.widget.Toast;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnTermsListener;
-import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.viewmodel.account.TermsViewModel;
 import io.temco.guhada.databinding.ActivityTermsBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
@@ -37,7 +36,7 @@ public class TermsActivity extends BindActivity<ActivityTermsBinding> {
             }
 
             @Override
-            public void closeActivity(int resultCode ) {
+            public void closeActivity(int resultCode) {
 //                SnsUser user = (SnsUser) getIntent().getSerializableExtra("user");
 //                user.setAgreeCollectPersonalInfoTos(mViewModel.getUser().getAgreeCollectPersonalInfoTos());
 //                user.setAgreeEmailReception(mViewModel.getUser().getAgreeEmailReception());
