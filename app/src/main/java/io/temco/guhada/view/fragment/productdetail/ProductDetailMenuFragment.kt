@@ -100,7 +100,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
 
                     // PRICE
                     mViewModel.extraPrice = ObservableInt(option.price)
-                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice)
+                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
                     mViewModel.notifyPropertyChanged(BR.extraPrice)
                     mViewModel.notifyPropertyChanged(BR.totalPrice)
                 }
@@ -146,7 +146,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
 
                     // PRICE
                     mViewModel.extraPrice = ObservableInt(option.price)
-                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice)
+                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
                     mViewModel.notifyPropertyChanged(BR.extraPrice)
                     mViewModel.notifyPropertyChanged(BR.totalPrice)
                 }

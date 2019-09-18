@@ -18,7 +18,7 @@ import io.temco.guhada.databinding.ItemProductdetailOptionspinnerBinding
  * @author Hyeyeon Park
  * @since 2019.09.05
  */
-class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var list: List<OptionInfo> = ArrayList(), var mOptionClickTask: (position: Int) -> Unit = {}) : ArrayAdapter<OptionInfo>(context, layout, list) {
+class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var list: List<OptionInfo> = ArrayList()) : ArrayAdapter<OptionInfo>(context, layout, list) {
     private lateinit var mBinding: ItemProductdetailOptionspinnerBinding
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)

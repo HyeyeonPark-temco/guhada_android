@@ -5,6 +5,7 @@ import android.content.Intent
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -443,9 +444,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
                                     }
 
+                                    val totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
                                     mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), couponDiscountPrice)
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), (mViewModel.order.totalPaymentPrice - couponDiscountPrice - mViewModel.order.totalDiscountDiffPrice))
-                                    mViewModel.mTotalDiscountPrice = ObservableInt(couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt())
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), (mViewModel.order.totalProdPrice - totalDiscountPrice))
+                                    mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice)
                                     mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
                                 }
                             }
