@@ -154,6 +154,16 @@ class ProductServer {
             }
         }
 
+        /**
+         * 상품 목록 조회 API
+         * @since 2019.09.18
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun getProductListByOnlyPage(listener: OnServerListener, unitPerPage: Int) =
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getProductListByOnlyPage(unitPerPage = unitPerPage).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
 
         /**
          * @author park jungho
@@ -195,8 +205,7 @@ class ProductServer {
         @JvmStatic
         fun getShippingCompanyList(listener: OnServerListener, type: String) =
                 RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getShippingCompanies(type = type).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) })
-                )
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
     }
 
 }

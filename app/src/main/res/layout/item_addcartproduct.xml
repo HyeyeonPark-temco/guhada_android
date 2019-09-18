@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="deal"
+            type="io.temco.guhada.data.model.Deal" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_addcartproduct_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <io.temco.guhada.common.SquareImageView
+            android:id="@+id/imageview_addcartproduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@color/white_two"
+            app:imageUrl="@{deal.productImage.url}" />
+
+        <TextView
+            android:id="@+id/textview_addcartproduct_brandname"
+            style="@style/TextMediumSingleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@{deal.brandName}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13" />
+
+        <TextView
+            android:id="@+id/textview_addcartproduct_productname"
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{deal.productName}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13" />
+    </LinearLayout>
+</layout>

@@ -47,11 +47,19 @@ interface ProductService {
 
     /**
      * 상품 목록 조회 API
-     * @since 2019.08.14
+     * @since 2019.09.18
      * @author Hyeyeon Park
      */
     @GET("deals")
     fun getProductListBySellerId(@Query("sellerId") sellerId: Long, @Query("pageIndex") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<MutableList<Deal>>>
+
+    /**
+     * 상품 목록 조회 API
+     * @since 2019.08.14
+     * @author Hyeyeon Park
+     */
+    @GET("deals")
+    fun getProductListByOnlyPage(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<MutableList<Deal>>>
 
     /**
      * 택배사 조회 API
