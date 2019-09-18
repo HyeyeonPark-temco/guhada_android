@@ -162,6 +162,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mVerifyTask: () -> Unit = {}
 
     // 현금영수증
+    var mIsRecipientIssued = false
     var mRecipientByPhone = ObservableBoolean(true)
         @Bindable
         get() = field
@@ -455,7 +456,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         } else {
                             // 현금영수증
                             if ((selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) ||
-                                    (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty())) {
+                                    (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty()) || !mIsRecipientIssued) {
                                 mRequestOrder.cashReceiptNo = ""
                                 mRequestOrder.cashReceiptType = ""
                                 mRequestOrder.cashReceiptUsage = ""

@@ -277,6 +277,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         // 신청, 미신청 체크박스
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                mViewModel.mIsRecipientIssued = true
                 if (mBinding.includePaymentPaymentway.checkboxPaymentReceiptpersonal.isChecked) {
                     mViewModel.mRequestOrder.cashReceiptUsage = RequestOrder.CashReceiptUsage.PERSONAL.code
                     mViewModel.mRequestOrder.cashReceiptType = RequestOrder.CashReceiptType.MOBILE.code
@@ -290,6 +291,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptunissue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                mViewModel.mIsRecipientIssued = false
                 mViewModel.mRequestOrder.cashReceiptType = ""
                 mViewModel.mRequestOrder.cashReceiptNo = ""
                 mViewModel.mRequestOrder.cashReceiptUsage = ""
