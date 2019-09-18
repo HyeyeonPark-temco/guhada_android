@@ -126,11 +126,11 @@
 
             <Button
                 android:id="@+id/button_payment_discountcoupon"
-                style="@style/TextMedium"
+                style="@style/borderlessStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginStart="7dp"
-                android:background="@{viewModel.order.availableCouponCount == 0 ? @drawable/box_all_palegrey : @drawable/border_all_whitethree,default =  @drawable/border_all_whitethree}"
+                android:background="@drawable/border_all_whitethree"
                 android:clickable="@{viewModel.order.availableCouponCount == 0 ? false : true, default = true}"
                 android:text="@string/payment_button_autocoupon"
                 android:textColor="@{viewModel.order.availableCouponCount == 0 ? @color/pinkish_grey : @color/black_four, default = @color/black_four}"
@@ -257,7 +257,7 @@
 
             <Button
                 android:id="@+id/button_payment_discountpoint"
-                style="@style/TextMedium"
+                style="@style/borderlessStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="7dp"
