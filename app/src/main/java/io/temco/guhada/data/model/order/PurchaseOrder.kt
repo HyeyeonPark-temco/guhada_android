@@ -68,7 +68,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var buyerPhone = ""
 
     // 취소 신청 정보
-    var cancelReason : String= ""
+    var cancelReason: String = ""
     var cancelReasonDetail = ""
 
     // 반품 신청 정보
@@ -92,7 +92,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var exchangeBuyerRecipientMobile = ""
     var exchangeBuyerZip = ""
     var exchangeBuyerAddress = ""
-    var exchangeBuyerRoadAddress=  ""
+    var exchangeBuyerRoadAddress = ""
     var exchangeBuyerDetailAddress = ""
     var exchangeBuyerShippingMessage = ""
 
@@ -100,17 +100,9 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
 
     fun getOptionStr(): String {
         var result = ""
-        if (optionAttribute1 != null) {
-            result = "$result$optionAttribute1"
-        }
-
-        if (optionAttribute2 != null) {
-            result = ", $result$optionAttribute2"
-        }
-
-        if (optionAttribute3 != null) {
-            result = ", $result$optionAttribute3"
-        }
+        if (!optionAttribute1.isNullOrEmpty()) result += optionAttribute1
+        if (!optionAttribute2.isNullOrEmpty()) result += ", $optionAttribute2"
+        if (!optionAttribute3.isNullOrEmpty()) result += ", $optionAttribute3"
 
         result = if (result.isEmpty()) "${quantity}개"
         else "$result, ${quantity}개"
@@ -119,8 +111,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     }
 
     fun getDate() = CommonUtil.convertTimeStampToDate(orderTimestamp) ?: ""
-    fun getStatus() : String = if(orderStatus.isEmpty()) claimStatus else orderStatus
-
+    fun getStatus(): String = if (orderStatus.isEmpty()) claimStatus else orderStatus
 
 
 }
