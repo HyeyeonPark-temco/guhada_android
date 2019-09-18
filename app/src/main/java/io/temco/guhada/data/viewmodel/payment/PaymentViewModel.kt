@@ -236,14 +236,16 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     notifyPropertyChanged(BR.order)
                     notifyPropertyChanged(BR.shippingAddressText)
 
-//                     사용 가능 포인트
+                    //  사용 가능 포인트
                     this.holdingPoint = order.availablePointResponse.availableTotalPoint.toLong()
-//                    this.holdingPoint = 10000   // test
                     this.mTotalDiscountPrice = ObservableInt(order.totalDiscountDiffPrice)
                     notifyPropertyChanged(BR.mTotalDiscountPrice)
 
-//                    적립 예정 포인트 조회
+                    //  적립 예정 포인트 조회
                     getDueSavePoint()
+
+                    // 사용 가능 쿠폰 갯수
+                    getAvailableBenefitCount()
                 } else {
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.closeActivity()
