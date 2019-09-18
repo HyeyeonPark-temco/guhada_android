@@ -64,7 +64,7 @@
                         android:id="@+id/edittext_join_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:hint="user@guhada.co.kr"
+                        app:hint="@string/login_hint_email"
                         app:txt="@={viewModel.user.email}"
                         app:type="text" />
 
@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
-                        app:hint="비밀번호"
+                        app:hint="@string/login_hint_password"
                         app:txt="@={viewModel.user.password}"
                         app:type="password" />
 

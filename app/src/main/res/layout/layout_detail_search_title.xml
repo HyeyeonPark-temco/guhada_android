@@ -42,7 +42,7 @@
                     android:textSize="@dimen/text_14" />
 
                 <TextView
-                    style="@style/TextRegularSingleLine"
+                    style="@style/TextMediumSingleLine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"

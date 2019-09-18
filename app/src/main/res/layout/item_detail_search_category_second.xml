@@ -46,12 +46,12 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
                         android:background="@drawable/selector_button_filter" />
 
                     <TextView
-                        style="@style/TextRegularSingleLine"
+                        style="@style/TextMediumSingleLine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -60,7 +60,7 @@
                         android:textSize="@dimen/text_14" />
 
                     <TextView
-                        style="@style/TextRegular"
+                        style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{count}"

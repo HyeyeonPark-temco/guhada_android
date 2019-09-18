@@ -24,7 +24,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.util.*
 
-enum class MyPageTabType{DELIVERY,DELIVERY_CANCEL_EX,POINT,COUPON,BOOKMARK,FOLLOW_SELLER,REVIEW,CLAIM,ADDRESS}
+enum class MyPageTabType{DELIVERY,DELIVERY_CANCEL_EX,POINT,COUPON,BOOKMARK,FOLLOW_SELLER,LAST_VIEW,REVIEW,CLAIM,ADDRESS}
 /**
  * 19.07.22
  * @author park jungho

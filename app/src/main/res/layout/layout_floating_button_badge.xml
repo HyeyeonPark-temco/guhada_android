@@ -14,13 +14,13 @@
             android:background="@drawable/time_icon" />
 
         <TextView
+            android:id="@+id/textview_floating_count"
             style="@style/TextBold"
             android:layout_width="13dp"
             android:layout_height="13dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/background_floating_button_badge"
             android:gravity="center"
-            android:text="10"
             android:textColor="@color/common_white"
             android:textSize="@dimen/text_8" />
     </RelativeLayout>

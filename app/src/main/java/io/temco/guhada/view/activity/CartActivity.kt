@@ -56,7 +56,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
     private fun initViewModel() {
         mViewModel = CartViewModel()
         mViewModel.showDeleteDialog = {
-            CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete),
+            CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete_select),
                     cancelButtonVisible = true,
                     confirmTask = {
                         mViewModel.deleteCartItem()

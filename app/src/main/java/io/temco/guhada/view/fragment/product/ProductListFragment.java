@@ -1,6 +1,9 @@
 package io.temco.guhada.view.fragment.product;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
@@ -19,8 +22,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.android.material.tabs.TabLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.temco.guhada.R;
 import io.temco.guhada.common.ActivityMoveToMain;
 import io.temco.guhada.common.BaseApplication;
@@ -29,12 +35,15 @@ import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnBrandListener;
+import io.temco.guhada.common.listener.OnCallBackListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CommonUtilKotlin;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
+import io.temco.guhada.data.db.GuhadaDB;
 import io.temco.guhada.data.model.Attribute;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
@@ -51,6 +60,7 @@ import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
 import io.temco.guhada.view.custom.dialog.ProductOrderDialog;
 import io.temco.guhada.view.fragment.base.BaseFragment;
+import io.temco.guhada.view.fragment.mypage.MyPageTabType;
 
 /**
  *
@@ -80,9 +90,15 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private String mText;
     private int mPageNumber = 1;
     private int tabIndex = 0;
+    private int tabWidth = 0;
+
+    private CompositeDisposable disposable;
+    private GuhadaDB db;
 
     private CategoryListDialog mCategoryListDialog = null;
     private BrandListDialog mBrandListDialog = null;
+
+    private View layout_tab_category;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -102,7 +118,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     @Override
     protected void init() {
         mLoadingIndicator = new LoadingIndicatorUtil(getContext());
-
+        disposable = new CompositeDisposable();
+        db = GuhadaDB.Companion.getInstance(getContext());
         // Glide
         mRequestManager = Glide.with(this);
 
@@ -137,6 +154,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setRecentProductCount();
+    }
+
+    @Override
     public void onReset() {
         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
             mCategoryData = null;
@@ -162,6 +185,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     public void onDestroy() {
         mLoadingIndicator.dismiss();
         super.onDestroy();
+        try {
+            disposable.dispose();
+            disposable = null;
+            GuhadaDB.Companion.destroyInstance();
+            db = null;
+        }catch (Exception e){
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+        }
     }
 
     @Override
@@ -297,6 +328,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             addCategoryTab(all, mCategoryData.selectId == -1);
             // Add Category
             int i=0;
+            tabWidth = 0;
             for (Category c : mCategoryData.children) {
                 if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
                     tabIndex = i+1;
@@ -307,10 +339,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
                 i++;
             }
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("","");
             // Select Event
             mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
+                    TextView text = tab.getCustomView().findViewById(R.id.text_title);
+                    text.setTypeface(null, Typeface.BOLD);
                     if (tab.getTag() != null && tab.getTag() instanceof Category) {
                         loadCategory((Category) tab.getTag(), false);
                     }
@@ -318,6 +353,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
+                    TextView text = tab.getCustomView().findViewById(R.id.text_title);
+                    text.setTypeface(null, Typeface.NORMAL);
                 }
 
                 @Override
@@ -327,7 +364,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     }
                 }
             });
-            /*if(mCategoryData.selectId != -1){
+            if(mCategoryData.selectId != -1){
                 mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
                     @Override
                     public void run() {
@@ -335,9 +372,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                         loadCategory(mCategoryData.children.get(tabIndex-1), false);
                     }
                 },150);
-            }*/
+            }
             // Scroll // Not Used
-            // setTabLayoutScrollEvent();
+            //setTabLayoutScrollEvent();
         } else {
             mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
         }
@@ -345,13 +382,26 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void addCategoryTab(Category data, boolean isSelect) {
         if (getContext() != null) {
-            View v = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
+            layout_tab_category = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
             // ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
-            ((TextView) v.findViewById(R.id.text_title)).setText(data.title);
-            TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(v);
+            TextView text_title =  ((TextView) layout_tab_category.findViewById(R.id.text_title));
+            text_title.setText(data.title);
+            TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(layout_tab_category);
             tab.setTag(data); // Tag
             mBinding.layoutHeader.layoutTab.addTab(tab);
-            if (isSelect) tab.select();
+            if (isSelect) {
+                text_title.setTypeface(null, Typeface.BOLD);
+                tab.select();
+            }else{
+                text_title.setTypeface(null, Typeface.NORMAL);
+            }
+            /*layout_tab_category.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    tabWidth += layout_tab_category.getMeasuredWidth();
+                    layout_tab_category.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });*/
         }
     }
 
@@ -370,6 +420,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void setTabLayoutScrollEvent() {
         mBinding.layoutHeader.layoutTab.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 1","mBinding.layoutHeader.layoutTab.getWidth()",mBinding.layoutHeader.layoutTab.getWidth());
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 1","width",tabWidth);
             if (mBinding.layoutHeader.layoutTab.getWidth() < mBinding.layoutHeader.layoutTab.getChildAt(0).getWidth()) {
                 mBinding.layoutHeader.layoutTab.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 
@@ -379,6 +431,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     public void onScrollChanged() {
                         if (mBinding.layoutHeader.layoutTab.getScrollX() != 0) {
                             int x = mBinding.layoutHeader.layoutTab.getScrollX();
+                            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 2","getScrollX",x);
+                            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 2","getRight",mBinding.layoutHeader.layoutTab.getRight());
                             if (currentScroll < x) {
                                 mBinding.layoutHeader.layoutTabLeftDirection.setVisibility(View.VISIBLE);
                                 mBinding.layoutHeader.layoutTabRightDirection.setVisibility(View.GONE);
@@ -547,7 +601,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void changeItemFloatingButton(boolean isShow, boolean animate) {
-       changeScaleView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+        if(CommonUtil.checkToken()){
+            changeLastView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+        }else{
+            mBinding.buttonFloatingItem.getRoot().setVisibility(View.GONE);
+        }
     }
 
     private void changeTopFloatingButton(boolean isShow, boolean animate) {
@@ -578,6 +636,57 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     v.setVisibility(View.GONE);
                 }
             }
+        }
+    }
+
+
+    /**
+     * @editor park jungho
+     * 19.08.01
+     * scrollToTop Value -> false 로 변경
+     *
+     */
+    private void changeLastView(View v, boolean isShow, boolean animate) {
+        if (isShow) {
+            if (v.getVisibility() != View.VISIBLE) {
+                v.setOnClickListener(view -> {
+                    BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, MyPageTabType.LAST_VIEW.ordinal(), true));
+                    ((Activity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_HOME);
+                    ((Activity)getContext()).onBackPressed();
+                });
+                v.setVisibility(View.VISIBLE);
+                if (animate) {
+                    showScaleAnimation(v);
+                }
+                setRecentProductCount();
+            }
+        } else {
+            if (v.getVisibility() == View.VISIBLE) {
+                v.setOnClickListener(null);
+                if (animate) {
+                    hideScaleAnimation(v);
+                } else {
+                    v.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    private void setRecentProductCount(){
+        try {
+            CommonUtilKotlin.INSTANCE.recentProductCount(disposable, db, new OnCallBackListener() {
+                @Override
+                public void callBackListener(boolean resultFlag, @NotNull Object value) {
+                    try {
+                        String count = value.toString();
+                        mBinding.buttonFloatingItem.textviewFloatingCount.setText(count);
+                    }catch (Exception e){
+                        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+                    }
+                }
+            });
+        }catch (Exception e){
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
         }
     }
 
@@ -736,7 +845,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         for (Filter f : filters) {
             for (Attribute a : f.attributes) {
                 if (a.selected) {
-                    addTagTypeNormal(a.name, a);
+                    if(TextUtils.isEmpty(a.colorName)) addTagTypeNormal(a.name, a);
+                    else addTagTypeNormal(a.colorName, a);
                 }
             }
         }

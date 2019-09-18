@@ -2,13 +2,20 @@ package io.temco.guhada.common.util
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.data.db.GuhadaDB
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.view.activity.CustomWebViewActivity
 import io.temco.guhada.view.activity.ImageDetailViewActivity
 import io.temco.guhada.view.activity.UserClaimGuhadaActivity
 import io.temco.guhada.view.activity.UserClaimSellerActivity
+import java.util.*
 
 object CommonUtilKotlin  {
 
@@ -77,6 +84,17 @@ object CommonUtilKotlin  {
         if(title!=null)intent.putExtra("title",title)
         intent.putExtra("path",path)
         activity.startActivityForResult(intent, Flag.RequestCode.BASE)
+    }
+
+
+    fun recentProductCount(disposable: CompositeDisposable, db : GuhadaDB, listener: OnCallBackListener) {
+        disposable.add(io.reactivex.Observable.fromCallable<Int> {
+            db.recentDealDao().getAll(20).size
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe { result ->
+                    listener.callBackListener(true,result)
+                }
+        )
     }
 
 
