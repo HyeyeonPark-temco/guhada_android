@@ -276,16 +276,26 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private fun initRecipient() {
         // 신청, 미신청 체크박스
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                if (mBinding.includePaymentPaymentway.checkboxPaymentReceiptpersonal.isChecked) {
+                    mViewModel.mRequestOrder.cashReceiptUsage = RequestOrder.CashReceiptUsage.PERSONAL.code
+                    mViewModel.mRequestOrder.cashReceiptType = RequestOrder.CashReceiptType.MOBILE.code
+                } else {
+                    mViewModel.mRequestOrder.cashReceiptUsage = RequestOrder.CashReceiptUsage.BUSINESS.code
+                    mViewModel.mRequestOrder.cashReceiptType = RequestOrder.CashReceiptType.BUSINESS.code
+                }
+            }
             mBinding.includePaymentPaymentway.checkboxPaymentReceiptunissue.isChecked = !isChecked
             mBinding.includePaymentPaymentway.constraintlayoutPaymentRecipientform.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptunissue.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                mViewModel.mRequestOrder.cashReceiptType = ""
+                mViewModel.mRequestOrder.cashReceiptNo = ""
+                mViewModel.mRequestOrder.cashReceiptUsage = ""
+            }
             mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.isChecked = !isChecked
             mBinding.includePaymentPaymentway.constraintlayoutPaymentRecipientform.visibility = if (!isChecked) View.VISIBLE else View.GONE
-
-            mViewModel.mRequestOrder.cashReceiptType = ""
-            mViewModel.mRequestOrder.cashReceiptNo = ""
-            mViewModel.mRequestOrder.cashReceiptUsage = ""
         }
 
         // 개인소득공제용

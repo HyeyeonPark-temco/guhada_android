@@ -34,13 +34,12 @@ class RequestOrder {
      * 현금영수증 용도(PERSONAL:개인소득공제용, BUSINESS:사업자증빙용)
      * @see CashReceiptUsage
      */
-    var cashReceiptUsage = ""
-
+    var cashReceiptUsage = RequestOrder.CashReceiptUsage.PERSONAL.code
     /**
      * 현금영수증 요청방식 (MOBILE:휴대폰번호, CARD:현금영수증카드, BUSINESS:사업자번호)
      * @see CashReceiptType
      */
-    var cashReceiptType = ""
+    var cashReceiptType = RequestOrder.CashReceiptType.MOBILE.code
 
     var consumptionPoint = 0    // 사용 포인트
 
