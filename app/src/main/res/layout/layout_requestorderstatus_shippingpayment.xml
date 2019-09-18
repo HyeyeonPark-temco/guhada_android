@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:background="@color/pale_grey">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -34,92 +34,93 @@
                 style="@style/RequestOrderStatusBlackSubTitleTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{title}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="@{title}" />
 
             <io.temco.guhada.view.custom.HtmlTextView
                 android:id="@+id/textview_requestorderstatus_shippingpayment_description1"
                 style="@style/RequestOrderStatusBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_title" />
+                android:layout_marginTop="25dp" />
 
             <io.temco.guhada.view.custom.HtmlTextView
                 android:id="@+id/textview_requestorderstatus_shippingpayment_description2"
                 style="@style/RequestOrderStatusBlackTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description1" />
+                android:layout_marginTop="6dp"/>
 
-            <RadioButton
-                android:id="@+id/radiobutton_requestorderstatus_shippingpayment1"
+            <LinearLayout
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/selector_ovalradiobutton_all"
-                android:button="@null"
-                android:visibility="@{isRefund ? View.VISIBLE : View.GONE, default= gone}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description2" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingpayment1"
-                style="@style/RequestOrderStatusBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/requestorderstatus_refund_shipping_radio"
-                android:visibility="@{isRefund ? View.VISIBLE : View.GONE, default= gone}"
-                app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_shippingpayment1"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment_description2" />
+                <RadioButton
+                    android:id="@+id/radiobutton_requestorderstatus_shippingpayment1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_ovalradiobutton_all"
+                    android:button="@null"
+                    android:visibility="@{isRefund ? View.VISIBLE : View.GONE, default= visible}" />
 
-            <RadioButton
-                android:id="@+id/radiobutton_requestorderstatus_shippingpayment2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/selector_ovalradiobutton_all"
-                android:button="@null"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radiobutton_requestorderstatus_shippingpayment1" />
+                <TextView
+                    android:id="@+id/textview_requestorderstatus_shippingpayment1"
+                    style="@style/RequestOrderStatusBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/requestorderstatus_refund_shipping_radio"
+                    android:visibility="@{isRefund ? View.VISIBLE : View.GONE, default= visible}" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingpayment2"
-                style="@style/RequestOrderStatusBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/requestorderstatus_common_shipping_radio1"
-                app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_shippingpayment2"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment1" />
-
-            <RadioButton
-                android:id="@+id/radiobutton_requestorderstatus_shippingpayment3"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/selector_ovalradiobutton_all"
-                android:button="@null"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radiobutton_requestorderstatus_shippingpayment2" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textview_requestorderstatus_shippingpayment3"
-                style="@style/RequestOrderStatusBlackTextStyle"
+                <RadioButton
+                    android:id="@+id/radiobutton_requestorderstatus_shippingpayment2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_ovalradiobutton_all"
+                    android:button="@null"
+                    app:layout_constraintLeft_toLeftOf="parent" />
+
+                <TextView
+                    android:id="@+id/textview_requestorderstatus_shippingpayment2"
+                    style="@style/RequestOrderStatusBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/requestorderstatus_common_shipping_radio1" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
-                android:text="@string/requestorderstatus_common_shipping_radio2"
-                app:layout_constraintLeft_toRightOf="@+id/radiobutton_requestorderstatus_shippingpayment3"
-                app:layout_constraintTop_toBottomOf="@+id/textview_requestorderstatus_shippingpayment2" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radiobutton_requestorderstatus_shippingpayment3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_ovalradiobutton_all"
+                    android:button="@null" />
+
+                <TextView
+                    android:id="@+id/textview_requestorderstatus_shippingpayment3"
+                    style="@style/RequestOrderStatusBlackTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/requestorderstatus_common_shipping_radio2" />
+            </LinearLayout>
+
+
+        </LinearLayout>
     </FrameLayout>
 </layout>
