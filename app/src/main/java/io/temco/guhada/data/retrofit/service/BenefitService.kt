@@ -101,10 +101,18 @@ interface BenefitService {
                           @Query("sellerId") sellerId: Long): Call<BaseModel<MutableList<Coupon>>>
 
     /**
-     * 사용 가능 포인트, 쿠폰 갯수 조회
+     * 사용 가능 포인트, 쿠폰 갯수 조회 API
      * @author Hyeyeon Park
      * @since 2019.09.17
      */
     @GET("/benefits/summary")
     fun getAvailableBenefitCount(@Header("Authorization") accessToken: String): Call<BaseModel<AvailableBenefitCount>>
+
+    /**
+     * 적립 예정 포인트 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.18
+     */
+    @POST("/process/due-save")
+    fun getDueSavePoint(@Header("Authorization") accessToken: String, @Body pointProcessParam: PointProcessParam) : Call<BaseModel<ExpectedPointResponse>>
 }

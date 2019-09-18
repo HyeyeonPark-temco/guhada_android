@@ -42,6 +42,9 @@ class RequestOrder {
      */
     var cashReceiptType = ""
 
+    var consumptionPoint = 0    // 사용 포인트
+
+
     // WEB 관련
     var userAgent: String = ""
     var web: Boolean = false

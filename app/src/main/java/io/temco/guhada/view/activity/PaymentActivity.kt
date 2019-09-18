@@ -29,6 +29,8 @@ import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
+import io.temco.guhada.data.model.point.PointProcessParam
+import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
@@ -39,6 +41,10 @@ import io.temco.guhada.view.adapter.payment.PaymentProductAdapter
 import io.temco.guhada.view.adapter.payment.PaymentSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 
+/**
+ * 주문 결제 화면
+ * @author Hyeyeon Park
+ */
 class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mViewModel: PaymentViewModel
@@ -65,11 +71,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         initRecipient()
 
         // 사용 가능 쿠폰, 포인트 조회
-        mViewModel.getAvailableBenefitCount()
-        mViewModel.mAvailableBenefitCount.observe(this, Observer {
-            mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), 0, it.totalAvailCoupon))
-            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint))
-        })
+        initAvailableBenefitCount()
+
+        // 적립 예정 포인트
+        initDueSavePoint()
 
         // 상품 리스트
         mBinding.recyclerviewPaymentProduct.adapter = PaymentProductAdapter()
@@ -331,6 +336,28 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     }
 
+    private fun initAvailableBenefitCount() {
+        mViewModel.mAvailableBenefitCount.observe(this, Observer {
+            mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, it.totalAvailCoupon))
+            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint))
+        })
+    }
+
+    private fun initDueSavePoint() {
+        mViewModel.mExpectedPoint.observe(this, Observer {
+            var dusSaveTotalPoint = 0
+            for (item in it.dueSavePointList) {
+                dusSaveTotalPoint += item.freePoint
+                when (item.pointType) {
+                    PointProcessParam.PointSave.BUY.type -> mBinding.includePaymentDiscountresult.textviewPaymentBuypoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+                    PointProcessParam.PointSave.TEXT_REVIEW.type -> mBinding.includePaymentDiscountresult.textviewPaymentTextreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+                    PointProcessParam.PointSave.IMG_REVIEW.type -> mBinding.includePaymentDiscountresult.textviewPaymentPhotoreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+                }
+            }
+            mBinding.includePaymentDiscountresult.textviewPaymentExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -383,9 +410,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             RequestCode.COUPON_SELECT.flag -> {
                 if (resultCode == Activity.RESULT_OK) {
                     // 쿠폰 선택
-                    data?.getSerializableExtra("selectedCouponMap").let { map ->
-                        if (map != null) {
-                            val selectedCouponMap = map as HashMap<Long, CouponWallet?>
+                    data?.getSerializableExtra("selectedCouponMap").let { selectedCouponMap ->
+                        if (selectedCouponMap != null) {
+                            mViewModel.mSelectedCouponMap = selectedCouponMap as HashMap<Long, CouponWallet?>
                             var couponCount = 0
                             for (key in selectedCouponMap.keys)
                                 if (selectedCouponMap[key]?.couponId ?: -1 > -1)
@@ -395,7 +422,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                 if (totalDiscountPrice != null) {
                                     // 사용가능 n장/보유 m장
                                     mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
-                                            couponCount, mViewModel.mAvailableBenefitCount.value?.totalAvailCoupon
+                                            mViewModel.order.availableCouponCount, mViewModel.mAvailableBenefitCount.value?.totalAvailCoupon
                                             ?: 0))
 
                                     // -n원(m장)

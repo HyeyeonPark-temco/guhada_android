@@ -6,6 +6,7 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.coupon.CouponConsumption
 import io.temco.guhada.data.model.coupon.CouponSaveProcess
 import io.temco.guhada.data.model.order.OrderItemResponse
+import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.BenefitService
@@ -149,5 +150,13 @@ class BenefitServer {
          */
         fun getAvailableBenefitCount(listener: OnServerListener, accessToken: String) =
                 RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getAvailableBenefitCount(accessToken = accessToken).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 적립 예정 포인트 조회 API
+         * @author Hyeyeon Park
+         * @since 2019.09.18
+         */
+        fun getDueSavePoint(listener: OnServerListener, accessToken: String, pointProcessParam: PointProcessParam) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getDueSavePoint(accessToken = accessToken, pointProcessParam = pointProcessParam).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
     }
 }
