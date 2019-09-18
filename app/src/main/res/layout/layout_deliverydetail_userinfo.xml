@@ -197,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="53dp"
                     android:layout_marginTop="18dp"
-                    android:text="@{viewModel.purchaseOrderResponse.shippingAddress.roadAddress + ` ` +  viewModel.purchaseOrderResponse.shippingAddress.addressDefault}"
+                    android:text="@{viewModel.purchaseOrderResponse.shippingAddress.roadAddress + ` ` +  viewModel.purchaseOrderResponse.shippingAddress.addressDetail}"
                     app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingaddress_title"
                     app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingname_content" />
 
