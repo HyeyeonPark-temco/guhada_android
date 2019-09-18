@@ -8,7 +8,8 @@ package io.temco.guhada.common;
 public class ActivityMoveToMain {
 
     // 메인으로 이동하는 code 값
-    int resultCode = 0;
+    int resultCode = -1;
+    int resultPageIndex = -1;
     // 메인으로 이동여부
     boolean isMoveToMain = false;
 
@@ -17,13 +18,24 @@ public class ActivityMoveToMain {
         this.isMoveToMain = isMoveToMain;
     }
 
+    public ActivityMoveToMain(int resultCode, int resultPageIndex, boolean isMoveToMain) {
+        this.resultCode = resultCode;
+        this.resultPageIndex = resultPageIndex;
+        this.isMoveToMain = isMoveToMain;
+    }
+
     public void clear(){
-        resultCode = 0;
+        resultCode = -1;
+        resultPageIndex = -1;
         isMoveToMain = false;
     }
 
     public int getResultCode() {
         return resultCode;
+    }
+
+    public int getResultPageIndex() {
+        return resultPageIndex;
     }
 
     public void setResultCode(int resultCode) {

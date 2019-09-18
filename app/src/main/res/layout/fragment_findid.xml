@@ -171,7 +171,7 @@
                         android:layout_marginTop="20dp"
                         style="@style/TextBold"
                         android:gravity="center"
-                        android:text="@string/verifyphone_content"
+                        android:text="@string/verifyphone_content2"
                         android:textColor="@color/greyish_brown"
                         android:textSize="@dimen/text_15" />
 

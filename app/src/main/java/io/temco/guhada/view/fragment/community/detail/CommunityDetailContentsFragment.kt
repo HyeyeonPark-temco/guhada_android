@@ -76,7 +76,33 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
 
 
         if(viewModel.communityDetailClientPlatformWeb.get()){
+            val data = StringBuilder()
+            data.append("<style>img{display: inline;height: auto;max-width: 100%;}</style>")
+            data.append(viewModel.communityDetail.value!!.contents!!.replace("\"//www","\"https://www"))
             mBinding.webviewCommunitydetailContent.settings.apply {
+                javaScriptEnabled = true
+                javaScriptCanOpenWindowsAutomatically = true
+                setSupportMultipleWindows(true)
+                allowFileAccess = true
+                pluginState = WebSettings.PluginState.ON
+                pluginState = WebSettings.PluginState.ON_DEMAND
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+                loadsImagesAutomatically = true
+                defaultFontSize = context?.resources?.getDimension(R.dimen.text_4)?.toInt() ?: 20
+                setAppCacheEnabled(true)
+                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+                if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
+            }
+            mBinding.webviewCommunitydetailContent.webViewClient = object  : WebViewClient(){
+                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                    //return super.shouldOverrideUrlLoading(view, request)
+                    view?.webChromeClient = WebChromeClient()
+                    if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment",request?.url!!.toString())
+                    return true
+                }
+            }
+            mBinding.webviewCommunitydetailContent.loadData(data.toString(), "text/html", null)
+            /*mBinding.webviewCommunitydetailContent.settings.apply {
                 javaScriptEnabled = true
                 javaScriptCanOpenWindowsAutomatically = true
                 setSupportMultipleWindows(true)
@@ -103,7 +129,7 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
             data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>")
             data.append(viewModel.communityDetail.value!!.contents!!.replace("\"//www","\"https://www"))
             data.append("</body></HTML>")
-            mBinding.webviewCommunitydetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(),"text/html; video/mpeg", "utf-8", null)
+            mBinding.webviewCommunitydetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(),"text/html; video/mpeg", "utf-8", null)*/
         }else{
             if (mBinding.recyclerviewCommunitydetailList.adapter == null) {
                 var mobileList = arrayListOf<CommunityMobileDetail>()

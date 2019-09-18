@@ -45,6 +45,8 @@ public class Flag {
         public static final int COMMUNITY_DETAIL_TEMP_LIST = 10032;
         public static final int USER_CLAIM_GUHADA = 10033;
         public static final int USER_CLAIM_SELLER = 10034;
+
+        public static final int MYPAGE_MOVE = 20000;
     }
 
     public static class ResultCode {

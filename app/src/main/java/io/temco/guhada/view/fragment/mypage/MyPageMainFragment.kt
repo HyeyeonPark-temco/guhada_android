@@ -10,6 +10,7 @@ import com.bumptech.glide.RequestManager
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtil
@@ -23,6 +24,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.util.*
 
+enum class MyPageTabType{DELIVERY,DELIVERY_CANCEL_EX,POINT,COUPON,BOOKMARK,FOLLOW_SELLER,REVIEW,CLAIM,ADDRESS}
 /**
  * 19.07.22
  * @author park jungho
@@ -58,6 +60,13 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun getLayoutId() = R.layout.fragment_main_mypagehome
     override fun init() {
         mViewModel = MyPageViewModel(context ?: mBinding.root.context)
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                Flag.RequestCode.MYPAGE_MOVE -> {
+                    setPagerIndexMove(requestCode.data as Int)
+                }
+            }
+        }
     }
 
     private fun initShippingAddressButtons() {
@@ -95,6 +104,10 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     // PUBLIC
     ////////////////////////////////////////////////
 
+    fun setPagerIndexMove(index : Int){
+        currentPagerIndex = index
+        mBinding.viewpager.setCurrentItem(index)
+    }
 
     ////////////////////////////////////////////////
     // PRIVATE

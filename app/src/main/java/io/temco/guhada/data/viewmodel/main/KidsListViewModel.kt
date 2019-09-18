@@ -70,63 +70,13 @@ class KidsListRepository(val context : Context){
         ddd.add(event)
         list.value!!.add(event)
         // ------------------------------------------------------------------
-        getNewArrivals()
+        getPlusItem()
     }
 
     /**
-     * new-arrivals    신상품 목록 조회
-     */
-    private fun getNewArrivals() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "NEW ARRIVALS", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
-                        list.value!!.add(subTitle)
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.focuson04, 556))
-                        //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
-                        getNewArrivalsDummy()
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-
-    /**
-     * plus-item    플러스 아이템 목록 조회
+     * PLUS ITEM
      */
     private fun getPlusItem() {
-        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        getNewArrivalsDummy1()
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-    /**
-     * new-arrivals    신상품 목록 조회 더미
-     */
-    private fun getNewArrivalsDummy() {
         ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -134,9 +84,83 @@ class KidsListRepository(val context : Context){
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
                                 "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
                         list.value!!.add(subTitle)
+                        //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
+                        getBestItem()
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
+        })
+    }
+
+
+    /**
+     * Best ITEM
+     */
+    private fun getBestItem() {
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                        list.value!!.add(subTitle)
                         list.value = list.value
-                        getNewArrivalsDummy1()
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.hotkeyword05, 341))
+                        getNewIn()
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
+        })
+    }
+
+
+    /**
+     * NEW IN
+     */
+    private fun getNewIn() {
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                        list.value!!.add(subTitle)
+                        list.value = list.value
+                        //gethotKeyword()
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
+        })
+    }
+
+
+    /**
+     * HOT KEYWORD
+     */
+    private fun gethotKeyword() {
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                        list.value!!.add(subTitle)
+                        list.value = list.value
+                        getBestStore()
                     },
                     dataNotFoundTask = {
 
@@ -149,19 +173,17 @@ class KidsListRepository(val context : Context){
     }
 
     /**
-     * new-arrivals    신상품 목록 조회 더미 community/all
+     * BEST STORE
      */
-    private fun getNewArrivalsDummy1() {
+    private fun getBestStore() {
         ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM TEST1", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
+                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        getNewArrivalsDummy2()
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_15, 120))
                     },
                     dataNotFoundTask = {
 
@@ -172,56 +194,6 @@ class KidsListRepository(val context : Context){
             )
         })
     }
-
-    /**
-     * new-arrivals    신상품 목록 조회 더미
-     */
-    private fun getNewArrivalsDummy2() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM  TEST2", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        getNewArrivalsDummy3()
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner09, 230))
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-    /**
-     * new-arrivals    신상품 목록 조회 더미
-     */
-    private fun getNewArrivalsDummy3() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM TEST3", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_13, 120))
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
 
 
 

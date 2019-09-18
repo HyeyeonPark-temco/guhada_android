@@ -70,23 +70,22 @@ class WomenListRepository(val context : Context){
         ddd.add(event)
         list.value!!.add(event)
         // ------------------------------------------------------------------
-        getNewArrivals()
+        getBestItem()
     }
 
     /**
-     * new-arrivals    신상품 목록 조회
+     * Best ITEM
      */
-    private fun getNewArrivals() {
+    private fun getBestItem() {
         ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "NEW ARRIVALS", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
+                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
                         list.value!!.add(subTitle)
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.focuson04, 556))
-                        //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
-                        getNewArrivalsDummy()
+                        list.value = list.value
+                        getNewIn()
                     },
                     dataNotFoundTask = {
 
@@ -100,18 +99,43 @@ class WomenListRepository(val context : Context){
 
 
     /**
-     * plus-item    플러스 아이템 목록 조회
+     * NEW IN
      */
-    private fun getPlusItem() {
-        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
+    private fun getNewIn() {
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        getNewArrivalsDummy1()
+                        //gethotKeyword()
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
+        })
+    }
+
+
+    /**
+     * HOT KEYWORD
+     */
+    private fun gethotKeyword() {
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
+                        list.value!!.add(subTitle)
+                        list.value = list.value
+                        getBestStore()
                     },
                     dataNotFoundTask = {
 
@@ -124,93 +148,17 @@ class WomenListRepository(val context : Context){
     }
 
     /**
-     * new-arrivals    신상품 목록 조회 더미
+     * BEST STORE
      */
-    private fun getNewArrivalsDummy() {
+    private fun getBestStore() {
         ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        getNewArrivalsDummy1()
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.hotkeyword05, 341))
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-    /**
-     * new-arrivals    신상품 목록 조회 더미 community/all
-     */
-    private fun getNewArrivalsDummy1() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM TEST1", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        getNewArrivalsDummy2()
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_15, 120))
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-    /**
-     * new-arrivals    신상품 목록 조회 더미
-     */
-    private fun getNewArrivalsDummy2() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM  TEST2", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        getNewArrivalsDummy3()
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner09, 230))
-                    },
-                    dataNotFoundTask = {
-
-                    },
-                    failedTask = {
-
-                    }
-            )
-        })
-    }
-
-    /**
-     * new-arrivals    신상품 목록 조회 더미
-     */
-    private fun getNewArrivalsDummy3() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM TEST3", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
-                        list.value!!.add(subTitle)
-                        list.value = list.value
-                        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.banner_13, 120))
                     },
                     dataNotFoundTask = {
 
