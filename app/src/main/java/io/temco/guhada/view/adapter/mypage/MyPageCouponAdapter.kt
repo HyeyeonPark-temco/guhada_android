@@ -6,15 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.server.BenefitServer
+import io.temco.guhada.data.viewmodel.mypage.MyPageCouponViewModel
 import io.temco.guhada.databinding.ItemCouponBinding
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 /**
@@ -23,7 +27,9 @@ import kotlinx.coroutines.launch
  * @since 2019.08.08
  */
 class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
+    lateinit var mViewModel: MyPageCouponViewModel
     var list: MutableList<Coupon> = mutableListOf()
+    var mIsAvailable = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_coupon, parent, false))
     override fun getItemCount(): Int = list.size
@@ -54,6 +60,11 @@ class MyPageCouponAdapter : RecyclerView.Adapter<MyPageCouponAdapter.Holder>() {
                                 if (model.resultCode == ResultCode.SUCCESS.flag) {
                                     this@MyPageCouponAdapter.list.removeAt(adapterPosition)
                                     notifyItemRemoved(adapterPosition)
+
+                                    mViewModel.getCoupons(isAvailable = this@MyPageCouponAdapter.mIsAvailable)
+                                } else {
+                                    val message = if (model.message.isNullOrEmpty()) BaseApplication.getInstance().getString(R.string.common_message_servererror) else model.message
+                                    ToastUtil.showMessage(message)
                                 }
                             }
                         }

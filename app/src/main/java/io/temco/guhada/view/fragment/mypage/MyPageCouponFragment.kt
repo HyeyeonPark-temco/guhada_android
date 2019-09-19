@@ -14,7 +14,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  */
 class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCouponEnabledBinding>() {
     lateinit var mViewModel: MyPageCouponViewModel
-    var isAvailable = false
+    var mIsAvailable = false
 
     override fun getBaseTag(): String = MyPageCouponFragment::class.java.simpleName
 
@@ -22,10 +22,13 @@ class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCo
 
     override fun init() {
         if (::mViewModel.isInitialized) {
-            mBinding.recyclerviewMypagecouponEnabledlist.adapter = MyPageCouponAdapter()
+            mBinding.recyclerviewMypagecouponEnabledlist.adapter = MyPageCouponAdapter().apply {
+                this.mViewModel = this@MyPageCouponFragment.mViewModel
+                this.mIsAvailable = this@MyPageCouponFragment.mIsAvailable
+            }
             mBinding.viewModel = mViewModel
-            mBinding.isAvailable = isAvailable
-            mViewModel.getCoupons(isAvailable)
+            mBinding.isAvailable = mIsAvailable
+            mViewModel.getCoupons(mIsAvailable)
             mBinding.executePendingBindings()
         }
     }
@@ -41,7 +44,7 @@ class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCo
 
     fun checkEmptyVisible() {
         val isEmpty =
-                if (isAvailable) mViewModel.enabledCouponResponse.value?.totalElements ?: 0 > 0
+                if (mIsAvailable) mViewModel.enabledCouponResponse.value?.totalElements ?: 0 > 0
                 else mViewModel.disabledCouponResponse.value?.totalElements ?: 0 > 0
 
         if (isEmpty) {
@@ -55,7 +58,7 @@ class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCo
 
     fun checkMoreVisible() {
         val isLast =
-                if (isAvailable) mViewModel.enabledCouponResponse.value?.last == true
+                if (mIsAvailable) mViewModel.enabledCouponResponse.value?.last == true
                 else mViewModel.disabledCouponResponse.value?.last == true
 
         if (isLast) {
