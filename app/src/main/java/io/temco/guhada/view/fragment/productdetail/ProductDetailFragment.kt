@@ -277,6 +277,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initSummary() {
+        mViewModel.getProductReviewSummary()
         mViewModel.getSellerSatisfaction()
         mBinding.includeProductdetailContentsummary.viewModel = mViewModel
         mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener {

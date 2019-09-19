@@ -38,6 +38,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
             override fun notifySummary(averageReviewsRating: Float) {
                 this@ProductDetailReviewFragment.notifySummary(averageReviewsRating)
             }
+
         }
 
         mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter()
