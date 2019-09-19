@@ -210,6 +210,7 @@ class MenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMod
 
         override fun bind(viewModel: MenListViewModel, position: Int, item: MainBaseModel) {
             if(item is SubTitleItemList){
+                var homeDeal = item.data as HomeDeal
                 if(width == 0){
                     val matrix = DisplayMetrics()
                     (viewModel.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
@@ -250,24 +251,24 @@ class MenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMod
                 for (i in 0..size){
                     var data : Deal?  = when(item.currentSubTitleIndex){
                         0->{
-                            if(item.homeDeal.allList!!.size <= i) null
-                            else item.homeDeal.allList!![i]
+                            if(homeDeal.allList!!.size <= i) null
+                            else homeDeal.allList!![i]
                         }
                         1->{
-                            if(item.homeDeal.womenList!!.size <= i) null
-                            else item.homeDeal.womenList!![i]
+                            if(homeDeal.womenList!!.size <= i) null
+                            else homeDeal.womenList!![i]
                         }
                         2->{
-                            if(item.homeDeal.menList!!.size <= i) null
-                            else item.homeDeal.menList!![i]
+                            if(homeDeal.menList!!.size <= i) null
+                            else homeDeal.menList!![i]
                         }
                         3->{
-                            if(item.homeDeal.kidsList!!.size <= i) null
-                            else item.homeDeal.kidsList!![i]
+                            if(homeDeal.kidsList!!.size <= i) null
+                            else homeDeal.kidsList!![i]
                         }
                         else -> {
-                            if(item.homeDeal.allList!!.size <= i) null
-                            else item.homeDeal.allList!![i]
+                            if(homeDeal.allList!!.size <= i) null
+                            else homeDeal.allList!![i]
                         }
                     }
 

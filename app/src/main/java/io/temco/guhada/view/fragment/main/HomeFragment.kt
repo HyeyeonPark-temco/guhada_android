@@ -81,13 +81,13 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                     override fun setViewLayout(container: ViewGroup, item: String, position: Int): View {
                         var vw : View
                         when(position){
-                            0->{vw = HomeListLayout(it)}
-                            1->{vw = WomenListLayout(it)}
-                            2->{vw = MenListLayout(it)}
-                            3->{vw = KidsListLayout(it)}
-                            4->{vw = HomeListLayout(it)}
-                            5->{vw = HomeListLayout(it)}
-                            6->{vw = HomeListLayout(it)}
+                            0->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
+                            1->{vw = WomenListLayout(it).apply { mHomeFragment = this@HomeFragment }}
+                            2->{vw = MenListLayout(it).apply { mHomeFragment = this@HomeFragment }}
+                            3->{vw = KidsListLayout(it).apply { mHomeFragment = this@HomeFragment }}
+                            4->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
+                            5->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
+                            6->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
                             else->{vw = HomeListLayout(it)}
                             // WomenListLayout,KidsListLayout,MenListLayout
                         }

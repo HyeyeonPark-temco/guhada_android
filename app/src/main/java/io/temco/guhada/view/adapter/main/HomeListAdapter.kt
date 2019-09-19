@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
@@ -23,10 +22,7 @@ import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.viewmodel.main.HomeListViewModel
-import io.temco.guhada.databinding.CustomlayoutMainItemDummyBinding
-import io.temco.guhada.databinding.CustomlayoutMainItemMaineventBinding
-import io.temco.guhada.databinding.CustomlayoutMainItemPaddingBinding
-import io.temco.guhada.databinding.CustomlayoutMainItemSubtitlelistBinding
+import io.temco.guhada.databinding.*
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
@@ -46,6 +42,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
             HomeType.MainEvent->return R.layout.customlayout_main_item_mainevent
             HomeType.SubTitleList->return R.layout.customlayout_main_item_subtitlelist
             HomeType.Dummy->return R.layout.customlayout_main_item_dummy
+            HomeType.Keyword->return R.layout.customlayout_main_item_keyword
             else ->return R.layout.customlayout_main_item_padding
         }
     }
@@ -68,6 +65,10 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
             HomeType.Dummy->{
                 val binding : CustomlayoutMainItemDummyBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return DummyViewHolder(binding.root, binding)
+            }
+            HomeType.Keyword->{
+                val binding : CustomlayoutMainItemKeywordBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return KeywordViewHolder(binding.root, binding)
             }
             else ->{
                 val binding : CustomlayoutMainItemPaddingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
@@ -210,6 +211,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
 
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is SubTitleItemList){
+                var homeDeal = item.data as HomeDeal
                 if(width == 0){
                     val matrix = DisplayMetrics()
                     (viewModel.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
@@ -250,24 +252,24 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                 for (i in 0..size){
                     var data : Deal?  = when(item.currentSubTitleIndex){
                         0->{
-                            if(item.homeDeal.allList!!.size <= i) null
-                            else item.homeDeal.allList!![i]
+                            if(homeDeal.allList!!.size <= i) null
+                            else homeDeal.allList!![i]
                         }
                         1->{
-                            if(item.homeDeal.womenList!!.size <= i) null
-                            else item.homeDeal.womenList!![i]
+                            if(homeDeal.womenList!!.size <= i) null
+                            else homeDeal.womenList!![i]
                         }
                         2->{
-                            if(item.homeDeal.menList!!.size <= i) null
-                            else item.homeDeal.menList!![i]
+                            if(homeDeal.menList!!.size <= i) null
+                            else homeDeal.menList!![i]
                         }
                         3->{
-                            if(item.homeDeal.kidsList!!.size <= i) null
-                            else item.homeDeal.kidsList!![i]
+                            if(homeDeal.kidsList!!.size <= i) null
+                            else homeDeal.kidsList!![i]
                         }
                         else -> {
-                            if(item.homeDeal.allList!!.size <= i) null
-                            else item.homeDeal.allList!![i]
+                            if(homeDeal.allList!!.size <= i) null
+                            else homeDeal.allList!![i]
                         }
                     }
 
@@ -364,6 +366,24 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         }
     }
 
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class KeywordViewHolder(private val containerView: View, val binding: CustomlayoutMainItemKeywordBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+            if(item is KeywordMain){
+                binding.title = item.title
+                if (binding.listKeyowrd.adapter == null) {
+                    binding.listKeyowrd.adapter = MainKeywordListAdapter().apply { mList = item.listKeyword!! }
+                } else {
+                    (binding.listKeyowrd.adapter as MainKeywordListAdapter).setItems(item.listKeyword!!)
+                }
+                binding.executePendingBindings()
+            }
+        }
+    }
 
     /**
      * 메인 리스트에 더미 화면 view holder

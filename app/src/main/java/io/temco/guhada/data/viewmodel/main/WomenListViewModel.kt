@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.db.entity.CategoryEntity
@@ -77,12 +78,12 @@ class WomenListRepository(val context : Context){
      * Best ITEM
      */
     private fun getBestItem() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
+                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         getNewIn()
@@ -107,7 +108,7 @@ class WomenListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
+                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         //gethotKeyword()
@@ -127,15 +128,16 @@ class WomenListRepository(val context : Context){
      * HOT KEYWORD
      */
     private fun gethotKeyword() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        ProductServer.getProductByKeyword(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
-                        list.value!!.add(subTitle)
+                        var keys =  (o as BaseModel<*>).list as List<Keyword>
+                        var sub = KeywordMain(list.value!!.size, HomeType.Keyword,"HOT KEYWORD", keys)
+                        if(CustomLog.flag) CustomLog.L("getHotKeyword keys",keys)
+                        if(CustomLog.flag) CustomLog.L("getHotKeyword sub",sub)
+                        list.value!!.add(sub)
                         list.value = list.value
-                        getBestStore()
+                        //getBestStore()
                     },
                     dataNotFoundTask = {
 
@@ -156,7 +158,7 @@ class WomenListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival)
+                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                     },

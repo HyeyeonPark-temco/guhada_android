@@ -14,10 +14,11 @@ class SubTitleItemList(index: Int,
                        var title : String,
                        var listSize : Array<Int>,
                        var currentSubTitleIndex : Int,
-                       var homeDeal : HomeDeal) : MainBaseModel(index, type,2){
+                       var data : Any,
+                       var isMoreView : Boolean) : MainBaseModel(index, type,2){
 
     override fun toString(): String {
-        if(CustomLog.flag)return "SubTitleItemList(title='$title', listSize=${Arrays.toString(listSize)}, currentSubTitleIndex=$currentSubTitleIndex, homeDeal=$homeDeal)"
+        if(CustomLog.flag)return "SubTitleItemList(title='$title', listSize=${Arrays.toString(listSize)}, currentSubTitleIndex=$currentSubTitleIndex, isMoreView=$isMoreView)"
         else return ""
     }
 }

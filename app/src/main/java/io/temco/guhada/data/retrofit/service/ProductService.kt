@@ -3,6 +3,7 @@ package io.temco.guhada.data.retrofit.service
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
 import retrofit2.Call
 import retrofit2.http.GET
@@ -68,5 +69,15 @@ interface ProductService {
      */
     @GET("/common/ship-companies")
     fun getShippingCompanies(@Query("type") type: String): Call<BaseModel<MutableList<ShippingCompany>>>
+
+
+
+    /**
+     * @author park jungho
+     * 19.09.19
+     * 핫키워드 목록 조회
+     */
+    @GET("main-home/hot-keyword")
+    fun getProductByKeyword(): Call<BaseModel<Keyword>>
 
 }

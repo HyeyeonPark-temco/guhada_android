@@ -60,5 +60,8 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
         this.scrollState = paramInt;
     }
 
+    public B getmBinding() {
+        return mBinding;
+    }
     ////////////////////////////////////////////////
 }

@@ -77,12 +77,12 @@ class MenListRepository(val context : Context){
      * Best ITEM
      */
     private fun getBestItem() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
+                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         getNewIn()
@@ -107,7 +107,7 @@ class MenListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
+                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         //gethotKeyword()
@@ -132,7 +132,7 @@ class MenListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
+                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         getBestStore()
@@ -156,7 +156,7 @@ class MenListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival)
+                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                     },

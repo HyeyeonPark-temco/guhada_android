@@ -33,6 +33,7 @@ import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.adapter.main.SubTitleListAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
+import io.temco.guhada.view.fragment.main.HomeFragment
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 class KidsListLayout constructor(
@@ -40,6 +41,7 @@ class KidsListLayout constructor(
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : BaseListLayout<CustomlayoutMainKidslistBinding,KidsListViewModel>(context, attrs, defStyleAttr) {
+    var mHomeFragment: HomeFragment? = null
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
 
@@ -132,7 +134,12 @@ class KidsListLayout constructor(
     private fun changeScaleView(v: View, isShow: Boolean, animate: Boolean) {
         if (isShow) {
             if (v.visibility != View.VISIBLE) {
-                v.setOnClickListener { view -> scrollToTop(false) }
+                v.setOnClickListener{
+                    try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
+                        if(CustomLog.flag)CustomLog.E(e)
+                    }
+                    scrollToTop(false)
+                }
                 v.visibility = View.VISIBLE
                 if (animate) {
                     showScaleAnimation(v)

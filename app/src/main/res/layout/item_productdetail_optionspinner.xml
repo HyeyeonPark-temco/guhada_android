@@ -32,7 +32,7 @@
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_margin="1dp"
-                android:background="@drawable/drawable_transparent_circle" />
+                android:src="@drawable/drawable_transparent_circle" />
 
             <TextView
                 android:id="@+id/textview_productdetail_optionspinner"

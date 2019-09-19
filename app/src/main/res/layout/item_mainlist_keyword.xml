@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="imgUrl"
+            type="String" />
+        <variable
+            name="title"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_contents"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingBottom="20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:paddingBottom="16dp"
+            android:scaleType="centerCrop"
+            android:background="@color/common_white"
+            app:imageUrl="@{imgUrl}" />
+
+        <TextView
+            style="@style/TextRegularSingleLine"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@{title}"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_12" />
+    </LinearLayout>
+</layout>

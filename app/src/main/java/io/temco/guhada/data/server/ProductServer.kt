@@ -10,6 +10,7 @@ import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.model.ProductByList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
+import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ProductService
@@ -206,6 +207,31 @@ class ProductServer {
         fun getShippingCompanyList(listener: OnServerListener, type: String) =
                 RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getShippingCompanies(type = type).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+
+
+
+        /**
+         * @author park jungho
+         * 19.09.19
+         * 핫키워드 목록 조회
+         */
+        @JvmStatic
+        fun getProductByKeyword(listener: OnServerListener?) {
+            if (listener != null) {
+                val call = RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false).getProductByKeyword()
+                RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<Keyword>> {
+                    override fun onResponse(call: Call<BaseModel<Keyword>>, response: Response<BaseModel<Keyword>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+                    override fun onFailure(call: Call<BaseModel<Keyword>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
+
+
     }
 
 }

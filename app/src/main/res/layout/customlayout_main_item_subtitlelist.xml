@@ -23,7 +23,7 @@
             android:layout_marginBottom="12dp"
             android:gravity="center_horizontal"
             android:textColor="@color/text_3"
-            android:textSize="20dp" />
+            android:textSize="@dimen/text_20" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -253,10 +253,9 @@
                             android:layout_marginTop="9dp"
                             android:background="@color/common_blue_purple"
                             android:gravity="center"
-                            android:padding="4dp"
                             android:text="@string/product_ship_free_split"
                             android:textColor="@color/common_white"
-                            android:textSize="@dimen/text_10" />
+                            android:textSize="@dimen/text_9" />
 
                         <!-- COLOR -->
                         <LinearLayout
@@ -419,10 +418,9 @@
                             android:layout_marginTop="9dp"
                             android:background="@color/common_blue_purple"
                             android:gravity="center"
-                            android:padding="4dp"
                             android:text="@string/product_ship_free_split"
                             android:textColor="@color/common_white"
-                            android:textSize="@dimen/text_10" />
+                            android:textSize="@dimen/text_9" />
 
                         <!-- COLOR -->
                         <LinearLayout
@@ -598,10 +596,9 @@
                             android:layout_marginTop="9dp"
                             android:background="@color/common_blue_purple"
                             android:gravity="center"
-                            android:padding="4dp"
                             android:text="@string/product_ship_free_split"
                             android:textColor="@color/common_white"
-                            android:textSize="@dimen/text_10" />
+                            android:textSize="@dimen/text_9" />
 
                         <!-- COLOR -->
                         <LinearLayout
@@ -762,10 +759,9 @@
                             android:layout_marginTop="9dp"
                             android:background="@color/common_blue_purple"
                             android:gravity="center"
-                            android:padding="4dp"
                             android:text="@string/product_ship_free_split"
                             android:textColor="@color/common_white"
-                            android:textSize="@dimen/text_10" />
+                            android:textSize="@dimen/text_9" />
 
                         <!-- COLOR -->
                         <LinearLayout
@@ -939,10 +935,9 @@
                             android:layout_marginTop="9dp"
                             android:background="@color/common_blue_purple"
                             android:gravity="center"
-                            android:padding="4dp"
                             android:text="@string/product_ship_free_split"
                             android:textColor="@color/common_white"
-                            android:textSize="@dimen/text_10" />
+                            android:textSize="@dimen/text_9" />
 
                         <!-- COLOR -->
                         <LinearLayout
@@ -1103,10 +1098,9 @@
                             android:layout_marginTop="9dp"
                             android:background="@color/common_blue_purple"
                             android:gravity="center"
-                            android:padding="4dp"
                             android:text="@string/product_ship_free_split"
                             android:textColor="@color/common_white"
-                            android:textSize="@dimen/text_10" />
+                            android:textSize="@dimen/text_9" />
 
                         <!-- COLOR -->
                         <LinearLayout

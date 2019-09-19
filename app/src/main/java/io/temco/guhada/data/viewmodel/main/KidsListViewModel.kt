@@ -77,12 +77,12 @@ class KidsListRepository(val context : Context){
      * PLUS ITEM
      */
     private fun getPlusItem() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival,false)
                         list.value!!.add(subTitle)
                         //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
                         getBestItem()
@@ -107,7 +107,7 @@ class KidsListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                                "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         getNewIn()
@@ -132,7 +132,7 @@ class KidsListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                                "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         //gethotKeyword()
@@ -157,7 +157,7 @@ class KidsListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival)
+                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 3, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                         getBestStore()
@@ -181,7 +181,7 @@ class KidsListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival)
+                                "BEST STORE", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
                     },

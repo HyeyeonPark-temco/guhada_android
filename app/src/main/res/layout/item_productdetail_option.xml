@@ -30,7 +30,6 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
-
             app:layout_constraintEnd_toStartOf="@+id/linearLayout9"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
