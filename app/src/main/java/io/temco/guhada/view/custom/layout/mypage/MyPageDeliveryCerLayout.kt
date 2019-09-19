@@ -89,8 +89,8 @@ class MyPageDeliveryCerLayout constructor(
 
     private fun initCalendarFilter() {
         mBinding.calendarfilterMypageDeliver.mListener = this
-        mBinding.calendarfilterMypageDeliver.setPeriod(0)
-        mBinding.calendarfilterMypageDeliver.setDate(7)
+        mBinding.calendarfilterMypageDeliver.setPeriod(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.pos)
+        mBinding.calendarfilterMypageDeliver.setDate(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.date)
     }
 
     override fun onFocusView() {
@@ -129,15 +129,15 @@ class MyPageDeliveryCerLayout constructor(
     override fun onChangeDate(startDate: String, endDate: String) {
         if (startDate.isNotEmpty() && endDate.isNotEmpty()) {
             mViewModel.page = 1
-            mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp //CommonUtil.convertDateToTimeStamp(startDate, ".")
-            mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp //CommonUtil.convertDateToTimeStamp(endDate, ".")
+            mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp
+            mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp
         }
     }
 
     private fun changeDate() {
         mViewModel.page = 1
-        mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp  //  CommonUtil.convertDateToTimeStamp(startDate, ".")
-        mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp // CommonUtil.convertDateToTimeStamp(endDate, ".")
+        mViewModel.startDate = mBinding.calendarfilterMypageDeliver.startTimeStamp
+        mViewModel.endDate = mBinding.calendarfilterMypageDeliver.endTimeStamp
         mViewModel.getCancelOrderStatus()
         mViewModel.getCancelOrderHistories()
     }
