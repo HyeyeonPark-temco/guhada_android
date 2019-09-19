@@ -60,7 +60,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
 
     fun onClickPlus() = changeProductCount {
         val plusCount = (productCount.get() + 1)
-        val maxStock = mSelectedOptionInfo?.stock ?: 0
+        val maxStock = if(product.options?.isEmpty()?:true) product.totalStock else mSelectedOptionInfo?.stock ?: 0
         if (maxStock < plusCount) ToastUtil.showMessage(String.format(BaseApplication.getInstance().getString(R.string.cart_message_maxquantity), maxStock))
         else changeTotalPrice(plusCount)
     }
@@ -68,10 +68,10 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
     fun onClickMinus() = changeProductCount { (productCount.get() - 1).let { count -> if (count > 0) changeTotalPrice(count) } }
 
     fun getDealOptionId(): Long? = mSelectedOptionInfo?.dealOptionSelectId?.toLong() //getOptionInfo(DEAL_OPTION_ID)?.toLong()
+
     private fun changeProductCount(task: () -> Unit) {
 //        if (optionMap.keys.size != product.options?.size) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
-
-        if (mSelectedOptionInfo == null) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
+        if (product.options?.isNotEmpty()?:false && mSelectedOptionInfo == null) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
         else task()
     }
 
