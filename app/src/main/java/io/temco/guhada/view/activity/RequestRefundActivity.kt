@@ -3,11 +3,11 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import io.reactivex.Observable
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
@@ -17,6 +17,7 @@ import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.delivery.RequestRefundViewModel
 import io.temco.guhada.view.activity.base.BindActivity
+import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.ShippingCompanySpinnerAdapter
 
 /**
@@ -40,9 +41,33 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundHeader.setOnClickBackButton { finish() }
     }
 
-    // TODO 환불 계좌 정보
+    // 환불 계좌 정보
     private fun initBank(purchaseOrder: PurchaseOrder) {
+        val bankNameList = mutableListOf<String>()
+        Observable.fromIterable(purchaseOrder.banks)
+                .map {
+                    it.bankName
+                }.subscribe {
+                    bankNameList.add(it)
+                }.dispose()
 
+        bankNameList.add(getString(R.string.requestorderstatus_refund_bankhint1))
+        mBinding.includeRequestrefundBank.spinnerRequestorderstatusBank.adapter = CommonSpinnerAdapter(context = this@RequestRefundActivity, layoutRes = R.layout.item_common_spinner, list = bankNameList).apply {
+            this.mItemCount = bankNameList.size - 1
+        }
+        mBinding.includeRequestrefundBank.spinnerRequestorderstatusBank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position < purchaseOrder.banks.size) {
+                    val selectedBank: PurchaseOrder.Bank? = purchaseOrder.banks[position]
+                    if (selectedBank != null) {
+                        mBinding.includeRequestrefundBank.textviewRequestrefundBankname.text = selectedBank.bankName
+                        mViewModel.mRefundRequest.refundBankCode = selectedBank.bankCode
+                    }
+                }
+            }
+        }
+        mBinding.includeRequestrefundBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
     }
 
     private fun initViewModel() {

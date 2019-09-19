@@ -12,7 +12,7 @@ import java.io.Serializable
  * @author Hyeyeon Park
  */
 class RefundRequest : Serializable {
-    var alreadySend  = false
+    var alreadySend = false
     var claimShippingPriceType = ""
     var invoiceNo = 0L
     var orderProdGroupId = 0L
@@ -20,6 +20,11 @@ class RefundRequest : Serializable {
     var shippingCompanyCode = ""
     var shippingCompanyName = ""
     var orderClaimId = 0L
+
+    // 환불 계좌 정보
+    var refundBankCode = ""             // 은행 코드
+    var refundBankAccountNumber = ""    // 계좌 번호
+    var refundBankAccountOwner = ""     // 예금주
 
     @SerializedName("returnReasonDetail")
     var refundReasonDetail = ""
