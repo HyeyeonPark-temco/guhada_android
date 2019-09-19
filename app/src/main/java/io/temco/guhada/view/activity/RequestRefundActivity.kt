@@ -68,6 +68,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             }
         }
         mBinding.includeRequestrefundBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
+        mBinding.includeRequestrefundBank.viewModel = mViewModel
     }
 
     private fun initViewModel() {

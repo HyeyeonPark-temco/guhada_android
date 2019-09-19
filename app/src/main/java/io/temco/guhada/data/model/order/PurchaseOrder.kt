@@ -116,7 +116,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     fun getDate() = CommonUtil.convertTimeStampToDate(orderTimestamp) ?: ""
     fun getStatus(): String = if (orderStatus.isEmpty()) claimStatus else orderStatus
 
-    class Bank {
+    class Bank : Serializable {
         var bankCode = ""       // ex: "81"
         var bankName = ""       // ex: "하나은행"
         var bankPriority = ""   // ex: "10"
