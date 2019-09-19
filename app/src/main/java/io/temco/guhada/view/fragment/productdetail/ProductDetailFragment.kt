@@ -493,6 +493,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         if (::mClaimFragment.isInitialized) mClaimFragment.refreshIsMineVisible()
     }
 
+    fun refreshCouponDownloadView(){
+        mViewModel.getExpectedCoupon()
+    }
+
     override fun redirectLoginActivity() {
         startActivityForResult(Intent(context, LoginActivity::class.java), Flag.RequestCode.LOGIN)
     }
