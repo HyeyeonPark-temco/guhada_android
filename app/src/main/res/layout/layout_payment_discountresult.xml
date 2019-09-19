@@ -103,7 +103,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/payment_text_freeshipping"
+                    android:text="@{viewModel.order.totalShipPrice != 0.0 ? @string/common_priceunit_format(Math.round(viewModel.order.totalShipPrice)) : @string/payment_text_freeshipping}"
                     android:textColor="@color/cool_grey"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toTopOf="@+id/linearlayout_payment_discounttotalprice"
