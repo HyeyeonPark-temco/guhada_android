@@ -103,39 +103,66 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             if (list.isEmpty()) {
                 mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.GONE
             } else {
+
+                var isAllAlreadySaved = true
+                for (coupon in list) {
+                    if (!coupon.alreadySaved) {
+                        isAllAlreadySaved = false
+                        break
+                    }
+                }
+
                 var highestPrice = 0
-                for (coupon in list)
-                    if (coupon.discountPrice > highestPrice)
-                        highestPrice = coupon.discountPrice
-
-                // 정률 할인 쿠폰만 있는 경우
                 var highestRate = 0.0
-                if (highestPrice == 0)
+
+                if (isAllAlreadySaved) {    // 회색 버튼
                     for (coupon in list)
-                        if (coupon.discountRate > highestRate)
-                            highestRate = coupon.discountRate
+                        if (coupon.discountPrice > highestPrice)
+                            highestPrice = coupon.discountPrice
 
-                mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.VISIBLE
-                mBinding.includeProductdetailContentheader.textviewProductdetailCoupon.text =
-                        if (highestPrice > 0) String.format(context?.getString(R.string.productdetail_coupon_price)!!, highestPrice)
-                        else String.format(context?.getString(R.string.productdetail_coupon_rate)!!, "$highestRate%")
+                    // 정률 할인 쿠폰만 있는 경우
+                    if (highestPrice == 0)
+                        for (coupon in list)
+                            if (coupon.discountRate > highestRate)
+                                highestRate = coupon.discountRate
+                } else {
+                    for (coupon in list)
+                        if (!coupon.alreadySaved && coupon.discountPrice > highestPrice)
+                            highestPrice = coupon.discountPrice
 
-                mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {
-                    ServerCallbackUtil.callWithToken(
-                            task = {
-                                val intent = Intent(context, CouponDownloadDialogActivity::class.java)
-                                intent.putParcelableArrayListExtra("couponList", ArrayList(list))
-                                intent.putExtra("dCategoryId", mViewModel.product.value?.dCategoryId)
-                                intent.putExtra("lCategoryId", mViewModel.product.value?.lCategoryId)
-                                intent.putExtra("mCategoryId", mViewModel.product.value?.mCategoryId)
-                                intent.putExtra("sCategoryId", mViewModel.product.value?.sCategoryId)
-                                intent.putExtra("dealId", mViewModel.product.value?.dealId)
-                                intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
-                                (mBinding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.COUPON_DOWNLOAD.flag)
-                            },
-                            invalidTokenTask = {
-                                ToastUtil.showMessage(mBinding.root.context.getString(R.string.login_message_requiredlogin))
-                            })
+                    // 정률 할인 쿠폰만 있는 경우
+                    if (highestPrice == 0)
+                        for (coupon in list)
+                            if (!coupon.alreadySaved && coupon.discountRate > highestRate)
+                                highestRate = coupon.discountRate
+                }
+
+                if (highestPrice > 0 || highestRate > 0.0) {
+                    mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.VISIBLE
+                    mBinding.includeProductdetailContentheader.textviewProductdetailCoupon.text =
+                            if (highestPrice > 0) String.format(context?.getString(R.string.productdetail_coupon_price)!!, highestPrice)
+                            else String.format(context?.getString(R.string.productdetail_coupon_rate)!!, "$highestRate%")
+                    mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {
+                        ServerCallbackUtil.callWithToken(
+                                task = {
+                                    val intent = Intent(context, CouponDownloadDialogActivity::class.java)
+                                    intent.putParcelableArrayListExtra("couponList", ArrayList(list))
+                                    intent.putExtra("dCategoryId", mViewModel.product.value?.dCategoryId)
+                                    intent.putExtra("lCategoryId", mViewModel.product.value?.lCategoryId)
+                                    intent.putExtra("mCategoryId", mViewModel.product.value?.mCategoryId)
+                                    intent.putExtra("sCategoryId", mViewModel.product.value?.sCategoryId)
+                                    intent.putExtra("dealId", mViewModel.product.value?.dealId)
+                                    intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
+                                    (mBinding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.COUPON_DOWNLOAD.flag)
+                                },
+                                invalidTokenTask = {
+                                    ToastUtil.showMessage(mBinding.root.context.getString(R.string.login_message_requiredlogin))
+                                })
+                    }
+
+                    if (isAllAlreadySaved) setSaveCouponDisabled()
+                } else {
+                    mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.GONE
                 }
             }
         })
@@ -630,7 +657,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 this.season = product?.season ?: ""
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
-                baseProduct.dealOptionId = getSelectedOptionDealId()?:0
+                baseProduct.dealOptionId = getSelectedOptionDealId() ?: 0
                 mViewModel.menuVisibility.set(View.GONE)
                 mViewModel.notifyPropertyChanged(BR.menuVisibility)
 
