@@ -21,13 +21,15 @@ class Coupon() : Parcelable {
     var status: String? = ""
     var saveType = ""
     var saveTargetType = ""
+    var saveActionType = ""
+    var alreadySaved = false                // 다운받았던 쿠폰인지 여부
 
     // PRICE
-    var discountType: String? = null          // 할인 방식 (PRICE, RATE)f
+    var discountType: String? = null        // 할인 방식 (PRICE, RATE)f
     var discountRate: Double = 0.0          // 할인률 (정률인 경우)
     var discountPrice: Int = 0              // 할인 금액 (정액인 경우)
     var minimumPrice: Int = 0               // 쿠폰을 적용받기위한 최소 금액 (전체 주문금액이 아닌, 해당 상품금액에만 적용)
-    var maximumDiscountPrice: Int = 0  // 정액인 경우, 최대 할인가능 금액
+    var maximumDiscountPrice: Int = 0       // 정액인 경우, 최대 할인가능 금액
 
     // DATE
     var startAt: String? = ""
@@ -72,6 +74,7 @@ class Coupon() : Parcelable {
         sellerImgUrl = parcel.readString()
         sellerName = parcel.readString()
         saveTargetType = parcel.readString() ?: ""
+        saveActionType = parcel.readString() ?: ""
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
@@ -98,6 +101,7 @@ class Coupon() : Parcelable {
         dest?.writeString(sellerImgUrl)
         dest?.writeString(sellerName)
         dest?.writeString(saveTargetType)
+        dest?.writeString(saveActionType)
     }
 
     override fun describeContents(): Int = 0

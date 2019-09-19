@@ -74,11 +74,6 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 
                     notifyPropertyChanged(BR.reviewResponse)
                     notifyPropertyChanged(BR.emptyVisibility)
-//                    if (o != null) {
-//                        listener.showMessage(o as String)
-//                    } else {
-//                        listener.showMessage("PRODUCT REVIEW ERROR")
-//                    }
                 }
 
                 if (::listener.isInitialized) listener.hideLoadingIndicator()

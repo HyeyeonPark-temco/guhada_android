@@ -41,6 +41,8 @@ open class BaseProduct : Serializable {
 //        }
 
     var totalPrice: Int = 0
+    var sellPrice = 0
+    var discountPrice = 0
 
     @Expose
     var totalCount: Int = 0

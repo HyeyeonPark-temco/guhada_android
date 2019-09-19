@@ -118,15 +118,6 @@ class MyPageDeliveryViewModel(val context: Context) : BaseObservableViewModel() 
         })
     }
 
-//    fun setDate(day: Int, callback: (startDate: String, endDate: String) -> Unit) {
-//        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
-//        endDate = convertDateFormat(calendar, ".")
-//        calendar.add(Calendar.DAY_OF_MONTH, -day)
-//        startDate = convertDateFormat(calendar, ".")
-//
-//        callback(startDate, endDate)
-//    }
-
     fun onClickMore() {
         getOrders()
     }

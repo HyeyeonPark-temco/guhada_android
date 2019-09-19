@@ -297,16 +297,19 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                 this.optionMap = optionAttr
                 this.totalCount = count
                 this.totalPrice = price
+                this.sellPrice = product?.sellPrice ?: 0
+                this.discountPrice = product?.discountPrice ?: 0
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
                 var quantity: Int = 1
                 when {
                     mMenuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = mMenuFragment.getSelectedOptionDealId()?:0
+                        baseProduct.dealOptionId = mMenuFragment.getSelectedOptionDealId() ?: 0
                         quantity = mMenuFragment.getProductCount()
                     }
                     mHeaderMenuFragment.getSelectedOptionCount() > 0 -> {
-                        baseProduct.dealOptionId = mHeaderMenuFragment.getSelectedOptionDealId()?:0
+                        baseProduct.dealOptionId = mHeaderMenuFragment.getSelectedOptionDealId()
+                                ?: 0
                         quantity = mHeaderMenuFragment.getProductCount()
                     }
                     else -> baseProduct.dealOptionId = null
@@ -338,7 +341,6 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         setResult(Activity.RESULT_CANCELED)
         finish()
     }
-
 
 
     override fun setBrandProductList(brand: Brand) {

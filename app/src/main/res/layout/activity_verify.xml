@@ -307,6 +307,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@color/common_blue_purple"
                     android:clickable="@{!viewModel.mEmailVerification}"
                     android:onClick="@{()->viewModel.onClickSend()}"

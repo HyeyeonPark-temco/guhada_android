@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel.productdetail
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
@@ -31,6 +32,7 @@ import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.Product
+import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.server.BenefitServer
@@ -106,6 +108,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 notifyPropertyChanged(BR.productBookMark)
             }
         }
+
+    var mReviewSummary = ObservableField<ReviewSummary>(ReviewSummary())
+        @Bindable
+        get() = field
 
     fun getDetail() {
         ProductServer.getProductDetail(OnServerListener { success, o ->
@@ -235,6 +241,32 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 },
                 invalidTokenTask = {}
         )
+    }
+
+    /**
+     * 상단 review summary 노출 여부 판단 목적
+     * @author Hyeyeon Park
+     * @since 2019.09.19
+     */
+    fun getProductReviewSummary() {
+        if (product.value != null) {
+            if (product.value?.productId != null) {
+                UserServer.getProductReviewSummary(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                this.mReviewSummary = ObservableField(it.data as ReviewSummary)
+                                notifyPropertyChanged(BR.mReviewSummary)
+                            },
+                            failedTask = {
+
+                            },
+                            dataNotFoundTask = {
+
+                            })
+                }, productId = product.value?.productId!!)
+            }
+        }
+
     }
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]

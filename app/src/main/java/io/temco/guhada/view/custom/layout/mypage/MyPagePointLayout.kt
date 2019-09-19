@@ -42,8 +42,8 @@ class MyPagePointLayout constructor(
 
     private fun initCalendar() {
         mBinding.calendarfilterMypagepoint.mListener = this
-        mBinding.calendarfilterMypagepoint.setPeriod(0)
-        mBinding.calendarfilterMypagepoint.setDate(7)
+        mBinding.calendarfilterMypagepoint.setPeriod(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.pos)
+        mBinding.calendarfilterMypagepoint.setDate(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.date)
     }
 
     override fun onRefresh() {

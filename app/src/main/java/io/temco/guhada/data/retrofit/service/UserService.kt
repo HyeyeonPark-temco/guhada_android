@@ -65,7 +65,7 @@ interface UserService {
      * @since 2019.09.03
      */
     @GET("/sellers/business-user")
-    fun getBusinessSeller(@Query("seller-id") sellerId : Long) : Call<BaseModel<BusinessSeller>>
+    fun getBusinessSeller(@Query("seller-id") sellerId: Long): Call<BaseModel<BusinessSeller>>
 
     /**
      * 셀러 기본 반품지 가져오기 API
@@ -388,7 +388,7 @@ interface UserService {
      * @since 2019.08.28
      */
     @GET("/products/{productId}/reviews/{reviewId}")
-    fun getReviewAsync(@Path("productId") productId : Long, @Path("reviewId") reviewId : Long) : Deferred<BaseModel<MyPageReviewContent>>
+    fun getReviewAsync(@Path("productId") productId: Long, @Path("reviewId") reviewId: Long): Deferred<BaseModel<MyPageReviewContent>>
 
     /**
      * 회원 신체 사이즈 정보 가져오기
@@ -425,6 +425,24 @@ interface UserService {
      * @since 2019.09.11
      */
     @PUT("/users/identity-verify")
-    fun updateIdentityVerify(@Header("Authorization") accessToken: String, @Body verification: Verification) : Call<BaseModel<Any>>
+    fun updateIdentityVerify(@Header("Authorization") accessToken: String, @Body verification: Verification): Call<BaseModel<Any>>
 
+    /**
+     * 셀러 스토어 정보 조회 API (비로그인)
+     * @param sellerId seller id
+     * @author Hyeyeon Park
+     * @since 2019.09.19
+     */
+    @GET("/sellers/{sellerId}/store")
+    fun getSellerStoreInfo(@Path("sellerId") sellerId: Long): Call<BaseModel<SellerStore>>
+
+    /**
+     * 셀러 스토어 정보 조회 API (로그인)
+     * @param accessToken access token
+     * @param sellerId seller id
+     * @author Hyeyeon Park
+     * @since 2019.09.19
+     */
+    @GET("/sellers/{sellerId}/store")
+    fun getSellerStoreInfo(@Header("Authorization") accessToken: String, @Path("sellerId") sellerId: Long): Call<BaseModel<SellerStore>>
 }

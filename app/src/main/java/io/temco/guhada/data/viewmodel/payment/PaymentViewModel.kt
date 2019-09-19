@@ -328,9 +328,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             UserServer.saveUserShippingAddress(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_add_success))
-
-                        })
+                            // ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_add_success))
+                            if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 success")
+                        }, failedTask = { if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 ${if (it is BaseModel<*>) it.message else "에러"}") })
             }, userId, selectedShippingAddress!!)
         }
     }

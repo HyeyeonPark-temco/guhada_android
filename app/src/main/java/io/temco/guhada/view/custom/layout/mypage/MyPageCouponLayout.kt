@@ -73,11 +73,11 @@ class MyPageCouponLayout constructor(
     private fun initViewPager() {
         mFragmentAdapter = BaseFragmentPagerAdapter((context as FragmentActivity).supportFragmentManager)
         mCouponFragment = MyPageCouponFragment().apply {
-            isAvailable = true
+            mIsAvailable = true
             mViewModel = this@MyPageCouponLayout.mViewModel
         }
         mDisabledCouponFragment = MyPageCouponFragment().apply {
-            isAvailable = false
+            mIsAvailable = false
             mViewModel = this@MyPageCouponLayout.mViewModel
         }
         mFragmentAdapter.addFragment(mCouponFragment)

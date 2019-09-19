@@ -36,9 +36,9 @@ class Product : BaseProduct() {
     var sellerName: String = ""
 
     // PRICE
-    var sellPrice: Int = 0
+//    var sellPrice: Int = 0        // BaseProduct field
+//    var discountPrice: Int = 0    // BaseProduct field
     var discountRate: Int = 0
-    var discountPrice: Int = 0
     var shipExpense: Int = 0
 
     // LIST

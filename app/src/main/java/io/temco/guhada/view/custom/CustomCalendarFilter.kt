@@ -22,6 +22,14 @@ import java.util.*
  * @author Hyeyeon Park
  */
 class CustomCalendarFilter : LinearLayout, View.OnClickListener {
+
+    enum class CalendarPeriod(val pos: Int, val date: Int) {
+        WEEK(0, 7),
+        ONE_MONTH(1, 30),
+        THREE_MONTH(2, 90),
+        YEAR(3, 365)
+    }
+
     private lateinit var mBinding: LayoutAllCalendarBinding
     lateinit var mListener: CustomCalendarListener
     var startDate = ""
@@ -151,25 +159,25 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
 
     fun setPeriod(position: Int) {
         when (position) {
-            0 -> {
+            CalendarPeriod.WEEK.pos -> {
                 mBinding.textWeek.isSelected = true //
                 mBinding.textMonth.isSelected = false
                 mBinding.textMonthThree.isSelected = false
                 mBinding.textYear.isSelected = false
             }
-            1 -> {
+            CalendarPeriod.ONE_MONTH.pos -> {
                 mBinding.textWeek.isSelected = false
                 mBinding.textMonth.isSelected = true //
                 mBinding.textMonthThree.isSelected = false
                 mBinding.textYear.isSelected = false
             }
-            2 -> {
+            CalendarPeriod.THREE_MONTH.pos -> {
                 mBinding.textWeek.isSelected = false
                 mBinding.textMonth.isSelected = false
                 mBinding.textMonthThree.isSelected = true //
                 mBinding.textYear.isSelected = false
             }
-            3 -> {
+            CalendarPeriod.YEAR.pos -> {
                 mBinding.textWeek.isSelected = false
                 mBinding.textMonth.isSelected = false
                 mBinding.textMonthThree.isSelected = false
@@ -192,7 +200,6 @@ class CustomCalendarFilter : LinearLayout, View.OnClickListener {
         calendar.set(Calendar.SECOND, 0)
         startDate = convertDateFormat(calendar, ".")
         startTimeStamp = calendar.timeInMillis
-
     }
 
 

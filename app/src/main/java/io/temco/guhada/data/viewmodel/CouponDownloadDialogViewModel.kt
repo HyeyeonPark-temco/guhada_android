@@ -58,7 +58,7 @@ class CouponDownloadDialogViewModel : BaseObservableViewModel() {
                 this.expirePeriod = coupon.expireDueDay.toLong()
                 this.maximumDiscountPrice = coupon.maximumDiscountPrice
                 this.minimumPrice = coupon.minimumPrice
-                this.saveActionType = coupon.saveTargetType
+                this.saveActionType = coupon.saveActionType
                 this.serviceType = PointRequest.ServiceType.AOS.type
                 this.userId = coupon.userId
 

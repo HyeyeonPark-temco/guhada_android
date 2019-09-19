@@ -101,16 +101,17 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
                 finish()
             }*/
             Activity.RESULT_OK -> when (requestCode) {
-                Flag.RequestCode.WRITE_CLAIM -> mProductDetailFragment!!.refreshClaims()
-                RequestCode.COUPON_DOWNLOAD.flag -> mProductDetailFragment!!.setSaveCouponDisabled()
+                Flag.RequestCode.WRITE_CLAIM -> if (mProductDetailFragment != null) mProductDetailFragment!!.refreshClaims()
+                RequestCode.COUPON_DOWNLOAD.flag -> if (mProductDetailFragment != null) mProductDetailFragment!!.setSaveCouponDisabled()
+                RequestCode.SIDE_MENU.flag -> if (mProductDetailFragment != null) mProductDetailFragment!!.refreshCouponDownloadView()
             }
             /**
              * @author park jungho
              * 판매자 문의하기에서 해당 상품을 주문한적이 없는 경우 나오는 팝업에서 확인을 눌렀을때 상품 문의하기로 보내는 부분
              */
-            Activity.RESULT_FIRST_USER -> when(requestCode){
+            Activity.RESULT_FIRST_USER -> when (requestCode) {
                 Flag.RequestCode.USER_CLAIM_SELLER -> {
-                    if(mProductDetailFragment != null && mProductDetailFragment!!.getProductId() > 0){
+                    if (mProductDetailFragment != null && mProductDetailFragment!!.getProductId() > 0) {
                         val intent = Intent(this@ProductFragmentDetailActivity, WriteClaimActivity::class.java)
                         intent.putExtra("productId", mProductDetailFragment!!.getProductId())
                         startActivityForResult(intent, Flag.RequestCode.WRITE_CLAIM)
@@ -120,8 +121,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
             else -> {
                 super.onActivityResult(requestCode, resultCode, data)
                 when (requestCode) {
-                    Flag.RequestCode.WRITE_CLAIM -> {
-                    }
+                    RequestCode.SIDE_MENU.flag -> if (mProductDetailFragment != null) mProductDetailFragment!!.refreshCouponDownloadView()
                 }
             }
         }
@@ -148,8 +148,9 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
 
     override fun onBackPressed() {
         if (mProductDetailFragment != null && mProductDetailFragment!!.isVisible) {
-            if(mProductDetailFragment?.getMenuVisible()?:false)  mProductDetailFragment?.closeMenuPopup() // menu gone
-                else  finish()
+            if (mProductDetailFragment?.getMenuVisible()
+                            ?: false) mProductDetailFragment?.closeMenuPopup() // menu gone
+            else finish()
         } else {
             finish()
         }

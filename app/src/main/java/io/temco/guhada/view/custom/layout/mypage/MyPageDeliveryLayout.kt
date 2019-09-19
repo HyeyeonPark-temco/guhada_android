@@ -123,8 +123,8 @@ class MyPageDeliveryLayout constructor(
 
     private fun initCalendarFilter() {
         mBinding.calendarfilterMypageDeliver.mListener = this
-        mBinding.calendarfilterMypageDeliver.setPeriod(0)
-        mBinding.calendarfilterMypageDeliver.setDate(7)
+        mBinding.calendarfilterMypageDeliver.setPeriod(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.pos)
+        mBinding.calendarfilterMypageDeliver.setDate(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.date)
     }
 
     private fun redirectCancelOrderActivity(purchaseOrder: PurchaseOrder) {
