@@ -30,7 +30,7 @@ public abstract class BaseProductViewHolder<B extends ViewDataBinding> extends B
     // ABSTRACT
     ////////////////////////////////////////////////
 
-    public abstract void init(Context context, RequestManager manager, Deal data);
+    public abstract void init(Context context, RequestManager manager, Deal data, int position);
 
     ////////////////////////////////////////////////
     // PROTECTED

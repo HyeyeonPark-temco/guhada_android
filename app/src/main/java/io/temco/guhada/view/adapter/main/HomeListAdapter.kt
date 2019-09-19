@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
@@ -43,6 +44,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
             HomeType.SubTitleList->return R.layout.customlayout_main_item_subtitlelist
             HomeType.Dummy->return R.layout.customlayout_main_item_dummy
             HomeType.Keyword->return R.layout.customlayout_main_item_keyword
+            HomeType.Footer->return R.layout.item_terminfo_footer
             else ->return R.layout.customlayout_main_item_padding
         }
     }
@@ -69,6 +71,10 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
             HomeType.Keyword->{
                 val binding : CustomlayoutMainItemKeywordBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return KeywordViewHolder(binding.root, binding)
+            }
+            HomeType.Footer->{
+                val binding : ItemTerminfoFooterBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return TermViewHolder(binding.root, binding)
             }
             else ->{
                 val binding : CustomlayoutMainItemPaddingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
@@ -97,7 +103,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
      */
     class PaddingViewHolder(private val containerView: View, val binding: CustomlayoutMainItemPaddingBinding) : ListViewHolder(containerView, binding){
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) { }
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
     }
 
     /**
@@ -109,7 +115,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         var eventListSize = 0
 
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) {
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) {
         }
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is MainEvent){
@@ -207,7 +213,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         var layoutHeight = 0
         var margin = 0
 
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
 
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is SubTitleItemList){
@@ -371,7 +377,7 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
      * 메인 리스트에 더미 화면 view holder
      */
     class KeywordViewHolder(private val containerView: View, val binding: CustomlayoutMainItemKeywordBinding) : ListViewHolder(containerView, binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is KeywordMain){
                 binding.title = item.title
@@ -388,8 +394,29 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
     /**
      * 메인 리스트에 더미 화면 view holder
      */
+    class TermViewHolder(private val containerView: View, val binding: ItemTerminfoFooterBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
+            binding.setOnClickListener {
+                when(it.id){
+                    R.id.textview_term_introduce ->{}
+                    R.id.textview_term_terms ->{ CommonUtilKotlin.startTermsPurchase(containerView.context as Activity) }
+                    R.id.textview_term_advise ->{}
+                    R.id.textview_term_privacy_terms ->{CommonUtilKotlin.startTermsPersonal(containerView.context as Activity) }
+                    R.id.textview_term_partner ->{}
+                    R.id.textview_term_as ->{}
+                    R.id.textview_term_recruit ->{}
+                    R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
+                }
+            }
+        }
+    }
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
     class DummyViewHolder(private val containerView: View, val binding: CustomlayoutMainItemDummyBinding) : ListViewHolder(containerView, binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is DummyImage){
                 var metrics = DisplayMetrics()
@@ -397,7 +424,6 @@ class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
                 binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
                 binding.heightLayout.setBackgroundResource(item.imageRes)
-
             }
         }
     }

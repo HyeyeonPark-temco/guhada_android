@@ -69,6 +69,7 @@
                         android:id="@+id/imageview_layout_tab"
                         android:layout_width="35dp"
                         android:layout_height="43dp"
+                        android:visibility="gone"
                         android:background="@drawable/btn_arrow_2"
                         android:layout_alignParentRight="true"/>
                 </RelativeLayout>

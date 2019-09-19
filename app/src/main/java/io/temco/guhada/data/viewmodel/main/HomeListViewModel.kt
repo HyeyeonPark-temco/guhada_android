@@ -75,8 +75,8 @@ class HomeListRepository(val context : Context){
     /**
      *  PLUS ITEM
      */
-    private fun getPlusItem() {
-        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
+    private fun getPlusItem() {//getProductByPlusItem
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
@@ -157,6 +157,7 @@ class HomeListRepository(val context : Context){
                         if(CustomLog.flag)CustomLog.L("getHotKeyword keys",keys)
                         if(CustomLog.flag)CustomLog.L("getHotKeyword sub",sub)
                         list.value!!.add(sub)
+                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
                         list.value = list.value
                         //getBestStore()
                     },
@@ -192,7 +193,6 @@ class HomeListRepository(val context : Context){
             )
         })
     }
-
 
 
 

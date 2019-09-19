@@ -75,7 +75,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
      * 메인 리스트에 사용할 base view holder
      */
     inner class MyPageProductListViewHolder(val containerView: View, val binding: ItemMypageProductListTwoBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(model : ViewModel, position : Int, data : Product){
             // Thumbnail
             if(data != null){
@@ -150,7 +150,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
     }
 
     inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) {  }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) {  }
         override fun bind(model : ViewModel, position : Int, data : Product){
 
         }

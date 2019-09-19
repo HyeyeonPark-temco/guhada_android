@@ -43,7 +43,7 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
 
     @SuppressLint("StringFormatMatches")
     @Override
-    public void init(Context context, RequestManager manager, Deal data) {
+    public void init(Context context, RequestManager manager, Deal data, int position) {
         if (data != null) {
             if(width == 0){
                 DisplayMetrics matrix = new DisplayMetrics();

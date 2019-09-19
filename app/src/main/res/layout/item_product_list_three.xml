@@ -2,37 +2,25 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_default"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:paddingBottom="25dp">
 
-        <io.temco.guhada.view.custom.layout.SameRelativeLayout
-            android:layout_width="110dp"
+        <RelativeLayout
+            android:id="@+id/layout_image"
+            android:layout_width="match_parent"
             android:layout_height="110dp">
 
             <!-- THUMBNAIL -->
             <ImageView
                 style="@style/ProductImageType"
                 android:id="@+id/image_thumb"
-                android:layout_width="110dp"
-                android:layout_height="110dp" />
-
-            <!-- SHIP -->
-            <!--<TextView-->
-            <!--android:id="@+id/text_ship_free"-->
-            <!--style="@style/TextMedium"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="9dp"-->
-            <!--android:layout_marginTop="9dp"-->
-            <!--android:background="@color/common_blue_purple"-->
-            <!--android:gravity="center"-->
-            <!--android:padding="4dp"-->
-            <!--android:text="@string/product_ship_free_split"-->
-            <!--android:textColor="@color/common_white"-->
-            <!--android:textSize="@dimen/text_10" />-->
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <!-- COLOR -->
             <LinearLayout
@@ -45,7 +33,7 @@
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="7dp" />
-        </io.temco.guhada.view.custom.layout.SameRelativeLayout>
+        </RelativeLayout>
 
         <!-- INFO -->
         <LinearLayout
@@ -53,9 +41,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="12dp"
-            android:paddingTop="10dp"
+            android:paddingTop="6dp"
             android:paddingRight="12dp"
-            android:paddingBottom="10dp">
+            android:paddingBottom="5dp">
 
             <!-- SEASON -->
             <TextView
@@ -70,7 +58,7 @@
             <!-- BRAND -->
             <TextView
                 android:id="@+id/text_brand"
-                style="@style/TextBold"
+                style="@style/TextMediumSingleLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -97,8 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:textColor="@color/text_3"
-                android:textSize="@dimen/text_15"  />
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_14"  />
         </LinearLayout>
     </LinearLayout>
 </layout>

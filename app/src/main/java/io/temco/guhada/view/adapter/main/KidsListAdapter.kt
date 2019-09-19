@@ -96,7 +96,7 @@ class KidsListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
      */
     class PaddingViewHolder(private val containerView: View, val binding: CustomlayoutMainItemPaddingBinding) : ListViewHolder(containerView, binding){
         override fun bind(viewModel: KidsListViewModel, position: Int, item: MainBaseModel) { }
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
     }
 
     /**
@@ -108,7 +108,7 @@ class KidsListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         var eventListSize = 0
 
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) {
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) {
         }
         override fun bind(viewModel: KidsListViewModel, position: Int, item: MainBaseModel) {
             if(item is MainEvent){
@@ -206,7 +206,7 @@ class KidsListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
         var layoutHeight = 0
         var margin = 0
 
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
 
         override fun bind(viewModel: KidsListViewModel, position: Int, item: MainBaseModel) {
             if(item is SubTitleItemList){
@@ -368,7 +368,7 @@ class KidsListAdapter(private val model : ViewModel, list : ArrayList<MainBaseMo
      * 메인 리스트에 더미 화면 view holder
      */
     class DummyViewHolder(private val containerView: View, val binding: CustomlayoutMainItemDummyBinding) : ListViewHolder(containerView, binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: KidsListViewModel, position: Int, item: MainBaseModel) {
             if(item is DummyImage){
                 var metrics = DisplayMetrics()

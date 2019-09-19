@@ -118,12 +118,12 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         })
         val windowSize = Point()
         activity!!.windowManager.defaultDisplay.getSize(windowSize)
-        mBinding.layoutTab.viewTreeObserver.addOnScrollChangedListener{
+        /*mBinding.layoutTab.viewTreeObserver.addOnScrollChangedListener{
             val scrollX = mBinding.layoutTab.getScrollX() // Current x scrolling position
             if(scrollX >= 190) mBinding.imageviewLayoutTab.visibility = View.GONE
             else mBinding.imageviewLayoutTab.visibility = View.VISIBLE
             //if(CustomLog.flag)CustomLog.L("HomeFragment","scrollX",scrollX)
-        }
+        }*/
         mBinding.imageviewLayoutTab.setOnClickListener {
             mBinding.viewpager.setCurrentItem(currentPagerIndex+1)
         }

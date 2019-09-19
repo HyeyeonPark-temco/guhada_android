@@ -1,14 +1,21 @@
 package io.temco.guhada.view.adapter.main
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.main.Keyword
 import io.temco.guhada.databinding.ItemMainlistKeywordBinding
+import io.temco.guhada.view.activity.ProductFilterListActivity
+import io.temco.guhada.view.activity.SearchWordActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**
@@ -40,6 +47,13 @@ class MainKeywordListAdapter : RecyclerView.Adapter<MainKeywordListAdapter.Holde
             setSpacing()
             mBinding.title = "#"+key.keyword
             mBinding.imgUrl = key.url
+            mBinding.linearlayoutContents.setOnClickListener {
+                //CommonUtil.startSearchWordActivity(itemView.context as Activity, key.keyword,true)
+                var intent = Intent((itemView.context as Activity), ProductFilterListActivity::class.java)
+                intent.putExtra("type", Type.ProductListViewType.SEARCH)
+                intent.putExtra("search_word", key.keyword)
+                (itemView.context as Activity).startActivityForResult(intent, Flag.RequestCode.BASE)
+            }
             mBinding.executePendingBindings()
         }
 

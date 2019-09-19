@@ -77,8 +77,8 @@ class WomenListRepository(val context : Context){
     /**
      * Best ITEM
      */
-    private fun getBestItem() {
-        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
+    private fun getBestItem() {//getProductByPlusItem
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
@@ -111,7 +111,7 @@ class WomenListRepository(val context : Context){
                                 "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        //gethotKeyword()
+                        getHotKeyword()
                     },
                     dataNotFoundTask = {
 
@@ -127,7 +127,7 @@ class WomenListRepository(val context : Context){
     /**
      * HOT KEYWORD
      */
-    private fun gethotKeyword() {
+    private fun getHotKeyword() {
         ProductServer.getProductByKeyword(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -136,6 +136,7 @@ class WomenListRepository(val context : Context){
                         if(CustomLog.flag) CustomLog.L("getHotKeyword keys",keys)
                         if(CustomLog.flag) CustomLog.L("getHotKeyword sub",sub)
                         list.value!!.add(sub)
+                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
                         list.value = list.value
                         //getBestStore()
                     },
@@ -148,6 +149,8 @@ class WomenListRepository(val context : Context){
             )
         })
     }
+
+
 
     /**
      * BEST STORE

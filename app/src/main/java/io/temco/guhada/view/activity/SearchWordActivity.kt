@@ -15,6 +15,7 @@ import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.db.GuhadaDB
@@ -65,7 +66,6 @@ class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
         mBinding.buttonSearchwordDeleteword.setOnClickListener { mBinding.edittextSearchwordWord.text = Editable.Factory.getInstance().newEditable("") }
         mBinding.edittextSearchwordWord.text = Editable.Factory.getInstance().newEditable(searchWord)
         mBinding.edittextSearchwordWord.setSelection(searchWord.length)
-        if(searchWord.isNotEmpty()) mViewModel.emptyEditTextWord.set(true)
 
         mBinding.edittextSearchwordWord.addTextChangedListener(object  : TextWatcher{
             override fun afterTextChanged(s: Editable?) { }
@@ -128,6 +128,9 @@ class SearchWordActivity : BindActivity<ActivitySearchwordBinding>(){
                     //mViewModel.getAutoCompleteAdapter().notifyDataSetChanged()
                 }
         )
+
+        if(searchWord.isNotEmpty()) mViewModel.emptyEditTextWord.set(false)
+        CommonViewUtil.showKeyborad(mBinding.edittextSearchwordWord,this@SearchWordActivity)
 
     }
 

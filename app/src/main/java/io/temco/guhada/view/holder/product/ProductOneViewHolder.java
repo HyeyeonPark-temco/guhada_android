@@ -33,7 +33,7 @@ public class ProductOneViewHolder extends BaseProductViewHolder<ItemProductListO
 
     @SuppressLint("StringFormatMatches")
     @Override
-    public void init(Context context, RequestManager manager, Deal data) {
+    public void init(Context context, RequestManager manager, Deal data, int position) {
         if (data != null) {
             // Thumbnail
             ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
@@ -91,7 +91,8 @@ public class ProductOneViewHolder extends BaseProductViewHolder<ItemProductListO
 
             mBinding.textSellerName.setText(data.sellerName);
             // Ship
-            mBinding.textShipFree.setVisibility(data.freeShipping ? View.VISIBLE : View.GONE);
+            mBinding.textShipFree.setVisibility(View.GONE);
+            //mBinding.textShipFree.setVisibility(data.freeShipping ? View.VISIBLE : View.GONE);
         }
     }
 

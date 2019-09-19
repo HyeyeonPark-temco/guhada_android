@@ -1,40 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <data>
         <variable
-            name="imgUrl"
-            type="String" />
-        <variable
-            name="title"
-            type="String" />
+            name="OnClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
-        android:id="@+id/linearlayout_contents"
-        android:layout_width="130dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="46dp"
+        android:background="@color/pale_grey"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:paddingBottom="16dp"
-            android:scaleType="centerCrop"
-            android:background="@color/common_white"
-            app:imageUrl="@{imgUrl}" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textview_term_introduce"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_introduce"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_11" />
+
+            <TextView
+                android:id="@+id/textview_term_terms"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_terms"
+                android:layout_marginLeft="92dp"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textview_term_advise"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_advise"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_11" />
+
+            <TextView
+                android:id="@+id/textview_term_privacy_terms"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_privacy_terms"
+                android:layout_marginLeft="92dp"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textview_term_partner"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_partner"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_11" />
+
+            <TextView
+                android:id="@+id/textview_term_as"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_as"
+                android:layout_marginLeft="92dp"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textview_term_recruit"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_recruit"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white_four"/>
+
+        <io.temco.guhada.view.custom.HtmlTextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/information_company_info"
+            android:lineSpacingExtra="7sp"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/warm_grey_two"
+            android:textSize="@dimen/text_11"
+            app:isHtml="true" />
+
+        <io.temco.guhada.view.custom.HtmlTextView
+            style="@style/TextRegular"
+            android:id="@+id/textview_term_guarantee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/information_company_info2"
+            android:lineSpacingExtra="4sp"
+            android:layout_marginBottom="24dp"
+            android:onClick="@{OnClickListener}"
+            android:textColor="@color/warm_grey_two"
+            android:textSize="@dimen/text_11"
+            app:isHtml="true" />
 
         <TextView
-            style="@style/TextRegularSingleLine"
-            android:layout_width="130dp"
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@{title}"
-            android:textColor="@color/black_four"
-            android:textSize="@dimen/text_12" />
+            android:text="@string/information_copyright_all"
+            android:textColor="@color/warm_grey_two"
+            android:textSize="@dimen/text_11" />
     </LinearLayout>
 </layout>

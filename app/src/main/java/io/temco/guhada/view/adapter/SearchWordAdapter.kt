@@ -91,7 +91,7 @@ class SearchWordAdapter (private val model : ViewModel, list : ArrayList<SearchW
      * 메인 리스트에 event viewpager view holder
      */
     inner class SearchWordRecent(private val containerView: View, val binding: ItemSearchwordRecentListBinding) : ListViewHolder(containerView, binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: SearchWordViewModel, position: Int, item: SearchWord) {
             if(item is SearchRecent){
                 binding.keyword = item.recent.searchWord
@@ -119,7 +119,7 @@ class SearchWordAdapter (private val model : ViewModel, list : ArrayList<SearchW
      * 메인 리스트에 event viewpager view holder
      */
     inner class SearchWordPopular(private val containerView: View, val binding: ItemSearchwordPopularListBinding) : ListViewHolder(containerView, binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?,position : Int) { }
         override fun bind(viewModel: SearchWordViewModel, position: Int, item: SearchWord) {
             if(item is SearchPopular){
                 binding.keyword = item.popular.keyword.replace("\\n"," ")
@@ -167,7 +167,7 @@ class SearchWordAdapter (private val model : ViewModel, list : ArrayList<SearchW
      * 메인 리스트에 event viewpager view holder
      */
     inner class SearchWordAutoComplete(private val containerView: View, val binding: ItemSearchwordAutocompleteListBinding) : ListViewHolder(containerView, binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) { }
         override fun bind(viewModel: SearchWordViewModel, position: Int, item: SearchWord) {
             if(item is SearchAutoComplete){
                 val sb = SpannableStringBuilder(item.name)
@@ -188,7 +188,7 @@ class SearchWordAdapter (private val model : ViewModel, list : ArrayList<SearchW
      * 메인 리스트에 event viewpager view holder
      */
     inner class SearchWordEmpty(private val containerView: View, val binding: ItemEmptyListBinding) : ListViewHolder(containerView, binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) { }
         override fun bind(viewModel: SearchWordViewModel, position: Int, item: SearchWord) { }
     }
 

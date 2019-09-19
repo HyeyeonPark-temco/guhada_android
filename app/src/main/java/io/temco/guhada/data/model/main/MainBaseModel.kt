@@ -1,6 +1,6 @@
 package io.temco.guhada.data.model.main
 
-enum class HomeType { MainEvent, SubTitleList, StoreLinear, GridList, Deal, Dummy, Keyword, BestStore }
+enum class HomeType { MainEvent, SubTitleList, StoreLinear, GridList, Deal, Dummy, Keyword, BestStore, Footer }
 
 /**
  * @author park jungho

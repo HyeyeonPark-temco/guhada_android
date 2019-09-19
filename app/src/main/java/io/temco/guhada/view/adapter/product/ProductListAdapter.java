@@ -72,7 +72,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHold
 
     @Override
     public void onBindViewHolder(@NonNull BaseProductViewHolder holder, int position) {
-        holder.init(mContext, mRequestManager, getItem(position));
+        holder.init(mContext, mRequestManager, getItem(position), position);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
     }

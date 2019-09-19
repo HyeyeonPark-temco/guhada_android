@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.db.entity.CategoryEntity
@@ -76,8 +77,8 @@ class MenListRepository(val context : Context){
     /**
      * Best ITEM
      */
-    private fun getBestItem() {
-        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
+    private fun getBestItem() {//getProductByPlusItem
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
@@ -110,7 +111,7 @@ class MenListRepository(val context : Context){
                                 "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        //gethotKeyword()
+                        getHotKeyword()
                     },
                     dataNotFoundTask = {
 
@@ -126,16 +127,18 @@ class MenListRepository(val context : Context){
     /**
      * HOT KEYWORD
      */
-    private fun gethotKeyword() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+    private fun getHotKeyword() {
+        ProductServer.getProductByKeyword(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
-                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "HOT KEYWORD", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 2, newArrival,false)
-                        list.value!!.add(subTitle)
+                        var keys =  (o as BaseModel<*>).list as List<Keyword>
+                        var sub = KeywordMain(list.value!!.size, HomeType.Keyword,"HOT KEYWORD", keys)
+                        if(CustomLog.flag) CustomLog.L("getHotKeyword keys",keys)
+                        if(CustomLog.flag) CustomLog.L("getHotKeyword sub",sub)
+                        list.value!!.add(sub)
+                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
                         list.value = list.value
-                        getBestStore()
+                        //getBestStore()
                     },
                     dataNotFoundTask = {
 
@@ -146,6 +149,7 @@ class MenListRepository(val context : Context){
             )
         })
     }
+
 
     /**
      * BEST STORE

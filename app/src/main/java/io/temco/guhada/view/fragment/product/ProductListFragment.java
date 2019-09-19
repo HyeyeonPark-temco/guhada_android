@@ -2,6 +2,8 @@ package io.temco.guhada.view.fragment.product;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.View;
@@ -41,6 +43,7 @@ import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CommonUtilKotlin;
+import io.temco.guhada.common.util.CommonViewUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.data.db.GuhadaDB;
@@ -143,13 +146,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             getProductListBySearch(true);
         }
 
-        if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
+        /*if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
             mBinding.imageviewMaintabIcon1.setBackgroundResource(R.drawable.tool_icon_category_on);
             mBinding.textviewMaintabTitle1.setTextColor(Color.parseColor("#5d2ed1"));
         }else if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.BRAND) {
             mBinding.imageviewMaintabIcon2.setBackgroundResource(R.drawable.tool_icon_brand_on);
             mBinding.textviewMaintabTitle2.setTextColor(Color.parseColor("#5d2ed1"));
-        }
+        }*/
 
     }
 
@@ -383,8 +386,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void addCategoryTab(Category data, boolean isSelect) {
         if (getContext() != null) {
             layout_tab_category = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
-            // ((TextView) v.findViewById(R.id.text_title)).setText(data.name);
-            TextView text_title =  ((TextView) layout_tab_category.findViewById(R.id.text_title));
+            TextView text_title = layout_tab_category.findViewById(R.id.text_title);
             text_title.setText(data.title);
             TabLayout.Tab tab = mBinding.layoutHeader.layoutTab.newTab().setCustomView(layout_tab_category);
             tab.setTag(data); // Tag
@@ -395,6 +397,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             }else{
                 text_title.setTypeface(null, Typeface.NORMAL);
             }
+            /*Rect bounds = new Rect();
+            Paint textPaint = text_title.getPaint();
+            textPaint.getTextBounds(data.title, 0, data.title.length(), bounds);*/
+
+            /*tabWidth += data.title.length() * CommonViewUtil.INSTANCE.convertDpToPixel(9,getContext());
+            tabWidth += CommonViewUtil.INSTANCE.convertDpToPixel(2,getContext());*/
+            //tabWidth += bounds.width();
             /*layout_tab_category.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
@@ -420,19 +429,15 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void setTabLayoutScrollEvent() {
         mBinding.layoutHeader.layoutTab.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 1","mBinding.layoutHeader.layoutTab.getWidth()",mBinding.layoutHeader.layoutTab.getWidth());
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 1","width",tabWidth);
             if (mBinding.layoutHeader.layoutTab.getWidth() < mBinding.layoutHeader.layoutTab.getChildAt(0).getWidth()) {
                 mBinding.layoutHeader.layoutTab.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-
                     int currentScroll = 0;
-
                     @Override
                     public void onScrollChanged() {
                         if (mBinding.layoutHeader.layoutTab.getScrollX() != 0) {
                             int x = mBinding.layoutHeader.layoutTab.getScrollX();
                             if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 2","getScrollX",x);
-                            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 2","getRight",mBinding.layoutHeader.layoutTab.getRight());
+                            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("setTabLayoutScrollEvent 2","tabWidth",tabWidth);
                             if (currentScroll < x) {
                                 mBinding.layoutHeader.layoutTabLeftDirection.setVisibility(View.VISIBLE);
                                 mBinding.layoutHeader.layoutTabRightDirection.setVisibility(View.GONE);
@@ -1037,6 +1042,15 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     if (mProductListData == null) mProductListData = (ProductList) o;
                 } else {
                     ;
+                }
+                if(mListAdapter.getItemCount() == 0){
+                    mBinding.listContentsEmpty.setVisibility(View.VISIBLE);
+                    mBinding.listContents.setVisibility(View.GONE);
+                    String txt = "'"+mText+"'에 대한검색결과가 없습니다.";
+                    mBinding.textviewProductlistEmpty.setText(txt);
+                }else{
+                    mBinding.listContentsEmpty.setVisibility(View.GONE);
+                    mBinding.listContents.setVisibility(View.VISIBLE);
                 }
             }
             mIsLoading = false;

@@ -378,12 +378,14 @@
                             <TextView
                                 android:id="@+id/text_seller_rate_0"
                                 style="@style/MainHomeListProductItemSellerRateTextStyle"
+                                android:visibility="gone"
                                 android:text="1" />
 
                             <TextView
                                 android:id="@+id/text_seller_name_0"
                                 android:textColor="@color/greyish_brown_two"
-                                style="@style/MainHomeListProductItemSellerNameTextStyle" />
+                                style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -541,12 +543,14 @@
                             <TextView
                                 android:id="@+id/text_seller_rate_1"
                                 style="@style/MainHomeListProductItemSellerRateTextStyle"
+                                android:visibility="gone"
                                 android:text="1" />
 
                             <TextView
                                 android:id="@+id/text_seller_name_1"
                                 android:textColor="@color/greyish_brown_two"
-                                style="@style/MainHomeListProductItemSellerNameTextStyle" />
+                                style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -719,12 +723,14 @@
                             <TextView
                                 android:id="@+id/text_seller_rate_2"
                                 style="@style/MainHomeListProductItemSellerRateTextStyle"
+                                android:visibility="gone"
                                 android:text="1" />
 
                             <TextView
                                 android:id="@+id/text_seller_name_2"
                                 android:textColor="@color/greyish_brown_two"
-                                style="@style/MainHomeListProductItemSellerNameTextStyle" />
+                                style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -881,12 +887,14 @@
                             <TextView
                                 android:id="@+id/text_seller_rate_3"
                                 style="@style/MainHomeListProductItemSellerRateTextStyle"
+                                android:visibility="gone"
                                 android:text="1" />
 
                             <TextView
                                 android:id="@+id/text_seller_name_3"
                                 android:textColor="@color/greyish_brown_two"
-                                style="@style/MainHomeListProductItemSellerNameTextStyle" />
+                                style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:layout_marginLeft="0dp"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -1058,12 +1066,14 @@
                             <TextView
                                 android:id="@+id/text_seller_rate_4"
                                 style="@style/MainHomeListProductItemSellerRateTextStyle"
+                                android:visibility="gone"
                                 android:text="1" />
 
                             <TextView
                                 android:id="@+id/text_seller_name_4"
                                 android:textColor="@color/greyish_brown_two"
-                                style="@style/MainHomeListProductItemSellerNameTextStyle" />
+                                style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -1221,12 +1231,14 @@
                             <TextView
                                 android:id="@+id/text_seller_rate_5"
                                 style="@style/MainHomeListProductItemSellerRateTextStyle"
+                                android:visibility="gone"
                                 android:text="1" />
 
                             <TextView
                                 android:id="@+id/text_seller_name_5"
                                 android:textColor="@color/greyish_brown_two"
-                                style="@style/MainHomeListProductItemSellerNameTextStyle" />
+                                style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

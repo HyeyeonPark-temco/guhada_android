@@ -73,7 +73,7 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
      * 메인 리스트에 사용할 base view holder
      */
     inner class MyPageProductListViewHolder(val containerView: View, val binding: ItemMypageProductListTwoBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(model : ViewModel, position : Int, data : Deal){
             // Thumbnail
             if(data != null){
@@ -138,7 +138,7 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
     }
 
     inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) {  }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) {  }
         override fun bind(model : ViewModel, position : Int, data : Deal){
             binding.linearlayoutMoreView.setOnClickListener {
                 if(model is MyPageBookMarkViewModel){

@@ -89,7 +89,7 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
      * 메인 리스트에 사용할 base view holder
      */
     inner class MyPageMyPageReviewAvailableListViewHolder(val containerView: View, val binding: ItemMypageReviewListAvaiableBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(model : ViewModel, position : Int, data : MyPageReviewBase) {
             if (data != null) {
                 var item = data as ReviewAvailableOrder
@@ -122,7 +122,7 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
     }
 
     inner class MyPageMyPageReviewListViewHolder(val containerView: View, val binding: ItemMypageReviewListReviewBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) { }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(model : ViewModel, position : Int, data : MyPageReviewBase) {
             if (data != null) {
                 var item = data as MyPageReviewContent
@@ -209,7 +209,7 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
     }
 
     inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?) {  }
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) {  }
         override fun bind(model : ViewModel, position : Int, data : MyPageReviewBase){
             binding.linearlayoutMoreView.setOnClickListener {
                 if(data is MyPageReviewContent){
