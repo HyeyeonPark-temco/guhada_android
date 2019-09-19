@@ -152,7 +152,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             else BaseApplication.getInstance().getString(R.string.payment_text_emptyshippingaddress)
         }
 
-    var termsChecked = false
+    var termsChecked = ObservableBoolean(false)
+        @Bindable
+        get() = field
 
     // 상품 리스트
     var cartIdList: MutableList<Int> = mutableListOf()
@@ -160,6 +162,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mVerifyTask: () -> Unit = {}
 
     // 현금영수증
+    var mIsRecipientIssued = false
     var mRecipientByPhone = ObservableBoolean(true)
         @Bindable
         get() = field
@@ -438,7 +441,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             return
         }
 
-        if (termsChecked) {
+        if (termsChecked.get()) {
             for (i in 0 until paymentWays.size)
                 if (paymentWays[i])
                     selectedMethod = order.paymentsMethod[i]
@@ -453,7 +456,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         } else {
                             // 현금영수증
                             if ((selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) ||
-                                    (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty())) {
+                                    (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty()) || !mIsRecipientIssued) {
                                 mRequestOrder.cashReceiptNo = ""
                                 mRequestOrder.cashReceiptType = ""
                                 mRequestOrder.cashReceiptUsage = ""
@@ -561,7 +564,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onTermsChecked(checked: Boolean) {
-        this.termsChecked = checked
+        this.termsChecked = ObservableBoolean(checked)
+        notifyPropertyChanged(BR.termsChecked)
     }
 
     fun onShippingMemoSelected(position: Int) {

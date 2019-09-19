@@ -111,8 +111,9 @@
             <EditText
                 android:id="@+id/textview_payment_discountcoupon"
                 style="@style/TextRegular"
+                android:layout_margin="1dp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:background="@drawable/box_all_palegrey"
                 android:clickable="false"
@@ -125,13 +126,14 @@
 
             <Button
                 android:id="@+id/button_payment_discountcoupon"
-                style="@style/TextMedium"
+                style="@style/borderlessStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:layout_marginStart="7dp"
                 android:background="@drawable/border_all_whitethree"
+                android:clickable="@{viewModel.order.availableCouponCount == 0 ? false : true, default = true}"
                 android:text="@string/payment_button_autocoupon"
-                android:textColor="@color/black_four"
+                android:textColor="@{viewModel.order.availableCouponCount == 0 ? @color/pinkish_grey : @color/black_four, default = @color/black_four}"
                 android:textSize="@dimen/text_13" />
         </LinearLayout>
 
@@ -187,14 +189,14 @@
                     android:hint="0"
                     android:inputType="number"
                     android:maxLength="15"
+                    android:text="@={viewModel.usedPoint}"
                     android:textColorHint="@color/warm_grey_two"
                     android:textCursorDrawable="@null"
                     android:textSize="@dimen/text_13"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="@={viewModel.usedPoint}" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     style="@style/PaymentContentGreyTextStyle"
@@ -255,7 +257,7 @@
 
             <Button
                 android:id="@+id/button_payment_discountpoint"
-                style="@style/TextMedium"
+                style="@style/borderlessStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="7dp"
