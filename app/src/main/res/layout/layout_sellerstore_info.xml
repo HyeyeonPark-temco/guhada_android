@@ -6,6 +6,10 @@
         <variable
             name="businessSeller"
             type="io.temco.guhada.data.model.seller.BusinessSeller" />
+
+        <variable
+            name="sellerStore"
+            type="io.temco.guhada.data.model.seller.SellerStore" />
     </data>
 
     <LinearLayout
@@ -322,7 +326,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
-                android:text="오프라인 스토어 주소" />
+                android:text="@{sellerStore.offlineStoreAddress}" />
 
         </LinearLayout>
 
@@ -347,7 +351,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
-                android:text="월요일 ~ 목요일 : 09:00 ~ 18:00\n금요일 : 09:00 ~ 15:00\n휴무일 : 주말 및 공휴일은 운영하지 않습니다." />
+                android:text="@{sellerStore.businessHours != null ? sellerStore.businessHours : @string/sellerstore_sellerinfo_empty }" />
 
         </LinearLayout>
     </LinearLayout>

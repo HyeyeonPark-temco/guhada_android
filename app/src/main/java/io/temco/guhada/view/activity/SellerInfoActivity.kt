@@ -119,11 +119,12 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
             mFilterFragment.show(supportFragmentManager, baseTag)
         }
 
-       // mViewModel.getSellerInfo()
+        // mViewModel.getSellerInfo()
+        mViewModel.getSellerStoreInfo()
         mViewModel.getBusinessSellerInfo()
         mViewModel.getSellerBookMark()
-        mViewModel.getSellerSatisfaction()
-        mViewModel.getSellerFollowCount()
+//        mViewModel.getSellerSatisfaction()
+//        mViewModel.getSellerFollowCount()
         mViewModel.getSellerProductList()
 
         mBinding.viewModel = mViewModel
@@ -145,6 +146,10 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
 //            mBinding.businessSeller = it
 //            initHeader(it)
 //        })
+        mViewModel.mSellerStore.observe(this@SellerInfoActivity, Observer {
+            mBinding.sellerStore = it
+            mBinding.includeSellerstoreInfo.sellerStore = it
+        })
         mViewModel.mSellerBookMark.observe(this@SellerInfoActivity, Observer { mBinding.bookMark = it })
         mViewModel.mSellerSatisfaction.observe(this@SellerInfoActivity, Observer { mBinding.satisfaction = it })
         mViewModel.mSellerFollowerCount.observe(this@SellerInfoActivity, Observer {

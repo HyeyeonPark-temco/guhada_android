@@ -47,6 +47,7 @@
     <string name="common_color_white">#ffffff</string>
 
     <string name="common_format_people">%,2d명</string>
+    <string name="common_format_product">%,2d개</string>
     <string name="common_format_totalproduct">총 %,2d개</string>
     <string name="common_unit_person"></string>
     <string name="common_unit_board">건</string>
@@ -1190,6 +1191,7 @@
     <string name="sellerstore_sellerinfo_title4">통신판매업번호</string>
     <string name="sellerstore_sellerinfo_title5">사업장소재지</string>
     <string name="sellerstore_sellerinfo_title6">고객센터</string>
+    <string name="sellerstore_sellerinfo_empty">미기재</string>
 
     <string name="common_temp">임시</string>
     <string name="common_register">등록</string>

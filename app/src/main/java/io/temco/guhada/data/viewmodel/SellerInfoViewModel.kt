@@ -5,16 +5,20 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.*
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.seller.BusinessSeller
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.model.seller.SellerSatisfaction
+import io.temco.guhada.data.model.seller.SellerStore
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.server.UserServer
@@ -23,6 +27,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class SellerInfoViewModel : BaseObservableViewModel() {
     var mSellerId = 0L
     var mOrder = ProductOrderType.DATE.type
+    var mSellerStore: MutableLiveData<SellerStore> = MutableLiveData()
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mBusinessSeller: MutableLiveData<BusinessSeller> = MutableLiveData()
     var mSellerBookMark: MutableLiveData<BookMark> = MutableLiveData()
@@ -44,6 +49,21 @@ class SellerInfoViewModel : BaseObservableViewModel() {
         BOARD(3),
         COMMENT(4),
         REPORT(5)
+    }
+
+    fun getSellerStoreInfo() {
+        val listener = OnServerListener { success, o ->
+            if (success) {
+                val model = o as BaseModel<SellerStore>
+                mSellerStore.postValue(model.data)
+            } else {
+                if (o is BaseModel<*>) ToastUtil.showMessage(o.message)
+                else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+            }
+        }
+        ServerCallbackUtil.callWithToken(
+                task = { accessToken -> UserServer.getSellerStoreInfo(listener, accessToken = accessToken, sellerId = mSellerId) },
+                invalidTokenTask = { UserServer.getSellerStoreInfo(listener, accessToken = null, sellerId = mSellerId) })
     }
 
     fun getSellerInfo() {
@@ -125,15 +145,20 @@ class SellerInfoViewModel : BaseObservableViewModel() {
     fun onClickFollow() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             if (mSellerBookMark.value?.content?.isEmpty() == true) {
+//            if(!mSellerStore.value?.followed!!){
                 val bookMarkResponse = BookMarkResponse(BookMarkTarget.SELLER.target, mSellerId)
                 UserServer.saveBookMark(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = { getSellerBookMark() })
+                            successTask = {
+                                getSellerBookMark()
+                                })
                 }, accessToken = accessToken, response = bookMarkResponse.getProductBookMarkRespose())
             } else {
                 UserServer.deleteBookMark(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = { getSellerBookMark() })
+                            successTask = {
+                                getSellerBookMark()
+                            })
                 }, accessToken = accessToken, target = BookMarkTarget.SELLER.target, targetId = mSellerId)
             }
         })

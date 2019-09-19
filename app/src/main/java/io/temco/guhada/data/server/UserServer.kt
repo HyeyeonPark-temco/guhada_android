@@ -799,6 +799,21 @@ class UserServer {
          */
         fun updateIdentityVerify(listener: OnServerListener, accessToken: String, verification: Verification) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateIdentityVerify(accessToken, verification)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 셀러 스토어 정보 조회 API
+         * @author Hyeyeon Park
+         * @since 2019.09.19
+         */
+        fun getSellerStoreInfo(listener: OnServerListener, sellerId: Long, accessToken: String?) {
+            if (accessToken.isNullOrEmpty())
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getSellerStoreInfo(sellerId = sellerId)
+                        .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerStore>>(successTask = { listener.onResult(true, it.body()) }))
+             else
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getSellerStoreInfo(accessToken = accessToken, sellerId = sellerId)
+                        .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerStore>>(successTask = { listener.onResult(true, it.body()) }))
+
+        }
     }
 
 }
