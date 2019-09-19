@@ -2,23 +2,30 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.mypage.delivery.RequestRefundViewModel" />
+    </data>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:background="@color/pale_grey"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/pale_grey">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/common_white"
             android:layout_marginTop="10dp"
+            android:background="@color/common_white"
+            android:orientation="vertical"
             android:padding="20dp">
 
             <TextView
                 style="@style/SuccessRequestExchangeSubTitleTextStyle"
                 android:layout_width="wrap_content"
-                android:text="@string/requestorderstatus_refund_banktitle"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/requestorderstatus_refund_banktitle" />
 
             <FrameLayout
                 android:id="@+id/framelayout_requestorderstatus_cause"
@@ -27,7 +34,7 @@
                 android:layout_marginTop="25dp">
 
                 <Spinner
-                    android:id="@+id/spinner_requestorderstatus_cause"
+                    android:id="@+id/spinner_requestorderstatus_bank"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:background="@drawable/border_all_whitethree"
@@ -35,9 +42,8 @@
                     android:overScrollMode="never"
                     android:overlapAnchor="false"
                     android:popupBackground="@null"
-                    android:spinnerMode="dropdown"
-                    />
-                <!--app:cause="@{causeList}"-->
+                    android:spinnerMode="dropdown" />
+
                 <FrameLayout
                     android:id="@+id/framelayout_requestorderstatus_causebutton"
                     android:layout_width="match_parent"
@@ -56,11 +62,11 @@
                         android:popupBackground="@null">
 
                         <TextView
+                            android:id="@+id/textview_requestrefund_bankname"
                             style="@style/MypageDeliveryWarmGreyTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:id="@+id/edittext_requestrefund_bankname"
                             android:layout_weight="1"
                             android:text="@string/requestorderstatus_refund_bankhint1"
                             android:textSize="@dimen/text_13" />
@@ -77,14 +83,15 @@
             </FrameLayout>
 
             <EditText
-                android:layout_width="match_parent"
                 android:id="@+id/edittext_requestrefund_banknum"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border_all_whitethree"
                 android:hint="@string/requestorderstatus_refund_bankhint2"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
+                android:text="@={viewModel.mRefundRequest.refundBankAccountNumber}"
                 android:textColor="@color/black_four"
                 android:textColorHint="@color/warm_grey"
                 android:textSize="@dimen/text_13" />
@@ -96,10 +103,11 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/edittext_requestrefund_bankowner"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
-                    android:id="@+id/edittext_requestrefund_bankowner"
                     android:layout_weight="1"
+                    android:text="@={viewModel.mRefundRequest.refundBankAccountOwner}"
                     android:background="@drawable/border_all_whitethree"
                     android:hint="@string/requestorderstatus_refund_bankhint3"
                     android:paddingStart="15dp"

@@ -25,280 +25,293 @@
             android:layout_height="1dp"
             android:background="@drawable/line" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/VerifyTitleTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/verify_title_mobile" />
-
-            <TextView
-                style="@style/VerifyTitleTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@{viewModel.mMobileVerification ? @string/verify_verified : @string/verify_notverified, default = @string/verify_notverified}"
-                android:textColor="@{viewModel.mMobileVerification ? @color/common_blue_purple : @color/brick , default = @color/brick}" />
-        </LinearLayout>
-
-
-        <TextView
-            style="@style/VerifyTitleTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:gravity="center"
-            android:text="@string/verify_subtitle_mobile"
-            android:textColor="@color/greyish_brown" />
-
-        <Button
-            style="@style/VerifyButtonStyle"
+        <androidx.core.widget.NestedScrollView
+            android:overScrollMode="never"
+            android:fillViewport="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:clickable="@{!viewModel.mMobileVerification}"
-            android:onClick="@{()->viewModel.onClickVerifyPhone()}"
-            android:text="@{viewModel.mMobileVerification ? @string/verify_button_finish : @string/verify_button_mobile, default = @string/verify_button_mobile }" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:src="@drawable/drawble_circle_dot2" />
-
-            <TextView
-                style="@style/VerifyDescriptionTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/verify_description1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:src="@drawable/drawble_circle_dot2" />
-
-            <TextView
-                style="@style/VerifyDescriptionTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/verify_description2" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:src="@drawable/drawble_circle_dot2" />
-
-            <TextView
-                style="@style/VerifyDescriptionTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/verify_description3" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:src="@drawable/drawble_circle_dot2" />
-
-            <TextView
-                style="@style/VerifyDescriptionTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/verify_description4" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="5dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center"
-                android:src="@drawable/drawble_circle_dot2" />
-
-            <TextView
-                style="@style/VerifyDescriptionTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:text="@string/verify_description5" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/line_6" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/VerifyTitleTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/verify_title_email" />
-
-            <TextView
-                style="@style/VerifyTitleTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@{viewModel.mEmailVerification ? @string/verify_verified : @string/verify_notverified, default = @string/verify_notverified}"
-                android:textColor="@{viewModel.mEmailVerification ? @color/common_blue_purple : @color/brick, default = @color/brick}" />
-        </LinearLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/border_all_whitethree">
-
-            <TextView
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="1dp"
-                android:background="@color/pale_grey"
-                android:gravity="center_vertical"
-                android:paddingStart="15dp"
-                android:text="@{viewModel.mUser.email}"
-                android:textColor="@color/black_four"
-                android:textSize="@dimen/text_13" />
-
-            <Button
-                style="@style/VerifyButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:layout_gravity="right"
-                android:onClick="@{()->viewModel.onClickResend()}"
-                android:text="@string/verify_button_resend"
-                android:visibility="@{viewModel.mActiveSendButton ? View.VISIBLE : View.GONE, default = gone}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </FrameLayout>
-
-
-        <io.temco.guhada.view.custom.BorderEditTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:visibility="@{viewModel.mActiveSendButton ? View.VISIBLE : View.GONE, default = gone}"
-            app:hint="@string/verify_hint_number"
-            app:max="6"
-            app:txt="@={viewModel.mVerificationNumber}"
-            app:type="number">
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textview_verify_minute"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.mTimerMinute}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_13" />
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/VerifyTitleTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/verify_title_mobile" />
+
+                    <TextView
+                        style="@style/VerifyTitleTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@{viewModel.mMobileVerification ? @string/verify_verified : @string/verify_notverified, default = @string/verify_notverified}"
+                        android:textColor="@{viewModel.mMobileVerification ? @color/common_blue_purple : @color/brick , default = @color/brick}" />
+                </LinearLayout>
+
 
                 <TextView
+                    style="@style/VerifyTitleTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:text=":"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_13" />
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:gravity="center"
+                    android:text="@string/verify_subtitle_mobile"
+                    android:textColor="@color/greyish_brown" />
 
-                <TextView
-                    android:id="@+id/textview_verify_second"
+                <Button
+                    style="@style/VerifyButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:clickable="@{!viewModel.mMobileVerification}"
+                    android:onClick="@{()->viewModel.onClickVerifyPhone()}"
+                    android:text="@{viewModel.mMobileVerification ? @string/verify_button_finish : @string/verify_button_mobile, default = @string/verify_button_mobile }" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.mTimerSecond}"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_13" />
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/drawble_circle_dot2" />
+
+                    <TextView
+                        style="@style/VerifyDescriptionTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/verify_description1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/drawble_circle_dot2" />
+
+                    <TextView
+                        style="@style/VerifyDescriptionTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/verify_description2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/drawble_circle_dot2" />
+
+                    <TextView
+                        style="@style/VerifyDescriptionTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/verify_description3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/drawble_circle_dot2" />
+
+                    <TextView
+                        style="@style/VerifyDescriptionTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/verify_description4" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="5dp"
+                        android:layout_height="5dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/drawble_circle_dot2" />
+
+                    <TextView
+                        style="@style/VerifyDescriptionTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/verify_description5" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/line_6" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/VerifyTitleTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/verify_title_email" />
+
+                    <TextView
+                        style="@style/VerifyTitleTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="@{viewModel.mEmailVerification ? @string/verify_verified : @string/verify_notverified, default = @string/verify_notverified}"
+                        android:textColor="@{viewModel.mEmailVerification ? @color/common_blue_purple : @color/brick, default = @color/brick}" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/border_all_whitethree">
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="1dp"
+                        android:background="@color/pale_grey"
+                        android:gravity="center_vertical"
+                        android:paddingStart="15dp"
+                        android:text="@{viewModel.mUser.email}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <Button
+                        style="@style/VerifyButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_gravity="right"
+                        android:onClick="@{()->viewModel.onClickResend()}"
+                        android:text="@string/verify_button_resend"
+                        android:visibility="@{viewModel.mActiveSendButton ? View.VISIBLE : View.GONE, default = gone}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </FrameLayout>
+
+
+                <io.temco.guhada.view.custom.BorderEditTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:visibility="@{viewModel.mActiveSendButton ? View.VISIBLE : View.GONE, default = gone}"
+                    app:hint="@string/verify_hint_number"
+                    app:max="6"
+                    app:txt="@={viewModel.mVerificationNumber}"
+                    app:type="number">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textview_verify_minute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.mTimerMinute}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:text=":"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            android:id="@+id/textview_verify_second"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.mTimerSecond}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+                </io.temco.guhada.view.custom.BorderEditTextView>
+
+                <Button
+                    style="@style/VerifyButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/common_blue_purple"
+                    android:clickable="@{!viewModel.mEmailVerification}"
+                    android:onClick="@{()->viewModel.onClickSend()}"
+                    android:text="@{viewModel.mEmailVerification || viewModel.mActiveSendButton ? @string/verify_button_finish : @string/verify_button_send, default = @string/verify_button_send}" />
             </LinearLayout>
-        </io.temco.guhada.view.custom.BorderEditTextView>
-
-        <Button
-            style="@style/VerifyButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/common_blue_purple"
-            android:clickable="@{!viewModel.mEmailVerification}"
-            android:onClick="@{()->viewModel.onClickSend()}"
-            android:text="@{viewModel.mEmailVerification || viewModel.mActiveSendButton ? @string/verify_button_finish : @string/verify_button_send, default = @string/verify_button_send}" />
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

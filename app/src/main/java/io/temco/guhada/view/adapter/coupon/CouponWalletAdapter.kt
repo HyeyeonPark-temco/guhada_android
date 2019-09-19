@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.product.BaseProduct
@@ -72,7 +73,15 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
 
                     discountPrice += when {
                         couponWallet.discountType == Coupon.DiscountType.PRICE.type -> couponWallet.discountPrice
-                        couponWallet.discountType == Coupon.DiscountType.RATE.type -> Math.round(productPrice * couponWallet.discountRate).toInt()
+                        couponWallet.discountType == Coupon.DiscountType.RATE.type -> {
+                            val price = Math.round(productPrice * couponWallet.discountRate).toInt()
+                            if (price > couponWallet.maximumDiscountPrice) {
+                               //  ToastUtil.showMessage(String.format(BaseApplication.getInstance().getString(R.string.couponselect_overmaxdiscountprice), couponWallet.maximumDiscountPrice))
+                                couponWallet.maximumDiscountPrice
+                            } else {
+                                price
+                            }
+                        }
                         else -> 0
                     }
                 }

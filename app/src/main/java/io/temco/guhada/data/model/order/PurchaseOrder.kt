@@ -98,6 +98,9 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
 
     var shippingMessageList = mutableListOf<ShippingMessage>()
 
+    // 반품 신청 환불 계좌 은행
+    var banks = mutableListOf<Bank>()
+
     fun getOptionStr(): String {
         var result = ""
         if (!optionAttribute1.isNullOrEmpty()) result += optionAttribute1
@@ -113,5 +116,10 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     fun getDate() = CommonUtil.convertTimeStampToDate(orderTimestamp) ?: ""
     fun getStatus(): String = if (orderStatus.isEmpty()) claimStatus else orderStatus
 
+    class Bank : Serializable {
+        var bankCode = ""       // ex: "81"
+        var bankName = ""       // ex: "하나은행"
+        var bankPriority = ""   // ex: "10"
+    }
 
 }

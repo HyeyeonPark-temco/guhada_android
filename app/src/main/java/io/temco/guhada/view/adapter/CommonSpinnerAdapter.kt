@@ -9,12 +9,14 @@ import androidx.databinding.DataBindingUtil
 import io.temco.guhada.databinding.ItemCommonSpinnerBinding
 
 /**
- *
+ * Text Spinner
+ * @author Hyeyeon Park
  */
 class CommonSpinnerAdapter(context: Context, private val layoutRes: Int, var list: List<String> = ArrayList()) : ArrayAdapter<String>(context, layoutRes, list) {
+    var mItemCount: Int? = null
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
-    override fun getCount(): Int = list.size
+    override fun getCount(): Int = if (mItemCount == null) list.size else mItemCount ?: 0
 
     fun setItems(list: List<String>) {
         this.list = list
