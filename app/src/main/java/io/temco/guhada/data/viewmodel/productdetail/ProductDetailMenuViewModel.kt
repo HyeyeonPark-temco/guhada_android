@@ -26,7 +26,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
     var product: Product = Product()
         set(value) {
             field = value
-            totalPrice = ObservableInt(if (product.options?.isEmpty() == true) product.discountPrice else 0)
+            totalPrice = ObservableInt(product.discountPrice)// ObservableInt(if (product.options?.isEmpty() == true) product.discountPrice else 0)
             notifyPropertyChanged(BR.totalPrice)
         }
 
