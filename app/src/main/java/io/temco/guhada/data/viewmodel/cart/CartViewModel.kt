@@ -125,6 +125,7 @@ class CartViewModel : BaseObservableViewModel() {
             }
         }
 
+        // 주문 결제 화면으로 넘길 상품 데이터 가공
         for (cart in productList) {
             BaseProduct().apply {
                 this.dealId = cart.dealId
@@ -134,6 +135,8 @@ class CartViewModel : BaseObservableViewModel() {
                 this.totalPrice = cart.sellPrice?:0
                 this.profileUrl = cart.imageUrl?:""
                 this.optionStr = cart.getOptionStr()?:""
+                this.sellPrice = cart.sellPrice
+                this.discountPrice = cart.discountPrice
             }.let {
                 list.add(it)
             }
