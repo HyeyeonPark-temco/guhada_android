@@ -588,6 +588,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 this.season = product?.season ?: ""
                 this.optionStr = getOptionText(option = selectedOption, count = count)
                 this.dealOptionId = if (!isOptionNone) selectedOption!!.dealOptionSelectId.toLong() else null
+                this.sellPrice = product?.sellPrice ?: 0
+                this.discountPrice = product?.sellPrice ?: 0
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
                 mViewModel.menuVisibility.set(View.GONE)
@@ -656,6 +658,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 this.totalCount = count
                 this.totalPrice = price
                 this.season = product?.season ?: ""
+                this.sellPrice = product?.sellPrice ?: 0
+                this.discountPrice = product?.discountPrice ?: 0
             }.let { baseProduct ->
                 // 장바구니 API 파라미터
                 baseProduct.dealOptionId = getSelectedOptionDealId() ?: 0
