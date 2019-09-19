@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.main
 
+import android.annotation.SuppressLint
 import android.graphics.Point
 import android.view.View
 import android.view.ViewGroup
@@ -41,20 +42,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     override fun init() {
         initHeader()
         setLinkText()
-        EventBusHelper.mSubject.subscribe { requestCode ->
-            when (requestCode.requestCode) {
-                Flag.RequestCode.HOME_MOVE -> {
-                    try{
-                        var index = requestCode.data as Int
-                        currentPagerIndex = index
-                        mBinding.viewpager.setCurrentItem(index)
-                        (customLayoutMap.get(0) as HomeListLayout).listScrollTop()
-                    }catch (e : Exception){
-                        if(CustomLog.flag)CustomLog.E(e)
-                    }
-                }
-            }
-        }
+        setEvenBus()
     }
 
     override fun onClick(v: View) {
@@ -124,7 +112,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 if (customLayoutMap.containsKey(currentPagerIndex)) customLayoutMap.get(currentPagerIndex)!!.onFocusView()
             }
         })
-        mBinding.viewpager.offscreenPageLimit = 3
+        mBinding.viewpager.offscreenPageLimit = 4
         mBinding.viewpager.currentItem = currentPagerIndex
         mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager){
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -190,6 +178,24 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                         CommonUtil.debug("Sevice Confirm!");
                     }
                 }), TextView.BufferType.SPANNABLE);*/
+    }
+
+    @SuppressLint("CheckResult")
+    private fun setEvenBus(){
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                Flag.RequestCode.HOME_MOVE -> {
+                    try{
+                        var index = requestCode.data as Int
+                        currentPagerIndex = index
+                        mBinding.viewpager.setCurrentItem(index)
+                        (customLayoutMap.get(0) as HomeListLayout).listScrollTop()
+                    }catch (e : Exception){
+                        if(CustomLog.flag)CustomLog.E(e)
+                    }
+                }
+            }
+        }
     }
 
 

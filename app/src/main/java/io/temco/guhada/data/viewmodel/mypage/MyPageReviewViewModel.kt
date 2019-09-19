@@ -175,22 +175,24 @@ class MyPageReviewRepository(val model : MyPageReviewViewModel){
                                         }
                                         var startRange = model.getAvailableAdapter().items.size
                                         var data = (o as BaseModel<*>).data as MyPageOrderReview
-                                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore ", o)
-                                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore ", "init ----- list",data)
-                                        model.mypageReviewtab1Title.set(data.count)
-                                        availableReviewOrderList.value!!.addAll(data.orderItemList)
-                                        if(data.totalPage > data.page+1){
-                                            var more = ReviewAvailableOrder()
-                                            more.isMoreList = true
-                                            availableReviewOrderList.value!!.add(more)
+                                        if(!data.orderItemList.isNullOrEmpty()){
+                                            if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore ", o)
+                                            if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore ", "init ----- list",data)
+                                            model.mypageReviewtab1Title.set(data.count)
+                                            availableReviewOrderList.value!!.addAll(data.orderItemList)
+                                            if(data.totalPage > data.page+1){
+                                                var more = ReviewAvailableOrder()
+                                                more.isMoreList = true
+                                                availableReviewOrderList.value!!.add(more)
+                                            }
+                                            model.tab1EmptyViewVisible.set(false)
+                                            if(startRange == 0){
+                                                model.getAvailableAdapter().notifyDataSetChanged()
+                                            }else{
+                                                model.getAvailableAdapter().notifyItemRangeChanged(startRange, model.getAvailableAdapter().items.size)
+                                            }
+                                            listener?.onResultCallback()
                                         }
-                                        model.tab1EmptyViewVisible.set(false)
-                                        if(startRange == 0){
-                                            model.getAvailableAdapter().notifyDataSetChanged()
-                                        }else{
-                                            model.getAvailableAdapter().notifyItemRangeChanged(startRange, model.getAvailableAdapter().items.size)
-                                        }
-                                        listener?.onResultCallback()
                                     },
                                     dataNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "getAvailableReviewOrderMore dataNotFoundTask ") },
                                     failedTask = {

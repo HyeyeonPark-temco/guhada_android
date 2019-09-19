@@ -95,7 +95,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         when (v.id) {
             ////////////////////////////////////////////////
             // Side Menu
-            R.id.image_home ->  gotoMain(false)
+            R.id.image_home ->  gotoMain(true)
             R.id.image_setting -> {
                 //CommonUtilKotlin.startActivityUserClaimGuhada(this@SideMenuActivity)
             }
