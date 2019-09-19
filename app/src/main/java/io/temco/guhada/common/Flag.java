@@ -47,6 +47,7 @@ public class Flag {
         public static final int USER_CLAIM_SELLER = 10034;
 
         public static final int MYPAGE_MOVE = 20000;
+        public static final int HOME_MOVE = 20001;
     }
 
     public static class ResultCode {

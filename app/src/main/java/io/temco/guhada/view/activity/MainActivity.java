@@ -104,6 +104,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(2);
                     selectTab(2, false);
+                    if(((BaseApplication) getApplicationContext()).getMoveToMain().isInitMain()){
+                        EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
+                    }
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(3);
                     selectTab(3, false);

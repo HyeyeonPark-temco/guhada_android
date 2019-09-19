@@ -83,7 +83,7 @@ class MyPageRecentLayout constructor(
 
     override fun onStart() {
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onStart ", "init -----")
-
+        onRefresh()
     }
 
     override fun onResume() {

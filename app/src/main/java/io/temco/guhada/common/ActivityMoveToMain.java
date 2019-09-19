@@ -12,10 +12,16 @@ public class ActivityMoveToMain {
     int resultPageIndex = -1;
     // 메인으로 이동여부
     boolean isMoveToMain = false;
+    boolean isInitMain = false;
 
     public ActivityMoveToMain(int resultCode, boolean isMoveToMain) {
         this.resultCode = resultCode;
         this.isMoveToMain = isMoveToMain;
+    }
+    public ActivityMoveToMain(int resultCode, boolean isMoveToMain, boolean isInitMain) {
+        this.resultCode = resultCode;
+        this.isMoveToMain = isMoveToMain;
+        this.isInitMain = isInitMain;
     }
 
     public ActivityMoveToMain(int resultCode, int resultPageIndex, boolean isMoveToMain) {
@@ -24,10 +30,18 @@ public class ActivityMoveToMain {
         this.isMoveToMain = isMoveToMain;
     }
 
+    public ActivityMoveToMain(int resultCode, int resultPageIndex, boolean isMoveToMain, boolean isInitMain) {
+        this.resultCode = resultCode;
+        this.resultPageIndex = resultPageIndex;
+        this.isMoveToMain = isMoveToMain;
+        this.isInitMain = isInitMain;
+    }
+
     public void clear(){
         resultCode = -1;
         resultPageIndex = -1;
         isMoveToMain = false;
+        isInitMain = false;
     }
 
     public int getResultCode() {
@@ -44,6 +58,10 @@ public class ActivityMoveToMain {
 
     public boolean isMoveToMain() {
         return isMoveToMain;
+    }
+
+    public boolean isInitMain() {
+        return isInitMain;
     }
 
     public void setMoveToMain(boolean moveToMain) {

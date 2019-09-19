@@ -95,7 +95,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         when (v.id) {
             ////////////////////////////////////////////////
             // Side Menu
-            R.id.image_home ->  gotoMain()
+            R.id.image_home ->  gotoMain(false)
             R.id.image_setting -> {
                 //CommonUtilKotlin.startActivityUserClaimGuhada(this@SideMenuActivity)
             }
@@ -143,7 +143,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                 mBinding.layoutHeader.layoutLogin.setOnClickListener{
                     Preferences.clearToken(true)
                     changeLoginStatus(false)
-                    gotoMain()
+                    gotoMain(true)
                 }
             } else {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_need))
@@ -199,8 +199,8 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         }
     }
 
-    private fun gotoMain(){
-        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true)
+    private fun gotoMain(initMain : Boolean){
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,initMain)
         this@SideMenuActivity.setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
         this@SideMenuActivity.onBackPressed()
     }

@@ -23,10 +23,7 @@ import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.viewmodel.main.WomenListViewModel
-import io.temco.guhada.databinding.CustomlayoutMainItemDummyBinding
-import io.temco.guhada.databinding.CustomlayoutMainItemMaineventBinding
-import io.temco.guhada.databinding.CustomlayoutMainItemPaddingBinding
-import io.temco.guhada.databinding.CustomlayoutMainItemSubtitlelistBinding
+import io.temco.guhada.databinding.*
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
@@ -46,6 +43,8 @@ class WomenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseM
             HomeType.MainEvent->return R.layout.customlayout_main_item_mainevent
             HomeType.SubTitleList->return R.layout.customlayout_main_item_subtitlelist
             HomeType.Dummy->return R.layout.customlayout_main_item_dummy
+            HomeType.Keyword->return R.layout.customlayout_main_item_keyword
+            HomeType.Footer->return R.layout.item_terminfo_footer
             else ->return R.layout.customlayout_main_item_padding
         }
     }
@@ -68,6 +67,14 @@ class WomenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseM
             HomeType.Dummy->{
                 val binding : CustomlayoutMainItemDummyBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return DummyViewHolder(binding.root, binding)
+            }
+            HomeType.Keyword->{
+                val binding : CustomlayoutMainItemKeywordBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return KeywordViewHolder(binding.root, binding)
+            }
+            HomeType.Footer->{
+                val binding : ItemTerminfoFooterBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return TermViewHolder(binding.root, binding)
             }
             else ->{
                 val binding : CustomlayoutMainItemPaddingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
@@ -363,6 +370,45 @@ class WomenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseM
         }
     }
 
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class KeywordViewHolder(private val containerView: View, val binding: CustomlayoutMainItemKeywordBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(viewModel: WomenListViewModel, position: Int, item: MainBaseModel) {
+            if(item is KeywordMain){
+                binding.title = item.title
+                if (binding.listKeyowrd.adapter == null) {
+                    binding.listKeyowrd.adapter = MainKeywordListAdapter().apply { mList = item.listKeyword!! }
+                } else {
+                    (binding.listKeyowrd.adapter as MainKeywordListAdapter).setItems(item.listKeyword!!)
+                }
+                binding.executePendingBindings()
+            }
+        }
+    }
+
+
+    /**
+     * 메인 리스트에 더미 화면 view holder
+     */
+    class TermViewHolder(private val containerView: View, val binding: ItemTerminfoFooterBinding) : ListViewHolder(containerView, binding){
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
+        override fun bind(viewModel: WomenListViewModel, position: Int, item: MainBaseModel) {
+            binding.setOnClickListener {
+                when(it.id){
+                    R.id.textview_term_introduce ->{}
+                    R.id.textview_term_terms ->{ CommonUtilKotlin.startTermsPurchase(containerView.context as Activity) }
+                    R.id.textview_term_advise ->{}
+                    R.id.textview_term_privacy_terms ->{CommonUtilKotlin.startTermsPersonal(containerView.context as Activity) }
+                    R.id.textview_term_partner ->{}
+                    R.id.textview_term_as ->{}
+                    R.id.textview_term_recruit ->{}
+                    R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
+                }
+            }
+        }
+    }
 
     /**
      * 메인 리스트에 더미 화면 view holder

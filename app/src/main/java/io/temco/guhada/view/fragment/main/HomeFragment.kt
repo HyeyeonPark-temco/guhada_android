@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
@@ -19,6 +20,7 @@ import io.temco.guhada.view.custom.layout.main.MenListLayout
 import io.temco.guhada.view.custom.layout.main.WomenListLayout
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
+import java.lang.Exception
 import java.util.*
 
 
@@ -39,6 +41,20 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     override fun init() {
         initHeader()
         setLinkText()
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                Flag.RequestCode.HOME_MOVE -> {
+                    try{
+                        var index = requestCode.data as Int
+                        currentPagerIndex = index
+                        mBinding.viewpager.setCurrentItem(index)
+                        (customLayoutMap.get(0) as HomeListLayout).listScrollTop()
+                    }catch (e : Exception){
+                        if(CustomLog.flag)CustomLog.E(e)
+                    }
+                }
+            }
+        }
     }
 
     override fun onClick(v: View) {

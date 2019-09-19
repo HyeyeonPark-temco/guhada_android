@@ -125,10 +125,7 @@ class HomeListLayout constructor(
         if (isShow) {
             if (v.visibility != View.VISIBLE) {
                 v.setOnClickListener{
-                    try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
-                        if(CustomLog.flag)CustomLog.E(e)
-                    }
-                    scrollToTop(false)
+                    listScrollTop()
                 }
                 v.visibility = View.VISIBLE
                 if (animate) {
@@ -145,6 +142,13 @@ class HomeListLayout constructor(
                 }
             }
         }
+    }
+
+    fun listScrollTop() {
+        try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
+        scrollToTop(false)
     }
 
 
