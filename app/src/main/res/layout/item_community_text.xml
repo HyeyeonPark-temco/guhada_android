@@ -75,6 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:visibility="@{item.comments == 0 ? View.GONE : View.VISIBLE, default = visible}"
                     android:text="@{@string/community_format_commentcount(item.comments)}"
                     android:textSize="@dimen/text_13" />
 
@@ -161,6 +162,7 @@
                 android:layout_width="19dp"
                 android:layout_height="12dp"
                 android:layout_marginTop="7dp"
+                android:visibility="gone"
                 android:background="@drawable/border_all_whitethree_r11"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/textview_communitytext_dot3"
@@ -180,7 +182,6 @@
                 style="@style/CommunityDescriptionTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:layout_marginTop="7dp"
                 android:text="@{item.userName}"
                 android:textSize="@dimen/text_13"

@@ -92,6 +92,7 @@ class HomeListLayout constructor(
 
     // Floating Button
     private fun changeFloatingButtonLayout(isShow: Boolean) {
+        setRecentProductCount()
         changeTopFloatingButton(isShow)
         changeItemFloatingButton(isShow)
     }
@@ -105,7 +106,7 @@ class HomeListLayout constructor(
     }
 
     private fun changeItemFloatingButton(isShow: Boolean, animate: Boolean) {
-        if (CommonUtil.checkToken()) {
+        if (CommonUtil.checkToken() && mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() > 0) {
             changeLastView(mBinding.buttonFloatingItem.root, isShow, animate)
         } else {
             mBinding.buttonFloatingItem.root.visibility = View.GONE
@@ -190,16 +191,32 @@ class HomeListLayout constructor(
                     try {
                         val count = value.toString()
                         mBinding.buttonFloatingItem.textviewFloatingCount.text = count
+                        if(mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() == 0){
+                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.GONE
+                        }else{
+                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.VISIBLE
+                        }
                     } catch (e: Exception) {
+                        mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.GONE
                         if (CustomLog.flag) CustomLog.E(e)
                     }
-
                 }
             })
+            /*try {
+                var count : String  = mHomeFragment?.recentProductCount?.toString() ?: "0"
+                mBinding.buttonFloatingItem.textviewFloatingCount.text = count
+                if(mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() == 0){
+                    mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.GONE
+                }else{
+                    mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.VISIBLE
+                }
+            } catch (e: Exception) {
+                mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.GONE
+                if (CustomLog.flag) CustomLog.E(e)
+            }*/
         } catch (e: Exception) {
             if (CustomLog.flag) CustomLog.E(e)
         }
-
     }
 
     private fun showScaleAnimation(v: View) {

@@ -10,7 +10,9 @@ import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.FragmentMainHomeBinding
 import io.temco.guhada.view.activity.MainActivity
@@ -31,6 +33,8 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
     private var currentPagerIndex : Int = 0
     var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>> = WeakHashMap()
+
+    var recentProductCount = 0
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -41,7 +45,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     override fun getLayoutId() = R.layout.fragment_main_home
     override fun init() {
         initHeader()
-        setLinkText()
         setEvenBus()
     }
 
@@ -68,6 +71,24 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
+
+    // 최근본 상품 Count 조회
+    /*private fun setRecentProductCount() {
+        try {
+            CommonUtilKotlin.recentProductCount((context as MainActivity).getmDisposable(), (context as MainActivity).getmDb(), object : OnCallBackListener {
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    try {
+                        recentProductCount = value.toString().toInt()
+                    } catch (e: Exception) {
+                        recentProductCount = 0
+                        if (CustomLog.flag) CustomLog.E(e)
+                    }
+                }
+            })
+        } catch (e: Exception) {
+            if (CustomLog.flag) CustomLog.E(e)
+        }
+    }*/
 
     private fun initHeader() {
         mBinding.layoutHeader.clickListener = this
@@ -157,28 +178,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         }
     }
 
-    private fun setLinkText() {
-        // Sales Number
-        /*mBinding.layoutInformation.textInformationSalesNumber.setMovementMethod(LinkMovementMethod.getInstance());
-        mBinding.layoutInformation.textInformationSalesNumber.setText(TextUtil.createTextWithLink(getContext(),
-                R.string.information_company_sales_number_en, R.string.information_confirm_company_en,
-                R.dimen.text_11, true,
-                () -> {
-                    if (true) {
-                        CommonUtil.debug("Company Info!");
-                    }
-                }), TextView.BufferType.SPANNABLE);
-        // Description
-        mBinding.layoutInformation.textInformationDescription.setMovementMethod(LinkMovementMethod.getInstance());
-        mBinding.layoutInformation.textInformationDescription.setText(TextUtil.createTextWithLink(getContext(),
-                R.string.information_description_en, R.string.information_confirm_service_en,
-                R.dimen.text_11, true,
-                () -> {
-                    if (true) {
-                        CommonUtil.debug("Sevice Confirm!");
-                    }
-                }), TextView.BufferType.SPANNABLE);*/
-    }
 
     @SuppressLint("CheckResult")
     private fun setEvenBus(){

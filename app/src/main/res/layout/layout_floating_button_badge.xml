@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
+        android:id="@+id/layout_floating_button_badge"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_floating_button2"
@@ -20,6 +21,7 @@
             android:layout_height="13dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/background_floating_button_badge"
+            android:text="0"
             android:gravity="center"
             android:textColor="@color/common_white"
             android:textSize="@dimen/text_8" />

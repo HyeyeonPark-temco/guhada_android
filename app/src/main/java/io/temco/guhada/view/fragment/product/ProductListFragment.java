@@ -1,9 +1,6 @@
 package io.temco.guhada.view.fragment.product;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.View;
@@ -43,7 +40,6 @@ import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CommonUtilKotlin;
-import io.temco.guhada.common.util.CommonViewUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.data.db.GuhadaDB;
@@ -606,7 +602,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void changeItemFloatingButton(boolean isShow, boolean animate) {
-        if(CommonUtil.checkToken()){
+        if (CommonUtil.checkToken() && Integer.parseInt(mBinding.buttonFloatingItem.textviewFloatingCount.getText().toString()) > 0) {
             changeLastView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
         }else{
             mBinding.buttonFloatingItem.getRoot().setVisibility(View.GONE);
@@ -685,7 +681,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     try {
                         String count = value.toString();
                         mBinding.buttonFloatingItem.textviewFloatingCount.setText(count);
+                        if(Integer.parseInt(mBinding.buttonFloatingItem.textviewFloatingCount.getText().toString()) == 0){
+                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setVisibility(View.GONE);
+                        }else{
+                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setVisibility(View.VISIBLE);
+                        }
                     }catch (Exception e){
+                        mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setVisibility(View.GONE);
                         if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
                     }
                 }
