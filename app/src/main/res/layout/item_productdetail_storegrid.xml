@@ -11,14 +11,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout_productdetail_store"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:paddingBottom="20dp">
 
-        <ImageView
+        <io.temco.guhada.common.SquareImageView
             android:id="@+id/imageview_productdetail_store_product"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/common_white"
             android:scaleType="centerInside"
             app:imageUrl="@{deal.productImage.url}"

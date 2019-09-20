@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.user;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,17 +25,30 @@ public class User extends Observable implements Serializable {
     private Boolean agreeSmsReception = false;
     private Boolean agreeEmailReception = false;
 
-    // USER INFO 
+    // USER INFO
+    @Nullable
     private String name = "";
+    @Nullable
     private String email = "";
+    @Nullable
     private String password = "";
+    @Nullable
     private String mobile = "";
+    @Nullable
     private String phoneNumber = "";
+    @Nullable
     private String joinAt = "", withdrawalAt = "";
+    @Nullable
     private String birth = "";
+
+    @Nullable
     private String address = "", roadAddress = "", detailAddress = "", zip;
     private Boolean emailVerify = false;
+
+    @Nullable
     private String profileImageUrl = "";
+
+    @Nullable
     private String nickname = "";
 
     // 임시 userDetail 정보

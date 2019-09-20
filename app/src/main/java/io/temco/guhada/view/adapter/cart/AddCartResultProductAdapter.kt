@@ -17,6 +17,8 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  */
 class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAdapter.Holder>() {
     var mList = mutableListOf<Deal>()
+    var mClickItemTask: (dealId: Long) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_addcartproduct, parent, false))
 
@@ -29,11 +31,12 @@ class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAda
     inner class Holder(binding: ItemAddcartproductBinding) : BaseViewHolder<ItemAddcartproductBinding>(binding.root) {
         fun bind(deal: Deal) {
             setSpacing()
+            mBinding.linearlayoutAddcartproductContainer.setOnClickListener { mClickItemTask(deal.dealId.toLong()) }
             mBinding.deal = deal
             mBinding.executePendingBindings()
         }
 
-        private fun setSpacing(){
+        private fun setSpacing() {
             val mSpanCount = 3
             val RIGHT_MARGIN = CommonViewUtil.convertDpToPixel(dp = 10, context = mBinding.root.context)
             (mBinding.linearlayoutAddcartproductContainer.layoutParams as ViewGroup.MarginLayoutParams).apply {

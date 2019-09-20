@@ -34,7 +34,9 @@ import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerAddress
 import io.temco.guhada.data.model.seller.SellerSatisfaction
+import io.temco.guhada.data.model.seller.SellerStore
 import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
@@ -93,6 +95,11 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         get() = field
 
     var notifySellerStoreFollow: (bookMark: BookMark) -> Unit = {}
+
+    var mSellerStore = ObservableField<SellerStore>(SellerStore())
+        @Bindable
+        get() = field
+
     /**
      * 북마크 여부 데이터 가져왔는지 여부
      * 처음 상품상세에 진입해서 확인하지 않은 상태에서 북마크 버튼을 누르면
@@ -267,6 +274,20 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             }
         }
 
+    }
+
+    /**
+     * 배송/반품/교환 판매자 정보
+     * @author Hyeyeon Park
+     * @since 2019.09.20
+     */
+    fun getSellerStoreInfo() {
+        if (product.value?.sellerId != null && product.value?.sellerId ?: 0 > 0)
+            UserServer.getSellerStoreInfo(OnServerListener { success, o ->
+                val sellerStore = (o as BaseModel<SellerStore>).data
+                this.mSellerStore = ObservableField(sellerStore)
+                notifyPropertyChanged(BR.mSellerStore)
+            }, sellerId = product.value?.sellerId!!, accessToken = null)
     }
 
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]

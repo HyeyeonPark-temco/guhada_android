@@ -7,13 +7,13 @@ package io.temco.guhada.data.model.seller
  */
 class SellerStore {
     var nickname = ""
-    var offlineStoreAddress = ""
-    var storeIntroduction = ""
-    var representativeName = ""
-    var companyRegistrationNumber = ""
-    var mailorderRegistrationNumber = ""
+    var offlineStoreAddress = ""            // 오프라인 스토어
+    var storeIntroduction = ""              // 스토어 소개
+    var representativeName = ""             // 대표자
+    var companyRegistrationNumber = ""      // 사업자 등록번호
+    var mailorderRegistrationNumber = ""    // 통신판매업 번호
     var zip = ""
-    var claimTelephone = ""
+    var claimTelephone = ""                 // 고객센터
 
     var followerCount = 0
     var sellingCount = 0
