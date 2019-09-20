@@ -42,7 +42,7 @@ class ProductDetailStoreGridAdapter : RecyclerView.Adapter<ProductDetailStoreGri
 
     inner class Holder(binding: ItemProductdetailStoregridBinding) : BaseViewHolder<ItemProductdetailStoregridBinding>(binding.root) {
         fun bind(deal: Deal) {
-            setSpacing()
+           // setSpacing()
             mBinding.deal = deal
             mBinding.constraintlayoutProductdetailStore.setOnClickListener {
                 val dealId = deal.dealId.toLong()
