@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.delivery.RequestRefundViewModel" />
@@ -107,8 +108,9 @@
                     android:layout_width="0dp"
                     android:layout_height="45dp"
                     android:layout_weight="1"
-                    android:text="@={viewModel.mRefundRequest.refundBankAccountOwner}"
-                    android:background="@drawable/border_all_whitethree"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:background="@drawable/box_all_palegrey"
                     android:hint="@string/requestorderstatus_refund_bankhint3"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
@@ -116,18 +118,20 @@
                     android:textSize="@dimen/text_13" />
 
                 <Button
+                    android:id="@+id/button_requestrefund_checkaccount"
                     style="@style/borderlessStyle"
                     android:layout_width="90dp"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
+                    android:clickable="@{viewModel.mIsCheckAccountAvailable}"
                     android:layout_marginStart="10dp"
                     android:background="@drawable/border_all_whitethree"
-                    android:text="@string/requestorderstatus_refund_checkbank"
+                    android:onClick="@{()->viewModel.checkAccount()}"
+                    android:text="@{viewModel.mIsCheckAccountAvailable ? @string/requestorderstatus_refund_checkbank : @string/requestorderstatus_refund_checkbank_success,default=@string/requestorderstatus_refund_checkbank }"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
                     android:textStyle="bold" />
             </LinearLayout>
-
 
         </LinearLayout>
     </FrameLayout>

@@ -1,6 +1,7 @@
 package io.temco.guhada.data.model.community
 
 import io.temco.guhada.common.util.DateUtil
+import io.temco.guhada.common.util.DateUtil.checkNewly
 import org.joda.time.DateTime
 
 /**
@@ -24,7 +25,9 @@ class CommunityBoard {
     // DATE
     var now = 0L
     var date = 0L
-    var newlyCreated = false
+
+    val newlyCreated
+        get() = checkNewly(now, date, true)
 
     // COUNT
     var likes = 0

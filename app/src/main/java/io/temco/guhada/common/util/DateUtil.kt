@@ -37,18 +37,19 @@ object DateUtil {
      * - 1일 초과(같은 해): MM월 dd일
      * - 1일 초과(다른 해): yyyy년 MM월 dd일
      *
-     * @param now 현재 TimeStamp
-     * @param date 비교 대상 TimeStamp
+     * @param now 현재 TimeStamp (ms)
+     * @param date 비교 대상 TimeStamp (ms)
+     * @param isMs ms 단위인지 여부 (default = false)
      *
      * @author Hyeyeon Park
      * @since 2019.08.22
      */
     @JvmStatic
-    fun getDateDiff(now: Long, date: Long): String {
+    fun getDateDiff(now: Long, date: Long, isMs: Boolean = false): String {
         val MINUTE_MS = 60 * 1000
         val HOUR_MS = MINUTE_MS * 60
         val DAY_MS = HOUR_MS * 24
-        val diffSeconds = (now - date) * 1000
+        val diffSeconds = if (isMs) (now - date) else (now - date) * 1000
 
         return when {
             diffSeconds < MINUTE_MS -> "조금 전"
@@ -68,6 +69,25 @@ object DateUtil {
     }
 
     /**
+     * 24시간 이내 작성된 글인지 체크
+     *
+     * @param now 현재 TimeStamp
+     * @param date 비교 대상 TimeStamp
+     * @param isMs ms 단위인지 여부 (default = false)
+     *
+     * @author Hyeyeon Park
+     * @since 2019.09.20
+     */
+    @JvmStatic
+    fun checkNewly(now: Long, date: Long, isMs: Boolean = false): Boolean {
+        val MINUTE_MS = 60 * 1000
+        val HOUR_MS = MINUTE_MS * 60
+        val DAY_MS = HOUR_MS * 24
+        val diffSeconds = if (isMs) (now - date) else (now - date) * 1000
+        return diffSeconds < DAY_MS
+    }
+
+    /**
      * convert timestamp
      * @param separator 년월일 구분자
      *
@@ -80,7 +100,7 @@ object DateUtil {
 
     @JvmStatic
     fun getNowDateDiffMinute(date: Long): Int {
-        if(date==0L) return 0
+        if (date == 0L) return 0
         val MINUTE_MS = 60 * 1000
         var today = Calendar.getInstance()
         var minute = (today.timeInMillis - date) / MINUTE_MS
@@ -90,7 +110,7 @@ object DateUtil {
 
     @JvmStatic
     fun getNowDateDiffHour(date: Long): Int {
-        if(date==0L) return 0
+        if (date == 0L) return 0
         val MINUTE_MS = 60 * 1000
         val HOUR_MS = MINUTE_MS * 60
         var today = Calendar.getInstance()
@@ -101,7 +121,7 @@ object DateUtil {
 
     @JvmStatic
     fun getNowDateDiffDay(date: Long): Int {
-        if(date==0L) return 0
+        if (date == 0L) return 0
         val MINUTE_MS = 60 * 1000
         val HOUR_MS = MINUTE_MS * 60
         val DAY_MS = HOUR_MS * 24

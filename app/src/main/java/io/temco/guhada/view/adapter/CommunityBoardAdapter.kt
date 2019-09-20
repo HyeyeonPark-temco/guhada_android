@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -41,6 +42,7 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
 
     class Holder(binding: ViewDataBinding, val mViewModel: CommunitySubListViewModel, val type: String) : BaseViewHolder<ViewDataBinding>(binding.root) {
         fun bind(item: CommunityBoard) {
+            Log.e("ㅇㅇㅇ", item.newlyCreated.toString())
             if (type == CommunitySubListFragment.CommunityListType.IMAGE.type) {
                 (mBinding as ItemCommunityPhotoBinding).item = item
                 (mBinding as ItemCommunityPhotoBinding).viewModel = mViewModel

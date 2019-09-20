@@ -1,10 +1,8 @@
 package io.temco.guhada.view.fragment.productdetail
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
@@ -88,22 +86,29 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val optionList = mViewModel.product.optionInfos ?: listOf()
                 if (optionList.size > position && optionList[position].stock > 0) {
-                    val option = optionList[position]
-                    mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                    mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
-                    mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
-                    mBinding.executePendingBindings()
+                    val option: OptionInfo? = optionList[position]
+                    if (option != null) {
+                        if (option.rgb1?.isNotEmpty() ?: false) {
+                            mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
+                            mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                        } else
+                            mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
-                    // INIT OPTION
-                    mViewModel.mSelectedOptionInfo = option
-                    mViewModel.productCount = ObservableInt(1)
-                    mViewModel.notifyPropertyChanged(BR.productCount)
+                        mBinding.linearlayoutProductdetailOption.visibility = View.GONE
+                        mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
+                        mBinding.executePendingBindings()
 
-                    // PRICE
-                    mViewModel.extraPrice = ObservableInt(option.price)
-                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
-                    mViewModel.notifyPropertyChanged(BR.extraPrice)
-                    mViewModel.notifyPropertyChanged(BR.totalPrice)
+                        // INIT OPTION
+                        mViewModel.mSelectedOptionInfo = option
+                        mViewModel.productCount = ObservableInt(1)
+                        mViewModel.notifyPropertyChanged(BR.productCount)
+
+                        // PRICE
+                        mViewModel.extraPrice = ObservableInt(option.price)
+                        mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
+                        mViewModel.notifyPropertyChanged(BR.extraPrice)
+                        mViewModel.notifyPropertyChanged(BR.totalPrice)
+                    }
                 }
             }
         }
@@ -149,8 +154,13 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
 
                 if (option.stock > 0) {
+                    if (option.rgb1?.isNotEmpty() ?: false) {
+                        mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
+                        mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                    } else
+                        mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
+
                     mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                    mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
                     mBinding.textviewProductdetailOptionselected.text = getOptionText(option)
                     mBinding.executePendingBindings()
 
