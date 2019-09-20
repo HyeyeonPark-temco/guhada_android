@@ -236,10 +236,13 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                  */
                 mViewModel.getBookMark(Type.BookMarkTarget.PRODUCT.name, mViewModel.product.value!!.productId)
                 mViewModel.getSellerInfo()
+                mViewModel.getSellerStoreInfo()
+
                 initOptionMenu()
                 initClaims()
                 initReview()
                 initStore()
+
             }
             /**
              * 19.07.25
@@ -496,7 +499,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         if (::mClaimFragment.isInitialized) mClaimFragment.refreshIsMineVisible()
     }
 
-    fun refreshCouponDownloadView(){
+    fun refreshCouponDownloadView() {
         mViewModel.getExpectedCoupon()
     }
 

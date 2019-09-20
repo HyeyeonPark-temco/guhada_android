@@ -6,21 +6,21 @@ import java.io.Serializable
 
 class Seller : Serializable {
     var id: Long = 0
-    var managerName = ""
-    var managerEmail = ""
-    var managerMobile = ""
-    var managerTelephone = ""
-    var fax = ""
-    var calculationReceivingMethod = ""
-    var bankCode = ""
-    var accountNumber = ""
-    var accountHolder = ""
+    var managerName: String? = ""
+    var managerEmail: String? = ""
+    var managerMobile: String? = ""
+    var managerTelephone: String? = ""
+    var fax: String? = ""
+    var calculationReceivingMethod: String? = ""
+    var bankCode: String? = ""
+    var accountNumber: String? = ""
+    var accountHolder: String? = ""
 
-    var storeName = "" // [19.08.27] 미사용 데이터
-    var storeIntroduction = ""
+    var storeName: String? = "" // [19.08.27] 미사용 데이터
+    var storeIntroduction: String? = ""
 
-    var claimTelephone = ""
-    var createdAt = ""
+    var claimTelephone: String? = ""
+    var createdAt: String? = ""
     var updatedAt: String? = ""
     var updatedBy: String? = ""
     var user: User = User()

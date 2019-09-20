@@ -13,11 +13,12 @@ class BusinessSeller {
     var sellerUser = Seller()
     var companyName = ""
     var businessDivision = ""
-    var corporationRegistrationNumber = ""
-    var representativeName = ""
+    var corporationRegistrationNumber = ""      // 사업자 등록번호
+    var mailorderRegistrationNumber = ""        // 통신판매업번호
+    var representativeName = ""                 // 대표자
     var businessType = ""
     var businessItem = ""
-    var mailorderRegistrationNumber = ""
+
     var notReportingType = ""
     var businessRegistrationUrl = ""
     var mailorderRegistrationUrl = ""
