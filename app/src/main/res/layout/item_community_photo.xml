@@ -20,9 +20,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout_communityphoto_container"
         android:layout_width="match_parent"
-        android:onClick="@{()->viewModel.onClickItem(item)}"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:onClick="@{()->viewModel.onClickItem(item)}"
         android:paddingBottom="20dp">
 
         <io.temco.guhada.common.SquareImageView
@@ -56,38 +56,40 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="@{item.title}"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@+id/textview_communityphoto_comment"
-                app:layout_constrainedWidth="true"/>
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textview_communityphoto_comment"
                 style="@style/CommunityTitleCategoryTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_marginStart="5dp"
+                android:gravity="center_vertical"
                 android:text="@{@string/community_format_commentcount(item.comments)}"
                 android:textSize="@dimen/text_13"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/textview_communityphoto_title"
-                app:layout_constraintRight_toLeftOf="@id/imageview_communityphoto_new" />
+                app:layout_constraintRight_toLeftOf="@id/imageview_communityphoto_new"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/imageview_communityphoto_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:layout_gravity="center"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="3dp"
+                android:gravity="center_vertical"
                 android:src="@drawable/com_icon_new"
-                android:visibility="@{item.newlyCreated ? View.VISIBLE : View.GONE, default= gone}"
-                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="@{item.newlyCreated ? View.VISIBLE : View.GONE, default= visible}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/textview_communityphoto_comment"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -97,8 +99,8 @@
             android:layout_height="12dp"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="8dp"
-            android:visibility="gone"
             android:background="@drawable/border_all_whitethree_r11"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/textview_communityphoto_like"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearlayout_communityphoto_title">
