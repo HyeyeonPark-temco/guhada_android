@@ -84,13 +84,11 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
     override fun onStart() {
         super.onStart()
+        if (CustomLog.flag) CustomLog.L("MyPageMainFragment ", "onStart----------------")
         if((context?.applicationContext as BaseApplication).isInitUserMaypage){
             (context?.applicationContext as BaseApplication).isInitUserMaypage = false
             initView = false
             viewPagerAdapter = null
-        }
-        if(CommonUtil.checkToken() && !initView){
-            initHeader()
         }
         if (customLayoutMap.isNotEmpty()) {
             for (v in customLayoutMap) {
@@ -101,6 +99,10 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
 
     override fun onResume() {
         super.onResume()
+        if (CustomLog.flag) CustomLog.L("MyPageMainFragment ", "onResume----------------")
+        if(CommonUtil.checkToken() && !initView){
+            initHeader()
+        }
         if (customLayoutMap.isNotEmpty()) {
             for (v in customLayoutMap) {
                 v.value.onResume()
@@ -150,6 +152,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     ////////////////////////////////////////////////
 
     private fun initHeader() {
+        if (CustomLog.flag) CustomLog.L("MyPageMainFragment ", "initHeader----------------")
         mBinding.layoutHeader.clickListener = this
         initView = true
         // Tab
