@@ -1,10 +1,8 @@
 package io.temco.guhada.view.fragment.productdetail
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.FrameLayout
 import android.widget.ListPopupWindow
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
@@ -90,8 +88,13 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 if (optionList.size > position && optionList[position].stock > 0) {
                     val option: OptionInfo? = optionList[position]
                     if (option != null) {
+                        if (option.rgb1?.isNotEmpty() ?: false) {
+                            mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
+                            mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                        } else
+                            mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
+
                         mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                        mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
                         mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
                         mBinding.executePendingBindings()
 
@@ -151,8 +154,13 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
 
                 if (option.stock > 0) {
+                    if (option.rgb1?.isNotEmpty() ?: false) {
+                        mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
+                        mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                    } else
+                        mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
+
                     mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                    mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
                     mBinding.textviewProductdetailOptionselected.text = getOptionText(option)
                     mBinding.executePendingBindings()
 
