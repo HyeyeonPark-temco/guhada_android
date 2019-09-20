@@ -141,6 +141,7 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
             if (isLogin) {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_out))
                 mBinding.layoutHeader.layoutLogin.setOnClickListener{
+                    (applicationContext as BaseApplication).isInitUserMaypage = true
                     Preferences.clearToken(true)
                     changeLoginStatus(false)
                     gotoMain(true)

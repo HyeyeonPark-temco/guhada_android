@@ -22,6 +22,7 @@ import io.temco.guhada.common.util.CommonUtil;
 public class BaseApplication extends MultiDexApplication {
 
     private static BaseApplication mApplication;
+    private boolean initUserMaypage;
 
     /**
      * @author park jungho
@@ -33,6 +34,7 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mApplication = this;
+        initUserMaypage = false;
         moveToMain = new ActivityMoveToMain(0,false);
         getFCMToken();
 
@@ -55,6 +57,7 @@ public class BaseApplication extends MultiDexApplication {
         super.onTerminate();
         moveToMain = null;
         mApplication = null;
+        initUserMaypage = false;
     }
 
     public static BaseApplication getInstance() {
@@ -79,5 +82,13 @@ public class BaseApplication extends MultiDexApplication {
 
     public void setMoveToMain(ActivityMoveToMain moveToMain) {
         this.moveToMain = moveToMain;
+    }
+
+    public boolean isInitUserMaypage() {
+        return initUserMaypage;
+    }
+
+    public void setInitUserMaypage(boolean initUserMaypage) {
+        this.initUserMaypage = initUserMaypage;
     }
 }

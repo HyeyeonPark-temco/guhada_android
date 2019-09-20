@@ -1,22 +1,19 @@
 package io.temco.guhada.view.fragment.mypage
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.disposables.CompositeDisposable
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.viewmodel.mypage.MyPageViewModel
 import io.temco.guhada.databinding.FragmentMainMypagehomeBinding
-import io.temco.guhada.view.activity.AddShippingAddressActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.custom.layout.mypage.*
@@ -60,28 +57,11 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun getLayoutId() = R.layout.fragment_main_mypagehome
     override fun init() {
         mViewModel = MyPageViewModel(context ?: mBinding.root.context)
-        EventBusHelper.mSubject.subscribe { requestCode ->
-            when (requestCode.requestCode) {
-                Flag.RequestCode.MYPAGE_MOVE -> {
-                    setPagerIndexMove(requestCode.data as Int)
-                }
-            }
-        }
+        initView = false
+        viewPagerAdapter = null
+        setEventBus()
     }
 
-    private fun initShippingAddressButtons() {
-//        mBinding.buttonMypagehomeAddaddress.setOnClickListener { activity!!.startActivityForResult(Intent(context, AddShippingAddressActivity::class.java), RequestCode.ADD_SHIPPING_ADDRESS.flag) }
-//        mBinding.buttonMypagehomeSetdefaultaddress.setOnClickListener {
-//            val isExist = customLayoutMap.contains(SHIPPING_ADDRESS_IDX)
-//            if (isExist) {
-//                val shippingAddressLayout = customLayoutMap[SHIPPING_ADDRESS_IDX] as MyPageAddressLayout
-//                val selectedItem = shippingAddressLayout.getSelectedItem()
-//                if (selectedItem != null) {
-//                    mViewModel.onClickDefault(shippingAddressLayout.getSelectedPos(), selectedItem) { shippingAddressLayout.onRefresh() }
-//                }
-//            }
-//        }
-    }
 
     override fun onClick(v: View) {
         when (v.id) {
@@ -96,6 +76,61 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
             R.id.image_shop_cart -> {
                 //CommonUtil.debug("image_shop_cart")
                 CommonUtil.startCartActivity(context as MainActivity)
+            }
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        if((context?.applicationContext as BaseApplication).isInitUserMaypage){
+            (context?.applicationContext as BaseApplication).isInitUserMaypage = false
+            initView = false
+            viewPagerAdapter = null
+        }
+        if(CommonUtil.checkToken() && !initView){
+            initHeader()
+        }
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onStart()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onResume()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onPause()
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onStop()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mDisposable.dispose()
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onDestroy()
             }
         }
     }
@@ -117,7 +152,6 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
         mBinding.layoutHeader.clickListener = this
         initView = true
         // Tab
-
         setTabLayout()
         setViewPager()
     }
@@ -225,56 +259,18 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
         }
     }
 
+    @SuppressLint("CheckResult")
+    private fun setEventBus(){
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                Flag.RequestCode.MYPAGE_MOVE -> {
+                    setPagerIndexMove(requestCode.data as Int)
+                }
+            }
+        }
+    }
+
 
     ////////////////////////////////////////////////
-
-    override fun onStart() {
-        super.onStart()
-        if(CommonUtil.checkToken() && !initView){
-            initHeader()
-        }
-        if (customLayoutMap.isNotEmpty()) {
-            for (v in customLayoutMap) {
-                v.value.onStart()
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (customLayoutMap.isNotEmpty()) {
-            for (v in customLayoutMap) {
-                v.value.onResume()
-            }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (customLayoutMap.isNotEmpty()) {
-            for (v in customLayoutMap) {
-                v.value.onPause()
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (customLayoutMap.isNotEmpty()) {
-            for (v in customLayoutMap) {
-                v.value.onStop()
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mDisposable.dispose()
-        if (customLayoutMap.isNotEmpty()) {
-            for (v in customLayoutMap) {
-                v.value.onDestroy()
-            }
-        }
-    }
 
 }
