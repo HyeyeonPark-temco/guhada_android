@@ -61,6 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="@{viewModel.product.dealId == 0 ? View.GONE : View.VISIBLE, default = visible}"
                 android:weightSum="3">
 
                 <TextView
@@ -91,12 +92,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="@{viewModel.product.productStatusName == null || viewModel.product.productStatusName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                 android:background="@color/white_four" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="@{viewModel.product.productStatusName == null || viewModel.product.productStatusName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                 android:weightSum="3">
 
                 <TextView
@@ -126,12 +129,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="@{viewModel.product.modelNumber == null || viewModel.product.modelNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                 android:background="@color/white_four" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="@{viewModel.product.modelNumber == null || viewModel.product.modelNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                 android:weightSum="3">
 
                 <TextView
@@ -161,12 +166,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:visibility="@{viewModel.product.originAreaName == null || viewModel.product.originAreaName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                 android:background="@color/white_four" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="@{viewModel.product.originAreaName == null || viewModel.product.originAreaName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                 android:weightSum="3">
 
                 <TextView
