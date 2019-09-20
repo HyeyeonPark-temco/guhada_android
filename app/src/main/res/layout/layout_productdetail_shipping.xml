@@ -209,7 +209,6 @@
                     android:id="@+id/linearLayout5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_all_whitefour_topbottom"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -354,7 +353,6 @@
                         android:id="@+id/linearLayout6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_all_whitefour_topbottom"
                         android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -446,15 +444,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:text="@{String.valueOf(viewModel.product.shipping.returnShipExpense)}"
-                                    android:textColor="@color/greyish_brown_two"
-                                    android:textSize="12dp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:text="원"
+                                    android:text="@{viewModel.product.shipping.returnShipExpense == 0 ? @string/common_free : @string/common_priceunit_format(viewModel.product.shipping.returnShipExpense)}"
                                     android:textColor="@color/greyish_brown_two"
                                     android:textSize="12dp" />
 
@@ -500,15 +490,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
-                                    android:text="@{String.valueOf(viewModel.product.shipping.exchangeShipExpense)}"
-                                    android:textColor="@color/greyish_brown_two"
-                                    android:textSize="12dp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:text="원"
+                                    android:text="@{viewModel.product.shipping.exchangeShipExpense == 0 ? @string/common_free : @string/common_priceunit_format(viewModel.product.shipping.exchangeShipExpense)}"
                                     android:textColor="@color/greyish_brown_two"
                                     android:textSize="12dp" />
                             </LinearLayout>
@@ -518,6 +500,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:visibility="@{viewModel.seller.user.roadAddress == null || viewModel.seller.user.roadAddress.isEmpty() ? View.GONE : View.VISIBLE,default=visible}"
                             android:background="@color/white_four" />
 
                         <LinearLayout
@@ -549,7 +532,7 @@
                                 android:paddingBottom="12dp"
                                 android:text="@{viewModel.seller.user.roadAddress + ` ` +viewModel.seller.user.detailAddress }"
                                 android:textColor="@color/greyish_brown_two"
-                                android:textSize="12dp" />
+                                android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                     </LinearLayout>
