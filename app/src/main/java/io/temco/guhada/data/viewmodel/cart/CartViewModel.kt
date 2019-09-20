@@ -60,19 +60,29 @@ class CartViewModel : BaseObservableViewModel() {
     var selectCartItemId: MutableList<Int> = mutableListOf() // 장바구니 상품 삭제 시 사용 데이터
         @Bindable
         get() = field
+        set(value) {
+            field= value
+
+           if(value.size == 0) {
+               allChecked = ObservableBoolean(false)
+               notifyPropertyChanged(BR.allChecked)
+            } else {
+
+           }
+        }
 
     var allChecked = ObservableBoolean(false)
         @Bindable
         get() = field
 
-    var notNotifyAllChecked = false // allChecked 필드 notify flag
+    var notNotifyAllChecked = true // allChecked 필드 notify flag
 
     lateinit var clickPaymentListener: (productList: ArrayList<BaseProduct>, cartIdList: Array<Int>) -> Unit
 
     // 선택 삭제 클릭
     var showDeleteDialog: () -> Unit = {}
 
-    var totalItemCount = ObservableInt(0)
+    var totalItemCount = ObservableInt(0)   // validStatus = true 상품들의 count
         @Bindable
         get() = field
         set(value) {
@@ -91,12 +101,9 @@ class CartViewModel : BaseObservableViewModel() {
     }
 
     fun onCheckedAll(checked: Boolean) {
-        if (!notNotifyAllChecked) {
-            allChecked = ObservableBoolean(checked)
-            notifyPropertyChanged(BR.allChecked)
-        }
+        allChecked = ObservableBoolean(checked)
+        notifyPropertyChanged(BR.allChecked)
     }
-
     fun onCheckedAll() {
         allChecked = ObservableBoolean(!allChecked.get())
         notifyPropertyChanged(BR.allChecked)
@@ -129,12 +136,12 @@ class CartViewModel : BaseObservableViewModel() {
         for (cart in productList) {
             BaseProduct().apply {
                 this.dealId = cart.dealId
-                this.brandName = cart.brandName?:""
-                this.season = cart.season?:""
-                this.name = cart.dealName?:""
-                this.totalPrice = cart.sellPrice?:0
-                this.profileUrl = cart.imageUrl?:""
-                this.optionStr = cart.getOptionStr()?:""
+                this.brandName = cart.brandName ?: ""
+                this.season = cart.season ?: ""
+                this.name = cart.dealName ?: ""
+                this.totalPrice = cart.sellPrice ?: 0
+                this.profileUrl = cart.imageUrl ?: ""
+                this.optionStr = cart.getOptionStr() ?: ""
                 this.sellPrice = cart.sellPrice
                 this.discountPrice = cart.discountPrice
             }.let {
@@ -205,6 +212,11 @@ class CartViewModel : BaseObservableViewModel() {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_changeselectedoption))
                             setCartItemList(it.data as CartResponse)
                             selectCartItemId = mutableListOf()
+
+//                            totalProductPrice = ObservableInt(0)
+//                            totalDiscountPrice = ObservableInt(0)
+//                            totalShipPrice= ObservableInt(0)
+//                            totalPaymentPrice = ObservableInt(0)
                         })
             }, accessToken = accessToken, cartItemId = cartItemId, selectDealOptionId = selectDealOptionId, quantity = quantity)
         })
@@ -218,6 +230,11 @@ class CartViewModel : BaseObservableViewModel() {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_changeselectedoption))
                             setCartItemList(it.data as CartResponse)
                             selectCartItemId = mutableListOf()
+
+                            totalProductPrice = ObservableInt(0)
+                            totalDiscountPrice = ObservableInt(0)
+                            totalShipPrice= ObservableInt(0)
+                            totalPaymentPrice = ObservableInt(0)
                         })
             }, accessToken = accessToken, cartItemId = cartItemId, quantity = quantity)
         })

@@ -2,13 +2,10 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
-import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -20,10 +17,8 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.CartResponse
-import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.cart.CartOptionAdapter
 import io.temco.guhada.view.adapter.cart.CartProductAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
@@ -69,28 +64,27 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             startActivity(intent)
         }
         mViewModel.cartResponse.observe(this, Observer {
-            mViewModel.allChecked = ObservableBoolean(false)
+            mViewModel.totalItemCount = ObservableInt(0)
+
             if (it.cartItemResponseList.isEmpty()) {
                 showEmptyView()
             } else {
-                if (mBinding.recyclerviewCartProduct.adapter != null)
-                    (mBinding.recyclerviewCartProduct.adapter as CartProductAdapter).setItems(it.cartItemResponseList)
+                // 기존 금액 초기화
+                if (mBinding.recyclerviewCartProduct.adapter != null) {
+                    mViewModel.totalProductPrice = ObservableInt(0)
+                    mViewModel.totalDiscountPrice = ObservableInt(0)
+                    mViewModel.totalShipPrice = ObservableInt(0)
+                    mViewModel.totalPaymentPrice = ObservableInt(0)
+                }
+
+                mBinding.recyclerviewCartProduct.adapter = CartProductAdapter(mViewModel).apply { this.items = it.cartItemResponseList }
+                mViewModel.onCheckedAll(true)
             }
-            mBinding.viewModel = mViewModel
-            mBinding.executePendingBindings()
         })
 
-//         GRID OPTION LIST
-//        mViewModel.cartOptionList.observe(this, Observer {
-//            val holder = mBinding.recyclerviewCartProduct.findViewHolderForAdapterPosition(mViewModel.shownMenuPos) as CartProductAdapter.Holder
-//            mCartProductAdapter.setCartItemOptionList(it)
-//            (holder.binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(it)
-//        })
 
         mViewModel.cartOptionListForSpinner.observe(this, Observer {
-           // val holder = mBinding.recyclerviewCartProduct.findViewHolderForAdapterPosition(mViewModel.shownMenuPos) as CartProductAdapter.Holder
             mCartProductAdapter.setCartItemOptionList(it)
-          //  (holder.binding.recyclerviewCartOption.adapter as CartOptionAdapter).setItems(it)
         })
 
 
@@ -99,6 +93,9 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
             redirectLoginActivity()
         })
+
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
     }
 
     private fun initCartAdapter() {

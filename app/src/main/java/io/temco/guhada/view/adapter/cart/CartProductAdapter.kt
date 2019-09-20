@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.RecyclerView
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
  * @author Hyeyeon Park
  */
 class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<CartProductAdapter.Holder>() {
-    private var items: MutableList<Cart> = mutableListOf()
+    var items: MutableList<Cart> = mutableListOf()
     private var expansionCollection: ExpansionLayoutCollection = ExpansionLayoutCollection()
     private var mSelectedOption: OptionInfo? = null
 
@@ -49,10 +50,10 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         expansionCollection.add(holder.binding.constraintllayoutCartOption)
     }
 
-    fun setItems(items: MutableList<Cart>) {
-        this.items = items
-        notifyDataSetChanged()
-    }
+//    fun setItems(items: MutableList<Cart>) {
+//        this.items = items
+//        notifyDataSetChanged()
+//    }
 
     fun setCartItemOptionList(cartOptionList: MutableList<OptionInfo>) {
         if (mViewModel.shownMenuPos > -1) {
@@ -92,26 +93,26 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
         private fun setSelectCartItemListener(cart: Cart) {
             binding.checkboxCart.setOnCheckedChangeListener { buttonView, isChecked ->
                 mViewModel.notNotifyAllChecked = true
-
                 if (cart.cartValidStatus.status) {
                     if (isChecked) {
                         mViewModel.selectedCartItem.add(cart)
                         mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
-                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() + cart.shipExpense)
-                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
+                        Log.e("ㅇㅇㅇ", "TOTAL: ${mViewModel.totalItemCount.get()}        SELECTED: ${mViewModel.selectCartItemId.size}")
+                        if (mViewModel.totalItemCount.get() == mViewModel.selectCartItemId.size) {
+                            mViewModel.allChecked = ObservableBoolean(true)
+                            mViewModel.notifyPropertyChanged(BR.allChecked)
+                        }
 
                         setTotalPrices(cart = cart, isAdd = true)
-                        mViewModel.notNotifyAllChecked = false
                     } else {
                         mViewModel.selectedCartItem.remove(cart)
                         mViewModel.selectCartItemId.remove(cart.cartItemId.toInt())
-                        mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() - cart.shipExpense)
-                        mViewModel.notifyPropertyChanged(BR.totalShipPrice)
+                        mViewModel.allChecked = ObservableBoolean(false)
 
                         setTotalPrices(cart = cart, isAdd = false)
-                        mViewModel.notNotifyAllChecked = false
                     }
 
+                    mViewModel.notNotifyAllChecked = false
                     mViewModel.notifyPropertyChanged(BR.selectCartItemId)
                 }
             }
@@ -173,10 +174,10 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 // val selectedOptionId = getOptionId(cart.cartItemId)
                 if (cart.selectedCartOption != null) {
                     // 1. 옵션이 있는 상품
-                    if (mViewModel.selectedOptionMap.keys.size == cart.cartOptionList.size)
+                    if (mViewModel.selectedOptionMap.keys.size == cart.cartOptionList.size) {
                         mViewModel.updateCartItemOption(cartItemId = cart.cartItemId, quantity = cart.tempQuantity, selectDealOptionId = cart.selectedCartOption?.dealOptionSelectId?.toInt()
                                 ?: 0)
-                    else
+                    } else
                         ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.cart_message_notselectedoption))
                 } else {
                     // 2. 옵션이 없는 상품 (수량만 변경)
@@ -218,15 +219,18 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 mViewModel.totalPaymentPrice = ObservableInt(mViewModel.totalPaymentPrice.get() + cart.discountPrice)
                 mViewModel.totalProductPrice = ObservableInt(mViewModel.totalProductPrice.get() + cart.sellPrice)
                 mViewModel.totalDiscountPrice = ObservableInt(mViewModel.totalDiscountPrice.get() + cart.discountDiffPrice)
+                mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() + cart.shipExpense)
             } else {
                 mViewModel.totalPaymentPrice = ObservableInt(mViewModel.totalPaymentPrice.get() - cart.discountPrice)
                 mViewModel.totalProductPrice = ObservableInt(mViewModel.totalProductPrice.get() - cart.sellPrice)
                 mViewModel.totalDiscountPrice = ObservableInt(mViewModel.totalDiscountPrice.get() - cart.discountDiffPrice)
+                mViewModel.totalShipPrice = ObservableInt(mViewModel.totalShipPrice.get() + cart.shipExpense)
             }
 
             mViewModel.notifyPropertyChanged(BR.totalPaymentPrice)
             mViewModel.notifyPropertyChanged(BR.totalProductPrice)
             mViewModel.notifyPropertyChanged(BR.totalDiscountPrice)
+            mViewModel.notifyPropertyChanged(BR.totalShipPrice)
         }
 
         // 선택한 옵션 값의 dealOptionId 추출
@@ -329,10 +333,10 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                         cart.selectedCartOption = option
                         mBinding.linearlayoutProductdetailOption.visibility = View.GONE
 
-                        if(option.rgb1 != null && option.rgb1?.isNotEmpty()?:false){
+                        if (option.rgb1 != null && option.rgb1?.isNotEmpty() ?: false) {
                             mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
                             mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
-                        }else {
+                        } else {
                             mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
                         }
 
