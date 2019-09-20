@@ -80,6 +80,13 @@ public class Deal {
         @SerializedName("attributes")
         public String[] attributes;
 
+        @Override
+        public String toString() {
+            return "Option{" +
+                    "type='" + type + '\'' +
+                    ", attributes=" + Arrays.toString(attributes) +
+                    '}';
+        }
     }
 
     @Override

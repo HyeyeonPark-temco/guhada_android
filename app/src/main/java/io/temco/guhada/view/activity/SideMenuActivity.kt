@@ -178,7 +178,10 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_LOGIN -> changeLoginStatus(checkToken())
+                REQUEST_CODE_LOGIN -> {
+                    changeLoginStatus(checkToken())
+                    gotoMain(true)
+                }
                 REQUEST_CODE_CATEGORY ->{
                     // @TODO MENU
                     if (data != null) {

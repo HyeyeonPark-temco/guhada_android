@@ -19,10 +19,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CommonViewUtil
-import io.temco.guhada.common.util.ImageUtil
-import io.temco.guhada.common.util.TextUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.viewmodel.mypage.MyPageBookMarkViewModel
 import io.temco.guhada.databinding.ItemMoreListBinding
@@ -123,6 +120,7 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
                 if (binding.layoutColor.getChildCount() > 0)binding.layoutColor.removeAllViews()
 
                 if (data.options != null && data!!.options!!.size > 0) {
+                    if(CustomLog.flag) CustomLog.L("MyPageDealListAdapter","data.options",data.options.toString())
                     for (o in data!!.options!!) {
                         when (Type.ProductOption.getType(o!!.type)) {
                             Type.ProductOption.COLOR -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes) // 5 Units
@@ -131,7 +129,6 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
                         }
                     }
                 }
-                R.layout.layout_tab_innercategory
 
                 // Price
                 if (data.discountRate > 0) {

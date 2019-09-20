@@ -498,6 +498,7 @@ public class Type {
 
         NONE(""),
         COLOR("RGB_BUTTON"),
+        COLOR2("COLOR"),
         TEXT_BUTTON("TEXT_BUTTON"),
         RGB("RGB"),
         TEXT("TEXT");
@@ -512,6 +513,8 @@ public class Type {
             switch (type) {
                 case COLOR:
                     return COLOR.type;
+                case COLOR2:
+                    return COLOR2.type;
                 case TEXT_BUTTON:
                     return TEXT_BUTTON.type;
                 case TEXT:
@@ -531,6 +534,8 @@ public class Type {
         public static ProductOption getType(String type) {
             if (type.equalsIgnoreCase(COLOR.type)) {
                 return COLOR;
+            } else if (type.equalsIgnoreCase(COLOR2.type)) {
+                return COLOR2;
             } else if (type.equalsIgnoreCase(TEXT_BUTTON.type)) {
                 return TEXT_BUTTON;
             } else if (type.equalsIgnoreCase(TEXT.type)) {

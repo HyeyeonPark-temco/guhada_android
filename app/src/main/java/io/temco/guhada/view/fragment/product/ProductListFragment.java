@@ -1,6 +1,9 @@
 package io.temco.guhada.view.fragment.product;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.View;
@@ -40,6 +43,7 @@ import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CommonUtilKotlin;
+import io.temco.guhada.common.util.CommonViewUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.data.db.GuhadaDB;
@@ -90,6 +94,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private int mPageNumber = 1;
     private int tabIndex = 0;
     private int tabWidth = 0;
+    private int recentViewCount = -1;
+    private boolean scrollviewOnTop = true;
 
     private CompositeDisposable disposable;
     private GuhadaDB db;
@@ -141,13 +147,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
             getProductListBySearch(true);
         }
-
-
-        mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener(view -> {
-            BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, MyPageTabType.LAST_VIEW.ordinal(), true));
-            ((Activity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_HOME);
-            ((Activity)getContext()).onBackPressed();
-        });
+        scrollviewOnTop = true;
+        getRecentProductCount();
         /*if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
             mBinding.imageviewMaintabIcon1.setBackgroundResource(R.drawable.tool_icon_category_on);
             mBinding.textviewMaintabTitle1.setTextColor(Color.parseColor("#5d2ed1"));
@@ -155,13 +156,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             mBinding.imageviewMaintabIcon2.setBackgroundResource(R.drawable.tool_icon_brand_on);
             mBinding.textviewMaintabTitle2.setTextColor(Color.parseColor("#5d2ed1"));
         }*/
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setRecentProductCount();
+        if(scrollviewOnTop) getRecentProductCount();
+        else setRecentProductCount();
     }
 
     @Override
@@ -509,11 +510,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 // super.onScrollStateChanged(recyclerView, newState);
                 if (!recyclerView.canScrollVertically(-1)) {
                     // Top
+                    scrollviewOnTop = true;
                     changeFloatingButtonLayout(false);
                 } else if (!recyclerView.canScrollVertically(1)) {
                     // Bottom
                 } else {
                     // Idle
+                    scrollviewOnTop = false;
                     changeFloatingButtonLayout(true);
                 }
             }
@@ -532,7 +535,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             }
         });
-        setRecentProductCount();
         mBinding.listContents.setAdapter(mListAdapter);
     }
 
@@ -596,7 +598,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     // Floating Button
     private void changeFloatingButtonLayout(boolean isShow) {
-        setRecentProductCount();
         changeTopFloatingButton(isShow);
         changeItemFloatingButton(isShow);
     }
@@ -610,10 +611,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void changeItemFloatingButton(boolean isShow, boolean animate) {
-        if (CommonUtil.checkToken() && Integer.parseInt(mBinding.buttonFloatingItem.textviewFloatingCount.getText().toString()) > 0) {
-            changeLastView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+        if (CommonUtil.checkToken()) {
+            if(recentViewCount > 0)
+                changeLastView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
         }else{
-            mBinding.buttonFloatingItem.getRoot().setVisibility(View.GONE);
+            changeLastView(mBinding.buttonFloatingItem.getRoot(), false, false);
         }
     }
 
@@ -658,14 +660,19 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void changeLastView(View v, boolean isShow, boolean animate) {
         if (isShow) {
             if (v.getVisibility() != View.VISIBLE) {
+                v.setOnClickListener(view -> {
+                    BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, MyPageTabType.LAST_VIEW.ordinal(), true));
+                    ((Activity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_HOME);
+                    ((Activity)getContext()).onBackPressed();
+                });
                 v.setVisibility(View.VISIBLE);
                 if (animate) {
                     showScaleAnimation(v);
                 }
-                setRecentProductCount();
             }
         } else {
             if (v.getVisibility() == View.VISIBLE) {
+                v.setOnClickListener(null);
                 if (animate) {
                     hideScaleAnimation(v);
                 } else {
@@ -677,6 +684,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void setRecentProductCount(){
         try {
+            if (!CommonUtil.checkToken()) return;
             CommonUtilKotlin.INSTANCE.recentProductCount(disposable, db, new OnCallBackListener() {
                 @Override
                 public void callBackListener(boolean resultFlag, @NotNull Object value) {
@@ -684,12 +692,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                         String count = value.toString();
                         mBinding.buttonFloatingItem.textviewFloatingCount.setText(count);
                         if(Integer.parseInt(mBinding.buttonFloatingItem.textviewFloatingCount.getText().toString()) == 0){
-                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setVisibility(View.GONE);
+                            changeLastView(mBinding.buttonFloatingItem.getRoot(), false, false);
                         }else{
-                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setVisibility(View.VISIBLE);
+                            changeLastView(mBinding.buttonFloatingItem.getRoot(), true, false);
                         }
                     }catch (Exception e){
-                        mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setVisibility(View.GONE);
+                        changeLastView(mBinding.buttonFloatingItem.getRoot(), false, false);
                         if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
                     }
                 }
@@ -698,6 +706,26 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
         }
     }
+
+
+    private void getRecentProductCount(){
+        try {
+            if (!CommonUtil.checkToken()) return;
+            CommonUtilKotlin.INSTANCE.recentProductCount(disposable, db, new OnCallBackListener() {
+                @Override
+                public void callBackListener(boolean resultFlag, @NotNull Object value) {
+                    try {
+                        recentViewCount = Integer.parseInt(value.toString());
+                    }catch (Exception e){
+                        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+                    }
+                }
+            });
+        }catch (Exception e){
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+        }
+    }
+
 
     private void showScaleAnimation(View v) {
         ViewCompat.animate(v)

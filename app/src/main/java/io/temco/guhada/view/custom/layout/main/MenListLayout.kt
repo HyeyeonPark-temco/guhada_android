@@ -44,6 +44,7 @@ class MenListLayout constructor(
     var mHomeFragment: HomeFragment? = null
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
+    private var recentViewCount = -1
 
     override fun getBaseTag() = MenListLayout::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_main_menlist
@@ -94,7 +95,7 @@ class MenListLayout constructor(
             EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE,MyPageTabType.LAST_VIEW.ordinal))
         }
 
-        setRecentProductCount()
+        getRecentProductCount()
         getCategory()
     }
 
@@ -109,7 +110,6 @@ class MenListLayout constructor(
 
     // Floating Button
     private fun changeFloatingButtonLayout(isShow: Boolean) {
-        setRecentProductCount()
         changeTopFloatingButton(isShow)
         changeItemFloatingButton(isShow)
     }
@@ -123,10 +123,12 @@ class MenListLayout constructor(
     }
 
     private fun changeItemFloatingButton(isShow: Boolean, animate: Boolean) {
-        if (CommonUtil.checkToken() && mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() > 0) {
-            changeLastView(mBinding.buttonFloatingItem.root, isShow, animate)
-        } else {
-            mBinding.buttonFloatingItem.root.visibility = View.GONE
+        if (CommonUtil.checkToken()) {
+            if(recentViewCount > 0){
+                changeLastView(mBinding.buttonFloatingItem.root, isShow, animate)
+            }
+        }else{
+            changeLastView(mBinding.buttonFloatingItem.root, false, false)
         }
     }
 
@@ -178,7 +180,6 @@ class MenListLayout constructor(
                 if (animate) {
                     showScaleAnimation(v)
                 }
-                setRecentProductCount()
             }
         } else {
             if (v.visibility == View.VISIBLE) {
@@ -193,18 +194,36 @@ class MenListLayout constructor(
 
     private fun setRecentProductCount() {
         try {
+            if (!CommonUtil.checkToken()) return
             CommonUtilKotlin.recentProductCount((context as MainActivity).getmDisposable(), (context as MainActivity).getmDb(), object : OnCallBackListener {
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
                     try {
                         val count = value.toString()
                         mBinding.buttonFloatingItem.textviewFloatingCount.text = count
                         if(mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() == 0){
-                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.GONE
+                            changeLastView(mBinding.buttonFloatingItem.root, false, false)
                         }else{
-                            mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.VISIBLE
+                            changeLastView(mBinding.buttonFloatingItem.root, true, false)
                         }
                     } catch (e: Exception) {
-                        mBinding.buttonFloatingItem.layoutFloatingButtonBadge.visibility = View.GONE
+                        changeLastView(mBinding.buttonFloatingItem.root, false, false)
+                        if (CustomLog.flag) CustomLog.E(e)
+                    }
+                }
+            })
+        } catch (e: Exception) {
+            if (CustomLog.flag) CustomLog.E(e)
+        }
+    }
+
+    private fun getRecentProductCount() {
+        try {
+            if (!CommonUtil.checkToken()) return
+            CommonUtilKotlin.recentProductCount((context as MainActivity).getmDisposable(), (context as MainActivity).getmDb(), object : OnCallBackListener {
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    try {
+                        recentViewCount = value.toString().toInt()
+                    } catch (e: Exception) {
                         if (CustomLog.flag) CustomLog.E(e)
                     }
                 }
@@ -270,28 +289,11 @@ class MenListLayout constructor(
         )
     }
 
-    override fun onFocusView() {
-
-    }
-
-    override fun onStart() {
-
-    }
-
-    override fun onResume() {
-        setRecentProductCount()
-    }
-
-    override fun onPause() {
-
-    }
-
-    override fun onStop() {
-
-    }
-
-    override fun onDestroy() {
-
-    }
+    override fun onFocusView() {  }
+    override fun onStart() { }
+    override fun onResume() { setRecentProductCount() }
+    override fun onPause() { }
+    override fun onStop() { }
+    override fun onDestroy() { }
 
 }

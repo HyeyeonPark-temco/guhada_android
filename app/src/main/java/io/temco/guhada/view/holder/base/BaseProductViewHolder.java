@@ -12,7 +12,10 @@ import androidx.databinding.ViewDataBinding;
 
 import com.bumptech.glide.RequestManager;
 
+import java.util.Arrays;
+
 import io.temco.guhada.R;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.ImageUtil;
 import io.temco.guhada.data.model.Deal;
 
@@ -37,6 +40,7 @@ public abstract class BaseProductViewHolder<B extends ViewDataBinding> extends B
     ////////////////////////////////////////////////
 
     protected void addColor(Context context, ViewGroup parent, int unit, String[] colors) {
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("BaseProductViewHolder","data.options", Arrays.toString(colors));
         if (colors != null && colors.length > 0) {
             int point = colors.length / unit;
             int re = colors.length % unit;
@@ -56,6 +60,8 @@ public abstract class BaseProductViewHolder<B extends ViewDataBinding> extends B
             }
         }
     }
+
+
 
     protected void addText(Context context, String[] texts) {
         // Not..

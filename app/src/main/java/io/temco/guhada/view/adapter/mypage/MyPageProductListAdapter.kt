@@ -18,10 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CommonViewUtil
-import io.temco.guhada.common.util.ImageUtil
-import io.temco.guhada.common.util.TextUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.mypage.MyPageBookMarkViewModel
@@ -123,17 +120,17 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 binding.textTitle.setText(data.name)
 
                 // Option
+
                 if (binding.layoutColor.getChildCount() > 0)binding.layoutColor.removeAllViews()
                 if (data.options != null && data!!.options!!.size > 0) {
+                    if(CustomLog.flag)CustomLog.L("MyPageProductListAdapter","data.options",data.options.toString())
                     for (o in data!!.options!!) {
                         when (Type.ProductOption.getType(o!!.type)) {
-                            Type.ProductOption.COLOR -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes.toTypedArray()) // 5 Units
-                            Type.ProductOption.RGB -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes.toTypedArray()) // 5 Units
-                            Type.ProductOption.TEXT -> addText((containerView.context as Activity), o.attributes.toTypedArray())
+                            Type.ProductOption.COLOR2 -> addColor(containerView.context, binding.layoutColor,5, o.rgb.toTypedArray()) // 5 Units
+                            Type.ProductOption.TEXT -> addText(containerView.context, o.attributes.toTypedArray())
                         }
                     }
                 }
-                R.layout.layout_tab_innercategory
 
                 // Price
                 if (data.discountRate > 0) {

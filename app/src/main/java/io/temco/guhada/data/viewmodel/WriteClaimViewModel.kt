@@ -45,8 +45,8 @@ class WriteClaimViewModel : BaseObservableViewModel() {
                         when (model.resultCode) {
                             ResultCode.SUCCESS.flag -> {
                                 val claim = model.data as Claim
-                                if (inquiry.inquiryId == null) ToastUtil.showMessage("[${claim.id}] 문의가 등록되었습니다.")
-                                else ToastUtil.showMessage("[${claim.id}] 문의가 수정되었습니다.")
+                                if (inquiry.inquiryId == null) ToastUtil.showMessage("문의가 등록되었습니다.")
+                                else ToastUtil.showMessage("문의가 수정되었습니다.")
                                 if (::closeActivity.isInitialized) closeActivity(RESULT_OK, claim)
                             }
 

@@ -300,7 +300,7 @@
 
     <style name="MainHomeListProductItemSellerNameTextStyle" parent="@style/TextThin">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_height">26dp</item>
         <item name="android:textColor">@color/greyish_brown_two</item>
         <item name="android:textSize">@dimen/text_10</item>
         <item name="android:layout_marginLeft">6dp</item>
