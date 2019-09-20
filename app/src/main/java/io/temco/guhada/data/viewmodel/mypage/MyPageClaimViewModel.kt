@@ -150,15 +150,23 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
                     },
                     dataNotFoundTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","dataNotFoundTask")
+                        viewModel.emptyClaimVisible.set(true)
+                        listener?.run { onResultCallback() }
                     },
                     failedTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","failedTask")
+                        viewModel.emptyClaimVisible.set(true)
+                        listener?.run { onResultCallback() }
                     },
                     serverRuntimeErrorTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverRuntimeErrorTask")
+                        viewModel.emptyClaimVisible.set(true)
+                        listener?.run { onResultCallback() }
                     },
                     serverLoginErrorTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverLoginErrorTask")
+                        viewModel.emptyClaimVisible.set(true)
+                        listener?.run { onResultCallback() }
                     },
                     dataIsNull = {
                         viewModel.listData.value = ArrayList()

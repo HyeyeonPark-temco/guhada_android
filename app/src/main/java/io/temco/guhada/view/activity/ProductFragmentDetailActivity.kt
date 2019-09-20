@@ -59,7 +59,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
 
     override fun removeProductFragment() {
         // setResult(Activity.RESULT_OK)
-        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,true)
         setResult(ResultCode.GO_TO_MAIN.flag)
         finish()
         //  removeProductDetailFragment()
@@ -71,7 +71,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         if (mProductDetailFragment != null && mProductDetailFragment!!.isAdded())
             supportFragmentManager.beginTransaction().remove(mProductDetailFragment!!).commitAllowingStateLoss()
         mLoadingIndicatorUtil.hide()*/
-        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN.flag, true)
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,true)
         setResult(ResultCode.GO_TO_MAIN.flag)
         finish()
     }

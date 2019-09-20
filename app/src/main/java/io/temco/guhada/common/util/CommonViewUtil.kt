@@ -87,6 +87,10 @@ object CommonViewUtil{
         return view.findViewById(context!!.resources.getIdentifier(name,"id",context.packageName))
     }
 
+
+    /**
+     * 텍스트가 여러줄일때 마지막 줄에 이미지를 붙이는 경우 사용
+     */
     fun setTextViewImageTextEnd(context: Context, res : Int, text : String, textview : TextView){
         val image = context.resources.getDrawable(res, null)
         image.setBounds(0, 0, image.intrinsicWidth, image.intrinsicHeight)

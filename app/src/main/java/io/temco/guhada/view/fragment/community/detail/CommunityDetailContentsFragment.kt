@@ -9,6 +9,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.DateUtil
 import io.temco.guhada.data.model.community.CommunityMobileDetail
 import io.temco.guhada.data.model.community.CommunityMobileDetailImage
 import io.temco.guhada.data.model.community.CommunityMobileDetailText
@@ -62,8 +63,16 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
                 }
             }
         }
-        CommonViewUtil.setTextViewImageTextEnd(context!!, R.drawable.drawable_icon_new,
-                (header+viewModel.communityDetail.value!!.title!!),mBinding.textviewCommunitydetailcontentsTitle)
+
+        /*if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","getNowDateDiffMinute",DateUtil.getNowDateDiffMinute(viewModel.communityDetail.value?.createdTimestamp ?: 0))
+        if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","getNowDateDiffHour",DateUtil.getNowDateDiffHour(viewModel.communityDetail.value?.createdTimestamp ?: 0))
+        if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","getNowDateDiffDay",DateUtil.getNowDateDiffDay(viewModel.communityDetail.value?.createdTimestamp ?: 0))*/
+        if(DateUtil.getNowDateDiffDay(viewModel.communityDetail.value?.createdTimestamp ?: 0) < 1){
+            CommonViewUtil.setTextViewImageTextEnd(context!!, R.drawable.drawable_icon_new,
+                    (header+viewModel.communityDetail.value!!.title!!+" "),mBinding.textviewCommunitydetailcontentsTitle)
+        }else{
+            mBinding.textviewCommunitydetailcontentsTitle.text = (header+viewModel.communityDetail.value!!.title!!)
+        }
 
         mBinding.setClickShareListener {
             val sendIntent: Intent = Intent().apply {

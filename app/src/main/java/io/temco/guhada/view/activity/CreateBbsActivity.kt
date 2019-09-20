@@ -447,6 +447,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         data.contents = mBinding.edittextReportText.text.toString()
         data.dealName = mBinding.edittextReportProduct.text.toString()
         data.title = mBinding.edittextReportTitle.text.toString()
+        data.imageUrl = ""
         data.categoryId = mViewModel.communityInfoList.value!![mViewModel.selectedCategoryIndex].communityCategoryId.toLong()
         if(CustomLog.flag)CustomLog.L("CreateBbsActivity","mViewModel.selectedCategoryIndex",mViewModel.selectedCategoryIndex)
         if(CustomLog.flag)CustomLog.L("CreateBbsActivity","mViewModel.selectedFilterIndex",mViewModel.selectedFilterIndex)

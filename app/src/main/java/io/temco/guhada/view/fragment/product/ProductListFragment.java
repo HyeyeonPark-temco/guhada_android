@@ -238,7 +238,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_maintab_layout3:
-                BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN, true));
+                BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_HOME, true));
                 ((ProductFilterListActivity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_HOME);
                 ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
                 ((ProductFilterListActivity)getContext()).finish();

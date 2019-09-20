@@ -18,6 +18,7 @@ import io.temco.guhada.databinding.CustomlayoutMypageRecentBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import kotlinx.android.synthetic.main.customlayout_mypage_recent.view.*
+import java.lang.Exception
 
 /**
  * 19.07.22
@@ -69,9 +70,13 @@ class MyPageRecentLayout constructor(
         mViewModel.reloadRecyclerView(object : OnSwipeRefreshResultListener{
             override fun onResultCallback() {
                 if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onResultCallback ", "init -----")
-                this@MyPageRecentLayout.handler.postDelayed({
-                    mBinding.swipeRefreshLayout.isRefreshing = false
-                },200)
+                try {
+                    this@MyPageRecentLayout?.handler?.postDelayed({
+                        mBinding?.swipeRefreshLayout?.isRefreshing = false
+                    },200)
+                }catch (e : Exception){
+                    if(CustomLog.flag)CustomLog.E(e)
+                }
             }
         })
     }
@@ -83,7 +88,11 @@ class MyPageRecentLayout constructor(
 
     override fun onStart() {
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onStart ", "init -----")
-        onRefresh()
+        try {
+            onRefresh()
+        }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
     }
 
     override fun onResume() {
