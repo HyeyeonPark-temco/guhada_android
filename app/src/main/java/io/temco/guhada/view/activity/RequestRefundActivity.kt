@@ -6,8 +6,10 @@ import android.text.Html
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
@@ -31,6 +33,11 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     override fun getBaseTag(): String = RequestRefundActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_requestrefund
     override fun getViewType(): Type.View = Type.View.REQUEST_REFUND
+    override fun onDestroy() {
+        super.onDestroy()
+//        if(::mViewModel.isInitialized) mViewModel.mRefundRequest.remove
+    }
+
     override fun init() {
         initViewModel()
         initHeader()
@@ -63,10 +70,17 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                     if (selectedBank != null) {
                         mBinding.includeRequestrefundBank.textviewRequestrefundBankname.text = selectedBank.bankName
                         mViewModel.mRefundRequest.refundBankCode = selectedBank.bankCode
+
+                        mViewModel.mIsCheckAccountAvailable = ObservableBoolean(true)
+                        mViewModel. notifyPropertyChanged(BR.mIsCheckAccountAvailable)
                     }
                 }
             }
         }
+
+        mViewModel.mBankAccount.observe(this, Observer {
+            mBinding.includeRequestrefundBank.edittextRequestrefundBankowner.setText(it.name)
+        })
         mBinding.includeRequestrefundBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
         mBinding.includeRequestrefundBank.viewModel = mViewModel
     }

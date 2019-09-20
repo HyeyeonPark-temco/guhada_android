@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import io.temco.guhada.data.model.BankAccount
 import io.temco.guhada.data.model.SellerInquireOrder
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseModel
@@ -148,5 +149,13 @@ interface OrderService {
      */
     @GET("/order-review/seller-inquire-order")
     fun getSellerInquireOrder(@Header("Authorization") accessToken: String, @Query("sellerId") sellerId: Long): Call<BaseModel<SellerInquireOrder>>
+
+    /**
+     * 계좌 확인
+     * @author Hyeyeon Park
+     * @since 2019.09.20
+     */
+    @POST("/accountCheck")
+    fun checkAccount(@Body bankAccount: BankAccount): Call<BaseModel<BankAccount>>
 
 }

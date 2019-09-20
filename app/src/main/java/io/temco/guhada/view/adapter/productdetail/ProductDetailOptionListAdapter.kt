@@ -40,6 +40,13 @@ class ProductDetailOptionListAdapter : RecyclerView.Adapter<ProductDetailOptionL
             mBinding.textviewProductdetailOptionspinner.text = getOptionText(option = option)
             mBinding.viewProductdetailOptionspinnerLine1.visibility = if (adapterPosition == 0) View.VISIBLE else View.GONE
             mBinding.linearlayoutProductdetailOptionspinner.setOnClickListener { mItemClickTask(option) }
+
+            if (option.rgb1?.isNotEmpty() ?: false) {
+                mBinding.imageviewProductdetailOptionspinner.visibility = View.VISIBLE
+                mBinding.imageviewProductdetailOptionspinner.setBackgroundColor(Color.parseColor(option.rgb1))
+            } else
+                mBinding.imageviewProductdetailOptionspinner.visibility = View.GONE
+
             mBinding.executePendingBindings()
         }
 
