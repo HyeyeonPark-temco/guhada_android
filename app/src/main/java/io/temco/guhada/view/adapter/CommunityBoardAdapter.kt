@@ -1,10 +1,9 @@
 package io.temco.guhada.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -42,15 +41,15 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
 
     class Holder(binding: ViewDataBinding, val mViewModel: CommunitySubListViewModel, val type: String) : BaseViewHolder<ViewDataBinding>(binding.root) {
         fun bind(item: CommunityBoard) {
-            Log.e("ㅇㅇㅇ", item.newlyCreated.toString())
+
             if (type == CommunitySubListFragment.CommunityListType.IMAGE.type) {
                 (mBinding as ItemCommunityPhotoBinding).item = item
                 (mBinding as ItemCommunityPhotoBinding).viewModel = mViewModel
-                //checkEllipsized(isTextType = false)
+                // checkEllipsized(isTextType = false)
             } else {
                 (mBinding as ItemCommunityTextBinding).item = item
                 (mBinding as ItemCommunityTextBinding).viewModel = mViewModel
-                //checkEllipsized(isTextType = true)
+                // checkEllipsized(isTextType = true)
             }
 
             setSpacing()
@@ -73,9 +72,9 @@ class CommunityBoardAdapter(val type: String) : RecyclerView.Adapter<CommunityBo
                 if (titleTextView.layout != null) {
                     val isEllipsized = titleTextView.layout.getEllipsisCount(titleTextView.lineCount - 1) > 0
 
-                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                    ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT).apply {
                         if (isEllipsized) {
-                            weight = 1f
+                            horizontalWeight = 1f
                             titleTextView.viewTreeObserver.removeOnGlobalLayoutListener { }
                         }
 
