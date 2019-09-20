@@ -328,7 +328,14 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                         //  mSelectedOption = option
                         cart.selectedCartOption = option
                         mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                        mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+
+                        if(option.rgb1 != null && option.rgb1?.isNotEmpty()?:false){
+                            mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
+                            mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                        }else {
+                            mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
+                        }
+
                         mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
                         mBinding.executePendingBindings()
                     }
