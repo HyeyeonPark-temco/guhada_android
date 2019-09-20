@@ -6,6 +6,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.BankAccount
 import io.temco.guhada.data.model.SellerInquireOrder
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.base.BaseErrorModel
@@ -278,7 +279,6 @@ class OrderServer {
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<Any?>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
 
-
         /**
          * 주문서 조회 API
          * @param cartIdList 장바구니 id
@@ -307,6 +307,7 @@ class OrderServer {
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<SellerInquireOrder>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getSellerInquireOrder", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
@@ -314,9 +315,18 @@ class OrderServer {
                     })
         }
 
+        /**
+         * 계좌 확인
+         * @author Hyeyeon Park
+         * @since 2019.09.20
+         */
+        @JvmStatic
+        fun checkAccount(listener: OnServerListener, bankAccount: BankAccount) =
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).checkAccount(bankAccount = bankAccount).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<BankAccount>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+
 
     }
-
 
 
 }

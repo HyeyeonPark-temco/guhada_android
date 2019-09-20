@@ -67,6 +67,9 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 }
             }
         }
+        mViewModel.mBankAccount.observe(this, Observer {
+
+        })
         mBinding.includeRequestrefundBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
         mBinding.includeRequestrefundBank.viewModel = mViewModel
     }
