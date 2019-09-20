@@ -5,13 +5,14 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ShippingPaymentType
 import java.io.Serializable
+import java.util.*
 
 /**
  * 주문 반품 정보
  * @see ShippingPaymentType
  * @author Hyeyeon Park
  */
-class RefundRequest : Serializable {
+class RefundRequest : Serializable, Observable() {
     var alreadySend = false
     var claimShippingPriceType = ""
     var invoiceNo = 0L
@@ -24,6 +25,11 @@ class RefundRequest : Serializable {
     // 환불 계좌 정보
     var refundBankCode = ""             // 은행 코드
     var refundBankAccountNumber = ""    // 계좌 번호
+        set(value) {
+            field = value
+            setChanged()
+            notifyObservers("bankNumber")
+        }
     var refundBankAccountOwner = ""     // 예금주
 
     @SerializedName("returnReasonDetail")

@@ -1,6 +1,10 @@
 package io.temco.guhada.data.viewmodel.mypage.delivery
 
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ShippingPaymentType
@@ -19,8 +23,9 @@ import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import java.util.*
 
-class RequestRefundViewModel : BaseObservableViewModel() {
+class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
     var mPurchaseOrder = MutableLiveData<PurchaseOrder>()
     var mRefundRequest = RefundRequest()
     var mSellerAddress: MutableLiveData<SellerAddress> = MutableLiveData()
@@ -32,7 +37,14 @@ class RequestRefundViewModel : BaseObservableViewModel() {
     var mCause = ""
     var mOrderProdGroupId = 0L
     var mOrderClaimId = 0L
-    var mBankAccount : MutableLiveData<BankAccount> = MutableLiveData()
+    var mBankAccount: MutableLiveData<BankAccount> = MutableLiveData()
+    var mIsCheckAccountAvailable = ObservableBoolean(true)
+        @Bindable
+        get() = field
+
+    init {
+        this.mRefundRequest.addObserver(this)
+    }
 
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
@@ -100,18 +112,22 @@ class RequestRefundViewModel : BaseObservableViewModel() {
     }
 
     fun requestRefund() {
-        ServerCallbackUtil.callWithToken(task = { accessToken ->
-            ClaimServer.requestRefund(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            val result = it.data as PurchaseOrder
-                            mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
-                            mPurchaseOrder.value?.orderStatusText = result.orderStatusText
-                            mPurchaseOrder.value?.claimStatusText = result.claimStatusText
-                            mSuccessRequestRefundTask(mPurchaseOrder.value!!)
-                        })
-            }, accessToken = accessToken, refundRequest = mRefundRequest)
-        })
+        if(mBankAccount.value?.result?:false){
+            ServerCallbackUtil.callWithToken(task = { accessToken ->
+                ClaimServer.requestRefund(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                val result = it.data as PurchaseOrder
+                                mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
+                                mPurchaseOrder.value?.orderStatusText = result.orderStatusText
+                                mPurchaseOrder.value?.claimStatusText = result.claimStatusText
+                                mSuccessRequestRefundTask(mPurchaseOrder.value!!)
+                            })
+                }, accessToken = accessToken, refundRequest = mRefundRequest)
+            })
+        }else {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_requiredcheckaccount))
+        }
     }
 
     fun updateRefund() {
@@ -126,28 +142,43 @@ class RequestRefundViewModel : BaseObservableViewModel() {
     }
 
     fun checkAccount() = when {
-        mRefundRequest.refundBankAccountNumber.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_emptybanknumber))
         mRefundRequest.refundBankCode.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_emptybankcode))
-        mRefundRequest.refundBankAccountOwner.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_emptybankowner))
+        mRefundRequest.refundBankAccountNumber.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_emptybanknumber))
         else -> BankAccount().apply {
             this.bankNumber = mRefundRequest.refundBankAccountNumber
             this.bankCode = mRefundRequest.refundBankCode
             this.name = mRefundRequest.refundBankAccountOwner
         }.let {
-            OrderServer.checkAccount(OnServerListener { success, o ->
-                if (success) {
-                    val bankAccount = (o as BaseModel<BankAccount>).data
-                    if (bankAccount.result) {
-                        mRefundRequest.refundBankCode = bankAccount.bankCode
-                        mRefundRequest.refundBankAccountNumber = bankAccount.bankNumber
-                        mRefundRequest.refundBankAccountOwner = bankAccount.name
-                        this.mBankAccount.postValue(bankAccount)
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_succesbankaccount))
-                    } else {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_invalidbankaccount))
+            if (mIsCheckAccountAvailable.get()) {
+                OrderServer.checkAccount(OnServerListener { success, o ->
+                    if (success) {
+                        val bankAccount = (o as BaseModel<BankAccount>).data
+                        if (bankAccount.result) {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_succesbankaccount))
+
+                            mRefundRequest.refundBankCode = bankAccount.bankCode
+                            mRefundRequest.refundBankAccountNumber = bankAccount.bankNumber
+                            mRefundRequest.refundBankAccountOwner = bankAccount.name
+
+                            mIsCheckAccountAvailable = ObservableBoolean(false)
+                            notifyPropertyChanged(BR.mIsCheckAccountAvailable)
+                            this.mBankAccount.postValue(bankAccount)
+                        } else {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_invalidbankaccount))
+                        }
                     }
-                }
-            }, bankAccount = it)
+                }, bankAccount = it)
+            }
+        }
+    }
+
+
+    override fun update(o: Observable?, arg: Any?) {
+        if (arg is String) {
+            if (arg == "bankNumber") {
+                mIsCheckAccountAvailable = ObservableBoolean(true)
+                notifyPropertyChanged(BR.mIsCheckAccountAvailable)
+            }
         }
     }
 }

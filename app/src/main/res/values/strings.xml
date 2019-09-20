@@ -865,13 +865,14 @@
     <string name="requestorderstatus_refund_checkbank_success">확인 완료</string>
     <string name="requestorderstatus_refund_bankhint1">은행명을 선택해주세요.</string>
     <string name="requestorderstatus_refund_bankhint2">계좌번호를 입력해주세요.</string>
-    <string name="requestorderstatus_refund_bankhint3">예금주명 (본인명)을 입력해주세요.</string>
+    <string name="requestorderstatus_refund_bankhint3">예금주명</string>
 
     <string name="requestorderstatus_refund_message_emptybanknumber">계좌번호를 입력해주세요.</string>
     <string name="requestorderstatus_refund_message_emptybankcode">은행을 선택해주세요.</string>
     <string name="requestorderstatus_refund_message_emptybankowner">예금주를 입력해주세요.</string>
     <string name="requestorderstatus_refund_message_invalidbankaccount">일치하는 계좌정보가 없습니다.</string>
     <string name="requestorderstatus_refund_message_succesbankaccount">계좌확인이 완료되었습니다.</string>
+    <string name="requestorderstatus_refund_message_requiredcheckaccount">환불 계좌 확인을 진행해주세요.</string>
 
     <!-- SUCCESS CANCEL ORDER -->
     <string name="successcancelorder_title1">주문상품의&#160;</string>

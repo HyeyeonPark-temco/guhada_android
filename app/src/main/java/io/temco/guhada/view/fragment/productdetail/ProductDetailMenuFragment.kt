@@ -88,22 +88,24 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val optionList = mViewModel.product.optionInfos ?: listOf()
                 if (optionList.size > position && optionList[position].stock > 0) {
-                    val option = optionList[position]
-                    mBinding.linearlayoutProductdetailOption.visibility = View.GONE
-                    mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
-                    mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
-                    mBinding.executePendingBindings()
+                    val option: OptionInfo? = optionList[position]
+                    if (option != null) {
+                        mBinding.linearlayoutProductdetailOption.visibility = View.GONE
+                        mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
+                        mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)
+                        mBinding.executePendingBindings()
 
-                    // INIT OPTION
-                    mViewModel.mSelectedOptionInfo = option
-                    mViewModel.productCount = ObservableInt(1)
-                    mViewModel.notifyPropertyChanged(BR.productCount)
+                        // INIT OPTION
+                        mViewModel.mSelectedOptionInfo = option
+                        mViewModel.productCount = ObservableInt(1)
+                        mViewModel.notifyPropertyChanged(BR.productCount)
 
-                    // PRICE
-                    mViewModel.extraPrice = ObservableInt(option.price)
-                    mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
-                    mViewModel.notifyPropertyChanged(BR.extraPrice)
-                    mViewModel.notifyPropertyChanged(BR.totalPrice)
+                        // PRICE
+                        mViewModel.extraPrice = ObservableInt(option.price)
+                        mViewModel.totalPrice = ObservableInt(mViewModel.product.discountPrice + option.price)
+                        mViewModel.notifyPropertyChanged(BR.extraPrice)
+                        mViewModel.notifyPropertyChanged(BR.totalPrice)
+                    }
                 }
             }
         }
