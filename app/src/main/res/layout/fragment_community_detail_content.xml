@@ -58,13 +58,14 @@
                     android:layout_marginRight="6dp"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_8"
+                    android:visibility="gone"
                     android:text="1" />
 
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginRight="6dp"
                     android:textColor="@color/warm_grey_two"
                     android:text="@{item.createUserInfo.nickname}"
                     android:textSize="@dimen/text_13" />

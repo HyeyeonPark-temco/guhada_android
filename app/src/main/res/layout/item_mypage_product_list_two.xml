@@ -7,14 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_default"
-        android:orientation="vertical"
-        android:padding="5dp">
+        android:orientation="vertical">
 
-        <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+        <RelativeLayout
+            android:id="@+id/relativeImageLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:height="206dp"
-            app:width="165dp">
+            android:layout_height="wrap_content">
 
             <!-- THUMBNAIL -->
             <ImageView
@@ -38,7 +36,6 @@
                 android:textSize="@dimen/text_9" />
 
 
-            <!-- SHIP -->
             <Button
                 android:id="@+id/btn_delete"
                 android:layout_width="30dp"
@@ -59,7 +56,7 @@
                 android:paddingLeft="7dp"
                 android:paddingRight="7dp"
                 android:paddingBottom="10dp" />
-        </io.temco.guhada.view.custom.layout.HeightRelativeLayout>
+        </RelativeLayout>
 
         <!-- INFO -->
         <LinearLayout
@@ -103,7 +100,10 @@
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="32dp"
                 android:layout_marginTop="3dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/text_3"
                 android:textSize="@dimen/text_12" />
 
@@ -114,6 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"
+                android:visibility="gone"
                 android:textColor="@color/text_3"
                 android:textSize="@dimen/text_9" />
 
@@ -127,11 +128,20 @@
 
                 <TextView
                     android:id="@+id/text_price"
-                    style="@style/TextBold"
+                    style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_16" />
+                    android:textSize="@dimen/text_15" />
+
+                <TextView
+                    android:id="@+id/text_pricediscount"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_11" />
 
                 <TextView
                     android:id="@+id/text_price_sale_per"

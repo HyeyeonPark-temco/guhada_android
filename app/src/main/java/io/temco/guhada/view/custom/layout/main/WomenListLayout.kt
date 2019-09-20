@@ -87,6 +87,13 @@ class WomenListLayout constructor(
                     //if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 2----------------",mViewModel.getListAdapter().items.size)
                 }
         )
+
+        mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
+            (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
+            (context as MainActivity).selectTab(4, false)
+            EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE,MyPageTabType.LAST_VIEW.ordinal))
+        }
+        setRecentProductCount()
         getCategory()
     }
 
@@ -166,11 +173,6 @@ class WomenListLayout constructor(
     private fun changeLastView(v: View, isShow: Boolean, animate: Boolean) {
         if (isShow) {
             if (v.visibility != View.VISIBLE) {
-                v.setOnClickListener { view ->
-                    (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
-                    (context as MainActivity).selectTab(4, false)
-                    EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE, MyPageTabType.LAST_VIEW.ordinal))
-                }
                 v.visibility = View.VISIBLE
                 if (animate) {
                     showScaleAnimation(v)
@@ -179,7 +181,6 @@ class WomenListLayout constructor(
             }
         } else {
             if (v.visibility == View.VISIBLE) {
-                v.setOnClickListener(null)
                 if (animate) {
                     hideScaleAnimation(v)
                 } else {

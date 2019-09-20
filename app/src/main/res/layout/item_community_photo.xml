@@ -84,7 +84,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="3dp"
                 android:src="@drawable/com_icon_new"
-                android:visibility="@{item.newlyCreated ? View.VISIBLE : View.GONE, default= visible}"
+                android:visibility="@{item.newlyCreated ? View.VISIBLE : View.GONE, default= gone}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toRightOf="@id/textview_communityphoto_comment"
                 app:layout_constraintRight_toRightOf="parent" />

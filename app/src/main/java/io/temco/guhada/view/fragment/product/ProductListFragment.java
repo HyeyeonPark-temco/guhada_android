@@ -142,6 +142,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             getProductListBySearch(true);
         }
 
+
+        mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener(view -> {
+            BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, MyPageTabType.LAST_VIEW.ordinal(), true));
+            ((Activity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_HOME);
+            ((Activity)getContext()).onBackPressed();
+        });
         /*if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
             mBinding.imageviewMaintabIcon1.setBackgroundResource(R.drawable.tool_icon_category_on);
             mBinding.textviewMaintabTitle1.setTextColor(Color.parseColor("#5d2ed1"));
@@ -526,6 +532,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             }
         });
+        setRecentProductCount();
         mBinding.listContents.setAdapter(mListAdapter);
     }
 
@@ -589,6 +596,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     // Floating Button
     private void changeFloatingButtonLayout(boolean isShow) {
+        setRecentProductCount();
         changeTopFloatingButton(isShow);
         changeItemFloatingButton(isShow);
     }
@@ -650,11 +658,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void changeLastView(View v, boolean isShow, boolean animate) {
         if (isShow) {
             if (v.getVisibility() != View.VISIBLE) {
-                v.setOnClickListener(view -> {
-                    BaseApplication.getInstance().setMoveToMain(new ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, MyPageTabType.LAST_VIEW.ordinal(), true));
-                    ((Activity)getContext()).setResult(Flag.ResultCode.GO_TO_MAIN_HOME);
-                    ((Activity)getContext()).onBackPressed();
-                });
                 v.setVisibility(View.VISIBLE);
                 if (animate) {
                     showScaleAnimation(v);
@@ -663,7 +666,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             }
         } else {
             if (v.getVisibility() == View.VISIBLE) {
-                v.setOnClickListener(null);
                 if (animate) {
                     hideScaleAnimation(v);
                 } else {

@@ -36,6 +36,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
     private lateinit var mViewModel : CommunityMainViewPagerViewModel
 
     var currentPagerIndex : Int = 0
+    var initView = false
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -45,8 +46,57 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
     override fun getBaseTag() = CommunityMainFragment::class.java.simpleName
     override fun getLayoutId() = R.layout.fragment_main_community
     override fun init() {
+        initView = false
         mViewModel = CommunityMainViewPagerViewModel(context = context!!)
         mBinding.viewModel = mViewModel
+    }
+
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.image_side_menu -> CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
+            R.id.image_search -> CommonUtil.startSearchWordActivity(context as MainActivity,null, true)
+            R.id.image_shop_cart -> CommonUtil.startCartActivity(context as MainActivity)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(!initView){
+            initView = true
+            setView()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    ////////////////////////////////////////////////
+    // PUBLIC
+    ////////////////////////////////////////////////
+
+    fun getViewModel() : CommunityMainViewPagerViewModel{
+        return mViewModel
+    }
+
+    ////////////////////////////////////////////////
+    // PRIVATE
+    ////////////////////////////////////////////////
+
+    private fun setView(){
         mViewModel.communityInfoList.observe(this, Observer {
             if(CustomLog.flag)CustomLog.L("CommunityMainFragment",it.toString())
             initHeader()
@@ -62,27 +112,6 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
             }
         }
     }
-
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.image_side_menu -> CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
-            R.id.image_search -> CommonUtil.startSearchWordActivity(context as MainActivity,null, true)
-            R.id.image_shop_cart -> CommonUtil.startCartActivity(context as MainActivity)
-        }
-    }
-
-    ////////////////////////////////////////////////
-    // PUBLIC
-    ////////////////////////////////////////////////
-
-    fun getViewModel() : CommunityMainViewPagerViewModel{
-        return mViewModel
-    }
-
-    ////////////////////////////////////////////////
-    // PRIVATE
-    ////////////////////////////////////////////////
 
     private fun initHeader() {
         mBinding.layoutHeader.clickListener = this
@@ -143,25 +172,5 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
 
 
     ////////////////////////////////////////////////
-
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
 }

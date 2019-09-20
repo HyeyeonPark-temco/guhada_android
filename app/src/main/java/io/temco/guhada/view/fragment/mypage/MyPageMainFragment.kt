@@ -12,6 +12,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.viewmodel.mypage.MyPageViewModel
 import io.temco.guhada.databinding.FragmentMainMypagehomeBinding
 import io.temco.guhada.view.activity.MainActivity
@@ -264,6 +265,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
                 Flag.RequestCode.MYPAGE_MOVE -> {
+                    if (CustomLog.flag) CustomLog.L("MyPageMainFragment LIFECYCLE", "EventBusHelper----------------MYPAGE_MOVE")
                     setPagerIndexMove(requestCode.data as Int)
                 }
             }

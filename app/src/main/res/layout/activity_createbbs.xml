@@ -350,9 +350,9 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:padding="10dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
                     android:onClick="@{onClickGetImage}"
                     android:src="@drawable/com_btn_photo"/>
 
@@ -371,9 +371,9 @@
                     android:layout_height="50dp">
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:padding="10dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_margin="10dp"
                         android:onClick="@{onClickTempList}"
                         android:src="@drawable/com_btn_storage"/>
 

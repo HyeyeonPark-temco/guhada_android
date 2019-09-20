@@ -2,9 +2,13 @@ package io.temco.guhada.view.adapter.mypage
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Paint
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
@@ -16,6 +20,7 @@ import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.TextUtil
 import io.temco.guhada.data.model.Deal
@@ -73,10 +78,30 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
      * 메인 리스트에 사용할 base view holder
      */
     inner class MyPageProductListViewHolder(val containerView: View, val binding: ItemMypageProductListTwoBinding) : ListViewHolder(containerView,binding){
+        internal var width = 0
+        internal var height = 0
+        internal var layoutHeight = 0
+        internal var margin = 0
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(model : ViewModel, position : Int, data : Deal){
             // Thumbnail
             if(data != null){
+                if (width == 0) {
+                    val matrix = DisplayMetrics()
+                    (itemView.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                    width = (matrix.widthPixels - CommonViewUtil.dipToPixel(itemView.context, 20)) / 2
+                    height = width
+                    margin = CommonViewUtil.dipToPixel(itemView.context, 4)
+                    layoutHeight = height + CommonViewUtil.dipToPixel(itemView.context, 160)
+                }
+
+                val param = LinearLayout.LayoutParams(width, height)
+                param.leftMargin = margin
+                param.leftMargin = margin
+                binding.relativeImageLayout.setLayoutParams(param)
+                val imageParams = RelativeLayout.LayoutParams(width, layoutHeight)
+                binding.linearlayoutMypageproductlistadapterItemlayout.setLayoutParams(imageParams)
+
                 binding.linearlayoutMypageproductlistadapterItemlayout.tag = data.dealId.toString()
                 binding.linearlayoutMypageproductlistadapterItemlayout.setOnClickListener{
                     var id = it.tag.toString().toLong()
@@ -107,12 +132,19 @@ class MyPageDealListAdapter (private val model : ViewModel, list : ArrayList<Dea
                     }
                 }
                 R.layout.layout_tab_innercategory
+
                 // Price
                 if (data.discountRate > 0) {
-                    binding.textPrice.setText(String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.toInt())))
+                    binding.textPrice.setText(TextUtil.getDecimalFormat(data.discountPrice.toInt()))
+                    binding.textPriceSalePer.setVisibility(View.VISIBLE)
                     binding.textPriceSalePer.setText(String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), data.discountRate))
+                    binding.textPricediscount.setVisibility(View.VISIBLE)
+                    binding.textPricediscount.setPaintFlags(binding.textPricediscount.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
+                    binding.textPricediscount.setText(TextUtil.getDecimalFormat(data.sellPrice.toInt()))
                 } else {
-                    binding.textPrice.setText(String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt())))
+                    binding.textPrice.setText(TextUtil.getDecimalFormat(data.sellPrice.toInt()))
+                    binding.textPriceSalePer.setVisibility(View.GONE)
+                    binding.textPricediscount.setVisibility(View.GONE)
                 }
                 // Ship
                 //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)

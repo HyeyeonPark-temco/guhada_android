@@ -172,8 +172,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             initSummary()
             initContentHeader()
             val data = StringBuilder()
-            data.append("<style>img{display: inline;height: auto;max-width: 100%;}" +
-                    "body{text-align: center; word-break: break-all; word-break: break-word}" +
+            data.append("<style>img{display: inline;width:100%;height:100%;display:block;}" +
+                    "body{word-break: break-all; word-break: break-word}" +
                     "h1{font-size:large; word-break: break-all; word-break: break-word}" +
                     "h2{font-size:medium; word-break: break-all; word-break: break-word}</style>")
             data.append(product.desc.replace("\"//www", "\"https://www"))

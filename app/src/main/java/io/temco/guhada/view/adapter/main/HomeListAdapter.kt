@@ -36,7 +36,7 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
 class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
     /**
-     * HomeType 에 따른 item view
+     * HomeType 에 따른 item view  TextUtils
      */
     private fun getLayoutIdForPosition(position: Int): Int {
         when(items[position].type){

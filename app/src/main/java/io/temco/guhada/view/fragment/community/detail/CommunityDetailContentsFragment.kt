@@ -86,7 +86,10 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
 
         if(viewModel.communityDetailClientPlatformWeb.get()){
             val data = StringBuilder()
-            data.append("<style>img{display: inline;height: auto;max-width: 100%;}</style>")
+            data.append("<style>img{display: inline;height: auto;max-width: 100%;}" +
+                    "body{word-break: break-all; word-break: break-word}" +
+                    "h1{font-size:large; word-break: break-all; word-break: break-word}" +
+                    "h2{font-size:medium; word-break: break-all; word-break: break-word}</style>")
             data.append(viewModel.communityDetail.value!!.contents!!.replace("\"//www","\"https://www"))
             mBinding.webviewCommunitydetailContent.settings.apply {
                 javaScriptEnabled = true
