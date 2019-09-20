@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.cart
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnAddCartResultListener
 import io.temco.guhada.common.listener.OnProductDetailListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.viewmodel.cart.AddCartResultViewModel
 import io.temco.guhada.databinding.FragmentAddcartresultBinding
 import io.temco.guhada.view.activity.CartActivity
@@ -38,9 +40,13 @@ class AddCartResultFragment(val mListener: OnProductDetailListener) : BottomShee
         mViewModel.mDealList.observe(this, Observer {
             mBinding.recyclerviewAddcartresultRecommend.adapter = AddCartResultProductAdapter().apply {
                 this.mList = it
+                this.mClickItemTask = {dealId ->
+                    CommonUtil.startProductActivity(this@AddCartResultFragment.context as Activity, dealId)
+                    this@AddCartResultFragment.dismiss()
+                }
             }
-//            (mBinding.recyclerviewAddcartresultRecommend.adapter as).notifyDataSetChanged()
         })
+
     }
 
     override fun onDestroyOptionsMenu() {
