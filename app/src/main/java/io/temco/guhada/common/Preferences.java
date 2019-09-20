@@ -201,6 +201,30 @@ public class Preferences {
         }
     }
 
+
+    /**
+     * @author park jungho
+     * 토큰 클리이시 마이페이지 갱신을 위한 값 설정
+     *
+     * @param isShowToast
+     * @param application
+     */
+    public static void clearToken(boolean isShowToast, BaseApplication application) {
+        application.setInitUserMaypage(true);
+        Preferences.setPasswordConfirm(false);
+        SharedPreferences pref = getPreferences();
+        if (pref == null) {
+            return;
+        }
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove(KEY_USER_TOKEN);
+        editor.apply();
+        if(isShowToast){
+            ToastUtil.showMessage("로그아웃 되었습니다.");
+            CommonUtil.debug("FINISH CLEAR TOKEN");
+        }
+    }
+
     // is id saved
     public static void setIsIdSaved(boolean isSaved) {
         putBoolean(KEY_IS_ID_SAVED, isSaved);
