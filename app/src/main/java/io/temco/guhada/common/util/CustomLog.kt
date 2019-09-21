@@ -11,9 +11,13 @@ object CustomLog {
 
     var num = 0
     var err = 0
+
+    @JvmStatic
     val flag = true
+
     val maxLogStringSize = 1000
 
+    @JvmStatic
     fun E(e: Exception) {
         try {
             if (flag) {
@@ -33,6 +37,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: String, msg: String) {
         try {
             if (flag) {
@@ -59,6 +64,7 @@ object CustomLog {
     }
 
 
+    @JvmStatic
     fun L(tag: String, vararg args: Any) {
         try {
             if (flag) {
@@ -90,6 +96,7 @@ object CustomLog {
     }
 
 
+    @JvmStatic
     fun L(tag: String, msg: Any?) {
         try {
             if (flag) {
@@ -154,6 +161,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: String, msg: Array<String>) {
         try {
             if (flag) {
@@ -189,6 +197,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: String, msg: DoubleArray) {
         try {
             if (flag) {
@@ -224,6 +233,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: String, msg: ArrayList<HashMap<String, String>>, key: Array<String>) {
         try {
             if (flag) {
@@ -273,6 +283,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: String, msg: HashMap<String, String>, key: Array<String>) {
         try {
             if (flag) {
@@ -321,6 +332,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: String, msg: ArrayList<HashMap<String, String>>) {
         try {
             if (flag) {
@@ -354,6 +366,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: Any, msg: String) {
         try {
             if (flag) {
@@ -380,6 +393,7 @@ object CustomLog {
     }
 
 
+    @JvmStatic
     fun L(tag: Any, msg: Any) {
         try {
             if (flag) {
@@ -436,6 +450,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: Any, msg: Array<String>) {
         try {
             if (flag) {
@@ -478,6 +493,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: Any, msg: DoubleArray) {
         try {
             if (flag) {
@@ -520,6 +536,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: Any, msg: ArrayList<HashMap<String, String>>, key: Array<String>) {
         try {
             if (flag) {
@@ -577,6 +594,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: Any, msg: HashMap<String, String>, key: Array<String>) {
         try {
             if (flag) {
@@ -632,6 +650,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun L(tag: Any, msg: ArrayList<HashMap<String, String>>) {
         try {
             if (flag) {
@@ -672,6 +691,7 @@ object CustomLog {
 
     }
 
+    @JvmStatic
     fun E(msg: String) {
         try {
             if (flag) {
@@ -690,6 +710,7 @@ object CustomLog {
     }
 
 
+    @JvmStatic
     fun E(msg: Throwable) {
         try {
             if (flag) {

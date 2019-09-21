@@ -81,7 +81,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<BaseProductViewHold
     public void onClick(View v) {
         if (v.getTag() != null && v.getTag() instanceof Integer) {
             Deal data = getItem((int) v.getTag());
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("ProductListAdapter","onClick dealId",data.dealId);
             CommonUtil.startProductActivity(((Activity)mContext),(long)(data.dealId));
         }
     }

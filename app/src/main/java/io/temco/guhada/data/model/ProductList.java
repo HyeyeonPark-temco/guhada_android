@@ -24,7 +24,11 @@ public class ProductList {
     @Override
     public String toString() {
         return "ProductList{" +
+                "brands=" + brands +
+                ", categories=" + categories +
                 ", filters=" + filters +
+                ", countOfDeals=" + countOfDeals +
+                ", deals=" + deals +
                 '}';
     }
 }
