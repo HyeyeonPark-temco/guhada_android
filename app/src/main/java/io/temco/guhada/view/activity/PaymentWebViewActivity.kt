@@ -7,6 +7,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
@@ -76,22 +77,14 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 "$PURCHASE_MOBILE=${URLEncoder.encode(mViewModel.pgResponse.purchasePhone, CHARSET)}&" +
                 "$STORE_NAME=${URLEncoder.encode(mViewModel.pgResponse.mallName, CHARSET)}"
 
+        URL = mViewModel.pgResponse.jsUrl
+        Log.e("결제 수단", "${intent.getStringExtra("payMethod")} ====> $URL")
+
         when (intent.getStringExtra("payMethod")) {
-            "CARD" -> {
-                URL = "https://mobpay.lpay.com/smart/wcard/"
-//                  URL = "https://devmobpay.lpay.com:410/smart/wcard/"
-                params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
-            }
+            "CARD" -> params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
             "VBank" -> {
-                // 무통장 입금
-//                URL = "https://devmobpay.lpay.com:410/smart/vbank/"
-                URL = "https://ksmobile.inicis.com/smart/vbank/"
-            }
-            "DirectBank" -> {
-                // 실시간 계좌
-                URL = "https://devmobpay.lpay.com:410/smart/bank/"
-                params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("apprun_checked=Y", "EUC-KR")}"
-            }
+            }      // 무통장 입금
+            "DirectBank" -> params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("apprun_checked=Y", "EUC-KR")}"   // 실시간 계좌이체
             "TOKEN" -> {
             }
         }
@@ -120,7 +113,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 if (!isFinishing) {
                     dialog.show()
                 }
-
                 return true
             }
         }
@@ -190,7 +182,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                                 this.pgOid = pgOid
                                 this.pgAmount = pgAmount
 
-                                  this.pgTidSample = pgTidSample
+                                this.pgTidSample = pgTidSample
                                 // this.cardQuota = mViewModel.pgResponse.cardQuota
                                 //  this.cardNo = mViewModel.pgResponse.cardCd ?: ""
                                 this.returnUrl = mViewModel.pgResponse.returnUrl

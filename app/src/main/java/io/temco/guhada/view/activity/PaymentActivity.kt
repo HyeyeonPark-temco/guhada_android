@@ -191,8 +191,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 // 적립 예정 포인트
                 intent.putExtra("expectedPoint", mViewModel.mExpectedPoint.value)
 
-                startActivity(intent)
-                finish()
+                this@PaymentActivity.startActivityForResult(intent, RequestCode.PAYMENT_RESULT.flag)
+                // finish()
             }
         })
 
@@ -466,6 +466,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                         }
                     }
                 }
+            }
+            RequestCode.PAYMENT_RESULT.flag -> {
+                setResult(Activity.RESULT_OK)
+                finish()
             }
         }
     }

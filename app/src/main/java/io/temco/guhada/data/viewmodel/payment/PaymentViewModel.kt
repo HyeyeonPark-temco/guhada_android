@@ -447,6 +447,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     selectedMethod = order.paymentsMethod[i]
 
             if (selectedMethod.methodCode.isNotEmpty()) {
+                mRequestOrder.parentMethodCd = selectedMethod.methodCode
+
                 if (selectedMethod.methodCode == PaymentWayType.TOKEN.code) {
                     listener.showMessage(BaseApplication.getInstance().getString(R.string.common_message_ing))
                 } else {
@@ -484,7 +486,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
                             if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
                                 mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
-                                mRequestOrder.parentMethodCd = selectedMethod.methodCode
 
                                 if (::cart.isInitialized)
                                     mRequestOrder.cartItemPayments.add(RequestOrder.CartItemPayment().apply { this.cartItemId = this@PaymentViewModel.cart.cartItemId })

@@ -14,6 +14,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.CartResponse
@@ -61,7 +62,7 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             val intent = Intent(this@CartActivity, PaymentActivity::class.java)
             intent.putExtra("productList", productList)
             intent.putExtra("cartIdList", cartIdList)
-            startActivity(intent)
+            startActivityForResult(intent, RequestCode.PAYMENT.flag)
         }
         mViewModel.cartResponse.observe(this, Observer {
             mViewModel.totalItemCount = ObservableInt(0)
@@ -135,6 +136,9 @@ class CartActivity : BindActivity<io.temco.guhada.databinding.ActivityCartBindin
             Flag.RequestCode.LOGIN ->
                 if (resultCode == Activity.RESULT_OK) mViewModel.getCart()
                 else finish()
+            RequestCode.PAYMENT.flag -> {
+                if (resultCode == Activity.RESULT_OK) finish()
+            }
         }
     }
 

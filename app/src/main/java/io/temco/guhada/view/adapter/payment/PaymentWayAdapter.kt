@@ -44,6 +44,7 @@ class PaymentWayAdapter : RecyclerView.Adapter<PaymentWayAdapter.Holder>() {
     inner class Holder(val binding: ItemPaymentPaymentwayBinding) : BaseViewHolder<ItemPaymentPaymentwayBinding>(binding.root) {
         fun bind(paymentMethod: PaymentMethod) {
             if (::mViewModel.isInitialized) {
+                binding.radiobuttonPaymentway.tag = adapterPosition.toString()
                 binding.paymentMethod = paymentMethod
                 binding.viewModel = mViewModel
                 binding.radiobuttonPaymentway.tag = adapterPosition

@@ -34,5 +34,6 @@ enum class RequestCode(val flag: Int) {
     WITHDRAW(10027),
     VERIFY(10028),
     COUPON_DOWNLOAD(10029),
-    COUPON_SELECT(10030)
+    COUPON_SELECT(10030),
+    PAYMENT_RESULT(10031)
 }
