@@ -133,7 +133,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 if (customLayoutMap.containsKey(currentPagerIndex)) customLayoutMap.get(currentPagerIndex)!!.onFocusView()
             }
         })
-        mBinding.viewpager.offscreenPageLimit = 4
+        mBinding.viewpager.offscreenPageLimit = 3
         mBinding.viewpager.currentItem = currentPagerIndex
         mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager){
             override fun onTabReselected(tab: TabLayout.Tab?) {

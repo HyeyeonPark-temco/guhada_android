@@ -243,6 +243,7 @@ class UserClaimSellerActivity : BindActivity<ActivityUserclaimsellerBinding>(), 
             return
         }
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
+        mLoadingIndicatorUtil.show()
         var response = UserClaimSellerResponse()
         response.contents = mBinding.edittextUserclaimsellerText.text.toString()
         response.title = mViewModel.userClaimSellerProductData.get().toString()
@@ -251,7 +252,6 @@ class UserClaimSellerActivity : BindActivity<ActivityUserclaimsellerBinding>(), 
         response.orderProdGroupId = mViewModel.userSellerInquireOrderList.get()?.get(mViewModel.userClaimSellerProductIndex.get())?.orderProdGroupId ?: 0
         if(CustomLog.flag)CustomLog.L("setOnClickWriteButton callBackListener","response", response.toString())
 
-        mLoadingIndicatorUtil.show()
         if(mViewModel.userClaimSellerImages.value.isNullOrEmpty()){
             if(CustomLog.flag)CustomLog.L("setOnClickWriteButton isNullOrEmpty","response", response)
             mViewModel.repository.saveUserClaimSeller(mViewModel.userId, response, object : OnCallBackListener{

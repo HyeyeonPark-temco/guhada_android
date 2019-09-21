@@ -36,19 +36,6 @@ class CommunitySubMainFragment : BaseFragment<FragmentCommunitySubMainBinding>()
     override fun getBaseTag(): String = CommunitySubMainFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.fragment_community_sub_main
     override fun init() {
-        mBinding.setClickListener {
-            var intent = Intent(context as Activity, CommunityDetailActivity::class.java)
-            intent.putExtra("bbsId", 282333L)// 282305L 282287L 282286L 282286L 282300L
-            intent.putExtra("info", info)
-            (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
-        }
-
-        mBinding.setClickListener2 {
-            var intent = Intent(context as Activity, CommunityDetailActivity::class.java)
-            intent.putExtra("bbsId", 282300L)// 282305L 282287L 282286L 282286L 282300L
-            intent.putExtra("info", info)
-            (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
-        }
     }
 
     ////////////////////////////////////////////////

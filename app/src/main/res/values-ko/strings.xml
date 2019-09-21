@@ -1126,7 +1126,7 @@
     <string name="user_size_update_recommend_desc">내 사이즈 등록하면 적립금 1,000원 적립!</string>
 
     <!-- Community -->
-    <string name="community_titles_main">메인</string>
+    <string name="community_titles_main">전체</string>
     <string name="community_titles_popular">인기글</string>
     <string name="community_titles_noti">공지사항</string>
 

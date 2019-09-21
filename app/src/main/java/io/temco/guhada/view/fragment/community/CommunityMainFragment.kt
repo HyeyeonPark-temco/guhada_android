@@ -12,6 +12,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.viewmodel.community.CommunityMainViewPagerViewModel
 import io.temco.guhada.databinding.FragmentMainCommunityBinding
@@ -26,7 +27,7 @@ import java.util.ArrayList
  * @author park jungho
  *
  * 전체 탭 구성
- * 메인 - 인기글 - 공지사항 - 패션문답 - 패션토크 - 패션추천 - 회원패션 - 소장품 - 비디오 쇼핑 - 포토 쇼핑 - 진품가품 - 쇼핑후기 - 세일정보
+ * 전체 - 인기글 - 패션문답 - 패션토크 - 패션추천 - 회원패션 - 소장품 - 비디오 쇼핑 - 포토 쇼핑 - 진품가품 - 쇼핑후기 - 세일정보
  *
  *
  */
@@ -34,6 +35,7 @@ import java.util.ArrayList
 class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View.OnClickListener {
     private var viewPagerAdapter : CommunityPagerAdapter? = null
     private lateinit var mViewModel : CommunityMainViewPagerViewModel
+    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     var currentPagerIndex : Int = 0
     var initView = false
@@ -48,7 +50,9 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
     override fun init() {
         initView = false
         mViewModel = CommunityMainViewPagerViewModel(context = context!!)
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
         mBinding.viewModel = mViewModel
+        viewPagerAdapter = null
     }
 
 
@@ -62,14 +66,15 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
 
     override fun onStart() {
         super.onStart()
-        if(!initView){
-            initView = true
-            setView()
-        }
     }
 
     override fun onResume() {
         super.onResume()
+        if(!initView){
+            if(::mLoadingIndicatorUtil.isInitialized)mLoadingIndicatorUtil.show()
+            initView = true
+            setView()
+        }
     }
 
     override fun onPause() {
@@ -82,6 +87,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
 
     override fun onDestroy() {
         super.onDestroy()
+        if(::mLoadingIndicatorUtil.isInitialized)mLoadingIndicatorUtil.dismiss()
     }
 
     ////////////////////////////////////////////////
@@ -146,6 +152,9 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
                 mBinding.viewpager.setCurrentItem(currentPagerIndex)
             }
         })
+        mBinding.viewpager.handler.postDelayed({
+            if(::mLoadingIndicatorUtil.isInitialized)mLoadingIndicatorUtil.dismiss()
+        },1000)
     }
 
 
