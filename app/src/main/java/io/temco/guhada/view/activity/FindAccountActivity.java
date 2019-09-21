@@ -249,7 +249,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Flag.RequestCode.VERIFY_PHONE) {
             if (resultCode == RESULT_OK) {
-                ToastUtil.showMessage("본인인증이 완료되었습니다.");
+                // ToastUtil.showMessage("본인인증이 완료되었습니다.");
 
                 if (data != null) {
                     mLoadingIndicatorUtil.show();
@@ -284,6 +284,8 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                                     String message = getResources().getString(R.string.findid_message_wronginfo);
                                     CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
                                     break;
+                                default:
+                                    CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, model.message);
                             }
                         } else {
                             String message = (String) o;

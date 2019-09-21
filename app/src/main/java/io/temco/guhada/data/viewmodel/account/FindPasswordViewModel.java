@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel.account;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.databinding.Bindable;
@@ -21,9 +20,9 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.ToastUtil;
-import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
@@ -367,6 +366,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             CustomLog.INSTANCE.L("비밀번호 재설정 response", "본인인증으로 진행 여부:" + checkedFindPwdByVerifyingPhone + "   RESULT MSG:" + model.message);
                         if (model.resultCode == Flag.ResultCode.SUCCESS) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
+                            listener.closeActivity();
                         } else {
                             String message = ((BaseModel) o).message != null && !((BaseModel) o).message.isEmpty() ? ((BaseModel) o).message : BaseApplication.getInstance().getString(R.string.common_message_servererror);
                             listener.showSnackBar(message);
