@@ -169,6 +169,8 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
                         listener?.run { onResultCallback() }
                     },
                     dataIsNull = {
+                        if(CustomLog.flag)CustomLog.L("getMoreClaimList","dataIsNull")
+                        viewModel.emptyClaimVisible.set(true)
                         viewModel.listData.value = ArrayList()
                         viewModel.listData.value = viewModel.listData.value
                         listener?.run { onResultCallback() }

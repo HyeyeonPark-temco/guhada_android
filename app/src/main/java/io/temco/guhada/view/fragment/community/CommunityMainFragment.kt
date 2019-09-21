@@ -154,7 +154,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
         })
         mBinding.viewpager.handler.postDelayed({
             if(::mLoadingIndicatorUtil.isInitialized)mLoadingIndicatorUtil.dismiss()
-        },1000)
+        },600)
     }
 
 

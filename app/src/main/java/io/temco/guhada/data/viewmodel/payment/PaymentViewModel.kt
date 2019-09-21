@@ -253,7 +253,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     notifyPropertyChanged(BR.shippingAddressText)
 
                     //  사용 가능 포인트
-                    this.holdingPoint = order.availablePointResponse.availableFreePoint.toLong()
+                    this.holdingPoint = order.availablePointResponse.availableTotalPoint.toLong()
                     this.mTotalDiscountPrice = ObservableInt(order.totalDiscountDiffPrice)
                     notifyPropertyChanged(BR.mTotalDiscountPrice)
 

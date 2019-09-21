@@ -71,6 +71,7 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center_vertical"
                 android:text="@{@string/community_format_commentcount(item.comments)}"
+                android:visibility="@{item.comments == 0 ? View.GONE : View.VISIBLE, default = visible}"
                 android:textSize="@dimen/text_13"
                 app:layout_constraintLeft_toRightOf="@id/textview_communityphoto_title"
                 app:layout_constraintRight_toLeftOf="@id/imageview_communityphoto_new"

@@ -8,8 +8,8 @@ package io.temco.guhada.data.model.point
  */
 class PointSummary {
     var userId: Long = 0
-    var totalFreePoint = 0
-    var totalPaidPoint = 0
-    var totalDueSavePoint = 0 // 적립 예정 포인트
+    var totalFreePoint = 0      // 무료 충전 포인트
+    var totalPaidPoint = 0      // 유료 충전 포인트
+    var totalDueSavePoint = 0   // 적립 예정 포인트
     var totalDueExpirePoint = 0 // 적립 포인트
 }

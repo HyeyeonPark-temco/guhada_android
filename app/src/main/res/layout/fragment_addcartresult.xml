@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="330dp">
+        android:id="@+id/constraintlayout_addcartresult_container"
+        android:paddingTop="30dp">
 
         <TextView
             android:id="@+id/textview_addcartresult_title"
@@ -59,9 +60,9 @@
             android:id="@+id/recyclerview_addcartresult_recommend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="12dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
             app:spanCount="3"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintLeft_toLeftOf="parent"

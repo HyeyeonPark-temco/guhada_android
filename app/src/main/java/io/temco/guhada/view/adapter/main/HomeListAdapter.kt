@@ -10,10 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -33,7 +31,7 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
  * 19.07.18
  * 메인 홈에서 사용했던 recycler adapter
  */
-class HomeListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
+class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
     /**
      * HomeType 에 따른 item view  TextUtils

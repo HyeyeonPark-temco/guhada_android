@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonViewUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.databinding.ItemAddcartproductBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder

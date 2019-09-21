@@ -514,8 +514,8 @@
 
     <string name="payment_message_cancel">결제가 취소되었습니다</string>
     <string name="payment_coupon_format">%,2d원(%d장)</string>
-    <string name="payment_couponcount_format"><![CDATA[(사용가능 <font color="#111111">%d</font>장 / 보유 %d장)]]></string>
-    <string name="payment_availablepoint_format"><![CDATA[(사용가능 <font color="#111111">%d</font>P / 보유 %dP)]]></string>
+    <string name="payment_couponcount_format"><![CDATA[(사용가능 <font color="#111111">%,2d</font>장 / 보유 %,2d장)]]></string>
+    <string name="payment_availablepoint_format"><![CDATA[(사용가능 <font color="#111111">%,2d</font>P / 보유 %,2dP)]]></string>
     <string name="payment_coupon_hint">0원 (0장)</string>
     <string name="payment_shipping_format">배송비 %,2d원</string>
 
@@ -1053,7 +1053,7 @@
     <string name="mypage_review_tab1_title">작성 가능한 리뷰 %d개</string>
     <string name="mypage_review_tab2_title">내가 작성한 리뷰 %d개</string>
 
-    <string name="no_list_item_claim_desc">상품문의 내역이 없습니다.</string>
+    <string name="no_list_item_claim_desc">문의한 내역이 없습니다.</string>
 
     <string name="review_write_title">리뷰작성</string>
     <string name="review_modity_title">리뷰수정</string>
