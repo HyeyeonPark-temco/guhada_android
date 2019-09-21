@@ -97,7 +97,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                     if (isChecked) {
                         mViewModel.selectedCartItem.add(cart)
                         mViewModel.selectCartItemId.add(cart.cartItemId.toInt())
-                        Log.e("ㅇㅇㅇ", "TOTAL: ${mViewModel.totalItemCount.get()}        SELECTED: ${mViewModel.selectCartItemId.size}")
+
                         if (mViewModel.totalItemCount.get() == mViewModel.selectCartItemId.size) {
                             mViewModel.allChecked = ObservableBoolean(true)
                             mViewModel.notifyPropertyChanged(BR.allChecked)
