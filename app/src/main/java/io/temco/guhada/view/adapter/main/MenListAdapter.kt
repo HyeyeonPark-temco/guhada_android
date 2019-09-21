@@ -222,7 +222,7 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
                     width = (matrix.widthPixels - CommonViewUtil.dipToPixel(viewModel.context, 13)) / 2
                     height = width
                     margin = CommonViewUtil.dipToPixel(viewModel.context, 3)
-                    layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 120)
+                    layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 126)
                 }
                 // Thumbnail
                 var size = item.listSize[item.currentSubTitleIndex] - 1
