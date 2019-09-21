@@ -92,11 +92,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var holdingPoint: Long = 0
     var usedPointNumber: Long = 0
         set(value) {
-
+            // 할인 금액 계산
             val prev = usedPointNumber.toInt()
             val new = if (value > holdingPoint) holdingPoint.toInt() else value.toInt()
             mTotalDiscountPrice = ObservableInt(mTotalDiscountPrice.get() - prev + new)
             notifyPropertyChanged(BR.mTotalDiscountPrice)
+
+            // 최종 결제 금액 계산
+            mTotalPaymentPrice = ObservableInt(order.totalProdPrice - mTotalDiscountPrice.get())
+            notifyPropertyChanged(BR.mTotalPaymentPrice)
 
             field = if (value > holdingPoint) {
                 listener.showMessage(String.format(BaseApplication.getInstance().resources.getString(R.string.payment_message_maxusagepoint), holdingPoint))
@@ -127,6 +131,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         set(value) {
             this.shippingMessages = value.shippingMessage
             notifyPropertyChanged(BR.shippingMessages)
+
+            // default 최종 결제 금액
+            this.mTotalPaymentPrice = ObservableInt(value.totalPaymentPrice)
+            notifyPropertyChanged(BR.mTotalPaymentPrice)
+
             field = value
         }
     var productVisible = ObservableBoolean(true)
@@ -190,6 +199,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mTotalDiscountPrice = ObservableInt(0)  // 상품 할인 금액 + 쿠폰 할인 금액 + 포인트 사용 금액
         @Bindable
         get() = field
+    var mTotalPaymentPrice = ObservableInt(0)   // 최종 결제 금액
+        @Bindable
+        get() = field
     var mCouponDiscountPrice = 0
     var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
         @Bindable
@@ -241,7 +253,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     notifyPropertyChanged(BR.shippingAddressText)
 
                     //  사용 가능 포인트
-                    this.holdingPoint = order.availablePointResponse.availableTotalPoint.toLong()
+                    this.holdingPoint = order.availablePointResponse.availableFreePoint.toLong()
                     this.mTotalDiscountPrice = ObservableInt(order.totalDiscountDiffPrice)
                     notifyPropertyChanged(BR.mTotalDiscountPrice)
 
@@ -251,6 +263,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     // 사용 가능 쿠폰 갯수
                     getAvailableBenefitCount()
                 } else {
+                    listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.closeActivity()
                 }
@@ -468,6 +481,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                         if (mRequestOrder.cashReceiptType == RequestOrder.CashReceiptType.MOBILE.code)
                                             if (mRecipientPhone1.isEmpty() || mRecipientPhone2.isEmpty() || mRecipientPhone3.isEmpty()) {
                                                 listener.showMessage("현금영수증을 신청할 핸드폰 번호를 입력하세요")
+                                                return
+                                            } else if (mRecipientPhone2.length < 4 || mRecipientPhone3.length < 4) {
+                                                listener.showMessage("현금영수증을 신청할 휴대폰 번호를 올바르게 입력하세요")
                                                 return
                                             }
                                     RequestOrder.CashReceiptUsage.BUSINESS.code ->
