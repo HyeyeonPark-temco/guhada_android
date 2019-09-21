@@ -365,7 +365,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private fun initAvailableBenefitCount() {
         mViewModel.mAvailableBenefitCount.observe(this, Observer {
             mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, it.totalAvailCoupon))
-            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableFreePoint, mViewModel.order.availablePointResponse.availableTotalPoint))
+            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, it.totalFreePoint + it.totalPaidPoint))
         })
     }
 

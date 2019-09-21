@@ -8,12 +8,16 @@ import android.view.View
 import android.webkit.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import io.reactivex.Observable
@@ -46,6 +50,7 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
+import kotlinx.android.synthetic.main.fragment_addcartresult.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -316,6 +321,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         if (!::mAddCartResultFragment.isInitialized) mAddCartResultFragment = AddCartResultFragment(this)
         mAddCartResultFragment.show(fragmentManager!!, "addCartResult")
     }
+
 
     override fun dismissAddCartResult() {
         if (::mAddCartResultFragment.isInitialized)

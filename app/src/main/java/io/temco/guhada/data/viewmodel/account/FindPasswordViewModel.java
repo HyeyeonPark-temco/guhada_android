@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel.account;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.databinding.Bindable;
@@ -18,6 +19,7 @@ import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.Verification;
@@ -245,10 +247,11 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
     /**
      * 이메일로 인증번호 발송
-     *
+     * <p>
      * response 변경 (double -> object)
      * { data: {data : Double}, .. }
      * updated 2019.09.09
+     *
      * @author Hyeyeon Park
      */
     public void onClickSendEmail() {
@@ -263,8 +266,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             verifyEmailVisibility = View.VISIBLE;
                             notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                          //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
-                            Double second = Double.parseDouble(((LinkedTreeMap)((BaseModel) o).data).get("data").toString());
+                            //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
+                            Double second = Double.parseDouble(((LinkedTreeMap) ((BaseModel) o).data).get("data").toString());
                             int minute = (int) (second / 60000);
                             if (String.valueOf(minute).length() == 1) {
                                 listener.startTimer("0" + (minute - 1), "60");
@@ -273,7 +276,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             }
                             listener.hideKeyboard();
                             listener.hideLoadingIndicator();
-                        break;
+                            break;
                         case 6005:
                             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
                     }
@@ -343,38 +346,49 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         if (newPassword.equals(newPasswordConfirm)) {
             if (CommonUtil.validatePassword(newPassword)) {
                 Verification verification = new Verification();
-                verification.setEmail(user.getEmail());
+                verification.setEmail(user.getEmail() == null ? "" : user.getEmail());
                 verification.setNewPassword(newPassword);
                 verification.setVerificationNumber(verifyNumber);
                 verification.setDiCode(di);
-                verification.setMobile(user.getMobile());
-                verification.setName(user.getName());
+                verification.setPhoneNumber(user.getMobile() == null ? "" : user.getMobile());
+                verification.setMobile(user.getMobile() == null ? "" : user.getMobile());
+                verification.setName(user.getName() == null ? "" : user.getName());
 
+                if (CustomLog.INSTANCE.getFlag())
+                    CustomLog.INSTANCE.L("비밀번호 재설정 body", verification.toString());
                 listener.showLoadingIndicator();
                 user.deleteObserver(this);
                 OnServerListener serverListener = (success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
                         listener.hideLoadingIndicator();
-                        switch (model.resultCode) {
-                            case Flag.ResultCode.SUCCESS:
-                                ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
-//                                listener.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
-                                // listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
-                                listener.closeActivity();
-                                break;
-                            case Flag.ResultCode.DATA_NOT_FOUND:
-                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
-                                break;
-                            case Flag.ResultCode.INVALID_VERIFICATION_NUMBER:
-                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
-                                break;
-                            case Flag.ResultCode.NOT_FOUND_VERIFY_INFO:
-                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidverificationdata));
-                                break;
-                            default :
-                                listener.showSnackBar(((BaseModel) o).message);
+
+                        if (CustomLog.INSTANCE.getFlag())
+                            CustomLog.INSTANCE.L("비밀번호 재설정 response", "본인인증으로 진행 여부:" + checkedFindPwdByVerifyingPhone + "   RESULT MSG:" + model.message);
+                        if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
+                        } else {
+                            String message = ((BaseModel) o).message != null && !((BaseModel) o).message.isEmpty() ? ((BaseModel) o).message : BaseApplication.getInstance().getString(R.string.common_message_servererror);
+                            listener.showSnackBar(message);
                         }
+
+//                        switch (model.resultCode) {
+//                            case Flag.ResultCode.SUCCESS:
+//                                ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
+//                                listener.closeActivity();
+//                                break;
+//                            case Flag.ResultCode.DATA_NOT_FOUND:
+//                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
+//                                break;
+//                            case Flag.ResultCode.INVALID_VERIFICATION_NUMBER:
+//                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
+//                                break;
+//                            case Flag.ResultCode.NOT_FOUND_VERIFY_INFO:
+//                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidverificationdata));
+//                                break;
+//                            default:
+//                                listener.showSnackBar(((BaseModel) o).message);
+//                        }
                     } else {
                         listener.showSnackBar((String) o);
                     }
@@ -384,7 +398,6 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
                 if (checkedFindPwdByVerifyingPhone) {
                     // 본인인증으로 비밀번호 재설정
-                    verification.setMobile(user.getPhoneNumber());
                     UserServer.changePasswordByIdentifying(serverListener, verification);
                 } else {
                     UserServer.changePassword(serverListener, verification);
