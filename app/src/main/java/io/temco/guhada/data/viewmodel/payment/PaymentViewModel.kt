@@ -482,6 +482,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                             if (mRecipientPhone1.isEmpty() || mRecipientPhone2.isEmpty() || mRecipientPhone3.isEmpty()) {
                                                 listener.showMessage("현금영수증을 신청할 핸드폰 번호를 입력하세요")
                                                 return
+                                            } else if (mRecipientPhone2.length < 4 || mRecipientPhone3.length < 4) {
+                                                listener.showMessage("현금영수증을 신청할 휴대폰 번호를 올바르게 입력하세요")
+                                                return
                                             }
                                     RequestOrder.CashReceiptUsage.BUSINESS.code ->
                                         if (mRecipientCorporation1.isEmpty() || mRecipientCorporation2.isEmpty() || mRecipientCorporation3.isEmpty()) {
