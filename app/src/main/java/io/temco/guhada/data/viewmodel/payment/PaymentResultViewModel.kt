@@ -51,14 +51,12 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
         get() = field
 
 
-    fun onClickBag() {
-        val message = "장바구니 이동"
-        listener.showMessage(message)
+    fun onClickCart() {
+        listener.redirectCartActivity()
     }
 
     fun onClickContinue() {
         listener.redirectMainActivity()
-        // listener.closeActivity()
     }
 
     fun onClickPointHistory() {

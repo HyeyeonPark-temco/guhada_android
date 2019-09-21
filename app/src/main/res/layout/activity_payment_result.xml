@@ -758,7 +758,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:background="@color/greyish_brown_two"
-                    android:onClick="@{()->viewModel.onClickBag()}"
+                    android:onClick="@{()->viewModel.onClickCart()}"
                     android:text="@string/paymentreuslt_button_bag"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_18"

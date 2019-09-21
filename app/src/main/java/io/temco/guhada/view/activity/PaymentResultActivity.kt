@@ -1,11 +1,13 @@
 package io.temco.guhada.view.activity
 
 import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.model.point.ExpectedPointResponse
@@ -33,13 +35,20 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
                 finish()
             }
 
+            override fun redirectCartActivity() {
+                Intent(this@PaymentResultActivity, CartActivity::class.java).let {
+                    this@PaymentResultActivity.startActivity(it)
+                    finish()
+                }
+            }
+
             override fun closeActivity() {
                 setResult(Activity.RESULT_CANCELED)
                 finish()
             }
 
             override fun showMessage(message: String) {
-                Toast.makeText(this@PaymentResultActivity, message, Toast.LENGTH_SHORT).show()
+                ToastUtil.showMessage(message)
             }
         }).apply {
             val purchaseOrderResponse = intent.getSerializableExtra("purchaseOrderResponse")
@@ -92,6 +101,7 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         fun closeActivity()
         fun showMessage(message: String)
         fun redirectMainActivity()
+        fun redirectCartActivity()
     }
 
     companion object {
