@@ -247,6 +247,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     mViewModel.usedPoint = ObservableField("0")
                     mViewModel.notifyPropertyChanged(BR.usedPoint)
                 }
+
+
+
+                Log.e("ㅇㅇㅇㅇㅇ", "NUM: ${mViewModel.usedPointNumber}  STR: ${mViewModel.usedPoint}")
             }
         })
     }
@@ -361,7 +365,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private fun initAvailableBenefitCount() {
         mViewModel.mAvailableBenefitCount.observe(this, Observer {
             mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, it.totalAvailCoupon))
-            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint))
+            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableFreePoint, mViewModel.order.availablePointResponse.availableTotalPoint))
         })
     }
 
@@ -457,10 +461,13 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                     }
 
                                     val totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), couponDiscountPrice)
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), (mViewModel.order.totalProdPrice - totalDiscountPrice))
                                     mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice)
+                                    mViewModel.mTotalPaymentPrice = ObservableInt((mViewModel.order.totalProdPrice - totalDiscountPrice))
                                     mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
+                                    mViewModel.notifyPropertyChanged(BR.mTotalPaymentPrice)
+
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), couponDiscountPrice)
+                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), mViewModel.mTotalPaymentPrice.get())
                                 }
                             }
                         }
