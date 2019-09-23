@@ -18,4 +18,6 @@ public interface OnFindAccountListener extends OnBaseActivityListener {
     void showLoadingIndicator();
 
     void hideLoadingIndicator();
+
+    void onSuccessGetIdentifyVerify();
 }

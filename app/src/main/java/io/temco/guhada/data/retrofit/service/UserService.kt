@@ -428,6 +428,14 @@ interface UserService {
     fun updateIdentityVerify(@Header("Authorization") accessToken: String, @Body verification: Verification): Call<BaseModel<Any>>
 
     /**
+     * 본인인증 데이터 여부 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.23
+     */
+    @GET("/users/identity-verify")
+    fun getIdentityVerify(@Query("diCode") di: String): Call<BaseModel<Any>>
+
+    /**
      * 셀러 스토어 정보 조회 API (비로그인)
      * @param sellerId seller id
      * @author Hyeyeon Park

@@ -30,7 +30,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="@{viewModel.user.email}"
+                    android:text="@{viewModel.user.name}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"

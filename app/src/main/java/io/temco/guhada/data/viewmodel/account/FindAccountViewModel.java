@@ -14,6 +14,8 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindAccountListener;
+import io.temco.guhada.common.listener.OnServerListener;
+import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
@@ -30,7 +32,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     private int resultVisibility = View.GONE;
 
     public User user = new User();
-
+    public String di = "";
     public ObservableField<User> mUser = new ObservableField<User>(new User()); // 삭ㅈㅔ 예정
 
     // FIND ID BY VERIFYING PHONE
@@ -234,7 +236,6 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
                         User user = (User) model.data;
-
                         this.user = user;
                         Objects.requireNonNull(this.user).setPhoneNumber(user.getPhoneNumber());
                         Objects.requireNonNull(this.user).setEmail(user.getEmail());
@@ -258,6 +259,32 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
         }, Objects.requireNonNull(this.user).getName(), Objects.requireNonNull(this.user).getPhoneNumber());
     }
 
+    /**
+     * 본인인증 데이터 여부 조회
+     * @param di
+     * @author Hyeyeon Park
+     * @since 2019.09.23
+     */
+    public void getIdentityVerify(String di) {
+        UserServer.getIdentityVerify((success, o) -> {
+            BaseModel model = (BaseModel) o;
+            if (success) {
+                switch (model.resultCode) {
+                    case Flag.ResultCode.SUCCESS:
+                        findAccountListener.onSuccessGetIdentifyVerify();
+                        return;
+                    case Flag.ResultCode.DATA_NOT_FOUND:
+                        String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
+                        findAccountListener.showSnackBar(message);
+                        return;
+                    default:
+                        findAccountListener.showMessage(model.message);
+                }
+            } else {
+                findAccountListener.showMessage(model.message);
+            }
+        }, di);
+    }
 
     @Override
     public void update(Observable o, Object arg) {

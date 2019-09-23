@@ -797,6 +797,7 @@ class UserServer {
          * @author Hyeyeon Park
          * @since 2019.09.11
          */
+        @JvmStatic
         fun updateIdentityVerify(listener: OnServerListener, accessToken: String, verification: Verification) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateIdentityVerify(accessToken, verification)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
@@ -805,15 +806,24 @@ class UserServer {
          * @author Hyeyeon Park
          * @since 2019.09.19
          */
+        @JvmStatic
         fun getSellerStoreInfo(listener: OnServerListener, sellerId: Long, accessToken: String?) {
             if (accessToken.isNullOrEmpty())
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getSellerStoreInfo(sellerId = sellerId)
                         .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerStore>>(successTask = { listener.onResult(true, it.body()) }))
-             else
+            else
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getSellerStoreInfo(accessToken = accessToken, sellerId = sellerId)
                         .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<SellerStore>>(successTask = { listener.onResult(true, it.body()) }))
-
         }
+
+        /**
+         * 본인인증 데이터 여부 조회
+         * @author Hyeyeon Park
+         * @since 2019.09.23
+         */
+        @JvmStatic
+        fun getIdentityVerify(listener: OnServerListener, di: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getIdentityVerify(di = di)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
     }
 
 }
