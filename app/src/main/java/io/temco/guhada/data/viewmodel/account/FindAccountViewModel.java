@@ -14,10 +14,8 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindAccountListener;
-import io.temco.guhada.common.listener.OnServerListener;
-import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
@@ -261,6 +259,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
 
     /**
      * 본인인증 데이터 여부 조회
+     *
      * @param di
      * @author Hyeyeon Park
      * @since 2019.09.23
@@ -284,6 +283,36 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                 findAccountListener.showMessage(model.message);
             }
         }, di);
+    }
+
+    /**
+     * 유저 정보 조회
+     *
+     * @param name
+     * @param phoneNumber
+     * @author Hyeyeon Park
+     * @since 2019.09.23
+     */
+    public void getUser(String name, String phoneNumber) {
+        UserServer.findUserId((success, o) -> {
+            BaseModel model = (BaseModel) o;
+            if (success) {
+                if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                    User user = (User) model.data;
+                    user.setPhoneNumber(phoneNumber);
+                    user.setMobile(phoneNumber);
+                    this.user = user;
+
+                    setResultVisibility(View.VISIBLE);
+                    notifyPropertyChanged(BR.resultVisibility);
+                    notifyPropertyChanged(BR.user);
+                } else {
+                    findAccountListener.showSnackBar(model.message);
+                }
+            } else {
+                findAccountListener.showSnackBar(model.message);
+            }
+        }, name, phoneNumber);
     }
 
     @Override

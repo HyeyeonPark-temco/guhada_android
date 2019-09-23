@@ -134,9 +134,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
                     passwordViewModel.notifyPropertyChanged(BR.user);
                 } else {
-                    mViewModel.setResultVisibility(View.VISIBLE);
-                    mViewModel.notifyPropertyChanged(BR.resultVisibility);
-                    mViewModel.notifyPropertyChanged(BR.user);
+                    mViewModel.getUser(mViewModel.user.getName(), mViewModel.user.getPhoneNumber());
                 }
 
                 hideKeyboard();

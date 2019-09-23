@@ -40,5 +40,4 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
             mBinding.executePendingBindings();
         }
     }
-
 }
