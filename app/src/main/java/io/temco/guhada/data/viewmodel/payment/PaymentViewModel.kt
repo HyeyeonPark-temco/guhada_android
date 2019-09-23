@@ -465,7 +465,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     listener.showMessage(BaseApplication.getInstance().getString(R.string.common_message_ing))
                 } else {
                     if (this.user.get() != null) {
-                        if (this.order.user.mobile.isEmpty()) {
+                        if (this.order.user.mobile.isNullOrEmpty()) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
                         } else if (this.order.user.emailVerify == false) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))

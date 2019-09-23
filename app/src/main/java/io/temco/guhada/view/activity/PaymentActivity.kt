@@ -332,23 +332,23 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         // 개인소득공제용 방식 스피너
         // 주민번호 삭제 [2019.09.10]
-        val personalTypeList = listOf(RequestOrder.CashReceiptType.MOBILE.label)
-        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.adapter = CommonSpinnerAdapter(context = this@PaymentActivity, layoutRes = R.layout.item_common_spinner, list = personalTypeList)
-        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedType = personalTypeList[position]
-                mBinding.includePaymentPaymentway.textviewPaymentPersonaltype.text = selectedType
-                mViewModel.mRecipientByPhone = ObservableBoolean(selectedType == RequestOrder.CashReceiptType.MOBILE.label)
-                mViewModel.notifyPropertyChanged(BR.mRecipientByPhone)
-
-                mViewModel.mRequestOrder.cashReceiptType = when (selectedType) {
-                    RequestOrder.CashReceiptType.MOBILE.label -> RequestOrder.CashReceiptType.MOBILE.code
-                    RequestOrder.CashReceiptType.CARD.label -> RequestOrder.CashReceiptType.CARD.code
-                    else -> ""
-                }
-            }
-        }
+//        val personalTypeList = listOf(RequestOrder.CashReceiptType.MOBILE.label)
+//        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.adapter = CommonSpinnerAdapter(context = this@PaymentActivity, layoutRes = R.layout.item_common_spinner, list = personalTypeList)
+//        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {}
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                val selectedType = personalTypeList[position]
+//                mBinding.includePaymentPaymentway.textviewPaymentPersonaltype.text = selectedType
+//                mViewModel.mRecipientByPhone = ObservableBoolean(selectedType == RequestOrder.CashReceiptType.MOBILE.label)
+//                mViewModel.notifyPropertyChanged(BR.mRecipientByPhone)
+//
+//                mViewModel.mRequestOrder.cashReceiptType = when (selectedType) {
+//                    RequestOrder.CashReceiptType.MOBILE.label -> RequestOrder.CashReceiptType.MOBILE.code
+//                    RequestOrder.CashReceiptType.CARD.label -> RequestOrder.CashReceiptType.CARD.code
+//                    else -> ""
+//                }
+//            }
+//        }
 
         // 핸드폰 번호 스피너
         val phoneList = listOf("010", "011", "016", "017", "019")
@@ -361,7 +361,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }
 
-        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.setSelection(0)
+//        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.setSelection(0)
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptpersonal.isChecked = true
 
     }
