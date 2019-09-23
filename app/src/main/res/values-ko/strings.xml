@@ -556,6 +556,8 @@
 
     <string name="payment_message_selectpaymentway">결제 수단을 선택해주세요.</string>
     <string name="payment_message_confirmtemrs">이용 약관에 동의해주세요</string>
+    <string name="payment_message_verifyemail">이메일 인증을 진행해주세요</string>
+    <string name="payment_message_verifymobile">휴대폰 본인인증을 진행해주세요</string>
 
     <!-- SHIPPING ADDRESS -->
     <string name="shippingaddress_title">배송지 변경</string>

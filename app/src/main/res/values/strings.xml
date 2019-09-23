@@ -553,6 +553,8 @@
     <string name="payment_message_maxusagepoint">The maximum usable point is %d P</string>
     <string name="payment_message_selectpaymentway">Please select a payment method</string>
     <string name="payment_message_confirmtemrs">Please agree to the terms and conditions</string>
+    <string name="payment_message_verifyemail">이메일 인증을 진행해주세요</string>
+    <string name="payment_message_verifymobile">휴대폰 본인인증을 진행해주세요</string>
 
     <!-- SHIPPING ADDRESS -->
     <string name="shippingaddress_title">배송지 변경</string>

@@ -207,7 +207,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
-    var mMobileVerification: Boolean= false
+    var mMobileVerification: Boolean = false
     var mEmailVerification: Boolean = false
 
     fun addCartItem(accessToken: String) {
@@ -339,7 +339,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
-    private fun saveShippingAddress(accessToken: String,userId: Int) {
+    private fun saveShippingAddress(accessToken: String, userId: Int) {
         if (selectedShippingAddress != null) {
             UserServer.saveUserShippingAddress(OnServerListener { success, o ->
                 executeByResultCode(success, o,
@@ -453,11 +453,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     // 결제하기 버튼 클릭
     fun onClickPay() {
         val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo)
-        if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
-            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
-            return
-        }
-
         if (termsChecked.get()) {
             for (i in 0 until paymentWays.size)
                 if (paymentWays[i])
@@ -470,7 +465,13 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     listener.showMessage(BaseApplication.getInstance().getString(R.string.common_message_ing))
                 } else {
                     if (this.user.get() != null) {
-                        if (this@PaymentViewModel.selectedShippingAddress == null) {
+                        if (this.order.user.mobile.isEmpty()) {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
+                        } else if (this.order.user.emailVerify == false) {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
+                        } else if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
+                            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
+                        } else if (this@PaymentViewModel.selectedShippingAddress == null) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
                             // 현금영수증
@@ -534,13 +535,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     // [임시] 토큰 없는 경우
                                     ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
                                 }
-                            }else {
+                            } else {
                                 requestOrder("Bearer $accessToken", mRequestOrder)
                             }
 
-
-                          //  addShippingAddress(accessToken)
-//                            requestOrder("Bearer $accessToken", mRequestOrder)
                         }
                     }
                 }
