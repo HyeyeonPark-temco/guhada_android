@@ -314,6 +314,7 @@
                         android:layout_marginTop="20dp"
                         android:height="44dp"
                         android:background="@drawable/border_all_purple_1dp"
+                        android:onClick="@{()->viewModel.onClickWriteReview()}"
                         android:paddingStart="36dp"
                         android:paddingEnd="36dp"
                         android:text="@string/productdetail_review_emptybutton"

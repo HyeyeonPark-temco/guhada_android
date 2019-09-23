@@ -119,6 +119,7 @@
             <TextView
                 android:id="@+id/textview_term_recruit"
                 style="@style/TextRegularSingleLine"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/information_title_recruit"

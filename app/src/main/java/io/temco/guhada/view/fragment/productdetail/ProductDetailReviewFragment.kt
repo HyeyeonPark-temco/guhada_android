@@ -19,7 +19,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  */
 class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBinding>() {
     private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
-    private var mViewModel: ProductDetailReviewViewModel = ProductDetailReviewViewModel()
+     var mViewModel: ProductDetailReviewViewModel = ProductDetailReviewViewModel()
     lateinit var notifySummary: (averageReviewsRating: Float) -> Unit
 
     override fun getBaseTag(): String = ProductDetailReviewFragment::class.java.simpleName
