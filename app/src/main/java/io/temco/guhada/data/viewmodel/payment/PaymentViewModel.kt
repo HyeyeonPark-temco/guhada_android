@@ -452,7 +452,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 결제하기 버튼 클릭
     fun onClickPay() {
-        val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo)
+
         if (termsChecked.get()) {
             for (i in 0 until paymentWays.size)
                 if (paymentWays[i])
@@ -469,11 +469,22 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
                         } else if (this.order.user.emailVerify == false) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
-                        } else if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
+                        } /*else if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))
-                        } else if (this@PaymentViewModel.selectedShippingAddress == null) {
+                        } */ else if (this@PaymentViewModel.selectedShippingAddress == null) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_text_defaultshippingaddress))
                         } else {
+                            // 배송 메세지
+                            val defaultShippingMessage = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo)
+                            if (mRequestOrder.shippingAddress.shippingMessage == defaultShippingMessage)
+                                mRequestOrder.shippingAddress.shippingMessage = ""
+
+                            if (selectedShippingMessage.get()?.message == shippingMessages[shippingMessages.size - 2].message) { // 배송메세지 직접 입력
+                                selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = shippingMessage })
+                            } else if (selectedShippingMessage.get()?.message ?: defaultShippingMessage == defaultShippingMessage) {
+                                selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = "" })
+                            }
+
                             // 현금영수증
                             if ((selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) ||
                                     (mRequestOrder.cashReceiptType.isEmpty() && mRequestOrder.cashReceiptUsage.isEmpty()) || !mIsRecipientIssued) {
