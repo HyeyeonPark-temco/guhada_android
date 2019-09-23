@@ -51,12 +51,12 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         @Bindable
         get() = field
     var dealId: Long = 0
-    var product: MutableLiveData<Product> = MutableLiveData()
+    var product: MutableLiveData<Product> = MutableLiveData(Product())
     var tags: List<String> = ArrayList()
     var menuVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
-    var bottomBtnVisibility = ObservableInt(View.GONE) // ObservableInt(View.GONE)
+    var bottomBtnVisibility = ObservableInt(View.GONE)
         @Bindable
         get() = field
         set(value) {

@@ -59,6 +59,10 @@ class Product : BaseProduct() {
     var sCategoryId: Int = 0
     var dCategoryId: Int = 0
 
+    // 구매 버튼 validation
+    var purchasable = true          // 구매 가능 여부
+    var reasonOfUnpurchasable = ""    // 구매 불가 사유
+
     class Item : Serializable {
         var label: String = ""
         var value: String = ""

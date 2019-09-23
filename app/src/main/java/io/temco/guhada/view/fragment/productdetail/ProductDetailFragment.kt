@@ -172,6 +172,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         })
         mViewModel.product.observe(this, Observer<Product> { product ->
+            mBinding.product = product
+            mBinding.executePendingBindings()
+
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mViewModel.getExpectedCoupon()
             initSummary()
@@ -271,6 +274,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         if (mViewModel.dealId > INVALID_DEAL_ID) {
             mViewModel.getDetail()
         }
+
     }
 
     private fun initTabListener() {
