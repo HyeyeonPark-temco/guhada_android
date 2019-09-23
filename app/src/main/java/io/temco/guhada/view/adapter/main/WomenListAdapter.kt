@@ -10,10 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -33,7 +31,7 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
  * 19.07.18
  * 메인 홈에서 사용했던 recycler adapter
  */
-class WomenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseModel>) :
+class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, WomenListAdapter.ListViewHolder>(list){
     /**
      * HomeType 에 따른 item view
@@ -224,7 +222,7 @@ class WomenListAdapter(private val model : ViewModel, list : ArrayList<MainBaseM
                     width = (matrix.widthPixels - CommonViewUtil.dipToPixel(viewModel.context, 13)) / 2
                     height = width
                     margin = CommonViewUtil.dipToPixel(viewModel.context, 3)
-                    layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 120)
+                    layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 126)
                 }
                 // Thumbnail
                 var size = item.listSize[item.currentSubTitleIndex] - 1

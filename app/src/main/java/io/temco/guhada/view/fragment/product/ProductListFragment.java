@@ -53,6 +53,7 @@ import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.model.Tag;
+import io.temco.guhada.data.model.body.FilterBody;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
@@ -96,6 +97,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private int tabWidth = 0;
     private int recentViewCount = -1;
     private boolean scrollviewOnTop = true;
+
+    private FilterBody filterBody = null;
 
     private CompositeDisposable disposable;
     private GuhadaDB db;
@@ -345,7 +348,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
                 i++;
             }
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("","");
             // Select Event
             mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -430,7 +432,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
-    private void setTabLayoutScrollEvent() {
+    // 카테고리 탭 사이드 화살표에 대한 로직 이였던것.....
+    /*private void setTabLayoutScrollEvent() {
         mBinding.layoutHeader.layoutTab.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             if (mBinding.layoutHeader.layoutTab.getWidth() < mBinding.layoutHeader.layoutTab.getChildAt(0).getWidth()) {
                 mBinding.layoutHeader.layoutTab.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -454,7 +457,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 });
             }
         });
-    }
+    }*/
 
     // Order
     private void changeProductOrderWithLoadList(Type.ProductOrder type) {
@@ -817,11 +820,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // TAG
     private void initTagLayout() {
         if (mProductListData != null) {
+            filterBody = null;
             mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
             mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.VISIBLE);
             mBinding.layoutHeaderSub.layoutReset.setOnClickListener(this);
-            //
             initTagList();
+            //filterBody = new FilterBody();
             addCategoryTag(mProductListData.categories);
             addBrandTag(mProductListData.brands);
             addFilterTag(mProductListData.filters);
@@ -861,6 +865,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void addCategoryTag(List<Category> categories) {
         if (categories != null && categories.size() > 0) {
+            if(CustomLog.getFlag())CustomLog.L("addCategoryTag","addCategoryTag",categories);
             for (Category c : categories) {
                 if (c.isSelected) {
                     addTagTypeFull(c.title, c);
@@ -871,19 +876,25 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void addBrandTag(List<Brand> brands) {
-        for (Brand b : brands) {
-            if (b.isSelected) {
-                addTagTypeNormal(b.nameKo, b);
+        if (brands != null && brands.size() > 0) {
+            if(CustomLog.getFlag())CustomLog.L("addBrandTag","addBrandTag",brands);
+            for (Brand b : brands) {
+                if (b.isSelected) {
+                    addTagTypeNormal(b.nameKo, b);
+                }
             }
         }
     }
 
     private void addFilterTag(List<Filter> filters) {
-        for (Filter f : filters) {
-            for (Attribute a : f.attributes) {
-                if (a.selected) {
-                    if(TextUtils.isEmpty(a.colorName)) addTagTypeNormal(a.name, a);
-                    else addTagTypeNormal(a.colorName, a);
+        if (filters != null && filters.size() > 0) {
+            if(CustomLog.getFlag())CustomLog.L("addFilterTag","addFilterTag",filters);
+            for (Filter f : filters) {
+                for (Attribute a : f.attributes) {
+                    if (a.selected) {
+                        if(TextUtils.isEmpty(a.colorName)) addTagTypeNormal(a.name, a);
+                        else addTagTypeNormal(a.colorName, a);
+                    }
                 }
             }
         }
@@ -951,10 +962,15 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     //
     private void resetTagLayout() {
         if (mProductListData != null) {
-            mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
+            if(mIsCategory == Type.ProductListViewType.CATEGORY){
+                mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
+            }else{
+                mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
+            }
             mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.GONE);
             mBinding.layoutHeaderSub.layoutReset.setOnClickListener(null);
             //
+            filterBody = null;
             mTagAdapter.removeAll();
             resetCategoryData(mProductListData.categories);
             resetBrandData(mProductListData.brands);
@@ -1015,9 +1031,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null) mProductListData = (ProductList) o;
                     if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.toString());
-                } else {
-                    ;
                 }
+                emptyView("검색결과가 없습니다.");
             }
             mIsLoading = false;
             mLoadingIndicator.hide();
@@ -1043,9 +1058,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null) mProductListData = (ProductList) o;
-                } else {
-                    ;
                 }
+                emptyView("검색결과가 없습니다.");
             }
             mIsLoading = false;
             mLoadingIndicator.hide();
@@ -1072,24 +1086,25 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null) mProductListData = (ProductList) o;
-                } else {
-                    ;
                 }
-                if(mListAdapter.getItemCount() == 0){
-                    mBinding.listContentsEmpty.setVisibility(View.VISIBLE);
-                    mBinding.listContents.setVisibility(View.GONE);
-                    String txt = "'"+mText+"'에 대한검색결과가 없습니다.";
-                    mBinding.textviewProductlistEmpty.setText(txt);
-                }else{
-                    mBinding.listContentsEmpty.setVisibility(View.GONE);
-                    mBinding.listContents.setVisibility(View.VISIBLE);
-                }
+                emptyView("'"+mText+"'에 대한검색결과가 없습니다.");
             }
             mIsLoading = false;
             mLoadingIndicator.hide();
         });
     }
 
+    private void emptyView(String msg){
+        if(mListAdapter.getItemCount() == 0){
+            mBinding.listContentsEmpty.setVisibility(View.VISIBLE);
+            mBinding.listContents.setVisibility(View.GONE);
+            String txt = msg;
+            mBinding.textviewProductlistEmpty.setText(txt);
+        }else{
+            mBinding.listContentsEmpty.setVisibility(View.GONE);
+            mBinding.listContents.setVisibility(View.VISIBLE);
+        }
+    }
 
     // Dialog
     private void showCategoryListDialog() {

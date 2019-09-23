@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- TEXT SIZE-->
+    <dimen name="grid_span_3_width">100dp</dimen>
+
+</resources>

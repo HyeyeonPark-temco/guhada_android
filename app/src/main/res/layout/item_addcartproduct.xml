@@ -13,12 +13,14 @@
         android:id="@+id/linearlayout_addcartproduct_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
         android:orientation="vertical">
 
         <io.temco.guhada.common.SquareImageView
             android:id="@+id/imageview_addcartproduct"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/grid_span_3_width"
             android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
             android:src="@color/white_two"
             app:imageUrl="@{deal.productImage.url}" />
 
@@ -37,11 +39,11 @@
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{deal.productName}"
             android:textColor="@color/black_four"
-            android:textSize="@dimen/text_13" />
+            android:textSize="@dimen/text_12" />
     </LinearLayout>
 </layout>

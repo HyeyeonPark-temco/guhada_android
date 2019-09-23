@@ -1053,7 +1053,7 @@
     <string name="mypage_review_tab1_title">작성 가능한 리뷰 %d개</string>
     <string name="mypage_review_tab2_title">내가 작성한 리뷰 %d개</string>
 
-    <string name="no_list_item_claim_desc">상품문의 내역이 없습니다.</string>
+    <string name="no_list_item_claim_desc">문의한 내역이 없습니다.</string>
 
     <string name="review_write_title">리뷰작성</string>
     <string name="review_modity_title">리뷰수정</string>
@@ -1127,7 +1127,7 @@
     <string name="user_size_update_recommend_desc">내 사이즈 등록하면 적립금 1,000원 적립!</string>
 
     <!-- Community -->
-    <string name="community_titles_main">메인</string>
+    <string name="community_titles_main">전체</string>
     <string name="community_titles_popular">인기글</string>
     <string name="community_titles_noti">공지사항</string>
 

@@ -12,22 +12,6 @@
         android:orientation="vertical"
         android:background="@color/common_white">
 
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="모바일 작성글"
-            android:layout_marginTop="80dp"
-            android:layout_gravity="center"
-            android:onClick="@{clickListener}" />
-
-
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:text="PC웹 작성글"
-            android:layout_marginTop="30dp"
-            android:layout_gravity="center"
-            android:onClick="@{clickListener2}" />
 
     </LinearLayout>
 
