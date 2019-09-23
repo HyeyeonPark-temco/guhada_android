@@ -2,7 +2,9 @@ package io.temco.guhada.view.adapter.main
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -403,6 +405,11 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                     R.id.textview_term_partner ->{}
                     R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
                     R.id.textview_term_company ->{}
+                    R.id.textview_term_call ->{
+                        val phone = (itemView.context as Activity).resources.getString(R.string.information_company_call)
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+                        (itemView.context as Activity).startActivity(intent)
+                    }
                 }
             }
         }
