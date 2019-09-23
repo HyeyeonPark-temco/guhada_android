@@ -280,6 +280,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:src="@drawable/bag_btn_coupon_change"
+                    android:visibility="@{viewModel.order.availableCouponCount == 0 ? View.GONE: View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView26"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -383,8 +384,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:onClick="@{()->viewModel.onClickSavePointInfo()}"
             android:background="@{viewModel.savePointInfoVisible ? @color/pale_grey : @color/common_white}"
+            android:onClick="@{()->viewModel.onClickSavePointInfo()}"
             android:paddingStart="20dp"
             android:paddingEnd="20dp">
 

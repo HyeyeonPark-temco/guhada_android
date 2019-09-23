@@ -5,19 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.view.View
-import android.webkit.*
+import android.webkit.WebSettings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import io.reactivex.Observable
@@ -50,7 +46,6 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.cart.AddCartResultFragment
-import kotlinx.android.synthetic.main.fragment_addcartresult.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -58,6 +53,7 @@ import kotlin.collections.ArrayList
 
 /**
  * 상품 상세 Fragment
+ * @see io.temco.guhada.view.activity.ProductFragmentDetailActivity
  * @author Hyeyeon Park
  */
 class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
@@ -172,6 +168,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         })
         mViewModel.product.observe(this, Observer<Product> { product ->
+            mBinding.product = product
+            mBinding.executePendingBindings()
+
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mViewModel.getExpectedCoupon()
             initSummary()
@@ -271,6 +270,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         if (mViewModel.dealId > INVALID_DEAL_ID) {
             mViewModel.getDetail()
         }
+
     }
 
     private fun initTabListener() {
@@ -378,7 +378,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
-        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId ?: 0)
+
+        if (mViewModel.product.value?.productId != null && mViewModel.product.value?.productId?:0 > 0)
+            mReviewFragment.setProductId(productId = mViewModel.product.value?.productId!!)
 
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)

@@ -6,6 +6,10 @@ import io.temco.guhada.data.viewmodel.account.FindPasswordViewModel;
 import io.temco.guhada.databinding.FragmentFindpasswordBinding;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
+/**
+ * 비밀번호 재설정 Fragment
+ * @author Hyeyeon Park
+ */
 public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBinding> {
 
     private FindPasswordViewModel mViewModel;

@@ -245,7 +245,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearlayout_payment_shipping">
 
                     <TextView
-                        android:id="@+id/textView23"
+                        android:id="@+id/textview_payment_shippingname"
                         style="@style/PaymentTitleBlackTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -265,8 +265,9 @@
                         android:visibility="@{viewModel.order.shippingAddress != null &amp;&amp; viewModel.order.shippingAddress.defaultAddress ? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@+id/textView23"
+                        app:layout_constraintStart_toEndOf="@+id/textview_payment_shippingname"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
                     <TextView
                         android:id="@+id/textview_payment_shippingaddress"
@@ -277,7 +278,19 @@
                         android:text="@{viewModel.shippingAddressText}"
                         android:textSize="@dimen/text_14"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                        app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingname" />
+
+                    <TextView
+                        android:id="@+id/textview_payment_recipient"
+                        style="@style/PaymentContentGreyTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@{viewModel.order.shippingAddress.recipientName + ` ` + viewModel.order.shippingAddress.recipientMobile}"
+                        android:textSize="@dimen/text_14"
+                        android:visibility="@{viewModel.order.shippingAddress.recipientName != null &amp;&amp; viewModel.order.shippingAddress.recipientMobile != null? View.VISIBLE : View.GONE}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingaddress"/>
 
                     <FrameLayout
                         android:id="@+id/framelayout_payment_shippingmemo"
@@ -286,7 +299,7 @@
                         android:layout_marginTop="24dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textview_payment_shippingaddress">
+                        app:layout_constraintTop_toBottomOf="@+id/textview_payment_recipient">
 
                         <Spinner
                             android:id="@+id/spinner_payment_shippingmemo"

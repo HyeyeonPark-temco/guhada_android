@@ -158,8 +158,12 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }).apply {
             this.mVerifyTask = {
+                mViewModel.mMobileVerification = mViewModel.order.user.mobile?.isNotEmpty()
+                        ?: false
                 val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
                 intent.putExtra("user", mViewModel.order.user)
+                intent.putExtra("mobileVerification", mViewModel.mMobileVerification)
+                intent.putExtra("emailVerification", mViewModel.mEmailVerification)
                 startActivityForResult(intent, RequestCode.VERIFY.flag)
             }
         }
@@ -328,23 +332,23 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         // 개인소득공제용 방식 스피너
         // 주민번호 삭제 [2019.09.10]
-        val personalTypeList = listOf(RequestOrder.CashReceiptType.MOBILE.label)
-        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.adapter = CommonSpinnerAdapter(context = this@PaymentActivity, layoutRes = R.layout.item_common_spinner, list = personalTypeList)
-        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedType = personalTypeList[position]
-                mBinding.includePaymentPaymentway.textviewPaymentPersonaltype.text = selectedType
-                mViewModel.mRecipientByPhone = ObservableBoolean(selectedType == RequestOrder.CashReceiptType.MOBILE.label)
-                mViewModel.notifyPropertyChanged(BR.mRecipientByPhone)
-
-                mViewModel.mRequestOrder.cashReceiptType = when (selectedType) {
-                    RequestOrder.CashReceiptType.MOBILE.label -> RequestOrder.CashReceiptType.MOBILE.code
-                    RequestOrder.CashReceiptType.CARD.label -> RequestOrder.CashReceiptType.CARD.code
-                    else -> ""
-                }
-            }
-        }
+//        val personalTypeList = listOf(RequestOrder.CashReceiptType.MOBILE.label)
+//        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.adapter = CommonSpinnerAdapter(context = this@PaymentActivity, layoutRes = R.layout.item_common_spinner, list = personalTypeList)
+//        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(parent: AdapterView<*>?) {}
+//            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                val selectedType = personalTypeList[position]
+//                mBinding.includePaymentPaymentway.textviewPaymentPersonaltype.text = selectedType
+//                mViewModel.mRecipientByPhone = ObservableBoolean(selectedType == RequestOrder.CashReceiptType.MOBILE.label)
+//                mViewModel.notifyPropertyChanged(BR.mRecipientByPhone)
+//
+//                mViewModel.mRequestOrder.cashReceiptType = when (selectedType) {
+//                    RequestOrder.CashReceiptType.MOBILE.label -> RequestOrder.CashReceiptType.MOBILE.code
+//                    RequestOrder.CashReceiptType.CARD.label -> RequestOrder.CashReceiptType.CARD.code
+//                    else -> ""
+//                }
+//            }
+//        }
 
         // 핸드폰 번호 스피너
         val phoneList = listOf("010", "011", "016", "017", "019")
@@ -357,7 +361,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }
 
-        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.setSelection(0)
+//        mBinding.includePaymentPaymentway.spinnerPaymentPersonaltype.setSelection(0)
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptpersonal.isChecked = true
 
     }
@@ -426,10 +430,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             RequestCode.VERIFY.flag -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val mobileVerification = data?.getBooleanExtra("mobileVerification", false)
-                            ?: false
                     val emailVerification = data?.getBooleanExtra("emailVerification", false)
-                            ?: false
-                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification && emailVerification) View.GONE else View.VISIBLE
+                    mViewModel.mMobileVerification = mobileVerification ?: false
+                    mViewModel.mEmailVerification = emailVerification ?: false
+                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false && emailVerification ?: false) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
                 }
             }

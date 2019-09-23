@@ -26,6 +26,10 @@ import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.adapter.productdetail.ProductDetailClaimAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
+/**
+ * 상품상세-상품 문의
+ * @author Hyeyeon Park
+ */
 class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>() {
     var productId: Long = 0L
     // 판매자 문의하기를 위해 셀러 id추가

@@ -321,6 +321,7 @@
     <!-- PRODUCT DETAIL -->
     <string name="productdetail_dummy_advantage1">포인트 적립</string>
     <string name="productdetail_dummy_advantage2">추가 적립 포인트 1,000원</string>
+    <string name="productdetail_dummy_shippingtype">택배, 등기, 소포</string>
 
     <string name="productdetail_option">옵션선택</string>
     <string name="productdetail_sizeinfo">사이즈정보</string>
@@ -482,6 +483,8 @@
     <string name="payment_title_receipt_personal">개인소득공제용</string>
     <string name="payment_title_receipt_corporation">사업자증빙용 (세금계산서용)</string>
     <string name="payment_title_receipt_corporationnumber">사업자등록번호</string>
+    <string name="payment_title_receipt_mobile">핸드폰번호</string>
+
 
     <string name="payment_text_freeshipping">무료배송</string>
     <string name="payment_text_verify">본인인증</string>
@@ -558,6 +561,8 @@
 
     <string name="payment_message_selectpaymentway">결제 수단을 선택해주세요.</string>
     <string name="payment_message_confirmtemrs">이용 약관에 동의해주세요</string>
+    <string name="payment_message_verifyemail">이메일 인증을 진행해주세요</string>
+    <string name="payment_message_verifymobile">휴대폰 본인인증을 진행해주세요</string>
 
     <!-- SHIPPING ADDRESS -->
     <string name="shippingaddress_title">배송지 변경</string>
@@ -921,6 +926,7 @@
     <string name="mypagecoupon_dday">D-%d</string>
     <string name="mypagecoupon_status_expired">EXPIRED</string>
     <string name="mypagecoupon_message_delete">삭제된 쿠폰은 복구할 수 없습니다.\n정말로 삭제하시겠습니까?</string>
+    <string name="mypagecoupon_price_format">%,2d원 할인</string>
 
     <!-- COUPON DOWNLOAD -->
     <string name="coupondownload_title_follow">셀러를 팔로우하고\n쿠폰을 받아보세요!</string>

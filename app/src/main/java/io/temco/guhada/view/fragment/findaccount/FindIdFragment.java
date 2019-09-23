@@ -5,6 +5,10 @@ import io.temco.guhada.data.viewmodel.account.FindAccountViewModel;
 import io.temco.guhada.databinding.FragmentFindidBinding;
 import io.temco.guhada.view.fragment.base.BaseFragment;
 
+/**
+ * 아이디 찾기 Fragment
+ * @author Hyeyeon Park
+ */
 public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
     private FindAccountViewModel mViewModel;
 
@@ -36,5 +40,4 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
             mBinding.executePendingBindings();
         }
     }
-
 }

@@ -4,9 +4,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel" />
+
+        <variable
+            name="product"
+            type="io.temco.guhada.data.model.product.Product" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -95,7 +101,7 @@
                     <View
                         android:id="@+id/productdetail_scrollflag_recommend"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="1dp" />
 
                     <FrameLayout
                         android:id="@+id/framelayout_productdetail_store"
@@ -136,11 +142,12 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@color/greyish_brown_two"
+            android:clickable="@{product.purchasable}"
             android:fontFamily="sans-serif-medium"
             android:onClick="@{()->viewModel.onClickCart()}"
             android:text="@string/productdetail_button_bag"
             android:textSize="@dimen/text_18"
-            android:visibility="@{viewModel.bottomBtnVisibility}"
+            android:visibility="@{viewModel.bottomBtnVisibility == View.VISIBLE &amp;&amp; product.purchasable ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -152,9 +159,11 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
+            android:background="@{product.purchasable ? @color/common_blue_purple : @color/silver}"
+            android:clickable="@{product.purchasable}"
             android:fontFamily="sans-serif-medium"
             android:onClick="@{()->viewModel.onClickPayment()}"
-            android:text="@string/productdetail_button_buy"
+            android:text="@{product.purchasable ? @string/productdetail_button_buy : product.reasonOfUnpurchasable}"
             android:textSize="@dimen/text_18"
             android:visibility="@{viewModel.bottomBtnVisibility}"
             app:layout_constraintBottom_toBottomOf="parent"

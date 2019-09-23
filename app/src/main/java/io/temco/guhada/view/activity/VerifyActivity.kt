@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.view.View
+import androidx.databinding.ObservableBoolean
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
@@ -32,6 +33,8 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
 
     private fun initViewModel() {
         mViewModel = VerifyViewModel().apply {
+            this.mEmailVerification = ObservableBoolean(intent.getBooleanExtra("emailVerification", false))
+            this.mMobileVerification = ObservableBoolean(intent.getBooleanExtra("mobileVerification", false))
             intent.getSerializableExtra("user").let {
                 this.mUser =
                         if (it != null) it as User
@@ -52,8 +55,10 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
     override fun onBackPressed() = closeActivity()
 
     private fun closeActivity() {
-        this@VerifyActivity.intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
-        this@VerifyActivity.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
+        if(::mViewModel.isInitialized){
+            this@VerifyActivity.intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
+            this@VerifyActivity.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
+        }
 
         setResult(Activity.RESULT_OK, intent)
         finish()

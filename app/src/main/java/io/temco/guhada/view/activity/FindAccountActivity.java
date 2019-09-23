@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,10 +22,6 @@ import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
-import io.temco.guhada.data.model.claim.Claim;
-import io.temco.guhada.data.model.user.User;
-import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.account.FindAccountViewModel;
 import io.temco.guhada.data.viewmodel.account.FindPasswordViewModel;
 import io.temco.guhada.databinding.ActivityFindaccountBinding;
@@ -33,6 +30,10 @@ import io.temco.guhada.view.adapter.FindAccountPagerAdapter;
 import io.temco.guhada.view.fragment.findaccount.FindIdFragment;
 import io.temco.guhada.view.fragment.findaccount.FindPasswordFragment;
 
+/**
+ * 아이디 찾기, 비밀번호 재설정 Activity
+ * @author Hyeyeon Park
+ */
 public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding> {
     private FindAccountViewModel mViewModel;
     private FindAccountPagerAdapter mAdapter;
@@ -122,6 +123,23 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                 Toast.makeText(FindAccountActivity.this, "아이디가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
+            @Override
+            public void onSuccessGetIdentifyVerify() {
+                if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
+                    FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                    passwordViewModel.setMobile(mViewModel.user.getMobile());
+                    passwordViewModel.setDi(mViewModel.di);
+                    passwordViewModel.setResultVisibility(View.VISIBLE);
+                    passwordViewModel.setUser(mViewModel.user);
+                    passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
+                    passwordViewModel.notifyPropertyChanged(BR.user);
+                } else {
+                    mViewModel.getUser(mViewModel.user.getName(), mViewModel.user.getPhoneNumber());
+                }
+
+                hideKeyboard();
+                hideLoadingIndicator();
+            }
         });
         mBinding.setViewModel(mViewModel);
         mBinding.includeFindaccountHeader.setViewModel(mViewModel);
@@ -137,8 +155,6 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
 
         FindPasswordFragment findPasswordFragment = new FindPasswordFragment();
         findPasswordFragment.setmViewModel(new FindPasswordViewModel(new OnFindPasswordListener() {
-
-
             @Override
             public void showLoadingIndicator() {
                 mLoadingIndicatorUtil.show();
@@ -208,6 +224,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     }
                 });
             }
+
         }));
         mAdapter.addFragment(findPasswordFragment);
 
@@ -249,51 +266,18 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Flag.RequestCode.VERIFY_PHONE) {
             if (resultCode == RESULT_OK) {
-                // ToastUtil.showMessage("본인인증이 완료되었습니다.");
-
                 if (data != null) {
                     mLoadingIndicatorUtil.show();
                     String name = data.getStringExtra("name");
                     String phoneNumber = data.getStringExtra("phoneNumber");
                     String di = data.getStringExtra("di");
+                    Log.e("DI", di);
 
-                    UserServer.findUserId((success, o) -> {
-                        if (success) {
-                            BaseModel model = (BaseModel) o;
-                            switch (model.resultCode) {
-                                case Flag.ResultCode.SUCCESS:
-                                    User user = (User) model.data;
-                                    user.setPhoneNumber(phoneNumber);
-                                    user.setMobile(phoneNumber);
-                                    if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
-                                        FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
-                                        passwordViewModel.setMobile(phoneNumber);
-                                        passwordViewModel.setDi(di);
-                                        passwordViewModel.setResultVisibility(View.VISIBLE);
-                                        passwordViewModel.setUser(user);
-                                        passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
-                                        passwordViewModel.notifyPropertyChanged(BR.user);
-                                    } else {
-                                        mViewModel.setResultVisibility(View.VISIBLE);
-                                        mViewModel.setUser(user);
-                                        mViewModel.notifyPropertyChanged(BR.resultVisibility);
-                                        mViewModel.notifyPropertyChanged(BR.user);
-                                    }
-                                    break;
-                                case Flag.ResultCode.DATA_NOT_FOUND:
-                                    String message = getResources().getString(R.string.findid_message_wronginfo);
-                                    CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
-                                    break;
-                                default:
-                                    CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, model.message);
-                            }
-                        } else {
-                            String message = (String) o;
-                            CommonUtil.showSnackBar(mBinding.linearlayoutFiindaccountContainer, message);
-                        }
-
-                        mLoadingIndicatorUtil.hide();
-                    }, name, phoneNumber);
+                    mViewModel.user.setPhoneNumber(phoneNumber);
+                    mViewModel.user.setMobile(phoneNumber);
+                    mViewModel.user.setName(name);
+                    mViewModel.di = di;
+                    mViewModel.getIdentityVerify(di);
                 }
             }
         }

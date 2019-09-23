@@ -265,9 +265,9 @@
         <item name="android:textColor">@color/black_four</item>
     </style>
 
-    <style name="PaymentContentGreyTextStyle" parent="@style/TextMedium">
+    <style name="PaymentContentGreyTextStyle" parent="@style/TextRegular">
         <item name="android:textSize">@dimen/text_13</item>
-        <item name="android:textColor">@color/warm_grey_two</item>
+        <item name="android:textColor">@color/warm_grey</item>
     </style>
 
     <style name="PaymentContentDarkGreyTextStyle" parent="@style/TextMedium">

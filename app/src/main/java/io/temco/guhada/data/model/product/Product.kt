@@ -21,6 +21,7 @@ class Product : BaseProduct() {
     // SHIPPING
     var shipping: Shipping? = Shipping()
     var shipExpenseType: String = ""
+    var shippingSummary = ""
 
     // AS (배송, 교환, 환불 정보)
     var asInfo: String = ""
@@ -58,6 +59,10 @@ class Product : BaseProduct() {
     var mCategoryId: Int = 0
     var sCategoryId: Int = 0
     var dCategoryId: Int = 0
+
+    // 구매 버튼 validation
+    var purchasable = true          // 구매 가능 여부
+    var reasonOfUnpurchasable = ""    // 구매 불가 사유
 
     class Item : Serializable {
         var label: String = ""

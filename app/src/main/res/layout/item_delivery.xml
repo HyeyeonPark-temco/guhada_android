@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="16dp"
-            android:text="@{item.purchaseStatusText}"
+            android:text="@{item.claimStatusText != null &amp;&amp; !item.claimStatusText.isEmpty() ? item.claimStatusText : item.purchaseStatusText}"
             android:textColor="@color/common_blue_purple"
             android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"
@@ -168,17 +168,17 @@
             app:spanCount="2" />
 
         <Button
-            style="@style/MypageDeliveryButtonStyle"
             android:id="@+id/button_delivery_claim"
+            style="@style/MypageDeliveryButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginBottom="30dp"
             android:background="@color/pale_grey"
             android:text="@{item.sellerName != null ? @string/mypage_delivery_button_claim(item.sellerName) : @string/mypage_delivery_button_claim_empty}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
-            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerview_delivery_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>

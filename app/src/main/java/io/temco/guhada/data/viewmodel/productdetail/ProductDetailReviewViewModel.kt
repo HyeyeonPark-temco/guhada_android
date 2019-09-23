@@ -35,14 +35,14 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         UserServer.getProductReviewSummary(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        try{
+                        try {
                             this.reviewSummary = it.data as ReviewSummary
                             notifyPropertyChanged(BR.reviewSummary)
 
                             if (::listener.isInitialized)
                                 listener.notifySummary(reviewSummary.averageReviewsRating)
-                        }catch (e : Exception){
-                            if(CustomLog.flag)CustomLog.E(e)
+                        } catch (e: Exception) {
+                            if (CustomLog.flag) CustomLog.E(e)
                         }
                     },
                     failedTask = {
@@ -63,7 +63,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                     if (o != null) {
                         val model = o as BaseModel<*>
                         this.reviewResponse = model.data as ReviewResponse
-                        if (reviewResponse.content.isNullOrEmpty()) emptyVisibility = ObservableInt(View.VISIBLE)
+                        emptyVisibility = if (reviewResponse.content.isNullOrEmpty()) ObservableInt(View.VISIBLE)
+                        else ObservableInt(View.GONE)
 
                         notifyPropertyChanged(BR.reviewResponse)
                         notifyPropertyChanged(BR.emptyVisibility)
@@ -85,5 +86,9 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         listener.showLoadingIndicator { getProductReview(++reviewPage, size) }
     }
 
+    // TODO 첫 리뷰 작성하기 버튼
+    fun onClickWriteReview() {
+
+    }
 
 }
