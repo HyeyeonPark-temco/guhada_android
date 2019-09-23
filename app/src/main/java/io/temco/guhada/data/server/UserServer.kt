@@ -824,6 +824,15 @@ class UserServer {
         @JvmStatic
         fun getIdentityVerify(listener: OnServerListener, di: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getIdentityVerify(di = di)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
+        /**
+         * 이메일 본인인증 업데이트
+         * @author Hyeyeon Park
+         * @since 2019.09.23
+         */
+        @JvmStatic
+        fun updateEmailVerify(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateEmailVerify(accessToken = accessToken)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
     }
 
 }

@@ -432,7 +432,7 @@ interface UserService {
      * @author Hyeyeon Park
      * @since 2019.09.23
      */
-    @GET("/users/identity-verify")
+    @POST("/users/identity-verify")
     fun getIdentityVerify(@Query("diCode") di: String): Call<BaseModel<Any>>
 
     /**
@@ -453,4 +453,13 @@ interface UserService {
      */
     @GET("/sellers/{sellerId}/store")
     fun getSellerStoreInfo(@Header("Authorization") accessToken: String, @Path("sellerId") sellerId: Long): Call<BaseModel<SellerStore>>
+
+    /**
+     * 이메일 본인인증 업데이트 API
+     * @author Hyeyeon Park
+     * @since 2019.09.23
+     */
+    @PUT("/users/email-verify")
+    fun updateEmailVerify(@Header("Authorization") accessToken: String) : Call<BaseModel<Any>>
+
 }

@@ -158,8 +158,12 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }).apply {
             this.mVerifyTask = {
+                mViewModel.mMobileVerification = mViewModel.order.user.mobile?.isNotEmpty()
+                        ?: false
                 val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
                 intent.putExtra("user", mViewModel.order.user)
+                intent.putExtra("mobileVerification", mViewModel.mMobileVerification)
+                intent.putExtra("emailVerification", mViewModel.mEmailVerification)
                 startActivityForResult(intent, RequestCode.VERIFY.flag)
             }
         }
@@ -426,10 +430,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             RequestCode.VERIFY.flag -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val mobileVerification = data?.getBooleanExtra("mobileVerification", false)
-                            ?: false
                     val emailVerification = data?.getBooleanExtra("emailVerification", false)
-                            ?: false
-                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification && emailVerification) View.GONE else View.VISIBLE
+                    mViewModel.mMobileVerification = mobileVerification ?: false
+                    mViewModel.mEmailVerification = emailVerification ?: false
+                    mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false && emailVerification ?: false) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
                 }
             }

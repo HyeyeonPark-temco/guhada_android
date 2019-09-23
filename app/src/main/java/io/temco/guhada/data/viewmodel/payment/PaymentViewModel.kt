@@ -207,6 +207,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    var mMobileVerification: Boolean= false
+    var mEmailVerification: Boolean = false
+
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
             if (success) {
@@ -336,13 +339,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
-    private fun saveShippingAddress(userId: Int) {
+    private fun saveShippingAddress(accessToken: String,userId: Int) {
         if (selectedShippingAddress != null) {
             UserServer.saveUserShippingAddress(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
                             // ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_add_success))
                             if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 success")
+                            requestOrder("Bearer $accessToken", mRequestOrder)
                         }, failedTask = { if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 ${if (it is BaseModel<*>) it.message else "에러"}") })
             }, userId, selectedShippingAddress!!)
         }
@@ -521,8 +525,22 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             mRequestOrder.consumptionPoint = usedPointNumber.toInt()
 
                             val accessToken = Preferences.getToken().accessToken
-                            addShippingAddress(accessToken)
-                            requestOrder("Bearer $accessToken", mRequestOrder)
+                            if (this@PaymentViewModel.selectedShippingAddress?.addList == true) {
+                                // 배송지 추가
+                                if (accessToken != null) {
+                                    val userId = JWT(accessToken).getClaim("userId").asInt()
+                                    if (userId != null) saveShippingAddress(accessToken, userId)
+                                } else {
+                                    // [임시] 토큰 없는 경우
+                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))
+                                }
+                            }else {
+                                requestOrder("Bearer $accessToken", mRequestOrder)
+                            }
+
+
+                          //  addShippingAddress(accessToken)
+//                            requestOrder("Bearer $accessToken", mRequestOrder)
                         }
                     }
                 }
@@ -553,7 +571,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             // 배송지 추가
             if (accessToken != null) {
                 val userId = JWT(accessToken).getClaim("userId").asInt()
-                if (userId != null) saveShippingAddress(userId)
+                if (userId != null) saveShippingAddress(accessToken, userId)
             } else {
                 // [임시] 토큰 없는 경우
                 ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_expiretoken))

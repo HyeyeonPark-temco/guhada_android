@@ -114,9 +114,7 @@ class VerifyViewModel : BaseObservableViewModel() {
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         CountTimer.stopTimer()
-                        mEmailVerification = ObservableBoolean(true)
-                        notifyPropertyChanged(BR.mEmailVerification)
-                        ToastUtil.showMessage("이메일 인증 완료")
+                        updateEmailVerify()
                     },
                     invalidVerificationNumberTask = {
                         ToastUtil.showMessage(it.message)
@@ -125,6 +123,21 @@ class VerifyViewModel : BaseObservableViewModel() {
             this.verificationTarget = mUser.email
             this.verificationTargetType = VerificationType.EMAIL.type
             this.verificationNumber = mVerificationNumber
+        })
+    }
+
+    private fun updateEmailVerify() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            UserServer.updateEmailVerify(OnServerListener { success, o ->
+                val model = o as BaseModel<*>
+                if (success) {
+                    mEmailVerification = ObservableBoolean(true)
+                    notifyPropertyChanged(BR.mEmailVerification)
+                    ToastUtil.showMessage("이메일 인증 완료")
+                } else {
+                    ToastUtil.showMessage(model.message)
+                }
+            }, accessToken = accessToken)
         })
     }
 

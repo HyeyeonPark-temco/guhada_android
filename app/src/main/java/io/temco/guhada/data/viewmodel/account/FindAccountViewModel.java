@@ -282,6 +282,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
             } else {
                 findAccountListener.showMessage(model.message);
             }
+            findAccountListener.hideLoadingIndicator();
         }, di);
     }
 
