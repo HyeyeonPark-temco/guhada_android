@@ -121,9 +121,10 @@
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
-                            android:text="@{viewModel.product.shipping.isQuickAvailable ? @string/productdetail_quick : @string/productdetail_notquick}"
+                            android:text="@string/productdetail_dummy_shippingtype"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
+                        <!--android:text="@{viewModel.product.shipping.isQuickAvailable ? @string/productdetail_quick : @string/productdetail_notquick}"-->
                     </LinearLayout>
 
                     <View

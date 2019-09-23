@@ -317,6 +317,7 @@
     <!-- PRODUCT DETAIL -->
     <string name="productdetail_dummy_advantage1">Points</string>
     <string name="productdetail_dummy_advantage2">Earn Additional 1,000 Points</string>
+    <string name="productdetail_dummy_shippingtype">택배, 등기, 소포</string>
 
     <string name="productdetail_option">Product options</string>
     <string name="productdetail_sizeinfo">Size info</string>
