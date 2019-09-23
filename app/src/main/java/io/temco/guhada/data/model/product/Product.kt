@@ -21,6 +21,7 @@ class Product : BaseProduct() {
     // SHIPPING
     var shipping: Shipping? = Shipping()
     var shipExpenseType: String = ""
+    var shippingSummary = ""
 
     // AS (배송, 교환, 환불 정보)
     var asInfo: String = ""
