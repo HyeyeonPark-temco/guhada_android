@@ -67,7 +67,7 @@
                     android:layout_marginStart="20dp"
                     android:visibility="@{coupon.discountRate > 0 || coupon.discountPrice > 0 ? View.VISIBLE : View.INVISIBLE}"
                     android:layout_marginTop="5dp"
-                    android:text="@{coupon.discountRate > 0 ? String.valueOf(coupon.discountRate * 100) + @string/common_unit_percent : @string/common_priceunit_format(coupon.discountPrice)}"
+                    android:text="@{coupon.discountRate > 0 ? String.valueOf(coupon.discountRate * 100) + @string/coupondownload_dicsount_rate : @string/mypagecoupon_price_format(coupon.discountPrice)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_22"
                     app:layout_constraintLeft_toLeftOf="parent"

@@ -920,6 +920,7 @@
     <string name="mypagecoupon_dday">D-%d</string>
     <string name="mypagecoupon_status_expired">EXPIRED</string>
     <string name="mypagecoupon_message_delete">삭제된 쿠폰은 복구할 수 없습니다.\n정말로 삭제하시겠습니까?</string>
+    <string name="mypagecoupon_price_format">%,2d원 할인</string>
 
     <!-- COUPON DOWNLOAD -->
     <string name="coupondownload_title_follow">셀러를 팔로우하고\n쿠폰을 받아보세요!</string>
