@@ -5,6 +5,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
 import io.temco.guhada.data.model.community.CommunityBoard
 import io.temco.guhada.data.model.community.CommunityCriteria
+import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.search.AutoComplete
 import io.temco.guhada.data.model.search.Popular
 import io.temco.guhada.data.model.seller.Criteria
@@ -70,4 +71,17 @@ interface SearchService {
      */
     @GET("/ps/search/seller/{id}")
     fun getSellerProductList(@Path("id") sellerId: Long, @Query("order") order: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int) : Call<BaseModel<ProductList>>
+
+
+
+    /**
+     * @author park jungho
+     * 19.07.18
+     * Best 목록 조회
+     * @param unitPerPage 내려받을 페이지 수
+     */
+    @GET("/ps/hits/list")
+    fun getProductByBestItem(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<HomeDeal>>
+
+
 }

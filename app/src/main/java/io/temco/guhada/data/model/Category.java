@@ -64,7 +64,6 @@ public class Category {
                 ", immediateChildrenCount=" + immediateChildrenCount +
                 ", hierarchies=" + Arrays.toString(hierarchies) +
                 ", isUnisex=" + isUnisex +
-                ", children=" + children +
                 '}';
     }
 }

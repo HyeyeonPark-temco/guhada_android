@@ -1,5 +1,6 @@
 package io.temco.guhada.view.custom.layout.mypage
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -70,25 +71,7 @@ class MyPageUserInfoLayout constructor(
         if(checkUserLogin()){
             setInitView()
         }
-
-        EventBusHelper.mSubject.subscribe {
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----",it.data.toString())
-            var result = it.data.toString().split(",")
-            var resultCode = result[0].toInt()
-            var message =  result[1]
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----",resultCode,"resultCode",resultCode)
-            if(resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)){
-                var returnId = message.toLong()
-                if(returnId == CommonUtil.checkUserId()){
-                    successLogin()
-                }else{
-                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
-                }
-            }else{
-                if(TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
-                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
-            }
-        }
+        setEventBus()
     }
 
 
@@ -162,7 +145,9 @@ class MyPageUserInfoLayout constructor(
     private fun setInitView() {
         mViewModel.userId = CommonUtil.checkUserId()
         if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setInitView ", "userId -----",mViewModel.userId)
-        if(Preferences.getPasswordConfirm()){
+        mViewModel.checkPasswordConfirm.set(true)
+
+        /*if(Preferences.getPasswordConfirm()){
             mViewModel.checkPasswordConfirm.set(true)
             if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "checkPasswordConfirm ", "true -----")
         }else{
@@ -174,6 +159,28 @@ class MyPageUserInfoLayout constructor(
                     if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener",  "userEmail -----",mViewModel.userEmail)
                 }
             })
+        }*/
+    }
+
+    @SuppressLint("CheckResult")
+    private fun setEventBus(){
+        EventBusHelper.mSubject.subscribe {
+            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----",it.data.toString())
+            var result = it.data.toString().split(",")
+            var resultCode = result[0].toInt()
+            var message =  result[1]
+            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----",resultCode,"resultCode",resultCode)
+            if(resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)){
+                var returnId = message.toLong()
+                if(returnId == CommonUtil.checkUserId()){
+                    successLogin()
+                }else{
+                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                }
+            }else{
+                if(TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
+                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
+            }
         }
     }
 

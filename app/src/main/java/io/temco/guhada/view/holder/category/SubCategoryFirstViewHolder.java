@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryHeaderListListener;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
@@ -32,7 +34,7 @@ public class SubCategoryFirstViewHolder extends BaseCategoryViewHolder<ItemSubCa
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
+    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListListener listener, OnCategoryHeaderListListener headerListListener) {
         // Type
         switch (type) {
             case KIDS:

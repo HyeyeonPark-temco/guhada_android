@@ -4,16 +4,19 @@ import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.RetryableCallback
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
 import io.temco.guhada.data.model.community.CommunityCriteria
+import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.search.AutoComplete
 import io.temco.guhada.data.model.search.Popular
 import io.temco.guhada.data.model.search.ProductSearchFilterValue
 import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
+import io.temco.guhada.data.retrofit.service.ProductService
 import io.temco.guhada.data.retrofit.service.SearchService
 import retrofit2.Call
 import retrofit2.Callback
@@ -264,6 +267,30 @@ class SearchServer {
         fun getSellerProductList(listener: OnServerListener, sellerId: Long, order: String, page: Int, unitPerPage: Int) =
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getSellerProductList(sellerId = sellerId, order = order, page = page, unitPerPage = unitPerPage).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+
+
+        /**
+         * @author park jungho
+         * 19.07.18
+         * 신상품 목록 조회
+         */
+        @JvmStatic
+        fun getProductByBestItem(unitPerPage: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, false).getProductByBestItem(unitPerPage)
+                RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
+                    override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+
+                    override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
+
 
     }
 

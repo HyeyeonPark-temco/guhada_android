@@ -383,8 +383,8 @@
 
                             <TextView
                                 android:id="@+id/text_seller_name_0"
-                                android:textColor="@color/greyish_brown_two"
                                 style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:textColor="@color/greyish_brown_two"
                                 android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -548,8 +548,8 @@
 
                             <TextView
                                 android:id="@+id/text_seller_name_1"
-                                android:textColor="@color/greyish_brown_two"
                                 style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:textColor="@color/greyish_brown_two"
                                 android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -728,8 +728,8 @@
 
                             <TextView
                                 android:id="@+id/text_seller_name_2"
-                                android:textColor="@color/greyish_brown_two"
                                 style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:textColor="@color/greyish_brown_two"
                                 android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -892,8 +892,8 @@
 
                             <TextView
                                 android:id="@+id/text_seller_name_3"
-                                android:textColor="@color/greyish_brown_two"
                                 style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:textColor="@color/greyish_brown_two"
                                 android:layout_marginLeft="0dp"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -1071,8 +1071,8 @@
 
                             <TextView
                                 android:id="@+id/text_seller_name_4"
-                                android:textColor="@color/greyish_brown_two"
                                 style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:textColor="@color/greyish_brown_two"
                                 android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -1236,8 +1236,8 @@
 
                             <TextView
                                 android:id="@+id/text_seller_name_5"
-                                android:textColor="@color/greyish_brown_two"
                                 style="@style/MainHomeListProductItemSellerNameTextStyle"
+                                android:textColor="@color/greyish_brown_two"
                                 android:layout_marginLeft="0dp" />
                         </LinearLayout>
                     </LinearLayout>

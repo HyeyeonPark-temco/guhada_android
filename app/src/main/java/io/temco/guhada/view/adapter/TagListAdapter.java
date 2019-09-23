@@ -14,6 +14,7 @@ import java.util.List;
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnTagListener;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.view.holder.base.BaseTagViewHolder;
 import io.temco.guhada.view.holder.tag.TagTypeFullViewHolder;
@@ -55,7 +56,6 @@ public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> impl
         switch (Type.Tag.getType(viewType)) {
             case TYPE_FULL:
                 return new TagTypeFullViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_tag_type_full, null));
-
             default:
                 return new TagTypeNormalViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_tag_type_normal, null));
         }
@@ -69,7 +69,8 @@ public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> impl
     @Override
     public void onClick(View v) {
         if (mTagListener != null && v.getTag() != null && v.getTag() instanceof Integer) {
-            mTagListener.onClose(getItem((int) v.getTag()).tagData);
+            if(CustomLog.getFlag())CustomLog.L("TagListAdapter","tagData",getItem((int) v.getTag()).tagData);
+            mTagListener.onClose((int) v.getTag(), getItem((int) v.getTag()).tagData);
         }
     }
 

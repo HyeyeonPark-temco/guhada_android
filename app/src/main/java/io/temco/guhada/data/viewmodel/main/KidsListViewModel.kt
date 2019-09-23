@@ -11,6 +11,7 @@ import io.temco.guhada.data.db.entity.CategoryEntity
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.ProductServer
+import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.adapter.main.KidsListAdapter
 
@@ -103,7 +104,7 @@ class KidsListRepository(val context : Context){
      * Best ITEM
      */
     private fun getBestItem() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        SearchServer.getProductByBestItem(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal

@@ -87,7 +87,7 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
     // PRIVATE
     ////////////////////////////////////////////////
 
-    private void dissmissWithData(Category data) {
+    private void dissmissWithData(int index, Category data) {
         if (mListener != null) {
             mListener.onEvent(data);
         }

@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryHeaderListListener;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemDetailSearchCategoryThirdBinding;
 import io.temco.guhada.view.adapter.category.DetailSearchCategoryFourthListAdapter;
@@ -32,7 +35,7 @@ public class DetailSearchCategoryThirdViewHolder extends BaseCategoryViewHolder<
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
+    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListListener listener, OnCategoryHeaderListListener headerListListener) {
         // Data
         if (data != null) {
             // Title
@@ -42,6 +45,7 @@ public class DetailSearchCategoryThirdViewHolder extends BaseCategoryViewHolder<
             // Child
             if (data.children == null) {
                 mBinding.setExpand(false);
+                mBinding.getRoot().setSelected(data.isSelected);
                 mBinding.layoutExpandHeader.setToggleOnClick(false);
             } else {
                 mBinding.setExpand(true);
@@ -53,6 +57,7 @@ public class DetailSearchCategoryThirdViewHolder extends BaseCategoryViewHolder<
                 // Adapter
                 DetailSearchCategoryFourthListAdapter adapter = new DetailSearchCategoryFourthListAdapter(context);
                 adapter.setOnCategoryListener(listener);
+                adapter.setmCategoryHeaderListListener(headerListListener);
                 adapter.setItems(data.children);
                 mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
                 mBinding.listContents.setAdapter(adapter);

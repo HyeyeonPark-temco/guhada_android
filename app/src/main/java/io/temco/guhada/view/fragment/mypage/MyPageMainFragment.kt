@@ -203,10 +203,10 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
                             }
                             /*11 -> {
                                 vw = MyPageGradeLayout(it)
-                            }
+                            }*/
                             10 -> {
                                 vw = MyPageUserInfoLayout(it)
-                            }*/
+                            }
                             else -> {
                                 vw = MyPageMainLayout(it)
                             }

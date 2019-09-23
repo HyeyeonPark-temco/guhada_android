@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.listener.OnCategoryHeaderListListener;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
@@ -22,7 +24,8 @@ public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<Dialog
     // -------- LOCAL VALUE --------
     private Context mContext;
     private List<Category> mItems;
-    private OnCategoryListener mCategoryListener;
+    private OnCategoryListListener mCategoryListener;
+    private OnCategoryHeaderListListener mCategoryHeaderListListener;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -50,7 +53,7 @@ public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<Dialog
 
     @Override
     public void onBindViewHolder(@NonNull DialogCategoryFourthViewHolder holder, int position) {
-        holder.init(mContext, null, getItem(position), mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener, mCategoryHeaderListListener);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
     }
@@ -59,7 +62,8 @@ public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<Dialog
     public void onClick(View v) {
         if (mCategoryListener != null
                 && v.getTag() != null && v.getTag() instanceof Integer) {
-            mCategoryListener.onEvent(getItem((int) v.getTag()));
+            int position = (int) v.getTag();
+            mCategoryListener.onEvent(position,getItem((int) v.getTag()));
         }
     }
 
@@ -72,8 +76,12 @@ public class DialogCategoryFourthListAdapter extends RecyclerView.Adapter<Dialog
         notifyDataSetChanged();
     }
 
-    public void setOnCategoryListener(OnCategoryListener listener) {
+    public void setOnCategoryListener(OnCategoryListListener listener) {
         mCategoryListener = listener;
+    }
+
+    public void setmCategoryHeaderListListener(OnCategoryHeaderListListener mCategoryHeaderListListener) {
+        this.mCategoryHeaderListListener = mCategoryHeaderListListener;
     }
 
     ////////////////////////////////////////////////

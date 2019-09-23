@@ -298,7 +298,7 @@
         <item name="android:background">@drawable/round_backgroud</item>
     </style>
 
-    <style name="MainHomeListProductItemSellerNameTextStyle" parent="@style/TextThin">
+    <style name="MainHomeListProductItemSellerNameTextStyle" parent="@style/TextRegular">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">26dp</item>
         <item name="android:textColor">@color/greyish_brown_two</item>

@@ -14,6 +14,7 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.Info;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
@@ -131,7 +132,7 @@ public class CategorySubActivity extends BindActivity<ActivityCategorySubBinding
     // LISTENER
     ////////////////////////////////////////////////
 
-    private OnCategoryListener mCategoryListener = category -> finishWithData(category.type, category.hierarchies);
+    private OnCategoryListListener mCategoryListener = (index,category) -> finishWithData(category.type, category.hierarchies);
 
     ////////////////////////////////////////////////
 }

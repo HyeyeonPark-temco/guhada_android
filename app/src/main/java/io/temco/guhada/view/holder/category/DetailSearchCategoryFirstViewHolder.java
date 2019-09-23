@@ -7,9 +7,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.github.florent37.expansionpanel.ExpansionLayout;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.listener.OnCategoryHeaderListListener;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemDetailSearchCategoryFirstBinding;
@@ -31,7 +34,7 @@ public class DetailSearchCategoryFirstViewHolder extends BaseCategoryViewHolder<
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
+    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListListener listener, OnCategoryHeaderListListener headerListListener) {
         // Data
         if (data != null) {
             // Title
@@ -44,6 +47,15 @@ public class DetailSearchCategoryFirstViewHolder extends BaseCategoryViewHolder<
                 mBinding.layoutExpandHeader.setToggleOnClick(false);
             } else {
                 mBinding.setExpand(true);
+                mBinding.layoutExpandHeader.setTag(data);
+                mBinding.layoutExpandHeader.addListener(new ExpansionLayout.Listener() {
+                    @Override
+                    public void onExpansionChanged(ExpansionLayout expansionLayout, boolean expanded) {
+                        Category data = null;
+                        if(expansionLayout.getTag() instanceof Category) data = (Category)expansionLayout.getTag();
+                        headerListListener.onEvent(0,data);
+                    }
+                });
                 mBinding.layoutExpandHeader.setToggleOnClick(true);
                 // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
@@ -52,6 +64,7 @@ public class DetailSearchCategoryFirstViewHolder extends BaseCategoryViewHolder<
                 // Adapter
                 DetailSearchCategorySecondListAdapter adapter = new DetailSearchCategorySecondListAdapter(context);
                 adapter.setOnCategoryListener(listener);
+                adapter.setmCategoryHeaderListListener(headerListListener);
                 adapter.setItems(data.children);
                 mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
                 mBinding.listContents.setAdapter(adapter);

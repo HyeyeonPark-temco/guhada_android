@@ -11,10 +11,12 @@ import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.listener.OnCategoryListListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.model.Brand
+import io.temco.guhada.data.model.Category
 import io.temco.guhada.data.viewmodel.SideMenuViewModel
 import io.temco.guhada.databinding.ActivitySidemenuBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -67,7 +69,11 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
 
     private fun setViewInit(){
         mBinding.listContents.layoutManager = LinearLayoutManager(this)
-        mSideMenuCategoryAdapter.setOnCategoryListener({ category -> startCategoryByHierarchy(category.type, category.hierarchies) })
+        mSideMenuCategoryAdapter.setOnCategoryListener(object : OnCategoryListListener{
+            override fun onEvent(index: Int, category: Category) {
+                startCategoryByHierarchy(category.type, category.hierarchies)
+            }
+        })
         mSideMenuCategoryAdapter.setItems(Preferences.getCategories())
         mBinding.listContents.setAdapter(mSideMenuCategoryAdapter)
         mBinding.clickListener = this

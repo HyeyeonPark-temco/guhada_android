@@ -11,6 +11,7 @@ import io.temco.guhada.data.db.entity.CategoryEntity
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.server.ProductServer
+import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.adapter.main.WomenListAdapter
 
@@ -71,14 +72,39 @@ class WomenListRepository(val context : Context){
         ddd.add(event)
         list.value!!.add(event)
         // ------------------------------------------------------------------
-        getBestItem()
+        getPlusItem()
+    }
+
+
+    /**
+     * PLUS ITEM
+     */
+    private fun getPlusItem() {//getProductByPlusItem
+        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var newArrival =  (o as BaseModel<*>).data as HomeDeal
+                        var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
+                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
+                        list.value!!.add(subTitle)
+                        //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
+                        getBestItem()
+                    },
+                    dataNotFoundTask = {
+
+                    },
+                    failedTask = {
+
+                    }
+            )
+        })
     }
 
     /**
      * Best ITEM
      */
     private fun getBestItem() {//getProductByPlusItem
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        SearchServer.getProductByBestItem(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal

@@ -36,7 +36,7 @@ public class DetailSearchCategoryFourthListAdapter extends BaseCategoryListAdapt
     public void onBindViewHolder(@NonNull DetailSearchCategoryFourthViewHolder holder, int position) {
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
-        holder.init(mContext, null, getItem(position), mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener, mCategoryHeaderListListener);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DetailSearchCategoryFourthListAdapter extends BaseCategoryListAdapt
             Category c = getItem(position);
             c.isSelected = !v.isSelected();
             // Listener
-            if (mCategoryListener != null) mCategoryListener.onEvent(c);
+            if (mCategoryListener != null) mCategoryListener.onEvent(position, c);
             // Notify
             notifyItemChanged(position);
         }

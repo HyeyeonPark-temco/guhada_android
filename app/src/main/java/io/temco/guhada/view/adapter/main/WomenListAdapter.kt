@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.ViewPager
@@ -395,14 +396,13 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
         override fun bind(viewModel: WomenListViewModel, position: Int, item: MainBaseModel) {
             binding.setOnClickListener {
                 when(it.id){
-                    R.id.textview_term_introduce ->{}
+                    R.id.textview_term_claim ->{ CommonUtilKotlin.startActivityUserClaimGuhada(containerView.context as AppCompatActivity) }
                     R.id.textview_term_terms ->{ CommonUtilKotlin.startTermsPurchase(containerView.context as Activity) }
                     R.id.textview_term_advise ->{}
                     R.id.textview_term_privacy_terms ->{CommonUtilKotlin.startTermsPersonal(containerView.context as Activity) }
                     R.id.textview_term_partner ->{}
-                    R.id.textview_term_as ->{}
-                    R.id.textview_term_recruit ->{}
                     R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
+                    R.id.textview_term_company ->{}
                 }
             }
         }

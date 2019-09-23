@@ -26,38 +26,9 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textview_term_introduce"
-                style="@style/TextRegularSingleLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/information_title_introduce"
-                android:onClick="@{OnClickListener}"
-                android:textColor="@color/warm_grey_two"
-                android:textSize="@dimen/text_11" />
-
-            <TextView
-                android:id="@+id/textview_term_terms"
-                style="@style/TextRegularSingleLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/information_title_terms"
-                android:layout_marginLeft="92dp"
-                android:onClick="@{OnClickListener}"
-                android:textColor="@color/warm_grey_two"
-                android:textSize="@dimen/text_11" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
-            android:orientation="horizontal">
-
-            <TextView
                 android:id="@+id/textview_term_advise"
                 style="@style/TextRegularSingleLine"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:text="@string/information_title_advise"
                 android:onClick="@{OnClickListener}"
@@ -70,7 +41,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/information_title_privacy_terms"
-                android:layout_marginLeft="92dp"
                 android:onClick="@{OnClickListener}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_11" />
@@ -87,7 +57,7 @@
             <TextView
                 android:id="@+id/textview_term_partner"
                 style="@style/TextRegularSingleLine"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:text="@string/information_title_partner"
                 android:onClick="@{OnClickListener}"
@@ -95,12 +65,11 @@
                 android:textSize="@dimen/text_11" />
 
             <TextView
-                android:id="@+id/textview_term_as"
+                android:id="@+id/textview_term_terms"
                 style="@style/TextRegularSingleLine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/information_title_as"
-                android:layout_marginLeft="92dp"
+                android:text="@string/information_title_terms"
                 android:onClick="@{OnClickListener}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_11" />
@@ -117,11 +86,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textview_term_recruit"
+                android:id="@+id/textview_term_claim"
                 style="@style/TextRegularSingleLine"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:text="@string/information_title_recruit"
+                android:text="@string/information_title_claim"
                 android:onClick="@{OnClickListener}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_11" />
@@ -137,6 +106,18 @@
 
         <io.temco.guhada.view.custom.HtmlTextView
             style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/information_company_info3"
+            android:lineSpacingExtra="7sp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/warm_grey_two"
+            android:textSize="@dimen/text_11"
+            app:isHtml="true" />
+
+        <io.temco.guhada.view.custom.HtmlTextView
+            style="@style/TextRegular"
+            android:id="@+id/textview_term_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/information_company_info"
