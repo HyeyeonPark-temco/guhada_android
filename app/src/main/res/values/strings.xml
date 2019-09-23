@@ -976,7 +976,6 @@
         <item>상품 리뷰</item>
         <item>상품 문의</item>
         <item>배송지 관리</item>
-        <item>회원정보</item>
     </string-array>
 
     <string name="mypage_userinfo_passwaord_desc"><![CDATA[안전한 회원정보 변경을 위해<br><font color="#5d2ed1">비밀번호</font>를 다시 한번 입력해 주세요.]]></string>

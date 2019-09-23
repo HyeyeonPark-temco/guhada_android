@@ -1,17 +1,22 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.*
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.review.ReviewResponseContent
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel
 import io.temco.guhada.databinding.LayoutProductdetailReviewBinding
+import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
+import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 /**
  * 상품상세-상품 리뷰
@@ -43,6 +48,19 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                 this@ProductDetailReviewFragment.notifySummary(averageReviewsRating)
             }
 
+            override fun onClickWriteReview() {
+                if(CommonUtil.checkToken()){
+                    BaseApplication.getInstance().moveToMain = ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, MyPageTabType.REVIEW.ordinal, true)
+                    (context as ProductFragmentDetailActivity).setResult(Flag.ResultCode.GO_TO_MAIN_MYPAGE)
+                    (context as ProductFragmentDetailActivity).finish()
+                }else{
+                    CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                            cancelButtonVisible = true,
+                            confirmTask = {
+                                CommonUtil.startLoginPage(context as AppCompatActivity)
+                            }).show(manager = (context as AppCompatActivity).supportFragmentManager, tag = "ProductDetailReviewFragment")
+                }
+            }
         }
 
         mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter()
@@ -99,5 +117,6 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         fun showLoadingIndicator(task: () -> Unit)
         fun hideLoadingIndicator()
         fun notifySummary(averageReviewsRating: Float)
+        fun onClickWriteReview()
     }
 }
