@@ -16,6 +16,7 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
 
 /**
+ * @see io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
  * @author park jungho
  * 19.08.05
  * 상품 상세 Activity

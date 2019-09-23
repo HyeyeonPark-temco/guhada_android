@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
@@ -43,6 +42,8 @@ import kotlinx.coroutines.launch
 
 /**
  * 현재 미사용/ ProductDetailFragment 사용중
+ * @see ProductFragmentDetailActivity
+ * @see io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
  */
 class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnProductDetailListener {
     private val INVALID_DEAL_ID = -1
@@ -93,23 +94,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
                     mViewModel.notifyPropertyChanged(BR.imagePos)
                 }
             })
-
-            CommonUtil.debug("TASK", "PRODUCT FINISH")
             if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.hide()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
-                // delay(8000)
-                mBinding.includeProductdetailContentbody.viewModel = mViewModel
-                mBinding.includeProductdetailContentinfo.viewModel = mViewModel
-                mBinding.includeProductdetailContentshipping.viewModel = mViewModel
-                mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
-
-
                 mViewModel.getSellerInfo()
                 initOptionMenu()
                 initClaims()
-                initReview()
+                initReview(product)
             }
         })
 
@@ -119,6 +111,10 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
             }
         }
 
+        mBinding.includeProductdetailContentbody.viewModel = mViewModel
+        mBinding.includeProductdetailContentinfo.viewModel = mViewModel
+        mBinding.includeProductdetailContentshipping.viewModel = mViewModel
+        mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
         mBinding.viewModel = mViewModel
         detectScrollView()
 
@@ -140,13 +136,14 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
         }
     }
 
-    private fun initReview() {
+    private fun initReview(product: Product) {
         mReviewFragment = ProductDetailReviewFragment()
         mReviewFragment.notifySummary = { averageReviewsRating ->
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
-        mReviewFragment.setProductId(productId = mViewModel.product.value?.productId ?: 0)
+
+        mReviewFragment.setProductId(productId = product.productId)
 
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)

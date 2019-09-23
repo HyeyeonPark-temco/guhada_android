@@ -13,6 +13,10 @@ import io.temco.guhada.databinding.LayoutProductdetailReviewBinding
 import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
+/**
+ * 상품상세-상품 리뷰
+ * @author Hyeyeon Park
+ */
 class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBinding>() {
     private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
     private var mViewModel: ProductDetailReviewViewModel = ProductDetailReviewViewModel()

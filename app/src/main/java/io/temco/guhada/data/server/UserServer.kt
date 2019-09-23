@@ -356,17 +356,8 @@ class UserServer {
          * 상품 리뷰 리스트 조회
          */
         @JvmStatic
-        fun getProductReview(listener: OnServerListener, productId: Long, page: Int, size: Int) {
-            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size).enqueue(object : Callback<BaseModel<ReviewResponse>> {
-                override fun onResponse(call: Call<BaseModel<ReviewResponse>>, response: Response<BaseModel<ReviewResponse>>) {
-                    listener.onResult(true, response.body())
-                }
-
-                override fun onFailure(call: Call<BaseModel<ReviewResponse>>, t: Throwable) {
-                    listener.onResult(false, t.message)
-                }
-            })
-        }
+        fun getProductReview(listener: OnServerListener, productId: Long, page: Int, size: Int) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
 
         /**

@@ -63,7 +63,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                     if (o != null) {
                         val model = o as BaseModel<*>
                         this.reviewResponse = model.data as ReviewResponse
-                        if (reviewResponse.content.isNullOrEmpty()) emptyVisibility = ObservableInt(View.VISIBLE)
+                        emptyVisibility = if (reviewResponse.content.isNullOrEmpty()) ObservableInt(View.VISIBLE)
+                        else ObservableInt(View.GONE)
 
                         notifyPropertyChanged(BR.reviewResponse)
                         notifyPropertyChanged(BR.emptyVisibility)
