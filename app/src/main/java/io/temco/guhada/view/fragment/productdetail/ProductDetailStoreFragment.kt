@@ -113,4 +113,8 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
         mViewModel.mSellerBookMark = bookMark
         mViewModel.notifyPropertyChanged(BR.mSellerBookMark)
     }
+
+    fun getSellerBookMark(target: String){
+        mViewModel.getSellerLike(target)
+    }
 }

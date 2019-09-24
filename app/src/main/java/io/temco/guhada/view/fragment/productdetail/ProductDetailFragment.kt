@@ -762,6 +762,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mBinding.includeProductdetailContentheader.textviewProductdetailCoupon.setBackgroundResource(R.drawable.coupon_text_disabled)
         mBinding.includeProductdetailContentheader.imageviewProductdetailCoupon.setImageResource(R.drawable.coupon_comlete_disabled)
         mBinding.executePendingBindings()
+
+        // 팔로우 버튼 리셋
+        mStoreFragment.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
+        mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
     }
 
     companion object {

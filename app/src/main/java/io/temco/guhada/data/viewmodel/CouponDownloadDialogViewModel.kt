@@ -17,7 +17,6 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class CouponDownloadDialogViewModel : BaseObservableViewModel() {
     var mList: MutableList<Coupon> = mutableListOf()
-    var mSellerId = 0L
     var mIsFollowCouponExist = false
     var mCouponSaveProcess = CouponSaveProcess()
     var mOnClickCloseTask: () -> Unit = {}
@@ -26,17 +25,17 @@ class CouponDownloadDialogViewModel : BaseObservableViewModel() {
     fun onClickClose() = mOnClickCloseTask()
     fun onClickDownload() {
         ServerCallbackUtil.callWithToken(task = {
-            if (mIsFollowCouponExist) saveFollow(accessToken = it, successTask = { saveCoupon(idx = 0, accessToken = it) })
+            if (mIsFollowCouponExist) saveFollow(accessToken = it)
             else saveCoupon(idx = 0, accessToken = it)
         })
     }
 
     // 셀러 팔로우 등록
-    private fun saveFollow(accessToken: String, successTask: () -> Unit) {
-        val bookMark = BookMarkResponse(target = BookMarkTarget.SELLER.target, targetId = mSellerId)
+    private fun saveFollow(accessToken: String) {
+        val bookMark = BookMarkResponse(target = BookMarkTarget.SELLER.target, targetId = mCouponSaveProcess.sellerId)
         UserServer.saveBookMark(OnServerListener { success, o ->
             if (success) {
-                successTask()
+                saveCoupon(0, accessToken)
             } else {
                 if (o is BaseModel<*>) ToastUtil.showMessage(o.message)
                 else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
