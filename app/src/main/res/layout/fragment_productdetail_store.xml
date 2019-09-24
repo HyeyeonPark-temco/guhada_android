@@ -178,6 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:background="@drawable/border_all_whitethree_r6"
+                        android:visibility="gone"
                         app:layout_constraintLeft_toRightOf="@+id/imageview_productdetail_store_seller"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -199,8 +200,8 @@
                         android:id="@+id/textview_productdetail_store_storename"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@{viewModel.mSeller.storeName}"
+                        android:layout_marginStart="20dp"
+                        android:text="@{viewModel.mSeller.user.nickname}"
                         android:textColor="@color/warm_grey_two"
                         android:textSize="@dimen/text_11"
                         app:layout_constraintLeft_toRightOf="@+id/imageview_productdetail_store_ranking"
