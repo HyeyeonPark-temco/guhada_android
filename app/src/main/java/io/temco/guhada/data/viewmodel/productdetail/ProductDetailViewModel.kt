@@ -257,7 +257,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
      */
     fun getProductReviewSummary() {
         if (product.value != null) {
-            if (product.value?.productId != null) {
+            if (product.value?.productId != null && product.value?.productId ?: 0 > 0) {
                 UserServer.getProductReviewSummary(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = {
