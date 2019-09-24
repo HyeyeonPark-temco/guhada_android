@@ -68,6 +68,10 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
 
+            /**
+             * @author park jungho
+             * 시즌과 상품 이름
+             */
             mBinding.includeDeliverydetailProductinfo.title = if(TextUtils.isEmpty(mViewModel.purchaseOrderResponse.orderList[0].season)) mViewModel.purchaseOrderResponse.orderList[0].productName
                 else mViewModel.purchaseOrderResponse.orderList[0].season+ " "+ mViewModel.purchaseOrderResponse.orderList[0].productName
 
