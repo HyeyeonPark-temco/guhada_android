@@ -446,7 +446,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onClickUseAllPoint() {
-        usedPointNumber = holdingPoint
+        usedPointNumber = if (mTotalDiscountPrice.get() + holdingPoint > mTotalPaymentPrice.get()) {
+          product.totalPrice - mCouponDiscountPrice.toLong()
+        } else {
+            holdingPoint
+        }
         notifyPropertyChanged(BR.usedPoint)
     }
 

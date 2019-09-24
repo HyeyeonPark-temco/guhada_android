@@ -251,10 +251,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     mViewModel.usedPoint = ObservableField("0")
                     mViewModel.notifyPropertyChanged(BR.usedPoint)
                 }
-
-
-
-                Log.e("ㅇㅇㅇㅇㅇ", "NUM: ${mViewModel.usedPointNumber}  STR: ${mViewModel.usedPoint}")
             }
         })
     }
@@ -464,7 +460,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
                                     }
 
-                                    val totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
+                                    // [2019.09.24] 할인 금액이 결제 금액보다 큰 경우
+                                    var totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
+                                    if (couponDiscountPrice > 0 && totalDiscountPrice > mViewModel.order.totalProdPrice) {
+                                        totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice
+                                        mViewModel.usedPointNumber = 0
+                                        mViewModel.notifyPropertyChanged(BR.usedPoint)
+                                    }
+
                                     mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice)
                                     mViewModel.mTotalPaymentPrice = ObservableInt((mViewModel.order.totalProdPrice - totalDiscountPrice))
                                     mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)

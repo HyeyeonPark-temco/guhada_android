@@ -32,9 +32,11 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
         initViewModel()
         mBinding.imagebuttonCouponselectClose.setOnClickListener { finish() }
         mBinding.buttonCouponselect.setOnClickListener {
-            intent.putExtra("selectedCouponMap", mViewModel.mSelectedCouponMap)
-            intent.putExtra("totalDiscountPrice", mViewModel.mTotalDiscountPrice.get())
-            setResult(Activity.RESULT_OK, intent)
+            if (mViewModel.mSelectedCouponMap.keys.isNotEmpty()) {
+                intent.putExtra("selectedCouponMap", mViewModel.mSelectedCouponMap)
+                intent.putExtra("totalDiscountPrice", mViewModel.mTotalDiscountPrice.get())
+                setResult(Activity.RESULT_OK, intent)
+            }
             finish()
         }
         mBinding.viewModel = mViewModel
