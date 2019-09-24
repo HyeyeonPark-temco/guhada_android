@@ -158,12 +158,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }).apply {
             this.mVerifyTask = {
-                mViewModel.mMobileVerification = mViewModel.order.user.mobile?.isNotEmpty()
-                        ?: false
                 val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
                 intent.putExtra("user", mViewModel.order.user)
-                intent.putExtra("mobileVerification", mViewModel.mMobileVerification)
-                intent.putExtra("emailVerification", mViewModel.mEmailVerification)
+                intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
+                intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
                 startActivityForResult(intent, RequestCode.VERIFY.flag)
             }
         }
@@ -427,8 +425,35 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 if (resultCode == Activity.RESULT_OK) {
                     val mobileVerification = data?.getBooleanExtra("mobileVerification", false)
                     val emailVerification = data?.getBooleanExtra("emailVerification", false)
-                    mViewModel.mMobileVerification = mobileVerification ?: false
-                    mViewModel.mEmailVerification = emailVerification ?: false
+                    val name = data?.getStringExtra("name")
+                    val phoneNumber = data?.getStringExtra("phoneNumber")
+                    val di = data?.getStringExtra("di")
+                    val gender = data?.getStringExtra("gender")
+
+                    if (!mViewModel.mMobileVerification.get()){
+                        if (name != null && phoneNumber != null) {
+                            mViewModel.mRequestOrder.user.name = name
+                            mViewModel.mRequestOrder.user.mobile = phoneNumber
+                            mViewModel.mRequestOrder.user.phoneNumber = phoneNumber
+
+                            mViewModel.order.user.name = name
+                            mViewModel.order.user.mobile = phoneNumber
+                            mViewModel.order.user.phoneNumber = phoneNumber
+
+                            mBinding.viewModel = mViewModel
+                        }
+
+                        mViewModel.mMobileVerification = ObservableBoolean(mobileVerification
+                                ?: false)
+                        mViewModel.notifyPropertyChanged(BR.mMobileVerification)
+                    }
+
+                    if (!mViewModel.mEmailVerification.get()){
+                        mViewModel.mEmailVerification = ObservableBoolean(emailVerification
+                                ?: false)
+                        mViewModel.notifyPropertyChanged(BR.mEmailVerification)
+                    }
+
                     mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false && emailVerification ?: false) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
                 }

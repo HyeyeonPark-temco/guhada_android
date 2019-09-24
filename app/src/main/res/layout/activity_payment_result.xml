@@ -121,11 +121,11 @@
                         style="@style/PaymentResultContentGreyTextStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{String.valueOf(viewModel.purchaseOrderResponse.orderNumber)}" />
+                        android:layout_weight="1"/>
 
                     <LinearLayout
                         android:id="@+id/linearLayout11"
+                        android:onClick="@{()->viewModel.onClickDetail()}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

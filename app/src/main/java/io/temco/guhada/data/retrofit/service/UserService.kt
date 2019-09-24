@@ -460,6 +460,6 @@ interface UserService {
      * @since 2019.09.23
      */
     @PUT("/users/email-verify")
-    fun updateEmailVerify(@Header("Authorization") accessToken: String) : Call<BaseModel<Any>>
+    fun updateEmailVerify(@Header("Authorization") accessToken: String, @Query("verificationNumber") verificationNumber: String): Call<BaseModel<Any>>
 
 }

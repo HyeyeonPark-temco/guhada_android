@@ -56,8 +56,12 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
 
     private fun closeActivity() {
         if(::mViewModel.isInitialized){
-            this@VerifyActivity.intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
-            this@VerifyActivity.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
+            this.intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
+            this.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
+            this.intent.putExtra("name", mViewModel.mVerification.name)
+            this.intent.putExtra("phoneNumber", mViewModel.mVerification.mobile)
+            this.intent.putExtra("di", mViewModel.mVerification.diCode)
+            this.intent.putExtra("gender", mViewModel.mVerification.gender)
         }
 
         setResult(Activity.RESULT_OK, intent)
