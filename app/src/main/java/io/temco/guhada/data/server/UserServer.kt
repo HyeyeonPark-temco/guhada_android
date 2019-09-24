@@ -822,7 +822,7 @@ class UserServer {
          * @since 2019.09.23
          */
         @JvmStatic
-        fun updateEmailVerify(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateEmailVerify(accessToken = accessToken)
+        fun updateEmailVerify(listener: OnServerListener, accessToken: String, verificationNumber: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateEmailVerify(accessToken = accessToken, verificationNumber = verificationNumber)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
 

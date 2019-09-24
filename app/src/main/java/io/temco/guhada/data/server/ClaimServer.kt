@@ -29,15 +29,15 @@ open class ClaimServer {
          * 회원 상품 문의 조회
          */
         @JvmStatic
-        fun getClaims(listener: OnServerListener, productId: Long, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
+        fun getClaims(listener: OnServerListener, accessToken: String, productId: Long, isMyInquiry: Boolean?, pageNo: Int, size: Int, status: String) {
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false).getClaims(productId = productId, isMyInquiry = isMyInquiry,
-                    pageNo = pageNo, size = size, status = status, accessToken = "Bearer ${Preferences.getToken().accessToken}").enqueue(object : Callback<BaseModel<ClaimResponse>> {
+                    pageNo = pageNo, size = size, status = status, accessToken = accessToken).enqueue(object : Callback<BaseModel<ClaimResponse>> {
                 override fun onResponse(call: Call<BaseModel<ClaimResponse>>, response: Response<BaseModel<ClaimResponse>>) {
                     listener.onResult(response.isSuccessful, response.body())
                 }
 
                 override fun onFailure(call: Call<BaseModel<ClaimResponse>>, t: Throwable) {
-//                    listener.onResult(false, t.message)
+                    listener.onResult(false, t.message)
                 }
             })
         }
@@ -269,7 +269,7 @@ open class ClaimServer {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -283,11 +283,12 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -318,13 +319,13 @@ open class ClaimServer {
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                     if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
                     listener.onResult(false, t.message)
                 }
             })
         }
-
 
 
         /**
@@ -337,11 +338,12 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<UserClaimGuhadaType>>, response: Response<BaseModel<UserClaimGuhadaType>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<UserClaimGuhadaType>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -355,11 +357,12 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -369,7 +372,7 @@ open class ClaimServer {
         @JvmStatic
         fun saveUserClaimGuhada(listener: OnServerListener, accessToken: String, userId: Long, param: UserClaimGuhadaResponse) {
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).saveUserClaimGuhada(
-                    accessToken=accessToken, userId=userId,  param=param).enqueue(object : Callback<BaseModel<Any>> {
+                    accessToken = accessToken, userId = userId, param = param).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     if (response.code() in 200..400 && response.body() != null) {
                         listener.onResult(true, response.body())
@@ -390,16 +393,13 @@ open class ClaimServer {
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                     if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
                     listener.onResult(false, t.message)
                 }
             })
         }
-
-
-
-
 
 
         /**
@@ -412,11 +412,12 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<UserClaimSellerType>>, response: Response<BaseModel<UserClaimSellerType>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<UserClaimSellerType>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -430,11 +431,12 @@ open class ClaimServer {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             listener.onResult(response.isSuccessful, response.body())
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -442,9 +444,9 @@ open class ClaimServer {
          * 판매자 문의하기
          */
         @JvmStatic
-        fun saveUserClaimSeller(listener: OnServerListener, accessToken: String, userId : Long, param: UserClaimSellerResponse) {
+        fun saveUserClaimSeller(listener: OnServerListener, accessToken: String, userId: Long, param: UserClaimSellerResponse) {
             RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true).saveUserClaimSeller(
-                    accessToken = accessToken, userId=userId, param = param).enqueue(object : Callback<BaseModel<Any>> {
+                    accessToken = accessToken, userId = userId, param = param).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                     if (response.code() in 200..400 && response.body() != null) {
                         listener.onResult(true, response.body())
@@ -465,6 +467,7 @@ open class ClaimServer {
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                     if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
                     listener.onResult(false, t.message)

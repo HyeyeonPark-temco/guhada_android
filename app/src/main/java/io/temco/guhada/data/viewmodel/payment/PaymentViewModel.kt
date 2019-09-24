@@ -125,7 +125,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             field = value
             notifyPropertyChanged(BR.usedPoint)
         }
-    var order: Order = Order()
+    var order= Order()
         @Bindable
         get() = field
         set(value) {
@@ -135,6 +135,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             // default 최종 결제 금액
             this.mTotalPaymentPrice = ObservableInt(value.totalPaymentPrice)
             notifyPropertyChanged(BR.mTotalPaymentPrice)
+
+            // 본인인증
+            this.mMobileVerification = ObservableBoolean(value.user.name != null && value.user.mobile != null)
+            this.mEmailVerification = ObservableBoolean( value.user.emailVerify)
+            notifyPropertyChanged(BR.mMobileVerification)
+            notifyPropertyChanged(BR.mEmailVerification)
 
             field = value
         }
@@ -157,7 +163,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     val shippingAddressText: String
         @Bindable
         get() {
-            return if (order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress}${order.shippingAddress?.detailAddress}"
+            return if (order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress} ${order.shippingAddress?.detailAddress}"
             else BaseApplication.getInstance().getString(R.string.payment_text_emptyshippingaddress)
         }
 
@@ -207,9 +213,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
-    var mMobileVerification: Boolean = false
-    var mEmailVerification: Boolean = false
-
+    var mMobileVerification = ObservableBoolean(false)
+    @Bindable
+    get() = field
+    var mEmailVerification = ObservableBoolean(false)
+        @Bindable
+        get() = field
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
             if (success) {
@@ -446,7 +455,11 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     }
 
     fun onClickUseAllPoint() {
-        usedPointNumber = holdingPoint
+        usedPointNumber = if (mTotalDiscountPrice.get() + holdingPoint > mTotalPaymentPrice.get()) {
+          product.totalPrice - mCouponDiscountPrice.toLong()
+        } else {
+            holdingPoint
+        }
         notifyPropertyChanged(BR.usedPoint)
     }
 
@@ -467,7 +480,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     if (this.user.get() != null) {
                         if (this.order.user.mobile.isNullOrEmpty()) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifymobile))
-                        } else if (this.order.user.emailVerify == false) {
+                        } else if (!mEmailVerification.get()) {
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
                         } /*else if (selectedShippingMessage.get()?.message == defaultShippingMessage || shippingMessage.isEmpty()) {
                             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo))

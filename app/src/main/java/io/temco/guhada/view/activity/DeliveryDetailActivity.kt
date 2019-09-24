@@ -49,7 +49,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
 //                    mViewModel.getClaimForm()
 //                }
 //            }
-            
+
             mViewModel.getOrder()
             mViewModel.onClickClaimTask = { productId ->
                 val intent = Intent(this, WriteClaimActivity::class.java)
@@ -68,12 +68,17 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
 
-            /**
-             * @author park jungho
-             * 시즌과 상품 이름
-             */
-            mBinding.includeDeliverydetailProductinfo.title = if(TextUtils.isEmpty(mViewModel.purchaseOrderResponse.orderList[0].season)) mViewModel.purchaseOrderResponse.orderList[0].productName
-                else mViewModel.purchaseOrderResponse.orderList[0].season+ " "+ mViewModel.purchaseOrderResponse.orderList[0].productName
+            mBinding.includeDeliverydetailProductinfo.status = intent.getStringExtra("status")
+//            /**
+//             * @author park jungho
+//             * 시즌과 상품 이름
+//             *
+//             * @author Hyeyeon Park
+//             * @since 2019.009.24
+//             * databinding으로 변경
+//             */
+//            mBinding.includeDeliverydetailProductinfo.title = if(TextUtils.isEmpty(mViewModel.purchaseOrderResponse.orderList[0].season)) mViewModel.purchaseOrderResponse.orderList[0].productName
+//                else mViewModel.purchaseOrderResponse.orderList[0].season+ " "+ mViewModel.purchaseOrderResponse.orderList[0].productName
 
             initRefundInfo()
 

@@ -235,7 +235,8 @@
                     android:background="@color/common_white"
                     android:paddingTop="60dp"
                     android:paddingBottom="60dp"
-                    android:visibility="@{viewModel.emptyVisibility, default =visible}">
+                    android:visibility="@{viewModel.emptyVisibility, default =visible}"
+                    >
 
                     <ImageView
                         android:id="@+id/imageView8"

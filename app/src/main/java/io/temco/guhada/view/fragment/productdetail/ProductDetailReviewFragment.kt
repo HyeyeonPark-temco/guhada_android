@@ -24,7 +24,7 @@ import io.temco.guhada.view.fragment.mypage.MyPageTabType
  */
 class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBinding>() {
     private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
-     var mViewModel: ProductDetailReviewViewModel = ProductDetailReviewViewModel()
+    var mViewModel: ProductDetailReviewViewModel = ProductDetailReviewViewModel()
     lateinit var notifySummary: (averageReviewsRating: Float) -> Unit
 
     override fun getBaseTag(): String = ProductDetailReviewFragment::class.java.simpleName
@@ -75,8 +75,10 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
 
     fun setProductId(productId: Long) {
         mViewModel.productId = productId
-        mViewModel.getProductReviewSummary()
-        mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize)
+        if (productId > 0) {
+            mViewModel.getProductReviewSummary()
+            mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize)
+        }
     }
 
     private fun showLoadingIndicator() {

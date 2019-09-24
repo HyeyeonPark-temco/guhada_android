@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.view.View
 import androidx.lifecycle.Observer
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -56,44 +57,64 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
 
     private fun serObservers() {
         mViewModel.mRelatedProductList.observe(this, Observer {
-            if (mBinding.recyclerviewProductdetailRelated.adapter == null) {
-                mBinding.recyclerviewProductdetailRelated.adapter = ProductDetailStoreAdapter().apply {
-                    this.mList = it.deals
-                    this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+            if(it.deals.isEmpty()){
+                mBinding.framelayoutProductdetailRelatedempty.visibility = View.VISIBLE
+            }else {
+                mBinding.framelayoutProductdetailRelatedempty.visibility = View.GONE
+                if (mBinding.recyclerviewProductdetailRelated.adapter == null) {
+                    mBinding.recyclerviewProductdetailRelated.adapter = ProductDetailStoreAdapter().apply {
+                        this.mList = it.deals
+                        this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+                    }
+                    mBinding.executePendingBindings()
+                } else {
+                    (mBinding.recyclerviewProductdetailRelated.adapter as ProductDetailStoreAdapter).setItems(it.deals)
                 }
-                mBinding.executePendingBindings()
-            } else {
-                (mBinding.recyclerviewProductdetailRelated.adapter as ProductDetailStoreAdapter).setItems(it.deals)
             }
         })
         mViewModel.mRecommendProductList.observe(this, Observer {
-            if (mBinding.recyclerviewProductdetailRecommend.adapter == null) {
-                mBinding.recyclerviewProductdetailRecommend.adapter = ProductDetailStoreAdapter().apply {
-                    this.mList = it.deals
-                    this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+            if(it.deals.isEmpty()){
+                mBinding.framelayoutProductdetailRecommendempty.visibility = View.VISIBLE
+            }else {
+                mBinding.framelayoutProductdetailRecommendempty.visibility = View.GONE
+                if (mBinding.recyclerviewProductdetailRecommend.adapter == null) {
+                    mBinding.recyclerviewProductdetailRecommend.adapter = ProductDetailStoreAdapter().apply {
+                        this.mList = it.deals
+                        this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+                    }
+                    mBinding.executePendingBindings()
+                } else {
+                    (mBinding.recyclerviewProductdetailRecommend.adapter as ProductDetailStoreAdapter).setItems(it.deals)
                 }
-                mBinding.executePendingBindings()
-            } else {
-                (mBinding.recyclerviewProductdetailRecommend.adapter as ProductDetailStoreAdapter).setItems(it.deals)
             }
         })
         mViewModel.mSellerProductList.observe(this, Observer {
-            if (mBinding.recyclerviewProductdetailSellerstore.adapter == null) {
-                mBinding.recyclerviewProductdetailSellerstore.adapter = ProductDetailStoreGridAdapter().apply {
-                    this.mList = it
-                    this.mIsGridLayout = true
-                    this.mSpanCount = 3
-                    this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+            if(it.isEmpty()){
+                mBinding.framelayoutProductdetailStoreempty.visibility = View.VISIBLE
+            }else {
+                mBinding.framelayoutProductdetailStoreempty.visibility = View.GONE
+                if (mBinding.recyclerviewProductdetailSellerstore.adapter == null) {
+                    mBinding.recyclerviewProductdetailSellerstore.adapter = ProductDetailStoreGridAdapter().apply {
+                        this.mList = it
+                        this.mIsGridLayout = true
+                        this.mSpanCount = 3
+                        this.mViewModel = this@ProductDetailStoreFragment.mViewModel
+                    }
+                    mBinding.executePendingBindings()
+                } else {
+                    (mBinding.recyclerviewProductdetailSellerstore.adapter as ProductDetailStoreGridAdapter).setItems(it)
                 }
-                mBinding.executePendingBindings()
-            } else {
-                (mBinding.recyclerviewProductdetailSellerstore.adapter as ProductDetailStoreGridAdapter).setItems(it)
             }
+
         })
     }
 
     fun setSellerBookMark(bookMark: BookMark) {
         mViewModel.mSellerBookMark = bookMark
         mViewModel.notifyPropertyChanged(BR.mSellerBookMark)
+    }
+
+    fun getSellerBookMark(target: String){
+        mViewModel.getSellerLike(target)
     }
 }

@@ -39,14 +39,53 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_16" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_productdetail_related"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_productdetail_related"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_relatedempty"
+                        android:layout_width="match_parent"
+                        android:layout_height="224dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/common_white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/icon_no_data" />
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="14dp"
+                                android:text="@string/productdetail_store_relatedempty"
+                                android:textColor="@color/greyish_brown_two"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+
 
                 <TextView
                     style="@style/TextBold"
@@ -57,14 +96,53 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_16" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_productdetail_recommend"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_productdetail_recommend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_recommendempty"
+                        android:layout_width="match_parent"
+                        android:layout_height="224dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/common_white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/icon_no_data" />
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="14dp"
+                                android:text="@string/productdetail_store_recommendempty"
+                                android:textColor="@color/greyish_brown_two"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -100,6 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:background="@drawable/border_all_whitethree_r6"
+                        android:visibility="gone"
                         app:layout_constraintLeft_toRightOf="@+id/imageview_productdetail_store_seller"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -121,8 +200,8 @@
                         android:id="@+id/textview_productdetail_store_storename"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@{viewModel.mSeller.storeName}"
+                        android:layout_marginStart="12dp"
+                        android:text="@{viewModel.mSeller.user.nickname}"
                         android:textColor="@color/warm_grey_two"
                         android:textSize="@dimen/text_11"
                         app:layout_constraintLeft_toRightOf="@+id/imageview_productdetail_store_ranking"
@@ -186,16 +265,55 @@
                     </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_productdetail_sellerstore"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginTop="20dp"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3" />
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_productdetail_sellerstore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="15dp"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="3" />
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_productdetail_storeempty"
+                        android:layout_width="match_parent"
+                        android:layout_height="224dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/common_white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:src="@drawable/icon_no_data" />
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="14dp"
+                                android:text="@string/productdetail_store_otherempty"
+                                android:textColor="@color/greyish_brown_two"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

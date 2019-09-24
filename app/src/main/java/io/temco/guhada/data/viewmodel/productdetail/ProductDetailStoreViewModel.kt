@@ -56,7 +56,6 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
             })
         }, criteria = mCriteria, page = mPage, unitPerPage = UNIT_PER_PAGE)
     }
-
     fun getSellerProductList() {
         ProductServer.getProductListBySellerId(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o, successTask = {

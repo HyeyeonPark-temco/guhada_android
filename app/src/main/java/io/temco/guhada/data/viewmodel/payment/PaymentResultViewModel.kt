@@ -64,6 +64,7 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
         notifyPropertyChanged(BR.pointVisibility)
     }
 
+
     private fun setCreatedAtText(arr: IntArray) {
         if (arr.isNotEmpty()) {
             completeAtText = ObservableField("${arr[0]}.${arr[1]}.${arr[2]} ${arr[3] ?: ""}:${arr[4]

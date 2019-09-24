@@ -3,7 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="title" type="String" />
+
+        <variable
+            name="title"
+            type="String" />
+
+        <variable
+            name="status"
+            type="String" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
@@ -28,23 +36,23 @@
             android:layout_height="120dp"
             android:layout_marginBottom="20dp"
             android:background="@color/common_white"
+            app:imageUrl="@{viewModel.purchaseOrderResponse.orderList[0].imageUrl}"
             app:layout_constraintBottom_toTopOf="@id/textivew_deliverydetail_description"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:imageUrl="@{viewModel.purchaseOrderResponse.orderList[0].imageUrl}"/>
-            <!--app:imageUrl="@{viewModel.mPurchaseOrder.imageUrl}"/>-->
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--app:imageUrl="@{viewModel.mPurchaseOrder.imageUrl}"/>-->
 
         <TextView
             android:id="@+id/textview_deliverydetail_brandname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
+            android:text="@{viewModel.purchaseOrderResponse.orderList[0].brandName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_deliverydetail_profile"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@{viewModel.purchaseOrderResponse.orderList[0].brandName}"/>
-            <!--android:text="@{viewModel.mPurchaseOrder.brandName}"/>-->
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--android:text="@{viewModel.mPurchaseOrder.brandName}"/>-->
 
         <TextView
             android:id="@+id/textview_deliverydetail_productname"
@@ -57,15 +65,14 @@
             android:ellipsize="end"
             android:gravity="start"
             android:singleLine="true"
+            android:text="@{viewModel.purchaseOrderResponse.orderList[0].season != null ? viewModel.purchaseOrderResponse.orderList[0].season + ` ` + viewModel.purchaseOrderResponse.orderList[0].productName : viewModel.purchaseOrderResponse.orderList[0].productName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toRightOf="@+id/imageview_deliverydetail_profile"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_brandname"
-            android:text="@{title}"/>
-            <!--android:text="@{viewModel.mPurchaseOrder.season + ` ` + viewModel.mPurchaseOrder.dealName}"/>-->
-
+            app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_brandname" />
+        <!--android:text="@{title}"-->
         <TextView
             android:id="@+id/textview_deliverydetail_option"
             style="@style/TextRegularSingleLine"
@@ -73,12 +80,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="3dp"
+            android:text="@{viewModel.purchaseOrderResponse.orderList[0].getOptionStr()}"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_deliverydetail_profile"
-            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_productname"
-            android:text="@{viewModel.purchaseOrderResponse.orderList[0].getOptionStr()}"/>
-            <!--android:text="@{viewModel.mPurchaseOrder.getOptionStr()}"/>-->
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_productname" />
+        <!--android:text="@{viewModel.mPurchaseOrder.getOptionStr()}"/>-->
 
         <TextView
             android:id="@+id/textview_deliverydetail_price"
@@ -88,12 +95,12 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="6dp"
 
+            android:text="@{@string/mypage_price_format(viewModel.purchaseOrderResponse.orderList[0].discountPrice)}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_deliverydetail_profile"
-            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_option"
-            android:text="@{@string/mypage_price_format(viewModel.purchaseOrderResponse.orderList[0].discountPrice)}"/>
-            <!--android:text="@{@string/mypage_price_format(viewModel.mPurchaseOrder.discountPrice)}"/>-->
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_option" />
+        <!--android:text="@{@string/mypage_price_format(viewModel.mPurchaseOrder.discountPrice)}"/>-->
 
         <TextView
             android:id="@+id/textview_deliverydetail_status"
@@ -103,15 +110,15 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="20dp"
+            android:text="@{status}"
             android:textColor="@color/common_blue_purple"
             android:textSize="@dimen/text_14"
             app:layout_constraintBottom_toTopOf="@+id/textivew_deliverydetail_description"
             app:layout_constraintLeft_toRightOf="@id/imageview_deliverydetail_profile"
             app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_price"
-            app:layout_constraintVertical_bias="0"
-            android:text="@{viewModel.purchaseOrderResponse.orderList[0].purchaseStatusText}"/>
-            <!--android:text="@{viewModel.mPurchaseOrder.getStatus()}"/>-->
-
+            app:layout_constraintVertical_bias="0" />
+        <!--android:text="@{viewModel.mPurchaseOrder.getStatus()}"/>-->
+        <!--android:text="@{viewModel.purchaseOrderResponse.orderList[0].purchaseStatusText}"-->
         <TextView
             android:id="@+id/textivew_deliverydetail_description"
             style="@style/TextMedium"

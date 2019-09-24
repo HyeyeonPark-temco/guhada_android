@@ -455,6 +455,10 @@
     <string name="productdetail_option_extraprice_format">(+%,2d원)</string>
     <string name="productdetail_option_soldout">(품절)</string>
 
+    <string name="productdetail_store_relatedempty">셀러의 연관 상품이 없습니다.</string>
+    <string name="productdetail_store_recommendempty">추천 상품이 없습니다.</string>
+    <string name="productdetail_store_otherempty">판매자의 다른 상품이 없습니다.</string>
+
     <!-- CLAIM -->
     <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
     <string name="claim_write_private">비공개글 설정</string>
@@ -484,7 +488,7 @@
     <string name="payment_title_receipt_personal">개인소득공제용</string>
     <string name="payment_title_receipt_corporation">사업자증빙용 (세금계산서용)</string>
     <string name="payment_title_receipt_corporationnumber">사업자등록번호</string>
-    <string name="payment_title_receipt_mobile">핸드폰번호</string>
+    <string name="payment_title_receipt_mobile">휴대폰번호</string>
 
 
     <string name="payment_text_freeshipping">무료배송</string>

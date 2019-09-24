@@ -137,7 +137,7 @@ class VerifyViewModel : BaseObservableViewModel() {
                 } else {
                     ToastUtil.showMessage(model.message)
                 }
-            }, accessToken = accessToken)
+            }, accessToken = accessToken, verificationNumber = mVerificationNumber)
         })
     }
 
@@ -149,6 +149,7 @@ class VerifyViewModel : BaseObservableViewModel() {
                 if (resultCode == ResultCode.SUCCESS.flag) {
                     mMobileVerification = ObservableBoolean(true)
                     notifyPropertyChanged(BR.mMobileVerification)
+                    ToastUtil.showMessage("본인 인증 완료")
                 } else {
                     ToastUtil.showMessage(o.message ?: "유저 정보 업데이트 오류")
                 }

@@ -158,12 +158,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }).apply {
             this.mVerifyTask = {
-                mViewModel.mMobileVerification = mViewModel.order.user.mobile?.isNotEmpty()
-                        ?: false
                 val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
                 intent.putExtra("user", mViewModel.order.user)
-                intent.putExtra("mobileVerification", mViewModel.mMobileVerification)
-                intent.putExtra("emailVerification", mViewModel.mEmailVerification)
+                intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
+                intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
                 startActivityForResult(intent, RequestCode.VERIFY.flag)
             }
         }
@@ -251,10 +249,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     mViewModel.usedPoint = ObservableField("0")
                     mViewModel.notifyPropertyChanged(BR.usedPoint)
                 }
-
-
-
-                Log.e("ㅇㅇㅇㅇㅇ", "NUM: ${mViewModel.usedPointNumber}  STR: ${mViewModel.usedPoint}")
             }
         })
     }
@@ -431,8 +425,35 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 if (resultCode == Activity.RESULT_OK) {
                     val mobileVerification = data?.getBooleanExtra("mobileVerification", false)
                     val emailVerification = data?.getBooleanExtra("emailVerification", false)
-                    mViewModel.mMobileVerification = mobileVerification ?: false
-                    mViewModel.mEmailVerification = emailVerification ?: false
+                    val name = data?.getStringExtra("name")
+                    val phoneNumber = data?.getStringExtra("phoneNumber")
+                    val di = data?.getStringExtra("di")
+                    val gender = data?.getStringExtra("gender")
+
+                    if (!mViewModel.mMobileVerification.get()){
+                        if (name != null && phoneNumber != null) {
+                            mViewModel.mRequestOrder.user.name = name
+                            mViewModel.mRequestOrder.user.mobile = phoneNumber
+                            mViewModel.mRequestOrder.user.phoneNumber = phoneNumber
+
+                            mViewModel.order.user.name = name
+                            mViewModel.order.user.mobile = phoneNumber
+                            mViewModel.order.user.phoneNumber = phoneNumber
+
+                            mBinding.viewModel = mViewModel
+                        }
+
+                        mViewModel.mMobileVerification = ObservableBoolean(mobileVerification
+                                ?: false)
+                        mViewModel.notifyPropertyChanged(BR.mMobileVerification)
+                    }
+
+                    if (!mViewModel.mEmailVerification.get()){
+                        mViewModel.mEmailVerification = ObservableBoolean(emailVerification
+                                ?: false)
+                        mViewModel.notifyPropertyChanged(BR.mEmailVerification)
+                    }
+
                     mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false && emailVerification ?: false) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()
                 }
@@ -464,7 +485,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                         mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
                                     }
 
-                                    val totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
+                                    // [2019.09.24] 할인 금액이 결제 금액보다 큰 경우
+                                    var totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
+                                    if (couponDiscountPrice > 0 && totalDiscountPrice > mViewModel.order.totalProdPrice) {
+                                        totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice
+                                        mViewModel.usedPointNumber = 0
+                                        mViewModel.notifyPropertyChanged(BR.usedPoint)
+                                    }
+
                                     mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice)
                                     mViewModel.mTotalPaymentPrice = ObservableInt((mViewModel.order.totalProdPrice - totalDiscountPrice))
                                     mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
