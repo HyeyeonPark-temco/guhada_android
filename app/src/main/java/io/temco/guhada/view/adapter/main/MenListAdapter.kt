@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Handler
 import android.util.DisplayMetrics
@@ -307,6 +308,12 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
 
                         // Title
                         textTitle[i].setText(data.dealName)
+                        if(data.isBoldName){
+                            textTitle[i].setTypeface(null, Typeface.BOLD)
+                        }else{
+                            textTitle[i].setTypeface(null, Typeface.NORMAL)
+                        }
+
 
                         // Seller Name
                         textSellerName[i].setText(data.sellerName)

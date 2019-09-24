@@ -16,6 +16,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Deal
@@ -99,6 +100,7 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
                 binding.productItemLayout.season = item.season
                 binding.productItemLayout.brand = item.brandName
                 binding.productItemLayout.title = item.prodName
+                binding.productItemLayout.setClickProductListener { CommonUtil.startProductActivity(itemView.context as Activity, item.dealId) }
                 var option = (if(!item.optionAttribute1.isNullOrEmpty())item.optionAttribute1 else "")  +
                         (if(!item.optionAttribute2.isNullOrEmpty())", "+item.optionAttribute2 else "")  +
                         (if(!item.optionAttribute3.isNullOrEmpty())", "+item.optionAttribute3 else "")
@@ -136,6 +138,8 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
                 var option = (if(!item.order.optionAttribute1.isNullOrEmpty())item.order.optionAttribute1 else "")  +
                         (if(!item.order.optionAttribute2.isNullOrEmpty())", "+item.order.optionAttribute2 else "")  +
                         (if(!item.order.optionAttribute3.isNullOrEmpty())", "+item.order.optionAttribute3 else "")
+
+                binding.productItemLayout.setClickProductListener { CommonUtil.startProductActivity(itemView.context as Activity, item.order.dealId) }
 
                 binding.productItemLayout.option = (if(!option.isNullOrEmpty()) option+", " else "") + item.order.quantity + "개"
                 binding.productItemLayout.price = item.order.orderPrice

@@ -3,6 +3,7 @@ package io.temco.guhada.view.adapter.mypage
 import android.app.Activity
 import android.content.Context
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -111,16 +112,21 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 ImageUtil.loadImage((this@MyPageProductListAdapter.model as MyPageRecentViewModel).mRequestManager, binding.imageThumb, url)
 
                 // Brand
-                binding.textBrand.setText(data.brandName)
+                binding.textBrand.text = data.brandName
 
                 // Season
-                binding.textSeason.setText(data.season)
+                binding.textSeason.text = data.season
 
                 // Title
-                binding.textTitle.setText(data.name)
+                binding.textTitle.text = data.name
+
+                if (data.isBoldName) {
+                    binding.textTitle.setTypeface(null, Typeface.BOLD)
+                } else {
+                    binding.textTitle.setTypeface(null, Typeface.NORMAL)
+                }
 
                 // Option
-
                 if (binding.layoutColor.getChildCount() > 0)binding.layoutColor.removeAllViews()
                 if (data.options != null && data!!.options!!.size > 0) {
                     if(CustomLog.flag)CustomLog.L("MyPageProductListAdapter","data.options",data.options.toString())

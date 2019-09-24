@@ -20,6 +20,7 @@ import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
+import io.temco.guhada.view.adapter.base.BaseCategoryListAdapter;
 import io.temco.guhada.view.adapter.brand.DetailSearchBrandListAdapter;
 import io.temco.guhada.view.adapter.category.DetailSearchCategoryFirstListAdapter;
 import io.temco.guhada.view.adapter.filter.FilterListAdapter;
@@ -183,16 +184,15 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.VISIBLE);
             mBinding.layoutExpandCategoryHeader.setToggleOnClick(true);
             for (Category c:mCategoryList) {
-                if(CustomLog.getFlag())CustomLog.L("setCategoryData c0",c.toString());
                 if(!c.children.isEmpty()){
                     for (Category c1:c.children) {
-                        if(CustomLog.getFlag())CustomLog.L("setCategoryData c1",c1.toString());
+                        c1.parentId = c.id;
                         if(c1.children !=null && !c1.children.isEmpty()){
                             for (Category c2:c1.children) {
-                                if(CustomLog.getFlag())CustomLog.L("setCategoryData c2",c2.toString());
+                                c2.parentId = c1.id;
                                 if(c2.children !=null && !c2.children.isEmpty()){
                                     for (Category c3:c2.children) {
-                                        if(CustomLog.getFlag())CustomLog.L("setCategoryData c3",c3.toString());
+                                        c3.parentId = c2.id;
                                     }
                                 }
                             }
@@ -253,65 +253,78 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
     private void checkSelectedCategoryHeaderList(int position, Category category) {
         if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryHeaderList","position",position,"type",category.type.name(), "category",category);
-        /*if (!checkSelectedCategoryHirarchy(category.hierarchies) || mCategorySelectedList == null) {
-            mCategorySelectedList = new ArrayList<>();
-        }
-        if(category.type == Type.Category.ALL){
-            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL","size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
-            if (mCategorySelectedList.size() > 0) {
-                for (Category b : mCategorySelectedList) {
-                    if (b.id == category.id) {
-                        if (!category.isSelected) {
-                            mCategorySelectedList.remove(b);
-                        }
-                        break;
-                    }
-                }
-            }
-            if (category.isSelected) {
-                mCategorySelectedList.add(category);
-            }
-        }else{
-            if (mCategorySelectedList.size() > 0) {
-                for (Category b : mCategorySelectedList) {
-                    if (b.id == category.id) {
-                        if (!category.isSelected) {
-                            mCategorySelectedList.remove(b);
-                        }
-                        break;
-                    }
-                }
-            }
-            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL" ,"size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
-            if (category.isSelected) {
-                mCategorySelectedList.add(category);
-            }
-        }
-        refreshCategoryTitle();*/
     }
 
 
     private void checkSelectedCategoryList(int position, Category category) {
-        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList","position",position,"type",category.type.name(), "category",category);
         if (!checkSelectedCategoryHirarchy(category.hierarchies) || mCategorySelectedList == null) {
             mCategorySelectedList = new ArrayList<>();
         }
         if(category.type == Type.Category.ALL){
-            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL","size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
-            if (mCategorySelectedList.size() > 0) {
-                for (Category b : mCategorySelectedList) {
-                    if (b.id == category.id) {
-                        if (!category.isSelected) {
-                            mCategorySelectedList.remove(b);
+            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL",category);
+            if (category.isSelected) {
+                mCategorySelectedList.clear();
+                for (Category b : (List<Category>) ((BaseCategoryListAdapter)mBinding.listCategory.getAdapter()).getmItems()) {
+
+                    if(b.id == category.id && b.type == Type.Category.ALL) {
+                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 0",b);
+                        mCategorySelectedList.add(b);
+                        b.isSelected = true;
+                    }else b.isSelected = false;
+
+                    if(b.children != null && !b.children.isEmpty()){
+                        for (Category b1 : b.children) {
+
+                            if(b1.id == category.id && b1.type == Type.Category.ALL) {
+                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 1",b);
+                                mCategorySelectedList.add(b1);
+                                b1.isSelected = true;
+                            }else b1.isSelected = false;
+
+                            if(b1.children != null && !b1.children.isEmpty()){
+                                for (Category b2 : b1.children) {
+
+                                    if(b2.id == category.id && b2.type == Type.Category.ALL) {
+                                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2",b2);
+                                        mCategorySelectedList.add(b2);
+                                        b2.isSelected = true;
+                                    }else b2.isSelected = false;
+
+                                    if(b2.children != null && !b2.children.isEmpty()){
+                                        for (Category b3 : b2.children) {
+
+                                            if(b3.id == category.id && b3.type == Type.Category.ALL) {
+                                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2",b3);
+                                                mCategorySelectedList.add(b3);
+                                                b3.isSelected = true;
+                                            }else b3.isSelected = false;
+
+                                            if(b3.children != null && !b3.children.isEmpty()){
+                                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2",b3.children);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-                        break;
                     }
                 }
-            }
-            if (category.isSelected) {
                 mCategorySelectedList.add(category);
+                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList mCategorySelectedList",mCategorySelectedList);
+            }else{
+                category.isSelected = true;
+                /*mCategorySelectedList.clear();
+                for (Category b : mCategoryList) {
+                    if (b.id == category.id) {
+                        b.isSelected = true;
+                        mCategorySelectedList.add(b);
+                    }else{
+                        b.isSelected = false;
+                    }
+                }*/
             }
         }else{
+            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL",category);
             if (mCategorySelectedList.size() > 0) {
                 for (Category b : mCategorySelectedList) {
                     if (b.id == category.id) {

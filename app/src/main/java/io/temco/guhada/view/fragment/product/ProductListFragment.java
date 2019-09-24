@@ -151,7 +151,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             getProductListBySearch(true);
         }
         scrollviewOnTop = true;
-        getRecentProductCount();
         /*if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
             mBinding.imageviewMaintabIcon1.setBackgroundResource(R.drawable.tool_icon_category_on);
             mBinding.textviewMaintabTitle1.setTextColor(Color.parseColor("#5d2ed1"));
@@ -715,6 +714,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 public void callBackListener(boolean resultFlag, @NotNull Object value) {
                     try {
                         recentViewCount = Integer.parseInt(value.toString());
+                        mBinding.buttonFloatingItem.textviewFloatingCount.setText(value.toString());
                     }catch (Exception e){
                         if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
                     }

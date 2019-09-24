@@ -38,6 +38,8 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
     private var reviewData : MyPageReviewBase? = null
     private var reviewAvailableData : ReviewAvailableOrder ? = null
 
+    private var deleteImageData = arrayListOf<ReviewPhotos>()
+
     private var ratingBarValue = 0.0f
 
     override fun getBaseTag(): String = ReviewWriteActivity::class.java.simpleName
@@ -118,6 +120,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             if(it.isNullOrEmpty()) mBinding.recyclerviewReviewwriteImagelist.visibility = View.GONE
             else mBinding.recyclerviewReviewwriteImagelist.visibility = View.VISIBLE
         })
+        deleteImageData.clear()
     }
 
 
@@ -167,7 +170,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         mViewModel.editTextReviewTxtCount.set(txt.length.toString())
         setImageRecyclerViewVisible()
 
-        if(item.userSize != null){
+        if(item.userSize == null){
             mViewModel.setUserSize(true, item.userSize)
         }
     }
@@ -220,6 +223,9 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
     override fun clickSelectItemListener(type : Int, index: Int, value: Any) {
         when(type){
             0 -> {
+                if("http".equals((mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).mList.get(index).reviewPhotoUrl.substring(0,4),true)){
+                    deleteImageData.add((mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).mList.get(index))
+                }
                 (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).mList.removeAt(index)
                 (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
                 setImageRecyclerViewVisible()
@@ -243,13 +249,17 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                         var imageValue = ReviewPhotos()
                         if(mViewModel.mReviewEditPhotos.value!!.size > mViewModel.selectedImageIndex){
                             mViewModel.mReviewEditPhotos.value!!.removeAt(mViewModel.selectedImageIndex)
-                            imageValue.id = -1
+                            imageValue.id = -99
                             imageValue.reviewPhotoUrl = fileNm
+                            imageValue.imageStatus = ImageStatus.ADDED.name
+                            imageValue.photoOrder = mViewModel.selectedImageIndex
                             mViewModel.mReviewEditPhotos.value!!.add(mViewModel.selectedImageIndex,imageValue)
                             (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
                         }else{
-                            imageValue.id = -1
+                            imageValue.id = -99
                             imageValue.reviewPhotoUrl = fileNm
+                            imageValue.imageStatus = ImageStatus.ADDED.name
+                            imageValue.photoOrder = mViewModel.mReviewEditPhotos.value!!.size
                             mViewModel.mReviewEditPhotos.value!!.add(imageValue)
                             (mBinding.recyclerviewReviewwriteImagelist.adapter as ReviewWriteImageAdapter).notifyDataSetChanged()
                         }
@@ -270,40 +280,60 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         }
     }
 
-    private fun clickReviewWriteOrModify(){
+    private fun clickReviewWriteOrModify(listPhoto : List<ReviewPhoto>?){
         val data = ReviewWrMdResponse()
 
         var reviewId = 0
         var productId = 0L
+        if(listPhoto != null){
+            if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","listPhoto",listPhoto)
+        }
+        if(deleteImageData.isNotEmpty()){
+            if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","deleteImageData",deleteImageData)
+        }
         if(mViewModel.modifyReviewStatus.get()){
             var item = reviewData as MyPageReviewContent
+            data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus1.get())
             data.colorSatisfaction = getColorSatisfaction(mViewModel.reviewSelectStatus2.get())
-            data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus1.get())
-            data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus3.get())
+            data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus3.get())
             data.productRating = getRating(ratingBarValue)
             data.orderProductGroupId = item.order.orderProdGroupId
             data.sellerId = item.order.sellerId
             data.productId = item.order.productId
             data.reviewId = item.review.id.toLong()
             data.textReview = mBinding.edittextReviewwriteText.text.toString()
+            if(listPhoto != null)data.reviewPhotos.addAll(listPhoto)
+            if(deleteImageData != null && deleteImageData.isNotEmpty()){
+                for (ph in deleteImageData){
+                    var pData = ReviewPhoto()
+                    pData.reviewPhotoUrl = ph.reviewPhotoUrl
+                    pData.photoOrder = ph.photoOrder
+                    pData.imageStatus = ImageStatus.DELETED.name
+                    pData.id = ph.id
+                    data.reviewPhotos.add(pData)
+                }
+            }
             reviewId = item.review.id
             productId = item.order.productId
         }else{
             var item = reviewAvailableData
+            data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus1.get())
             data.colorSatisfaction = getColorSatisfaction(mViewModel.reviewSelectStatus2.get())
-            data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus1.get())
-            data.sizeSatisfaction = getSizeSatisfaction(mViewModel.reviewSelectStatus3.get())
+            data.lengthSatisfaction = getLengthSatisfaction(mViewModel.reviewSelectStatus3.get())
             data.productRating = getRating(ratingBarValue)
             data.orderProductGroupId = item!!.orderProdGroupId
             data.sellerId = item!!.sellerId
             data.productId = item!!.productId
             data.textReview = mBinding.edittextReviewwriteText.text.toString()
+            if(listPhoto != null)data.reviewPhotos.addAll(listPhoto)
             reviewId = 0
             productId = item!!.productId
         }
+        loadingIndicatorUtil?.dismiss()
+        if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify",mViewModel.modifyReviewStatus.get()," data",data)
         mViewModel.clickReviewWriteOrModify(data, productId, reviewId , object  : OnCallBackListener{
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-                loadingIndicatorUtil?.hide()
+                loadingIndicatorUtil?.dismiss()
                 if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","resultFlag",resultFlag,"value",value)
                 if(resultFlag){
                     if(mViewModel.modifyReviewStatus.get()){
@@ -318,7 +348,6 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         })
     }
 
-    private var totalImageSize = 0
     private fun imageCheck(){
         val txt = mBinding.edittextReviewwriteText.text.toString()
         if(txt.isNullOrEmpty()){
@@ -326,38 +355,44 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             return
         }
         loadingIndicatorUtil?.show()
-        var imageMap = mutableMapOf<Int,String>()
-        for (i:Int in 0 until mViewModel.mReviewEditPhotos.value!!.size){
-            var image = mViewModel.mReviewEditPhotos.value!![i]
-            if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify image",image.toString())
-            if(image.id < 0){
-                imageMap.put(i,image.reviewPhotoUrl)
-            }else{
-                if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify url",image.reviewPhotoUrl)
-            }
-        }
-        clickReviewWriteOrModify()
-        /*if(imageMap.isNotEmpty()){
-            totalImageSize = imageMap.size
-            for (key in imageMap.keys){
-                var index = key
-                mViewModel.uploadImage(imageMap.get(key)!!, index, object : OnCallBackListener{
-                    override fun callBackListener(resultFlag: Boolean, value: Any) {
-                        totalImageSize -= 1
-                        if (CustomLog.flag) CustomLog.L("clickReviewWriteOrModify", "totalImageSize",totalImageSize,"uploadImage", resultFlag, "value", value)
-                        var image = value as ImageResponse
-                        var index = image.index
-                        mViewModel.mReviewEditPhotos.value!!.removeAt(image.index)
-                        var reviewPhotos = ReviewPhotos()
-                        if(totalImageSize == 0){
-                            clickReviewWriteOrModify()
+        if(mViewModel.mReviewEditPhotos.value != null && mViewModel.mReviewEditPhotos.value!!.isNotEmpty()){
+            var listPhoto = arrayListOf<ReviewPhoto>()
+            for ((index,data) in mViewModel.mReviewEditPhotos.value!!.withIndex()){
+                if(data.id == -99){
+                    mViewModel.uploadImage(data.reviewPhotoUrl, mViewModel.reviewPhotoUrl, index, object : OnCallBackListener{
+                        override fun callBackListener(resultFlag: Boolean, value: Any) {
+                            if (CustomLog.flag) CustomLog.L("clickReviewWriteOrModify", "uploadImage", resultFlag, "index", index)
+                            var image = value as ImageResponse
+                            var index = image.index!!
+                            mViewModel.mReviewEditPhotos.value!!.get(index)
+                            var reviewPhoto = ReviewPhoto()
+                            reviewPhoto.id = 0
+                            reviewPhoto.imageStatus = ImageStatus.ADDED.name
+                            reviewPhoto.photoOrder = index
+                            reviewPhoto.reviewPhotoUrl =  image.url
+                            listPhoto.add(index,reviewPhoto)
+                            if(mViewModel.mReviewEditPhotos.value!!.size == listPhoto.size){
+                                clickReviewWriteOrModify(listPhoto)
+                            }
                         }
+                    })
+                }else{
+                    if (CustomLog.flag) CustomLog.L("clickReviewWriteOrModify", "no uploadImage", "index", index)
+                    var reviewPhoto = ReviewPhoto()
+                    reviewPhoto.id = mViewModel.mReviewEditPhotos.value!![index].id
+                    reviewPhoto.imageStatus = if(mViewModel.modifyReviewStatus.get()) ImageStatus.UPDATED.name else ImageStatus.ADDED.name
+                    reviewPhoto.photoOrder = index
+                    reviewPhoto.reviewPhotoUrl = mViewModel.mReviewEditPhotos.value!![index].reviewPhotoUrl
+                    listPhoto.add(index,reviewPhoto)
+                    if(mViewModel.mReviewEditPhotos.value!!.size == listPhoto.size){
+                        if (CustomLog.flag) CustomLog.L("clickReviewWriteOrModify notNull", "listPhoto",listPhoto)
+                        clickReviewWriteOrModify(listPhoto)
                     }
-                })
+                }
             }
         }else{
-            clickReviewWriteOrModify()
-        }*/
+            clickReviewWriteOrModify(null)
+        }
     }
 
 

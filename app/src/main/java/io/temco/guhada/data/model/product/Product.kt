@@ -18,6 +18,8 @@ class Product : BaseProduct() {
     var originAreaName: String = "" // 원산지
     var totalStock: Int = 0
 
+    var isBoldName = false
+
     // SHIPPING
     var shipping: Shipping? = Shipping()
     var shipExpenseType: String = ""

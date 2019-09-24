@@ -543,7 +543,7 @@ class UserServer {
         @JvmStatic
         fun writeReview(listener: OnServerListener, accessToken: String, productId: Long, data: ReviewWrMdResponse) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .writeReview(accessToken, productId, data.setParam()).enqueue(object : Callback<BaseModel<Any>> {
+                    .writeReview(accessToken, productId, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             if (CustomLog.flag) CustomLog.L("writeReview", "onResponse body", response.code())
 
@@ -583,7 +583,7 @@ class UserServer {
         @JvmStatic
         fun modifyReview(listener: OnServerListener, accessToken: String, productId: Long, reviewId: Int, data: ReviewWrMdResponse) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .modifyReview(accessToken, productId, reviewId, data.setParamModify()).enqueue(object : Callback<BaseModel<Any>> {
+                    .modifyReview(accessToken, productId, reviewId, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             if (response.code() in 200..400 && response.body() != null) {
                                 listener.onResult(true, response.body())
@@ -824,6 +824,45 @@ class UserServer {
         @JvmStatic
         fun updateEmailVerify(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateEmailVerify(accessToken = accessToken)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
-    }
 
+
+        /**
+         * 마이페이지 내가 작성한 리뷰 리스트
+         */
+        @JvmStatic
+        fun getUserReviewUrl(listener: OnServerListener, accessToken: String) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .getUserReviewUrl(accessToken).enqueue(object : Callback<BaseModel<JsonObject>> {
+                        override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                            if (response.code() in 200..400 && response.body() != null) {
+                                listener.onResult(true, response.body())
+                            } else {
+                                try {
+                                    var msg = Message()
+                                    var errorBody: String? = response.errorBody()?.string() ?: null
+                                    if (!errorBody.isNullOrEmpty()) {
+                                        var gson = Gson()
+                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                                    }
+                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                                    if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onResponse body", error.toString())
+                                    listener.onResult(false, error)
+                                } catch (e: Exception) {
+                                    if (CustomLog.flag) CustomLog.E(e)
+                                    listener.onResult(false, null)
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+                    )
+        }
+
+
+
+
+    }
 }

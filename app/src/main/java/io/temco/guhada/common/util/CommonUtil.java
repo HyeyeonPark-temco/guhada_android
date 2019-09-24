@@ -283,6 +283,7 @@ public class CommonUtil {
         }
     }
 
+
     public static Category createAllCategoryData(String title, String depth, int id, int[] hierarchies) {
         Category all = new Category();
         all.type = Type.Category.ALL;
@@ -291,6 +292,20 @@ public class CommonUtil {
         all.title = title;
         all.fullDepthName = depth;
         all.hierarchies = hierarchies;
+        all.isSelected = false;
+        return all;
+    }
+
+    public static Category createAllCategoryData(String title, String depth, int id, int[] hierarchies, boolean isSelected, int parentId) {
+        Category all = new Category();
+        all.type = Type.Category.ALL;
+        all.id = id;
+        // all.name = title;
+        all.title = title;
+        all.fullDepthName = depth;
+        all.hierarchies = hierarchies;
+        all.isSelected = isSelected;
+        all.parentId = parentId;
         return all;
     }
 

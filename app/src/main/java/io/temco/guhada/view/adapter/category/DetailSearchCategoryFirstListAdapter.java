@@ -11,8 +11,6 @@ import com.github.florent37.expansionpanel.ExpansionLayout;
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import io.temco.guhada.R;
-import io.temco.guhada.common.util.CommonUtil;
-import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.adapter.base.BaseCategoryListAdapter;
 import io.temco.guhada.view.holder.category.DetailSearchCategoryFirstViewHolder;

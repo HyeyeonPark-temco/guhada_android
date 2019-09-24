@@ -261,8 +261,10 @@ class ReviewPhotos : Serializable {
     @SerializedName("photoOrder")
     var photoOrder : Int = 0
 
+    var imageStatus : String = ""
+
     override fun toString(): String {
-        return "ReviewPhotos(id=$id, userProductReviewId=$userProductReviewId, reviewPhotoUrl='$reviewPhotoUrl', photoOrder=$photoOrder)"
+        return "ReviewPhotos(id=$id, userProductReviewId=$userProductReviewId, reviewPhotoUrl='$reviewPhotoUrl', photoOrder=$photoOrder, imageStatus=$imageStatus)"
     }
 }
 

@@ -54,4 +54,7 @@ public class ProductByList implements Serializable {
 
     @SerializedName("options")
     public List options;
+
+    @SerializedName("isBoldName")
+    public boolean isBoldName;
 }

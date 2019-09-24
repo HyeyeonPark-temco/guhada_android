@@ -9,8 +9,8 @@ android {
         applicationId "io.temco.guhada"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "0.0.8"
+        versionCode 9
+        versionName "0.0.9"
 
         multiDexEnabled true
     }
@@ -64,6 +64,12 @@ android {
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         abortOnError false
+    }
+
+    bundle {
+        abi.enableSplit = true
+        density.enableSplit = false
+        language.enableSplit = true
     }
 }
 

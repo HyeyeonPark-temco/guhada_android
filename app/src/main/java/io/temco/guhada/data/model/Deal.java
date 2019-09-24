@@ -67,6 +67,10 @@ public class Deal {
     @SerializedName("shipExpenseType")
     public String shipExpenseType;
 
+
+    @SerializedName("isBoldName")
+    public boolean isBoldName;
+
     public boolean isFreeShipping() {
         if(shipExpenseType!=null && !"".equals(shipExpenseType)) return "FREE".equals(shipExpenseType);
         return freeShipping;

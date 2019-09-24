@@ -33,7 +33,6 @@ public class DetailSearchCategoryFourthViewHolder extends BaseCategoryViewHolder
     public void init(Context context, Type.CategoryData type, Category data, OnCategoryListListener listener, OnCategoryHeaderListListener headerListListener) {
         // Data
         if (data != null) {
-            if(CustomLog.getFlag())CustomLog.L("DetailSearchCategoryFourthViewHolder","data",data.toString());
             // Title
             if (!TextUtils.isEmpty(data.title)) {
                 mBinding.setTitle(data.title);

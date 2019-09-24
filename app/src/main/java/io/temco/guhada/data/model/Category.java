@@ -50,6 +50,8 @@ public class Category {
 
     public int selectId = -1;
 
+    public int parentId = -1;
+
     @Override
     public String toString() {
         return "Category{" +
@@ -57,6 +59,7 @@ public class Category {
                 ", isSelected=" + isSelected +
                 ", isExpand=" + isExpand +
                 ", id=" + id +
+                ", parentId=" + parentId +
                 ", title='" + title + '\'' +
                 ", key='" + key + '\'' +
                 ", hierarchy='" + hierarchy + '\'' +

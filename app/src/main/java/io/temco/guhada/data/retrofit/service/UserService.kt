@@ -4,10 +4,7 @@ import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
-import io.temco.guhada.data.model.review.MyPageReview
-import io.temco.guhada.data.model.review.MyPageReviewContent
-import io.temco.guhada.data.model.review.ReviewResponse
-import io.temco.guhada.data.model.review.ReviewSummary
+import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
@@ -364,10 +361,10 @@ interface UserService {
      *
      * park jungho
      * 19.08.12
-     */
     @FormUrlEncoded
+     */
     @POST("/products/{productId}/reviews")
-    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @FieldMap param: HashMap<String, Any>): Call<BaseModel<Any>>
+    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Body param: ReviewWrMdResponse): Call<BaseModel<Any>>
 
 
     /**
@@ -375,11 +372,15 @@ interface UserService {
      *
      * park jungho
      * 19.08.12
-     */
     @FormUrlEncoded
-    @POST("/products/{productId}/reviews/{reviewId}")
+     */
+    @PUT("/products/{productId}/reviews/{reviewId}")
+    fun modifyReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Int,
+                     @Body param: ReviewWrMdResponse): Call<BaseModel<Any>>
+    /*
     fun modifyReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("reviewId") reviewId: Int,
                      @FieldMap param: HashMap<String, Any>): Call<BaseModel<Any>>
+     */
 
 
     /**
@@ -461,5 +462,16 @@ interface UserService {
      */
     @PUT("/users/email-verify")
     fun updateEmailVerify(@Header("Authorization") accessToken: String) : Call<BaseModel<Any>>
+
+
+
+    /**
+     * review image 업로드 url
+     *
+     * park jungho
+     * 19.08.16
+     */
+    @GET("/products/reviews/image-upload-url")
+    fun getUserReviewUrl(@Header("Authorization") accessToken: String): Call<BaseModel<JsonObject>>
 
 }

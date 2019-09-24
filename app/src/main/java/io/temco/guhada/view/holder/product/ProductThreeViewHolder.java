@@ -3,6 +3,7 @@ package io.temco.guhada.view.holder.product;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -75,6 +76,11 @@ public class ProductThreeViewHolder extends BaseProductViewHolder<ItemProductLis
 
             // Title
              mBinding.textTitle.setText(data.dealName);
+            if(data.isBoldName){
+                mBinding.textTitle.setTypeface(null, Typeface.BOLD);
+            }else{
+                mBinding.textTitle.setTypeface(null, Typeface.NORMAL);
+            }
 
             // Size
             // Empty...

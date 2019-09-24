@@ -47,19 +47,10 @@ public class DetailSearchCategoryFirstViewHolder extends BaseCategoryViewHolder<
                 mBinding.layoutExpandHeader.setToggleOnClick(false);
             } else {
                 mBinding.setExpand(true);
-                mBinding.layoutExpandHeader.setTag(data);
-                mBinding.layoutExpandHeader.addListener(new ExpansionLayout.Listener() {
-                    @Override
-                    public void onExpansionChanged(ExpansionLayout expansionLayout, boolean expanded) {
-                        Category data = null;
-                        if(expansionLayout.getTag() instanceof Category) data = (Category)expansionLayout.getTag();
-                        headerListListener.onEvent(0,data);
-                    }
-                });
                 mBinding.layoutExpandHeader.setToggleOnClick(true);
                 // Add All
                 if (data.children.get(0).type != Type.Category.ALL) {
-                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.fullDepthName, data.id, data.hierarchies));
+                    data.children.add(0, CommonUtil.createAllCategoryData(context.getString(R.string.category_all), data.fullDepthName, data.id, data.hierarchies,data.isSelected,data.id));
                 }
                 // Adapter
                 DetailSearchCategorySecondListAdapter adapter = new DetailSearchCategorySecondListAdapter(context);

@@ -223,6 +223,7 @@ class WomenListLayout constructor(
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
                     try {
                         recentViewCount = value.toString().toInt()
+                        mBinding.buttonFloatingItem.textviewFloatingCount.text = value.toString()
                     } catch (e: Exception) {
                         if (CustomLog.flag) CustomLog.E(e)
                     }

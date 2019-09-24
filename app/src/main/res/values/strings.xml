@@ -25,47 +25,47 @@
     <string name="app_logo_sub_title">쇼핑의 즐거움을 구하다</string>
     <string name="app_copyright">Ⓒ 2019 GUHADA</string>
 
-    <string name="common_confirm">Confirm</string>
-    <string name="common_cancel">Cancel</string>
-    <string name="common_check">Search</string>
-    <string name="common_remaining">Remaining</string>
+    <string name="common_confirm">확인</string>
+    <string name="common_cancel">취소</string>
+    <string name="common_check">조회</string>
+    <string name="common_remaining">보유</string>
 
     <string name="common_top">TOP</string>
-    <string name="common_category">Category</string>
-    <string name="common_brand">Brand</string>
-    <string name="common_home">Home</string>
-    <string name="common_my_page">My Page</string>
-    <string name="common_community">Community</string>
+    <string name="common_category">카테고리</string>
+    <string name="common_brand">브랜드</string>
+    <string name="common_home">홈</string>
+    <string name="common_my_page">마이페이지</string>
+    <string name="common_community">커뮤니티</string>
 
-    <string name="common_show">show</string>
-    <string name="common_max">Maximum</string>
+    <string name="common_show">보기</string>
+    <string name="common_max">최대</string>
     <string name="common_price_format">%,2d</string>
     <string name="common_priceunit_format">%,2d원</string>
 
-    <string name="common_more">More</string>
+    <string name="common_more">더보기</string>
     <string name="common_reset">초기화</string>
     <string name="common_color_white">#ffffff</string>
 
     <string name="common_format_people">%,2d명</string>
     <string name="common_format_product">%,2d개</string>
     <string name="common_format_totalproduct">총 %,2d개</string>
-    <string name="common_unit_person"></string>
+    <string name="common_unit_person">명</string>
     <string name="common_unit_board">건</string>
-    <string name="common_unit_price"></string>
-    <string name="common_unit_krw">KRW</string>
+    <string name="common_unit_price">원</string>
+    <string name="common_unit_krw"></string>
     <string name="common_unit_percent">%</string>
-    <string name="common_unit_product">Items</string>
+    <string name="common_unit_product">개</string>
     <string name="common_unit_point">P</string>
-    <string name="common_unit_score"></string>
+    <string name="common_unit_score">점</string>
 
-    <string name="common_week_one">1 week</string>
-    <string name="common_month_one">1 months</string>
-    <string name="common_month_three">3 months</string>
-    <string name="common_year_one">1 year</string>
+    <string name="common_week_one">1주일</string>
+    <string name="common_month_one">1개월</string>
+    <string name="common_month_three">3개월</string>
+    <string name="common_year_one">1년</string>
 
     <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
-    <string name="common_message_ing">Under Development</string>
+    <string name="common_message_ing">준비중입니다.</string>
     <string name="common_message_expiretoken">토큰이 만료되었습니다. 다시 로그인해주세요.</string><!-- 임시 -->
 
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
@@ -80,13 +80,14 @@
     <string name="common_free">무료</string>
 
 
+
     <!-- ORDER SHIPPING -->
-    <string name="order_shipping_deposit_confirm">Ordered</string>
-    <string name="order_shipping_payment_complete">Paid</string>
-    <string name="order_shipping_product_authenticate">Being evaluated</string>
-    <string name="order_shipping_product_ready">Preparation</string>
-    <string name="order_shipping_ing">In transit</string>
-    <string name="order_shipping_complete">Delivered</string>
+    <string name="order_shipping_deposit_confirm">입금확인</string>
+    <string name="order_shipping_payment_complete">결제완료</string>
+    <string name="order_shipping_product_authenticate">제품감정</string>
+    <string name="order_shipping_product_ready">상품준비</string>
+    <string name="order_shipping_ing">배송중</string>
+    <string name="order_shipping_complete">배송완료</string>
 
     <!-- INFORMATION -->
     <string name="information_title_introduce">회사소개</string>
@@ -94,7 +95,7 @@
     <string name="information_title_advise">입점/제휴문의</string>
     <string name="information_title_privacy_terms">개인정보처리방침</string>
     <string name="information_title_partner">셀러오피스</string>
-    <string name="information_title_as">Customer service</string>
+    <string name="information_title_as">고객센터</string>
     <string name="information_title_recruit">채용정보</string>
     <string name="information_title_claim">문의하기</string>
     <string name="information_company_info"><![CDATA[(주)구하다<br>대표자 : 윤재섭 ㅣ 개인정보보호책임자 : 최대훈<br>사업자등록번호: 000-88-00000<br>주소 : 서울특별시 강남구 논현로75길 8 비드빌딩 6층<br>통신판매업자신고 : 제 2009호-서울강남-0000호 <u>사업자정보확인</u>]]></string><!-- <u>사업자정보확인</u> -->
@@ -106,7 +107,7 @@
     <string name="information_company_number">사업자등록번호: 000-88-00000</string>
     <string name="information_company_address">주소 : 서울특별시 강남구 논현로75길 8 비드빌딩 6층</string>
     <string name="information_company_sales_number">통신판매업자신고 : 제 2009호-서울강남-0000호</string>
-    <string name="information_description">- GUHADA is committed to your privacy. This privacy notice explains our collection, use, disclosure, retention, and protection of your personal information.</string>
+    <string name="information_description">고객님은 안전거래를 위해 결제 시 저희 사이트에서 가입한 구매안전 서비스(채무지급보증)을 이용하실 수 있습니다.</string>
     <string name="information_confirm_company">사업자정보확인</string>
     <string name="information_confirm_service">서비스 가입사실 확인</string>
     <string name="information_copyright_all">COPYRIGHT Ⓒ 2019 GUHADA ALL RIGHTS RESERVED</string>
@@ -130,33 +131,33 @@
 
 
     <!-- SIDE MENU -->
-    <string name="side_menu_login_need">Log In / Register</string>
-    <string name="side_menu_login_out">Log Out</string>
-    <string name="side_menu_sub_sale">Sale</string>
-    <string name="side_menu_sub_new_product">New Arrivials</string>
-    <string name="side_menu_sub_power_deal">Power Deals</string>
-    <string name="side_menu_sub_time_deal">Today’s Deals</string>
-    <string name="side_menu_sub_limit_price">Limited Offers</string>
-    <string name="side_menu_sub_community">Community</string>
+    <string name="side_menu_login_need">로그인 해주세요</string>
+    <string name="side_menu_login_out">로그아웃</string>
+    <string name="side_menu_sub_sale">세일</string>
+    <string name="side_menu_sub_new_product">신상품</string>
+    <string name="side_menu_sub_power_deal">파워딜</string>
+    <string name="side_menu_sub_time_deal">타임딜</string>
+    <string name="side_menu_sub_limit_price">한정특가</string>
+    <string name="side_menu_sub_community">커뮤니티</string>
 
     <!-- CATEGORY -->
-    <string name="category_all">All</string>
+    <string name="category_all">전체보기</string>
 
     <!-- PRODUCT -->
-    <string name="product_order_title">Product Arrangement</string>
-    <string name="product_order_new_product">By Recent</string>
-    <string name="product_order_marks">By rating: high to Low</string>
-    <string name="product_order_low_price">By Price: High to Low</string>
-    <string name="product_order_high_price">By Price: Low to High</string>
+    <string name="product_order_title">상품정렬</string>
+    <string name="product_order_new_product">신상품순</string>
+    <string name="product_order_marks">평점순</string>
+    <string name="product_order_low_price">낮은가격순</string>
+    <string name="product_order_high_price">높은가격순</string>
 
-    <string name="product_search_detail_title">Advanced Search</string>
-    <string name="product_price">\%s</string>
+    <string name="product_search_detail_title">상세검색</string>
+    <string name="product_price">%s원</string>
     <string name="product_price_sale_per">%d%%</string>
-    <string name="product_ship_free">Free shipping</string>
-    <string name="product_ship_free_split">Free\nshipping</string>
+    <string name="product_ship_free">무료배송</string>
+    <string name="product_ship_free_split">무료\n배송</string>
 
     <!-- BRAND -->
-    <string name="brand_search_hint">Search for brand</string>
+    <string name="brand_search_hint">브랜드명을 검색해주세요.</string>
 
     <!-- DETAIL SEARCH -->
     <string name="detail_search_result">검색결과 보기</string>
@@ -164,28 +165,28 @@
 
     <!-- LOGIN -->
     <string name="login_hint_email">아이디(이메일)</string>
-    <string name="login_hint_password">Password</string>
-    <string name="login_title">Login</string>
-    <string name="login_naver">Naver\nlog in</string>
-    <string name="login_google">Google\nlog in</string>
-    <string name="login_kakao">Kakao\nlog in</string>
-    <string name="login_facebook">Facebook\nlog in</string>
-    <string name="login_findid">Find my ID</string>
-    <string name="login_findpwd">Reset your password</string>
-    <string name="login_simple">Log in with you SNS</string>
+    <string name="login_hint_password">비밀번호</string>
+    <string name="login_title">로그인</string>
+    <string name="login_naver">네이버\n로그인</string>
+    <string name="login_google">구글\n로그인</string>
+    <string name="login_kakao">카카오\n로그인</string>
+    <string name="login_facebook">페이스북\n로그인</string>
+    <string name="login_findid">아이디 찾기</string>
+    <string name="login_findpwd">비밀번호 찾기</string>
+    <string name="login_simple">간편 로그인</string>
 
-    <string name="login_button_signin">Log in</string>
-    <string name="login_button_signup">Create an account</string>
-    <string name="login_button_saveid">Remember me</string>
-    <string name="login_button_guestorder">Non-member Order Inquiry</string>
+    <string name="login_button_signin">로그인</string>
+    <string name="login_button_signup">회원가입</string>
+    <string name="login_button_saveid">아이디 저장</string>
+    <string name="login_button_guestorder">비회원 주문조회</string>
 
-    <string name="login_message_wrongidformat">Id form is invalid</string>
-    <string name="login_message_wrongpwdformat">Passwords can only consist of alphanumeric characters and special characters</string>
-    <string name="login_message_wrondpwdlength">Passwords can only be generated between 8 and 15 characters</string>
-    <string name="login_message_invalidinfo">Incorrect email address or password</string>
-    <string name="login_message_notequalpwd">Incorrect password</string>
-    <string name="login_message_existemail">This Id(email) already exists</string>
-    <string name="login_message_requiredlogin">Login Required</string>
+    <string name="login_message_wrongidformat">아이디 형태가 올바르지 않습니다.</string>
+    <string name="login_message_wrongpwdformat">비밀번호는 영문과 숫자 그리고 특수문자로만 구성이 가능합니다.</string>
+    <string name="login_message_wrondpwdlength">비밀번호는 8자에서 15자 사이에서만 생성할 수 있습니다.</string>
+    <string name="login_message_invalidinfo">아이디 또는 비밀번호가 일치하지 않습니다.</string>
+    <string name="login_message_notequalpwd">비밀번호가 일치하지 않습니다.</string>
+    <string name="login_message_existemail">해당 아이디(이메일)가 이미 존재합니다.</string>
+    <string name="login_message_requiredlogin">로그인이 필요한 서비스입니다.</string>
 
     <!-- JOIN -->
     <string name="join_agreeall">전체동의</string>
@@ -212,7 +213,7 @@
     <string name="join_message_existemail">해당 아이디(이메일)가 이미 존재합니다.</string>
 
     <!-- FIND ACCOUNT -->
-    <string name="findaccount_findid">Find my ID</string>
+    <string name="findaccount_findid">아이디 찾기</string>
     <string name="findaccount_findpwd">비밀번호 찾기</string>
     <string name="findaccount_female">여자</string>
     <string name="findaccount_male">남자</string>
@@ -280,7 +281,7 @@
     <string name="verify_verified">[인증완료]</string>
     <string name="verify_message_send">인증번호가 발송되었습니다.</string>
 
-    <string name="findpwd_phonenumber_title">휴대폰 번호로 재설정하기</string>
+    <string name="findpwd_phonenumber_title">휴대폰으로 재설정하기</string>
     <string name="findpwd_phonenumber_description">전화번호 인증을 통해서 비밀번호를 재설정할 수 있습니다.\n아래정보를 입력해주세요.</string>
     <string name="findpwd_email_title">이메일로 재설정하기</string>
     <string name="findpwd_verifyphone_title">휴대폰 본인인증으로 재설정하기</string>
@@ -308,6 +309,7 @@
     <string name="findpwd_message_invalidemailformat">이메일 형식이 올바르지 않습니다.</string>
     <string name="findpwd_message_invalidemailformat_none">아이디로 사용할 이메일을 입력하세요.</string>
 
+
     <!-- TERMS -->
     <string name="terms_title">약관동의</string>
     <string name="terms_button">동의하고 진행하기</string>
@@ -318,131 +320,131 @@
                                         가입은 14세 이상만 가능합니다.</string>
 
     <!-- PRODUCT DETAIL -->
-    <string name="productdetail_dummy_advantage1">Points</string>
-    <string name="productdetail_dummy_advantage2">Earn Additional 1,000 Points</string>
+    <string name="productdetail_dummy_advantage1">포인트 적립</string>
+    <string name="productdetail_dummy_advantage2">추가 적립 포인트 1,000원</string>
     <string name="productdetail_dummy_shippingtype">택배, 등기, 소포</string>
 
-    <string name="productdetail_option">Product options</string>
-    <string name="productdetail_sizeinfo">Size info</string>
-    <string name="productdetail_available">Yes</string>
-    <string name="productdetail_disavailable">No</string>
+    <string name="productdetail_option">옵션선택</string>
+    <string name="productdetail_sizeinfo">사이즈정보</string>
+    <string name="productdetail_available">가능</string>
+    <string name="productdetail_disavailable">불가능</string>
     <string name="productdetail_quick">퀵서비스</string>
-    <string name="productdetail_notquick">Standard shipping</string>
+    <string name="productdetail_notquick">일반배송</string>
 
-    <string name="productdetail_advantageinfo">Benefit</string>
-    <string name="productdetail_totalprice">Total Price</string>
-    <string name="productdetail_tag">Tag</string>
-    <string name="productdetail_report">Report</string>
-    <string name="productdetail_comment">Comments</string>
+    <string name="productdetail_advantageinfo">헤택정보</string>
+    <string name="productdetail_totalprice">총 상품금액</string>
+    <string name="productdetail_tag">태그</string>
+    <string name="productdetail_report">신고</string>
+    <string name="productdetail_comment">댓글</string>
 
-    <string name="productdetail_info">Product Information</string>
-    <string name="productdetail_info_status">Product Status</string>
-    <string name="productdetail_info_number">Item Number</string>
-    <string name="productdetail_info_modelnumber">Product Number</string>
-    <string name="productdetail_info_origin">Origin</string>
-    <string name="productdetail_info_status_new">New</string>
-    <string name="productdetail_info_status_used">Used goods</string>
+    <string name="productdetail_info">상품 정보</string>
+    <string name="productdetail_info_status">상품상태</string>
+    <string name="productdetail_info_number">상품번호</string>
+    <string name="productdetail_info_modelnumber">제품번호</string>
+    <string name="productdetail_info_origin">원산지</string>
+    <string name="productdetail_info_status_new">새 상품</string>
+    <string name="productdetail_info_status_used">중고 상품</string>
 
+    <string name="productdetail_shipinfo">배송정보</string>
+    <string name="productdetail_shipfree">무료배송</string>
 
-    <string name="productdetail_shipinfo">Shipping</string>
-    <string name="productdetail_shipfree">Free Shipping</string>
+    <string name="productdetail_review">상품리뷰</string>
+    <string name="productdetail_totalreview">총 리뷰 평점</string>
+    <string name="productdetail_review_good">만족</string>
+    <string name="productdetail_review_normal">보통</string>
+    <string name="productdetail_review_bad">불만족</string>
+    <string name="productdetail_review_empty">작성된 상품 리뷰가 없습니다.</string>
+    <string name="productdetail_review_description1">첫 상품 리뷰를 작성하고 </string>
+    <string name="productdetail_review_description2">최대 2,000점의 포인트 혜택</string>
+    <string name="productdetail_review_description3">을 누려보세요!</string>
+    <string name="productdetail_review_emptybutton">첫 리뷰 작성하기</string>
+    <string name="productdetail_review_message_lastitem">마지막 상품 리뷰입니다.</string>
 
-    <string name="productdetail_review">Review</string>
-    <string name="productdetail_totalreview">Review Rating</string>
-    <string name="productdetail_review_good">Satified</string>
-    <string name="productdetail_review_normal">Average</string>
-    <string name="productdetail_review_bad">Bad</string>
-    <string name="productdetail_review_empty">There is no product review yet.</string>
-    <string name="productdetail_review_description1">Please be the first one to write review and </string>
-    <string name="productdetail_review_description2">earn up to 2,000 points</string>
-    <string name="productdetail_review_description3"></string>
-    <string name="productdetail_review_emptybutton">Write review</string>
-    <string name="productdetail_review_message_lastitem">No More Reviews</string>
-
-    <string name="productdetail_button_bag">ADD TO BAG</string>
-    <string name="productdetail_button_buy">Buy Now</string>
-    <string name="productdetail_button_detail">Detail</string>
-    <string name="productdetail_button_qna"><![CDATA[Q&A]]></string>
-    <string name="productdetail_button_follow">Follow</string>
+    <string name="productdetail_button_bag">장바구니</string>
+    <string name="productdetail_button_buy">바로구매</string>
+    <string name="productdetail_button_detail">상세정보</string>
+    <string name="productdetail_button_qna">상품문의</string>
+    <string name="productdetail_button_follow">팔로우</string>
     <string name="productdetail_button_following">팔로잉</string>
-    <string name="productdetail_button_store">Store</string>
+    <string name="productdetail_button_store">셀러스토어</string>
 
-    <string name="productdetail_shipping_title">Shipping/Return/Exchange</string>
-    <string name="productdetail_shipping_info_title">Shipping</string>
-    <string name="productdetail_shipping_info_content1">Shipping</string>
-    <string name="productdetail_shipping_info_content2">Bundle Shipping</string>
-    <string name="productdetail_shipping_info_content3">Remote Area Shipping</string>
+    <string name="productdetail_shipping_title">배송/반품/교환정보</string>
+    <string name="productdetail_shipping_info_title">배송정보</string>
+    <string name="productdetail_shipping_info_content1">배송방법</string>
+    <string name="productdetail_shipping_info_content2">묶음배송여부</string>
+    <string name="productdetail_shipping_info_content3">도서산간배송여부</string>
 
-    <string name="productdetail_shipping_as_title">A/S</string>
-    <string name="productdetail_shipping_as_content1">A/S</string>
-    <string name="productdetail_shipping_as_content2">AS contact</string>
+    <string name="productdetail_shipping_as_title">AS안내사항</string>
+    <string name="productdetail_shipping_as_content1">AS 안내내용</string>
+    <string name="productdetail_shipping_as_content2">AS 전화번호</string>
     <string name="productdetail_shipping_as_content3">판매자 특이사항</string>
 
-    <string name="productdetail_shipping_refund_title">Return/Exchange</string>
-    <string name="productdetail_shipping_refund_description">Please contact the seller to discuss exchange/return terms and send the product</string>
+    <string name="productdetail_shipping_refund_title">교환/반품 안내</string>
+    <string name="productdetail_shipping_refund_description">교환/반품 시 먼저 판매자와 연락하셔서 교환/반품사유, 택배사, 반품지 주소 등을 협의하신 후 교환/반품 상품을 발송해 주시기 바랍니다.</string>
 
-    <string name="productdetail_shipping_refund_content1">Designated carrier</string>
-    <string name="productdetail_shipping_refund_content2">Shipping cost for return</string>
-    <string name="productdetail_shipping_refund_content3">Shipping cost for exchange</string>
-    <string name="productdetail_shipping_refund_content4">Return Address</string>
+    <string name="productdetail_shipping_refund_content1">판매자 지정택배사</string>
+    <string name="productdetail_shipping_refund_content2">반품배송비</string>
+    <string name="productdetail_shipping_refund_content3">교환배송비</string>
+    <string name="productdetail_shipping_refund_content4">보내실 곳</string>
 
-    <string name="productdetail_shipping_common_description1_title">- The request period according to the reason for return/exchange</string>
-    <string name="productdetail_shipping_common_description1_content1">· Return will be accepted within 7 days of receipt in case you changed your mind.</string>
-    <string name="productdetail_shipping_common_description1_content2">· In the case of a defective product, within 3 months after receipt of the goods or within 30 days from the date knowing the fact.\n(Seller is responsible for shipping cost)</string>
+    <string name="productdetail_shipping_common_description1_title">- 반품/교환 사유에 따른 요청 가능 기간</string>
+    <string name="productdetail_shipping_common_description1_content1">· 구매자 단순변심은 상품 수령 후 7일 이내 (구매자 반품배송비 부담)</string>
+    <string name="productdetail_shipping_common_description1_content2">· 표시/광고와 상이, 상품하자의 경우 상품 수령 후 3개월 이내 혹은 표시/광고와 다른 사실을 안 날로부터 30일 이내 (판매자 반품 배송비
+  부담) 둘 중 하나 경과 시 반품/교환 불가</string>
 
-    <string name="productdetail_shipping_common_description2_title">- Non-returnable/non-exchangeable item policy</string>
-    <string name="productdetail_shipping_common_description2_content1">1. If the return request period has passed</string>
-    <string name="productdetail_shipping_common_description2_content2">2. If the goods are lost or damaged due to the responsibility of the buyer.(Except when you have damaged the packaging to check the contents of the product)</string>
-    <string name="productdetail_shipping_common_description2_content3">3. If the packages is opened but the packaging is damaged and the value of the product is significantly lost (eg cosmetics, perfume types)</string>
-    <string name="productdetail_shipping_common_description2_content4">4. If the value of a good is significantly reduced by the use of the purchaser (if the label or tag is damaged)</string>
-    <string name="productdetail_shipping_common_description2_content5">5. If the value of the product is significantly reduced so that resale is difficult due to the passage of time</string>
-    <string name="productdetail_shipping_common_description2_content6">6. Custom-made products that go into production with</string>
+    <string name="productdetail_shipping_common_description2_title">- 반품/교환 불가능 사유</string>
+    <string name="productdetail_shipping_common_description2_content1">1. 반품요청기간이 지난 경우</string>
+    <string name="productdetail_shipping_common_description2_content2">2. 구매자의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우 (단, 상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외)</string>
+    <string name="productdetail_shipping_common_description2_content3">3. 포장을 개봉하였으나 포장이 훼손되어 상품가치가 현저히 상실된 경우 (예: 화장품, 향수류 등)</string>
+    <string name="productdetail_shipping_common_description2_content4">4. 구매자의 사용 또는 일부 소비에 의하여 상품의 가치가 현저히 감소한 우, (라벨이 떨어진 의류 또는 태그가 떨어진 상품인 경우)</string>
+    <string name="productdetail_shipping_common_description2_content5">5. 시간의 경과에 의하여 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우</string>
+    <string name="productdetail_shipping_common_description2_content6">6. 고객주문 확인 후 상품제작에 들어가는 주문제작상품 (판매자에게 회복불가능한 손해가 예상되고, 그러한 예정으로 청약철회권행사가 불가하다는 사실을 서면 동의받은 경우)</string>
 
-    <string name="productdetail_shipping_seller_title">Seller\'s information</string>
-    <string name="productdetail_shipping_seller_content1">Business Name</string>
-    <string name="productdetail_shipping_seller_content2">Representative</string>
-    <string name="productdetail_shipping_seller_content3">Company registration number</string>
-    <string name="productdetail_shipping_seller_content4">Registered number for business through telecommunications</string>
-    <string name="productdetail_shipping_seller_content5">Business address</string>
-    <string name="productdetail_shipping_seller_content6">Customer service</string>
-    <string name="productdetail_shipping_notifies_title">Product information</string>
+    <string name="productdetail_shipping_seller_title">판매자 정보</string>
+    <string name="productdetail_shipping_seller_content1">상호명</string>
+    <string name="productdetail_shipping_seller_content2">대표자</string>
+    <string name="productdetail_shipping_seller_content3">사업자등록번호</string>
+    <string name="productdetail_shipping_seller_content4">통신판매업번호</string>
+    <string name="productdetail_shipping_seller_content5">사업장소재지</string>
+    <string name="productdetail_shipping_seller_content6">고객센터</string>
+    <string name="productdetail_shipping_notifies_title">상품고시정보</string>
 
     <string name="productdetail_option_type_color">COLOR</string>
     <string name="productdetail_option_type_size">SIZE</string>
     <string name="productdetail_option_type_custom">CUSTOM</string>
 
-    <string name="productdetail_qna_title">Product Inquiries</string>
-    <string name="productdetail_qna_mine">View my inquiries only</string>
-    <string name="productdetail_qna_description">Please write inquiry if you have any questions about the item.\nPlease click \'Contact Seller\' if you have any other questions.</string>
+    <string name="productdetail_qna_title">상품문의</string>
+    <string name="productdetail_qna_mine">내 문의만 보기</string>
+    <string name="productdetail_qna_description">구매하시려는 상품에 대해 궁금하신 점이 있으신 경우, 문의해주세요. 상품 이외의 문의는 ‘판매자 문의하기’를 이용해주세요.</string>
     <string name="productdetail_qna_report">신고</string>
     <string name="productdetail_qna_reply">답변</string>
-    <string name="productdetail_qna_reply_all">View All</string>
-    <string name="productdetail_qna_reply_pending">Unanswered</string>
-    <string name="productdetail_qna_reply_completed">Answered</string>
+    <string name="productdetail_qna_reply_all">전체문의</string>
+    <string name="productdetail_qna_reply_pending">미답변</string>
+    <string name="productdetail_qna_reply_completed">답변완료</string>
     <string name="productdetail_qna_reply_status_completed">COMPLETED</string>
     <string name="productdetail_qna_reply_status_pending">PENDING</string>
-    <string name="productdetail_qna_message_empty">There is no product inquiry yet.</string>
-    <string name="productdetail_qna_button_contactforproduct">Write Inquiry</string>
-    <string name="productdetail_qna_button_contactwithseller">Contact Seller</string>
-    <string name="productdetail_qna_button_moreclaim">See 5 more inquiries</string>
+    <string name="productdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
+    <string name="productdetail_qna_button_contactforproduct">상품 문의하기</string>
+    <string name="productdetail_qna_button_contactwithseller">판매자 문의하기</string>
+    <string name="productdetail_qna_button_moreclaim">상품 문의 5개 더보기</string>
 
-    <string name="productdetail_review_close">close</string>
-    <string name="productdetail_review_all">All reviews</string>
-    <string name="productdetail_review_photo">Photo</string>
-    <string name="productdetail_review_size">Size</string>
-    <string name="productdetail_review_reply">cComments</string>
-    <string name="productdetail_review_title">Reviews</string>
-    <string name="productdetail_review_button_morereview">See 5 more reviews</string>
+    <string name="productdetail_review_close">닫기</string>
+    <string name="productdetail_review_all">전체리뷰</string>
+    <string name="productdetail_review_photo">포토리뷰</string>
+    <string name="productdetail_review_size">수치포함</string>
+    <string name="productdetail_review_reply">댓글포함</string>
+    <string name="productdetail_review_title">리뷰</string>
+    <string name="productdetail_review_button_morereview">상품 리뷰 5개 더보기</string>
 
-    <string name="productdetail_review_like">It was helpful</string>
-    <string name="productdetail_review_height">Heights:</string>
-    <string name="productdetail_review_averagesize">Usually wear:</string>
-    <string name="productdetail_review_option">Purchase Option:</string>
-    <string name="productdetail_review_graphsize">Size</string>
-    <string name="productdetail_review_graphcolor">Color</string>
-    <string name="productdetail_review_graphlength">Length</string>
-    <string name="productdetail_notifies_empty">No registered product information</string>
-    <string name="productdetail_message_selectoption">Please select one of the options</string>
+    <string name="productdetail_review_like">도움되었어요</string>
+    <string name="productdetail_review_height">키:</string>
+    <string name="productdetail_review_averagesize">평소사이즈:</string>
+    <string name="productdetail_review_option">구매옵션:</string>
+    <string name="productdetail_review_graphsize">사이즈</string>
+    <string name="productdetail_review_graphcolor">컬러</string>
+    <string name="productdetail_review_graphlength">길이감</string>
+    <string name="productdetail_notifies_empty">등록된 상품고시정보가 없습니다.</string>
+    <string name="productdetail_message_selectoption">옵션을 선택해주세요.</string>
 
     <string name="productdetail_store_related">판매자의 연관상품</string>
     <string name="productdetail_store_recommend">추천상품</string>
@@ -454,27 +456,27 @@
     <string name="productdetail_option_soldout">(품절)</string>
 
     <!-- CLAIM -->
-    <string name="claim_write_hint">Enter the inquiry content</string>
-    <string name="claim_write_private">private</string>
-    <string name="claim_write_description1">Answers to inquiries can be found </string>
-    <string name="claim_write_description2">on the product page or on the My Page</string>
-    <string name="claim_write_description3"></string>
-    <string name="claim_write_button_cancel">Cancel</string>
-    <string name="claim_write_button_submit">Confirm</string>
-    <string name="claim_write_empty">There is no product inquiry yet</string>
-    <string name="claim_write_message_empty">Inquiry content is empty</string>
-    <string name="claim_message_lastitem">No More Inquiries</string>
+    <string name="claim_write_hint">문의하실 내용을 입력하세요</string>
+    <string name="claim_write_private">비공개글 설정</string>
+    <string name="claim_write_description1">문의하신 내용에 대한 답변은 해당 상품의 상세페이지 또는</string>
+    <string name="claim_write_description2">마이페이지 &gt; 상품문의</string>
+    <string name="claim_write_description3">에서 확인하실 수 있습니다.</string>
+    <string name="claim_write_button_cancel">취소</string>
+    <string name="claim_write_button_submit">등록</string>
+    <string name="claim_write_empty">작성된 상품 문의가 없습니다.</string>
+    <string name="claim_write_message_empty">문의 내용을 작성해주세요.</string>
+    <string name="claim_message_lastitem">마지막 상품 문의입니다.</string>
     <string name="claim_message_add">문의가 등록되었습니다.</string>
 
     <!-- PAYMENT -->
-    <string name="payment_title_header">Order payment</string>
-    <string name="payment_title_product">Placed Order</string>
-    <string name="payment_title_buyer">Your information</string>
-    <string name="payment_title_shipping">Shipping address</string>
-    <string name="payment_title_discount">Discount options</string>
-    <string name="payment_title_coupon">Coupon</string>
-    <string name="payment_title_point">Point</string>
-    <string name="payment_title_paymentway">Payment methods</string>
+    <string name="payment_title_header">주문 결제</string>
+    <string name="payment_title_product">주문 상품</string>
+    <string name="payment_title_buyer">주문자 정보</string>
+    <string name="payment_title_shipping">배송지</string>
+    <string name="payment_title_discount">할인 적용</string>
+    <string name="payment_title_coupon">쿠폰</string>
+    <string name="payment_title_point">포인트</string>
+    <string name="payment_title_paymentway">결제 수단</string>
     <string name="payment_title_receipt">현금영수증</string>
 
     <string name="payment_title_receipt_issue">신청</string>
@@ -484,49 +486,50 @@
     <string name="payment_title_receipt_corporationnumber">사업자등록번호</string>
     <string name="payment_title_receipt_mobile">핸드폰번호</string>
 
-    <string name="payment_text_freeshipping">Free shipping</string>
-    <string name="payment_text_verify">Identity verification</string>
-    <string name="payment_text_required">[Required]</string>
-    <string name="payment_text_totalorderprice">Total</string>
-    <string name="payment_text_totaldiscount">Discount</string>
-    <string name="payment_text_totalpayprice">Your total</string>
-    <string name="payment_text_discountcoupon">Coupon Discount</string>
-    <string name="payment_text_discountproduct">Product Discount</string>
-    <string name="payment_text_discountpoint">Points Used</string>
-    <string name="payment_text_expectedpoint">You will earn</string>
-    <string name="payment_text_fixbuy">Purchase Confirmation Points</string>
-    <string name="payment_text_textreview">Text Review Points</string>
-    <string name="payment_text_photoreview">Photo Review Points</string>
+
+    <string name="payment_text_freeshipping">무료배송</string>
+    <string name="payment_text_verify">본인인증</string>
+    <string name="payment_text_required">[필수]</string>
+    <string name="payment_text_totalorderprice">총 주문금액</string>
+    <string name="payment_text_totaldiscount">할인금액</string>
+    <string name="payment_text_totalpayprice">최종 결제금액</string>
+    <string name="payment_text_discountcoupon">쿠폰 할인</string>
+    <string name="payment_text_discountproduct">상품 할인</string>
+    <string name="payment_text_discountpoint">포인트 사용</string>
+    <string name="payment_text_expectedpoint">적립 예정 내역</string>
+    <string name="payment_text_fixbuy">구매 확정</string>
+    <string name="payment_text_textreview">텍스트 리뷰</string>
+    <string name="payment_text_photoreview">포토 리뷰</string>
 
     <string name="payment_text_card">신용/체크카드</string>
     <string name="payment_text_mobile">휴대폰 결제</string>
     <string name="payment_text_realtimetransfer">실시간 계좌이체</string>
     <string name="payment_text_transfer">무통장 입금</string>
-    <string name="payment_text_terms">I agree to GUHADA’s privacy notice and conditions of use.</string>
+    <string name="payment_text_terms">구매 및 결제대행서비스 이용약관 동의</string>
 
-    <string name="payment_text_defaultshippingaddress">Please select a shipping address</string>
-    <string name="payment_text_emptyshippingaddress">No registered shipping address</string>
-    <string name="payment_hint_shippingmemo">Please select your shipping note</string>
-    <string name="payment_hint_textshippingmemo">Please enter 50 characters or less</string>
-    <string name="payment_hint_coupon">Please select available coupons</string>
+    <string name="payment_text_defaultshippingaddress">배송지를 선택해 주세요</string>
+    <string name="payment_text_emptyshippingaddress">등록된 배송지가 없습니다.</string>
+    <string name="payment_hint_shippingmemo">배송메모를 선택해 주세요</string>
+    <string name="payment_hint_textshippingmemo">50자 이내로 입력해주세요.</string>
+    <string name="payment_hint_coupon">적용 가능한 쿠폰을 선택해주세요</string>
 
-    <string name="payment_text_changedestination">Change shipping address</string>
-    <string name="payment_button_submit">Place your order</string>
-    <string name="payment_button_autocoupon">Apply</string>
-    <string name="payment_button_allpoint">Use All</string>
+    <string name="payment_text_changedestination">배송지 변경</string>
+    <string name="payment_button_submit">결제하기</string>
+    <string name="payment_button_autocoupon">쿠폰 변경</string>
+    <string name="payment_button_allpoint">전액 사용</string>
 
-    <string name="payment_message_cancel">Payment canceled</string>
+    <string name="payment_message_cancel">결제가 취소되었습니다</string>
     <string name="payment_coupon_format">%,2d원(%d장)</string>
     <string name="payment_couponcount_format"><![CDATA[(사용가능 <font color="#111111">%,2d</font>장 / 보유 %,2d장)]]></string>
-    <string name="payment_availablepoint_format"><![CDATA[(사용가능 <font color="#111111">%,2d</font>P / 보유 %,2 dP)]]></string>
+    <string name="payment_availablepoint_format"><![CDATA[(사용가능 <font color="#111111">%,2d</font>P / 보유 %,2dP)]]></string>
     <string name="payment_coupon_hint">0원 (0장)</string>
     <string name="payment_shipping_format">배송비 %,2d원</string>
 
     <string name="shippingmemo_before_call">배송 전, 연락바랍니다.</string>
     <string name="shippingmemo_security">경비실에 맡겨주세요.</string>
     <string name="shippingmemo_call_if_absent">부재시 휴대폰으로 연락바랍니다.</string>
-    <string name="shippingmemo_postbox">택배함에 넣어주세요.</string>
-    <string name="shippingmemo_self">Please enter your shipping message</string>
+    <string name="shippingmemo_postbox">택배함에 넣어주세요</string>
+    <string name="shippingmemo_self">배송 메세지를 입력해주세요.</string>
     <string name="shippingmemo_put_door">문 앞에 놓아주세요.</string>
 
     <string name="paymentresult_title1">님의 주문이</string>
@@ -555,9 +558,10 @@
     <string name="paymentreuslt_button_bag">장바구니</string>
     <string name="paymentreuslt_button_continue">쇼핑 계속하기</string>
 
-    <string name="payment_message_maxusagepoint">The maximum usable point is %d P</string>
-    <string name="payment_message_selectpaymentway">Please select a payment method</string>
-    <string name="payment_message_confirmtemrs">Please agree to the terms and conditions</string>
+    <string name="payment_message_maxusagepoint">최대 사용 가능 포인트는 %dP 입니다</string>
+
+    <string name="payment_message_selectpaymentway">결제 수단을 선택해주세요.</string>
+    <string name="payment_message_confirmtemrs">이용 약관에 동의해주세요</string>
     <string name="payment_message_verifyemail">이메일 인증을 진행해주세요</string>
     <string name="payment_message_verifymobile">휴대폰 본인인증을 진행해주세요</string>
 
@@ -569,7 +573,6 @@
     <string name="shippingaddress_button_submit">선택 완료</string>
     <string name="shippingaddress_button_edit">수정</string>
     <string name="shippingaddress_button_delete">삭제</string>
-
     <string name="shippingaddress_message_empty_shippingname">배송지 명을 입력해주세요</string>
     <string name="shippingaddress_message_empty_address">주소를 입력해주세요</string>
     <string name="shippingaddress_message_empty_detailaddress">상세주소를 입력해주세요</string>
@@ -582,11 +585,11 @@
     <string name="shippingaddress_message_edit_success">배송지가 변경되었습니다</string>
 
     <!-- MY PAGE -->
-    <string name="mypage_order_shipping">Your orders</string>
-    <string name="mypage_order_number">Order #</string>
-    <string name="mypage_order_list">Order list</string>
-    <string name="mypage_order_cancel">Order cancel</string>
-    <string name="mypage_order_as">Customer service</string>
+    <string name="mypage_order_shipping">주문 배송</string>
+    <string name="mypage_order_number">주문 번호</string>
+    <string name="mypage_order_list">주문 목록</string>
+    <string name="mypage_order_cancel">주문 취소</string>
+    <string name="mypage_order_as">고객센터</string>
     <string name="mypage_order_change_shipping">배송지 변경</string>
     <string name="mypage_order_qna">압구정 날라리에 문의하기</string>
     <string name="mypage_order_reward">확인 후 보상받기</string>
@@ -624,7 +627,7 @@
 
     <!-- ADD SHIPPING ADDRESS -->
     <string name="addshippingaddress_title">신규배송지 등록</string>
-    <string name="addshippingaddress_button_cancel">입력  취소</string>
+    <string name="addshippingaddress_button_cancel">입력 취소</string>
     <string name="addshippingaddress_button_confirm">입력 완료</string>
     <string name="addshippingaddress_button_close">닫기</string>
     <string name="addshippingaddress_button_save">등록</string>
@@ -634,22 +637,22 @@
     <string name="addshippingaddress_description3">에서 수정 및 삭제가 가능합니다.</string>
 
     <!-- HOME FRAGMENT
-        <item>New Arrivals</item>
-        <item>Power Deals</item>
-        <item>Today’s Deals</item>
-        <item>Limited Offers</item>-->
+        <item>신상품</item>
+        <item>파워딜</item>
+        <item>타임딜</item>
+        <item>한정특가</item>-->
     <string-array name="main_titles">
-        <item>Home</item>
-        <item>Women</item>
-        <item>Men</item>
-        <item>Kids</item>
+        <item>홈</item>
+        <item>여성</item>
+        <item>남성</item>
+        <item>키즈</item>
     </string-array>
 
     <!-- MYPAGE ORDER SHIP -->
-    <string name="mypageordership_deliverystart">Start Shipping</string>
-    <string name="mypageordership_deliveryrefund">Proceed with Refund</string>
-    <string name="mypageordership_deliverycounterfeit"><![CDATA[Your product is evaluated as “Counterfeit”]]></string>
-    <string name="mypageordership_deliverygenuine"><![CDATA[Your product is evaluated as “Genuine”]]></string>
+    <string name="mypageordership_deliverystart">확인 후 배송시작</string>
+    <string name="mypageordership_deliveryrefund">확인 후 배송시작</string>
+    <string name="mypageordership_deliverycounterfeit"><![CDATA[제품 감정 결과 ‘가품’으로 확인되었습니다.]]></string>
+    <string name="mypageordership_deliverygenuine"><![CDATA[제품 감정 결과 ‘진품’으로 확인되었습니다. ]]></string>
     <string name="mypageordership_deliveryrefundok">환불 신청이 완료되었습니다.</string>
     <string name="mypageordership_deliverydeliveryok">배송 접수가 완료되었습니다.</string>
 
@@ -663,7 +666,7 @@
     <string name="mypagepoint_status_accumulated">적립</string>
     <string name="mypagepoint_status_canceled">취소</string>
     <string name="mypagepoint_status_recovered">복원</string>
-    <string name="mypagepoint_status_expired">소멸</string>
+    <string name="mypagepoint_status_expired">만료</string>
 
     <!-- MYPAGE FOLLOW -->
     <string name="mypagefollow_empty">팔로우한 스토어가 없습니다.</string>
@@ -672,8 +675,8 @@
     <string name="mypagefollow_productcount">상품수 %d개</string>
 
     <!-- PRODUCT INFO REVIEW -->
-    <string name="productdetaininfo_review_sort1">Newly Listed</string>
-    <string name="productdetaininfo_review_sort2">Rating</string>
+    <string name="productdetaininfo_review_sort1">최신순</string>
+    <string name="productdetaininfo_review_sort2">전체평점</string>
 
     <!-- SEARCH ZIP -->
     <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>
@@ -758,7 +761,7 @@
     <string name="mypage_deliverydetail_shippinginfo_address">주소</string>
     <string name="mypage_deliverydetail_shippinginfo_recipientname">받는분</string>
     <string name="mypage_deliverydetail_shippinginfo_recipientphone">연락처</string>
-    <string name="mypage_deliverydetail_shippinginfo_memo">배송메모</string>
+    <string name="mypage_deliverydetail_shippinginfo_memo">배송 메모</string>
 
     <string name="mypage_deliverydetail_paymentinfo_title">결제 정보</string>
     <string name="mypage_deliverydetail_paymentinfo_order1">총 주문금액</string>
@@ -846,9 +849,9 @@
     <string name="requestorderstatus_exchange_button_submit">교환 신청</string>
     <string name="requestorderstatus_exchange_button_update">교환 신청 수정</string>
     <string name="requestorderstatus_exchange_address">교환상품 배송지</string>
-    <string name="requestorderstatus_exchange_selleraddress">교환상품 반송지</string>
+    <string name="requestorderstatus_exchange_selleraddress">교환 반송지</string>
     <string name="requestorderstatus_exchange_way_title">교환 발송 여부</string>
-    <string name="requestorderstatus_exchange_way_description">교환상품을 이미 발송하셨나요?</string>
+    <string name="requestorderstatus_exchange_way_description">교환상품을 이미 발송하셨습니까?</string>
     <string name="requestorderstatus_exchange_shipping_title">교환배송비 결제</string>
     <string name="requestorderstatus_exchange_shipping_description1"><![CDATA[<font color="#5d2ed1">교환사유</font>로 인해 <font color="#5d2ed1">교환배송비 5,000</font>을]]></string>
     <string name="requestorderstatus_exchange_shipping_description2"><![CDATA[<font color="#5d2ed1">구매자가 부담</font>합니다.]]></string>
@@ -860,7 +863,7 @@
     <string name="requestorderstatus_refund_hint_cause">반품 사유를 간략히 적어주세요.</string>
     <string name="requestorderstatus_refund_button_submit">반품 신청</string>
     <string name="requestorderstatus_refund_button_update">반품 신청 수정</string>
-    <string name="requestorderstatus_refund_selleraddress">반품상품 반송지</string>
+    <string name="requestorderstatus_refund_selleraddress">반품 반송지</string>
     <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨나요?</string>
     <string name="requestorderstatus_refund_way_title">반품 발송 여부</string>
     <string name="requestorderstatus_refund_shipping_title">반품배송비 결제</string>
@@ -883,7 +886,7 @@
     <string name="requestorderstatus_refund_message_requiredcheckaccount">환불 계좌 확인을 진행해주세요.</string>
 
     <!-- SUCCESS CANCEL ORDER -->
-    <string name="successcancelorder_title1">주문상품의&#160;</string>
+    <string name="successcancelorder_title1">주문상품의 </string>
     <string name="successcancelorder_title2">주문취소가</string>
     <string name="successcancelorder_title3">완료</string>
     <string name="successcancelorder_title4">되었습니다.</string>
@@ -892,8 +895,8 @@
     <!-- SUCCESS EXCHANGE -->
     <string name="successexchange_warning">반드시, 교환 상품 발송 후 송장번호를 등록해주세요.</string>
     <string name="successexchange_title"><![CDATA[주문상품의 <font color="#5d2ed1">교환신청이<br>완료</font>되었습니다.]]></string>
-    <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 5,000원을\n%s으로 구매자가 부담합니다.</string>
-    <string name="successexchange_notsend">아니요</string>
+    <string name="successexchange_shippingpayment">교환 사유로 인해 교환배송비 5,000원을\n박스에 동봉으로 구매자가 부담합니다.</string>
+    <string name="successexchange_notsend">미발송</string>
     <string name="successexchange_address_format">[%s] %s</string>
 
     <!-- SUCCESS REFUND -->
@@ -908,7 +911,7 @@
     <!-- MYPAGE COUPON -->
     <string name="mypagecoupon_tab_enabled">사용 가능 쿠폰 %d장</string>
     <string name="mypagecoupon_tab_enabled_temp">사용 가능 쿠폰</string>
-    <string name="mypagecoupon_tab_disabled">사용완료 ・ 기간만료 쿠폰</string>
+    <string name="mypagecoupon_tab_disabled">사용완료・기간만료 쿠폰</string>
     <string name="mypagecoupon_more">더보기</string>
     <string name="mypagecoupon_add_title">쿠폰등록</string>
     <string name="mypagecoupon_add_description">구하다 프로모션 쿠폰 및 포인트 적립 쿠폰을 등록하세요.</string>
@@ -930,10 +933,12 @@
     <string name="coupondownload_title_follow">셀러를 팔로우하고\n쿠폰을 받아보세요!</string>
     <string name="coupondownload_title_unfollow">첫 구매 쿠폰을\n받아보세요!</string>
     <string name="coupondownload_description">받은 쿠폰은 마이페이지에서 확인할 수 있습니다.</string>
-    <string name="coupondownload_button_follow">팔로우하고 쿠폰 받기</string>
+
+    <string name="coupondownload_button_follow">팔로우하고 모든 쿠폰 받기</string>
     <string name="coupondownload_button_unfollow">쿠폰 받기</string>
     <string name="coupondownload_button_follow_all">팔로우하고 모든 쿠폰 받기</string>
     <string name="coupondownload_button_unfollow_all">모든 쿠폰 받기</string>
+
     <string name="coupondownload_dicsount_price">원 할인</string>
     <string name="coupondownload_dicsount_rate">% 할인</string>
     <string name="coupondownload_dicsount_condition">%,2d원 이상 결제시 사용 가능</string>
@@ -949,18 +954,17 @@
     <string name="couponselect_overmaxdiscountprice">해당 쿠폰의 최대 할인 금액은 %,2d원 입니다.</string>
 
     <!-- MAIN LIST SUBTITLE -->
-    <string name="mainlistsubtitle_all">ALL</string>
-    <string name="mainlistsubtitle_women">Women</string>
-    <string name="mainlistsubtitle_men">Men</string>
-    <string name="mainlistsubtitle_kids">Kids</string>
+    <string name="mainlistsubtitle_all">전체</string>
+    <string name="mainlistsubtitle_women">여성</string>
+    <string name="mainlistsubtitle_men">남성</string>
+    <string name="mainlistsubtitle_kids">키즈</string>
 
     <string-array name="main_sub_titles">
-        <item>ALL</item>
-        <item>Women</item>
-        <item>Men</item>
-        <item>Kids</item>
+        <item>전체</item>
+        <item>여성</item>
+        <item>남성</item>
+        <item>키즈</item>
     </string-array>
-
 
     <!-- MyPage FRAGMENT
         <item>메인</item>
@@ -988,6 +992,8 @@
     <string name="mypage_userinfo_passwaord_login_google">구글 로그인</string>
     <string name="mypage_userinfo_passwaord_login_kakao">카카오톡 로그인</string>
     <string name="mypage_userinfo_passwaord_login_facebook">페이스북 로그인</string>
+
+
     <string name="mypage_userinfo_passwaord_infotitle1">회원정보</string>
     <string name="mypage_userinfo_passwaord_infotitle2">이름</string>
     <string name="mypage_userinfo_passwaord_infotitle3">닉네임</string>
@@ -1085,23 +1091,22 @@
     <!-- CONFIRM PURCHASE -->
     <string name="confirmpurchase_title">구매확정을 진행해주세요!</string>
     <string name="confirmpurchase_description">구매확정 이후에는 반품・교환이 불가하므로\n반드시 상품을 받으신 후 진행해주세요.</string>
-    <string name="confirmpurchase_point_title">포인트 적립 유의사항</string>
     <string name="confirmpurchase_point_confirm1">구매확정 시</string>
     <string name="confirmpurchase_point_confirm2">포인트</string>
     <string name="confirmpurchase_point_review1">리뷰작성 시</string>
     <string name="confirmpurchase_point_review2">포인트 최대</string>
+    <string name="confirmpurchase_point_title">포인트 적립 유의사항</string>
     <string name="confirmpurchase_point_description1">한달 사용 리뷰 작성 포인트는 위와 별개이며, 구매확정 이후 31일부터 [마이페이지 > 상품리뷰] 에서 작성가능합니다.</string>
     <string name="confirmpurchase_point_description2">텍스트 리뷰와 포토/동영상 리뷰 적립 혜택은 중복으로 지급되지 않으며, 최초 작성한 리뷰 기준으로 지급됩니다.</string>
     <string name="confirmpurchase_point_description3">해당 상품과 무관한 내용이나 동일 문자의 반복 등 부적합한 내용의 리뷰 작성은 통보 없이 삭제 및 적립 혜택이 회수될 수 있습니다.</string>
     <string name="confirmpurchase_button_confirm">구매확정</string>
-
     <string name="review_activity_maximage_desc">사진은 최대 10장 까지 등록 가능합니다.</string>
     <string name="review_result_dialog_point_desc">포인트 1,000</string>
     <string name="review_result_dialog_subtitle1">구매확정 완료!</string>
     <string name="review_result_dialog_subtitle2">리뷰작성 완료!</string>
     <string name="review_result_dialog_subtitle3">사이즈 등록 완료!</string>
     <string name="review_result_dialog_mypoint">나의 포인트</string>
-    <string name="review_result_dialog_complete_payment_desc"><![CDATA[지금 리뷰 작성하고 포인트<br><font color="#5d2ed1">%s</font> 적립 받으세요!]]></string>
+    <string name="review_result_dialog_complete_payment_desc"><![CDATA[지금 리뷰 작성하고 포인트<br><font color="#5D2ED1">최대 %,2d원</font> 적립 받으세요!]]></string>
     <string name="review_result_dialog_complete_payment_btnok">리뷰쓰고 포인트 더 받기</string>
     <string name="review_result_dialog_complete_payment_btncancle">다음에 쓸게요</string>
 
@@ -1137,11 +1142,6 @@
 
     <string name="community_filter_category">말머리 선택</string>
     <string name="community_filter_sort1">최신순</string>
-
-    <string name="community_format_commentcount">(%d)</string>
-    <string name="community_format_likecount">좋아요 %d</string>
-    <string name="community_format_viewcount">조회 %d</string>
-
     <string name="community_detail_hitcount">조회 %d</string>
     <string name="community_detail_likecount">좋아요 %d</string>
     <string name="community_detail_commentcount">댓글 %d</string>
@@ -1149,6 +1149,10 @@
     <string name="intToStringText">%d</string>
 
     <string name="community_add_comment_reply">댓글달기</string>
+
+    <string name="community_format_commentcount">(%d)</string>
+    <string name="community_format_likecount">좋아요 %d</string>
+    <string name="community_format_viewcount">조회 %d</string>
     <string name="community_empty">등록된게시글이 없습니다.</string>
 
     <string name="community_edit_hint">댓글을 입력해주세요</string>
@@ -1185,7 +1189,6 @@
         <item>게시글/댓글 신고</item>
         <item>게시글/댓글 신고</item>
     </string-array>
-
 
     <!-- SELLER STORE -->
     <string name="sellerstore_follower">팔로워</string>

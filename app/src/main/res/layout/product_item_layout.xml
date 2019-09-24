@@ -8,6 +8,7 @@
     <variable name="option" type="String" />
     <variable name="price" type="Integer" />
     <variable name="deliveryComplete" type="String" />
+    <variable name="clickProductListener" type="android.view.View.OnClickListener" />
 </data>
 
     <LinearLayout
@@ -20,6 +21,7 @@
         <ImageView
             android:id="@+id/image_itemmypagereviewlistreview_thumb"
             style="@style/ProductImageType"
+            android:onClick="@{clickProductListener}"
             android:layout_width="90dp"
             android:layout_height="match_parent"/>
 

@@ -87,7 +87,7 @@ class CommunityMainViewPagerViewModel (val context : Context) : BaseObservableVi
                             if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "setDetailView getCommunityCategoryFilter 0 ",communityCategoryMap.toString())
                             var list : ArrayList<CommunityInfo> = arrayListOf()
                             list.add(CommunityInfo(CommunityType.MAIN, context.resources.getString(R.string.community_titles_main)))
-                            list.add(CommunityInfo(CommunityType.POPULAR, context.resources.getString(R.string.community_titles_popular)))
+                            //list.add(CommunityInfo(CommunityType.POPULAR, context.resources.getString(R.string.community_titles_popular)))
                             //list.add(CommunityInfo(CommunityType.NOTIFICATION, context.resources.getString(R.string.community_titles_noti)))
                             var communityKeys : Iterator<Int> = communityCategoryMap.keys.iterator()
                             while (communityKeys.hasNext()){

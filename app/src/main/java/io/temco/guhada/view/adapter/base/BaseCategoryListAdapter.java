@@ -43,6 +43,10 @@ public abstract class BaseCategoryListAdapter<VH extends BaseCategoryViewHolder>
         notifyDataSetChanged();
     }
 
+    public List<Category> getmItems() {
+        return mItems;
+    }
+
     public void setOnCategoryListener(OnCategoryListListener listener) {
         mCategoryListener = listener;
     }

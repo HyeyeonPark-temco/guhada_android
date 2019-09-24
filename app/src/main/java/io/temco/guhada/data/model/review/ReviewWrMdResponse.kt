@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.review
 
+import com.google.gson.Gson
+
 /**
  * @author park jungho
  *
@@ -17,35 +19,23 @@ class ReviewWrMdResponse {
     var productId  = 0L
     var reviewId  = 0L
     var textReview = ""
-
-    fun setParam() : HashMap<String, Any>{
-        var map : HashMap<String, Any> = hashMapOf()
-        map.put("colorSatisfaction",colorSatisfaction)
-        map.put("lengthSatisfaction",lengthSatisfaction)
-        map.put("orderProductGroupId",orderProductGroupId)
-        map.put("productRating",productRating)
-        map.put("sellerId",sellerId)
-        map.put("productId",productId)
-        map.put("sizeSatisfaction",sizeSatisfaction)
-        map.put("textReview",textReview)
-
-        return map
+    var reviewPhotos : MutableList<ReviewPhoto> = mutableListOf()
+    override fun toString(): String {
+        return "ReviewWrMdResponse(colorSatisfaction='$colorSatisfaction', lengthSatisfaction='$lengthSatisfaction', orderProductGroupId=$orderProductGroupId, productRating='$productRating', sellerId=$sellerId, sizeSatisfaction='$sizeSatisfaction', productId=$productId, reviewId=$reviewId, textReview='$textReview', reviewPhotos=$reviewPhotos)"
     }
 
-    fun setParamModify() : HashMap<String, Any>{
-        var map : HashMap<String, Any> = hashMapOf()
-        map.put("colorSatisfaction",colorSatisfaction)
-        map.put("lengthSatisfaction",lengthSatisfaction)
-        map.put("orderProductGroupId",orderProductGroupId)
-        map.put("productRating",productRating)
-        map.put("sellerId",sellerId)
-        map.put("productId",productId)
-        map.put("reviewId",reviewId)
-        map.put("sizeSatisfaction",sizeSatisfaction)
-        map.put("textReview",textReview)
 
-        return map
+}
+
+enum class ImageStatus {UNCHANGED, ADDED, UPDATED, DELETED}
+
+class ReviewPhoto {
+    var id = 0
+    var imageStatus = ""
+    var photoOrder = 0
+    var reviewPhotoUrl = ""
+    override fun toString(): String {
+        return "ReviewPhoto(id=$id, imageStatus='$imageStatus', photoOrder=$photoOrder, reviewPhotoUrl='$reviewPhotoUrl')"
     }
-
 
 }
