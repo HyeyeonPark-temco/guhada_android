@@ -12,6 +12,7 @@ import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
@@ -23,7 +24,7 @@ public class SubCategorySecondListAdapter extends RecyclerView.Adapter<BaseCateg
     // -------- LOCAL VALUE --------
     private Context mContext;
     private List<Category> mItems;
-    private OnCategoryListener mCategoryListener;
+    private OnCategoryListListener mCategoryListener;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -65,7 +66,7 @@ public class SubCategorySecondListAdapter extends RecyclerView.Adapter<BaseCateg
 
     @Override
     public void onBindViewHolder(@NonNull BaseCategoryViewHolder holder, int position) {
-        holder.init(mContext, null, getItem(position), mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener,null);
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(this);
     }
@@ -74,7 +75,8 @@ public class SubCategorySecondListAdapter extends RecyclerView.Adapter<BaseCateg
     public void onClick(View v) {
         if (mCategoryListener != null
                 && v.getTag() != null && v.getTag() instanceof Integer) {
-            mCategoryListener.onEvent(getItem((int) v.getTag()));
+            int position = (int) v.getTag();
+            mCategoryListener.onEvent(position, getItem((int) v.getTag()));
         }
     }
 
@@ -87,7 +89,7 @@ public class SubCategorySecondListAdapter extends RecyclerView.Adapter<BaseCateg
         notifyDataSetChanged();
     }
 
-    public void setOnCategoryListener(OnCategoryListener listener) {
+    public void setOnCategoryListener(OnCategoryListListener listener) {
         mCategoryListener = listener;
     }
 

@@ -182,6 +182,24 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         if (mCategoryList != null && mCategoryList.size() > 0) {
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.VISIBLE);
             mBinding.layoutExpandCategoryHeader.setToggleOnClick(true);
+            for (Category c:mCategoryList) {
+                if(CustomLog.getFlag())CustomLog.L("setCategoryData c0",c.toString());
+                if(!c.children.isEmpty()){
+                    for (Category c1:c.children) {
+                        if(CustomLog.getFlag())CustomLog.L("setCategoryData c1",c1.toString());
+                        if(c1.children !=null && !c1.children.isEmpty()){
+                            for (Category c2:c1.children) {
+                                if(CustomLog.getFlag())CustomLog.L("setCategoryData c2",c2.toString());
+                                if(c2.children !=null && !c2.children.isEmpty()){
+                                    for (Category c3:c2.children) {
+                                        if(CustomLog.getFlag())CustomLog.L("setCategoryData c3",c3.toString());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             // Add All
             initCategoryList(mCategoryList);
         } else {
@@ -194,6 +212,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
         DetailSearchCategoryFirstListAdapter adapter = new DetailSearchCategoryFirstListAdapter(getContext());
         adapter.setOnCategoryListener(this::checkSelectedCategoryList);
+        adapter.setmCategoryHeaderListListener(this::checkSelectedCategoryHeaderList);
         adapter.setItems(data);
         mBinding.listCategory.setAdapter(adapter);
     }
@@ -231,22 +250,82 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         }
     }
 
-    private void checkSelectedCategoryList(Category category) {
+
+    private void checkSelectedCategoryHeaderList(int position, Category category) {
+        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryHeaderList","position",position,"type",category.type.name(), "category",category);
+        /*if (!checkSelectedCategoryHirarchy(category.hierarchies) || mCategorySelectedList == null) {
+            mCategorySelectedList = new ArrayList<>();
+        }
+        if(category.type == Type.Category.ALL){
+            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL","size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
+            if (mCategorySelectedList.size() > 0) {
+                for (Category b : mCategorySelectedList) {
+                    if (b.id == category.id) {
+                        if (!category.isSelected) {
+                            mCategorySelectedList.remove(b);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (category.isSelected) {
+                mCategorySelectedList.add(category);
+            }
+        }else{
+            if (mCategorySelectedList.size() > 0) {
+                for (Category b : mCategorySelectedList) {
+                    if (b.id == category.id) {
+                        if (!category.isSelected) {
+                            mCategorySelectedList.remove(b);
+                        }
+                        break;
+                    }
+                }
+            }
+            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL" ,"size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
+            if (category.isSelected) {
+                mCategorySelectedList.add(category);
+            }
+        }
+        refreshCategoryTitle();*/
+    }
+
+
+    private void checkSelectedCategoryList(int position, Category category) {
+        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList","position",position,"type",category.type.name(), "category",category);
         if (!checkSelectedCategoryHirarchy(category.hierarchies) || mCategorySelectedList == null) {
             mCategorySelectedList = new ArrayList<>();
         }
-        if (mCategorySelectedList.size() > 0) {
-            for (Category b : mCategorySelectedList) {
-                if (b.id == category.id) {
-                    if (!category.isSelected) {
-                        mCategorySelectedList.remove(b);
+        if(category.type == Type.Category.ALL){
+            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL","size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
+            if (mCategorySelectedList.size() > 0) {
+                for (Category b : mCategorySelectedList) {
+                    if (b.id == category.id) {
+                        if (!category.isSelected) {
+                            mCategorySelectedList.remove(b);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
-        }
-        if (category.isSelected) {
-            mCategorySelectedList.add(category);
+            if (category.isSelected) {
+                mCategorySelectedList.add(category);
+            }
+        }else{
+            if (mCategorySelectedList.size() > 0) {
+                for (Category b : mCategorySelectedList) {
+                    if (b.id == category.id) {
+                        if (!category.isSelected) {
+                            mCategorySelectedList.remove(b);
+                        }
+                        break;
+                    }
+                }
+            }
+            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL" ,"size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
+            if (category.isSelected) {
+                mCategorySelectedList.add(category);
+            }
         }
         refreshCategoryTitle();
     }
@@ -256,7 +335,8 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             StringBuilder sb = new StringBuilder();
             sb.append(mCategorySelectedList.get(0).fullDepthName);
             for (int i = 1; i < mCategorySelectedList.size(); i++) {
-                sb.append(", ").append(mCategorySelectedList.get(i).title);
+                if(!TextUtils.isEmpty(sb.toString())) sb.append(", ");
+                sb.append(mCategorySelectedList.get(i).title);
             }
             mBinding.layoutHeaderCategory.setDepth(sb.toString());
         } else {

@@ -27,6 +27,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
     private var mProductDetailFragment: ProductDetailFragment? = null
 
     private var dealId: Long = 0
+    private var initView = false
 
     override fun getBaseTag(): String = this@ProductFragmentDetailActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_productdetailfragment
@@ -34,14 +35,22 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
 
     override fun init() {
         dealId = intent.getLongExtra("dealId", dealId)
-        setViewInit()
+        initView = false
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(!initView){
+            initView = true
+            setViewInit()
+        }
     }
 
     private fun setViewInit() {
         addProductDetailView(dealId)
     }
 
-    fun addProductDetailView(dealId: Long) {
+    private fun addProductDetailView(dealId: Long) {
         mBinding.viewMainProductdetail.bringToFront()
         mBinding.viewMainProductdetail.visibility = View.VISIBLE
 

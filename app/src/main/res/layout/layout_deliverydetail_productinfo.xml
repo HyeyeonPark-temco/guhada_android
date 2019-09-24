@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable name="title" type="String" />
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
@@ -63,7 +63,7 @@
             app:layout_constraintLeft_toRightOf="@+id/imageview_deliverydetail_profile"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_brandname"
-            android:text="@{viewModel.purchaseOrderResponse.orderList[0].season + ` ` + viewModel.purchaseOrderResponse.orderList[0].productName}"/>
+            android:text="@{title}"/>
             <!--android:text="@{viewModel.mPurchaseOrder.season + ` ` + viewModel.mPurchaseOrder.dealName}"/>-->
 
         <TextView

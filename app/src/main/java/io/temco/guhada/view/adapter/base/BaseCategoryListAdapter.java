@@ -8,6 +8,8 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import java.util.List;
 
+import io.temco.guhada.common.listener.OnCategoryHeaderListListener;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
@@ -18,7 +20,9 @@ public abstract class BaseCategoryListAdapter<VH extends BaseCategoryViewHolder>
     protected Context mContext;
     protected ExpansionLayoutCollection mExpansionsCollection;
     protected List<Category> mItems;
-    protected OnCategoryListener mCategoryListener;
+    protected OnCategoryListListener mCategoryListener;
+    protected OnCategoryHeaderListListener mCategoryHeaderListListener;
+
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -39,10 +43,13 @@ public abstract class BaseCategoryListAdapter<VH extends BaseCategoryViewHolder>
         notifyDataSetChanged();
     }
 
-    public void setOnCategoryListener(OnCategoryListener listener) {
+    public void setOnCategoryListener(OnCategoryListListener listener) {
         mCategoryListener = listener;
     }
 
+    public void setmCategoryHeaderListListener(OnCategoryHeaderListListener mCategoryHeaderListListener) {
+        this.mCategoryHeaderListListener = mCategoryHeaderListListener;
+    }
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////

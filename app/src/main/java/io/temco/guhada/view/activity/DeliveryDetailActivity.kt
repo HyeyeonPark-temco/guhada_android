@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -66,6 +67,13 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailPaymentinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
+
+            /**
+             * @author park jungho
+             * 시즌과 상품 이름
+             */
+            mBinding.includeDeliverydetailProductinfo.title = if(TextUtils.isEmpty(mViewModel.purchaseOrderResponse.orderList[0].season)) mViewModel.purchaseOrderResponse.orderList[0].productName
+                else mViewModel.purchaseOrderResponse.orderList[0].season+ " "+ mViewModel.purchaseOrderResponse.orderList[0].productName
 
             initRefundInfo()
 

@@ -7,14 +7,16 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.github.florent37.expansionpanel.ExpansionLayout;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
-import io.temco.guhada.common.listener.OnCategoryListener;
-import io.temco.guhada.common.listener.OnCategorySelectListener;
+import io.temco.guhada.common.listener.OnCategoryHeaderListListener;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.ItemDetailSearchCategorySecondBinding;
-import io.temco.guhada.view.adapter.category.DetailSearchCategorySecondListAdapter;
 import io.temco.guhada.view.adapter.category.DetailSearchCategoryThirdListAdapter;
 import io.temco.guhada.view.holder.base.BaseCategoryViewHolder;
 
@@ -33,7 +35,7 @@ public class DetailSearchCategorySecondViewHolder extends BaseCategoryViewHolder
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListener listener) {
+    public void init(Context context, Type.CategoryData type, Category data, OnCategoryListListener listener, OnCategoryHeaderListListener headerListListener) {
         // Data
         if (data != null) {
             // Title
@@ -43,6 +45,7 @@ public class DetailSearchCategorySecondViewHolder extends BaseCategoryViewHolder
             // Child
             if (data.children == null) {
                 mBinding.setExpand(false);
+                mBinding.getRoot().setSelected(data.isSelected);
                 mBinding.layoutExpandHeader.setToggleOnClick(false);
             } else {
                 mBinding.setExpand(true);
@@ -54,11 +57,13 @@ public class DetailSearchCategorySecondViewHolder extends BaseCategoryViewHolder
                 // Adapter
                 DetailSearchCategoryThirdListAdapter adapter = new DetailSearchCategoryThirdListAdapter(context);
                 adapter.setOnCategoryListener(listener);
+                adapter.setmCategoryHeaderListListener(headerListListener);
                 adapter.setItems(data.children);
                 mBinding.listContents.setLayoutManager(new LinearLayoutManager(context));
                 mBinding.listContents.setAdapter(adapter);
                 // Expand
                 if (data.isSelected) {
+                    headerListListener.onEvent(1,data);
                     mBinding.layoutExpandContents.expand(true);
                 }
             }

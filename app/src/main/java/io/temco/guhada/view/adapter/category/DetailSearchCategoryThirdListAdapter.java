@@ -12,6 +12,7 @@ import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.adapter.base.BaseCategoryListAdapter;
 import io.temco.guhada.view.holder.category.DetailSearchCategoryThirdViewHolder;
@@ -45,9 +46,19 @@ public class DetailSearchCategoryThirdListAdapter extends BaseCategoryListAdapte
             holder.getBinding().layoutHeader.setTag(position);
             holder.getBinding().layoutHeader.setOnClickListener(this);
         } else {
+            holder.getBinding().layoutExpandContents.setTag(position);
+            holder.getBinding().layoutExpandContents.addListener(new ExpansionLayout.Listener() {
+                @Override
+                public void onExpansionChanged(ExpansionLayout expansionLayout, boolean expanded) {
+                    // Data
+                    int position = (int) expansionLayout.getTag();
+                    Category c = getItem(position);
+                    mCategoryHeaderListListener.onEvent(position,c);
+                }
+            });
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         }
-        holder.init(mContext, null, getItem(position), mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener, mCategoryHeaderListListener);
     }
 
     @Override
@@ -58,7 +69,7 @@ public class DetailSearchCategoryThirdListAdapter extends BaseCategoryListAdapte
             Category c = getItem(position);
             c.isSelected = !v.isSelected();
             // Listener
-            if (mCategoryListener != null) mCategoryListener.onEvent(c);
+            if (mCategoryListener != null) mCategoryListener.onEvent(position,c);
             // Notify
             notifyItemChanged(position);
         }

@@ -500,10 +500,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // Adapter
         mListAdapter = new ProductListAdapter(getContext(), mRequestManager);
 
-        // [2019.06.26] 임시 브릿지 ; 상품 리스트 아이템 클릭
-        //mListAdapter.setOnProductListListener(ProductBridge.Companion::addProductDetailView);
-//        ProductDetailActivity.startActivity(getContext(), id)
-
         // List
         mGridManager = new GridLayoutManager(getContext(), Type.Grid.get(mCurrentGridType));
         mBinding.listContents.setLayoutManager(mGridManager);
@@ -692,9 +688,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 @Override
                 public void callBackListener(boolean resultFlag, @NotNull Object value) {
                     try {
-                        String count = value.toString();
-                        mBinding.buttonFloatingItem.textviewFloatingCount.setText(count);
-                        if(Integer.parseInt(mBinding.buttonFloatingItem.textviewFloatingCount.getText().toString()) == 0){
+                        recentViewCount = Integer.parseInt(value.toString());
+                        mBinding.buttonFloatingItem.textviewFloatingCount.setText(value.toString());
+                        if(recentViewCount == 0){
                             changeLastView(mBinding.buttonFloatingItem.getRoot(), false, false);
                         }else{
                             changeLastView(mBinding.buttonFloatingItem.getRoot(), true, false);
@@ -837,18 +833,39 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // Adapter
         if (mTagAdapter == null) {
             mTagAdapter = new TagListAdapter(getContext());
-            mTagAdapter.setOnTagListener(tagData -> {
+            mTagAdapter.setOnTagListener((index, tagData)  -> {
                 if (tagData != null) {
                     if (tagData instanceof Category) {
                         changeCategoryData((Category) tagData, false);
+                        if(CustomLog.getFlag())CustomLog.L("initTagList","index", index,"Category", tagData);
+                        mTagAdapter.remove(index);
+                        if(mTagAdapter.getItemCount() == 0){
+                            resetTagLayout();
+                        }else{
+                            mTagAdapter.notifyDataSetChanged();
+                        }
                         // refresh list
 
                     } else if (tagData instanceof Brand) {
                         changeBrandData((Brand) tagData, false);
+                        if(CustomLog.getFlag())CustomLog.L("initTagList","index", index,"Brand", tagData);
+                        mTagAdapter.remove(index);
+                        if(mTagAdapter.getItemCount() == 0){
+                            resetTagLayout();
+                        }else{
+                            mTagAdapter.notifyDataSetChanged();
+                        }
                         // refresh list
 
                     } else if (tagData instanceof Attribute) {
                         changeFilterData((Attribute) tagData, false);
+                        if(CustomLog.getFlag())CustomLog.L("initTagList","index", index,"Attribute", tagData);
+                        mTagAdapter.remove(index);
+                        if(mTagAdapter.getItemCount() == 0){
+                            resetTagLayout();
+                        }else{
+                            mTagAdapter.notifyDataSetChanged();
+                        }
                         // refresh list
 
                     }

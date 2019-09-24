@@ -2,7 +2,9 @@ package io.temco.guhada.view.adapter.main
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.ViewPager
@@ -396,14 +399,18 @@ class KidsListAdapter(private val model : KidsListViewModel, list : ArrayList<Ma
         override fun bind(viewModel: KidsListViewModel, position: Int, item: MainBaseModel) {
             binding.setOnClickListener {
                 when(it.id){
-                    R.id.textview_term_introduce ->{}
+                    R.id.textview_term_claim ->{ CommonUtilKotlin.startActivityUserClaimGuhada(containerView.context as AppCompatActivity) }
                     R.id.textview_term_terms ->{ CommonUtilKotlin.startTermsPurchase(containerView.context as Activity) }
                     R.id.textview_term_advise ->{}
                     R.id.textview_term_privacy_terms ->{CommonUtilKotlin.startTermsPersonal(containerView.context as Activity) }
                     R.id.textview_term_partner ->{}
-                    R.id.textview_term_as ->{}
-                    R.id.textview_term_recruit ->{}
                     R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
+                    R.id.textview_term_company ->{}
+                    R.id.textview_term_call ->{
+                        val phone = (itemView.context as Activity).resources.getString(R.string.information_company_call)
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+                        (itemView.context as Activity).startActivity(intent)
+                    }
                 }
             }
         }

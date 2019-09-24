@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.listener.OnCategoryHeaderListListener;
+import io.temco.guhada.common.listener.OnCategoryListListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.ExpansionCollection;
 import io.temco.guhada.data.model.Category;
@@ -21,7 +23,8 @@ public class SideMenuCategoryFirstListAdapter extends RecyclerView.Adapter<SideM
     private Context mContext;
     private ExpansionCollection mExpansionsCollection;
     private List<Category> mItems;
-    private OnCategoryListener mCategoryListener;
+    private OnCategoryListListener mCategoryListener;
+    private OnCategoryHeaderListListener mCategoryHeaderListListener;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -52,7 +55,7 @@ public class SideMenuCategoryFirstListAdapter extends RecyclerView.Adapter<SideM
     @Override
     public void onBindViewHolder(@NonNull SideMenuFirstViewHolder holder, int position) {
         mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
-        holder.init(mContext, null, getItem(position), mCategoryListener);
+        holder.init(mContext, null, getItem(position), mCategoryListener, mCategoryHeaderListListener);
     }
 
     ////////////////////////////////////////////////
@@ -64,8 +67,12 @@ public class SideMenuCategoryFirstListAdapter extends RecyclerView.Adapter<SideM
         notifyDataSetChanged();
     }
 
-    public void setOnCategoryListener(OnCategoryListener listener) {
+    public void setOnCategoryListener(OnCategoryListListener listener) {
         mCategoryListener = listener;
+    }
+
+    public void setmCategoryHeaderListListener(OnCategoryHeaderListListener mCategoryHeaderListListener) {
+        this.mCategoryHeaderListListener = mCategoryHeaderListListener;
     }
 
     public void collapseAll() {
