@@ -163,7 +163,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     val shippingAddressText: String
         @Bindable
         get() {
-            return if (order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress}${order.shippingAddress?.detailAddress}"
+            return if (order.shippingAddress != null) "[${order.shippingAddress?.zip}] ${order.shippingAddress?.roadAddress} ${order.shippingAddress?.detailAddress}"
             else BaseApplication.getInstance().getString(R.string.payment_text_emptyshippingaddress)
         }
 
