@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel.productdetail
 import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -18,7 +19,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 
 class ProductDetailClaimViewModel(private val productId: Long, val listener: ProductDetailClaimFragment.OnProductDetailClaimListener) : BaseObservableViewModel() {
-    var emptyVisibility = ObservableInt(View.GONE)
+    var emptyVisible = ObservableBoolean(false)
         @Bindable
         get() = field
     var totalClaimCount = 0
@@ -43,10 +44,9 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
                     listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
                 }
 
-                Log.e("ㅇㅇㅇ", "1111    VISIBLE")
                 notifyPropertyChanged(BR.claimResponse)
-                emptyVisibility = ObservableInt(View.VISIBLE)
-                notifyPropertyChanged(BR.emptyVisibility)
+                emptyVisible = ObservableBoolean(true)
+                notifyPropertyChanged(BR.emptyVisible)
             } else {
                 this.claimResponse = model.data as ClaimResponse
 
@@ -55,16 +55,13 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
                     notifyPropertyChanged(BR.totalClaimCount)
                 }
 
-                Log.e("ㅇㅇㅇ", "2222    GONE")
                 notifyPropertyChanged(BR.claimResponse)
-                emptyVisibility = ObservableInt(View.GONE)
-                notifyPropertyChanged(BR.emptyVisibility)
+                emptyVisible = ObservableBoolean(false)
+                notifyPropertyChanged(BR.emptyVisible)
             }
         } else {
-
-            Log.e("ㅇㅇㅇ", "3333    VISIBLE")
-            emptyVisibility = ObservableInt(View.VISIBLE)
-            notifyPropertyChanged(BR.emptyVisibility)
+            emptyVisible = ObservableBoolean(true)
+            notifyPropertyChanged(BR.emptyVisible)
         }
 
         if (Preferences.getToken() == null) {

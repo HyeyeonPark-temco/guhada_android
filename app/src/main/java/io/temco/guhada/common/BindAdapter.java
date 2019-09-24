@@ -30,7 +30,7 @@ public class BindAdapter {
 
     @BindingAdapter("ovalImageUrl")
     public static void loadOvalImage(ImageView view, String url) {
-        if(!url.isEmpty())
+        if(url != null && url != "")
             GlideApp.with(view.getContext()).load(url).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(view);
     }
 
