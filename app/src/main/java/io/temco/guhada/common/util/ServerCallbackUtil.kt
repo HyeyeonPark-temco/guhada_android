@@ -81,7 +81,7 @@ class ServerCallbackUtil {
                                 },
                                 serverRuntimeErrorTask: (BaseModel<*>) -> Unit = {
                                     CommonUtil.debug(it.message)
-                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
                                 },
                                 serverLoginErrorTask: (BaseModel<*>) -> Unit = {},
                                 dataNotFoundTask: () -> Unit = {},

@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel.productdetail
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableInt
@@ -9,6 +10,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.ClaimServer
@@ -40,6 +42,8 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
                 if (this.claimResponse.content.isNotEmpty() && this.claimResponse.last) {
                     listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
                 }
+
+                Log.e("ㅇㅇㅇ", "1111    VISIBLE")
                 notifyPropertyChanged(BR.claimResponse)
                 emptyVisibility = ObservableInt(View.VISIBLE)
                 notifyPropertyChanged(BR.emptyVisibility)
@@ -50,14 +54,15 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
                     this.totalClaimCount = this.claimResponse.totalElements
                     notifyPropertyChanged(BR.totalClaimCount)
                 }
+
+                Log.e("ㅇㅇㅇ", "2222    GONE")
                 notifyPropertyChanged(BR.claimResponse)
                 emptyVisibility = ObservableInt(View.GONE)
                 notifyPropertyChanged(BR.emptyVisibility)
             }
         } else {
-//            if (o != null) listener.showMessage(o as String)
-//            else listener.showMessage("상품 문의 조회 오류") // 임시 메세지
 
+            Log.e("ㅇㅇㅇ", "3333    VISIBLE")
             emptyVisibility = ObservableInt(View.VISIBLE)
             notifyPropertyChanged(BR.emptyVisibility)
         }
@@ -70,11 +75,13 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
 
     fun getClaims() {
         if (!this.claimResponse.last) {
-            if (Preferences.getToken() != null) {
-                ClaimServer.getClaims(getClaimListener, productId = productId, isMyInquiry = isMineChecked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
-            } else {
-                ClaimServer.getClaimsForGuest(getClaimListener, productId = productId, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
-            }
+            ServerCallbackUtil.callWithToken(
+                    task = { accessToken ->
+                        ClaimServer.getClaims(getClaimListener, accessToken = accessToken, productId = productId, isMyInquiry = isMineChecked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
+                    },
+                    invalidTokenTask = {
+                        ClaimServer.getClaimsForGuest(getClaimListener, productId = productId, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
+                    })
         } else {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
         }
@@ -109,6 +116,8 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         claimPageNo = 0
 
         listener.clearClaims()
-        ClaimServer.getClaims(getClaimListener, productId = productId, isMyInquiry = checked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            ClaimServer.getClaims(getClaimListener, accessToken = accessToken, productId = productId, isMyInquiry = checked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
+        })
     }
 }

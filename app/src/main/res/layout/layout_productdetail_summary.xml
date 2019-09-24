@@ -135,9 +135,10 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:src="@color/black_overlay"
-                app:ovalImageUrl="@{viewModel.seller.user.profileImageUrl}" />
+                android:background="@color/white_three"
+                android:src="@drawable/drawable_transparent_circle" />
 
+            <!--app:ovalImageUrl="@{viewModel.seller.user.profileImageUrl}"-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,6 +164,7 @@
                         android:id="@+id/frameLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="4dp"
                         android:background="@drawable/border_all_whitethree_r6"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -188,6 +190,7 @@
                         android:layout_marginStart="5dp"
                         android:text="Top Seller"
                         android:textColor="@color/warm_grey_two"
+                        android:visibility="gone"
                         android:textSize="@dimen/text_11"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/button3"

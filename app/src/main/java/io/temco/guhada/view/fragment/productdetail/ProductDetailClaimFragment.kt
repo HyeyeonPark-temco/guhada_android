@@ -43,59 +43,59 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     override fun getLayoutId(): Int = R.layout.layout_productdetail_claim
 
     override fun init() {
-        mViewModel = ProductDetailClaimViewModel(productId, object : OnProductDetailClaimListener {
-            override fun showMessage(message: String) {
-                ToastUtil.showMessage(message)
-//                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun redirectWriteClaimActivity() {
-                val intent = Intent(this@ProductDetailClaimFragment.context, WriteClaimActivity::class.java)
-                intent.putExtra("productId", productId)
-                activity?.startActivityForResult(intent, WRITE_CLAIM)
-            }
-
-            /**
-             * @author park jungho
-             * 판매자 문의하기
-             */
-            override fun redirectUserClaimSellerActivity() {
-                CommonUtilKotlin.startActivityUserClaimSeller(context as AppCompatActivity, sellerId, productId,-1)
-            }
-
-            override fun clearClaims() {
-                (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
-            }
-
-            override fun redirectLoginActivity() {
-                val intent = Intent(this@ProductDetailClaimFragment.context, LoginActivity::class.java)
-                activity?.startActivityForResult(intent, LOGIN)
-            }
-        })
-        mBinding.viewModel = mViewModel
-        mBinding.recyclerviewProductdetailClaim.adapter = ProductDetailClaimAdapter()
-        mBinding.recyclerviewProductdetailClaim.layoutManager = WrapContentLinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        mBinding.tablayoutProductdetailClaim.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    ALL_CLAIMS -> mViewModel.claimStatus = ""
-                    PENDING_CLAIMS -> mViewModel.claimStatus = "PENDING"
-                    COMPLETED_CLAIMS -> mViewModel.claimStatus = "COMPLETED"
+        if(productId > 0){
+            mViewModel = ProductDetailClaimViewModel(productId, object : OnProductDetailClaimListener {
+                override fun showMessage(message: String) {
+                    ToastUtil.showMessage(message)
                 }
-                refreshClaims()
-            }
-        })
-        mViewModel.mineVisibility = if (Preferences.getToken() != null) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
 
-        mViewModel.getClaims()
-        mBinding.executePendingBindings()
+                override fun redirectWriteClaimActivity() {
+                    val intent = Intent(this@ProductDetailClaimFragment.context, WriteClaimActivity::class.java)
+                    intent.putExtra("productId", productId)
+                    activity?.startActivityForResult(intent, WRITE_CLAIM)
+                }
+
+                /**
+                 * @author park jungho
+                 * 판매자 문의하기
+                 */
+                override fun redirectUserClaimSellerActivity() {
+                    CommonUtilKotlin.startActivityUserClaimSeller(context as AppCompatActivity, sellerId, productId,-1)
+                }
+
+                override fun clearClaims() {
+                    (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
+                }
+
+                override fun redirectLoginActivity() {
+                    val intent = Intent(this@ProductDetailClaimFragment.context, LoginActivity::class.java)
+                    activity?.startActivityForResult(intent, LOGIN)
+                }
+            })
+            mBinding.viewModel = mViewModel
+            mBinding.recyclerviewProductdetailClaim.adapter = ProductDetailClaimAdapter()
+            mBinding.tablayoutProductdetailClaim.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    when (tab?.position) {
+                        ALL_CLAIMS -> mViewModel.claimStatus = ""
+                        PENDING_CLAIMS -> mViewModel.claimStatus = "PENDING"
+                        COMPLETED_CLAIMS -> mViewModel.claimStatus = "COMPLETED"
+                    }
+                    refreshClaims()
+                }
+            })
+            mViewModel.mineVisibility = if (Preferences.getToken() != null) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
+
+            mViewModel.getClaims()
+            mBinding.executePendingBindings()
+        }
     }
 
     fun refreshIsMineVisible() {
@@ -115,7 +115,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
         @JvmStatic
         @BindingAdapter("productClaims")
         fun RecyclerView.bindClaims(list: MutableList<Claim>?) {
-            if (list != null) {
+            if (list != null && list.isNotEmpty()) {
                 if (this.adapter == null) {
                     this.adapter = ProductDetailClaimAdapter()
                 }

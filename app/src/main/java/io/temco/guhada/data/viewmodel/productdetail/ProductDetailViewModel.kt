@@ -346,7 +346,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 listener?.setBrandProductList(brand)*/
             }
         } else {
-            listener?.showMessage("일시적인 오류입니다. 다시 시도해주세요.")
+           // listener?.showMessage("일시적인 오류입니다. 다시 시도해주세요.")
         }
     }
 
@@ -488,7 +488,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             }
             productBookMark.set(!productBookMark.get())
         } else {
-            ToastUtil.showMessage("test")
+         //   ToastUtil.showMessage("test")
         }
     }
 

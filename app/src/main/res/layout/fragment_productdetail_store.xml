@@ -200,7 +200,7 @@
                         android:id="@+id/textview_productdetail_store_storename"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="12dp"
                         android:text="@{viewModel.mSeller.user.nickname}"
                         android:textColor="@color/warm_grey_two"
                         android:textSize="@dimen/text_11"

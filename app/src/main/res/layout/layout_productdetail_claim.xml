@@ -169,6 +169,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_productdetail_claim"
                 android:layout_width="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
                 android:visibility="@{viewModel.emptyVisibility == View.GONE ? View.VISIBLE : View.GONE}"
