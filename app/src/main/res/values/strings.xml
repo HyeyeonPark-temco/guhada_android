@@ -453,6 +453,10 @@
     <string name="productdetail_option_extraprice_format">(+%,2d원)</string>
     <string name="productdetail_option_soldout">(품절)</string>
 
+    <string name="productdetail_store_relatedempty">셀러의 연관 상품이 없습니다.</string>
+    <string name="productdetail_store_recommendempty">추천 상품이 없습니다.</string>
+    <string name="productdetail_store_otherempty">판매자의 다른 상품이 없습니다.</string>
+
     <!-- CLAIM -->
     <string name="claim_write_hint">Enter the inquiry content</string>
     <string name="claim_write_private">private</string>
