@@ -60,6 +60,7 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
                 }, criteria = criteria, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
             }
         } else {
+            // 전체글 조회
             val jsonObject = JsonObject()
             jsonObject.addProperty("deleted", false)
             jsonObject.addProperty("inUse", true)

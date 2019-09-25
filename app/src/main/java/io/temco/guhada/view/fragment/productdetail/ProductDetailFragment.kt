@@ -291,11 +291,14 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel.getProductReviewSummary()
         mViewModel.getSellerSatisfaction()
         mBinding.includeProductdetailContentsummary.viewModel = mViewModel
-        mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener {
-            val intent = Intent(this@ProductDetailFragment.context, SellerInfoActivity::class.java)
-            intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
-            startActivity(intent)
-        }
+        mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener { redirectSellerInfoActivity() }
+        mBinding.includeProductdetailContentsummary.framelayooutProductdetailSellerstore.setOnClickListener { redirectSellerInfoActivity() }
+    }
+
+    private fun redirectSellerInfoActivity() {
+        val intent = Intent(this@ProductDetailFragment.context, SellerInfoActivity::class.java)
+        intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
+        startActivity(intent)
     }
 
     private fun initContentHeader() {
@@ -374,8 +377,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      */
     private fun initReview() {
         mReviewFragment = ProductDetailReviewFragment().apply {
-                if (this@ProductDetailFragment.mViewModel.product.value?.productId != null && this@ProductDetailFragment.mViewModel.product.value?.productId?:0 > 0)
-                    this.productId =this@ProductDetailFragment.mViewModel.product.value?.productId!!
+            if (this@ProductDetailFragment.mViewModel.product.value?.productId != null && this@ProductDetailFragment.mViewModel.product.value?.productId ?: 0 > 0)
+                this.productId = this@ProductDetailFragment.mViewModel.product.value?.productId!!
         }
         mReviewFragment.notifySummary = { averageReviewsRating ->
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
@@ -767,7 +770,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mBinding.executePendingBindings()
 
         // 팔로우 버튼 리셋
-        if(::mStoreFragment.isInitialized) mStoreFragment.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
+        if (::mStoreFragment.isInitialized) mStoreFragment.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
         mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
     }
 

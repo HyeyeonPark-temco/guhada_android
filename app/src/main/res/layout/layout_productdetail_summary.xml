@@ -205,7 +205,7 @@
                         android:onClick="@{()->viewModel.onClickSellerBookMark()}"
                         android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_silver }"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/button4"
+                        app:layout_constraintEnd_toStartOf="@+id/framelayoout_productdetail_sellerstore"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
@@ -218,7 +218,7 @@
                     </FrameLayout>
 
                     <FrameLayout
-                        android:id="@+id/button4"
+                        android:id="@+id/framelayoout_productdetail_sellerstore"
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:background="@color/greyish_brown_two"
