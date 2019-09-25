@@ -5,6 +5,9 @@
     <data>
         <import type="android.view.View" />
         <import type="android.text.TextUtils" />
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
         <variable name="depth" type="Integer" />
         <variable name="title" type="String" />
         <variable name="count" type="String" />
@@ -24,6 +27,7 @@
             android:layout_height="40dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:onClick="@{clickListener}"
             android:paddingLeft="32dp"
             android:paddingRight="18dp">
 

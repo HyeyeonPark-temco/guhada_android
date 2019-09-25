@@ -11,10 +11,13 @@ public class Category {
 
     public Type.Category type = Type.Category.NORMAL;
 
+    @SerializedName("isSelected")
     public boolean isSelected = false;
 
+    @SerializedName("isExpand")
     public boolean isExpand = false;
 
+    @SerializedName("depth")
     public int depth = -1;
 
     @SerializedName("id")
@@ -60,6 +63,7 @@ public class Category {
                 "type=" + type +
                 ", isSelected=" + isSelected +
                 ", isExpand=" + isExpand +
+                ", depth=" + depth +
                 ", id=" + id +
                 ", parentId=" + parentId +
                 ", title='" + title + '\'' +

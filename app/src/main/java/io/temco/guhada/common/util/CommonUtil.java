@@ -309,6 +309,21 @@ public class CommonUtil {
         return all;
     }
 
+
+    public static Category createAllCategoryData(String title, String depth, int id, int[] hierarchies, boolean isSelected, int parentId,int depthIndex) {
+        Category all = new Category();
+        all.type = Type.Category.ALL;
+        all.id = id;
+        // all.name = title;
+        all.title = title;
+        all.fullDepthName = depth;
+        all.hierarchies = hierarchies;
+        all.isSelected = isSelected;
+        all.parentId = parentId;
+        all.depth = depthIndex;
+        return all;
+    }
+
     public static boolean checkSelectCategoryData(Category parent, Category child) {
         boolean isSelect = false;
         for (Category c : parent.children) {

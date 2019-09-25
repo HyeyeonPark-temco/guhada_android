@@ -26,7 +26,9 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.temco.guhada.R;
@@ -57,6 +59,7 @@ import io.temco.guhada.data.model.body.FilterBody;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
+import io.temco.guhada.view.adapter.CategoryTitle;
 import io.temco.guhada.view.adapter.TagListAdapter;
 import io.temco.guhada.view.adapter.product.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
@@ -85,6 +88,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // Value
     private Type.ProductListViewType mIsCategory = Type.ProductListViewType.NONE; // Category/Brand
     private ProductList mProductListData;
+    private Map<Integer,Map<Integer, Category>> mDepthTitle;
     private Category mCategoryData; // Category
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
     private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
@@ -308,7 +312,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     ////////////////////////////////////////////////
 
     private void changeLayout() {
-        if (mProductListData != null) {
+        if (mProductListData != null || mDepthTitle != null) {
             initTagLayout();
         }
     }
@@ -780,9 +784,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     (mIsCategory==Type.ProductListViewType.CATEGORY) ? mCategoryData.hierarchies : null,
                     mProductListData.categories);
             d.setBrandData(mProductListData.brands);
+            d.setmDepthTitle(mDepthTitle);
             d.setFilterData(mProductListData.filters);
             d.setOnDetailSearchListener(new OnDetailSearchListener() {
-
                 @Override
                 public void onChange(boolean change) {
                     if (change) changeLayout();
@@ -790,8 +794,16 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
                 @Override
                 public void onCategory(List<Category> categories) {
-                    if (mProductListData != null) {
+                    /*if (mProductListData != null) {
                         mProductListData.categories = categories;
+                    }*/
+                }
+
+                @Override
+                public void onCategoryResult(Map<Integer, Map<Integer, Category>> map) {
+                    if (map != null) {
+                        if(CustomLog.getFlag())CustomLog.L("onCategoryResult","mDepthTitle",mDepthTitle);
+                        mDepthTitle = map;
                     }
                 }
 
@@ -815,18 +827,35 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     // TAG
     private void initTagLayout() {
+        filterBody = null;
+        mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
+        mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.VISIBLE);
+        mBinding.layoutHeaderSub.layoutReset.setOnClickListener(this);
+        //filterBody = new FilterBody();
         if (mProductListData != null) {
-            filterBody = null;
-            mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
-            mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.VISIBLE);
-            mBinding.layoutHeaderSub.layoutReset.setOnClickListener(this);
             initTagList();
-            //filterBody = new FilterBody();
-            addCategoryTag(mProductListData.categories);
             addBrandTag(mProductListData.brands);
             addFilterTag(mProductListData.filters);
-            mTagAdapter.notifyDataSetChanged();
         }
+
+        if (mDepthTitle != null) {
+            if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle",mDepthTitle.toString());
+            initTagList();
+            Iterator<Integer> depthList = mDepthTitle.keySet().iterator();
+            int depth = -1;
+            while (depthList.hasNext()){
+                int i = depthList.next();
+                if(i > depth) depth = i;
+            }
+            Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
+            while (idList.hasNext()) {
+                int id = idList.next();
+                if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle title",mDepthTitle.get(depth).get(id).title);
+                addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+            }
+        }
+
+        mTagAdapter.notifyDataSetChanged();
     }
 
     private void initTagList() {
