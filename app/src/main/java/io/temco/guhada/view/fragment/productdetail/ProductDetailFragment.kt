@@ -373,14 +373,17 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * productId 전달
      */
     private fun initReview() {
-        mReviewFragment = ProductDetailReviewFragment()
+        mReviewFragment = ProductDetailReviewFragment().apply {
+                if (this@ProductDetailFragment.mViewModel.product.value?.productId != null && this@ProductDetailFragment.mViewModel.product.value?.productId?:0 > 0)
+                    this.productId =this@ProductDetailFragment.mViewModel.product.value?.productId!!
+        }
         mReviewFragment.notifySummary = { averageReviewsRating ->
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
 
-        if (mViewModel.product.value?.productId != null && mViewModel.product.value?.productId?:0 > 0)
-            mReviewFragment.setProductId(productId = mViewModel.product.value?.productId!!)
+//        if (mViewModel.product.value?.productId != null && mViewModel.product.value?.productId?:0 > 0)
+//            mReviewFragment.setProductId(productId = mViewModel.product.value?.productId!!)
 
         childFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
@@ -764,7 +767,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mBinding.executePendingBindings()
 
         // 팔로우 버튼 리셋
-        mStoreFragment.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
+        if(::mStoreFragment.isInitialized) mStoreFragment.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
         mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
     }
 

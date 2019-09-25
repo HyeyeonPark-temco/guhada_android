@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,10 @@ import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * 상품상세-상품 리뷰
@@ -53,24 +58,29 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         COMMENT(3)
     }
 
+    var productId = 0L
     private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
-    var mViewModel: ProductDetailReviewViewModel = ProductDetailReviewViewModel()
+    lateinit var mViewModel: ProductDetailReviewViewModel
     lateinit var notifySummary: (averageReviewsRating: Float) -> Unit
 
     override fun getBaseTag(): String = ProductDetailReviewFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_review
     override fun init() {
         initViewModel()
-        initTab()
         initRatingSpinner()
         initSortingSpinner()
+        initTab()
 
         mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+
+        mViewModel.getProductReviewSummary()
+        // mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
     }
 
     private fun initViewModel() {
+        mViewModel = ProductDetailReviewViewModel().apply { this.productId = this@ProductDetailReviewFragment.productId }
         mViewModel.listener = object : OnProductDetailReviewListener {
             override fun showMessage(message: String) {
                 ToastUtil.showMessage(message)
@@ -117,6 +127,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                     mViewModel.mSelectedTabPos = tab?.position ?: ReviewTab.ALL.pos
                     mViewModel.reviewResponse = ReviewResponse()
                     mViewModel.reviewPage = 0
+
                     mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, tab?.position
                             ?: ReviewTab.ALL.pos)
 
@@ -124,6 +135,14 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                     mViewModel.mSortingSpinnerBlock = true
                     mBinding.spinnerReviewSorting.setSelection(0)
                     mViewModel.mSortingSpinnerBlock = false
+
+                    // 평점 스피너 초기화
+                    mViewModel.mRatingSpinnerBlock = true
+                    mBinding.spinnerReviewRating.setSelection(0, true)
+                    CoroutineScope(Dispatchers.Default).launch {
+                        delay(1500)
+                        mViewModel.mRatingSpinnerBlock = false
+                    }
                 }
             }
         })
@@ -148,7 +167,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                     mBinding.spinnerReviewSorting.setSelection(0)
 
                     if (position == ReviewRating.ALL.pos) {
-                        mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewPage, ReviewTab.ALL.pos)
+                        mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
                     } else {
                         when (position) {
                             ReviewRating.FIVE.pos -> mViewModel.getProductReview(page = mViewModel.reviewPage, size = mViewModel.reviewSize, tabPos = ReviewTab.ALL.pos, rating = ReviewRating.FIVE.value, sorting = null)
@@ -161,9 +180,10 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                     mViewModel.mTabSelectBlock = false
                     mViewModel.mSortingSpinnerBlock = false
                 }
+                mViewModel.mRatingSpinnerBlock = false
             }
         }
-        mBinding.spinnerReviewRating.setSelection(0)
+//        mBinding.spinnerReviewRating.setSelection(0)
     }
 
     private fun initSortingSpinner() {
@@ -191,7 +211,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                 }
             }
         }
-        mBinding.spinnerReviewSorting.setSelection(0)
+//        mBinding.spinnerReviewSorting.setSelection(0)
     }
 
     override fun onDestroyOptionsMenu() {
@@ -199,14 +219,14 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         if (::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil.hide()
     }
 
-    fun setProductId(productId: Long) {
-        mViewModel.productId = productId
-        if (productId > 0) {
-            if (mBinding != null) mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
-            mViewModel.getProductReviewSummary()
-            mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
-        }
-    }
+//    fun setProductId(productId: Long) {
+//        mViewModel.productId = productId
+//        if (productId > 0) {
+//            if (mBinding != null) mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
+//            mViewModel.getProductReviewSummary()
+//            mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
+//        }
+//    }
 
     private fun showLoadingIndicator() {
         if (!::loadingIndicatorUtil.isInitialized) {

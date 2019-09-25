@@ -24,14 +24,14 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
     lateinit var listener: ProductDetailReviewFragment.OnProductDetailReviewListener
     var productId: Long = 0
     var reviewPage = 0
-    var reviewSize = 5
+    val reviewSize = 2
     var reviewSummary: ReviewSummary = ReviewSummary()
         @Bindable
         get() = field
     var reviewResponse: ReviewResponse = ReviewResponse()
         @Bindable
         get() = field
-    var emptyVisibility: ObservableInt = ObservableInt(View.GONE)
+    var emptyVisibility: ObservableInt = ObservableInt(View.VISIBLE)
         @Bindable
         get() = field
 
@@ -167,8 +167,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
             }, productId, page, size, sorting = sorting)
     }
 
-    fun onClickMoreReview(size: Int) {
-        listener.showLoadingIndicator { getProductReview(++reviewPage, size, mSelectedTabPos, rating = mSelectedRating, sorting = mSelectedSorting) }
+    fun onClickMoreReview() {
+        listener.showLoadingIndicator { getProductReview(++reviewPage, reviewSize, mSelectedTabPos, rating = mSelectedRating, sorting = mSelectedSorting) }
     }
 
     // TODO 첫 리뷰 작성하기 버튼
