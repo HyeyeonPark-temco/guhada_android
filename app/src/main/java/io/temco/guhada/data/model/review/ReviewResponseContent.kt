@@ -12,7 +12,7 @@ class ReviewResponseContent {
     var order: Any? = null    // 확인 필요
     var photoUrls: MutableList<String> = ArrayList()
     var productOption: ProductOption = ProductOption()
-    var userSize: String? = ""    // 확인 필요
+    var userSize = UserSize()
     var likesUserIds: Array<Long>? = arrayOf()
     var reviewTexts: ReviewSatisfactionText = ReviewSatisfactionText()
 
@@ -22,5 +22,13 @@ class ReviewResponseContent {
         var size = ""
         var color = ""
         var length = ""
+    }
+
+    class UserSize {
+        var height = 0
+        var weight = 0
+        var shoe = 0
+        var bottom = 0
+        var top = ""
     }
 }

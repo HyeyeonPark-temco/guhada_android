@@ -359,6 +359,10 @@ class UserServer {
         fun getProductReview(listener: OnServerListener, productId: Long, page: Int, size: Int) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
+        @JvmStatic
+        fun getProductReview(listener: OnServerListener, productId: Long, page: Int, size: Int, rating:String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size, rating).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
+
         /**
          * 상품 리뷰 리스트(포토 리뷰) 조회
          * @author Hyeyeon Park

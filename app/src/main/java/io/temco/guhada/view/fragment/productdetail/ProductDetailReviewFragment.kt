@@ -1,5 +1,8 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +20,8 @@ import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel
 import io.temco.guhada.databinding.LayoutProductdetailReviewBinding
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity
+import io.temco.guhada.view.adapter.CommonNonBoxSpinnerAdapter
+import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -28,6 +33,15 @@ import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment.C
  * @author Hyeyeon Park
  */
 class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBinding>() {
+
+    enum class ReviewRating(val pos: Int, val value: String) {
+        ALL(0, "ALL"),
+        FIVE(1, "FIVE"),
+        FOUR(2, "FOUR"),
+        THREE(3, "THREE"),
+        TWO(4, "TWO"),
+        ONE(5, "ONE"),
+    }
 
     enum class ReviewTab(val pos: Int) {
         ALL(0),
@@ -45,6 +59,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
     override fun init() {
         initViewModel()
         initTab()
+        initFilter()
 
         mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter()
         mBinding.viewModel = mViewModel
@@ -93,13 +108,43 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (!mViewModel.mTabSelectBlock) {
+                    mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter()
+                    mViewModel.reviewResponse = ReviewResponse()
+                    mViewModel.reviewPage = 0
+                    mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, tab?.position
+                            ?: ReviewTab.ALL.pos)
+                }
+            }
+        })
+    }
+
+    private fun initFilter() {
+        mBinding.spinnerReviewRating.adapter = CommonNonBoxSpinnerAdapter(mBinding.root.context, R.layout.item_common_spinner2, listOf("전체 평점", "5점만", "4점만", "3점만", "2점만", "1점만"))
+        mBinding.spinnerReviewRating.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                mViewModel.mTabSelectBlock = true
+                mBinding.tablayoutProductdetailReview.getTabAt(0)?.select()
                 mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter()
                 mViewModel.reviewResponse = ReviewResponse()
                 mViewModel.reviewPage = 0
-                mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, tab?.position
-                        ?: ReviewTab.ALL.pos)
+                if (position == ReviewRating.ALL.pos) {
+                    mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewPage, ReviewTab.ALL.pos)
+                } else {
+                    when (position) {
+                        ReviewRating.FIVE.pos -> mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewPage, ReviewTab.ALL.pos, rating = ReviewRating.FIVE.value)
+                        ReviewRating.FOUR.pos -> mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewPage, ReviewTab.ALL.pos, rating = ReviewRating.FOUR.value)
+                        ReviewRating.THREE.pos -> mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewPage, ReviewTab.ALL.pos, rating = ReviewRating.THREE.value)
+                        ReviewRating.TWO.pos -> mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewPage, ReviewTab.ALL.pos, rating = ReviewRating.TWO.value)
+                        ReviewRating.ONE.pos -> mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewPage, ReviewTab.ALL.pos, rating = ReviewRating.ONE.value)
+                    }
+                }
+                mViewModel.mTabSelectBlock = false
             }
-        })
+        }
+        mBinding.spinnerReviewRating.setSelection(0)
     }
 
     override fun onDestroyOptionsMenu() {
@@ -110,6 +155,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
     fun setProductId(productId: Long) {
         mViewModel.productId = productId
         if (productId > 0) {
+            if (mBinding != null) mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter()
             mViewModel.getProductReviewSummary()
             mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
         }

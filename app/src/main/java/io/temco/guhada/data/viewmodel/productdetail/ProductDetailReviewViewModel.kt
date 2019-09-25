@@ -36,6 +36,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         get() = field
 
     var mSelectedTabPos = ProductDetailReviewFragment.ReviewTab.ALL.pos
+    var mTabSelectBlock = true
 
     fun getProductReviewSummary() {
         UserServer.getProductReviewSummary(OnServerListener { success, o ->
@@ -60,7 +61,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         }, productId)
     }
 
-    fun getProductReview(page: Int, size: Int, tabPos: Int) {
+    fun getProductReview(page: Int, size: Int, tabPos: Int, rating: String? = null) {
         mSelectedTabPos = tabPos
 
         if (reviewResponse.last) {
@@ -72,7 +73,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                         val model = o as BaseModel<*>
                         this.reviewResponse = model.data as ReviewResponse
                         emptyVisibility = if (reviewResponse.content.isNullOrEmpty()) ObservableInt(View.VISIBLE)
-                        else ObservableInt(View.GONE)
+                         else ObservableInt(View.GONE)
 
                         notifyPropertyChanged(BR.reviewResponse)
                         notifyPropertyChanged(BR.emptyVisibility)
@@ -88,30 +89,44 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 if (::listener.isInitialized) listener.hideLoadingIndicator()
             }
 
-            when (tabPos) {
-                ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReview(page, size, resultTask)
-                ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReview(page, size, resultTask)
-                ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReview(page, size, resultTask)
+            if (rating == null) {
+                when (tabPos) {
+                    ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReview(page, size, resultTask)
+                    ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReview(page, size, resultTask)
+                    ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReview(page, size, resultTask)
+                }
+            } else {
+                getAllReviewWithRating(page, size, rating, resultTask)
             }
         }
     }
 
     private fun getAllReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
-        UserServer.getProductReview(OnServerListener { success, o ->
-            resultTask(success, o)
-        }, productId, page, size)
+        if(productId > 0)
+            UserServer.getProductReview(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size)
+    }
+
+    private fun getAllReviewWithRating(page: Int, size: Int, rating: String, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if(productId > 0)
+            UserServer.getProductReview(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size, rating)
     }
 
     private fun getPhotoReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
-        UserServer.getProductPhotoReview(OnServerListener { success, o ->
-            resultTask(success, o)
-        }, productId, page, size)
+        if(productId > 0)
+            UserServer.getProductPhotoReview(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size)
     }
 
     private fun getSizeReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
-        UserServer.getProductSizeReview(OnServerListener { success, o ->
-            resultTask(success, o)
-        }, productId, page, size)
+        if(productId > 0)
+            UserServer.getProductSizeReview(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size)
     }
 
 
