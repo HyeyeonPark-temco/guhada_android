@@ -10,6 +10,7 @@ import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
 import kotlinx.coroutines.Deferred
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -461,9 +462,7 @@ interface UserService {
      * @since 2019.09.23
      */
     @PUT("/users/email-verify")
-    fun updateEmailVerify(@Header("Authorization") accessToken: String, @Query("verificationNumber") verificationNumber: String): Call<BaseModel<Any>>
-
-
+    fun updateEmailVerify(@Header("Authorization") accessToken: String, @Body verificationNumber: JsonObject): Call<BaseModel<Any>>
 
     /**
      * review image 업로드 url

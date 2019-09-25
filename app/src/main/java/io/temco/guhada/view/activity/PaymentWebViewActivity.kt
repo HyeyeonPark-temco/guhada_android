@@ -15,6 +15,7 @@ import androidx.core.net.toUri
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
@@ -28,7 +29,7 @@ import java.net.URLEncoder
 
 
 class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
-    private val RESULT_URL = "http://13.209.10.68/lotte/mobile/privyCertifyResult"
+    private val RESULT_URL = "https://order.guhada.com/lotte/mobile/privyCertifyResult" //"http://13.209.10.68/lotte/mobile/privyCertifyResult"
     private var mViewModel: PaymentWebViewViewModel = PaymentWebViewViewModel()
     val RESULT_CODE_SUCCESS = "00"
     val SCHEME = "ispmobile://"
@@ -78,7 +79,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 "$STORE_NAME=${URLEncoder.encode(mViewModel.pgResponse.mallName, CHARSET)}"
 
         URL = mViewModel.pgResponse.jsUrl
-        Log.e("결제 수단", "${intent.getStringExtra("payMethod")} ====> $URL")
+        // Log.e("결제 수단", "${intent.getStringExtra("payMethod")} ====> $URL")
 
         when (intent.getStringExtra("payMethod")) {
             "CARD" -> params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
@@ -115,6 +116,11 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 }
                 return true
             }
+
+            override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+                if (CustomLog.flag) Log.e("결제 webview", consoleMessage?.message())
+                return super.onConsoleMessage(consoleMessage)
+            }
         }
 
         // Insecurity 페이지 허용
@@ -129,10 +135,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
             cookieManager.setAcceptCookie(true)
         }
 
-        if (!mViewModel.pgResponse.jsUrl.isEmpty()) {
-            URL = mViewModel.pgResponse.jsUrl
-        }
-
         mBinding.webviewPayment.postUrl(URL, params.toByteArray())
     }
 
@@ -140,7 +142,8 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-            if (url == RESULT_URL) {
+            if (CustomLog.flag) Log.e("결제 webview URL", url)
+            if (url == mViewModel.pgResponse.returnUrl) {
                 mBinding.webviewPayment.visibility = View.GONE
                 view?.evaluateJavascript("(function(){return window.document.body.outerHTML})();") { html ->
                     StringEscapeUtils.unescapeJava(html).let {
@@ -170,7 +173,8 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                             val vbankReceivedNo = document.getElementById("vbankReceivedNo")?.`val`()
                                     ?: ""
 
-                            CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid authToken: $authToken")
+                            if (CustomLog.flag) CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid authToken: $authToken")
+
 
                             PGAuth().apply {
                                 this.resultCode = resultCode
@@ -220,7 +224,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            CommonUtil.debug("<LPAY>", url.toString())
+            if(CustomLog.flag)  CommonUtil.debug("<LPAY>", url.toString())
 
             if (!url?.startsWith("http://")!! && !url.startsWith("https://") && !url.startsWith("javascript")) {
                 val intent: Intent
