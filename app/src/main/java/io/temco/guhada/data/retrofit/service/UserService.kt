@@ -463,7 +463,7 @@ interface UserService {
      * @since 2019.09.23
      */
     @POST("/users/identity-verify")
-    fun getIdentityVerify(@Query("diCode") di: String): Call<BaseModel<Any>>
+    fun getIdentityVerify(@Body jsonObject: JsonObject): Call<BaseModel<Any>>
 
     /**
      * 셀러 스토어 정보 조회 API (비로그인)
