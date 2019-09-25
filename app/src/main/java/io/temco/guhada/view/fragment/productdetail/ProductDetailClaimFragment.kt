@@ -99,8 +99,10 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     }
 
     fun refreshIsMineVisible() {
-        mViewModel.mineVisibility = if (Preferences.getToken() != null) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
-        mViewModel.notifyPropertyChanged(BR.mineVisibility)
+        if(::mViewModel.isInitialized){
+            mViewModel.mineVisibility = if (Preferences.getToken() != null) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
+            mViewModel.notifyPropertyChanged(BR.mineVisibility)
+        }
     }
 
     fun refreshClaims() {

@@ -138,7 +138,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/imageButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,46 +147,58 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView41"
+
+                <Spinner
+                    android:id="@+id/spinner_review_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/productdetaininfo_review_sort2"
+                    android:background="@color/common_white"
+                    android:popupElevation="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton2"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
+
+                <!--<TextView-->
+                <!--android:id="@+id/textView41"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="4dp"-->
+                <!--android:text="@string/productdetaininfo_review_sort2"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/imageButton2"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <ImageView
                     android:id="@+id/imageButton3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/detail_icon_arrow_open"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView41"
+                    app:layout_constraintEnd_toStartOf="@+id/spinner_review_rating"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView42"
+
+                <Spinner
+                    android:id="@+id/spinner_review_sorting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/productdetaininfo_review_sort1"
+                    android:background="@color/common_white"
+                    android:popupElevation="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton3"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- [임시] 탭 안보이게 -->
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tablayout_productdetail_claim"
-
-
+                android:id="@+id/tablayout_productdetail_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:tabBackground="@drawable/selector_tab_productdetail_claim"
                 app:tabIndicatorAnimationDuration="0"
                 app:tabIndicatorHeight="0dp"
@@ -194,7 +206,7 @@
                 app:tabTextColor="@color/black_four">
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabitem_productdetail_claim_all"
+                    android:id="@+id/tabitem_productdetail_review_all"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="@string/productdetail_review_all" />
@@ -209,10 +221,10 @@
                     android:layout_height="40dp"
                     android:text="@string/productdetail_review_size" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="@string/productdetail_review_reply" />
+                <!--<com.google.android.material.tabs.TabItem-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:text="@string/productdetail_review_reply" />-->
             </com.google.android.material.tabs.TabLayout>
 
             <FrameLayout
@@ -235,8 +247,7 @@
                     android:background="@color/common_white"
                     android:paddingTop="60dp"
                     android:paddingBottom="60dp"
-                    android:visibility="@{viewModel.emptyVisibility, default =visible}"
-                    >
+                    android:visibility="@{viewModel.emptyVisibility, default =visible}">
 
                     <ImageView
                         android:id="@+id/imageView8"
@@ -332,7 +343,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/border_all_whitethree"
-                android:onClick="@{()->viewModel.onClickMoreReview(5)}"
+                android:onClick="@{()->viewModel.onClickMoreReview()}"
                 android:visibility="@{viewModel.emptyVisibility == View.VISIBLE || viewModel.reviewResponse.last ? View.GONE : View.VISIBLE, default = gone}">
 
                 <LinearLayout

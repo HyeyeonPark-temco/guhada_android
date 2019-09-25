@@ -10,9 +10,9 @@ import io.temco.guhada.data.model.product.ProductOption
 class ReviewResponseContent {
     var review: Review = Review()
     var order: Any? = null    // 확인 필요
-    var photoUrls: MutableList<String> = ArrayList()
+    var reviewPhotos: MutableList<ReviewPhoto>? = ArrayList()
     var productOption: ProductOption = ProductOption()
-    var userSize: String? = ""    // 확인 필요
+    var userSize : UserSize?= UserSize()
     var likesUserIds: Array<Long>? = arrayOf()
     var reviewTexts: ReviewSatisfactionText = ReviewSatisfactionText()
 
@@ -22,5 +22,20 @@ class ReviewResponseContent {
         var size = ""
         var color = ""
         var length = ""
+    }
+
+    class UserSize {
+        var height = 0
+        var weight = 0
+        var shoe = 0
+        var bottom = 0
+        var top = ""
+    }
+
+    class ReviewPhoto{
+        var id = 0L
+        var userProductReviewId = 0L
+        var reviewPhotoUrl: String = ""
+        var photoOrder = 0
     }
 }

@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import com.google.gson.JsonObject
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -15,7 +16,6 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.order.Order
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -58,7 +58,7 @@ class VerifyViewModel : BaseObservableViewModel() {
     // 이메일로 인증번호 전송
     fun onClickSend() {
         if (!mActiveSendButton.get()) {
-            if (mUser.name.isNullOrEmpty()) {
+            if (!mMobileVerification.get()) {
                 // 본인인증을 안하면 name 필드 값이 없음 (email 인증번호 발송 api에서 name이 필수 값)
                 ToastUtil.showMessage("휴대폰 본인인증을 먼저 진행해주세요.")
             } else {
@@ -127,6 +127,9 @@ class VerifyViewModel : BaseObservableViewModel() {
     }
 
     private fun updateEmailVerify() {
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("verificationNumber", mVerificationNumber)
+
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             UserServer.updateEmailVerify(OnServerListener { success, o ->
                 val model = o as BaseModel<*>
@@ -137,7 +140,7 @@ class VerifyViewModel : BaseObservableViewModel() {
                 } else {
                     ToastUtil.showMessage(model.message)
                 }
-            }, accessToken = accessToken, verificationNumber = mVerificationNumber)
+            }, accessToken = accessToken, verificationNumber = jsonObject)
         })
     }
 

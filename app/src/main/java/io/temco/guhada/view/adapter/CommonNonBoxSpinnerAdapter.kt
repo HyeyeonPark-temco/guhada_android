@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import io.temco.guhada.databinding.ItemPaymentSpinnerBinding
+import io.temco.guhada.databinding.ItemCommonSpinner2Binding
+import io.temco.guhada.databinding.ItemCommonSpinnerBinding
 
 /**
- * Payment spinner Adapter
- * @author Hyeyeoon Park
+ * Text Spinner (no border)
+ * @author Hyeyeon Park
  */
-class PaymentSpinnerAdapter(context: Context, private val layoutRes: Int, var list: List<String> = ArrayList()) : ArrayAdapter<String>(context, layoutRes, list) {
+class CommonNonBoxSpinnerAdapter(context: Context, private val layoutRes: Int, var list: List<String> = ArrayList()) : ArrayAdapter<String>(context, layoutRes, list) {
+    var mItemCount: Int? = null
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
-    override fun getCount(): Int = list.size
+    override fun getCount(): Int = if (mItemCount == null) list.size else mItemCount ?: 0
 
     fun setItems(list: List<String>) {
         this.list = list
@@ -23,7 +25,7 @@ class PaymentSpinnerAdapter(context: Context, private val layoutRes: Int, var li
     }
 
     private fun getCustomView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val binding = DataBindingUtil.inflate<ItemPaymentSpinnerBinding>(LayoutInflater.from(parent.context), layoutRes, parent, false)
+        val binding = DataBindingUtil.inflate<ItemCommonSpinner2Binding>(LayoutInflater.from(parent.context), layoutRes, parent, false)
         if (list.isNotEmpty()) binding.message = list[position]
 
         when (position) {

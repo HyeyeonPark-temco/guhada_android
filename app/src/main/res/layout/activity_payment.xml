@@ -349,7 +349,6 @@
                                     android:src="@drawable/payment_icon_selectbox_open" />
                             </LinearLayout>
                         </FrameLayout>
-
                     </FrameLayout>
 
                     <EditText

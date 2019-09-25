@@ -24,16 +24,23 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
     lateinit var listener: ProductDetailReviewFragment.OnProductDetailReviewListener
     var productId: Long = 0
     var reviewPage = 0
-    var reviewSize = 5
+    val reviewSize = 2
     var reviewSummary: ReviewSummary = ReviewSummary()
         @Bindable
         get() = field
     var reviewResponse: ReviewResponse = ReviewResponse()
         @Bindable
         get() = field
-    var emptyVisibility: ObservableInt = ObservableInt(View.GONE)
+    var emptyVisibility: ObservableInt = ObservableInt(View.VISIBLE)
         @Bindable
         get() = field
+
+    var mSelectedTabPos = ProductDetailReviewFragment.ReviewTab.ALL.pos
+    var mSelectedRating: String? = null
+    var mSelectedSorting: String? = null
+    var mTabSelectBlock = false
+    var mRatingSpinnerBlock = false
+    var mSortingSpinnerBlock = false
 
     fun getProductReviewSummary() {
         UserServer.getProductReviewSummary(OnServerListener { success, o ->
@@ -58,11 +65,13 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         }, productId)
     }
 
-    fun getProductReview(page: Int, size: Int) {
+    fun getProductReview(page: Int, size: Int, tabPos: Int, rating: String? = null, sorting: String? = ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value) {
+        mSelectedTabPos = tabPos
+
         if (reviewResponse.last) {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_review_message_lastitem))
         } else {
-            UserServer.getProductReview(OnServerListener { success, o ->
+            val resultTask: (success: Boolean, o: Any) -> Unit = { success: Boolean, o: Any? ->
                 if (success) {
                     if (o != null) {
                         val model = o as BaseModel<*>
@@ -82,12 +91,84 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 }
 
                 if (::listener.isInitialized) listener.hideLoadingIndicator()
-            }, productId, page, size)
+            }
+
+            if (rating == null && sorting == null) { // 최신순 & 전체 평점
+                when (tabPos) {
+                    ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReview(page, size, resultTask)
+                    ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReview(page, size, resultTask)
+                    ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReview(page, size, resultTask)
+                }
+            } else if (rating != null && sorting == null) {
+                mSelectedRating = rating
+                getAllReviewWithRating(page, size, mSelectedRating
+                        ?: ProductDetailReviewFragment.ReviewRating.ALL.value, resultTask)
+            } else if (rating == null && sorting != null) {
+                mSelectedSorting = sorting
+
+                when (tabPos) {
+                    ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReviewWithSorting(page, size, mSelectedSorting
+                            ?: ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value, resultTask)
+                    ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReviewWithSorting(page, size, mSelectedSorting
+                            ?: ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value, resultTask)
+                    ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReviewWithSorting(page, size, mSelectedSorting
+                            ?: ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value, resultTask)
+                }
+            }
         }
     }
 
-    fun onClickMoreReview(size: Int) {
-        listener.showLoadingIndicator { getProductReview(++reviewPage, size) }
+    private fun getAllReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductReview(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size)
+    }
+
+    private fun getAllReviewWithRating(page: Int, size: Int, rating: String, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductReviewWithRating(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size, rating = rating)
+    }
+
+    private fun getAllReviewWithSorting(page: Int, size: Int, sorting: String, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductReviewWithSorting(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size, sorting = sorting)
+    }
+
+    private fun getPhotoReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductPhotoReview(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size)
+    }
+
+    private fun getPhotoReviewWithSorting(page: Int, size: Int, sorting: String, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductPhotoReviewWithSorting(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size, sorting = sorting)
+    }
+
+    private fun getSizeReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductSizeReview(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size)
+    }
+
+    private fun getSizeReviewWithSorting(page: Int, size: Int, sorting: String, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductSizeReviewWithSorting(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size, sorting = sorting)
+    }
+
+    fun onClickMoreReview() {
+        listener.showLoadingIndicator { getProductReview(++reviewPage, reviewSize, mSelectedTabPos, rating = mSelectedRating, sorting = mSelectedSorting) }
     }
 
     // TODO 첫 리뷰 작성하기 버튼

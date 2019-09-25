@@ -10,6 +10,7 @@ import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
 import kotlinx.coroutines.Deferred
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -227,6 +228,34 @@ interface UserService {
      */
     @GET("/products/{productId}/reviews")
     fun getProductReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
+
+    @GET("/products/{productId}/reviews")
+    fun getProductReviewWithRating(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("rating") rating: String): Call<BaseModel<ReviewResponse>>
+
+    @GET("/products/{productId}/reviews")
+    fun getProductReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
+
+    /**
+     * 상품 리뷰 리스트(포토 리뷰) 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.25
+     */
+    @GET("/products/{productId}/reviews/photo")
+    fun getProductPhotoReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
+
+    @GET("/products/{productId}/reviews/photo")
+    fun getProductPhotoReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
+
+    /**
+     * 상품 리뷰 리스트(개인 수치 포함) 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.25
+     */
+    @GET("/products/{productId}/reviews/user-size")
+    fun getProductSizeReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
+
+    @GET("/products/{productId}/reviews/user-size")
+    fun getProductSizeReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
 
     /**
      * 셀러 만족도 조회 API
@@ -461,9 +490,7 @@ interface UserService {
      * @since 2019.09.23
      */
     @PUT("/users/email-verify")
-    fun updateEmailVerify(@Header("Authorization") accessToken: String, @Query("verificationNumber") verificationNumber: String): Call<BaseModel<Any>>
-
-
+    fun updateEmailVerify(@Header("Authorization") accessToken: String, @Body verificationNumber: JsonObject): Call<BaseModel<Any>>
 
     /**
      * review image 업로드 url

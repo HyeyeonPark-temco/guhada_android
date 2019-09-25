@@ -137,13 +137,13 @@ class ProductDetailActivity : BindActivity<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initReview(product: Product) {
-        mReviewFragment = ProductDetailReviewFragment()
+        mReviewFragment = ProductDetailReviewFragment().apply { this.productId = product.productId }
         mReviewFragment.notifySummary = { averageReviewsRating ->
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
 
-        mReviewFragment.setProductId(productId = product.productId)
+//        mReviewFragment.setProductId(productId = product.productId)
 
         supportFragmentManager.beginTransaction().let {
             it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)

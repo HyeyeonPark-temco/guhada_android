@@ -3,6 +3,7 @@ package io.temco.guhada.data.viewmodel
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonObject
 import io.temco.guhada.common.enum.CommunityOrderType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
@@ -35,14 +36,35 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
             else filterList[0].id.toLong()
         }
 
-        CommunityCriteria().apply {
-            this.categoryId = mCommunityInfo.communityCategoryId.toLong()
-            this.filterId = mFilterId
-            this.deleted = false
-            this.inUse = true
-            this.query = ""
-            this.searchType = CommunityCriteria.SearchType.TITLE_CONTENTS.type
-        }.let { criteria ->
+        val categoryId = mCommunityInfo.communityCategoryId.toLong()
+        if (categoryId > 0) {
+            CommunityCriteria().apply {
+                this.categoryId = mCommunityInfo.communityCategoryId.toLong()
+                this.filterId = mFilterId
+                this.deleted = false
+                this.inUse = true
+                this.query = ""
+                this.searchType = CommunityCriteria.SearchType.TITLE_CONTENTS.type
+            }.let { criteria ->
+                SearchServer.getCommunityBoardList(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                if (mPage > 1) {
+                                    val newList = (it.data as CommunityBoard.CommunityResponse).bbs
+                                    this.mCommunityResponse.value?.bbs?.addAll(newList)
+                                    this.mCommunityResponse.postValue(this.mCommunityResponse.value)
+                                } else {
+                                    this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
+                                }
+                            })
+                }, criteria = criteria, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
+            }
+        } else {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("deleted", false)
+            jsonObject.addProperty("inUse", true)
+            jsonObject.addProperty("searchType", "CONTENTS")
+
             SearchServer.getCommunityBoardList(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
@@ -54,8 +76,9 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
                                 this.mCommunityResponse.postValue(it.data as CommunityBoard.CommunityResponse)
                             }
                         })
-            }, criteria = criteria, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
+            }, criteria = jsonObject, order = mOrder, page = ++mPage, unitPerPage = UNIT_PER_PAGE)
         }
+
     }
 
     fun onClickMore() = getCommunityList()

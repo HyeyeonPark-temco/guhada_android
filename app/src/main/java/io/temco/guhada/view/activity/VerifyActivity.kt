@@ -55,7 +55,7 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
     override fun onBackPressed() = closeActivity()
 
     private fun closeActivity() {
-        if(::mViewModel.isInitialized){
+        if (::mViewModel.isInitialized) {
             this.intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
             this.intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
             this.intent.putExtra("name", mViewModel.mVerification.name)
@@ -72,10 +72,14 @@ class VerifyActivity : BindActivity<ActivityVerifyBinding>() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RequestCode.VERIFY_PHONE.flag) {
             if (resultCode == Activity.RESULT_OK) {
-                mViewModel.mVerification.name = data?.getStringExtra("name")?:""
-                mViewModel.mVerification.mobile = data?.getStringExtra("phoneNumber")?:""
-                mViewModel.mVerification.diCode = data?.getStringExtra("di")?:""
-                mViewModel.mVerification.gender =  data?.getStringExtra("gender")?:""
+                mViewModel.mVerification.name = data?.getStringExtra("name") ?: ""
+                mViewModel.mVerification.mobile = data?.getStringExtra("phoneNumber") ?: ""
+                mViewModel.mVerification.diCode = data?.getStringExtra("di") ?: ""
+                mViewModel.mVerification.gender = data?.getStringExtra("gender") ?: ""
+
+                mViewModel.mUser.name = mViewModel.mVerification.name
+                mViewModel.mUser.phoneNumber = mViewModel.mVerification.mobile
+                mViewModel.mUser.mobile = mViewModel.mVerification.mobile
                 mViewModel.updateIdentityVerify()
             }
         }

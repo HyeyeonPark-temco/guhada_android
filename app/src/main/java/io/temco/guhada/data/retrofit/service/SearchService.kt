@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import com.google.gson.JsonObject
 import io.temco.guhada.data.model.ProductList
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.body.FilterBody
@@ -61,6 +62,14 @@ interface SearchService {
      */
     @POST("/ps/bbs/search")
     fun getCommunityList(@Body criteria: CommunityCriteria, @Query("order") order: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<CommunityBoard.CommunityResponse>>
+
+    /**
+     * 커뮤니티 전체글 검색 API
+     * @author Hyeyeon Park
+     * @since 2019.09.25
+     */
+    @POST("/ps/bbs/search")
+    fun getCommunityList(@Body criteria: JsonObject, @Query("order") order: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int): Call<BaseModel<CommunityBoard.CommunityResponse>>
 
     /**
      * 셀러별 상품 목록 조회 API
