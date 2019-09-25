@@ -72,7 +72,7 @@ class WomenListRepository(val context : Context){
         ddd.add(event)
         list.value!!.add(event)
         // ------------------------------------------------------------------
-        getPlusItem()
+        getNewIn()
     }
 
 
