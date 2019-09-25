@@ -59,6 +59,8 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     private int mSectionText;
     @ColorInt
     private int mSectionBackground;
+
+    private FastScrollItemDecoration fastScrollItemDecoration;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -78,7 +80,13 @@ public class BrandListAdapter extends StickyHeaderRecyclerAdapter<BaseBrandViewH
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        if (mUseFaseScroll) recyclerView.addItemDecoration(new FastScrollItemDecoration(this));
+        if (mUseFaseScroll) {
+            RecyclerView.ItemDecoration itemDecoration;
+            while (recyclerView.getItemDecorationCount() > 0 &&(itemDecoration = recyclerView.getItemDecorationAt(0)) != null) {
+                recyclerView.removeItemDecoration(itemDecoration);
+            }
+            recyclerView.addItemDecoration(new FastScrollItemDecoration(this));
+        }
     }
 
     @NonNull

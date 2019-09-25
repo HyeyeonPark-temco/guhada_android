@@ -7,8 +7,13 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.Type;
@@ -20,9 +25,8 @@ import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.databinding.DialogDetailSearchBinding;
-import io.temco.guhada.view.adapter.base.BaseCategoryListAdapter;
+import io.temco.guhada.view.adapter.DetailSearchCategoryListAdapter;
 import io.temco.guhada.view.adapter.brand.DetailSearchBrandListAdapter;
-import io.temco.guhada.view.adapter.category.DetailSearchCategoryFirstListAdapter;
 import io.temco.guhada.view.adapter.filter.FilterListAdapter;
 import io.temco.guhada.view.custom.dialog.base.BaseDialog;
 
@@ -37,7 +41,9 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private int[] mParentCategoryHierarchy;
     private String mParentCategoryDepth;
     private List<Category> mCategoryList;
-    private List<Category> mCategorySelectedList;
+    private List<Category> mCategoryAllList;
+
+    private Map<Integer,Map<Integer, Category>> mDepthTitle;
     private int[] mSelectedCategoryHierarchy;
     // Brand
     private List<Brand> mBrandList;
@@ -58,7 +64,6 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     @Override
     protected void init() {
         mBinding.setClickListener(this);
-
         // Data
         initData();
     }
@@ -114,6 +119,10 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         mBrandList = brands;
     }
 
+    public void setmDepthTitle(Map<Integer, Map<Integer, Category>> mDepthTitle) {
+        this.mDepthTitle = mDepthTitle;
+    }
+
     public void setFilterData(List<Filter> filters) {
         mFilterList = filters;
     }
@@ -165,8 +174,10 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     ////////////////////////////////////////////////
 
     private void changeDataEvent() {
+        if(CustomLog.getFlag())CustomLog.L("changeDataEvent","mIsChangeData",mIsChangeData ,"mDepthTitle null",(mDepthTitle==null));
         if (mIsChangeData && mDetailSearchListener != null) {
             if (mCategoryList != null) mDetailSearchListener.onCategory(mCategoryList);
+            if (mDepthTitle != null) mDetailSearchListener.onCategoryResult(mDepthTitle);
             if (mBrandList != null) mDetailSearchListener.onBrand(mBrandList);
             if (mFilterList != null) mDetailSearchListener.onFilter(mFilterList);
             mDetailSearchListener.onChange(true);
@@ -181,27 +192,59 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         }
         // List
         if (mCategoryList != null && mCategoryList.size() > 0) {
+            mCategoryAllList = new ArrayList<>();
+            if(mDepthTitle == null) mDepthTitle = new HashMap<>();
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.VISIBLE);
             mBinding.layoutExpandCategoryHeader.setToggleOnClick(true);
             for (Category c:mCategoryList) {
-                if(!c.children.isEmpty()){
-                    for (Category c1:c.children) {
+                Gson gson = new Gson();
+                Category tmp = gson.fromJson(gson.toJson(c), Category.class);
+                tmp.depth = 0;
+                if(mCategoryList.size() == 1) {
+                    HashMap<Integer, Category> map = new HashMap<>();
+                    //map.put(c.id,new CategoryTitle(c.title, c.fullDepthName));
+                    map.put(c.id,c);
+                    mDepthTitle.put(tmp.depth, map);
+                }
+                if(!tmp.children.isEmpty()){
+                    tmp.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), tmp.fullDepthName, tmp.id, tmp.hierarchies,tmp.isSelected,-1,1));
+                    for (Category c1:tmp.children){
                         c1.parentId = c.id;
+                        c1.depth = 1;
                         if(c1.children !=null && !c1.children.isEmpty()){
+                            c1.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c1.fullDepthName, c1.id, c1.hierarchies,c1.isSelected,tmp.id,2));
                             for (Category c2:c1.children) {
                                 c2.parentId = c1.id;
+                                c2.depth = 2;
                                 if(c2.children !=null && !c2.children.isEmpty()){
+                                    c2.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c2.fullDepthName, c2.id, c2.hierarchies,c2.isSelected,c1.id,3));
                                     for (Category c3:c2.children) {
                                         c3.parentId = c2.id;
+                                        c3.depth = 3;
+                                        if(c3.children !=null && !c3.children.isEmpty()){
+                                            c3.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c3.fullDepthName, c3.id, c3.hierarchies,c3.isSelected,c2.id,4));
+                                            for (Category c4:c3.children) {
+                                                c4.parentId = c3.id;
+                                                c4.depth = 4;
+                                                if(c4.children !=null && !c4.children.isEmpty()){
+                                                    c4.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c4.fullDepthName, c4.id, c4.hierarchies,c4.isSelected,c3.id,5));
+                                                    for (Category c5:c4.children) {
+                                                        c5.parentId = c5.id;
+                                                        c5.depth = 5;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+                mCategoryAllList.add(tmp);
             }
             // Add All
-            initCategoryList(mCategoryList);
+            initCategoryList(mCategoryAllList);
         } else {
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.GONE);
             mBinding.layoutExpandCategoryHeader.setToggleOnClick(false);
@@ -210,11 +253,18 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
     private void initCategoryList(List<Category> data) {
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
+        DetailSearchCategoryListAdapter adapter = new DetailSearchCategoryListAdapter();
+        adapter.setMCategoryListener(this::checkSelectedCategoryList);
+        adapter.setParentCategoryCount(data.size());
+        adapter.setMDepthTitle(mDepthTitle);
+        adapter.setItems(data);
+        mBinding.listCategory.setAdapter(adapter);
+        /*mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
         DetailSearchCategoryFirstListAdapter adapter = new DetailSearchCategoryFirstListAdapter(getContext());
         adapter.setOnCategoryListener(this::checkSelectedCategoryList);
         adapter.setmCategoryHeaderListListener(this::checkSelectedCategoryHeaderList);
         adapter.setItems(data);
-        mBinding.listCategory.setAdapter(adapter);
+        mBinding.listCategory.setAdapter(adapter);*/
     }
 
     private boolean checkSelectedCategoryHirarchy(int[] hirarchy) {
@@ -257,151 +307,26 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
 
 
     private void checkSelectedCategoryList(int position, Category category) {
-        if (!checkSelectedCategoryHirarchy(category.hierarchies) || mCategorySelectedList == null) {
-            mCategorySelectedList = new ArrayList<>();
-        }
-        if(category.type == Type.Category.ALL){
-            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL","position",position,"category ",category);
-            if (category.isSelected) {
-                mCategorySelectedList.clear();
-                for (Category b : (List<Category>) ((BaseCategoryListAdapter)mBinding.listCategory.getAdapter()).getmItems()) {
-
-                    if(b.id == category.id && b.type == Type.Category.ALL) {
-                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 0","position",position,"category ",b);
-                        mCategorySelectedList.add(b);
-                        b.isSelected = true;
-                    }else b.isSelected = false;
-
-                    if(b.children != null && !b.children.isEmpty()){
-                        for (Category b1 : b.children) {
-
-                            if(b1.id == category.id && b1.type == Type.Category.ALL) {
-                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 1","position",position,"category ",b);
-                                mCategorySelectedList.add(b1);
-                                b1.isSelected = true;
-                            }else b1.isSelected = false;
-
-                            if(b1.children != null && !b1.children.isEmpty()){
-                                for (Category b2 : b1.children) {
-
-                                    if(b2.id == category.id && b2.type == Type.Category.ALL) {
-                                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2","position",position,"category ",b2);
-                                        mCategorySelectedList.add(b2);
-                                        b2.isSelected = true;
-                                    }else b2.isSelected = false;
-
-                                    if(b2.children != null && !b2.children.isEmpty()){
-                                        for (Category b3 : b2.children) {
-
-                                            if(b3.id == category.id && b3.type == Type.Category.ALL) {
-                                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2","position",position,"category ",b3);
-                                                mCategorySelectedList.add(b3);
-                                                b3.isSelected = true;
-                                            }else b3.isSelected = false;
-
-                                            if(b3.children != null && !b3.children.isEmpty()){
-                                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2",b3.children);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                mCategorySelectedList.add(category);
-                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList mCategorySelectedList",mCategorySelectedList);
-            }else{
-                mCategorySelectedList.clear();
-                category.isSelected = true;
-                /*mCategorySelectedList.clear();
-                for (Category b : mCategoryList) {
-                    if (b.id == category.id) {
-                        b.isSelected = true;
-                        mCategorySelectedList.add(b);
-                    }else{
-                        b.isSelected = false;
-                    }
-                }*/
-            }
-        }else{
-            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL",category);
-
-            for (Category b : (List<Category>) ((BaseCategoryListAdapter)mBinding.listCategory.getAdapter()).getmItems()) {
-
-                if(b.id == category.id && b.type == Type.Category.ALL && b.isSelected) {
-                    if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 0","position",position,"category ",b);
-                    mCategorySelectedList.add(b);
-                    b.isSelected = false;
-                }
-
-                if(b.children != null && !b.children.isEmpty()){
-                    for (Category b1 : b.children) {
-
-                        if(b1.id == category.parentId && b1.type == Type.Category.ALL && b1.isSelected) {
-                            b1.isSelected = false;
-                            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 1","position",position,"category ",b);
-                            mCategorySelectedList.add(b1);
-                        }
-
-                        if(b1.children != null && !b1.children.isEmpty()){
-                            for (Category b2 : b1.children) {
-
-                                if(b2.id == category.parentId && b2.type == Type.Category.ALL && b2.isSelected) {
-                                    b2.isSelected = false;
-                                    if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 2","position",position,"category ",b2);
-                                    mCategorySelectedList.add(b2);
-                                }
-
-                                if(b2.children != null && !b2.children.isEmpty()){
-                                    for (Category b3 : b2.children) {
-
-                                        if(b3.id == category.parentId && b3.type == Type.Category.ALL && b3.isSelected) {
-                                            b3.isSelected = false;
-                                            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 2","position",position,"category ",b3);
-                                            mCategorySelectedList.add(b3);
-                                        }
-
-                                        if(b3.children != null && !b3.children.isEmpty()){
-                                            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 2",b3.children);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            (mBinding.listCategory.getAdapter()).notifyDataSetChanged();
-
-            /*if (mCategorySelectedList.size() > 0) {
-                for (Category b : mCategorySelectedList) {
-                    if (b.id == category.id) {
-                        if (!category.isSelected) {
-                            mCategorySelectedList.remove(b);
-                        }
-                        break;
-                    }
-                }
-            }*/
-            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL" ,"size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
-            if (category.isSelected) {
-                mCategorySelectedList.add(category);
-            }
-        }
+        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList","position",position,"type",category.type.name(), "category",category);
+        mIsChangeData = true;
         refreshCategoryTitle();
     }
 
     private void refreshCategoryTitle() {
-        if (mCategorySelectedList != null && mCategorySelectedList.size() > 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(mCategorySelectedList.get(0).fullDepthName);
-            for (int i = 1; i < mCategorySelectedList.size(); i++) {
-                if(!TextUtils.isEmpty(sb.toString())) sb.append(", ");
-                sb.append(mCategorySelectedList.get(i).title);
+        if (mDepthTitle != null && mDepthTitle.size() > 0) {
+            String sb = "";
+            Iterator<Integer> depthList = mDepthTitle.keySet().iterator();
+            while (depthList.hasNext()){
+                int depth = depthList.next();
+                sb = "";
+                Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
+                while (idList.hasNext()) {
+                    int id = idList.next();
+                    if(TextUtils.isEmpty(sb)) sb += mDepthTitle.get(depth).get(id).fullDepthName;
+                    else sb += ", " + mDepthTitle.get(depth).get(id).title;
+                }
             }
-            mBinding.layoutHeaderCategory.setDepth(sb.toString());
+            mBinding.layoutHeaderCategory.setDepth(sb);
         } else {
             mBinding.layoutHeaderCategory.setDepth(null);
         }

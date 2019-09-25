@@ -321,7 +321,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         textSellerName[i].setText(data.sellerName)
 
                         // Option
-                        if (layoutColor[i].getChildCount() > 0)layoutColor[i].removeAllViews()
+                        if (layoutColor[i].getChildCount() > 0) layoutColor[i].removeAllViews()
 
                         if (data.options != null && data.options.size > 0) {
                             for (o in data.options) {

@@ -3,6 +3,7 @@ package io.temco.guhada.view.adapter.mypage
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,7 +98,7 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
                 ImageUtil.loadImage((this@MyPageReviewAdapter.model as MyPageReviewViewModel).mRequestManager, binding.productItemLayout.imageItemmypagereviewlistreviewThumb, item.imageUrl)
 
                 binding.position = position
-                binding.productItemLayout.season = item.season
+                binding.productItemLayout.season = if(TextUtils.isEmpty(item.season)) "" else item.season
                 binding.productItemLayout.brand = item.brandName
                 binding.productItemLayout.title = item.prodName
                 binding.productItemLayout.setClickProductListener { CommonUtil.startProductActivity(itemView.context as Activity, item.dealId) }
@@ -132,7 +133,7 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
                 ImageUtil.loadImage((this@MyPageReviewAdapter.model as MyPageReviewViewModel).mRequestManager, binding.productItemLayout.imageItemmypagereviewlistreviewThumb, item.order.imageUrl)
 
                 binding.position = position
-                binding.productItemLayout.season = item.order.season
+                binding.productItemLayout.season = if(TextUtils.isEmpty(item.order.season)) "" else item.order.season
                 binding.productItemLayout.brand = item.order.brandName
                 binding.productItemLayout.title = item.order.prodName
                 var option = (if(!item.order.optionAttribute1.isNullOrEmpty())item.order.optionAttribute1 else "")  +
