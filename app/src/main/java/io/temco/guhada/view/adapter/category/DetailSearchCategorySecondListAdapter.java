@@ -70,7 +70,7 @@ public class DetailSearchCategorySecondListAdapter extends BaseCategoryListAdapt
             Category c = getItem(position);
             c.isSelected = !v.isSelected();
             // Listener
-            if (mCategoryListener != null) mCategoryListener.onEvent(position,c);
+            if (mCategoryListener != null) mCategoryListener.onEvent(1,c);
             // Notify
             notifyItemChanged(position);
         }

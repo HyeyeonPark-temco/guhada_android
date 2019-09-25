@@ -88,7 +88,7 @@ class WomenListRepository(val context : Context){
                                 "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
                         list.value!!.add(subTitle)
                         //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
-                        getBestItem()
+                        //getBestItem()
                     },
                     dataNotFoundTask = {
 

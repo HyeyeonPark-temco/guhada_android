@@ -261,13 +261,13 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             mCategorySelectedList = new ArrayList<>();
         }
         if(category.type == Type.Category.ALL){
-            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL",category);
+            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList ALL","position",position,"category ",category);
             if (category.isSelected) {
                 mCategorySelectedList.clear();
                 for (Category b : (List<Category>) ((BaseCategoryListAdapter)mBinding.listCategory.getAdapter()).getmItems()) {
 
                     if(b.id == category.id && b.type == Type.Category.ALL) {
-                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 0",b);
+                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 0","position",position,"category ",b);
                         mCategorySelectedList.add(b);
                         b.isSelected = true;
                     }else b.isSelected = false;
@@ -276,7 +276,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                         for (Category b1 : b.children) {
 
                             if(b1.id == category.id && b1.type == Type.Category.ALL) {
-                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 1",b);
+                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 1","position",position,"category ",b);
                                 mCategorySelectedList.add(b1);
                                 b1.isSelected = true;
                             }else b1.isSelected = false;
@@ -285,7 +285,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                                 for (Category b2 : b1.children) {
 
                                     if(b2.id == category.id && b2.type == Type.Category.ALL) {
-                                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2",b2);
+                                        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2","position",position,"category ",b2);
                                         mCategorySelectedList.add(b2);
                                         b2.isSelected = true;
                                     }else b2.isSelected = false;
@@ -294,7 +294,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                                         for (Category b3 : b2.children) {
 
                                             if(b3.id == category.id && b3.type == Type.Category.ALL) {
-                                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2",b3);
+                                                if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList All 2","position",position,"category ",b3);
                                                 mCategorySelectedList.add(b3);
                                                 b3.isSelected = true;
                                             }else b3.isSelected = false;
@@ -312,6 +312,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 mCategorySelectedList.add(category);
                 if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList mCategorySelectedList",mCategorySelectedList);
             }else{
+                mCategorySelectedList.clear();
                 category.isSelected = true;
                 /*mCategorySelectedList.clear();
                 for (Category b : mCategoryList) {
@@ -325,7 +326,56 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             }
         }else{
             if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL",category);
-            if (mCategorySelectedList.size() > 0) {
+
+            for (Category b : (List<Category>) ((BaseCategoryListAdapter)mBinding.listCategory.getAdapter()).getmItems()) {
+
+                if(b.id == category.id && b.type == Type.Category.ALL && b.isSelected) {
+                    if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 0","position",position,"category ",b);
+                    mCategorySelectedList.add(b);
+                    b.isSelected = false;
+                }
+
+                if(b.children != null && !b.children.isEmpty()){
+                    for (Category b1 : b.children) {
+
+                        if(b1.id == category.parentId && b1.type == Type.Category.ALL && b1.isSelected) {
+                            b1.isSelected = false;
+                            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 1","position",position,"category ",b);
+                            mCategorySelectedList.add(b1);
+                        }
+
+                        if(b1.children != null && !b1.children.isEmpty()){
+                            for (Category b2 : b1.children) {
+
+                                if(b2.id == category.parentId && b2.type == Type.Category.ALL && b2.isSelected) {
+                                    b2.isSelected = false;
+                                    if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 2","position",position,"category ",b2);
+                                    mCategorySelectedList.add(b2);
+                                }
+
+                                if(b2.children != null && !b2.children.isEmpty()){
+                                    for (Category b3 : b2.children) {
+
+                                        if(b3.id == category.parentId && b3.type == Type.Category.ALL && b3.isSelected) {
+                                            b3.isSelected = false;
+                                            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 2","position",position,"category ",b3);
+                                            mCategorySelectedList.add(b3);
+                                        }
+
+                                        if(b3.children != null && !b3.children.isEmpty()){
+                                            if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL 2",b3.children);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            (mBinding.listCategory.getAdapter()).notifyDataSetChanged();
+
+            /*if (mCategorySelectedList.size() > 0) {
                 for (Category b : mCategorySelectedList) {
                     if (b.id == category.id) {
                         if (!category.isSelected) {
@@ -334,7 +384,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                         break;
                     }
                 }
-            }
+            }*/
             if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList NORMAL" ,"size",mCategorySelectedList.size(),"mCategorySelectedList",mCategorySelectedList);
             if (category.isSelected) {
                 mCategorySelectedList.add(category);

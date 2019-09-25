@@ -63,7 +63,6 @@ public class DetailSearchCategorySecondViewHolder extends BaseCategoryViewHolder
                 mBinding.listContents.setAdapter(adapter);
                 // Expand
                 if (data.isSelected) {
-                    headerListListener.onEvent(1,data);
                     mBinding.layoutExpandContents.expand(true);
                 }
             }

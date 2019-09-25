@@ -69,7 +69,7 @@ public class DetailSearchCategoryThirdListAdapter extends BaseCategoryListAdapte
             Category c = getItem(position);
             c.isSelected = !v.isSelected();
             // Listener
-            if (mCategoryListener != null) mCategoryListener.onEvent(position,c);
+            if (mCategoryListener != null) mCategoryListener.onEvent(2,c);
             // Notify
             notifyItemChanged(position);
         }

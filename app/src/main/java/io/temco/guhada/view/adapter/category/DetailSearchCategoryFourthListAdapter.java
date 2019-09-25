@@ -47,7 +47,7 @@ public class DetailSearchCategoryFourthListAdapter extends BaseCategoryListAdapt
             Category c = getItem(position);
             c.isSelected = !v.isSelected();
             // Listener
-            if (mCategoryListener != null) mCategoryListener.onEvent(position, c);
+            if (mCategoryListener != null) mCategoryListener.onEvent(3, c);
             // Notify
             notifyItemChanged(position);
         }

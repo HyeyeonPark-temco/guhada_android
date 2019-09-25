@@ -67,7 +67,7 @@ public class DetailSearchCategoryFirstListAdapter extends BaseCategoryListAdapte
             Category c = getItem(position);
             c.isSelected = !v.isSelected();
             // Listener
-            if (mCategoryListener != null) mCategoryListener.onEvent(position, c);
+            if (mCategoryListener != null) mCategoryListener.onEvent(0, c);
             // Notify
             notifyItemChanged(position);
         }
