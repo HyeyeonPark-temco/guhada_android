@@ -98,11 +98,13 @@
                 app:layout_constraintRight_toLeftOf="@+id/imageview_productdetail_claim_new"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- new 표시 임시 숨김 처리 -->
             <ImageView
                 android:id="@+id/imageview_productdetail_claim_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/mypage_icon_new"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

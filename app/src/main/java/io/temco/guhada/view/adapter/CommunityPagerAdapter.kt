@@ -22,7 +22,7 @@ class CommunityPagerAdapter(private val mFragmentManager: FragmentManager, val t
     override fun getItem(position: Int): Fragment {
         var frg : BaseFragment<*>? = null
         when(tabInfo.get(position).type){
-            CommunityType.MAIN-> frg = CommunitySubMainFragment().apply { info = tabInfo.get(position) }
+            CommunityType.MAIN-> frg = CommunitySubListFragment().apply { info = tabInfo.get(position) }
             CommunityType.POPULAR-> frg = CommunitySubPopularFragment().apply { info = tabInfo.get(position) }
             CommunityType.NOTIFICATION-> frg = CommunitySubNotiFragment().apply { info = tabInfo.get(position) }
             else ->  frg = CommunitySubListFragment().apply { info = tabInfo.get(position) }

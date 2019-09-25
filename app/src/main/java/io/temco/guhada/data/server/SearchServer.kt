@@ -1,5 +1,6 @@
 package io.temco.guhada.data.server
 
+import com.google.gson.JsonObject
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
@@ -257,6 +258,14 @@ class SearchServer {
          */
         @JvmStatic
         fun getCommunityBoardList(listener: OnServerListener, criteria: CommunityCriteria, order: String, page: Int, unitPerPage: Int) =
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getCommunityList(criteria = criteria, order = order, page = page, unitPerPage = unitPerPage).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 커뮤니티 게시판 전체글 검색
+         */
+        @JvmStatic
+        fun getCommunityBoardList(listener: OnServerListener, criteria: JsonObject, order: String, page: Int, unitPerPage: Int) =
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getCommunityList(criteria = criteria, order = order, page = page, unitPerPage = unitPerPage).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
