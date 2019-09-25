@@ -138,7 +138,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/imageButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                 <!--app:layout_constraintEnd_toStartOf="@+id/imageButton2"-->
                 <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/imageButton3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -179,15 +179,17 @@
                     app:layout_constraintEnd_toStartOf="@+id/spinner_review_rating"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView42"
+
+                <Spinner
+                    android:id="@+id/spinner_review_sorting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:text="@string/productdetaininfo_review_sort1"
+                    android:background="@color/common_white"
+                    android:popupElevation="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton3"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- [임시] 탭 안보이게 -->

@@ -360,8 +360,13 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         @JvmStatic
-        fun getProductReview(listener: OnServerListener, productId: Long, page: Int, size: Int, rating:String) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size, rating).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
+        fun getProductReviewWithRating(listener: OnServerListener, productId: Long, page: Int, size: Int, rating:String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewWithRating(productId, page, size, rating).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
+
+        @JvmStatic
+        fun getProductReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting:String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewWithSorting(productId, page, size, sorting).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
+
 
         /**
          * 상품 리뷰 리스트(포토 리뷰) 조회
@@ -372,6 +377,10 @@ class UserServer {
         fun getProductPhotoReview(listener: OnServerListener, productId: Long, page: Int, size: Int) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductPhotoReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
+        @JvmStatic
+        fun getProductPhotoReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting:String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductPhotoReviewWithSorting(productId, page, size, sorting).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
+
         /**
          * 상품 리뷰 리스트(개인 수치 포함) 조회
          * @author Hyeyeon Park
@@ -380,6 +389,10 @@ class UserServer {
         @JvmStatic
         fun getProductSizeReview(listener: OnServerListener, productId: Long, page: Int, size: Int) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductSizeReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
+
+        @JvmStatic
+        fun getProductSizeReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting:String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductSizeReviewWithSorting(productId, page, size, sorting).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         /**
          * 북마크 확인

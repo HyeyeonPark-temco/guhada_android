@@ -15,7 +15,7 @@ import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapter.Holder>() {
-    private var list: MutableList<ReviewResponseContent> = mutableListOf()
+     var list: MutableList<ReviewResponseContent> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = DataBindingUtil.inflate<ItemProductdetailReviewBinding>(LayoutInflater.from(parent.context), R.layout.item_productdetail_review, parent, false)

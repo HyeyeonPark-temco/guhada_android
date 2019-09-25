@@ -230,7 +230,10 @@ interface UserService {
     fun getProductReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
 
     @GET("/products/{productId}/reviews")
-    fun getProductReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("rating") rating: String): Call<BaseModel<ReviewResponse>>
+    fun getProductReviewWithRating(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("rating") rating: String): Call<BaseModel<ReviewResponse>>
+
+    @GET("/products/{productId}/reviews")
+    fun getProductReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
 
     /**
      * 상품 리뷰 리스트(포토 리뷰) 조회 API
@@ -240,6 +243,9 @@ interface UserService {
     @GET("/products/{productId}/reviews/photo")
     fun getProductPhotoReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
 
+    @GET("/products/{productId}/reviews/photo")
+    fun getProductPhotoReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
+
     /**
      * 상품 리뷰 리스트(개인 수치 포함) 조회 API
      * @author Hyeyeon Park
@@ -247,6 +253,9 @@ interface UserService {
      */
     @GET("/products/{productId}/reviews/user-size")
     fun getProductSizeReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
+
+    @GET("/products/{productId}/reviews/user-size")
+    fun getProductSizeReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
 
     /**
      * 셀러 만족도 조회 API
