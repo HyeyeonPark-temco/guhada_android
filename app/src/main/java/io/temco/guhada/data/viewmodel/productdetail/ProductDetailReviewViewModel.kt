@@ -35,6 +35,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
+    var mSelectedTabPos = ProductDetailReviewFragment.ReviewTab.ALL.pos
+
     fun getProductReviewSummary() {
         UserServer.getProductReviewSummary(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -58,11 +60,13 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         }, productId)
     }
 
-    fun getProductReview(page: Int, size: Int) {
+    fun getProductReview(page: Int, size: Int, tabPos: Int) {
+        mSelectedTabPos = tabPos
+
         if (reviewResponse.last) {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_review_message_lastitem))
         } else {
-            UserServer.getProductReview(OnServerListener { success, o ->
+            val resultTask: (success: Boolean, o: Any) -> Unit = { success: Boolean, o: Any? ->
                 if (success) {
                     if (o != null) {
                         val model = o as BaseModel<*>
@@ -82,12 +86,37 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 }
 
                 if (::listener.isInitialized) listener.hideLoadingIndicator()
-            }, productId, page, size)
+            }
+
+            when (tabPos) {
+                ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReview(page, size, resultTask)
+                ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReview(page, size, resultTask)
+                ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReview(page, size, resultTask)
+            }
         }
     }
 
+    private fun getAllReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+        UserServer.getProductReview(OnServerListener { success, o ->
+            resultTask(success, o)
+        }, productId, page, size)
+    }
+
+    private fun getPhotoReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+        UserServer.getProductPhotoReview(OnServerListener { success, o ->
+            resultTask(success, o)
+        }, productId, page, size)
+    }
+
+    private fun getSizeReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+        UserServer.getProductSizeReview(OnServerListener { success, o ->
+            resultTask(success, o)
+        }, productId, page, size)
+    }
+
+
     fun onClickMoreReview(size: Int) {
-        listener.showLoadingIndicator { getProductReview(++reviewPage, size) }
+        listener.showLoadingIndicator { getProductReview(++reviewPage, size, mSelectedTabPos) }
     }
 
     // TODO 첫 리뷰 작성하기 버튼

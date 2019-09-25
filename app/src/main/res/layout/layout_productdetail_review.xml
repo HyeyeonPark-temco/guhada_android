@@ -180,13 +180,11 @@
 
             <!-- [임시] 탭 안보이게 -->
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tablayout_productdetail_claim"
-
-
+                android:id="@+id/tablayout_productdetail_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:tabBackground="@drawable/selector_tab_productdetail_claim"
                 app:tabIndicatorAnimationDuration="0"
                 app:tabIndicatorHeight="0dp"
@@ -194,7 +192,7 @@
                 app:tabTextColor="@color/black_four">
 
                 <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tabitem_productdetail_claim_all"
+                    android:id="@+id/tabitem_productdetail_review_all"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="@string/productdetail_review_all" />
@@ -209,10 +207,10 @@
                     android:layout_height="40dp"
                     android:text="@string/productdetail_review_size" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="@string/productdetail_review_reply" />
+                <!--<com.google.android.material.tabs.TabItem-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:text="@string/productdetail_review_reply" />-->
             </com.google.android.material.tabs.TabLayout>
 
             <FrameLayout

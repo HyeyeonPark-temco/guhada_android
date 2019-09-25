@@ -230,6 +230,22 @@ interface UserService {
     fun getProductReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
 
     /**
+     * 상품 리뷰 리스트(포토 리뷰) 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.25
+     */
+    @GET("/products/{productId}/reviews/photo")
+    fun getProductPhotoReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
+
+    /**
+     * 상품 리뷰 리스트(개인 수치 포함) 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.25
+     */
+    @GET("/products/{productId}/reviews/user-size")
+    fun getProductSizeReview(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int): Call<BaseModel<ReviewResponse>>
+
+    /**
      * 셀러 만족도 조회 API
      */
     @GET("/sellers/{sellerId}/purchase-satisfaction")
