@@ -7,11 +7,15 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.databinding.DialogBrandListBinding;
 import io.temco.guhada.view.adapter.brand.BrandListAdapter;
@@ -22,6 +26,9 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
     // -------- LOCAL VALUE --------
     private OnBrandListener mListener;
     private BrandListAdapter mListAdapter;
+    private boolean isAlphabet;
+    private List<Brand> alphabetList;
+    private List<Brand> hangulList;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -39,6 +46,7 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
         mBinding.layoutSearch.setClickListener(this);
 
         // List
+        isAlphabet = true;
         CommonUtil.delayRunnable(this::initList);
 
         // EditText
@@ -67,11 +75,15 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
                 break;
 
             case R.id.image_alphabet:
+                isAlphabet = true;
                 changeLanguage(true);
+                CommonUtil.delayRunnable(this::initList);
                 break;
 
             case R.id.image_hangul:
+                isAlphabet = false;
                 changeLanguage(false);
+                CommonUtil.delayRunnable(this::initList);
                 break;
         }
     }
@@ -96,15 +108,38 @@ public class BrandListDialog extends BaseDialog<DialogBrandListBinding> implemen
     }
 
     private void initList() {
-        selectLanguage(true);
+        selectLanguage(isAlphabet);
         // Adapter
         mListAdapter = new BrandListAdapter(getContext(), true);
+        mListAdapter.changeLanguage(isAlphabet);
         mListAdapter.setOnBrandListener(brand -> {
             if (brand != null && brand.type != Type.List.HEADER) {
                 dissmissWithData(brand);
             }
         });
-        mListAdapter.initBrandData(Preferences.getBrands());
+
+        if(alphabetList == null){
+            List<Brand> list = Preferences.getBrands();
+            if(CustomLog.getFlag())CustomLog.L("BrandListDialog","list",list.size());
+            alphabetList = new ArrayList<Brand>();
+            hangulList = new ArrayList<Brand>();
+            for (Brand brand : list){
+                alphabetList.add(brand);
+                if(!TextUtils.isEmpty(brand.nameKo) && !"null".equals(brand.nameKo)){
+                    if(CustomLog.getFlag())CustomLog.L("BrandListDialog","hangulList",brand.toString());
+                    hangulList.add(brand);
+                }
+            }
+            if(CustomLog.getFlag())CustomLog.L("BrandListDialog","alphabetList",alphabetList.size());
+            if(CustomLog.getFlag())CustomLog.L("BrandListDialog","hangulList",hangulList.size());
+        }
+
+        if(isAlphabet){
+            mListAdapter.initBrandData(alphabetList);
+        }else{
+            mListAdapter.initBrandData(hangulList);
+        }
+
         // List
         mBinding.listContents.setHasFixedSize(true);
         mBinding.listContents.setLayoutManager(new LinearLayoutManager(getContext()));

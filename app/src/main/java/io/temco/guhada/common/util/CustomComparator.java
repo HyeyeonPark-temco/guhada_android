@@ -1,5 +1,7 @@
 package io.temco.guhada.common.util;
 
+import android.text.TextUtils;
+
 import java.text.Collator;
 import java.util.Comparator;
 
@@ -60,7 +62,7 @@ public class CustomComparator {
 
         @Override
         public int compare(Brand o1, Brand o2) {
-            return mIsAlphabet ? compareString(o1.nameEn, o2.nameEn) : compareString(o1.nameKo, o2.nameKo);
+            return mIsAlphabet ? compareString(o1.nameEn, o2.nameEn) : compareString(o1, o2);
         }
     }
 
@@ -80,7 +82,46 @@ public class CustomComparator {
         }
     }
 
+
     private static int compareString(String left, String right) {
+        //if(CustomLog.getFlag())CustomLog.L("compareString","left",left,"right",right);
+
+        left = left.toUpperCase().replaceAll(" ", "");
+        right = right.toUpperCase().replaceAll(" ", "");
+
+        int leftLen = left.length();
+        int rightLen = right.length();
+        int minLen = Math.min(leftLen, rightLen);
+
+        for (int i = 0; i < minLen; ++i) {
+            char leftChar = left.charAt(i);
+            char rightChar = right.charAt(i);
+            if (leftChar != rightChar) {
+                if (isKoreanAndEnglish(leftChar, rightChar)
+                        || isKoreanAndNumber(leftChar, rightChar)
+                        || isEnglishAndNumber(leftChar, rightChar)
+                        || isKoreanAndSpecial(leftChar, rightChar)) {
+                    return (leftChar - rightChar) * REVERSE;
+                } else if (isEnglishAndSpecial(leftChar, rightChar)
+                        || isNumberAndSpecial(leftChar, rightChar)) {
+                    if (isEnglish(leftChar) || isNumber(leftChar)) {
+                        return LEFT_FIRST;
+                    } else {
+                        return RIGHT_FIRST;
+                    }
+                } else {
+                    return leftChar - rightChar;
+                }
+            }
+        }
+
+        return leftLen - rightLen;
+    }
+
+    private static int compareString(Brand o1, Brand o2) {
+        //if(CustomLog.getFlag())CustomLog.L("compareString","o1",o1.toString(),"o2",o2.toString());
+        String left = (!TextUtils.isEmpty(o1.nameKo) && !"null".equals(o1.nameKo)) ? o1.nameKo : o1.nameDefault;
+        String right = (!TextUtils.isEmpty(o2.nameKo) && !"null".equals(o2.nameKo)) ? o2.nameKo : o2.nameDefault;
 
         left = left.toUpperCase().replaceAll(" ", "");
         right = right.toUpperCase().replaceAll(" ", "");

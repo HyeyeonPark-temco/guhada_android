@@ -15,6 +15,8 @@ public class Category {
 
     public boolean isExpand = false;
 
+    public int depth = -1;
+
     @SerializedName("id")
     public int id;
 
@@ -69,4 +71,5 @@ public class Category {
                 ", isUnisex=" + isUnisex +
                 '}';
     }
+
 }

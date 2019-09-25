@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -115,7 +116,7 @@ class MyPageProductListAdapter (private val model : ViewModel, list : ArrayList<
                 binding.textBrand.text = data.brandName
 
                 // Season
-                binding.textSeason.text = data.season
+                binding.textSeason.text = if(TextUtils.isEmpty(data.season)) "" else data.season
 
                 // Title
                 binding.textTitle.text = data.name

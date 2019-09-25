@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
+        <variable name="depth" type="Integer" />
+        <variable name="title" type="String" />
+        <variable name="count" type="String" />
+        <variable name="hasChild" type="java.lang.Boolean" />
+        <variable name="isSelect" type="java.lang.Boolean" />
+        <variable name="isExpandable" type="java.lang.Boolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="32dp"
+            android:paddingRight="18dp">
+
+            <LinearLayout
+                android:id="@+id/layout_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:visibility="@{depth==1 ? View.VISIBLE : View.GONE , default = gone}"/>
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="15dp"
+                    android:visibility="@{depth==2 ? View.VISIBLE : View.GONE , default = gone}"/>
+                <View
+                    android:layout_width="45dp"
+                    android:layout_height="15dp"
+                    android:visibility="@{depth==3 ? View.VISIBLE : View.GONE , default = gone}"/>
+                <View
+                    android:layout_width="60dp"
+                    android:layout_height="15dp"
+                    android:visibility="@{depth==4 ? View.VISIBLE : View.GONE , default = gone}"/>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@{isSelect ? @drawable/filter_checkbox_selected : @drawable/filter_checkbox_inactive , default = @drawable/filter_checkbox_inactive}" />
+
+                <TextView
+                    style="@style/TextMediumSingleLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@{title}"
+                    android:textColor="@{isSelect ? @color/common_blue_purple : @color/text_3 , default = @color/text_3}"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{count}"
+                    android:visibility="@{TextUtils.isEmpty(count) ? View.GONE : View.VISIBLE , default = gone}"
+                    android:textColor="@color/text_4"
+                    android:textSize="@dimen/text_14" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_expand"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_weight="0"
+                android:background="@{isSelect ? @drawable/burger_menu_close : @drawable/burger_menu_open , default = @drawable/burger_menu_open}"
+                android:visibility="@{isExpandable ? View.VISIBLE : View.GONE , default = gone}" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

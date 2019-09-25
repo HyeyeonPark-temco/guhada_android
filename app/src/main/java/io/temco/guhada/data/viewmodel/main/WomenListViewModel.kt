@@ -80,7 +80,7 @@ class WomenListRepository(val context : Context){
      * PLUS ITEM
      */
     private fun getPlusItem() {//getProductByPlusItem
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
@@ -88,7 +88,7 @@ class WomenListRepository(val context : Context){
                                 "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
                         list.value!!.add(subTitle)
                         //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
-                        //getBestItem()
+                        getBestItem()
                     },
                     dataNotFoundTask = {
 

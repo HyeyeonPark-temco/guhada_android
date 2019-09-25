@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter.mypage
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -123,7 +124,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             val review = ReviewAvailableOrder().apply {
                 this.purchaseId = item.purchaseId
                 this.productId = item.productId
-                this.season = item.season
+                this.season = if(TextUtils.isEmpty(item.season)) "" else item.season
                 this.brandName = item.brandName
                 this.prodName = item.productName
                 this.quantity = item.quantity
