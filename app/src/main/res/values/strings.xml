@@ -78,6 +78,7 @@
     <string name="common_question_mark">\?</string>
     <string name="common_exclamation_mark">!</string>
     <string name="common_free">무료</string>
+    <string name="common_height">%dcm</string>
 
 
 

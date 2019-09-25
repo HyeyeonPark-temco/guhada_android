@@ -45,25 +45,29 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
             mBinding.reviewContent = reviewContent
 
             // 리뷰 사진 view pager
-            val list = reviewContent.photoUrls
-            mBinding.viewpagerProductdetailReviewfiles.adapter = ImagePagerAdapter().apply {
-                Observable.fromIterable(list).map {
-                    Product.Image().apply { this.url = it }
-                }.subscribe {
-                    this.list.add(it)
+            val list = reviewContent.reviewPhotos
+            if (list != null) {
+                mBinding.viewpagerProductdetailReviewfiles.adapter = ImagePagerAdapter().apply {
+                    Observable.fromIterable(list).map {
+                        Product.Image().apply { this.url = it.reviewPhotoUrl }
+                    }.subscribe {
+                        this.list.add(it)
+                    }
                 }
+
+                mBinding.viewpagerProductdetailReviewfiles.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                    override fun onPageScrollStateChanged(state: Int) {}
+                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+                    override fun onPageSelected(position: Int) {
+                        mBinding.textviewProductdetailReviewfilespos.text = (position + 1).toString()
+                        mBinding.executePendingBindings()
+                    }
+                })
+                mBinding.textviewProductdetailReviewfilescount.text = list.size.toString()
             }
-            mBinding.viewpagerProductdetailReviewfiles.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {}
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-                override fun onPageSelected(position: Int) {
-                    mBinding.textviewProductdetailReviewfilespos.text = (position + 1).toString()
-                    mBinding.executePendingBindings()
-                }
-            })
-            mBinding.textviewProductdetailReviewfilescount.text = list.size.toString()
-            mBinding.framelayoutProductdetailReviewfiles.visibility = if (list.isEmpty()) View.GONE else View.VISIBLE
-            mBinding.linearlayoutProductdetailReviewfilescount.visibility = if (list.size > 1) View.VISIBLE else View.GONE
+
+            mBinding.framelayoutProductdetailReviewfiles.visibility = if (list?.isEmpty() != false) View.GONE else View.VISIBLE
+            mBinding.linearlayoutProductdetailReviewfilescount.visibility = if (list?.size ?: 0 > 1) View.VISIBLE else View.GONE
 
             mBinding.executePendingBindings()
         }
