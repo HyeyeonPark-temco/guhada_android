@@ -5,6 +5,8 @@ import android.view.View;
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
 
+import com.google.gson.JsonObject;
+
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
@@ -265,6 +267,9 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
      * @since 2019.09.23
      */
     public void getIdentityVerify(String di) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("diCode", di);
+
         UserServer.getIdentityVerify((success, o) -> {
             BaseModel model = (BaseModel) o;
             if (success) {
@@ -283,7 +288,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                 findAccountListener.showMessage(model.message);
             }
             findAccountListener.hideLoadingIndicator();
-        }, di);
+        }, jsonObject);
     }
 
     /**

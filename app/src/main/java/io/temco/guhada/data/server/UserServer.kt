@@ -847,7 +847,7 @@ class UserServer {
          * @since 2019.09.23
          */
         @JvmStatic
-        fun getIdentityVerify(listener: OnServerListener, di: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getIdentityVerify(di = di)
+        fun getIdentityVerify(listener: OnServerListener, jsonObject: JsonObject) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getIdentityVerify(jsonObject = jsonObject)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
         /**
