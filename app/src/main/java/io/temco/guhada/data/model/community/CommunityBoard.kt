@@ -12,7 +12,7 @@ import org.joda.time.DateTime
 class CommunityBoard {
     var bbsId = 0L
     var categoryId = 0L
-    var categoryFilterName = ""
+    var categoryFilterName : String? = null
     var is_use = true
     var is_delete = false
 
@@ -37,8 +37,14 @@ class CommunityBoard {
     fun getDateStr(): String = DateTime(date).toString("MM.dd")
     fun getDateDiff(): String = DateUtil.getDateDiff(now = now, date = date)
 
+    override fun toString(): String {
+        return "CommunityBoard(bbsId=$bbsId, categoryId=$categoryId, categoryFilterName=$categoryFilterName, is_use=$is_use, is_delete=$is_delete, title='$title', userName='$userName', imageUrl='$imageUrl', contents='$contents', now=$now, date=$date, likes=$likes, views=$views, comments=$comments)"
+    }
+
     class CommunityResponse {
         var bbs = mutableListOf<CommunityBoard>()
         var totalCount = 0
     }
+
+
 }

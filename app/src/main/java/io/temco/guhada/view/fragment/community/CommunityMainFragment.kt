@@ -34,7 +34,7 @@ import java.util.ArrayList
 
 class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View.OnClickListener {
     private var viewPagerAdapter : CommunityPagerAdapter? = null
-    private lateinit var mViewModel : CommunityMainViewPagerViewModel
+    lateinit var mViewModel : CommunityMainViewPagerViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     var currentPagerIndex : Int = 0

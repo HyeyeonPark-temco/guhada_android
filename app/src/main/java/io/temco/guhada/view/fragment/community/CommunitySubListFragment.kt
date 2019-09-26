@@ -27,6 +27,8 @@ import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.adapter.CommunityBoardAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
 
+
+
 /**
  * @author park jungho
  *
@@ -84,7 +86,21 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         mViewModel.redirectDetailTask = {
             val intent = Intent(context, CommunityDetailActivity::class.java)
             intent.putExtra("bbsId", it.bbsId)
-            intent.putExtra("info", mViewModel.mCommunityInfo)
+            if("".equals(mViewModel.mCommunityInfo.communityName) && mViewModel.mCommunityInfo.communityCategoryId == 0){
+                val frag = this.parentFragment as CommunityMainFragment
+                if(frag.mViewModel.communityInfoList?.value ?:null != null){
+                    loop@for (data in frag.mViewModel.communityInfoList.value!!){
+                        if(it.categoryId.toInt() == data.communityCategoryId){
+                            intent.putExtra("info", data)
+                            break@loop
+                        }
+                    }
+                }else{
+                    intent.putExtra("info", mViewModel.mCommunityInfo)
+                }
+            }else{
+                intent.putExtra("info", mViewModel.mCommunityInfo)
+            }
             (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
         }
         mBinding.viewModel = mViewModel

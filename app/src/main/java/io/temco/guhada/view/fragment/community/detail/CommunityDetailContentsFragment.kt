@@ -52,6 +52,7 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
 
     fun setDetailView(){
         mBinding.item = viewModel.communityDetail.value!!
+        if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment","communityDetail",viewModel.communityDetail.value.toString())
         mBinding.recyclerviewCommunitydetailList.adapter = null
 
         var header = ""
