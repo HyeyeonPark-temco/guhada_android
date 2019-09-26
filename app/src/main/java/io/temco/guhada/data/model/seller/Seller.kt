@@ -20,11 +20,10 @@ class Seller : Serializable {
     var storeIntroduction: String? = ""
 
     var claimTelephone: String? = ""
-    var createdAt: String? = ""
-    var updatedAt: String? = ""
+//    var createdAt: Long = 0L
+//    var updatedAt: Long = 0L
     var updatedBy: String? = ""
     var user: User = User()
-
 
     @Expose
     var isFollowing = true
