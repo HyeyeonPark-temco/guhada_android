@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
@@ -30,25 +31,10 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
 
     override fun init() {
         initHeader()
-        mViewModel = MyPageDeliveryDetailViewModel().apply {
-            intent.getLongExtra("purchaseId", 0).let { purchaseId ->
-                if (purchaseId > 0) {
-                    this.purchaseId = purchaseId
-                } else {
-                    ToastUtil.showMessage(getString(R.string.common_message_error))
-                    setResult(Activity.RESULT_CANCELED)
-                    finish()
-                }
-            }
-        }
+        initViewModel()
 
         if (::mViewModel.isInitialized) {
-//            intent.getLongExtra("orderProdGroupId", 0).let { orderProdGroupId ->
-//                if (orderProdGroupId > 0) {
-//                    mViewModel.mOrderProdGroupId = orderProdGroupId
-//                    mViewModel.getClaimForm()
-//                }
-//            }
+            initExpectedRefundPrice()
 
             mViewModel.getOrder()
             mViewModel.onClickClaimTask = { productId ->
@@ -69,17 +55,6 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
 
             mBinding.includeDeliverydetailProductinfo.status = intent.getStringExtra("status")
-//            /**
-//             * @author park jungho
-//             * 시즌과 상품 이름
-//             *
-//             * @author Hyeyeon Park
-//             * @since 2019.009.24
-//             * databinding으로 변경
-//             */
-//            mBinding.includeDeliverydetailProductinfo.title = if(TextUtils.isEmpty(mViewModel.purchaseOrderResponse.orderList[0].season)) mViewModel.purchaseOrderResponse.orderList[0].productName
-//                else mViewModel.purchaseOrderResponse.orderList[0].season+ " "+ mViewModel.purchaseOrderResponse.orderList[0].productName
-
             initRefundInfo()
 
             val receiptButtonVisible = intent.getBooleanExtra("receiptButtonVisible", true)
@@ -87,6 +62,35 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.executePendingBindings()
         }
     }
+
+    private fun initViewModel(){
+        mViewModel = MyPageDeliveryDetailViewModel().apply {
+            intent.getLongExtra("purchaseId", 0).let { purchaseId ->
+                if (purchaseId > 0) {
+                    this.purchaseId = purchaseId
+                } else {
+                    ToastUtil.showMessage(getString(R.string.common_message_error))
+                    setResult(Activity.RESULT_CANCELED)
+                    finish()
+                }
+            }
+        }
+    }
+
+    private fun initExpectedRefundPrice(){
+        intent.getLongExtra("orderClaimGroupId", 0).let { orderClaimGroupId ->
+            if (orderClaimGroupId > 0) {
+                mViewModel.mOrderClaimGroupId = orderClaimGroupId
+                mViewModel.getExpectedRefundPrice()
+            }
+        }
+
+        mViewModel.mExpectedRefundPrice.observe(this, Observer {
+            mBinding.includeDeliverydetailRefundinfo.expectedRefundPrice = it
+            mBinding.executePendingBindings()
+        })
+    }
+
 
     private fun initHeader() {
         mBinding.includeDeliverydetailHeader.title = "주문 내역 상세"

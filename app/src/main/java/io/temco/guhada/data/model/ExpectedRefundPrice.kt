@@ -12,4 +12,8 @@ class ExpectedRefundPrice {
     var totalCancelDiscountPrice = 0    // "상품 주문할인 취소" /////  할인부분에 무조건 쓰시면됩니다.
     var totalPaymentCancelPrice = 0     // "신용카드 환불금액" ///// 신용카드가 아니고 결제수단에 맞춰서 텍스트 보여주시면 됩니다!
     var totalPointCancelPrice = 0       // "포인트 환불금액" ///// 포인트에 그대로 쓰시면됩니다.
+
+    class ExpectedRefuncInfo{
+        var refundResponse = ExpectedRefundPrice()
+    }
 }

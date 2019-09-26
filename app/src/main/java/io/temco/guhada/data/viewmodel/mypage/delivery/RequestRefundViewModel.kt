@@ -180,16 +180,6 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
         }
     }
 
-    fun getExpectedRefundPrice() {
-        ServerCallbackUtil.callWithToken(task = { accessToken ->
-            ClaimServer.getExpectedRefundPrice(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o, successTask = {
-                    mExpectedRefundPrice.postValue(it.data as ExpectedRefundPrice)
-                })
-            }, accessToken = accessToken, orderClaimGroupId = mOrderProdGroupId)
-        })
-    }
-
     fun getExpectedRefundPriceForRequest(quantity: Int) {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             ClaimServer.getExpectedRefundPriceForRequest(OnServerListener { success, o ->
@@ -199,7 +189,6 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
             }, accessToken = accessToken, orderProdGroupId = mOrderProdGroupId, quantity = quantity)
         })
     }
-
 
     override fun update(o: Observable?, arg: Any?) {
         if (arg is String) {
