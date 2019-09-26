@@ -26,5 +26,5 @@ class ShippingTrackingInfo {
     var firstDetail = ""        //
     var lastDetail = ""         // 배송 완료 후 정보
     var lastStateDetail = ""    // 배송 완료 후 정보
-    var trackingDetails = ""
+    var trackingDetails = mutableListOf<ShippingTrackingDetail>()
 }

@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/header_common_closebutton" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/white_four" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/pale_grey"
+                    android:gravity="center"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="30dp"
+                    android:text="상품이 배달지역에 도착했습니다."
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_16" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/ShippingTrackingTitleTextStyle"
+                        android:layout_width="105dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shippingtracking_number" />
+
+                    <TextView
+                        style="@style/ShippingTrackingContentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="한진택배 (506686293164)" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/ShippingTrackingTitleTextStyle"
+                        android:layout_width="105dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shippingtracking_sender" />
+
+                    <TextView
+                        style="@style/ShippingTrackingContentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="김지은 (주)명품샵" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/ShippingTrackingTitleTextStyle"
+                        android:layout_width="105dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/shippingtracking_recipient" />
+
+                    <TextView
+                        style="@style/ShippingTrackingContentTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="7sp"
+                        android:text="이지은 (서울 강서구 화곡8 브라운스톤아파트 101동 301호)" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/white_four" />
+
+
+                <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_marginStart="20dp"-->
+                <!--android:layout_marginTop="40dp"-->
+                <!--android:layout_marginEnd="20dp"-->
+                <!--android:layout_marginBottom="40dp">-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_status1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:src="@drawable/delivery_icon_01"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_statusdot1"-->
+                <!--android:layout_width="7dp"-->
+                <!--android:layout_height="7dp"-->
+                <!--android:layout_marginStart="20dp"-->
+                <!--android:layout_marginTop="15dp"-->
+
+                <!--android:background="@drawable/oval_all_whitefour"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status1" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/textview_deliverytracking_status1"-->
+                <!--style="@style/TextRegular"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="3dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:text="@string/shippingtracking_status1"-->
+                <!--android:textColor="@color/warm_grey"-->
+                <!--android:textSize="@dimen/text_12"-->
+                <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot1" />-->
+
+                <!--<View-->
+                <!--android:id="@+id/view_deliverytracking_status1"-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="18dp"-->
+                <!--android:background="@color/white_four"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_statusdot1"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status1" />-->
+
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_status2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="40dp"-->
+                <!--android:src="@drawable/delivery_icon_02"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_status1"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_statusdot2"-->
+                <!--android:layout_width="7dp"-->
+                <!--android:layout_height="7dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:background="@drawable/oval_all_whitefour"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/view_deliverytracking_status1"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status2" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/textview_deliverytracking_status2"-->
+                <!--style="@style/TextRegular"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="26dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:text="@string/shippingtracking_status2"-->
+                <!--android:textColor="@color/warm_grey"-->
+                <!--android:textSize="@dimen/text_12"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/textview_deliverytracking_status1"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot2" />-->
+
+                <!--<View-->
+                <!--android:id="@+id/view_deliverytracking_status2"-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="18dp"-->
+
+                <!--android:background="@color/white_four"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_statusdot2"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status2" />-->
+
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_status3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="40dp"-->
+                <!--android:src="@drawable/delivery_icon_03"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_status2"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_statusdot3"-->
+                <!--android:layout_width="7dp"-->
+                <!--android:layout_height="7dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:background="@drawable/oval_all_whitefour"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/view_deliverytracking_status2"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status3" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/textview_deliverytracking_status3"-->
+                <!--style="@style/TextRegular"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="31dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:text="@string/shippingtracking_status3"-->
+                <!--android:textColor="@color/warm_grey"-->
+                <!--android:textSize="@dimen/text_12"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/textview_deliverytracking_status2"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot3" />-->
+
+                <!--<View-->
+                <!--android:id="@+id/view_deliverytracking_status3"-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="18dp"-->
+
+                <!--android:background="@color/white_four"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_statusdot2"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status2" />-->
+
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_status4"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="40dp"-->
+                <!--android:src="@drawable/delivery_icon_04"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_status3"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_statusdot4"-->
+                <!--android:layout_width="7dp"-->
+                <!--android:layout_height="7dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:background="@drawable/oval_all_whitefour"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/view_deliverytracking_status3"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status4" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/textview_deliverytracking_status4"-->
+                <!--style="@style/TextRegular"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="24dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:text="@string/shippingtracking_status4"-->
+                <!--android:textColor="@color/warm_grey"-->
+                <!--android:textSize="@dimen/text_12"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/textview_deliverytracking_status3"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot4" />-->
+
+                <!--<View-->
+                <!--android:id="@+id/view_deliverytracking_status4"-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="18dp"-->
+
+                <!--android:background="@color/white_four"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_statusdot4"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status4" />-->
+
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_status5"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="40dp"-->
+                <!--android:src="@drawable/delivery_icon_05"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_status4"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_statusdot5"-->
+                <!--android:layout_width="7dp"-->
+                <!--android:layout_height="7dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:background="@drawable/oval_all_whitefour"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/view_deliverytracking_status4"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status5" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/textview_deliverytracking_status5"-->
+                <!--style="@style/TextRegular"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="28dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="@string/shippingtracking_status5"-->
+                <!--android:textColor="@color/warm_grey"-->
+                <!--android:textSize="@dimen/text_12"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toEndOf="@+id/textview_deliverytracking_status4"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot6" />-->
+
+                <!--<View-->
+                <!--android:id="@+id/view_deliverytracking_status5"-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="1dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="18dp"-->
+
+                <!--android:background="@color/white_four"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/imageview_deliverytracking_statusdot5"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status5" />-->
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageview_deliverytracking_statusdot6"-->
+                <!--android:layout_width="7dp"-->
+                <!--android:layout_height="7dp"-->
+                <!--android:layout_marginStart="2dp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:background="@drawable/oval_all_whitefour"-->
+                <!--app:layout_constraintLeft_toRightOf="@+id/view_deliverytracking_status5"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_status5" />-->
+
+                <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="40dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageview_deliverytracking_status1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/delivery_icon_01"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageview_deliverytracking_statusdot1"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:src="@drawable/oval_all_whitefour"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:background="@color/white_four" />
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/textview_deliverytracking_status1"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/shippingtracking_status1"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageview_deliverytracking_status2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/delivery_icon_02"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="25dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="2dp"
+                                android:background="@color/white_four" />
+
+                            <ImageView
+                                android:id="@+id/imageview_deliverytracking_statusdot2"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:src="@drawable/oval_all_whitefour"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="25dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:background="@color/white_four" />
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/textview_deliverytracking_status2"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/shippingtracking_status2"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageview_deliverytracking_status3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/delivery_icon_03"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="2dp"
+                                android:background="@color/white_four" />
+
+                            <ImageView
+                                android:id="@+id/imageview_deliverytracking_statusdot3"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:src="@drawable/oval_all_whitefour"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:background="@color/white_four" />
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/textview_deliverytracking_status3"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/shippingtracking_status3"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageview_deliverytracking_status4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/delivery_icon_04"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="2dp"
+                                android:background="@color/white_four" />
+
+                            <ImageView
+                                android:id="@+id/imageview_deliverytracking_statusdot4"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:src="@drawable/oval_all_whitefour"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:background="@color/white_four" />
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/textview_deliverytracking_status4"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/shippingtracking_status4"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot1" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageview_deliverytracking_status5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/delivery_icon_05"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="30dp"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="30dp"
+                                android:layout_height="1dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="2dp"
+                                android:background="@color/white_four" />
+
+                            <ImageView
+                                android:id="@+id/imageview_deliverytracking_statusdot5"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:src="@drawable/oval_all_whitefour"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/textview_deliverytracking_status5"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/shippingtracking_status5"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_deliverytracking_statusdot1" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/black_four" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                  />
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+</layout>
