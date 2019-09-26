@@ -3,6 +3,7 @@ package io.temco.guhada.view.adapter.mypage
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +52,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_delivery, parent, false))
     override fun getItemCount(): Int = list.size
-    override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(list[position])
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        val item = list[position]
+        holder.bind(item)
+    }
 
     fun setItems(list: MutableList<PurchaseOrder>) {
         this.list = list
@@ -124,7 +128,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             val review = ReviewAvailableOrder().apply {
                 this.purchaseId = item.purchaseId
                 this.productId = item.productId
-                this.season = if(TextUtils.isEmpty(item.season)) "" else item.season
+                this.season = if (TextUtils.isEmpty(item.season)) "" else item.season
                 this.brandName = item.brandName
                 this.prodName = item.productName
                 this.quantity = item.quantity
@@ -256,6 +260,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         buttons.add(DeliveryButton().apply {
                             text = mBinding.root.context.getString(R.string.mypage_delivery_button_requestrefund)
                             task = View.OnClickListener {
+                                Log.e("ㅇㅇㅇ", item.orderClaimGroupId.toString())
                                 val intent = Intent(binding.root.context, RequestRefundActivity::class.java)
                                 intent.putExtra("orderProdGroupId", item.orderProdGroupId)
                                 (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)

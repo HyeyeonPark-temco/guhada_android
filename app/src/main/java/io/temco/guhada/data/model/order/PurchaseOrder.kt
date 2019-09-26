@@ -53,6 +53,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
 
     // 신청서 수정 정보
     var orderClaimId: Long = 0L
+    var orderClaimGroupId: Long = 0L
     var receiverAddress = ""
     var receiverAddressDetail = ""
     var receiverAddressName = ""
