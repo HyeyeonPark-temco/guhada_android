@@ -6,6 +6,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
+import io.temco.guhada.data.model.user.LikesModel
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
@@ -500,5 +501,24 @@ interface UserService {
      */
     @GET("/products/reviews/image-upload-url")
     fun getUserReviewUrl(@Header("Authorization") accessToken: String): Call<BaseModel<JsonObject>>
+
+
+    /**
+     * BookMark 정보 추가 (비동기)
+     * @author Hyeyeon Park
+     * @since 2019.08.27
+     */
+    @POST("/users/{userId}/likes")
+    fun saveLikesAsync(@Header("Authorization") accessToken: String, @Query("userId") userId: Long, @Body response: LikesModel): Deferred<BaseModel<Any>>
+
+
+    /**
+     * BookMark 정보 삭제 (비동기)
+     * @author Hyeyeon Park
+     * @since 2019.08.27
+     */
+    @DELETE("/users/{userId}/likes/{id}")
+    fun deleteLikesAsync(@Header("Authorization") accessToken: String, @Query("userId") userId: Long, @Query("id") id: Long): Deferred<BaseModel<Any>>
+
 
 }

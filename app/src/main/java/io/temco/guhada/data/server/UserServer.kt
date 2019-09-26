@@ -15,6 +15,7 @@ import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
+import io.temco.guhada.data.model.user.LikesModel
 import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
@@ -895,6 +896,28 @@ class UserServer {
                     )
         }
 
+
+
+
+        /**
+         * 회원 좋아요 저장하기 (비동기)
+         * @since 2019.09.26
+         * @author park jungho
+         */
+        @JvmStatic
+        fun saveLikesAsync(accessToken: String, userId: Long, response: LikesModel): Deferred<BaseModel<Any>> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).saveLikesAsync(accessToken = accessToken, userId = userId, response = response).await()
+        }
+
+        /**
+         * 회원 좋아요 삭제하기 (비동기)
+         * @since 2019.09.26
+         * @author park jungho
+         */
+        @JvmStatic
+        fun deleteLikesAsync(accessToken: String, userId: Long, id: Long): Deferred<BaseModel<Any>> = GlobalScope.async {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).deleteLikesAsync(accessToken = accessToken, userId = userId, id = id).await()
+        }
 
 
 

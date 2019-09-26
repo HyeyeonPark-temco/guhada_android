@@ -7,26 +7,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCategoryListListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Category
 import io.temco.guhada.databinding.ItemCategoryLayoutBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
-import java.io.Serializable
-
-class CategoryTitle(var title : String, var fullTitle : String) : Serializable{
-    override fun toString(): String {
-        return "CategoryTitle(title='$title', fullTitle='$fullTitle')"
-    }
-}
 
 class DetailSearchCategoryListAdapter : RecyclerView.Adapter<CategoryBaseListViewHolder<Category,ItemCategoryLayoutBinding>>() {
     var mList: MutableList<Category> = arrayListOf()
     lateinit var mDepthTitle: MutableMap<Int,MutableMap<Int, Category>>
+    lateinit var mDepthIndex : HashMap<Int, Int>
     var parentCategoryCount = 0
 
     var mCategoryListener: OnCategoryListListener? = null
-    var mDepthIndex : HashMap<Int, Int> = hashMapOf()
 
 
     /*override fun getItemViewType(position: Int): Int {
@@ -77,57 +71,117 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
             if(!data.children.isNullOrEmpty()) addChild(adapter, position, data)
         }
         mBinding.setClickListener {
-            synchronized(adapter){
-                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","data",data.toString())
-                if(!data.isSelected){
-                    data.isSelected = true
-                    if(!adapter.mDepthTitle.contains(data.depth)){
-                        var map : MutableMap<Int, Category> = mutableMapOf()
-                        map.put(data.id, /*CategoryTitle(data.title,data.fullDepthName)*/data)
-                        adapter.mDepthTitle.put(data.depth, map)
-                    }else{
-                        var map : MutableMap<Int, Category> = adapter.mDepthTitle.get(data.depth)!!
-                        map.put(data.id, data/*CategoryTitle(data.title,data.fullDepthName)*/)
-                        adapter.mDepthTitle.put(data.depth, map)
-                    }
-                    if(!data.children.isNullOrEmpty()){
-                        if(!adapter.mDepthIndex.containsKey(data.depth)){
-                            adapter.mDepthIndex.put(data.depth, position)
-                            addChild(adapter, position, data)
-                        }else{
-                            var removeIndex = adapter.mDepthIndex.get(data.depth) as Int
-                            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","removeIndex",removeIndex , "adapter size",adapter.mList.size)
-                            var count = removeChild(adapter, removeIndex!!, data)
-                            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","position",position ,"adapter size",adapter.mList.size)
-                            var modPosition = position
-                            if(position > removeIndex){
-                                modPosition = position - count
-                            }
-                            adapter.mDepthIndex.put(data.depth, modPosition)
-                            addChild(adapter, modPosition, data)
-                        }
-                    }
-                }else{
-                    var boolean = true
-                    if(data.parentId == -1 && adapter.parentCategoryCount == 1) boolean = false
-                    if(boolean){
-                        data.isSelected = false
-                        selectTitleRemove(adapter, data)
-                        if(!data.children.isNullOrEmpty()){
-                            adapter.mDepthIndex.remove(data.depth)
-                            removeChild(adapter, position, data)
-                        }
-                    }
-                }
-                adapter.mCategoryListener?.onEvent(position, data)
-                adapter.notifyDataSetChanged()
+            if(data.type == Type.Category.ALL){
+                clickAll(adapter, position, data)
+            }else{
+                clickNormal(adapter, position, data)
             }
         }
         mBinding.executePendingBindings()
     }
 
 
+    private fun clickNormal(adapter : DetailSearchCategoryListAdapter, position: Int, data: Category){
+        synchronized(adapter){
+            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","0---- start clickNormal data",data.toString())
+            if(!data.isSelected){
+                data.isSelected = true
+                if(!adapter.mDepthTitle.contains(data.depth)){
+                    var map : MutableMap<Int, Category> = mutableMapOf()
+                    map.put(data.id, data)
+                    adapter.mDepthTitle.put(data.depth, map)
+                }else{
+                    var map : MutableMap<Int, Category> = adapter.mDepthTitle.get(data.depth)!!
+                    map.put(data.id, data)
+                    adapter.mDepthTitle.put(data.depth, map)
+                }
+                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","1---- start clickNormal data",data.toString())
+                if(adapter.mDepthTitle.containsKey(data.depth-1)){
+                    for (c in adapter.mList){
+                        if(c.children != null && c.children.size > 2 && adapter.mDepthTitle.get(data.depth-1)?.containsKey(c.id)!!){
+                            c.children[0].isSelected = false
+                        }
+                    }
+                }
+                if(!data.children.isNullOrEmpty()){
+                    if(!adapter.mDepthIndex.containsKey(data.depth)){
+                        adapter.mDepthIndex.put(data.depth, position)
+                        addChild(adapter, position, data)
+                    }else{
+                        var removeIndex = adapter.mDepthIndex.get(data.depth) as Int
+                        var count = removeChild(adapter, removeIndex!!, data)
+                        var modPosition = position
+                        if(position > removeIndex){
+                            modPosition = position - count
+                        }
+                        adapter.mDepthIndex.put(data.depth, modPosition)
+                        addChild(adapter, modPosition, data)
+                    }
+                }
+                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","11---- clickNormal data",data.toString())
+            }else{
+                var boolean = true
+                if(data.parentId == -1 && adapter.parentCategoryCount == 1) boolean = false
+                if(boolean){
+                    data.isSelected = false
+                    selectTitleRemove(adapter, data)
+                    if(!data.children.isNullOrEmpty()){
+                        adapter.mDepthIndex.remove(data.depth)
+                        removeChild(adapter, position, data)
+                    }
+                }
+            }
+            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","mDepthIndex",adapter.mDepthIndex.toString())
+            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- end mDepthTitle",adapter.mDepthTitle.toString())
+            adapter.mCategoryListener?.onEvent(position, data)
+            adapter.notifyDataSetChanged()
+        }
+    }
 
+
+    private fun clickAll(adapter : DetailSearchCategoryListAdapter, index: Int, tmp: Category){
+        if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","clickAll tmp",tmp.toString())
+        if(!tmp.isSelected){
+            var position = index-1
+            var data = adapter.mList[position]
+            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","clickAll tmp",data.toString())
+            selectTitleRemove(adapter, data)
+            if(!data.children.isNullOrEmpty()){
+                adapter.mDepthIndex.remove(data.depth)
+                removeChild(adapter, position, data)
+            }
+            if(!data.children.isNullOrEmpty()){
+                if(!adapter.mDepthIndex.containsKey(data.depth)){
+                    adapter.mDepthIndex.put(data.depth, position)
+                    addChild(adapter, position, data)
+                }else{
+                    var removeIndex = adapter.mDepthIndex.get(data.depth) as Int
+                    var count = removeChild(adapter, removeIndex!!, data)
+                    var modPosition = position
+                    if(position > removeIndex){
+                        modPosition = position - count
+                    }
+                    adapter.mDepthIndex.put(data.depth, modPosition)
+                    addChild(adapter, modPosition, data)
+                }
+            }
+
+            data.isSelected = true
+            if(!adapter.mDepthTitle.contains(data.depth)){
+                var map : MutableMap<Int, Category> = mutableMapOf()
+                map.put(data.id, data)
+                adapter.mDepthTitle.put(data.depth, map)
+            }else{
+                var map : MutableMap<Int, Category> = adapter.mDepthTitle.get(data.depth)!!
+                map.put(data.id, data)
+                adapter.mDepthTitle.put(data.depth, map)
+            }
+            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- clickAll mDepthTitle",adapter.mDepthTitle.toString())
+            tmp.isSelected = true
+            adapter.mCategoryListener?.onEvent(position, data)
+            adapter.notifyDataSetChanged()
+        }
+    }
 
 
     private fun addChild(adapter : DetailSearchCategoryListAdapter, position : Int , data : Category){
@@ -140,23 +194,23 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
 
     private fun removeChild(adapter : DetailSearchCategoryListAdapter, position : Int , data : Category) : Int {
         var count = 0
-        if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","adapter.mList.size",adapter.mList.size,"position",position)
         for (i in adapter.mList.size-1 downTo position+1){
             if(data.depth < adapter.mList[i].depth){
                 unSelectCategory(adapter, adapter.mList[i])
-                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder remove "+i,adapter.mList[i])
                 count++
+                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- clickAll removeChild 1",adapter.mList[i].toString())
                 adapter.mList.remove(adapter.mList[i])
             }
         }
         adapter.mList[position].isSelected = false
+        if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- clickAll removeChild 2",adapter.mList[position].toString())
         selectTitleRemove(adapter, adapter.mList[position])
         return count
     }
 
     private fun selectTitleRemove(adapter : DetailSearchCategoryListAdapter,item : Category){
-        if(adapter.mDepthTitle.containsKey(item.depth) && adapter.mDepthTitle.get(item.depth)!!.contains(item.id)){
-            adapter.mDepthTitle.get(item.depth)!!.remove(item.id)
+        if(adapter.mDepthTitle.containsKey(item.depth) && adapter.mDepthTitle[item.depth]!!.contains(item.id)){
+            adapter.mDepthTitle[item.depth]!!.remove(item.id)
             if(adapter.mDepthTitle[item.depth]?.size ?: 0 == 0) adapter.mDepthTitle.remove(item.depth)
         }
     }
@@ -165,19 +219,8 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
         synchronized(adapter){
             item.isSelected = false
             selectTitleRemove(adapter, item)
-            /*adapter.mCategorySelectedList.iterator().apply {
-                loop@while (hasNext()){
-                    var r = next()
-                    if(r.id == item.id ) {
-                        adapter.mCategorySelectedList.remove(r)
-                        break@loop
-                    }
-                }
-            }*/
-            //for (r in adapter.mCategorySelectedList) if(item.id == r.id) adapter.mCategorySelectedList.remove(r)
-
             if(!item.children.isNullOrEmpty()){
-                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder unSelectCategory ",item)
+                //if(CustomLog.flag)CustomLog.L("CategoryListViewHolder unSelectCategory ",item)
                 for (c in item.children) {
                     unSelectCategory(adapter, c)
                 }

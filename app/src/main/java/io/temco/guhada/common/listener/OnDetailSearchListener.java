@@ -6,7 +6,6 @@ import java.util.Map;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Filter;
-import io.temco.guhada.view.adapter.CategoryTitle;
 
 public interface OnDetailSearchListener {
 

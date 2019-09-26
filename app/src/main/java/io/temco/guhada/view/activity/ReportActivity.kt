@@ -252,7 +252,7 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
             return
         }
         if(!mViewModel.checkTermReport.get()) {
-            showDialog(resources.getString(R.string.user_size_update_check_desc), false)
+            showDialog(resources.getString(R.string.user_private_term_check), false)
             return
         }
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)

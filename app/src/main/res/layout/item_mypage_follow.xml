@@ -91,7 +91,6 @@
                 android:id="@+id/textview_mypagefollow_followcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="팔로워 777"
                 app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
                 app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
 
@@ -102,6 +101,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:background="@color/white_three"
+                android:visibility="invisible"
                 app:layout_constraintLeft_toRightOf="@+id/textview_mypagefollow_followcount"
                 app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description"
                 app:layout_constraintVertical_bias="0.5" />
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="상품수 7777"
+                android:visibility="invisible"
                 app:layout_constraintLeft_toRightOf="@+id/view_mypagefollow_line"
                 app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
         </LinearLayout>
@@ -123,9 +123,9 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
-            android:background="@drawable/background_color_purple"
+            android:background="@drawable/border_all_whitethree"
             android:text="@string/productdetail_button_following"
-            android:textColor="@color/common_white"
+            android:textColor="@color/black_four"
             android:textSize="@dimen/text_13"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"

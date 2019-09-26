@@ -1,13 +1,9 @@
 package io.temco.guhada.view.fragment.product;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 import android.widget.TextView;
 
@@ -23,10 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +44,6 @@ import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CommonUtilKotlin;
-import io.temco.guhada.common.util.CommonViewUtil;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.data.db.GuhadaDB;
@@ -61,7 +57,6 @@ import io.temco.guhada.data.model.body.FilterBody;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
-import io.temco.guhada.view.adapter.CategoryTitle;
 import io.temco.guhada.view.adapter.TagListAdapter;
 import io.temco.guhada.view.adapter.product.ProductListAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
@@ -91,7 +86,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private Type.ProductListViewType mIsCategory = Type.ProductListViewType.NONE; // Category/Brand
     private ProductList mProductListData;
     private Map<Integer,Map<Integer, Category>> mDepthTitle;
-    private Map<Integer,Map<Integer, Category>> mDepthOldeTitle; // backup
+    private Map<Integer,Map<Integer, Category>> mDepthOldTitle; // backup
     private Category mCategoryData; // Category
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
     private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
@@ -106,6 +101,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private boolean scrollviewOnTop = true;
 
     private FilterBody filterBody = null;
+    private List<Category> selectedCategory = null;
+    private List<Brand> selectedBrand = null;
+    private List<Filter> selectedFilter = null;
 
     private CompositeDisposable disposable;
     private GuhadaDB db;
@@ -141,6 +139,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         // Header
         mBinding.layoutHeaderSub.setClickListener(this);
         mBinding.setClickListener(this);
+
+        mDepthTitle = null;
+        mDepthOldTitle = null;
 
         changeListType(mCurrentGridType);
         changeProductOrder(mCurrentOrderType);
@@ -234,7 +235,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
             case R.id.layout_search_detail:
                  showDetailSearchDialog();
-//                Toast.makeText(getContext(), getString(R.string.common_message_ing), Toast.LENGTH_SHORT).show();
                 break;
 
             // Tag
@@ -318,7 +318,37 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void changeLayout() {
         if (mProductListData != null || mDepthTitle != null) {
             initTagLayout();
+            copyDepthCategory(mDepthTitle, mDepthOldTitle);
         }
+    }
+
+    private void copyDepthCategory(Map<Integer,Map<Integer, Category>> newData, Map<Integer,Map<Integer, Category>> oldData){
+        if(newData != null){
+            oldData = new HashMap<>();
+            Iterator<Integer> depth = newData.keySet().iterator();
+            while (depth.hasNext()){
+                int depthIndex = depth.next();
+                Iterator<Integer> ids = newData.get(depthIndex).keySet().iterator();
+                while (ids.hasNext()){
+                    int id = ids.next();
+                    Gson gson = new Gson();
+                    Category tmp = gson.fromJson(gson.toJson(newData.get(depthIndex).get(id)), Category.class);
+                    if(oldData.containsKey(depthIndex)){
+                        if(oldData.get(depthIndex) != null) {
+                            oldData.get(depthIndex).put(id, tmp);
+                        }else{
+                            oldData.put(depthIndex, new HashMap<Integer, Category>());
+                            oldData.get(depthIndex).put(id, tmp);
+                        }
+                    }else{
+                        oldData.put(depthIndex, new HashMap<Integer, Category>());
+                        oldData.get(depthIndex).put(id, tmp);
+                    }
+                }
+            }
+        }
+        if(CustomLog.getFlag())CustomLog.L("changeLayout","newData",mDepthTitle);
+        if(CustomLog.getFlag())CustomLog.L("changeLayout","oldData",oldData);
     }
 
     private void setTabLayout() {
@@ -779,20 +809,28 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         }
     }
 
+    private void setInitCategoryDepth(){
+        if(mDepthTitle == null) {
+            mDepthTitle = new HashMap<>();
+        }else mDepthTitle.clear();
+        if((mIsCategory==Type.ProductListViewType.CATEGORY)){
+            setDepthTitle(0, mProductListData.categories, mCategoryData.hierarchies);
+        }
+        if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mDepthTitle", mDepthTitle.toString());
+    }
+
     private void showDetailSearchDialog() {
         if (getFragmentManager() != null && mProductListData != null) {
+            DetailSearchDialog d = new DetailSearchDialog();
             if(mDepthTitle == null) {
                 mDepthTitle = new HashMap<>();
-            }
-            if((mIsCategory==Type.ProductListViewType.CATEGORY)){
-                if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mCategoryData.fullDepthName",mCategoryData.fullDepthName);
-                if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mCategoryData.id",mCategoryData.id);
-                if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mCategoryData.hierarchies", Arrays.toString(mCategoryData.hierarchies));
-                setDepthTitle(0, mProductListData.categories, mCategoryData.hierarchies);
+                if((mIsCategory==Type.ProductListViewType.CATEGORY)){
+                    setDepthTitle(0, mProductListData.categories, mCategoryData.hierarchies);
+                }
+                if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mDepthTitle", mDepthTitle.toString());
             }
 
-            if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mDepthTitle", mDepthTitle.toString());
-            DetailSearchDialog d = new DetailSearchDialog();
+
             d.setCategoryData(
                     (mIsCategory==Type.ProductListViewType.CATEGORY) ? mCategoryData.fullDepthName : null,
                     (mIsCategory==Type.ProductListViewType.CATEGORY) ? mCategoryData.id : 0,
@@ -857,19 +895,29 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     // TAG
     private void initTagLayout() {
         filterBody = null;
+        selectedCategory = new ArrayList<>();
+        selectedBrand = new ArrayList<>();
+        selectedFilter = new ArrayList<>();
+
         mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
         mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.VISIBLE);
         mBinding.layoutHeaderSub.layoutReset.setOnClickListener(this);
         //filterBody = new FilterBody();
+        boolean isInit = false;
         if (mProductListData != null) {
-            initTagList();
+            if(!isInit){
+                isInit = true;
+                initTagList();
+            }
             addBrandTag(mProductListData.brands);
             addFilterTag(mProductListData.filters);
         }
 
-        if (mDepthTitle != null) {
+        if (mDepthTitle != null && mDepthTitle.size() > 0) {
             if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle",mDepthTitle.toString());
-            initTagList();
+            if(!isInit){
+                initTagList();
+            }
             Iterator<Integer> depthList = mDepthTitle.keySet().iterator();
             int depth = -1;
             while (depthList.hasNext()){
@@ -879,11 +927,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
             while (idList.hasNext()) {
                 int id = idList.next();
-                if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle title",mDepthTitle.get(depth).get(id).title);
-                addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+                if(id != mCategoryData.id) {
+                    if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle title",mDepthTitle.get(depth).get(id).title);
+                    selectedCategory.add(mDepthTitle.get(depth).get(id));
+                    addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+                }
             }
         }
-
         mTagAdapter.notifyDataSetChanged();
     }
 
@@ -894,8 +944,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             mTagAdapter.setOnTagListener((index, tagData)  -> {
                 if (tagData != null) {
                     if (tagData instanceof Category) {
-                        changeCategoryData((Category) tagData, false);
-                        if(CustomLog.getFlag())CustomLog.L("initTagList","index", index,"Category", tagData);
+                        Category c = (Category) tagData;
+                        changeCategoryData(c, false);
+                        mDepthTitle.get(c.depth).remove(c.id);
+                        if(CustomLog.getFlag())CustomLog.L("initTagList","index", index,"Category", c);
                         mTagAdapter.remove(index);
                         if(mTagAdapter.getItemCount() == 0){
                             resetTagLayout();
@@ -952,10 +1004,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void addBrandTag(List<Brand> brands) {
         if (brands != null && brands.size() > 0) {
-            if(CustomLog.getFlag())CustomLog.L("addBrandTag","addBrandTag",brands);
             for (Brand b : brands) {
                 if (b.isSelected) {
-                    addTagTypeNormal(b.nameKo, b);
+                    if(CustomLog.getFlag())CustomLog.L("addBrandTag","addBrandTag",b);
+                    addTagTypeNormal(b.nameDefault, b);
+                    selectedBrand.add(b);
                 }
             }
         }
@@ -963,10 +1016,17 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void addFilterTag(List<Filter> filters) {
         if (filters != null && filters.size() > 0) {
-            if(CustomLog.getFlag())CustomLog.L("addFilterTag","addFilterTag",filters);
             for (Filter f : filters) {
+                Filter tmp = new Filter();
                 for (Attribute a : f.attributes) {
                     if (a.selected) {
+                        tmp.id = f.id;
+                        tmp.attributes = new ArrayList<>();
+                        tmp.attributes.add(a);
+                        tmp.name = f.name;
+                        tmp.viewType = f.viewType;
+                        selectedFilter.add(tmp);
+                        if(CustomLog.getFlag())CustomLog.L("addFilterTag","addFilterTag",a);
                         if(TextUtils.isEmpty(a.colorName)) addTagTypeNormal(a.name, a);
                         else addTagTypeNormal(a.colorName, a);
                     }
@@ -1054,12 +1114,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void resetCategoryData(List<Category> categories) {
+        //copyDepthCategory(mDepthOldTitle, mDepthTitle);
         if (categories != null && categories.size() > 0) {
             for (Category c : categories) {
                 c.isSelected = false;
                 resetCategoryData(c.children);
             }
         }
+        setInitCategoryDepth();
     }
 
     private void resetBrandData(List<Brand> brands) {

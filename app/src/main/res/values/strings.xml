@@ -677,7 +677,7 @@
     <!-- MYPAGE FOLLOW -->
     <string name="mypagefollow_empty">팔로우한 스토어가 없습니다.</string>
     <string name="mypagefollow_totalcount"><![CDATA[총 <font color="#5d2ed1">%d</font>개]]></string>
-    <string name="mypagefollow_followcount">팔로우 %d개</string>
+    <string name="mypagefollow_followcount">팔로워 %d개</string>
     <string name="mypagefollow_productcount">상품수 %d개</string>
 
     <!-- PRODUCT INFO REVIEW -->
@@ -1137,6 +1137,7 @@
     <string name="user_size_update_sub4_array_4">L</string>
     <string name="user_size_update_sub4_array_5">XL</string>
 
+    <string name="user_private_term_check">개인정보 수집에 동의해주세요.</string>
     <string name="user_size_update_check_desc">필수 항목 확인이 필요합니다.</string>
     <string name="user_size_update_save_dialog_desc">내 사이즈가 등록되었습니다.</string>
     <string name="user_size_update_modify_dialog_desc">내 사이즈가 수정되었습니다.</string>

@@ -10,6 +10,8 @@ public class Brand extends BaseStickyHeaderModel implements Serializable {
 
     public boolean isSelected = false;
 
+    public boolean isAlphaClicked = false;
+
     @SerializedName("id")
     public int id;
 

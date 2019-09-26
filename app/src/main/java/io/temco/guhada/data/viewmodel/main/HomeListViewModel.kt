@@ -74,7 +74,7 @@ class HomeListRepository(val context : Context){
     }
 
     /**
-     *  PLUS ITEM
+     *  Premium Item
      */
     private fun getPlusItem() {//getProductByPlusItem
         ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
@@ -82,7 +82,7 @@ class HomeListRepository(val context : Context){
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
-                                "PLUS ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
+                                "Premium Item", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
                         //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
                         //getBestItem()

@@ -101,8 +101,10 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
         private suspend fun saveBookMark(accessToken: String, bookMarkResponse: BookMarkResponse) {
             UserServer.saveBookMarkAsync(accessToken = accessToken, response = bookMarkResponse.getProductBookMarkRespose()).await().let {
                 if (it.resultCode == ResultCode.SUCCESS.flag) {
-                    mBinding.buttonMypagefollowFollow.background = mBinding.root.context.getDrawable(R.drawable.background_color_purple)
-                    mBinding.buttonMypagefollowFollow.setTextColor(Color.WHITE)
+                    val context = mBinding.root.context
+                    mBinding.buttonMypagefollowFollow.background = mBinding.root.context.getDrawable(R.drawable.border_all_whitethree)
+                    mBinding.buttonMypagefollowFollow.setTextColor(context.resources.getColor(R.color.black_four))
+                    mBinding.buttonMypagefollowFollow.text = "팔로잉"
                 } else {
                     ToastUtil.showMessage(it.message)
                 }
@@ -113,8 +115,9 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
             UserServer.deleteBookMarkAsync(accessToken = accessToken, target = target, targetId = targetId).await().let {
                 if (it.resultCode == ResultCode.SUCCESS.flag) {
                     val context = mBinding.root.context
-                    mBinding.buttonMypagefollowFollow.background = context.getDrawable(R.drawable.border_all_whitethree)
-                    mBinding.buttonMypagefollowFollow.setTextColor(context.resources.getColor(R.color.black_four))
+                    mBinding.buttonMypagefollowFollow.background = context.getDrawable(R.drawable.background_color_purple)
+                    mBinding.buttonMypagefollowFollow.setTextColor(Color.WHITE)
+                    mBinding.buttonMypagefollowFollow.text = "팔로우"
                 } else {
                     ToastUtil.showMessage(it.message)
                 }
