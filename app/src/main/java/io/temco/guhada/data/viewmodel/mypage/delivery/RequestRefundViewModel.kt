@@ -12,6 +12,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BankAccount
+import io.temco.guhada.data.model.ExpectedRefundPrice
 import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.ShippingCompany
 import io.temco.guhada.data.model.base.BaseModel
@@ -31,12 +32,14 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
     var mSellerAddress: MutableLiveData<SellerAddress> = MutableLiveData()
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
+    var mExpectedRefundPrice: MutableLiveData<ExpectedRefundPrice> = MutableLiveData()
     var mShippingPayment: Int = ShippingPaymentType.NONE.pos
     var mSuccessRequestRefundTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
     var mSuccessUpdateRefundTask: () -> Unit = {}
     var mCause = ""
     var mOrderProdGroupId = 0L
     var mOrderClaimId = 0L
+    var mOrderClaimGroupId = 0L
     var mBankAccount: MutableLiveData<BankAccount> = MutableLiveData()
     var mIsCheckAccountAvailable = ObservableBoolean(true)
         @Bindable
@@ -112,7 +115,7 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
     }
 
     fun requestRefund() {
-        if(mBankAccount.value?.result?:false){
+        if (mBankAccount.value?.result ?: false) {
             ServerCallbackUtil.callWithToken(task = { accessToken ->
                 ClaimServer.requestRefund(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
@@ -122,10 +125,13 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
                                 mPurchaseOrder.value?.orderStatusText = result.orderStatusText
                                 mPurchaseOrder.value?.claimStatusText = result.claimStatusText
                                 mSuccessRequestRefundTask(mPurchaseOrder.value!!)
+                            },
+                            failedTask = {
+                                ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
                             })
                 }, accessToken = accessToken, refundRequest = mRefundRequest)
             })
-        }else {
+        } else {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_requiredcheckaccount))
         }
     }
@@ -136,7 +142,9 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             mSuccessUpdateRefundTask()
-                        })
+                        }, failedTask = {
+                    ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                })
             }, accessToken = accessToken, refundRequest = mRefundRequest)
         })
     }
@@ -172,6 +180,15 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
         }
     }
 
+    fun getExpectedRefundPriceForRequest(quantity: Int) {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            ClaimServer.getExpectedRefundPriceForRequest(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o, successTask = {
+                    mExpectedRefundPrice.postValue(it.data as ExpectedRefundPrice)
+                })
+            }, accessToken = accessToken, orderProdGroupId = mOrderProdGroupId, quantity = quantity)
+        })
+    }
 
     override fun update(o: Observable?, arg: Any?) {
         if (arg is String) {

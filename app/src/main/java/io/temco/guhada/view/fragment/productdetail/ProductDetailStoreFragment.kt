@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
 import io.temco.guhada.BR
@@ -10,6 +11,7 @@ import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailStoreViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.FragmentProductdetailStoreBinding
+import io.temco.guhada.view.activity.SellerInfoActivity
 import io.temco.guhada.view.adapter.ProductDetailStoreAdapter
 import io.temco.guhada.view.adapter.ProductDetailStoreGridAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
@@ -32,6 +34,13 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
         if (mProductId > INVALID_ID && mSellerId > INVALID_ID) {
             initViewModel()
             mBinding.viewModel = mViewModel
+            mBinding.imageviewProductdetailStoreSeller.setOnClickListener {
+                if(mSellerId > INVALID_ID){
+                    val intent = Intent(this@ProductDetailStoreFragment.context, SellerInfoActivity::class.java)
+                    intent.putExtra("sellerId", mSellerId)
+                    startActivity(intent)
+                }
+            }
             mBinding.executePendingBindings()
         }
     }
@@ -57,9 +66,9 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
 
     private fun serObservers() {
         mViewModel.mRelatedProductList.observe(this, Observer {
-            if(it.deals.isEmpty()){
+            if (it.deals.isEmpty()) {
                 mBinding.framelayoutProductdetailRelatedempty.visibility = View.VISIBLE
-            }else {
+            } else {
                 mBinding.framelayoutProductdetailRelatedempty.visibility = View.GONE
                 if (mBinding.recyclerviewProductdetailRelated.adapter == null) {
                     mBinding.recyclerviewProductdetailRelated.adapter = ProductDetailStoreAdapter().apply {
@@ -73,9 +82,9 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
             }
         })
         mViewModel.mRecommendProductList.observe(this, Observer {
-            if(it.deals.isEmpty()){
+            if (it.deals.isEmpty()) {
                 mBinding.framelayoutProductdetailRecommendempty.visibility = View.VISIBLE
-            }else {
+            } else {
                 mBinding.framelayoutProductdetailRecommendempty.visibility = View.GONE
                 if (mBinding.recyclerviewProductdetailRecommend.adapter == null) {
                     mBinding.recyclerviewProductdetailRecommend.adapter = ProductDetailStoreAdapter().apply {
@@ -89,9 +98,9 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
             }
         })
         mViewModel.mSellerProductList.observe(this, Observer {
-            if(it.isEmpty()){
+            if (it.isEmpty()) {
                 mBinding.framelayoutProductdetailStoreempty.visibility = View.VISIBLE
-            }else {
+            } else {
                 mBinding.framelayoutProductdetailStoreempty.visibility = View.GONE
                 if (mBinding.recyclerviewProductdetailSellerstore.adapter == null) {
                     mBinding.recyclerviewProductdetailSellerstore.adapter = ProductDetailStoreGridAdapter().apply {
@@ -114,7 +123,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
         mViewModel.notifyPropertyChanged(BR.mSellerBookMark)
     }
 
-    fun getSellerBookMark(target: String){
+    fun getSellerBookMark(target: String) {
         mViewModel.getSellerLike(target)
     }
 }

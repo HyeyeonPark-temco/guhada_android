@@ -48,9 +48,20 @@
                     android:id="@+id/include_deliverydetail_orderinfo"
                     layout="@layout/layout_deliverydetail_orderinfo" />
 
-                <include
-                    android:id="@+id/include_deliverydetail_productinfo"
-                    layout="@layout/layout_deliverydetail_productinfo" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_deliverydetail_productlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:purchaseOrders="@{viewModel.purchaseOrderResponse.orderList}" />
+
+                <!--<include-->
+                <!--android:id="@+id/include_deliverydetail_productinfo"-->
+                <!--layout="@layout/layout_deliverydetail_productinfo" />-->
 
                 <include
                     android:id="@+id/include_deliverydetail_userinfo"

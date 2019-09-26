@@ -2,10 +2,12 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.ActivityMoveToMain
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
@@ -16,6 +18,7 @@ import io.temco.guhada.data.viewmodel.payment.PaymentResultViewModel
 import io.temco.guhada.databinding.ActivityPaymentResultBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.payment.PaymentResultOrderAdapter
+import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
     private lateinit var mViewModel: PaymentResultViewModel
@@ -28,7 +31,23 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
 
     override fun init() {
         initHeader()
+        initViewModel()
+        initExpectedPoint()
+        initDiscount()
 
+        // 주문 내역 보기
+        mBinding.linearlayoutPaymentresultHistory.setOnClickListener {
+            BaseApplication.getInstance().moveToMain = ActivityMoveToMain(Flag.ResultCode.GO_TO_MAIN_MYPAGE, MyPageTabType.DELIVERY.ordinal, true)
+            setResult(Flag.ResultCode.GO_TO_MAIN_MYPAGE)
+            finish()
+        }
+
+        mBinding.recyclerView.adapter = PaymentResultOrderAdapter()
+        mBinding.viewModel = mViewModel
+        mBinding.executePendingBindings()
+    }
+
+    private fun initViewModel() {
         mViewModel = PaymentResultViewModel(object : OnPaymentResultListener {
             override fun redirectMainActivity() {
                 setResult(Activity.RESULT_CANCELED)
@@ -60,12 +79,17 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
                 this.purchaseOrderResponse = purchaseOrderResponse as PurchaseOrderResponse
             }
         }
+    }
 
-        // 할인 내역
-        mBinding.textviewPaymentresultTotaldiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("totalDiscountPrice", 0))
-        mBinding.textviewPaymentresultCoupondiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("couponDiscountPrice", 0))
-        mBinding.textviewPaymentresultUsedpoint.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("usedPoint", 0))
+    private fun initHeader() {
+        mBinding.includePaymentresultHeader.title = "주문 완료"
+        mBinding.includePaymentresultHeader.setOnClickBackButton {
+            setResult(Activity.RESULT_CANCELED)
+            finish()
+        }
+    }
 
+    private fun initExpectedPoint() {
         // 적립 예정 포인트
         intent.getSerializableExtra("expectedPoint").let {
             if (it != null) {
@@ -83,18 +107,13 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
                 mBinding.textviewPaymentresultExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
             }
         }
-
-        mBinding.recyclerView.adapter = PaymentResultOrderAdapter()
-        mBinding.viewModel = mViewModel
-        mBinding.executePendingBindings()
     }
 
-    private fun initHeader() {
-        mBinding.includePaymentresultHeader.title = "주문 완료"
-        mBinding.includePaymentresultHeader.setOnClickBackButton {
-            setResult(Activity.RESULT_CANCELED)
-            finish()
-        }
+    private fun initDiscount() {
+        // 할인 내역
+        mBinding.textviewPaymentresultTotaldiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("totalDiscountPrice", 0))
+        mBinding.textviewPaymentresultCoupondiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("couponDiscountPrice", 0))
+        mBinding.textviewPaymentresultUsedpoint.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("usedPoint", 0))
     }
 
     interface OnPaymentResultListener {
@@ -108,6 +127,8 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         @JvmStatic
         @BindingAdapter("purchaseOrders")
         fun RecyclerView.bindPurchaseOrders(list: MutableList<PurchaseOrder>) {
+            if(this.adapter == null)
+                this.adapter = PaymentResultOrderAdapter()
             (this.adapter as PaymentResultOrderAdapter).setItems(list)
         }
     }

@@ -10,6 +10,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.ExpectedRefundPrice
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.model.user.User
@@ -21,6 +22,8 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
     var purchaseId: Long = -1
     var mOrderProdGroupId: Long = 0L
+    var mOrderClaimGroupId :Long = 0L
+    var mExpectedRefundPrice = MutableLiveData<ExpectedRefundPrice>()
     var refundInfoVisible = false
     var purchaseOrderResponse = PurchaseOrderResponse()
         @Bindable
@@ -60,6 +63,16 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
                             notifyPropertyChanged(BR.purchaseOrderResponse)
                         })
             }, accessToken = token, purchaseId = purchaseId.toDouble())
+        })
+    }
+
+    fun getExpectedRefundPrice() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            ClaimServer.getExpectedRefundPrice(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o, successTask = {
+                    mExpectedRefundPrice.postValue((it.data as ExpectedRefundPrice.ExpectedRefuncInfo).refundResponse)
+                })
+            }, accessToken = accessToken, orderClaimGroupId = mOrderClaimGroupId)
         })
     }
 

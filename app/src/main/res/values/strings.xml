@@ -67,7 +67,7 @@
     <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_ing">준비중입니다.</string>
-    <string name="common_message_expiretoken">토큰이 만료되었습니다. 다시 로그인해주세요.</string><!-- 임시 -->
+    <string name="common_message_expiretoken">다시 로그인해주세요.</string><!-- fix (토큰이 만료되었습니다. 다시 로그인해주세요.) -->
 
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
@@ -1248,4 +1248,13 @@
     <string name="userclaim_seller_hint1">문의 유형을 선택</string>
     <string name="userclaim_seller_hint2">문의하실 내용을 입력하세요.</string>
 
+    <!-- SHIPPING TRACKING -->
+    <string name="shippingtracking_number">택배/송장번호</string>
+    <string name="shippingtracking_sender">보낸사람</string>
+    <string name="shippingtracking_recipient">받는사람</string>
+    <string name="shippingtracking_status1">집하완료</string>
+    <string name="shippingtracking_status2">배송중</string>
+    <string name="shippingtracking_status3">지점도착</string>
+    <string name="shippingtracking_status4">배송출발</string>
+    <string name="shippingtracking_status5">배송완료</string>
 </resources>

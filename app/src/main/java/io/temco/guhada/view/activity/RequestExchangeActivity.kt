@@ -111,7 +111,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeProductinfo.brandName = mViewModel.mPurchaseOrder.value?.brandName
         mBinding.includeRequestexchangeProductinfo.productName = "${mViewModel.mPurchaseOrder.value?.season} ${mViewModel.mPurchaseOrder.value?.dealName}"
         mBinding.includeRequestexchangeProductinfo.optionStr = mViewModel.mPurchaseOrder.value?.getOptionStr()
-        mBinding.includeRequestexchangeProductinfo.price = mViewModel.mPurchaseOrder.value?.discountPrice
+        mBinding.includeRequestexchangeProductinfo.price = mViewModel.mPurchaseOrder.value?.orderPrice
         mBinding.includeRequestexchangeProductinfo.purchaseStatusText = mViewModel.mPurchaseOrder.value?.purchaseStatusText
     }
 

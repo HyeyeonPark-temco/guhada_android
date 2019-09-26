@@ -34,11 +34,12 @@ class ProductDetailClaimAdapter : RecyclerView.Adapter<ProductDetailClaimAdapter
 
     fun setItems(list: MutableList<Claim>) {
         this.list = list
-        if (list.isEmpty()) {
-            notifyDataSetChanged()
-        } else {
-            notifyItemRangeChanged(0, list.size)
-        }
+        notifyDataSetChanged()
+//        if (list.isEmpty()) {
+//            notifyDataSetChanged()
+//        } else {
+//            notifyItemRangeChanged(0, list.size)
+//        }
     }
 
     fun addItems(list: MutableList<Claim>) {

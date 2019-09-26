@@ -8,6 +8,7 @@ import io.temco.guhada.common.enum.ShippingMessageCode
 import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.ExchangeRequest
 import io.temco.guhada.data.model.ShippingCompany
 import io.temco.guhada.data.model.base.BaseModel
@@ -174,7 +175,9 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                             mPurchaseOrder.value?.orderStatusText = result.orderStatusText
                             mPurchaseOrder.value?.claimStatusText = result.claimStatusText
                             mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
-                        })
+                        }, failedTask = {
+                    ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                })
             }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
         })
     }
@@ -185,7 +188,9 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             mSuccessUpdateExchangeTask()
-                        })
+                        }, failedTask = {
+                    ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                })
             }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
         })
     }

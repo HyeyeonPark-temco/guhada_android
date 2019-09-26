@@ -325,6 +325,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
+        <!-- shipping tracking -->
+        <activity android:name=".view.activity.ShippingTrackingActivity"/>
+
         <!-- Kakao -->
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"

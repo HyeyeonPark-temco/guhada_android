@@ -475,7 +475,27 @@ open class ClaimServer {
             })
         }
 
+        /**
+         * 환불 예상 금액 조회
+         * @author Hyeyeon Park
+         * @since 2019.09.26
+         */
+        @JvmStatic
+        fun getExpectedRefundPrice(listener: OnServerListener, accessToken: String, orderClaimGroupId: Long) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .getExpectedRefundPrice(accessToken = accessToken, orderClaimGroupId = orderClaimGroupId).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
 
+        /**
+         * 취소신청, 반품신청 환불 예상 금액 조회
+         * @author Hyeyeon Park
+         * @since 2019.09.26
+         */
+        @JvmStatic
+        fun getExpectedRefundPriceForRequest(listener: OnServerListener, accessToken: String, orderProdGroupId: Long, quantity: Int) =
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true, false)
+                        .getExpectedRefundPriceForRequest(accessToken = accessToken, orderProdGroupId = orderProdGroupId, quantity = quantity).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback(successTask = { listener.onResult(true, it.body()) }))
     }
 
 }

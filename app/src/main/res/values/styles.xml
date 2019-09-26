@@ -518,5 +518,16 @@
         <item name="android:textSize">@dimen/text_13</item>
         <item name="android:textColor">@color/warm_grey</item>
     </style>
+
+    <!-- SHIPPING TRACKING -->
+    <style name="ShippingTrackingTitleTextStyle" parent="TextRegular">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/black_four</item>
+    </style>
+
+    <style name="ShippingTrackingContentTextStyle" parent="TextRegular">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/warm_grey</item>
+    </style>
 </resources>
 

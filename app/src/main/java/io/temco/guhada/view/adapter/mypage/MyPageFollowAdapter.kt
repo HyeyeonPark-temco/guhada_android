@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter.mypage
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel
 import io.temco.guhada.databinding.ItemMypageFollowBinding
+import io.temco.guhada.view.activity.SellerInfoActivity
 import io.temco.guhada.view.holder.base.BaseViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,6 +72,12 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
                         seller.isFollowing = !seller.isFollowing
                     }
                 }
+            }
+
+            mBinding.imageviewMypagefollowProfile.setOnClickListener {
+                val intent = Intent(mBinding.root.context, SellerInfoActivity::class.java)
+                intent.putExtra("sellerId", seller.id)
+                mBinding.root.context.startActivity(intent)
             }
 
             if (::mViewModel.isInitialized) {

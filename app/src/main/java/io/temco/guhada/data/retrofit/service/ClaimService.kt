@@ -84,49 +84,49 @@ interface ClaimService {
      * 교환 신청 API
      */
     @POST("/order-claim/order-exchange")
-    fun requestExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest) : Call<BaseModel<PurchaseOrder>>
+    fun requestExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest): Call<BaseModel<PurchaseOrder>>
 
     /**
      * 반품 신청 API
      */
     @POST("/order-claim/order-return")
-    fun requestRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<PurchaseOrder>>
+    fun requestRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest): Call<BaseModel<PurchaseOrder>>
 
     /**
      * 주문교환반품 신청 화면 정보 API
      */
     @GET("/order-claim/claim-form/{orderProdGroupId}")
-    fun getClaimForm(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long) : Call<BaseModel<PurchaseOrder>>
+    fun getClaimForm(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<PurchaseOrder>>
 
     /**
      * 주문교환반품 신청서 수정 화면 정보 API
      */
     @GET("/order-claim/claim-update-form/{orderClaimId}")
-    fun getUpdateClaimForm(@Header("Authorization") accessToken: String, @Path("orderClaimId") orderClaimId: Long) : Call<BaseModel<PurchaseOrder>>
+    fun getUpdateClaimForm(@Header("Authorization") accessToken: String, @Path("orderClaimId") orderClaimId: Long): Call<BaseModel<PurchaseOrder>>
 
     /**
      * 반품 철회 API
      */
     @DELETE("/order-claim/order-return-withdraw")
-    fun withdrawRefund(@Header("Authorization") accessToken: String, @Query("orderClaimId") orderClaimId: Long) : Call<BaseModel<Any>>
+    fun withdrawRefund(@Header("Authorization") accessToken: String, @Query("orderClaimId") orderClaimId: Long): Call<BaseModel<Any>>
 
     /**
      * 교환 철회 API
      */
     @DELETE("/order-claim/order-exchange-withdraw")
-    fun withdrawExchange(@Header("Authorization") accessToken: String, @Query("orderClaimId") orderClaimId: Long) : Call<BaseModel<Any>>
+    fun withdrawExchange(@Header("Authorization") accessToken: String, @Query("orderClaimId") orderClaimId: Long): Call<BaseModel<Any>>
 
     /**
      * 반품 신청서 수정 API
      */
     @POST("/order-claim/update-order-return")
-    fun updateRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest) : Call<BaseModel<Any>>
+    fun updateRefund(@Header("Authorization") accessToken: String, @Body refundRequest: RefundRequest): Call<BaseModel<Any>>
 
     /**
      * 교환 신청서 수정 API
      */
     @POST("/order-claim/update-order-exchange")
-    fun updateExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest) : Call<BaseModel<Any>>
+    fun updateExchange(@Header("Authorization") accessToken: String, @Body exchangeRequest: ExchangeRequest): Call<BaseModel<Any>>
 
 
     /**
@@ -168,7 +168,7 @@ interface ClaimService {
      * USER 구하다 문의하기
      */
     @POST("/users/{userId}/claims")
-    fun saveUserClaimGuhada(@Header("Authorization") accessToken: String, @Path("userId") userId : Long, @Body param: UserClaimGuhadaResponse): Call<BaseModel<Any>>
+    fun saveUserClaimGuhada(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body param: UserClaimGuhadaResponse): Call<BaseModel<Any>>
 
 
     /**
@@ -189,6 +189,23 @@ interface ClaimService {
      * 판매자 문의하기
      */
     @POST("/users/{userId}/seller-claims")
-    fun saveUserClaimSeller(@Header("Authorization") accessToken: String, @Path("userId") userId : Long, @Body param : UserClaimSellerResponse): Call<BaseModel<Any>>
+    fun saveUserClaimSeller(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body param: UserClaimSellerResponse): Call<BaseModel<Any>>
+
+    /**
+     * 환불 예상 금액 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.26
+     */
+    @GET("/order-claim/claim-complete-form/{orderClaimGroupId}")
+    fun getExpectedRefundPrice(@Header("Authorization") accessToken: String, @Path("orderClaimGroupId") orderClaimGroupId: Long): Call<BaseModel<ExpectedRefundPrice.ExpectedRefuncInfo>>
+
+    /**
+     * 취소신청, 반품신청 환불 예상 금액 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.09.26
+     */
+    @GET("/order-claim/refund-price")
+    fun getExpectedRefundPriceForRequest(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId : Long, @Query("quantity") quantity: Int): Call<BaseModel<ExpectedRefundPrice>>
+
 
 }

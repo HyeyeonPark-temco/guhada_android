@@ -133,8 +133,8 @@ class UserServer {
          * 유저 정보 가져오기
          */
         @JvmStatic
-        fun findUserId(listener: OnServerListener, name: String, phoneNumber: String) {
-            val call = RetrofitManager.createService(Type.Server.USER, UserService::class.java).findUserId(name, phoneNumber)
+        fun findUserId(listener: OnServerListener, name: String, mobile: String, diCode: String) {
+            val call = RetrofitManager.createService(Type.Server.USER, UserService::class.java).findUserId(name, mobile, diCode)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<User>> {
                 override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
                     listener.onResult(response.isSuccessful, response.body())
@@ -361,11 +361,11 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         @JvmStatic
-        fun getProductReviewWithRating(listener: OnServerListener, productId: Long, page: Int, size: Int, rating:String) =
+        fun getProductReviewWithRating(listener: OnServerListener, productId: Long, page: Int, size: Int, rating: String) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewWithRating(productId, page, size, rating).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         @JvmStatic
-        fun getProductReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting:String) =
+        fun getProductReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting: String) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewWithSorting(productId, page, size, sorting).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
 
@@ -379,7 +379,7 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductPhotoReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         @JvmStatic
-        fun getProductPhotoReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting:String) =
+        fun getProductPhotoReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting: String) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductPhotoReviewWithSorting(productId, page, size, sorting).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         /**
@@ -392,7 +392,7 @@ class UserServer {
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductSizeReview(productId, page, size).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         @JvmStatic
-        fun getProductSizeReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting:String) =
+        fun getProductSizeReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting: String) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductSizeReviewWithSorting(productId, page, size, sorting).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         /**
@@ -888,6 +888,7 @@ class UserServer {
                                 }
                             }
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)

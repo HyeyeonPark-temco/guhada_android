@@ -7,6 +7,10 @@
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
+
+        <variable
+            name="expectedRefundPrice"
+            type="io.temco.guhada.data.model.ExpectedRefundPrice" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="0원"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelOrderPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line1" />
 
@@ -75,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="0원"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelProductPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice_content" />
 
@@ -95,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="- 0원"
+            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundPrice.totalCancelShipPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice1_content" />
 
@@ -115,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="- 0원"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelDiscountPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice2_content" />
 
@@ -126,6 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/mypage_deliverydetail_reufndinfo_order5"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice3_title" />
 
@@ -136,6 +141,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="- 0원"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice3_content" />
 
@@ -146,6 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/mypage_deliverydetail_reufndinfo_order6"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice4_title" />
 
@@ -156,6 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="- 0원"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice4_content" />
 
@@ -277,7 +285,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="0"
+            android:text="@{@string/common_price_format(expectedRefundPrice.totalPaymentCancelPrice + expectedRefundPrice.totalPointCancelPrice)}"
             android:textSize="@dimen/text_20"
             app:layout_constraintRight_toLeftOf="@+id/textview_deliverydetail_final1_content2"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line3"
@@ -310,7 +318,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="0원"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalPaymentCancelPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_final1_content1" />
 
@@ -332,7 +340,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="0원"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalPointCancelPrice)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_final2_content"

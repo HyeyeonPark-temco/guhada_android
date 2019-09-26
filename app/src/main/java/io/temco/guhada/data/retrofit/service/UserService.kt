@@ -78,10 +78,11 @@ interface UserService {
      * @param name
      * @param phoneNumber
      */
-    @GET("/findUserId")
+    @POST("/findUserId")
     fun findUserId(
             @Query("name") name: String,
-            @Query("phoneNumber") phoneNumber: String): Call<BaseModel<User>>
+            @Query("mobile") phoneNumber: String,
+            @Query("diCode") diCode: String): Call<BaseModel<User>>
 
     /**
      * 나이스 본인인증 호출 토큰 발급 API
