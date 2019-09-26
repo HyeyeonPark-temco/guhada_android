@@ -16,16 +16,19 @@ android {
     }
     buildTypes {
         debug {
+//            applicationIdSuffix '.debug'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.DEV"
         }
         qa {
+//            applicationIdSuffix '.qa'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.QA"
         }
         stage {
+//            applicationIdSuffix '.stage'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.STAGE"
