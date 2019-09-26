@@ -112,7 +112,7 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
     }
 
     fun requestRefund() {
-        if(mBankAccount.value?.result?:false){
+        if (mBankAccount.value?.result ?: false) {
             ServerCallbackUtil.callWithToken(task = { accessToken ->
                 ClaimServer.requestRefund(OnServerListener { success, o ->
                     ServerCallbackUtil.executeByResultCode(success, o,
@@ -122,10 +122,13 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
                                 mPurchaseOrder.value?.orderStatusText = result.orderStatusText
                                 mPurchaseOrder.value?.claimStatusText = result.claimStatusText
                                 mSuccessRequestRefundTask(mPurchaseOrder.value!!)
+                            },
+                            failedTask = {
+                                ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
                             })
                 }, accessToken = accessToken, refundRequest = mRefundRequest)
             })
-        }else {
+        } else {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_requiredcheckaccount))
         }
     }
@@ -136,7 +139,9 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             mSuccessUpdateRefundTask()
-                        })
+                        }, failedTask = {
+                    ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                })
             }, accessToken = accessToken, refundRequest = mRefundRequest)
         })
     }

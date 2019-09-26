@@ -173,6 +173,9 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
         notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
     }
 
+    /**
+     * 본인인증으로 아이디 찾기 클릭
+     */
     public void onClickVerifyPhone() {
         findAccountListener.redirectVerifyPhoneActivity();
     }
@@ -225,6 +228,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     }
 
     /**
+     * 내 회원정보로 아이디 찾기 클릭
      * [아이디찾기] 회원정보
      */
     public void onClickFindId() {
@@ -256,11 +260,12 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                 findAccountListener.showMessage((String) o);
             }
             findAccountListener.hideLoadingIndicator();
-        }, Objects.requireNonNull(this.user).getName(), Objects.requireNonNull(this.user).getPhoneNumber());
+        }, Objects.requireNonNull(this.user).getName(), Objects.requireNonNull(this.user).getPhoneNumber(), "");
     }
 
     /**
      * 본인인증 데이터 여부 조회
+     * 본인인증으로 아이디 찾기(검증)
      *
      * @param di
      * @author Hyeyeon Park
@@ -318,7 +323,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
             } else {
                 findAccountListener.showSnackBar(model.message);
             }
-        }, name, phoneNumber);
+        }, name, phoneNumber, "");
     }
 
     @Override

@@ -17,14 +17,14 @@ class CancelOrderViewModel : BaseObservableViewModel() {
     var quantity = 1
     var selectedCausePos = -1
     var cause = ""
-    var successCancelOrderTask: (result : PurchaseOrder) -> Unit = {}
+    var successCancelOrderTask: (result: PurchaseOrder) -> Unit = {}
 
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.getClaimForm(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            if(it.data != null)
+                            if (it.data != null)
                                 this@CancelOrderViewModel.purchaseOrder.postValue(it.data as PurchaseOrder)
                         })
             }, accessToken = token, orderProdGroupId = orderProdGroupId)
@@ -39,7 +39,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                     return
                 }
                 cause.isEmpty() -> {
-                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
                     return
                 }
                 else -> {
@@ -57,6 +57,9 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                         successTask = {
                             val result = it.data as PurchaseOrder
                             successCancelOrderTask(result)
+                        },
+                        failedTask = {
+                            ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
                         })
             }, accessToken = token, cancelRequest = cancelRequest)
         })

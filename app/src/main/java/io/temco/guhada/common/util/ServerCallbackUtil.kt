@@ -26,7 +26,7 @@ class ServerCallbackUtil {
     open class ServerResponseCallback<T>() : Callback<T> {
         private lateinit var failedTask: (Throwable) -> Unit
         private lateinit var successTask: (Response<T>) -> Unit
-        private var failedMessage = BaseApplication.getInstance().getString(R.string.common_message_error)
+        private var failedMessage = BaseApplication.getInstance().getString(R.string.common_message_servererror)
 
         constructor(successTask: (Response<T>) -> Unit) : this() {
             this.successTask = successTask
@@ -77,7 +77,7 @@ class ServerCallbackUtil {
                                 successTask: (BaseModel<*>) -> Unit,
                                 failedTask: (BaseModel<*>) -> Unit = {
                                     CommonUtil.debug(it.message)
-                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
                                 },
                                 serverRuntimeErrorTask: (BaseModel<*>) -> Unit = {
                                     CommonUtil.debug(it.message)

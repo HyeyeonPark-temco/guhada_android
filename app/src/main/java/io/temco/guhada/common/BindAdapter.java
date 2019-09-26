@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
+import io.temco.guhada.R;
 import io.temco.guhada.common.util.GlideApp;
 import io.temco.guhada.common.util.ImageUtil;
 
@@ -32,6 +33,8 @@ public class BindAdapter {
     public static void loadOvalImage(ImageView view, String url) {
         if(url != null && url != "")
             GlideApp.with(view.getContext()).load(url).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(view);
+        else
+            GlideApp.with(view.getContext()).load(R.drawable.profile_non_square).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(view);
     }
 
     @BindingAdapter(value = {"roundCornerImageUrl", "roundCornerRadius"})
