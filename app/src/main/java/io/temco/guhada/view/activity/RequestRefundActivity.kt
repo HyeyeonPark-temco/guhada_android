@@ -29,7 +29,6 @@ import io.temco.guhada.view.adapter.ShippingCompanySpinnerAdapter
  */
 class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityRequestrefundBinding>() {
     private lateinit var mViewModel: RequestRefundViewModel
-    private val INIT_QUANTITY = 1
 
     override fun getBaseTag(): String = RequestRefundActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_requestrefund
@@ -127,7 +126,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 initShippingPayment(it)
                 initBank(it)
                 mViewModel.mOrderProdGroupId = it.orderProdGroupId
-                mViewModel.getExpectedRefundPriceForRequest(INIT_QUANTITY)
+                mViewModel.getExpectedRefundPriceForRequest(it.quantity)
                 mBinding.executePendingBindings()
             }
         })
@@ -172,7 +171,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundCause.edittextRequestorderstatusCause.setText(purchaseOrder.returnReasonDetail)
         mBinding.includeRequestrefundCause.hintMessage = resources.getString(R.string.requestorderstatus_refund_hint_cause)
         mBinding.includeRequestrefundCause.quantityTitle = resources.getString(R.string.requestorderstatus_refund_quantity)
-        mBinding.includeRequestrefundCause.quantity = INIT_QUANTITY
+        mBinding.includeRequestrefundCause.quantity = purchaseOrder.quantity
         mBinding.includeRequestrefundCause.requestType = 2
         mBinding.includeRequestrefundCause.setOnClickAmountMinus {
             val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
@@ -181,9 +180,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mBinding.includeRequestrefundCause.quantity = quantity - 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity - 1)
             }
-
-            mViewModel.mRefundRequest.quantity = mBinding.includeRequestrefundCause.quantity
-                    ?: 0
         }
         mBinding.includeRequestrefundCause.setOnClickAmountPlus {
             val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
@@ -192,9 +188,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 mBinding.includeRequestrefundCause.quantity = quantity + 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity + 1)
             }
-
-            mViewModel.mRefundRequest.quantity = mBinding.includeRequestrefundCause.quantity
-                    ?: 0
         }
         mBinding.includeRequestrefundCause.causeList = purchaseOrder.returnReasonList
         mBinding.includeRequestrefundCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="3dp"
-            android:text="@{optionStr}"
+            android:text="@{optionStr != null ? optionStr : ``}"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_13"
             app:layout_constraintLeft_toRightOf="@id/imageview_requestcancelorder_profile"

@@ -35,6 +35,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     override fun init() {
         initViewModel()
         initHeader()
+        initExpectedRefundPrice()
     }
 
     private fun initViewModel() {
@@ -51,6 +52,9 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
                 initProductInfo(it)
                 initCauseInfo(it)
                 initButton()
+
+                mViewModel.mOrderProdGroupId = it.orderProdGroupId
+                mViewModel.getExpectedRefundPriceForRequest(it.quantity)
                 mBinding.viewModel = mViewModel
                 mBinding.executePendingBindings()
             }
@@ -63,6 +67,13 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             setResult(Activity.RESULT_OK)
             finish()
         }
+    }
+
+    private fun initExpectedRefundPrice() {
+        mViewModel.mExpectedRefundPrice.observe(this, Observer {
+            mBinding.includeRequestcancelorderRefund.expectedRefundPrice = it
+            mBinding.executePendingBindings()
+        })
     }
 
     private fun initHeader() {
@@ -78,33 +89,34 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     private fun initProductInfo(purchaseOrder: PurchaseOrder) {
         mBinding.includeRequestcancelorderProductinfo.imageUrl = purchaseOrder.imageUrl
         mBinding.includeRequestcancelorderProductinfo.brandName = purchaseOrder.brandName
-        mBinding.includeRequestcancelorderProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.dealName}"
+        mBinding.includeRequestcancelorderProductinfo.productName = if (purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName else "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeRequestcancelorderProductinfo.optionStr = purchaseOrder.getOptionStr()
-        mBinding.includeRequestcancelorderProductinfo.price = purchaseOrder.discountPrice
+        mBinding.includeRequestcancelorderProductinfo.price = purchaseOrder.orderPrice
         mBinding.includeRequestcancelorderProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
     }
 
     private fun initCauseInfo(purchaseOrder: PurchaseOrder) {
         mBinding.includeRequestcancelorderCause.causeList = purchaseOrder.cancelReasonList
         mBinding.includeRequestcancelorderCause.quantityTitle = getString(R.string.requestorderstatus_cancel_quantity)
-        mBinding.includeRequestcancelorderCause.quantity = mViewModel.quantity
+        mBinding.includeRequestcancelorderCause.quantity = purchaseOrder.quantity
         mBinding.includeRequestcancelorderCause.defaultMessage = getString(R.string.requestorderstatus_cancel_cause)
         mBinding.includeRequestcancelorderCause.hintMessage = getString(R.string.requestorderstatus_cancel_hint_cause)
         mBinding.includeRequestcancelorderCause.sellerName = purchaseOrder.sellerName
         mBinding.includeRequestcancelorderCause.setOnClickAmountPlus {
-            if (mViewModel.quantity + 1 > purchaseOrder.quantity)
-                ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overmaxquantity))
-            else mViewModel.quantity += 1
-            mBinding.includeRequestcancelorderCause.quantity = mViewModel.quantity
-            mBinding.executePendingBindings()
+            val quantity = mBinding.includeRequestcancelorderCause.quantity ?: 0
+            if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overmaxquantity))
+            else {
+                mBinding.includeRequestcancelorderCause.quantity = quantity + 1
+                mViewModel.getExpectedRefundPriceForRequest(quantity + 1)
+            }
         }
         mBinding.includeRequestcancelorderCause.setOnClickAmountMinus {
-            if (mViewModel.quantity - 1 > 0)
-                mViewModel.quantity -= 1
-            else
-                ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overminquantity))
-            mBinding.includeRequestcancelorderCause.quantity = mViewModel.quantity
-            mBinding.executePendingBindings()
+            val quantity = mBinding.includeRequestcancelorderCause.quantity ?: 0
+            if (quantity - 1 <= 0) ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overminquantity))
+            else {
+                mBinding.includeRequestcancelorderCause.quantity = quantity - 1
+                mViewModel.getExpectedRefundPriceForRequest(quantity - 1)
+            }
         }
         mBinding.includeRequestcancelorderCause.spinnerRequestorderstatusCause.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
