@@ -132,8 +132,8 @@ class UserServer {
          * 유저 정보 가져오기
          */
         @JvmStatic
-        fun findUserId(listener: OnServerListener, name: String, mobile: String, diCode: String) {
-            val call = RetrofitManager.createService(Type.Server.USER, UserService::class.java).findUserId(name, mobile, diCode)
+        fun findUserId(listener: OnServerListener, body: JsonObject) {
+            val call = RetrofitManager.createService(Type.Server.USER, UserService::class.java).findUserId(body)
             RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<User>> {
                 override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
                     listener.onResult(response.isSuccessful, response.body())

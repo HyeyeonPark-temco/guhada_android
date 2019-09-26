@@ -234,6 +234,11 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     public void onClickFindId() {
         findAccountListener.showLoadingIndicator();
         user.deleteObserver(this);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", Objects.requireNonNull(this.user).getName());
+        jsonObject.addProperty("mobile", Objects.requireNonNull(this.user).getPhoneNumber());
+
         UserServer.findUserId((success, o) -> {
             if (success) {
                 BaseModel model = (BaseModel) o;
@@ -260,7 +265,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                 findAccountListener.showMessage((String) o);
             }
             findAccountListener.hideLoadingIndicator();
-        }, Objects.requireNonNull(this.user).getName(), Objects.requireNonNull(this.user).getPhoneNumber(), "");
+        }, jsonObject);
     }
 
     /**
@@ -273,9 +278,11 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
      */
     public void getIdentityVerify(String di) {
         JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", Objects.requireNonNull(this.user).getName());
+        jsonObject.addProperty("mobile", Objects.requireNonNull(this.user).getPhoneNumber());
         jsonObject.addProperty("diCode", di);
 
-        UserServer.getIdentityVerify((success, o) -> {
+        UserServer.findUserId((success, o) -> {
             BaseModel model = (BaseModel) o;
             if (success) {
                 switch (model.resultCode) {
@@ -294,6 +301,27 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
             }
             findAccountListener.hideLoadingIndicator();
         }, jsonObject);
+
+
+//        UserServer.getIdentityVerify((success, o) -> {
+//            BaseModel model = (BaseModel) o;
+//            if (success) {
+//                switch (model.resultCode) {
+//                    case Flag.ResultCode.SUCCESS:
+//                        findAccountListener.onSuccessGetIdentifyVerify();
+//                        return;
+//                    case Flag.ResultCode.DATA_NOT_FOUND:
+//                        String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
+//                        findAccountListener.showSnackBar(message);
+//                        return;
+//                    default:
+//                        findAccountListener.showMessage(model.message);
+//                }
+//            } else {
+//                findAccountListener.showMessage(model.message);
+//            }
+//            findAccountListener.hideLoadingIndicator();
+//        }, jsonObject);
     }
 
     /**
@@ -305,6 +333,11 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
      * @since 2019.09.23
      */
     public void getUser(String name, String phoneNumber) {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", Objects.requireNonNull(this.user).getName());
+        jsonObject.addProperty("mobile", Objects.requireNonNull(this.user).getPhoneNumber());
+
         UserServer.findUserId((success, o) -> {
             BaseModel model = (BaseModel) o;
             if (success) {
@@ -323,7 +356,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
             } else {
                 findAccountListener.showSnackBar(model.message);
             }
-        }, name, phoneNumber, "");
+        }, jsonObject);
     }
 
     @Override
