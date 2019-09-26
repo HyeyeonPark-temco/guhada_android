@@ -127,6 +127,8 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         @JvmStatic
         @BindingAdapter("purchaseOrders")
         fun RecyclerView.bindPurchaseOrders(list: MutableList<PurchaseOrder>) {
+            if(this.adapter == null)
+                this.adapter = PaymentResultOrderAdapter()
             (this.adapter as PaymentResultOrderAdapter).setItems(list)
         }
     }

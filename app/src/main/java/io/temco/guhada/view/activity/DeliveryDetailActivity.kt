@@ -51,10 +51,10 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.viewModel = mViewModel
             mBinding.includeDeliverydetailOrderinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailPaymentinfo.viewModel = mViewModel
-            mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
+//            mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
 
-            mBinding.includeDeliverydetailProductinfo.status = intent.getStringExtra("status")
+//            mBinding.includeDeliverydetailProductinfo.status = intent.getStringExtra("status")
             initRefundInfo()
 
             val receiptButtonVisible = intent.getBooleanExtra("receiptButtonVisible", true)
