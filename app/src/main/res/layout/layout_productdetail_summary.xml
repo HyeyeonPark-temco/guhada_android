@@ -47,13 +47,6 @@
                 android:text="@{viewModel.product.shippingSummary}"
                 android:textColor="@color/greyish_brown_two" />
             <!--android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : @string/common_price_format(viewModel.product.shipExpense)}'-->
-            <TextView
-                style="@style/ProductDetailContentBlackTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/common_unit_price"
-                android:textColor="@color/greyish_brown_two"
-                android:visibility='@{viewModel.product.shipExpense == 0 ? View.GONE : View.VISIBLE}' />
 
         </LinearLayout>
 

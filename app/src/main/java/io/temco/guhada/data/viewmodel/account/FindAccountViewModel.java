@@ -283,11 +283,21 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
         jsonObject.addProperty("diCode", di);
 
         UserServer.findUserId((success, o) -> {
+            findAccountListener.hideLoadingIndicator();
+
             BaseModel model = (BaseModel) o;
             if (success) {
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
-                        findAccountListener.onSuccessGetIdentifyVerify();
+                        User obj = (User) ((BaseModel) o).data;
+                        this.user.setEmail(obj.getEmail());
+                        this.user.setMobile(obj.getPhoneNumber());
+                        this.user.setPhoneNumber(obj.getPhoneNumber());
+                        this.user.setJoinAt(obj.getJoinAt());
+
+                        setResultVisibility(View.VISIBLE);
+                        notifyPropertyChanged(BR.resultVisibility);
+                        notifyPropertyChanged(BR.user);
                         return;
                     case Flag.ResultCode.DATA_NOT_FOUND:
                         String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
@@ -299,29 +309,9 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
             } else {
                 findAccountListener.showMessage(model.message);
             }
-            findAccountListener.hideLoadingIndicator();
+
         }, jsonObject);
 
-
-//        UserServer.getIdentityVerify((success, o) -> {
-//            BaseModel model = (BaseModel) o;
-//            if (success) {
-//                switch (model.resultCode) {
-//                    case Flag.ResultCode.SUCCESS:
-//                        findAccountListener.onSuccessGetIdentifyVerify();
-//                        return;
-//                    case Flag.ResultCode.DATA_NOT_FOUND:
-//                        String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
-//                        findAccountListener.showSnackBar(message);
-//                        return;
-//                    default:
-//                        findAccountListener.showMessage(model.message);
-//                }
-//            } else {
-//                findAccountListener.showMessage(model.message);
-//            }
-//            findAccountListener.hideLoadingIndicator();
-//        }, jsonObject);
     }
 
     /**
