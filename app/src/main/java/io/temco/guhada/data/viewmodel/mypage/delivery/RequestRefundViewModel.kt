@@ -190,13 +190,13 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
         })
     }
 
-    fun getExpectedRefundPriceForRequest(orderProdGroupId: Long, quantity: Int) {
+    fun getExpectedRefundPriceForRequest(quantity: Int) {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             ClaimServer.getExpectedRefundPriceForRequest(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o, successTask = {
                     mExpectedRefundPrice.postValue(it.data as ExpectedRefundPrice)
                 })
-            }, accessToken = accessToken, orderProdGroupId = orderProdGroupId, quantity = quantity)
+            }, accessToken = accessToken, orderProdGroupId = mOrderProdGroupId, quantity = quantity)
         })
     }
 
