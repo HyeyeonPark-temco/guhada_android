@@ -72,6 +72,10 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
         mBinding.isExpandable = !data.children.isNullOrEmpty()
         mBinding.isSelect = data.isSelected
         mBinding.title = data.title
+        if(data.isExpand){
+            data.isExpand = false
+            if(!data.children.isNullOrEmpty()) addChild(adapter, position, data)
+        }
         mBinding.setClickListener {
             synchronized(adapter){
                 if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","data",data.toString())
@@ -121,6 +125,9 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
         }
         mBinding.executePendingBindings()
     }
+
+
+
 
 
     private fun addChild(adapter : DetailSearchCategoryListAdapter, position : Int , data : Category){

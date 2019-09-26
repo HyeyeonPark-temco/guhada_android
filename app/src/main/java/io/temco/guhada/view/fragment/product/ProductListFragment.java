@@ -26,6 +26,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +91,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private Type.ProductListViewType mIsCategory = Type.ProductListViewType.NONE; // Category/Brand
     private ProductList mProductListData;
     private Map<Integer,Map<Integer, Category>> mDepthTitle;
+    private Map<Integer,Map<Integer, Category>> mDepthOldeTitle; // backup
     private Category mCategoryData; // Category
     private Type.Grid mCurrentGridType = Type.Grid.TWO;
     private Type.ProductOrder mCurrentOrderType = Type.ProductOrder.NEW_PRODUCT;
@@ -155,7 +158,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             getProductListBySearch(true);
         }
         scrollviewOnTop = true;
-        /*if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
+        /* 상품 목록의 하단 select ui
+        if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
             mBinding.imageviewMaintabIcon1.setBackgroundResource(R.drawable.tool_icon_category_on);
             mBinding.textviewMaintabTitle1.setTextColor(Color.parseColor("#5d2ed1"));
         }else if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.BRAND) {
@@ -777,6 +781,17 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void showDetailSearchDialog() {
         if (getFragmentManager() != null && mProductListData != null) {
+            if(mDepthTitle == null) {
+                mDepthTitle = new HashMap<>();
+            }
+            if((mIsCategory==Type.ProductListViewType.CATEGORY)){
+                if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mCategoryData.fullDepthName",mCategoryData.fullDepthName);
+                if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mCategoryData.id",mCategoryData.id);
+                if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mCategoryData.hierarchies", Arrays.toString(mCategoryData.hierarchies));
+                setDepthTitle(0, mProductListData.categories, mCategoryData.hierarchies);
+            }
+
+            if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mDepthTitle", mDepthTitle.toString());
             DetailSearchDialog d = new DetailSearchDialog();
             d.setCategoryData(
                     (mIsCategory==Type.ProductListViewType.CATEGORY) ? mCategoryData.fullDepthName : null,
@@ -822,6 +837,20 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 }
             });
             d.show(getFragmentManager(), getBaseTag());
+        }
+    }
+
+
+    private void setDepthTitle(int depth, List<Category> parent, int[] hierarchies){
+        for (Category children : parent){
+            if(children.id == mCategoryData.hierarchies[depth]){
+                HashMap<Integer, Category> map = new HashMap<>();
+                map.put(children.id, children);
+                mDepthTitle.put(depth,map);
+                if(mCategoryData.hierarchies.length > (depth+1) && (children.children != null && children.children.size() > 0)){
+                    setDepthTitle(depth+1, children.children, hierarchies);
+                }
+            }
         }
     }
 

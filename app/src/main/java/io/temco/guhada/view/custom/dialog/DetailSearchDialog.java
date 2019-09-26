@@ -171,7 +171,6 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         }
     }
 
-    ////////////////////////////////////////////////
 
     private void changeDataEvent() {
         if(CustomLog.getFlag())CustomLog.L("changeDataEvent","mIsChangeData",mIsChangeData ,"mDepthTitle null",(mDepthTitle==null));
@@ -200,37 +199,37 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                 Gson gson = new Gson();
                 Category tmp = gson.fromJson(gson.toJson(c), Category.class);
                 tmp.depth = 0;
-                if(mCategoryList.size() == 1) {
-                    HashMap<Integer, Category> map = new HashMap<>();
-                    //map.put(c.id,new CategoryTitle(c.title, c.fullDepthName));
-                    map.put(c.id,c);
-                    mDepthTitle.put(tmp.depth, map);
-                }
+                setDepthList(tmp.depth, tmp);
                 if(!tmp.children.isEmpty()){
                     tmp.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), tmp.fullDepthName, tmp.id, tmp.hierarchies,tmp.isSelected,-1,1));
                     for (Category c1:tmp.children){
                         c1.parentId = c.id;
                         c1.depth = 1;
+                        setDepthList(c1.depth, c1);
                         if(c1.children !=null && !c1.children.isEmpty()){
                             c1.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c1.fullDepthName, c1.id, c1.hierarchies,c1.isSelected,tmp.id,2));
                             for (Category c2:c1.children) {
                                 c2.parentId = c1.id;
                                 c2.depth = 2;
+                                setDepthList(c2.depth, c2);
                                 if(c2.children !=null && !c2.children.isEmpty()){
                                     c2.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c2.fullDepthName, c2.id, c2.hierarchies,c2.isSelected,c1.id,3));
                                     for (Category c3:c2.children) {
                                         c3.parentId = c2.id;
                                         c3.depth = 3;
+                                        setDepthList(c3.depth, c3);
                                         if(c3.children !=null && !c3.children.isEmpty()){
                                             c3.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c3.fullDepthName, c3.id, c3.hierarchies,c3.isSelected,c2.id,4));
                                             for (Category c4:c3.children) {
                                                 c4.parentId = c3.id;
                                                 c4.depth = 4;
+                                                setDepthList(c4.depth, c4);
                                                 if(c4.children !=null && !c4.children.isEmpty()){
                                                     c4.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c4.fullDepthName, c4.id, c4.hierarchies,c4.isSelected,c3.id,5));
                                                     for (Category c5:c4.children) {
                                                         c5.parentId = c5.id;
                                                         c5.depth = 5;
+                                                        setDepthList(c5.depth, c5);
                                                     }
                                                 }
                                             }
@@ -251,6 +250,14 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         }
     }
 
+    private void setDepthList(int depth, Category category){
+        if(mDepthTitle!=null && mDepthTitle.containsKey(depth) && mDepthTitle.get(depth).containsKey(category.id)){
+            category.isSelected = true;
+            category.isExpand = true;
+        }
+    }
+
+
     private void initCategoryList(List<Category> data) {
         mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
         DetailSearchCategoryListAdapter adapter = new DetailSearchCategoryListAdapter();
@@ -259,6 +266,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         adapter.setMDepthTitle(mDepthTitle);
         adapter.setItems(data);
         mBinding.listCategory.setAdapter(adapter);
+        refreshCategoryTitle();
         /*mBinding.listCategory.setLayoutManager(new LinearLayoutManager(getContext()));
         DetailSearchCategoryFirstListAdapter adapter = new DetailSearchCategoryFirstListAdapter(getContext());
         adapter.setOnCategoryListener(this::checkSelectedCategoryList);
@@ -299,12 +307,6 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
             return false;
         }
     }
-
-
-    private void checkSelectedCategoryHeaderList(int position, Category category) {
-        if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryHeaderList","position",position,"type",category.type.name(), "category",category);
-    }
-
 
     private void checkSelectedCategoryList(int position, Category category) {
         if(CustomLog.getFlag())CustomLog.L("checkSelectedCategoryList","position",position,"type",category.type.name(), "category",category);
@@ -497,5 +499,6 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         return false;
     }
 
+    ////////////////////////////////////////////////
     ////////////////////////////////////////////////
 }
