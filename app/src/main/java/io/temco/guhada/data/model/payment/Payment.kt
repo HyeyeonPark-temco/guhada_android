@@ -15,12 +15,15 @@ class Payment : Serializable {
     var method = ""
     var mobileNo = ""
     var parentMethod = ""
+    var pointPayment = 0
 
     var completeAt = intArrayOf()
+    var completeTimestamp = 0L
     var mobileCorp = ""
     var mobileVanCd = ""
     var paymentStatus = ""
     var requestAt = intArrayOf()
+    var requestTimestamp = 0L
     var vbankBankName = ""
     var vbankDepositorName = ""
     var vbankExpireAt = intArrayOf()
