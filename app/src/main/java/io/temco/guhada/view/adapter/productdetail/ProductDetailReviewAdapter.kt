@@ -3,19 +3,23 @@ package io.temco.guhada.view.adapter.productdetail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import io.reactivex.Observable
 import io.temco.guhada.R
+import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewResponseContent
+import io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel
 import io.temco.guhada.databinding.ItemProductdetailReviewBinding
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapter.Holder>() {
-     var list: MutableList<ReviewResponseContent> = mutableListOf()
+    var list: MutableList<ReviewResponseContent> = mutableListOf()
+    lateinit var mViewModel: ProductDetailReviewViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = DataBindingUtil.inflate<ItemProductdetailReviewBinding>(LayoutInflater.from(parent.context), R.layout.item_productdetail_review, parent, false)
@@ -69,7 +73,40 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
             mBinding.framelayoutProductdetailReviewfiles.visibility = if (list?.isEmpty() != false) View.GONE else View.VISIBLE
             mBinding.linearlayoutProductdetailReviewfilescount.visibility = if (list?.size ?: 0 > 1) View.VISIBLE else View.GONE
 
+
+            mBinding.imageviewProdudctdetailReviewlike.setOnClickListener {
+                if (it.tag == "false") {
+                    mViewModel.saveLike(reviewContent.review.id, successTask = {
+                        it.tag = "true"
+                        (it as ImageView).setImageResource(R.drawable.detail_icon_thumbsup_on)
+                        mBinding.textviewProductdetailReviewlikecount.text = (mBinding.textviewProductdetailReviewlikecount.text.toString().toInt() + 1).toString()
+                        mBinding.executePendingBindings()
+                    })
+                } else {
+                    mViewModel.deleteLike(reviewContent.review.id, successTask = {
+                        it.tag = "false"
+                        (it as ImageView).setImageResource(R.drawable.detail_icon_thumbsup_off)
+                        mBinding.textviewProductdetailReviewlikecount.text = (mBinding.textviewProductdetailReviewlikecount.text.toString().toInt() - 1).toString()
+                        mBinding.executePendingBindings()
+                    })
+                }
+            }
+
+            mViewModel.getBookMarks(target = BookMarkTarget.REVIEW.target, successTask = {
+                for (item
+
+                in (it.content))
+                    if (item.target == BookMarkTarget.REVIEW.target && item.targetId == reviewContent.review.id) {
+                        mBinding.imageviewProdudctdetailReviewlike.tag = "true"
+                        mBinding.imageviewProdudctdetailReviewlike.setImageResource(R.drawable.detail_icon_thumbsup_on)
+                        return@getBookMarks
+                    }
+            })
+
+            mBinding.viewModel = mViewModel
             mBinding.executePendingBindings()
         }
     }
+
+
 }

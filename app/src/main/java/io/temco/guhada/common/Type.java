@@ -157,8 +157,8 @@ public class Type {
             case RELEASE:
                 return "https://ship.guhada.com/";
             default:
-                return "https://ship.guhada.com/";
 //                return "http://dev.ship.guhada.com/";
+                return "http://ship.guhada.com/";
         }
     }
 

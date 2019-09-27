@@ -9,6 +9,10 @@
         <variable
             name="reviewContent"
             type="io.temco.guhada.data.model.review.ReviewResponseContent" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel" />
     </data>
 
     <LinearLayout
@@ -394,20 +398,23 @@
                     android:textColor="@color/greyish_brown_two"
                     android:textSize="@dimen/text_13" />
 
-                <CheckBox
+                <ImageView
+                    android:id="@+id/imageview_produdctdetail_reviewlike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
-                    android:background="@drawable/selector_like_productdetail"
+                    android:tag="false"
+                    android:src="@drawable/detail_icon_thumbsup_off"
                     android:button="@null" />
 
                 <TextView
+                    android:id="@+id/textview_productdetail_reviewlikecount"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@{@string/common_price_format(reviewContent.review.likeCount)}"
+                    android:text="@{String.valueOf(reviewContent.review.bookmarkCount)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13" />
 
