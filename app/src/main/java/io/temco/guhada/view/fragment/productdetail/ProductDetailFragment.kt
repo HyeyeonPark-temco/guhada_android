@@ -142,7 +142,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.VISIBLE
                     mBinding.includeProductdetailContentheader.textviewProductdetailCoupon.text =
                             if (highestPrice > 0) String.format(context?.getString(R.string.productdetail_coupon_price)!!, highestPrice)
-                            else String.format(context?.getString(R.string.productdetail_coupon_rate)!!, "$highestRate%")
+                            else String.format(context?.getString(R.string.productdetail_coupon_rate)!!, "${highestRate * 100}%")
                     mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {
                         ServerCallbackUtil.callWithToken(
                                 task = {
@@ -401,7 +401,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initStore() {
         mStoreFragment = ProductDetailStoreFragment().apply {
             this.mProductId = this@ProductDetailFragment.mViewModel.product.value?.productId ?: -1
-            this.mSellerId = this@ProductDetailFragment.mViewModel.product.value?.sellerId ?: -1
+            this.mSellerId = this@ProductDetailFragment.mViewModel.product.value?.sellerId ?: mViewModel.mSeller.id
             this.mProductDetailViewModel = this@ProductDetailFragment.mViewModel
         }
         childFragmentManager.beginTransaction().let {

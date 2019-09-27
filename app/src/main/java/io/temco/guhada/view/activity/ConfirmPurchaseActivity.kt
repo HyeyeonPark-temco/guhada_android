@@ -15,6 +15,10 @@ import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.delivery.ConfirmPurchaseViewModel
 import io.temco.guhada.databinding.ActivityConfirmpurchaseBinding
 
+/**
+ * 구매 확정 dialog
+ * @author Hyeyeon Park
+ */
 class ConfirmPurchaseActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityConfirmpurchaseBinding
     private lateinit var mViewModel: ConfirmPurchaseViewModel
