@@ -68,10 +68,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="2dp"
+                    android:layout_marginEnd="9dp"
                     android:text="@{reviewContent.review.userNickname}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_12"
-                    android:layout_marginEnd="9dp"
                     app:layout_constraintStart_toEndOf="@+id/frameLayout3"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -175,20 +175,18 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout15"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border_all_whitethree_r11"
                 android:orientation="horizontal"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintLeft_toRightOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/linearLayout16"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
@@ -197,7 +195,7 @@
                     android:gravity="center"
                     android:text="@string/productdetail_review_graphsize"
                     android:textColor="@color/greyish_brown_two"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_10" />
 
                 <View
                     android:layout_width="1dp"
@@ -205,7 +203,7 @@
                     android:background="@color/white_six" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_marginEnd="10dp"
@@ -213,25 +211,23 @@
                     android:gravity="center"
                     android:text="@{reviewContent.reviewTexts.size}"
                     android:textColor="@color/common_blue_purple"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_10" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout16"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/border_all_whitethree_r11"
                 android:orientation="horizontal"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toRightOf="@id/linearLayout15"
-                app:layout_constraintRight_toLeftOf="@id/linearLayout17"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
@@ -240,7 +236,7 @@
                     android:gravity="center"
                     android:text="@string/productdetail_review_graphcolor"
                     android:textColor="@color/greyish_brown_two"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_10" />
 
                 <View
                     android:layout_width="1dp"
@@ -248,7 +244,7 @@
                     android:background="@color/white_six" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_marginEnd="10dp"
@@ -256,25 +252,23 @@
                     android:gravity="center"
                     android:text="@{reviewContent.reviewTexts.color}"
                     android:textColor="@color/common_blue_purple"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_10" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout17"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/border_all_whitethree_r11"
                 android:orientation="horizontal"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toRightOf="@id/linearLayout16"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="34dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="10dp"
@@ -283,7 +277,7 @@
                     android:gravity="center"
                     android:text="@string/productdetail_review_graphlength"
                     android:textColor="@color/greyish_brown_two"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_10" />
 
                 <View
                     android:layout_width="1dp"
@@ -291,7 +285,7 @@
                     android:background="@color/white_six" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_marginEnd="10dp"
@@ -299,7 +293,7 @@
                     android:gravity="center"
                     android:text="@{reviewContent.reviewTexts.length}"
                     android:textColor="@color/common_blue_purple"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_10" />
             </LinearLayout>
 
             <TextView

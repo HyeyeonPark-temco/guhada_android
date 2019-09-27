@@ -171,9 +171,9 @@
             android:name=".view.activity.ReceiptActivity"
             android:screenOrientation="portrait" />
 
+
         <activity
             android:name=".view.activity.ConfirmPurchaseActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
 
@@ -201,7 +201,6 @@
         <!-- Review Write Modify -->
         <activity
             android:name=".view.activity.ReviewWriteActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
 
@@ -308,7 +307,6 @@
 
         <activity
             android:name=".view.activity.UserClaimSellerActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
