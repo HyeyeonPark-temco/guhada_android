@@ -67,6 +67,7 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
                 1->{
                     mViewModel.reportUserId = (intent?.extras?.getSerializable("data") as ReportUserModel).reportUserId
                     mViewModel.reportTarget = ReportTarget.USER
+                    mBinding.linearlayoutReportdetailType1.type = mViewModel.reportType
                 }
                 2->{
                     mViewModel.communityData = intent?.extras?.getSerializable("data") as CommunityDetail

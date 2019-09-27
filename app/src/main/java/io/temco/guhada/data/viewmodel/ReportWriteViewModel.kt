@@ -182,8 +182,7 @@ class ReportWriteRepository(val viewModel: ReportWriteViewModel){
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var value = (it as BaseModel<User>).data
-                        viewModel.writeUserInfo.value = value
-                        listener.callBackListener(true, "successTask")
+                        listener.callBackListener(true, value)
                         if(CustomLog.flag)CustomLog.L("ReportWriteRepository User",value)
                     },
                     dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
@@ -213,7 +212,7 @@ class ReportWriteRepository(val viewModel: ReportWriteViewModel){
                         viewModel.notifyPropertyChanged(BR.reportTypeMessages)
                         viewModel.reportTypeList.value = typeList
                         viewModel.onReportTypeSelected(0)
-                        if(CustomLog.flag)CustomLog.L("getReportTypeData typeList size",typeList.size)
+                        if(CustomLog.flag)CustomLog.L("getReportTypeData typeList size",typeList)
                     },
                     dataNotFoundTask = { },
                     failedTask = { },

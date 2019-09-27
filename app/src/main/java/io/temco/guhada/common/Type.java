@@ -146,6 +146,7 @@ public class Type {
         CATEGORY,
         BRAND,
         SEARCH,
+        VIEW_MORE,
         NONE
     }
 

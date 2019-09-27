@@ -163,6 +163,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void initFilterBody(){
+        if(CustomLog.getFlag())CustomLog.L("initFilterBody","mIsCategory",mIsCategory.name(),"mText",mText);
         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
             if(filterBody == null){
                 filterBody = new FilterBody();
@@ -178,6 +179,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 filterBody = new FilterBody();
                 filterBody.searchQueries.add(mText);
             }
+        } else if (mIsCategory == Type.ProductListViewType.VIEW_MORE)  {
+            if(filterBody == null){
+                filterBody = new FilterBody();
+                filterBody.searchCondition = mText;
+            }
         }
     }
 
@@ -189,6 +195,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             getProductListByBrand(isInit);
         } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
             getProductListBySearch(isInit);
+        } else if (mIsCategory == Type.ProductListViewType.VIEW_MORE)  {
+            getProductListByViewMore(isInit);
         }
     }
 
@@ -944,13 +952,40 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 int i = depthList.next();
                 if(i > depth) depth = i;
             }
-            Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
-            while (idList.hasNext()) {
-                int id = idList.next();
-                if(id != mCategoryData.id) {
-                    if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle title",mDepthTitle.get(depth).get(id).title);
-                    filterBody.categoryIds.add(id);
-                    addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+            if(depth != -1){
+                if(CustomLog.getFlag())CustomLog.L("initTagLayout","depth----",depth);
+                if(depth > 1){
+                    filterBody.categoryIds.clear();
+                    Iterator<Integer> sub = mDepthTitle.get(depth-1).keySet().iterator();
+                    while (sub.hasNext()) {
+                        int id = sub.next();
+                        filterBody.categoryIds.add(id);
+                    }
+                    Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
+                    while (idList.hasNext()) {
+                        int id = idList.next();
+                        if(mCategoryData != null && id != mCategoryData.id) {
+                            if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle title",mDepthTitle.get(depth).get(id).title);
+                            filterBody.categoryIds.add(id);
+                            addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+                        }else {
+                            filterBody.categoryIds.add(id);
+                            addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+                        }
+                    }
+                }else{
+                    Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
+                    while (idList.hasNext()) {
+                        int id = idList.next();
+                        if(mCategoryData != null && id != mCategoryData.id) {
+                            if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle title",mDepthTitle.get(depth).get(id).title);
+                            filterBody.categoryIds.add(id);
+                            addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+                        }else {
+                            filterBody.categoryIds.add(id);
+                            addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
+                        }
+                    }
                 }
             }
         }
@@ -1272,6 +1307,34 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
      * @param reset 초기화 여부
      */
     private void getProductListBySearch(boolean reset) {
+        if (mIsLoading) return;
+        mIsLoading = true;
+        if (reset) {
+            resetList(false);
+        }
+        mLoadingIndicator.show();
+        SearchServer.getProductListBySearchFilter(mCurrentOrderType, filterBody, mPageNumber, (success, o) -> {
+            if (mListAdapter != null) {
+                if (success) {
+                    mPageNumber++;
+                    mListAdapter.setItems(((ProductList) o).deals);
+                    if (mProductListData == null) mProductListData = (ProductList) o;
+                }
+                emptyView("'"+mText+"'에 대한검색결과가 없습니다.");
+            }
+            mIsLoading = false;
+            mLoadingIndicator.hide();
+        });
+    }
+
+
+    /**
+     * @author park jungho
+     * 상품 리스트에서 브랜드 별 상품 리스트 데이터 가져오는 부분
+     *
+     * @param reset 초기화 여부
+     */
+    private void getProductListByViewMore(boolean reset) {
         if (mIsLoading) return;
         mIsLoading = true;
         if (reset) {

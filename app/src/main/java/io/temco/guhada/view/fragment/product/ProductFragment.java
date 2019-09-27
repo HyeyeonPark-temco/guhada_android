@@ -11,6 +11,7 @@ import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBackPressListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.FragmentProductBinding;
@@ -77,6 +78,10 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 addSearchList();
                 mBinding.layoutHeader.layoutHeader.setVisibility(View.GONE);
                 mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.VISIBLE);
+            }else if (mType == Type.ProductListViewType.VIEW_MORE) {
+                addConditionList();
+                mBinding.layoutHeader.layoutHeader.setVisibility(View.GONE);
+                mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -95,7 +100,11 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
 
             case R.id.image_delete:
             case R.id.image_search:
-                CommonUtil.startSearchWordActivity((Activity) getContext(),null, mType != Type.ProductListViewType.SEARCH);
+                if(mType == Type.ProductListViewType.SEARCH){
+                    CommonUtil.startSearchWordActivity((Activity) getContext(),null, mType != Type.ProductListViewType.SEARCH);
+                }else{
+                    CommonUtil.startSearchWordActivity((Activity) getContext(),null, mType != Type.ProductListViewType.SEARCH);
+                }
                 break;
 
             case R.id.image_shop_cart:
@@ -103,7 +112,11 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 break;
 
             case R.id.text_search_headertitle:
-                CommonUtil.startSearchWordActivity((Activity) getContext(),mBinding.layoutHeaderSearch.textSearchHeadertitle.getText().toString(), mType != Type.ProductListViewType.SEARCH);
+                if(mType == Type.ProductListViewType.SEARCH){
+                    CommonUtil.startSearchWordActivity((Activity) getContext(),mBinding.layoutHeaderSearch.textSearchHeadertitle.getText().toString(), mType != Type.ProductListViewType.SEARCH);
+                }else{
+                    CommonUtil.startSearchWordActivity((Activity) getContext(),"", mType != Type.ProductListViewType.SEARCH);
+                }
                 break;
         }
     }
@@ -129,6 +142,12 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         mSearchData = data;
         addSearchList();
     }
+
+    public void setCondition(String data) {
+        mSearchData = data;
+        addConditionList();
+    }
+
 
 
     public void removeAll() {
@@ -192,6 +211,14 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         }
     }
 
+
+    private void addConditionList() {
+        if (mBinding != null && mSearchData != null) {
+            setTitle(mSearchData);
+            addConditionFragment(mSearchData);
+        }
+    }
+
     private void addBrandChildFragment(Brand data) {
         mListPagerAdapter.addBrandFragment(data);
         mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
@@ -201,6 +228,13 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
 
     private void addSearchFragment(String data) {
         mListPagerAdapter.addSearchFragment(data);
+        mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
+        mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
+    }
+
+    private void addConditionFragment(String data) {
+        if(CustomLog.getFlag())CustomLog.L("initFilterBody addConditionFragment","mText",data);
+        mListPagerAdapter.addConditionFragment(data);
         mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
         mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
     }
@@ -224,6 +258,8 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         if (!TextUtils.isEmpty(title)) {
             if (mType == Type.ProductListViewType.SEARCH) {
                 mBinding.layoutHeaderSearch.setTitle(title);
+            }else if (mType == Type.ProductListViewType.VIEW_MORE) {
+                mBinding.layoutHeaderSearch.setTitle("BEST ITEM");
             }else{
                 mBinding.layoutHeader.setTitle(title);
             }

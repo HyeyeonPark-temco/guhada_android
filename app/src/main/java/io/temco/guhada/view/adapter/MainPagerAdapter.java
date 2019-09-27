@@ -86,6 +86,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     public void setProductBrandData(Brand brand) { addProductFragment(brand); }
     public void setProductSearchData(String word) { addProductFragment(word); }
+    public void setProductConditionData(String word) { addProductFragmentCondition(word); }
 
     public void removeProduct() {
         removeProductFragment();
@@ -130,6 +131,13 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private void addProductFragment(String s) {
         checkProductFragment();
         mProductFragment.changeProduct(Type.ProductListViewType.SEARCH);
+        mProductFragment.setSearch(s);
+    }
+
+
+    private void addProductFragmentCondition(String s) {
+        checkProductFragment();
+        mProductFragment.changeProduct(Type.ProductListViewType.VIEW_MORE);
         mProductFragment.setSearch(s);
     }
 

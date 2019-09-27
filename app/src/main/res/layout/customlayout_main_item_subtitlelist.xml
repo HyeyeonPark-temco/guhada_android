@@ -4,6 +4,11 @@
 
     <data>
         <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+        <import type="android.view.View" />
+        <variable name="isViewMore" type="java.lang.Boolean" />
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.main.HomeListViewModel" />
     </data>
@@ -1248,9 +1253,25 @@
 
         </LinearLayout>
 
+        <TextView
+            style="@style/TextMedium"
+            android:layout_width="141dp"
+            android:layout_height="40dp"
+            android:text="VIEW MORE"
+            android:gravity="center"
+            android:onClick="@{clickListener}"
+            android:visibility="@{isViewMore ? View.VISIBLE : View.GONE , default=gone}"
+            android:background="@drawable/border_all_whitethree"
+            android:textColor="@color/black_four"
+            android:layout_marginBottom="60dp"
+            android:textSize="@dimen/text_14" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:background="@color/pale_grey"/>
+
+
+
     </LinearLayout>
 </layout>

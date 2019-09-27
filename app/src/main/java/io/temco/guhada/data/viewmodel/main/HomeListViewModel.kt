@@ -110,7 +110,7 @@ class HomeListRepository(val context : Context){
                                 "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        getNewIn()
+                        //getNewIn()
                     },
                     dataNotFoundTask = {
 
@@ -134,6 +134,7 @@ class HomeListRepository(val context : Context){
                                 "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
+                        getBestItem()
                         //getHotKeyword()
                     },
                     dataNotFoundTask = {

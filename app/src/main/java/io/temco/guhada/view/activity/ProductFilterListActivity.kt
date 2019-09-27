@@ -63,6 +63,9 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
                 Type.ProductListViewType.SEARCH -> {
                     searchWord = intent.extras.getString("search_word")
                 }
+                Type.ProductListViewType.VIEW_MORE -> {
+                    searchWord = intent.extras.getString("search_word")
+                }
             }
         }
         setViewInit()
@@ -91,6 +94,9 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
             mPagerAdapter?.setProductBrandData(brand!!)
         } else if (type == Type.ProductListViewType.SEARCH) {
             mPagerAdapter?.setProductSearchData(searchWord!!)
+        } else if (type == Type.ProductListViewType.VIEW_MORE) {
+            if (CustomLog.flag) CustomLog.L("initFilterBody addFragmentList", "type", type.name, "searchWord", searchWord!!)
+            mPagerAdapter?.setProductConditionData(searchWord!!)
         }
     }
 

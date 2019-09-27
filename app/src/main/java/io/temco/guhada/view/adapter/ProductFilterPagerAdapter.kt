@@ -7,6 +7,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnBackPressListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
 import io.temco.guhada.view.fragment.product.ProductFragment
@@ -82,6 +83,11 @@ class ProductFilterPagerAdapter(private val mFragmentManager: FragmentManager) :
         addProductFragment(word)
     }
 
+    fun setProductConditionData(word: String) {
+        addProductFragmentCondition(word)
+    }
+
+
     fun removeProduct() {
         removeProductFragment()
     }
@@ -127,6 +133,14 @@ class ProductFilterPagerAdapter(private val mFragmentManager: FragmentManager) :
         mProductFragment!!.changeProduct(Type.ProductListViewType.SEARCH)
         mProductFragment!!.setSearch(s)
     }
+
+    private fun addProductFragmentCondition(s: String) {
+        if (CustomLog.flag) CustomLog.L("initFilterBody addProductFragmentCondition", "type VIEW_MORE", "searchWord", s)
+        checkProductFragment()
+        mProductFragment!!.changeProduct(Type.ProductListViewType.VIEW_MORE)
+        mProductFragment!!.setCondition(s)
+    }
+
 
     private fun removeProductFragment() {
         if (mProductFragment != null) {

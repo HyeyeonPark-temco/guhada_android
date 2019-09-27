@@ -12,6 +12,7 @@ import java.util.List;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnChangeTitleListener;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.view.fragment.product.ProductListFragment;
@@ -126,6 +127,22 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
         // Title
         notifyDataSetChanged();
     }
+
+
+    public void addConditionFragment(String data) {
+        // Fragment
+        if(CustomLog.getFlag())CustomLog.L("initFilterBody addConditionFragment------------","mText",data);
+        ProductListFragment f = new ProductListFragment();
+        f.setProductListViewType(Type.ProductListViewType.VIEW_MORE);
+        f.setSearchData(data);
+        // Add
+        mFragmentList.add(f);
+        // Position
+        f.setPosition(mFragmentList.size() - 1);
+        // Title
+        notifyDataSetChanged();
+    }
+
 
     public boolean removeFragment() {
         try {

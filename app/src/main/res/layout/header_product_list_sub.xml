@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:paddingLeft="20dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <!-- TAG -->
             <androidx.recyclerview.widget.RecyclerView

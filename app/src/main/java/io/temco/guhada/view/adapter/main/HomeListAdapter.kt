@@ -20,12 +20,16 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.*
+import io.temco.guhada.view.activity.MainActivity
+import io.temco.guhada.view.activity.ProductFilterListActivity
+import io.temco.guhada.view.activity.SearchWordActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
@@ -229,6 +233,15 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     margin = CommonViewUtil.dipToPixel(viewModel.context, 3)
                     layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 126)
                 }
+
+                binding.isViewMore = "BEST ITEM".equals(item.title)
+                binding.setClickListener {
+                    var intent = Intent(itemView.context as MainActivity, ProductFilterListActivity::class.java)
+                    intent.putExtra("type", Type.ProductListViewType.VIEW_MORE)
+                    intent.putExtra("search_word", "BEST")
+                    (itemView.context as MainActivity).startActivityForResult(intent, Flag.RequestCode.BASE)
+                }
+
                 // Thumbnail
                 var size = item.listSize[item.currentSubTitleIndex] - 1
                 binding.title.text = item.title
