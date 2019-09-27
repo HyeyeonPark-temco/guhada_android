@@ -44,7 +44,9 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     private List<Category> mCategoryAllList;
 
     private Map<Integer,Map<Integer, Category>> mDepthTitle;
-    private HashMap<Integer,Integer> mDepthIndex;
+    private HashMap<Integer,Integer> mDepthIndexMap;
+
+    private int mDepthIndex;
     private int[] mSelectedCategoryHierarchy;
     // Brand
     private List<Brand> mBrandList;
@@ -65,7 +67,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
     @Override
     protected void init() {
         mBinding.setClickListener(this);
-        mDepthIndex = null;
+        mDepthIndexMap = null;
         // Data
         initData();
     }
@@ -195,55 +197,58 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         if (mCategoryList != null && mCategoryList.size() > 0) {
             mCategoryAllList = new ArrayList<>();
             if(mDepthTitle == null) mDepthTitle = new HashMap<>();
-            if(mDepthIndex == null) mDepthIndex = new HashMap<>();
+            if(mDepthIndexMap == null) mDepthIndexMap = new HashMap<>();
 
             mBinding.layoutHeaderCategory.imageExpand.setVisibility(View.VISIBLE);
             mBinding.layoutExpandCategoryHeader.setToggleOnClick(true);
-            int index = 0;
+            mDepthIndex = -1;
             for (int i=0;i<mCategoryList.size();i++) {
                 Category c = mCategoryList.get(i);
                 Gson gson = new Gson();
                 Category tmp = gson.fromJson(gson.toJson(c), Category.class);
                 tmp.depth = 0;
-                boolean isAllSelect = setDepthList(tmp.depth, tmp, i);
+                mDepthIndex++;
+                boolean isAllSelect = setDepthList(tmp.depth, tmp, mDepthIndex);
                 if(!tmp.children.isEmpty()){
                     tmp.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), tmp.fullDepthName, tmp.id, tmp.hierarchies,isAllSelect,-1,1));
                     for (int i1=0;i1<tmp.children.size();i1++){
-                        index++;
                         Category c1 = tmp.children.get(i1);
                         c1.parentId = c.id;
                         c1.depth = 1;
-                        isAllSelect = setDepthList(c1.depth, c1, i1);
+                        mDepthIndex++;
+                        isAllSelect = setDepthList(c1.depth, c1, mDepthIndex);
                         if(c1.children !=null && !c1.children.isEmpty()){
                             c1.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c1.fullDepthName, c1.id, c1.hierarchies,isAllSelect,tmp.id,2));
                             for (int i2=0;i2<c1.children.size();i2++){
-                                index++;
                                 Category c2 = c1.children.get(i2);
                                 c2.parentId = c1.id;
                                 c2.depth = 2;
-                                isAllSelect = setDepthList(c2.depth, c2, i2);
+                                mDepthIndex++;
+                                isAllSelect = setDepthList(c2.depth, c2, mDepthIndex);
                                 if(c2.children !=null && !c2.children.isEmpty()){
                                     c2.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c2.fullDepthName, c2.id, c2.hierarchies,isAllSelect,c1.id,3));
                                     for (int i3=0;i3<c2.children.size();i3++){
-                                        index++;
                                         Category c3 = c2.children.get(i3);
                                         c3.parentId = c2.id;
                                         c3.depth = 3;
-                                        isAllSelect = setDepthList(c3.depth, c3, i3);
+                                        mDepthIndex++;
+                                        isAllSelect = setDepthList(c3.depth, c3, mDepthIndex);
                                         if(c3.children !=null && !c3.children.isEmpty()){
                                             c3.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c3.fullDepthName, c3.id, c3.hierarchies,isAllSelect,c2.id,4));
                                             for (int i4=0;i4<c3.children.size();i4++){
                                                 Category c4 = c3.children.get(i4);
                                                 c4.parentId = c3.id;
                                                 c4.depth = 4;
-                                                isAllSelect = setDepthList(c4.depth, c4, i4);
+                                                mDepthIndex++;
+                                                isAllSelect = setDepthList(c4.depth, c4, mDepthIndex);
                                                 if(c4.children !=null && !c4.children.isEmpty()){
                                                     c4.children.add(0, CommonUtil.createAllCategoryData(getContext().getString(R.string.category_all), c4.fullDepthName, c4.id, c4.hierarchies,isAllSelect,c3.id,5));
                                                     for (int i5=0;i4<c4.children.size();i5++){
                                                         Category c5 = c4.children.get(i5);
                                                         c5.parentId = c5.id;
                                                         c5.depth = 5;
-                                                        setDepthList(c5.depth, c5, i5);
+                                                        mDepthIndex++;
+                                                        setDepthList(c5.depth, c5, mDepthIndex);
                                                     }
                                                 }
                                             }
@@ -254,10 +259,9 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
                         }
                     }
                 }
-                index++;
                 mCategoryAllList.add(tmp);
             }
-            if(CustomLog.getFlag())CustomLog.L("CategoryListViewHolder","mDepthIndex",mDepthIndex.toString());
+            if(CustomLog.getFlag())CustomLog.L("CategoryListViewHolder","mDepthIndexMap 0",mDepthIndexMap.toString());
             // Add All
             initCategoryList(mCategoryAllList);
         } else {
@@ -271,9 +275,9 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         if(mDepthTitle!=null && mDepthTitle.containsKey(depth) && mDepthTitle.get(depth).containsKey(category.id)){
             category.isSelected = true;
             category.isExpand = true;
-            mDepthIndex.put(depth,index);
-            if(CustomLog.getFlag())CustomLog.L("CategoryListViewHolder","mDepthIndex","depth",depth,"index",index,category);
-            if(category.children!=null && category.children.size() > 2 && mDepthTitle.get(depth).size() == category.children.size()) isAllSelect = true;
+            if(category.children!=null && category.children.size() > 1)mDepthIndexMap.put(depth,index);
+            if(CustomLog.getFlag())CustomLog.L("CategoryListViewHolder","mDepthIndexMap","depth",depth,"index",index,category);
+            if(category.children!=null && category.children.size() > 1 && mDepthTitle.get(depth).size() == category.children.size()) isAllSelect = true;
         }
         return isAllSelect;
     }
@@ -286,7 +290,7 @@ public class DetailSearchDialog extends BaseDialog<DialogDetailSearchBinding> im
         adapter.setMCategoryListener(this::checkSelectedCategoryList);
         adapter.setParentCategoryCount(data.size());
         adapter.setMDepthTitle(mDepthTitle);
-        adapter.setMDepthIndex(mDepthIndex);
+        adapter.setMDepthIndex(mDepthIndexMap);
         adapter.setItems(data);
         mBinding.listCategory.setAdapter(adapter);
         refreshCategoryTitle();
