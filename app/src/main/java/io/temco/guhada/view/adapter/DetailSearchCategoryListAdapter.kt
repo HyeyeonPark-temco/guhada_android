@@ -12,6 +12,7 @@ import io.temco.guhada.common.listener.OnCategoryListListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Category
 import io.temco.guhada.databinding.ItemCategoryLayoutBinding
+import io.temco.guhada.view.custom.dialog.DetailSearchDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class DetailSearchCategoryListAdapter : RecyclerView.Adapter<CategoryBaseListViewHolder<Category,ItemCategoryLayoutBinding>>() {
@@ -98,18 +99,19 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
                 if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","1---- start clickNormal data",data.toString())
                 if(adapter.mDepthTitle.containsKey(data.depth-1)){
                     for (c in adapter.mList){
-                        if(c.children != null && c.children.size > 2 && adapter.mDepthTitle.get(data.depth-1)?.containsKey(c.id)!!){
+                        if(c.children != null && c.children.size > 1 && adapter.mDepthTitle.get(data.depth-1)?.containsKey(c.id)!!){
                             c.children[0].isSelected = false
                         }
                     }
                 }
-                if(!data.children.isNullOrEmpty()){
+                if(data.children != null && data.children.size > 0){
+                    if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","1---- start clickNormal data",data.toString())
                     if(!adapter.mDepthIndex.containsKey(data.depth)){
                         adapter.mDepthIndex.put(data.depth, position)
                         addChild(adapter, position, data)
                     }else{
                         var removeIndex = adapter.mDepthIndex.get(data.depth) as Int
-                        var count = removeChild(adapter, removeIndex!!, data)
+                        var count = removeChild(adapter, removeIndex, data)
                         var modPosition = position
                         if(position > removeIndex){
                             modPosition = position - count
@@ -157,6 +159,9 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
                 }else{
                     var removeIndex = adapter.mDepthIndex.get(data.depth) as Int
                     var count = removeChild(adapter, removeIndex!!, data)
+                    if(count == -99) {
+                        (itemView.context as DetailSearchDialog).dismiss()
+                    }
                     var modPosition = position
                     if(position > removeIndex){
                         modPosition = position - count
@@ -194,19 +199,33 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
 
     private fun removeChild(adapter : DetailSearchCategoryListAdapter, position : Int , data : Category) : Int {
         var count = 0
-        for (i in adapter.mList.size-1 downTo position+1){
-            if(data.depth < adapter.mList[i].depth){
-                unSelectCategory(adapter, adapter.mList[i])
-                count++
-                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- clickAll removeChild 1",adapter.mList[i].toString())
-                adapter.mList.remove(adapter.mList[i])
+        try{
+            for (i in adapter.mList.size-1 downTo position+1){
+                if(data.depth < adapter.mList[i].depth){
+                    unSelectCategory(adapter, adapter.mList[i])
+                    count++
+                    if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- clickAll removeChild 1",adapter.mList[i].toString())
+                    adapter.mList.remove(adapter.mList[i])
+                }
             }
+            adapter.mList[position].isSelected = false
+            if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- clickAll removeChild 2",adapter.mList[position].toString())
+            selectTitleRemove(adapter, adapter.mList[position])
+        }catch (e : Exception){
+            count = -99
         }
-        adapter.mList[position].isSelected = false
-        if(CustomLog.flag)CustomLog.L("CategoryListViewHolder -- clickAll removeChild 2",adapter.mList[position].toString())
-        selectTitleRemove(adapter, adapter.mList[position])
         return count
     }
+
+    /**
+     * 오류 있음 수정해야됨
+     * java.lang.IndexOutOfBoundsException: Index: 19, Size: 16
+    at java.util.ArrayList.get(ArrayList.java:437)
+    at io.temco.guhada.view.adapter.CategoryListViewHolder.removeChild(DetailSearchCategoryListAdapter.kt:206)
+    at io.temco.guhada.view.adapter.CategoryListViewHolder.clickNormal(DetailSearchCategoryListAdapter.kt:113)
+    at io.temco.guhada.view.adapter.CategoryListViewHolder.access$clickNormal(DetailSearchCategoryListAdapter.kt:61)
+    at io.temco.guhada.view.adapter.CategoryListViewHolder$bind$1.onClick(DetailSearchCategoryListAdapter.kt:77)
+     */
 
     private fun selectTitleRemove(adapter : DetailSearchCategoryListAdapter,item : Category){
         if(adapter.mDepthTitle.containsKey(item.depth) && adapter.mDepthTitle[item.depth]!!.contains(item.id)){

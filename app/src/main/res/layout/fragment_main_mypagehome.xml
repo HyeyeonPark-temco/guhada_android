@@ -30,7 +30,7 @@
 
                     <include
                         android:id="@+id/layout_header"
-                        layout="@layout/header_main_home" />
+                        layout="@layout/header_mypage_home" />
                 </androidx.appcompat.widget.Toolbar>
 
                 <!-- CATEGORY -->

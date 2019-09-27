@@ -33,42 +33,7 @@ class SearchServer {
             if (listener != null) {
                 // Body
                 val body = FilterBody()
-                body.categoryIds = intArrayOf(id)
-                body.searchResultOrder = Type.ProductOrder.get(type)
-                if(CustomLog.flag)CustomLog.L("getProductListByCategory","body",body)
-                // Request
-                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
-                        .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
-                        .enqueue(object : Callback<BaseModel<ProductList>> {
-                            override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                if (response.isSuccessful) {
-                                    if (response.body()!!.resultCode == 200) {
-                                        listener.onResult(true, response.body()!!.data)
-                                    } else {
-                                        listener.onResult(false, response.body()!!.message)
-                                    }
-                                } else {
-                                    try {
-                                        listener.onResult(false, response.errorBody()!!.string())
-                                    } catch (e: IOException) {
-                                        // e.printStackTrace();
-                                    }
-                                }
-                            }
-                            override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
-                                listener.onResult(false, t.message)
-                            }
-                        })
-            }
-        }
-
-
-        @JvmStatic
-        fun getProductListByCategoryFilter(type: Type.ProductOrder, id: Int, page: Int, listener: OnServerListener?) {
-            if (listener != null) {
-                // Body
-                val body = FilterBody()
-                body.categoryIds = intArrayOf(id)
+                body.categoryIds = arrayListOf(id)
                 body.searchResultOrder = Type.ProductOrder.get(type)
                 if(CustomLog.flag)CustomLog.L("getProductListByCategory","body",body)
                 // Request
@@ -141,7 +106,7 @@ class SearchServer {
             if (listener != null) {
                 // Body
                 val body = FilterBody()
-                body.searchQueries = arrayOf(text)
+                body.searchQueries = arrayListOf(text)
                 body.searchResultOrder = Type.ProductOrder.get(type)
                 // Request
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
@@ -299,6 +264,116 @@ class SearchServer {
                 })
             }
         }
+
+
+
+
+
+
+        @JvmStatic
+        fun getProductListByCategoryFilter(type: Type.ProductOrder, body: FilterBody, page: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                // Body
+                body.searchResultOrder = Type.ProductOrder.get(type)
+                if(CustomLog.flag)CustomLog.L("getProductListByCategory","body",body)
+                // Request
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
+                        .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
+                        .enqueue(object : Callback<BaseModel<ProductList>> {
+                            override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
+                            }
+                            override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
+            }
+        }
+
+
+
+
+        @JvmStatic
+        fun getProductListByBrandFilter(type: Type.ProductOrder, body: FilterBody, page: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                // Body
+                body.searchResultOrder = Type.ProductOrder.get(type)
+                if(CustomLog.flag)CustomLog.L("getProductListByBrandFilter","body",body)
+                // Request
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
+                        .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
+                        .enqueue(object : Callback<BaseModel<ProductList>> {
+                            override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+
+                                }
+                            }
+
+                            override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
+            }
+        }
+
+        @JvmStatic
+        fun getProductListBySearchFilter(type: Type.ProductOrder, body: FilterBody, page: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                // Body
+                body.searchResultOrder = Type.ProductOrder.get(type)
+                if(CustomLog.flag)CustomLog.L("getProductListBySearchFilter","body",body)
+                // Request
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
+                        .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
+                        .enqueue(object : Callback<BaseModel<ProductList>> {
+                            override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+
+                                }
+                            }
+
+                            override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
+            }
+        }
+
+
 
 
     }

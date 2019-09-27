@@ -167,8 +167,8 @@ public class Type {
             case RELEASE:
                 return "https://product.guhada.com/";
             default:
-                return "https://product.guhada.com/";
-                //return "http://dev.product.guhada.com:8080/";
+                //return "https://product.guhada.com/";
+                return "http://dev.product.guhada.com:8080/";
         }
     }
 
@@ -479,7 +479,7 @@ public class Type {
     public enum ProductOrder {
 
         NEW_PRODUCT("DATE"), // 신상품순
-        MARKS(""), // 평점순
+        MARKS("SCORE"), // 평점순
         LOW_PRICE("PRICE_ASC"), // 낮은가격순
         HIGH_PRICE("PRICE_DESC"); // 높은가격순
 

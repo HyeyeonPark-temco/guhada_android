@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Brand;

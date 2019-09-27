@@ -35,12 +35,17 @@
                     android:background="@drawable/top_btn_menu"
                     android:onClick="@{clickListener}" />
 
-                <ImageView
-                    android:layout_width="110dp"
-                    android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/logo_guhada" />
             </LinearLayout>
+
+            <TextView
+                style="@style/TextMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_header"
+                android:textSize="17sp"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:text="@string/common_my_page"
+                android:textColor="@color/black_four"/>
 
             <!-- RIGHT -->
             <LinearLayout

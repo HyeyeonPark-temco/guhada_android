@@ -15,4 +15,14 @@ public class FilterBodyAttribute {
 
     @SerializedName("filterName")
     public String filterName;
+
+    @Override
+    public String toString() {
+        return "FilterBodyAttribute{" +
+                "filterAttributeId=" + filterAttributeId +
+                ", filterAttributeName='" + filterAttributeName + '\'' +
+                ", filterId=" + filterId +
+                ", filterName='" + filterName + '\'' +
+                '}';
+    }
 }

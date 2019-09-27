@@ -34,7 +34,6 @@ class BaseResponseInterceptor : Interceptor {
         body.close()
         try{
             val json = parser.parse(bodyString)
-
             var model = JsonObject()
             json?.let {
                 val jsonObject: JsonObject = it.asJsonObject

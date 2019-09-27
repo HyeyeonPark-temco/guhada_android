@@ -54,6 +54,7 @@ import io.temco.guhada.data.model.Filter;
 import io.temco.guhada.data.model.ProductList;
 import io.temco.guhada.data.model.Tag;
 import io.temco.guhada.data.model.body.FilterBody;
+import io.temco.guhada.data.model.body.FilterBodyAttribute;
 import io.temco.guhada.data.server.SearchServer;
 import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
@@ -101,9 +102,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private boolean scrollviewOnTop = true;
 
     private FilterBody filterBody = null;
-    private List<Category> selectedCategory = null;
-    private List<Brand> selectedBrand = null;
-    private List<Filter> selectedFilter = null;
 
     private CompositeDisposable disposable;
     private GuhadaDB db;
@@ -149,14 +147,27 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
         // List
         initProductList();
+        filterBody = null;
 
         // Data
         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+            if(filterBody == null){
+                filterBody = new FilterBody();
+                filterBody.categoryIds.add(mId);
+            }
             getProductListByCategory(true);
         } else if (mIsCategory == Type.ProductListViewType.BRAND)  {
+            if(filterBody == null){
+                filterBody = new FilterBody();
+                filterBody.brandIds.add(mId);
+            }
             getProductListByBrand(true);
         } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
-            getProductListBySearch(true);
+            if(filterBody == null){
+                filterBody = new FilterBody();
+                filterBody.searchQueries.add(mText);
+            }
+            getProductListBySearch(true );
         }
         scrollviewOnTop = true;
         /* 상품 목록의 하단 select ui
@@ -299,6 +310,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     public void setBrandData(Brand data) {
+        if(CustomLog.getFlag())CustomLog.L("setBrandData",data.toString());
         mId = data == null ? 0 : data.id;
     }
 
@@ -830,7 +842,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if(CustomLog.getFlag())CustomLog.L("showDetailSearchDialog","mDepthTitle", mDepthTitle.toString());
             }
 
-
             d.setCategoryData(
                     (mIsCategory==Type.ProductListViewType.CATEGORY) ? mCategoryData.fullDepthName : null,
                     (mIsCategory==Type.ProductListViewType.CATEGORY) ? mCategoryData.id : 0,
@@ -894,15 +905,16 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     // TAG
     private void initTagLayout() {
-        filterBody = null;
-        selectedCategory = new ArrayList<>();
-        selectedBrand = new ArrayList<>();
-        selectedFilter = new ArrayList<>();
+        filterBody = new FilterBody();
+        if(mIsCategory == Type.ProductListViewType.SEARCH){
+            filterBody.searchQueries = new ArrayList<>();
+            filterBody.searchQueries.add(mText);
+        }
 
         mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
         mBinding.layoutHeaderSub.layoutFilterParent.setVisibility(View.VISIBLE);
         mBinding.layoutHeaderSub.layoutReset.setOnClickListener(this);
-        //filterBody = new FilterBody();
+
         boolean isInit = false;
         if (mProductListData != null) {
             if(!isInit){
@@ -929,11 +941,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 int id = idList.next();
                 if(id != mCategoryData.id) {
                     if(CustomLog.getFlag())CustomLog.L("initTagLayout","mDepthTitle title",mDepthTitle.get(depth).get(id).title);
-                    selectedCategory.add(mDepthTitle.get(depth).get(id));
+                    filterBody.categoryIds.add(id);
                     addTagTypeFull(mDepthTitle.get(depth).get(id).title, mDepthTitle.get(depth).get(id));
                 }
             }
         }
+        if(CustomLog.getFlag())CustomLog.L("filterBody",filterBody.toString());
         mTagAdapter.notifyDataSetChanged();
     }
 
@@ -1008,7 +1021,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (b.isSelected) {
                     if(CustomLog.getFlag())CustomLog.L("addBrandTag","addBrandTag",b);
                     addTagTypeNormal(b.nameDefault, b);
-                    selectedBrand.add(b);
+                    filterBody.brandIds.add(b.id);
                 }
             }
         }
@@ -1017,15 +1030,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void addFilterTag(List<Filter> filters) {
         if (filters != null && filters.size() > 0) {
             for (Filter f : filters) {
-                Filter tmp = new Filter();
                 for (Attribute a : f.attributes) {
                     if (a.selected) {
-                        tmp.id = f.id;
-                        tmp.attributes = new ArrayList<>();
-                        tmp.attributes.add(a);
-                        tmp.name = f.name;
-                        tmp.viewType = f.viewType;
-                        selectedFilter.add(tmp);
+                        FilterBodyAttribute attribute = new FilterBodyAttribute();
+                        attribute.filterId = f.id;
+                        attribute.filterName = f.name;
+                        attribute.filterAttributeId = a.id;
+                        attribute.filterAttributeName = a.name;
+                        filterBody.filters.add(attribute);
                         if(CustomLog.getFlag())CustomLog.L("addFilterTag","addFilterTag",a);
                         if(TextUtils.isEmpty(a.colorName)) addTagTypeNormal(a.name, a);
                         else addTagTypeNormal(a.colorName, a);
@@ -1161,7 +1173,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             resetList(false);
         }
         mLoadingIndicator.show();
-        SearchServer.getProductListByCategory(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
+        SearchServer.getProductListByCategoryFilter(mCurrentOrderType, filterBody, mPageNumber, (success, o) -> {
             if (mListAdapter != null) {
                 if (success) {
                     mPageNumber++;
@@ -1174,6 +1186,19 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             mIsLoading = false;
             mLoadingIndicator.hide();
         });
+        /*SearchServer.getProductListByCategory(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
+            if (mListAdapter != null) {
+                if (success) {
+                    mPageNumber++;
+                    mListAdapter.setItems(((ProductList) o).deals);
+                    if (mProductListData == null) mProductListData = (ProductList) o;
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.toString());
+                }
+                emptyView("검색결과가 없습니다.");
+            }
+            mIsLoading = false;
+            mLoadingIndicator.hide();
+        });*/
     }
 
     /**
@@ -1189,7 +1214,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             resetList(false);
         }
         mLoadingIndicator.show();
-        SearchServer.getProductListByBrand(mCurrentOrderType, mId, mPageNumber, (success, o) -> {
+        SearchServer.getProductListByBrandFilter(mCurrentOrderType, filterBody, mPageNumber, (success, o) -> {
             if (mListAdapter != null) {
                 if (success) {
                     mPageNumber++;
@@ -1217,7 +1242,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             resetList(false);
         }
         mLoadingIndicator.show();
-        SearchServer.getProductListBySearch(mCurrentOrderType, mText, mPageNumber, (success, o) -> {
+        SearchServer.getProductListBySearchFilter(mCurrentOrderType, filterBody, mPageNumber, (success, o) -> {
             if (mListAdapter != null) {
                 if (success) {
                     mPageNumber++;
