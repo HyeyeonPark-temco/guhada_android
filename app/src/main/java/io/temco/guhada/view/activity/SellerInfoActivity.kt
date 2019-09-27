@@ -1,10 +1,14 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.ProductOrderType
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
@@ -38,7 +42,7 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
 
     override fun init() {
         initViewModel()
-
+        initHeader()
         mBinding.imagebuttonSellerstoreMore.setOnClickListener {
             if (!::mMenuFragment.isInitialized) {
                 mMenuFragment = ListBottomSheetFragment(this).apply {
@@ -158,7 +162,7 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
         mViewModel.mBusinessSeller.observe(this, Observer {
             mBinding.businessSeller = it
             mBinding.includeSellerstoreInfo.businessSeller = it
-            initHeader(it.sellerUser)
+            mBinding.includeSellerstoreHeader.title = it.sellerUser.user.nickname
         })
         mViewModel.mSellerProductList.observe(this@SellerInfoActivity, Observer {
             if (mViewModel.mPage == 1) // first
@@ -176,9 +180,11 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
         })
     }
 
-    private fun initHeader(seller: Seller) {
-        mBinding.includeSellerstoreHeader.title = seller.user.nickname
+    private fun initHeader() {
         mBinding.includeSellerstoreHeader.setOnClickBack { finish() }
+        mBinding.includeSellerstoreHeader.setOnClickMenu { CommonUtil.startMenuActivity(this@SellerInfoActivity, Flag.RequestCode.SIDE_MENU) }
+        mBinding.includeSellerstoreHeader.setOnClickCart { CommonUtil.startCartActivity(this@SellerInfoActivity) }
+        mBinding.includeSellerstoreHeader.setOnClickSearch { CommonUtil.startSearchWordActivity(this@SellerInfoActivity, null, true) }
     }
 }
 
