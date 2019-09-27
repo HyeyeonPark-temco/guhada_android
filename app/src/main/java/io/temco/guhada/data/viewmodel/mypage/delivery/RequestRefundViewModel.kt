@@ -9,6 +9,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BankAccount
@@ -128,6 +129,14 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
                             },
                             failedTask = {
                                 ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                            },
+                            dataIsNull = {
+                                if (it is BaseModel<*>) {
+                                    CommonUtil.debug(it.message)
+                                    ToastUtil.showMessage(it.message)
+                                } else {
+                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                                }
                             })
                 }, accessToken = accessToken, refundRequest = mRefundRequest)
             })
@@ -144,7 +153,15 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
                             mSuccessUpdateRefundTask()
                         }, failedTask = {
                     ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
-                })
+                }, dataIsNull = {
+                    if (it is BaseModel<*>) {
+                        CommonUtil.debug(it.message)
+                        ToastUtil.showMessage(it.message)
+                    } else {
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                    }
+                }
+                )
             }, accessToken = accessToken, refundRequest = mRefundRequest)
         })
     }

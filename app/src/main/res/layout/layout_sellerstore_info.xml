@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="businessSeller"
             type="io.temco.guhada.data.model.seller.BusinessSeller" />
@@ -16,6 +18,7 @@
         android:id="@+id/linearlayout_sellerstore_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="40dp"
         android:orientation="vertical">
 
         <FrameLayout
@@ -24,7 +27,8 @@
             android:layout_height="600dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white_six" />
+            android:background="@color/white_six"
+            android:visibility="gone" />
 
         <TextView
             style="@style/ProductDetailTitleBlackTextStyle"
@@ -78,7 +82,7 @@
                         android:paddingStart="10dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
-                        android:text="@{businessSeller.companyName}"
+                        android:text="@{businessSeller != null ? businessSeller.companyName : sellerStore.nickname}"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
 
@@ -119,7 +123,7 @@
                         android:paddingStart="10dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
-                        android:text="@{businessSeller.representativeName}"
+                        android:text="@{sellerStore.representativeName}"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
 
@@ -132,7 +136,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{businessSeller != null ? View.VISIBLE: View.GONE}">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -160,6 +165,7 @@
                         android:paddingStart="10dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
+
                         android:text="@{businessSeller.corporationRegistrationNumber}"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
@@ -167,13 +173,15 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/white_four" />
+                    android:background="@color/white_four"
+                    android:visibility="@{businessSeller != null ? View.VISIBLE: View.GONE}" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{businessSeller != null ? View.VISIBLE: View.GONE}">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -208,7 +216,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/white_four" />
+                    android:background="@color/white_four"
+                    android:visibility="@{businessSeller != null ? View.VISIBLE: View.GONE}" />
             </LinearLayout>
 
             <LinearLayout
@@ -238,7 +247,7 @@
                         android:layout_weight="2"
                         android:gravity="center_vertical"
                         android:paddingStart="10dp"
-                        android:text="@{@string/sellerstore_format_zip(businessSeller.sellerUser.user.zip) + businessSeller.sellerUser.user.roadAddress + ` ` + businessSeller.sellerUser.user.detailAddress}"
+                        android:text="@{@string/sellerstore_format_zip(sellerStore.zip) + sellerStore.offlineStoreAddress}"
                         android:textSize="@dimen/text_12" />
 
                 </LinearLayout>
@@ -280,7 +289,7 @@
                         android:paddingStart="10dp"
                         android:paddingTop="12dp"
                         android:paddingBottom="12dp"
-                        android:text="@{businessSeller.sellerUser.claimTelephone}"
+                        android:text="@{sellerStore.claimTelephone}"
                         android:textSize="@dimen/text_12" />
                 </LinearLayout>
 
@@ -304,10 +313,10 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginStart="20dp"
-            android:visibility="gone"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white_six" />
+            android:background="@color/white_six"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -339,8 +348,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="40dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="@{sellerStore.businessHours != null ? View.VISIBLE : View.GONE}">
 
             <ImageView
                 android:layout_width="wrap_content"

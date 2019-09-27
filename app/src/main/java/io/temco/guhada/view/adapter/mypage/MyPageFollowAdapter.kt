@@ -91,13 +91,6 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
                 val item = it.data as Seller
                 mBinding.seller = item
                 mBinding.executePendingBindings()
-
-                if (item.user.profileImageUrl == null || item.user.profileImageUrl.isEmpty()) {
-                    val drawable = mBinding.root.context.resources.getDrawable(R.drawable.background_color_search)
-                    GlideApp.with(mBinding.root.context).load(drawable).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
-                } else {
-                    GlideApp.with(mBinding.root.context).load(item.user.profileImageUrl).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(mBinding.imageviewMypagefollowProfile)
-                }
             }
         }
 

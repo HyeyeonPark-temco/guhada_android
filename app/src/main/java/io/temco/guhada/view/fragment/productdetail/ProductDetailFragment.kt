@@ -265,6 +265,18 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     }
                 })
             }
+
+            /**
+             * 공유하기
+             */
+            mBinding.includeProductdetailContentheader.imagebuttonProductdetailShare.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, Info.SHARE_PRODUCT_URL + product.dealId)
+                    type = "text/plain"
+                }
+                (context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
+            }
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
@@ -401,7 +413,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     private fun initStore() {
         mStoreFragment = ProductDetailStoreFragment().apply {
             this.mProductId = this@ProductDetailFragment.mViewModel.product.value?.productId ?: -1
-            this.mSellerId = this@ProductDetailFragment.mViewModel.product.value?.sellerId ?: mViewModel.mSeller.id
+            this.mSellerId = this@ProductDetailFragment.mViewModel.product.value?.sellerId
+                    ?: mViewModel.mSeller.id
             this.mProductDetailViewModel = this@ProductDetailFragment.mViewModel
         }
         childFragmentManager.beginTransaction().let {

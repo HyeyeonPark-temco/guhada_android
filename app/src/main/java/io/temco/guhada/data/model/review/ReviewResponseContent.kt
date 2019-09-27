@@ -38,4 +38,13 @@ class ReviewResponseContent {
         var reviewPhotoUrl: String = ""
         var photoOrder = 0
     }
+
+    fun getOption():String{
+        return if(productOption.color.isNullOrEmpty() && productOption.size.isNullOrEmpty())
+            "${productOption.color}/${productOption.size}"
+        else if(!productOption.color.isNullOrEmpty() && productOption.size.isNullOrEmpty())
+            productOption.color
+        else
+            productOption.size
+    }
 }
