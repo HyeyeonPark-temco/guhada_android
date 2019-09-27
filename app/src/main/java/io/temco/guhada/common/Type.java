@@ -68,7 +68,8 @@ public class Type {
         COMMUNITY_TEMP_LIST,
         IMAGE_DETAIL,
         CUSTOM_WEBVIEW,
-        VERIFY
+        VERIFY,
+        SHIPPING_TRACKING
     }
 
     // Main
@@ -98,7 +99,8 @@ public class Type {
         BENEFIT,
         GATEWAY,
         STG_ORDER,
-        WEB;
+        WEB,
+        SHIP;
 
         public static String getUrl(Server type) {
             switch (type) {
@@ -130,6 +132,8 @@ public class Type {
                     return "https://stg.order.guhada.com/";
                 case WEB:
                     return getWebUrl();
+                case SHIP:
+                    return getShipUrl();
                 default:
                     return "";
             }
@@ -142,6 +146,19 @@ public class Type {
         BRAND,
         SEARCH,
         NONE
+    }
+
+    private static String getShipUrl(){
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://qa.ship.guhada.com/";
+            case STAGE:
+                return "https://stg.ship.guhada.com/";
+            case RELEASE:
+                return "https://ship.guhada.com/";
+            default:
+                return "http://dev.ship.guhada.com/";
+        }
     }
 
     private static String getSearchUrl() {

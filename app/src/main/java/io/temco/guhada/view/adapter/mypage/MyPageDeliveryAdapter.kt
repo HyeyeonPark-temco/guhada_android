@@ -186,6 +186,13 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             }
         }
 
+        private fun redirectShippingTrackingActivity(invoiceNo: String?, companyNo: String?) {
+            val intent = Intent(mBinding.root.context, ShippingTrackingActivity::class.java)
+            intent.putExtra("invoiceNo", invoiceNo)
+            intent.putExtra("companyNo", companyNo)
+            mBinding.root.context.startActivity(intent)
+        }
+
         private suspend fun getReviewAsync(productId: Long, reviewId: Long): MyPageReviewContent = UserServer.getReviewAsync(productId, reviewId).await().data
 
         private fun getButtons(item: PurchaseOrder): MutableList<DeliveryButton> {
@@ -227,8 +234,14 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.DELIVERING.status,
                 PurchaseStatus.DELIVERED.status -> {
                     if (item.purchaseStatus == PurchaseStatus.RESEND_EXCHANGE.status || item.purchaseStatus == PurchaseStatus.COMPLETE_EXCHANGE.status)
-                        buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_reshippinginfo) })
-                    else buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_shippinginfo) })
+                        buttons.add(DeliveryButton().apply {
+                            text = mBinding.root.context.getString(R.string.mypage_delivery_button_reshippinginfo)
+                            task = View.OnClickListener { redirectShippingTrackingActivity(invoiceNo = item.resendInvoiceNo, companyNo = item.resendShipCompany) }
+                        })
+                    else buttons.add(DeliveryButton().apply {
+                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_shippinginfo)
+                        task = View.OnClickListener { redirectShippingTrackingActivity(invoiceNo = item.invoiceNo, companyNo = item.shipCompany) }
+                    })
 
                     if (item.purchaseConfirm) {
                         if (item.reviewId != null) buttons.add(DeliveryButton().apply {

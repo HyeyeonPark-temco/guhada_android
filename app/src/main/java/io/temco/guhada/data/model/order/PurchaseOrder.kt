@@ -102,6 +102,13 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     // 반품 신청 환불 계좌 은행
     var banks = mutableListOf<Bank>()
 
+    // 배송 조회 필요 정보
+    var shipCompany = ""
+    var invoiceNo = ""
+
+    var resendShipCompany = ""
+    var resendInvoiceNo = ""
+
     fun getOptionStr(): String {
         var result = ""
         if (!optionAttribute1.isNullOrEmpty()) result += optionAttribute1

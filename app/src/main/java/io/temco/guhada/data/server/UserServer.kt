@@ -127,7 +127,7 @@ class UserServer {
          */
         @JvmStatic
         fun getVerifyPhoneToken(listener: OnServerListener) =
-                RetrofitManager.createService(Type.Server.STG_ORDER, UserService::class.java, true, false).getVerifyToken().enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<String>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "나이스 본인인증 토큰 호출 오류"))
+                RetrofitManager.createService(Type.Server.ORDER, UserService::class.java, true, false).getVerifyToken().enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<String>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "나이스 본인인증 토큰 호출 오류"))
 
         /**
          * 유저 정보 가져오기

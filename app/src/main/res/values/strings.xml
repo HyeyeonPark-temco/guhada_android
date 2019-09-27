@@ -166,7 +166,7 @@
     <string name="detail_search_result_count">검색결과 보기(%s개)</string>
 
     <!-- LOGIN -->
-    <string name="login_hint_email">아이디(이메일)</string>
+    <string name="login_hint_email">아이디 (이메일)</string>
     <string name="login_hint_password">비밀번호</string>
     <string name="login_title">로그인</string>
     <string name="login_naver">네이버\n로그인</string>
@@ -525,7 +525,7 @@
 
     <string name="payment_text_changedestination">배송지 변경</string>
     <string name="payment_button_submit">결제하기</string>
-    <string name="payment_button_autocoupon">쿠폰 변경</string>
+    <string name="payment_button_autocoupon">쿠폰 적용</string>
     <string name="payment_button_allpoint">전액 사용</string>
 
     <string name="payment_message_cancel">결제가 취소되었습니다</string>
@@ -1253,6 +1253,7 @@
     <string name="userclaim_seller_hint2">문의하실 내용을 입력하세요.</string>
 
     <!-- SHIPPING TRACKING -->
+    <string name="shippingtracking_title">배송조회</string>
     <string name="shippingtracking_number">택배/송장번호</string>
     <string name="shippingtracking_sender">보낸사람</string>
     <string name="shippingtracking_recipient">받는사람</string>
@@ -1261,4 +1262,6 @@
     <string name="shippingtracking_status3">지점도착</string>
     <string name="shippingtracking_status4">배송출발</string>
     <string name="shippingtracking_status5">배송완료</string>
+    <string name="shippingtracking_companyinfo_format">%s (%s)</string>
+    <string name="shippingtracking_message_invalid">유효하지 않은 배송 정보입니다.</string>
 </resources>
