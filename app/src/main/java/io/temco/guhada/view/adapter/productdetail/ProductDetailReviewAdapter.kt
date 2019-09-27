@@ -1,17 +1,22 @@
 package io.temco.guhada.view.adapter.productdetail
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import io.reactivex.Observable
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.data.model.ReportUserModel
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewResponseContent
 import io.temco.guhada.databinding.ItemProductdetailReviewBinding
 import io.temco.guhada.view.adapter.ImagePagerAdapter
+import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapter.Holder>() {
@@ -66,6 +71,17 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
                 mBinding.textviewProductdetailReviewfilescount.text = list.size.toString()
             }
 
+            mBinding.setClickListener {
+                if (CommonUtil.checkToken()) {
+                    CommonUtil.startReportActivity(itemView.context as Activity, 1, ReportUserModel(reviewContent.review.userId.toInt()), null)
+                } else {
+                    CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                            cancelButtonVisible = true,
+                            confirmTask = {
+                                CommonUtil.startLoginPage(itemView.context as AppCompatActivity)
+                            }).show(manager = (itemView.context as AppCompatActivity).supportFragmentManager, tag = "ProductDetailReviewFragment")
+                }
+            }
             mBinding.framelayoutProductdetailReviewfiles.visibility = if (list?.isEmpty() != false) View.GONE else View.VISIBLE
             mBinding.linearlayoutProductdetailReviewfilescount.visibility = if (list?.size ?: 0 > 1) View.VISIBLE else View.GONE
 

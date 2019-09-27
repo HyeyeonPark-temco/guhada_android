@@ -16,10 +16,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.Comments
-import io.temco.guhada.data.model.ImageResponse
-import io.temco.guhada.data.model.ReportResponse
-import io.temco.guhada.data.model.ReportTarget
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.community.CommunityDetail
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.user.User
@@ -68,7 +65,7 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
                     mBinding.linearlayoutReportdetailType0.text03 = mViewModel.productData?.sellerName
                 }
                 1->{
-                    mViewModel.userData = intent?.extras?.getSerializable("data") as User
+                    mViewModel.reportUserId = (intent?.extras?.getSerializable("data") as ReportUserModel).reportUserId
                     mViewModel.reportTarget = ReportTarget.USER
                 }
                 2->{

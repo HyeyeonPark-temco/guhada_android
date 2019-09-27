@@ -1,8 +1,12 @@
 package io.temco.guhada.data.server
 
+import com.google.gson.Gson
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.data.model.base.BaseErrorModel
+import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.coupon.CouponConsumption
 import io.temco.guhada.data.model.coupon.CouponSaveProcess
 import io.temco.guhada.data.model.order.OrderItemResponse
@@ -12,9 +16,34 @@ import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.BenefitService
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import retrofit2.Call
+import retrofit2.Response
 
 class BenefitServer {
     companion object {
+
+        @JvmStatic
+        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+            if (response.code() in 200..400 && response.body() != null) {
+                listener.onResult(true, response.body())
+            } else {
+                try {
+                    var msg = Message()
+                    var errorBody: String? = response.errorBody()?.string() ?: null
+                    if (!errorBody.isNullOrEmpty()) {
+                        var gson = Gson()
+                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                    }
+                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                    if (CustomLog.flag) CustomLog.L("saveReport", "onResponse body", error.toString())
+                    listener.onResult(false, error)
+                } catch (e: Exception) {
+                    if (CustomLog.flag) CustomLog.E(e)
+                    listener.onResult(false, null)
+                }
+            }
+        }
+
         /**
          * 포인트 Summary 조회
          * @param expireDays 포인트 만료 예정 조회 일수

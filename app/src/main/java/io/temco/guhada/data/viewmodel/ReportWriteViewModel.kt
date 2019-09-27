@@ -31,6 +31,7 @@ class ReportWriteViewModel(val context : Context) : BaseObservableViewModel() {
     var productData : Product? = null
     var sellerName : String? = null
 
+    var reportUserId : Int? = null
     var userData : User? = null
 
     var communityData : CommunityDetail? = null
@@ -76,11 +77,43 @@ class ReportWriteViewModel(val context : Context) : BaseObservableViewModel() {
 
 
     fun setInit(){
+        if(reportTarget == ReportTarget.USER && reportUserId != null){
+            repository.getUserInfo(reportUserId!!, object  : OnCallBackListener{
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    if(resultFlag){
+                        userData = value as User
+                        if(CustomLog.flag)CustomLog.L("ReportWriteRepository getUserInfo",resultFlag, "userData", (userData as User))
+                    }
+                    repository.getUserInfo(object : OnCallBackListener{
+                        override fun callBackListener(resultFlag: Boolean, value: Any) {
+                            repository.getReportTypeData()
+                            repository.getReportUserPhotoUrl()
+                        }
+                    })
+                }
+            })
+        }else{
+            repository.getUserInfo(object : OnCallBackListener{
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    repository.getReportTypeData()
+                    repository.getReportUserPhotoUrl()
+                }
+            })
+        }
         repository.getUserInfo(object : OnCallBackListener{
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 repository.getReportTypeData()
                 repository.getReportUserPhotoUrl()
-                if(CustomLog.flag)CustomLog.L("ReportWriteRepository callBackListener",resultFlag, value)
+                if(reportTarget == ReportTarget.USER && reportUserId != null){
+                    repository.getUserInfo(reportUserId!!, object  : OnCallBackListener{
+                        override fun callBackListener(resultFlag: Boolean, value: Any) {
+                            if(resultFlag){
+                                userData = value as User
+                                if(CustomLog.flag)CustomLog.L("ReportWriteRepository getUserInfo",resultFlag, "userData", (userData as User))
+                            }
+                        }
+                    })
+                }
             }
         })
     }
@@ -143,6 +176,23 @@ class ReportWriteRepository(val viewModel: ReportWriteViewModel){
                 }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
 
+
+    fun getUserInfo(id : Int, listener: OnCallBackListener){
+        UserServer.getUserById(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var value = (it as BaseModel<User>).data
+                        viewModel.writeUserInfo.value = value
+                        listener.callBackListener(true, "successTask")
+                        if(CustomLog.flag)CustomLog.L("ReportWriteRepository User",value)
+                    },
+                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                    failedTask = { listener.callBackListener(false, "failedTask") },
+                    userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
+                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") }
+            )
+        }, id)
+    }
     fun getReportTypeData(){
         ClaimServer.getReportTypeList(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,

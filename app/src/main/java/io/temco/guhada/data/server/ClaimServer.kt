@@ -25,6 +25,31 @@ import retrofit2.Response
 
 open class ClaimServer {
     companion object {
+
+        @JvmStatic
+        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+            if (response.code() in 200..400 && response.body() != null) {
+                listener.onResult(true, response.body())
+            } else {
+                try {
+                    var msg = Message()
+                    var errorBody: String? = response.errorBody()?.string() ?: null
+                    if (!errorBody.isNullOrEmpty()) {
+                        var gson = Gson()
+                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
+                    }
+                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
+                    if (CustomLog.flag) CustomLog.L("saveReport", "onResponse body", error.toString())
+                    listener.onResult(false, error)
+                } catch (e: Exception) {
+                    if (CustomLog.flag) CustomLog.E(e)
+                    listener.onResult(false, null)
+                }
+            }
+        }
+
+
+
         /**
          * 회원 상품 문의 조회
          */
@@ -72,13 +97,23 @@ open class ClaimServer {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(
                         accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
                     override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
+                        resultListener(listener, call, response)
+                    }
+                    override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
+                        if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
+                        listener.onResult(false, t.message)
+                    }
+                })
+               /* RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java).saveClaim(
+                        accessToken = "Bearer $accessToken", productId = inquiry.productId, inquiry = inquiry).enqueue(object : Callback<BaseModel<Claim>> {
+                    override fun onResponse(call: Call<BaseModel<Claim>>, response: Response<BaseModel<Claim>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
 
                     override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
-                })
+                })*/
             }
         }
 

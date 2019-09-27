@@ -722,7 +722,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun closeActivity() {
-        mainListener.removeProductDetailFragment()
+        //mainListener.removeProductDetailFragment()
+        (context as AppCompatActivity).finish()
     }
 
     override fun setBrandProductList(brand: Brand) {
