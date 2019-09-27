@@ -109,6 +109,7 @@ class HomeListRepository(val context : Context){
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
                                 "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
+                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
                         list.value = list.value
                         //getNewIn()
                     },
