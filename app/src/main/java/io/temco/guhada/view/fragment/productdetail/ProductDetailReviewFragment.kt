@@ -78,6 +78,8 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
         mViewModel.getProductReviewSummary()
+        mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
+        mViewModel.mTabSelectBlock = false
     }
 
     private fun initViewModel() {
@@ -147,6 +149,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                         delay(1500)
                         mViewModel.mRatingSpinnerBlock = false
                     }
+
                 }
             }
         })

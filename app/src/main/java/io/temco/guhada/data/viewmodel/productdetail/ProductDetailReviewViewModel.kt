@@ -45,9 +45,9 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
     var mSelectedTabPos = ProductDetailReviewFragment.ReviewTab.ALL.pos
     var mSelectedRating: String? = null
     var mSelectedSorting: String? = null
-    var mTabSelectBlock = false
-    var mRatingSpinnerBlock = false
-    var mSortingSpinnerBlock = false
+    var mTabSelectBlock = true
+    var mRatingSpinnerBlock = true
+    var mSortingSpinnerBlock = true
 
     fun getProductReviewSummary() {
         if(productId > 0)
