@@ -531,7 +531,7 @@
                                 android:paddingStart="10dp"
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
-                                android:text="@{viewModel.seller.user.roadAddress + ` ` +viewModel.seller.user.detailAddress }"
+                                android:text="@{`(` + viewModel.seller.user.zip + `) `+ viewModel.seller.user.roadAddress + ` ` +viewModel.seller.user.detailAddress }"
                                 android:textColor="@color/greyish_brown_two"
                                 android:textSize="@dimen/text_12" />
                         </LinearLayout>
