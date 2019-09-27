@@ -446,6 +446,12 @@ class UserServer {
                         .getBookMarkWithoutTargetId(accessToken = accessToken, userId = userId, target = target).enqueue(
                                 ServerCallbackUtil.ServerResponseCallback<BaseModel<BookMark>>(successTask = { response -> listener.onResult(true, response.body()) }))
 
+        @JvmStatic
+        fun getBookMarkWithoutTargetIdAndTarget(listener: OnServerListener, accessToken: String, userId: Int) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                        .getBookMarkWithoutTargetIdAndTarget(accessToken = accessToken, userId = userId).enqueue(
+                                ServerCallbackUtil.ServerResponseCallback<BaseModel<BookMark>>(successTask = { response -> listener.onResult(true, response.body()) }))
+
         /**
          * 북마크 저장
          * */

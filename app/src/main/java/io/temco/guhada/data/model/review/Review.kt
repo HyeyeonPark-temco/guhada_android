@@ -25,6 +25,7 @@ class Review {
     // REVIEW
     var photoCount = 0
     var likeCount = 0
+    var bookmarkCount = 0
     var userNickname = ""
     var productRating = ""
     var profileImageUrl = ""

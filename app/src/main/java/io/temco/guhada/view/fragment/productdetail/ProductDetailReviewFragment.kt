@@ -71,12 +71,13 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         initSortingSpinner()
         initTab()
 
-        mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
+        mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply {
+            this.list = arrayListOf()
+            this.mViewModel = this@ProductDetailReviewFragment.mViewModel
+        }
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
-
         mViewModel.getProductReviewSummary()
-        // mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
     }
 
     private fun initViewModel() {
@@ -123,7 +124,10 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (!mViewModel.mTabSelectBlock) {
-                    mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
+                    mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply {
+                        this.list = arrayListOf()
+                        this.mViewModel = this@ProductDetailReviewFragment.mViewModel
+                    }
                     mViewModel.mSelectedTabPos = tab?.position ?: ReviewTab.ALL.pos
                     mViewModel.reviewResponse = ReviewResponse()
                     mViewModel.reviewPage = 0
@@ -158,7 +162,10 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                 if (!mViewModel.mRatingSpinnerBlock) {
                     mViewModel.mTabSelectBlock = true
                     mBinding.tablayoutProductdetailReview.getTabAt(0)?.select()
-                    mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
+                    mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply {
+                        this.list = arrayListOf()
+                        this.mViewModel = this@ProductDetailReviewFragment.mViewModel
+                    }
                     mViewModel.reviewResponse = ReviewResponse()
                     mViewModel.reviewPage = 0
 
@@ -194,7 +201,10 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (!mViewModel.mSortingSpinnerBlock) {
                     mViewModel.mSelectedRating = null
-                    mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
+                    mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply {
+                        this.list = arrayListOf()
+                        this.mViewModel = this@ProductDetailReviewFragment.mViewModel
+                    }
                     mViewModel.reviewResponse = ReviewResponse()
                     mViewModel.reviewPage = 0
 
@@ -218,15 +228,6 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         super.onDestroyOptionsMenu()
         if (::loadingIndicatorUtil.isInitialized) loadingIndicatorUtil.hide()
     }
-
-//    fun setProductId(productId: Long) {
-//        mViewModel.productId = productId
-//        if (productId > 0) {
-//            if (mBinding != null) mBinding.recyclerviewProductdetailReview.adapter = ProductDetailReviewAdapter().apply { this.list = arrayListOf() }
-//            mViewModel.getProductReviewSummary()
-//            mViewModel.getProductReview(mViewModel.reviewPage, mViewModel.reviewSize, ReviewTab.ALL.pos)
-//        }
-//    }
 
     private fun showLoadingIndicator() {
         if (!::loadingIndicatorUtil.isInitialized) {

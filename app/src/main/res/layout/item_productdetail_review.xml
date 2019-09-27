@@ -11,6 +11,10 @@
         <variable
             name="reviewContent"
             type="io.temco.guhada.data.model.review.ReviewResponseContent" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel" />
     </data>
 
     <LinearLayout
@@ -396,20 +400,23 @@
                     android:textColor="@color/greyish_brown_two"
                     android:textSize="@dimen/text_13" />
 
-                <CheckBox
+                <ImageView
+                    android:id="@+id/imageview_produdctdetail_reviewlike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
-                    android:background="@drawable/selector_like_productdetail"
+                    android:tag="false"
+                    android:src="@drawable/detail_icon_thumbsup_off"
                     android:button="@null" />
 
                 <TextView
+                    android:id="@+id/textview_productdetail_reviewlikecount"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@{reviewContent.getLikeCount()}"
+                    android:text="@{String.valueOf(reviewContent.review.bookmarkCount)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13" />
 
@@ -429,14 +436,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/productdetail_comment"
                     android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13" />
+                    android:textSize="@dimen/text_13"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:background="@color/white_six" />
+                    android:background="@color/white_six"
+                    android:visibility="gone" />
 
                 <TextView
                     style="@style/TextRegular"

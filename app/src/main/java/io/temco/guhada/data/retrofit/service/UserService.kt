@@ -296,6 +296,9 @@ interface UserService {
     @GET("/users/{userId}/bookmarks")
     fun getBookMarkWithoutTargetId(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("target") target: String): Call<BaseModel<BookMark>>
 
+    @GET("/users/{userId}/bookmarks")
+    fun getBookMarkWithoutTargetIdAndTarget(@Header("Authorization") accessToken: String, @Path("userId") userId: Int): Call<BaseModel<BookMark>>
+
     /**
      * BookMark 정보 추가
      * target: PRODUCT, DEAL, BBS, COMMENT, STORE, REVIEW, SELLER

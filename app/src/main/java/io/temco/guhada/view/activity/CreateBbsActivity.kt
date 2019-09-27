@@ -262,14 +262,15 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                         }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
                 return@setOnClickWriteButton
             }
-            if("IMAGE".equals(mViewModel.communityInfoList.value!![mViewModel.selectedCategoryIndex].communityCategorySub.type)){
-                if(mViewModel.bbsPhotos.value!!.size == 0){
+            if("IMAGE".equals(mViewModel.communityInfoList.value!![mViewModel.selectedCategoryIndex].communityCategorySub.type)) {
+                if (mViewModel.bbsPhotos.value!!.size == 0) {
                     CustomMessageDialog(message = "해당게시판은 사진을 필수로 입력해주세요", cancelButtonVisible = false,
                             confirmTask = {
                             }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
                     return@setOnClickWriteButton
                 }
             }
+
             var message = "등록하시겠습니까?"
             if(mViewModel.communityDetailModifyData.get()) message = "수정하시겠습니까?"
 

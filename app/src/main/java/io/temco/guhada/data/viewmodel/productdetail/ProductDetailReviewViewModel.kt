@@ -2,16 +2,23 @@ package io.temco.guhada.data.viewmodel.productdetail
 
 import android.view.View
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
+import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.BookMark
+import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
@@ -43,26 +50,27 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
     var mSortingSpinnerBlock = false
 
     fun getProductReviewSummary() {
-        UserServer.getProductReviewSummary(OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        try {
-                            this.reviewSummary = it.data as ReviewSummary
-                            notifyPropertyChanged(BR.reviewSummary)
+        if(productId > 0)
+            UserServer.getProductReviewSummary(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            try {
+                                this.reviewSummary = it.data as ReviewSummary
+                                notifyPropertyChanged(BR.reviewSummary)
 
-                            if (::listener.isInitialized)
-                                listener.notifySummary(reviewSummary.averageReviewsRating)
-                        } catch (e: Exception) {
-                            if (CustomLog.flag) CustomLog.E(e)
-                        }
-                    },
-                    failedTask = {
-                        listener.showMessage(it.message)
-                    },
-                    dataNotFoundTask = {
+                                if (::listener.isInitialized)
+                                    listener.notifySummary(reviewSummary.averageReviewsRating)
+                            } catch (e: Exception) {
+                                if (CustomLog.flag) CustomLog.E(e)
+                            }
+                        },
+                        failedTask = {
+                            listener.showMessage(it.message)
+                        },
+                        dataNotFoundTask = {
 
-                    })
-        }, productId)
+                        })
+            }, productId)
     }
 
     fun getProductReview(page: Int, size: Int, tabPos: Int, rating: String? = null, sorting: String? = ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value) {
@@ -118,6 +126,42 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         }
     }
 
+    // 좋아요 여부 조회
+    fun getBookMarks(target: String, successTask: (bookMark: BookMark) -> Unit) {
+        ServerCallbackUtil.callWithToken(task = {
+            val accessToken = it.split("Bearer")[1]
+            val userId = JWT(accessToken).getClaim("userId").asInt()
+            if (userId != null)
+                UserServer.getBookMarkWithoutTargetIdAndTarget(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = { model ->
+                                successTask(model.data as BookMark)
+                            })
+                }, userId = userId, accessToken = it)
+        })
+    }
+
+    // 좋아요 등록
+    fun saveLike(reviewId: Long, successTask: () -> Unit) {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            val bookMark = BookMarkResponse(target = BookMarkTarget.REVIEW.target, targetId = reviewId)
+            UserServer.saveBookMark(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = { successTask() })
+            }, accessToken = accessToken, response = bookMark.getProductBookMarkRespose())
+        })
+    }
+
+    // 좋아요 삭제
+    fun deleteLike(reviewId: Long, successTask: () -> Unit) {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            UserServer.deleteBookMark(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = { successTask() })
+            }, accessToken = accessToken, targetId = reviewId, target = BookMarkTarget.REVIEW.target)
+        })
+    }
+
     private fun getAllReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
         if (productId > 0)
             UserServer.getProductReview(OnServerListener { success, o ->
@@ -166,6 +210,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                 resultTask(success, o)
             }, productId, page, size, sorting = sorting)
     }
+
 
     fun onClickMoreReview() {
         listener.showLoadingIndicator { getProductReview(++reviewPage, reviewSize, mSelectedTabPos, rating = mSelectedRating, sorting = mSelectedSorting) }
