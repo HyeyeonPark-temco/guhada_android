@@ -407,7 +407,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@{reviewContent.getLikeCount()}"
+                    android:text="@{@string/common_price_format(reviewContent.review.likeCount)}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13" />
 
@@ -427,14 +427,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/productdetail_comment"
                     android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13" />
+                    android:textSize="@dimen/text_13"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:background="@color/white_six" />
+                    android:background="@color/white_six"
+                    android:visibility="gone" />
 
                 <TextView
                     style="@style/TextRegular"
