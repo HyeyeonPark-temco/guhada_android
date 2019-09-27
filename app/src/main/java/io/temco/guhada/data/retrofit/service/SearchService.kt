@@ -82,7 +82,6 @@ interface SearchService {
     fun getSellerProductList(@Path("id") sellerId: Long, @Query("order") order: String, @Query("page") page: Int, @Query("unitPerPage") unitPerPage: Int) : Call<BaseModel<ProductList>>
 
 
-
     /**
      * @author park jungho
      * 19.07.18
@@ -91,6 +90,5 @@ interface SearchService {
      */
     @GET("/ps/hits/list")
     fun getProductByBestItem(@Query("unitPerPage") unitPerPage: Int): Call<BaseModel<HomeDeal>>
-
 
 }

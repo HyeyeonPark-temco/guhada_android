@@ -25,10 +25,6 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.community.detail.CommentListFragment
 import io.temco.guhada.view.fragment.community.detail.CommunityDetailContentsFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-
 /**
  * @author park jungho
  *
@@ -56,8 +52,6 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
 
 
     override fun init() {
-        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
-        mLoadingIndicatorUtil.show()
         if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "init ---------------------")
         mViewModel = CommunityDetailViewModel(this)
         mBinding.viewModel = mViewModel
@@ -69,6 +63,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         detailReload = false
 
         initIntent()
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
+        mLoadingIndicatorUtil.show()
 
         mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.addTextChangedListener(object  : TextWatcher {
             override fun afterTextChanged(s: Editable?) { }
@@ -79,11 +75,9 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
             }
         })
 
-        val scope = CoroutineScope(Dispatchers.IO)
-        scope.launch {
-            setDetailView()
-            setOnClick()
-        }
+        setDetailView()
+
+        setOnClick()
     }
 
 

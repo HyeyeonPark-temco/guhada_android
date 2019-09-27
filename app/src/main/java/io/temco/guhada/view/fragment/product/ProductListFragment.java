@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -674,14 +673,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void changeItemFloatingButton(boolean isShow, boolean animate) {
         if (CommonUtil.checkToken()) {
             if(recentViewCount > 0)
-                changeLastView(mBinding.buttonFloatingItem.getRoot(), isShow, animate);
+                changeLastView(mBinding.buttonFloatingItem, isShow, animate);
         }else{
-            changeLastView(mBinding.buttonFloatingItem.getRoot(), false, false);
+            changeLastView(mBinding.buttonFloatingItem, false, false);
         }
     }
 
     private void changeTopFloatingButton(boolean isShow, boolean animate) {
-        changeScaleView(mBinding.buttonFloatingTop.getRoot(), isShow, animate);
+        changeScaleView(mBinding.buttonFloatingTop, isShow, animate);
     }
 
     /**
@@ -751,14 +750,14 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 public void callBackListener(boolean resultFlag, @NotNull Object value) {
                     try {
                         recentViewCount = Integer.parseInt(value.toString());
-                        mBinding.buttonFloatingItem.textviewFloatingCount.setText(value.toString());
+                        mBinding.textviewFloatingCount.setText(value.toString());
                         if(recentViewCount == 0){
-                            changeLastView(mBinding.buttonFloatingItem.getRoot(), false, false);
+                            changeLastView(mBinding.buttonFloatingItem, false, false);
                         }else{
-                            changeLastView(mBinding.buttonFloatingItem.getRoot(), true, false);
+                            changeLastView(mBinding.buttonFloatingItem, true, false);
                         }
                     }catch (Exception e){
-                        changeLastView(mBinding.buttonFloatingItem.getRoot(), false, false);
+                        changeLastView(mBinding.buttonFloatingItem, false, false);
                         if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
                     }
                 }
@@ -777,7 +776,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 public void callBackListener(boolean resultFlag, @NotNull Object value) {
                     try {
                         recentViewCount = Integer.parseInt(value.toString());
-                        mBinding.buttonFloatingItem.textviewFloatingCount.setText(value.toString());
+                        mBinding.textviewFloatingCount.setText(value.toString());
                     }catch (Exception e){
                         if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
                     }
@@ -1156,6 +1155,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             resetCategoryData(mProductListData.categories);
             resetBrandData(mProductListData.brands);
             resetFilterData(mProductListData.filters);
+
+            initFilterBody();
+            setLoadData(true);
         }
     }
 

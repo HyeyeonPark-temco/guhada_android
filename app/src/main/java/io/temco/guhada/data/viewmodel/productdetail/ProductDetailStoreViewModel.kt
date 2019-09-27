@@ -7,6 +7,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.BookMarkTarget
+import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
@@ -56,12 +57,15 @@ class ProductDetailStoreViewModel : BaseObservableViewModel() {
             })
         }, criteria = mCriteria, page = mPage, unitPerPage = UNIT_PER_PAGE)
     }
+
     fun getSellerProductList() {
-        ProductServer.getProductListBySellerId(OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o, successTask = {
-                this.mSellerProductList.postValue(it.data as MutableList<Deal>)
-            })
-        }, sellerId = mCriteria.sellerId, page = mPage, unitPerPage = UNIT_PER_PAGE)
+        if (mCriteria.sellerId > 0) {
+            SearchServer.getSellerProductList(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o, successTask = {
+                    this.mSellerProductList.postValue((it.data as ProductList).deals)
+                })
+            }, sellerId = mCriteria.sellerId, order = ProductOrderType.DATE.type, page = mPage, unitPerPage = UNIT_PER_PAGE)
+        }
     }
 
     fun getSellerInfo() {

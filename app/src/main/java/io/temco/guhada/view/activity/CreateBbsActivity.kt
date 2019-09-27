@@ -200,7 +200,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
             if(mViewModel.communityDetailModifyData.get()){
                 if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "init ", "mViewModel.modifyBbsData -----",mViewModel.modifyBbsData)
                 loop@for ((index, value) in mViewModel.communityInfoList.value!!.iterator().withIndex()){
-                    if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "init ", "communityCategoryId -----",value.communityCategoryId.toLong())
+                    if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "init ", "communityCategoryId -----",value)
                     if(value.communityCategoryId.toLong() ==  mViewModel.modifyBbsData.categoryId){
                         mViewModel.onBbsCategorySelected(index)
                         if(!value.communityCategorySub.categoryFilterList.isNullOrEmpty() &&
@@ -261,6 +261,14 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                         confirmTask = {
                         }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
                 return@setOnClickWriteButton
+            }
+            if("IMAGE".equals(mViewModel.communityInfoList.value!![mViewModel.selectedCategoryIndex].communityCategorySub.type)){
+                if(mViewModel.bbsPhotos.value!!.size == 0){
+                    CustomMessageDialog(message = "해당게시판은 사진을 필수로 입력해주세요", cancelButtonVisible = false,
+                            confirmTask = {
+                            }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
+                    return@setOnClickWriteButton
+                }
             }
             var message = "등록하시겠습니까?"
             if(mViewModel.communityDetailModifyData.get()) message = "수정하시겠습니까?"

@@ -269,20 +269,60 @@
                         android:gravity="bottom"
                         android:orientation="vertical">
 
-                        <include
+                        <!--<include
                             android:id="@+id/button_floating_item"
                             layout="@layout/layout_floating_button_badge"
                             android:layout_width="@dimen/view_button_floating"
                             android:layout_height="@dimen/view_button_floating"
                             android:visibility="gone" />
-
                         <include
                             android:id="@+id/button_floating_top"
                             layout="@layout/layout_floating_button_top"
                             android:layout_width="@dimen/view_button_floating"
                             android:layout_height="@dimen/view_button_floating"
                             android:layout_marginTop="7dp"
-                            android:visibility="gone" />
+                            android:visibility="gone" />-->
+                        <RelativeLayout
+                            android:id="@+id/button_floating_item"
+                            android:layout_width="@dimen/view_button_floating"
+                            android:layout_height="@dimen/view_button_floating"
+                            android:background="@drawable/background_floating_button2"
+                            android:orientation="vertical"
+                            android:visibility="gone" >
+
+                            <ImageView
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/time_icon" />
+
+                            <TextView
+                                android:id="@+id/textview_floating_count"
+                                style="@style/TextBold"
+                                android:layout_width="13dp"
+                                android:layout_height="13dp"
+                                android:layout_alignParentRight="true"
+                                android:background="@drawable/background_floating_button_badge"
+                                android:text="0"
+                                android:gravity="center"
+                                android:textColor="@color/common_white"
+                                android:textSize="@dimen/text_8" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/button_floating_top"
+                            android:layout_width="@dimen/view_button_floating"
+                            android:layout_height="@dimen/view_button_floating"
+                            android:layout_marginTop="7dp"
+                            android:background="@drawable/background_floating_button"
+                            android:orientation="vertical"
+                            android:visibility="gone" >
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/btn_top" />
+                        </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
 

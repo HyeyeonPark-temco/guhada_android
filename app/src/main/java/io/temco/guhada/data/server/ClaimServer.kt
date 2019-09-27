@@ -26,6 +26,10 @@ import retrofit2.Response
 open class ClaimServer {
     companion object {
 
+        /**
+         * @author park jungho
+         * 서버 result null 오류 나는 경우 error Result 만들기
+         */
         @JvmStatic
         fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
             if (response.code() in 200..400 && response.body() != null) {
@@ -86,6 +90,10 @@ open class ClaimServer {
 
         /**
          * 상품문의 작성
+         *
+         *
+         * @author park jungho
+         * 서버 result null 오류 나는 경우 error Result 만들기 적용
          */
         @JvmStatic
         fun saveClaim(listener: OnServerListener, inquiry: Inquiry) {
@@ -100,7 +108,6 @@ open class ClaimServer {
                         resultListener(listener, call, response)
                     }
                     override fun onFailure(call: Call<BaseModel<Claim>>, t: Throwable) {
-                        if (CustomLog.flag) CustomLog.L("saveReport", "onFailure", t.message.toString())
                         listener.onResult(false, t.message)
                     }
                 })
