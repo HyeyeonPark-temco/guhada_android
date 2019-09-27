@@ -173,7 +173,7 @@
 
         <activity
             android:name=".view.activity.ConfirmPurchaseActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
 
@@ -201,7 +201,7 @@
         <!-- Review Write Modify -->
         <activity
             android:name=".view.activity.ReviewWriteActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
 
@@ -270,6 +270,7 @@
         <!-- Coupon -->
         <activity
             android:name=".view.activity.CouponDownloadDialogActivity"
+            android:screenOrientation="unspecified"
             android:theme="@style/NoTitleBarDialog" />
         <activity
             android:name=".view.activity.CouponSelectDialogActivity"
@@ -291,7 +292,7 @@
         <!-- User Size Update -->
         <activity
             android:name=".view.activity.UserSizeUpdateActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
             android:theme="@style/NoTitleBarDialog"
             android:windowSoftInputMode="adjustResize" />
 

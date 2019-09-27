@@ -149,26 +149,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         initProductList();
         filterBody = null;
 
-        // Data
-        if (mIsCategory == Type.ProductListViewType.CATEGORY) {
-            if(filterBody == null){
-                filterBody = new FilterBody();
-                filterBody.categoryIds.add(mId);
-            }
-            getProductListByCategory(true);
-        } else if (mIsCategory == Type.ProductListViewType.BRAND)  {
-            if(filterBody == null){
-                filterBody = new FilterBody();
-                filterBody.brandIds.add(mId);
-            }
-            getProductListByBrand(true);
-        } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
-            if(filterBody == null){
-                filterBody = new FilterBody();
-                filterBody.searchQueries.add(mText);
-            }
-            getProductListBySearch(true );
-        }
+        setLoadData(true);
+
         scrollviewOnTop = true;
         /* 상품 목록의 하단 select ui
         if(((ProductFilterListActivity)getContext()).getType() ==  Type.ProductListViewType.CATEGORY) {
@@ -178,6 +160,29 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             mBinding.imageviewMaintabIcon2.setBackgroundResource(R.drawable.tool_icon_brand_on);
             mBinding.textviewMaintabTitle2.setTextColor(Color.parseColor("#5d2ed1"));
         }*/
+    }
+
+    private void setLoadData(boolean isInit){
+        // Data
+        if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+            if(filterBody == null){
+                filterBody = new FilterBody();
+                filterBody.categoryIds.add(mId);
+            }
+            getProductListByCategory(isInit);
+        } else if (mIsCategory == Type.ProductListViewType.BRAND)  {
+            if(filterBody == null){
+                filterBody = new FilterBody();
+                filterBody.brandIds.add(mId);
+            }
+            getProductListByBrand(isInit);
+        } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
+            if(filterBody == null){
+                filterBody = new FilterBody();
+                filterBody.searchQueries.add(mText);
+            }
+            getProductListBySearch(isInit);
+        }
     }
 
     @Override
@@ -947,7 +952,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             }
         }
         if(CustomLog.getFlag())CustomLog.L("filterBody",filterBody.toString());
-        mTagAdapter.notifyDataSetChanged();
+        setLoadData(true);
+        //mTagAdapter.notifyDataSetChanged();
     }
 
     private void initTagList() {

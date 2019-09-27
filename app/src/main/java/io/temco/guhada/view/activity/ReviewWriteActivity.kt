@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
@@ -46,6 +47,11 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
     override fun getLayoutId(): Int = R.layout.activity_reviewwrite
     override fun getViewType(): Type.View = Type.View.REVIEW_WRITE
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun init() {
         loadingIndicatorUtil = LoadingIndicatorUtil(this)

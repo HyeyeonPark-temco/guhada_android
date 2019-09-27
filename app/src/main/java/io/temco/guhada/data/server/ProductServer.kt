@@ -72,7 +72,6 @@ class ProductServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
 
