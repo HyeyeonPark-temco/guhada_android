@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@string/productdetail_review_averagesize"
+                    android:text="@string/productdetail_review_height"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_12"
                     android:visibility="@{reviewContent.userSize != null ? View.VISIBLE: View.GONE}" />
@@ -95,7 +95,7 @@
                     android:layout_marginStart="2dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@{reviewContent.userSize != null ? reviewContent.userSize.top: ``}"
+                    android:text="@{reviewContent.userSize != null ? @string/common_height(reviewContent.userSize.height)  : ``}"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_12"
                     android:visibility="@{reviewContent.userSize != null ? View.VISIBLE: View.GONE}" />
@@ -117,7 +117,7 @@
                     android:layout_marginStart="2dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@string/productdetail_review_height"
+                    android:text="@string/productdetail_review_weight"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_12"
                     android:visibility="@{reviewContent.userSize != null ? View.VISIBLE: View.GONE}" />
@@ -128,7 +128,7 @@
                     android:layout_marginStart="2dp"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="@{reviewContent.userSize != null ? @string/common_height(reviewContent.userSize.height)  : ``}"
+                    android:text="@{reviewContent.userSize != null ? @string/common_weight(reviewContent.userSize.weight)  : ``}"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_12"
                     android:visibility="@{reviewContent.userSize != null ? View.VISIBLE: View.GONE}" />
@@ -163,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginBottom="4dp"
-                android:text="red/85"
+                android:text="@{reviewContent.getOption()}"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_12"
                 app:layout_constraintBottom_toBottomOf="parent"

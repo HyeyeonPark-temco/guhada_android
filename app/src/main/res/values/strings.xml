@@ -80,7 +80,7 @@
     <string name="common_exclamation_mark">!</string>
     <string name="common_free">무료</string>
     <string name="common_height">%dcm</string>
-
+    <string name="common_weight">%dkg</string>
 
 
     <!-- ORDER SHIPPING -->
@@ -444,6 +444,7 @@
 
     <string name="productdetail_review_like">도움되었어요</string>
     <string name="productdetail_review_height">키:</string>
+    <string name="productdetail_review_weight">몸무게:</string>
     <string name="productdetail_review_averagesize">평소사이즈:</string>
     <string name="productdetail_review_option">구매옵션:</string>
     <string name="productdetail_review_graphsize">사이즈</string>
