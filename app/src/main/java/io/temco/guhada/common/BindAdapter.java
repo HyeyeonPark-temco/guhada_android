@@ -32,15 +32,15 @@ public class BindAdapter {
     @BindingAdapter("ovalImageUrl")
     public static void loadOvalImage(ImageView view, String url) {
         if(url != null && url != "")
-            GlideApp.with(view.getContext()).load(url).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(view);
+            GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
         else
-            GlideApp.with(view.getContext()).load(R.drawable.profile_non_square).thumbnail(0.9f).apply(RequestOptions.circleCropTransform()).into(view);
+            GlideApp.with(view.getContext()).load(R.drawable.profile_non_square).apply(RequestOptions.circleCropTransform()).into(view);
     }
 
     @BindingAdapter(value = {"roundCornerImageUrl", "roundCornerRadius"})
     public static void loadRoundCornerImage(ImageView view, String url, int radius) {
         if(url != null && !url.equals(""))
-            GlideApp.with(view.getContext()).load(url).thumbnail(0.9f).apply(new RequestOptions().transform(new FitCenter(), new RoundedCorners(radius))).into(view);
+            GlideApp.with(view.getContext()).load(url).apply(new RequestOptions().transform(new FitCenter(), new RoundedCorners(radius))).into(view);
     }
 
     @BindingAdapter("android:visibility")
