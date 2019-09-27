@@ -133,10 +133,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     passwordViewModel.setUser(mViewModel.user);
                     passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
                     passwordViewModel.notifyPropertyChanged(BR.user);
-                } else {
-                    mViewModel.getUser(mViewModel.user.getName(), mViewModel.user.getPhoneNumber());
                 }
-
                 hideKeyboard();
                 hideLoadingIndicator();
             }

@@ -18,5 +18,5 @@ class SellerAddress : Serializable {
     var address = ""
     var roadAddress = ""
     var detailAddress = ""
-    var createdAt = ""
+//    var createdAt = ""
 }

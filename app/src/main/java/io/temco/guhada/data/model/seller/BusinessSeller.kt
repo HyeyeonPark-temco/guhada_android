@@ -25,8 +25,8 @@ class BusinessSeller {
     var certificateSealUrl = ""
     var representativeBankCopyUrl = ""
     var entityRegistrationCertificateUrl = ""
-    var createdAt = ""
-    var updatedAt = ""
+//    var createdAt = 0L
+//    var updatedAt = 0L
     var updatedBy: String? = null
     var mailorderBusiness = false
 }
