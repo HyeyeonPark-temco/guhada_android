@@ -6,11 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.View
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnBaseDialogListener
+import io.temco.guhada.common.listener.OnBorderEditTextFocusListener
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.util.CommonUtil
@@ -49,29 +51,41 @@ class MyPageUserInfoLayout constructor(
 
         mBinding.includeMypageuserinfoUserpassword.setOnClickFacebook {
             var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request",Flag.RequestCode.FACEBOOK_LOGIN)
+            intent.putExtra("request", Flag.RequestCode.FACEBOOK_LOGIN)
             (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.FACEBOOK_LOGIN)
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickGoogle {
             var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request",Flag.RequestCode.GOOGLE_LOGIN)
+            intent.putExtra("request", Flag.RequestCode.GOOGLE_LOGIN)
             (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.RC_GOOGLE_LOGIN)
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickKakao {
             var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request",Flag.RequestCode.KAKAO_LOGIN)
+            intent.putExtra("request", Flag.RequestCode.KAKAO_LOGIN)
             (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN)
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickNaver {
             var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request",Flag.RequestCode.NAVER_LOGIN)
+            intent.putExtra("request", Flag.RequestCode.NAVER_LOGIN)
             (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.NAVER_LOGIN)
         }
 
-        if(checkUserLogin()){
+        if (checkUserLogin()) {
             setInitView()
         }
         setEventBus()
+
+        // 닉네임 변경
+        setNickNameListener()
+    }
+
+    private fun setNickNameListener() {
+        mBinding.edittextMypageuserinfoNickname.setOnFocusChangeListener { v, hasFocus ->
+            if (!mViewModel.isNickNameFocus) mViewModel.isNickNameFocus = hasFocus
+            if (mViewModel.isNickNameFocus && !hasFocus) {
+                mViewModel.getUserByNickName()
+            }
+        }
     }
 
 
@@ -91,9 +105,9 @@ class MyPageUserInfoLayout constructor(
 
     }
 
-    override fun redirectJoinActivity() { }
+    override fun redirectJoinActivity() {}
 
-    override fun redirectFindAccountActivity() {  }
+    override fun redirectFindAccountActivity() {}
 
     override fun showMessage(message: String) {
         CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
@@ -104,7 +118,7 @@ class MyPageUserInfoLayout constructor(
     }
 
     override fun closeActivity(resultCode: Int) {
-        if(resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             successLogin()
         }
     }
@@ -115,7 +129,7 @@ class MyPageUserInfoLayout constructor(
 
     override fun onResume() {
         if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "onResume ", "init -----")
-        if(checkUserLogin()) setInitView()
+        if (checkUserLogin()) setInitView()
     }
 
     override fun onStart() {
@@ -130,21 +144,21 @@ class MyPageUserInfoLayout constructor(
     override fun onDestroy() {
     }
 
-    private fun checkUserLogin() : Boolean{
-        if(!CommonUtil.checkToken()){
-            CommonViewUtil.showDialog(context as MainActivity, "로그인이 필요한 화면입니다.", false ,object : OnBaseDialogListener{
+    private fun checkUserLogin(): Boolean {
+        if (!CommonUtil.checkToken()) {
+            CommonViewUtil.showDialog(context as MainActivity, "로그인이 필요한 화면입니다.", false, object : OnBaseDialogListener {
                 override fun onClickOk() {
                     (context as MainActivity).moveMainTab(2)
                 }
             })
             return false
-        }else return true
+        } else return true
     }
 
 
     private fun setInitView() {
         mViewModel.userId = CommonUtil.checkUserId()
-        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setInitView ", "userId -----",mViewModel.userId)
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setInitView ", "userId -----", mViewModel.userId)
         mViewModel.checkPasswordConfirm.set(true)
 
         /*if(Preferences.getPasswordConfirm()){
@@ -163,28 +177,28 @@ class MyPageUserInfoLayout constructor(
     }
 
     @SuppressLint("CheckResult")
-    private fun setEventBus(){
+    private fun setEventBus() {
         EventBusHelper.mSubject.subscribe {
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----",it.data.toString())
+            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----", it.data.toString())
             var result = it.data.toString().split(",")
             var resultCode = result[0].toInt()
-            var message =  result[1]
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----",resultCode,"resultCode",resultCode)
-            if(resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)){
+            var message = result[1]
+            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----", resultCode, "resultCode", resultCode)
+            if (resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)) {
                 var returnId = message.toLong()
-                if(returnId == CommonUtil.checkUserId()){
+                if (returnId == CommonUtil.checkUserId()) {
                     successLogin()
-                }else{
+                } else {
                     CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
                 }
-            }else{
-                if(TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
+            } else {
+                if (TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
                 CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
             }
         }
     }
 
-    private fun successLogin(){
+    private fun successLogin() {
         Preferences.setPasswordConfirm(true)
         mViewModel.checkPasswordConfirm.set(true)
     }

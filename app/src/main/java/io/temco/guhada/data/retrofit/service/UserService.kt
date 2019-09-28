@@ -79,7 +79,7 @@ interface UserService {
      * @param phoneNumber
      */
     @POST("/users/findUserId")
-    fun findUserId(@Body body : JsonObject): Call<BaseModel<User>>
+    fun findUserId(@Body body: JsonObject): Call<BaseModel<User>>
 
     /**
      * 나이스 본인인증 호출 토큰 발급 API
@@ -521,5 +521,12 @@ interface UserService {
     @DELETE("/users/{userId}/likes/{id}")
     fun deleteLikesAsync(@Header("Authorization") accessToken: String, @Query("userId") userId: Long, @Query("id") id: Long): Deferred<BaseModel<Any>>
 
+    /**
+     * 닉네임으로 유저 정보 가져오기 API
+     * @since 2019.09.28
+     * @author Hyeyeon Park
+     */
+    @GET("/users/nickname/{nickname}")
+    fun getUserByNickName(@Path("nickname") nickName: String): Call<BaseModel<Any>>
 
 }

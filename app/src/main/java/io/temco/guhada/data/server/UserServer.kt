@@ -904,8 +904,6 @@ class UserServer {
         }
 
 
-
-
         /**
          * 회원 좋아요 저장하기 (비동기)
          * @since 2019.09.26
@@ -926,6 +924,14 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).deleteLikesAsync(accessToken = accessToken, userId = userId, id = id).await()
         }
 
+        /**
+         * 닉네임으로 유저 정보 가져오기
+         * @since 2019.09.28
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun getUserByNickName(listener: OnServerListener, nickName: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getUserByNickName(nickName = nickName)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
 
     }

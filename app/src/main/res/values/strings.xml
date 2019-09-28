@@ -994,6 +994,7 @@
         <item>상품 리뷰</item>
         <item>상품 문의</item>
         <item>배송지 관리</item>
+        <item>회원정보수정</item>
     </string-array>
 
     <string name="mypage_userinfo_passwaord_desc"><![CDATA[안전한 회원정보 변경을 위해<br><font color="#5d2ed1">비밀번호</font>를 다시 한번 입력해 주세요.]]></string>
@@ -1052,6 +1053,18 @@
     <string name="mypage_userinfo_passwaord_infotitle36">신발 사이즈</string>
     <string name="mypage_userinfo_passwaord_infotitle37">사이즈 수정</string>
 
+    <string name="mypage_userinfo_refundaccount_title">환불 계좌정보</string>
+    <string name="mypage_userinfo_refundaccount_name">은행명</string>
+    <string name="mypage_userinfo_refundaccount_name_hint">선택해주세요</string>
+
+    <string name="mypage_userinfo_refundaccount_number">계좌정보</string>
+    <string name="mypage_userinfo_refundaccount_number_hint">입력해주세요</string>
+
+    <string name="mypage_userinfo_refundaccount_owner">예금주명 (본인명)</string>
+    <string name="mypage_userinfo_refundaccount_owner_hint">입력해주세요</string>
+    <string name="mypage_userinfo_refundaccount_button">계좌확인</string>
+
+    <string name="mypage_userinfo_hint_errornickname">이미 사용중인 닉네임입니다.</string>
 
     <string name="mypage_recentlayout_totalsize1">총 </string>
     <string name="mypage_recentlayout_totalsize2">개</string>

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel" />
@@ -12,7 +14,9 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -22,10 +26,10 @@
 
             <include
                 android:id="@+id/include_mypageuserinfo_userpassword"
+                layout="@layout/layout_mypageuserinfo_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                layout="@layout/layout_mypageuserinfo_password"
-                android:visibility="@{viewModel.checkPasswordConfirm ? View.GONE : View.VISIBLE, default = gone}"/>
+                android:visibility="@{viewModel.checkPasswordConfirm ? View.GONE : View.VISIBLE, default = gone}" />
 
             <!-- 회원정보수정 - 로그인 인증화면 끝 -->
 
@@ -36,8 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/common_white"
-                android:visibility="@{viewModel.checkPasswordConfirm ? View.VISIBLE : View.GONE, default = gone}"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{viewModel.checkPasswordConfirm ? View.VISIBLE : View.GONE, default = visible}">
 
                 <!-- 회원정보수정 - 회원정보 -->
                 <TextView
@@ -47,10 +51,10 @@
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle1"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_15"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15"
+                    android:textStyle="bold" />
                 <!-- ====================================================================== -->
 
 
@@ -63,23 +67,23 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle2"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <TextView
                     style="@style/TextMedium"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:paddingLeft="15dp"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="30dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:background="@drawable/drawable_disable_inputform"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
                     android:text="@string/mypage_userinfo_passwaord_infotitle2"
-                    android:textSize="@dimen/text_13"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
                 <!-- ====================================================================== -->
 
 
@@ -92,22 +96,61 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle3"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
-                <io.temco.guhada.view.custom.BorderEditTextView
-                    style="@style/TextMedium"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright">
+
+                    <FrameLayout
+                        android:id="@+id/framelayout_mypageuserinfo_nicknamebg"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@{viewModel.mNickNameBg}">
+
+                        <EditText
+                            android:id="@+id/edittext_mypageuserinfo_nickname"
+                            style="@style/TextMedium"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="1dp"
+                            android:background="@color/common_white"
+                            android:gravity="center_vertical"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:text="@={viewModel.mNickName}"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_13" />
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/imageview_mypageuserinfo_nicknamecheck"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginEnd="12dp"
+                        android:src="@{viewModel.mIsNicknameValid ? @drawable/input_check_icon : @drawable/input_error_icon}"
+                        android:visibility="@{viewModel.mNickNameCheckIconVisible ? View.VISIBLE: View.GONE}" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/textview_mypageuserinfo_nicknameerror"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginTop="7dp"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_marginBottom="30dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13"
-                    app:txt="@string/mypage_userinfo_passwaord_infotitle3"
-                    app:type="text"/>
+                    android:text="@string/mypage_userinfo_hint_errornickname"
+                    android:textColor="@color/brick"
+                    android:textSize="@dimen/text_12"
+                    android:visibility="@{viewModel.mIsNicknameValid ? View.GONE : View.VISIBLE,default=gone}" />
+
+
                 <!-- ====================================================================== -->
 
 
@@ -117,12 +160,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginTop="30dp"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle4"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <io.temco.guhada.view.custom.BorderEditTextView
                     style="@style/TextMedium"
@@ -135,7 +179,7 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
                     app:txt="@string/mypage_userinfo_passwaord_infotitle4"
-                    app:type="email"/>
+                    app:type="email" />
                 <!-- ====================================================================== -->
 
 
@@ -148,9 +192,9 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle5"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <io.temco.guhada.view.custom.BorderEditTextView
                     style="@style/TextMedium"
@@ -163,9 +207,8 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
                     app:txt="01049115559"
-                    app:type="number"/>
+                    app:type="number" />
                 <!-- ====================================================================== -->
-
 
 
                 <!-- 회원정보수정 - 비밀번호 -->
@@ -177,9 +220,9 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle6"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <io.temco.guhada.view.custom.BorderEditTextView
                     style="@style/TextMedium"
@@ -192,7 +235,7 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
                     app:hint="@string/findpwd_hint_newpwd"
-                    app:type="password"/>
+                    app:type="password" />
 
                 <io.temco.guhada.view.custom.BorderEditTextView
                     style="@style/TextMedium"
@@ -205,7 +248,7 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"
                     app:hint="@string/findpwd_hint_newpwdconfirm"
-                    app:type="password"/>
+                    app:type="password" />
 
                 <TextView
                     style="@style/TextMedium"
@@ -215,9 +258,9 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="28dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/warm_grey"
                     android:text="@string/mypage_userinfo_passwaord_infodesc1"
-                    android:textSize="@dimen/text_12"/>
+                    android:textColor="@color/warm_grey"
+                    android:textSize="@dimen/text_12" />
                 <!-- ====================================================================== -->
 
 
@@ -230,19 +273,19 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle7"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_gravity="center_horizontal"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
 
                     <!-- 회원정보수정 - 배송지 - 네이버 -->
@@ -273,8 +316,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:layout_marginLeft="10dp"
+                            android:gravity="center"
                             android:text="@string/mypage_userinfo_passwaord_infotitle8"
                             android:textColor="@color/greyish"
                             android:textSize="@dimen/text_13" />
@@ -311,8 +354,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:layout_marginLeft="10dp"
+                            android:gravity="center"
                             android:text="@string/mypage_userinfo_passwaord_infotitle9"
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_13" />
@@ -324,20 +367,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginTop="15dp"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
 
                     <!-- 회원정보수정 - 배송지 - 페이스북 -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <FrameLayout
@@ -361,8 +404,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:layout_marginLeft="10dp"
+                            android:gravity="center"
                             android:text="@string/mypage_userinfo_passwaord_infotitle10"
                             android:textColor="@color/greyish"
                             android:textSize="@dimen/text_13" />
@@ -373,8 +416,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -387,8 +430,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center"
                             android:layout_marginLeft="10dp"
+                            android:gravity="center"
                             android:text="@string/mypage_userinfo_passwaord_infotitle11"
                             android:textColor="@color/greyish"
                             android:textSize="@dimen/text_13" />
@@ -403,13 +446,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginTop="50dp"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="13dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle12"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <io.temco.guhada.view.custom.HtmlTextView
                     style="@style/TextMedium"
@@ -418,8 +461,8 @@
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="28dp"
-                    android:textColor="@color/greyish_brown"
                     android:text="@string/mypage_userinfo_passwaord_infodesc2"
+                    android:textColor="@color/greyish_brown"
                     android:textSize="@dimen/text_13"
                     app:isHtml="true" />
                 <!-- ====================================================================== -->
@@ -434,9 +477,9 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="13dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle13"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -449,19 +492,19 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
 
                         <CheckBox
                             android:id="@+id/checkbox_mypageuserinfo_sms"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/selector_checkbox_all"
-                            android:button="@null"/>
+                            android:button="@null" />
 
                         <TextView
-                            style="@style/TextMedium"
                             android:id="@+id/textview_mypageuserinfo_sms"
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="11dp"
@@ -474,8 +517,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
 
                         <CheckBox
                             android:id="@+id/checkbox_mypageuserinfo_email"
@@ -485,8 +528,8 @@
                             android:button="@null" />
 
                         <TextView
-                            style="@style/TextMedium"
                             android:id="@+id/textview_mypageuserinfo_email"
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="11dp"
@@ -501,8 +544,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginTop="12dp"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:gravity="center_vertical">
 
                     <CheckBox
@@ -510,11 +553,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/selector_checkbox_all"
-                        android:button="@null"/>
+                        android:button="@null" />
 
                     <TextView
-                        style="@style/TextMedium"
                         android:id="@+id/textview_mypageuserinfo_marketing"
+                        style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="11dp"
@@ -530,13 +573,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginTop="28dp"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="13dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle15"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -549,19 +592,19 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
 
                         <CheckBox
                             android:id="@+id/checkbox_mypageuserinfo_notikakao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/selector_checkbox_all"
-                            android:button="@null"/>
+                            android:button="@null" />
 
                         <TextView
-                            style="@style/TextMedium"
                             android:id="@+id/textview_mypageuserinfo_notikakao"
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="11dp"
@@ -574,8 +617,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
 
                         <CheckBox
                             android:id="@+id/checkbox_mypageuserinfo_notisms"
@@ -585,8 +628,8 @@
                             android:button="@null" />
 
                         <TextView
-                            style="@style/TextMedium"
                             android:id="@+id/textview_mypageuserinfo_notisms"
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="11dp"
@@ -601,8 +644,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginTop="12dp"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="40dp"
                     android:gravity="center_vertical">
 
@@ -611,11 +654,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/selector_checkbox_all"
-                        android:button="@null"/>
+                        android:button="@null" />
 
                     <TextView
-                        style="@style/TextMedium"
                         android:id="@+id/textview_mypageuserinfo_notiemail"
+                        style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="11dp"
@@ -630,7 +673,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
-                    android:background="@color/pale_grey"/>
+                    android:background="@color/pale_grey" />
 
 
                 <!-- 회원정보수정 - 추가정보 -->
@@ -641,10 +684,10 @@
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle19"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_15"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15"
+                    android:textStyle="bold" />
                 <!-- ====================================================================== -->
 
 
@@ -657,9 +700,9 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle20"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -667,120 +710,130 @@
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
-                    android:paddingTop="18dp"
-                    android:paddingBottom="18dp"
                     android:background="@drawable/drawable_border_esix"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:weightSum="16">
+
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/warm_grey_two"
-                            android:paddingLeft="20dp"
                             android:layout_weight="4"
+                            android:paddingLeft="20dp"
                             android:text="@string/mypage_userinfo_passwaord_infotitle32"
-                            android:textSize="@dimen/text_13"/>
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_13" />
+
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/greyish_brown_two"
                             android:layout_weight="4"
                             android:text="163~165cm"
-                            android:textSize="@dimen/text_13"/>
-                        <TextView
-                            style="@style/TextMedium"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/warm_grey_two"
-                            android:paddingLeft="10dp"
-                            android:layout_weight="4"
-                            android:text="@string/mypage_userinfo_passwaord_infotitle33"
-                            android:textSize="@dimen/text_13"/>
-                        <TextView
-                            style="@style/TextMedium"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:textColor="@color/greyish_brown_two"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:paddingLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle33"
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="3"
                             android:text="XS"
-                            android:textSize="@dimen/text_13"/>
+                            android:textColor="@color/greyish_brown_two"
+                            android:textSize="@dimen/text_13" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:weightSum="16">
+
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/warm_grey_two"
-                            android:paddingLeft="20dp"
                             android:layout_weight="4"
+                            android:paddingLeft="20dp"
                             android:text="@string/mypage_userinfo_passwaord_infotitle34"
-                            android:textSize="@dimen/text_13"/>
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_13" />
+
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/greyish_brown_two"
                             android:layout_weight="4"
                             android:text="60kg"
-                            android:textSize="@dimen/text_13"/>
-                        <TextView
-                            style="@style/TextMedium"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/warm_grey_two"
-                            android:paddingLeft="10dp"
-                            android:layout_weight="4"
-                            android:text="@string/mypage_userinfo_passwaord_infotitle35"
-                            android:textSize="@dimen/text_13"/>
-                        <TextView
-                            style="@style/TextMedium"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:textColor="@color/greyish_brown_two"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:paddingLeft="10dp"
+                            android:text="@string/mypage_userinfo_passwaord_infotitle35"
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="3"
                             android:text="28"
-                            android:textSize="@dimen/text_13"/>
+                            android:textColor="@color/greyish_brown_two"
+                            android:textSize="@dimen/text_13" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:orientation="horizontal"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:weightSum="16">
+
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/warm_grey_two"
-                            android:paddingLeft="20dp"
                             android:layout_weight="4"
+                            android:paddingLeft="20dp"
                             android:text="@string/mypage_userinfo_passwaord_infotitle36"
-                            android:textSize="@dimen/text_13"/>
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_13" />
+
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/greyish_brown_two"
                             android:layout_weight="12"
                             android:text="240mm"
-                            android:textSize="@dimen/text_13"/>
+                            android:textColor="@color/greyish_brown_two"
+                            android:textSize="@dimen/text_13" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -809,8 +862,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="1"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
                         <TextView
                             style="@style/TextMedium"
@@ -823,17 +876,18 @@
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/warm_grey_two"
                             android:layout_weight="1"
                             android:text="@string/mypage_userinfo_passwaord_infodesc7"
+                            android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_12"
-                            app:isHtml="true"/>
+                            app:isHtml="true" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:weightSum="1"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
                         <TextView
                             style="@style/TextMedium"
@@ -846,15 +900,15 @@
                             style="@style/TextMedium"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/warm_grey_two"
                             android:layout_weight="1"
                             android:text="@string/mypage_userinfo_passwaord_infodesc8"
+                            android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_12"
-                            app:isHtml="true"/>
+                            app:isHtml="true" />
                     </LinearLayout>
                 </LinearLayout>
 
-                    <!-- 회원정보수정 - 사이즈수정 -->
+                <!-- 회원정보수정 - 사이즈수정 -->
                 <TextView
                     android:id="@+id/button_mypageuserinfo_sizemodify"
                     style="@style/TextMedium"
@@ -864,8 +918,8 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/drawable_border_dsix"
-                    android:text="@string/mypage_userinfo_passwaord_infotitle37"
                     android:gravity="center"
+                    android:text="@string/mypage_userinfo_passwaord_infotitle37"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13" />
                 <!-- ====================================================================== -->
@@ -880,9 +934,9 @@
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle22"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -896,10 +950,10 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="6"
+                        android:background="@drawable/drawable_border_esix"
                         android:orientation="horizontal"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:background="@drawable/drawable_border_esix"
                         android:popupBackground="@null">
 
                         <TextView
@@ -924,8 +978,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="4"
                         android:layout_marginLeft="10dp"
+                        android:layout_weight="4"
                         android:background="@drawable/drawable_border_esix"
                         android:orientation="horizontal"
                         android:paddingStart="15dp"
@@ -952,8 +1006,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="4"
                         android:layout_marginLeft="10dp"
+                        android:layout_weight="4"
                         android:background="@drawable/drawable_border_esix"
                         android:orientation="horizontal"
                         android:paddingStart="15dp"
@@ -987,20 +1041,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
-                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginTop="30dp"
+                    android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="15dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
                     android:text="@string/mypage_userinfo_passwaord_infotitle26"
-                    android:textSize="@dimen/text_14"/>
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:layout_marginBottom="30dp"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
@@ -1014,8 +1068,8 @@
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:background="@drawable/selector_ovalradiobutton_all"/>
+                            android:background="@drawable/selector_ovalradiobutton_all"
+                            android:button="@null" />
 
                         <TextView
                             style="@style/TextMedium"
@@ -1037,8 +1091,8 @@
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:background="@drawable/selector_ovalradiobutton_all"/>
+                            android:background="@drawable/selector_ovalradiobutton_all"
+                            android:button="@null" />
 
                         <TextView
                             style="@style/TextMedium"
@@ -1053,6 +1107,10 @@
                 </LinearLayout>
                 <!-- ====================================================================== -->
 
+                <!-- 환불 계좌정보 -->
+                <include
+                    android:id="@+id/include_mypageuserinfo_bank"
+                    layout="@layout/layout_mypageuserinfo_refundaccount" />
 
                 <!-- 회원정보수정 - 회원탈퇴 -->
                 <TextView
@@ -1063,8 +1121,8 @@
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginBottom="60dp"
-                    android:gravity="center"
                     android:background="@drawable/drawable_border_esix"
+                    android:gravity="center"
                     android:text="@string/mypage_userinfo_passwaord_infotitle29"
                     android:textColor="@color/color_dbdbdb"
                     android:textSize="@dimen/text_13" />
