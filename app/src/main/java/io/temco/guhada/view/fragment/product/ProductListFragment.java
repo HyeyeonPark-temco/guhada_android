@@ -537,6 +537,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             getProductListByBrand(true);
         }else  if (mIsCategory == Type.ProductListViewType.SEARCH) {
             getProductListBySearch(true);
+        }else  if (mIsCategory == Type.ProductListViewType.VIEW_MORE) {
+            getProductListByViewMore(true);
         }
     }
 

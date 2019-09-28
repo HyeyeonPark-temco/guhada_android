@@ -13,33 +13,33 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Inquiry
-import io.temco.guhada.data.model.claim.MyPageClaim
+import io.temco.guhada.data.model.claim.MyPageClaimSellerContent
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimListItemViewModel
 import io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel
 import io.temco.guhada.databinding.ItemMoreListBinding
-import io.temco.guhada.databinding.ItemMypageClaimListBinding
+import io.temco.guhada.databinding.ItemMypageClaimsellerListBinding
 import io.temco.guhada.view.activity.WriteClaimActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageClaim.Content>) :
-        CommonRecyclerAdapter<MyPageClaim.Content, CommonRecyclerAdapter.ListViewHolder<MyPageClaim.Content>>(list) {
+class MyPageSellerClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageClaimSellerContent>) :
+        CommonRecyclerAdapter<MyPageClaimSellerContent, CommonRecyclerAdapter.ListViewHolder<MyPageClaimSellerContent>>(list) {
 
     override fun getItemViewType(position: Int): Int {
-        if(items[position].inquiry.id != 0L){
+        if(items[position].id != 0){
             return 1
         }else{
             return 0
         }
     }
 
-    override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder<MyPageClaim.Content> {
+    override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder<MyPageClaimSellerContent> {
         val layoutInflater = LayoutInflater.from(parent.context)
         when(viewType){
             1 -> {
-                var res = R.layout.item_mypage_claim_list
-                val binding: ItemMypageClaimListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+                var res = R.layout.item_mypage_claimseller_list
+                val binding: ItemMypageClaimsellerListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
                 var viewModel = MyPageClaimListItemViewModel((model as MyPageClaimViewModel).context)
                 binding.item = viewModel
                 return MyPageClaimListViewHolder(binding.root, binding)
@@ -52,7 +52,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
         }
     }
 
-    override fun setOnBindViewHolder(viewHolder: ListViewHolder<MyPageClaim.Content>, item: MyPageClaim.Content, position: Int) {
+    override fun setOnBindViewHolder(viewHolder: ListViewHolder<MyPageClaimSellerContent>, item: MyPageClaimSellerContent, position: Int) {
         viewHolder.bind(model, position, item)
     }
 
@@ -62,43 +62,21 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
     /**
      * 마이페이지 상품문의 의 리스트에 사용할 viewholder
      */
-    inner class MyPageClaimListViewHolder(val containerView: View, val binding: ItemMypageClaimListBinding) : ListViewHolder<MyPageClaim.Content>(containerView, binding) {
-        override fun bind(model: ViewModel, position: Int, data: MyPageClaim.Content) {
+    inner class MyPageClaimListViewHolder(val containerView: View, val binding: ItemMypageClaimsellerListBinding) : ListViewHolder<MyPageClaimSellerContent>(containerView, binding) {
+        override fun bind(model: ViewModel, position: Int, data: MyPageClaimSellerContent) {
             // init
             binding.linearlayoutMypageclaimlistAnswer1.visibility = View.VISIBLE
             binding.linearlayoutMypageclaimlistAnswer2.visibility = View.GONE
             binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener(null)
             binding.textviewMypageclaimlistAsk1.maxLines = 1
             binding.imageviewMypageclaimlistArrow1.setImageResource(R.drawable.detail_icon_arrow_open)
-            binding.buttonMypageclaimlistModify.visibility = View.GONE
-            binding.buttonMypageclaimlistDelete.visibility = View.VISIBLE
 
-            /**
-             * 상품 문의 수정
-             * @author Hyeyeon Park
-             * @since 2019.07.30
-             */
-            binding.buttonMypageclaimlistModify.setOnClickListener {
-                val context = (model as MyPageClaimViewModel).context as AppCompatActivity
-                val intent = Intent(context, WriteClaimActivity::class.java)
-                val claimContent = model.listData.value?.get(adapterPosition)
-
-                val inquiry = Inquiry().apply {
-                    content = claimContent?.inquiry?.inquiry ?: ""
-                    privateInquiry = claimContent?.inquiry?.private ?: false
-                    inquiryId = claimContent?.inquiry?.id?.toInt()
-                }
-                model.selectedIndex = adapterPosition
-                intent.putExtra("inquiry", inquiry)
-                intent.putExtra("productId", claimContent?.inquiry?.productId)
-                context.startActivityForResult(intent, Flag.RequestCode.MODIFY_CLAIM)
-            }
             when {
                 position == 0 -> {
                     binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
                     binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
                 }
-                position == this@MyPageClaimAdapter.itemCount - 1 -> {
+                position == this@MyPageSellerClaimAdapter.itemCount - 1 -> {
                     binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
                     binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
                 }
@@ -109,23 +87,23 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             }
 
             // Product
-            ImageUtil.loadImage((this@MyPageClaimAdapter.model as MyPageClaimViewModel).mRequestManager, binding.imageviewMypageclaimlistProduct, data.item.imageUrl)
+            /*ImageUtil.loadImage((this@MyPageSellerClaimAdapter.model as MyPageClaimViewModel).mRequestManager, binding.imageviewMypageclaimlistProduct, data.item.imageUrl)
             binding.imageviewMypageclaimlistProduct.contentDescription = data.item.dealId.toString()
             binding.imageviewMypageclaimlistProduct.setOnClickListener {
                 var id = it.contentDescription.toString().toLong()
                 CommonUtil.startProductActivity((model as MyPageClaimViewModel).context as Activity, id)
-            }
-            binding.textviewMypageclaimlistBrand.text = data.item.brandName
-            binding.textviewMypageclaimlistTitle.text = data.item.productName
-            binding.textviewMypageclaimlistSeller.text = data.item.sellerName
-            binding.textviewMypageclaimlistSeason.text = data.item.productSeason
-            var createdAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.createdAt }
+            }*/
+            binding.textviewMypageclaimlistTitle.text = data.title
+            var createdAtCal = Calendar.getInstance().apply { timeInMillis = data.createdAt }
             binding.textviewMypageclaimlistDate.text = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, createdAtCal ) + " 작성")
 
             // Inquiry
-            binding.textviewMypageclaimlistAsk1.text = data.inquiry.inquiry
             binding.linearlayoutMypageclaimlistAnswer1.tag = false
-            if ("COMPLETED".equals(data.inquiry.status)) {
+            binding.buttonMypageclaimlistDelete.visibility = View.GONE
+            binding.buttonMypageclaimlistDelete.setOnClickListener(null)
+            binding.textviewMypageclaimlistAsk1.text = data.contents
+            binding.textviewMypageclaimlistAsk2.text = data.contents
+            /*if ("COMPLETED".equals(data.inquiry.status)) {
                 binding.buttonMypageclaimlistDelete.visibility = View.GONE
                 binding.buttonMypageclaimlistDelete.setOnClickListener(null)
                 binding.textviewMypageclaimlistStatus.setBackgroundResource(R.color.common_blue_purple)
@@ -135,8 +113,8 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                 binding.textviewMypageclaimlistAsk1.text = data.inquiry.inquiry
                 binding.textviewMypageclaimlistAsk2.text = data.inquiry.inquiry
                 binding.textviewMypageclaimlistAsk3.text = data.inquiry.reply
-                if(data.inquiry.replyAt != null && data.inquiry.replyAt is Long){
-                    var replyAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.replyAt!! as Long }
+                if(data.repliedAt != null && data.repliedAt is Long){
+                    var replyAtCal = Calendar.getInstance().apply { timeInMillis = data.repliedAt!! as Long }
                     binding.textviewMypageclaimlistDate1.text = ("판매자 " +  DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, replyAtCal ))
                 }else{
                     try{
@@ -174,7 +152,9 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                     (model as MyPageClaimViewModel).deleteClaimItem(position,data.inquiry.productId, data.inquiry.id, loading)
                 }
 
-            }
+            }*/
+
+
         }
 
         /**
@@ -191,7 +171,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                         binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
                         binding.imageviewMypageclaimlistTopbar2.visibility = View.INVISIBLE
                     }
-                    index == this@MyPageClaimAdapter.itemCount-1 -> {
+                    index == this@MyPageSellerClaimAdapter.itemCount-1 -> {
                         binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
                         binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
                     }
@@ -209,7 +189,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                         binding.imageviewMypageclaimlistTopbar1.visibility = View.INVISIBLE
                         binding.imageviewMypageclaimlistTopbar2.visibility = View.VISIBLE
                     }
-                    index == this@MyPageClaimAdapter.itemCount-1 -> {
+                    index == this@MyPageSellerClaimAdapter.itemCount-1 -> {
                         binding.imageviewMypageclaimlistTopbar1.visibility = View.GONE
                         binding.imageviewMypageclaimlistTopbar2.visibility = View.GONE
                     }
@@ -225,8 +205,8 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
     }
 
 
-    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder<MyPageClaim.Content>(containerView,binding){
-        override fun bind(model : ViewModel, position : Int, data: MyPageClaim.Content){
+    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder<MyPageClaimSellerContent>(containerView,binding){
+        override fun bind(model : ViewModel, position : Int, data: MyPageClaimSellerContent){
             binding.linearlayoutMoreView.setOnClickListener {
                 (model as MyPageClaimViewModel).getMoreCalimList(data.pageNumber+1)
             }

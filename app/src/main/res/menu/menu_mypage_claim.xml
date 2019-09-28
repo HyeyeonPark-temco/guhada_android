@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/maypage_claim_status1"
+        android:title="전체" />
+    <item
+        android:id="@+id/maypage_claim_status2"
+        android:title="미답변" />
+    <item
+        android:id="@+id/maypage_claim_status3"
+        android:title="완료" />
+
+</menu>

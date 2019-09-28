@@ -602,7 +602,8 @@ public class Type {
         TYPE_1("yyyy.MM.dd"),
         TYPE_2("yyyy-MM-dd"),
         TYPE_3("yyyy-MM-dd HH:mm:ss"),
-        TYPE_4("yy.MM.dd HH:mm");
+        TYPE_4("yy.MM.dd HH:mm"),
+        TYPE_5("yy.MM.dd HH:mm");
 
         private String type;
 
@@ -618,6 +619,8 @@ public class Type {
                     return TYPE_3.type;
                 case TYPE_4:
                     return TYPE_4.type;
+                case TYPE_5:
+                    return TYPE_5.type;
                 default:
                     return TYPE_1.type;
             }

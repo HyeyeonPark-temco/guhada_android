@@ -123,7 +123,7 @@ class MyPageClaim : BasePageModel(), Serializable {
         var replier : Long = 0L
 
         @SerializedName("replyAt")
-        var replyAt : Array<Int> = arrayOf()
+        var replyAt : Any? = null
 
         @SerializedName("replyUpdated")
         var replyUpdated : String = ""
@@ -132,17 +132,19 @@ class MyPageClaim : BasePageModel(), Serializable {
         var enable : Boolean = false
 
         @SerializedName("createdAt")
-        var createdAt : Array<Int> = arrayOf()
+        var createdAt : Long = 0L
 
         @SerializedName("updatedAt")
-        var updatedAt : Array<Int> = arrayOf()
+        var updatedAt : Long = 0L
 
         @SerializedName("private")
         var private : Boolean = false
 
         override fun toString(): String {
-            return "Inquiry(id=$id, productId=$productId, status='$status', inquiry='$inquiry', inquirer=$inquirer, nickname='$nickname', reply='$reply', replier=$replier, replyAt=${Arrays.toString(replyAt)}, replyUpdated='$replyUpdated', enable=$enable, createdAt=${Arrays.toString(createdAt)}, updatedAt=${Arrays.toString(updatedAt)}, private=$private)"
+            return "Inquiry(id=$id, productId=$productId, status='$status', inquiry='$inquiry', inquirer=$inquirer, nickname='$nickname', reply='$reply', replier=$replier, replyAt=$replyAt, replyUpdated='$replyUpdated', enable=$enable, createdAt=$createdAt, updatedAt=$updatedAt, private=$private)"
         }
+
+
     }
 
     override fun toString(): String {

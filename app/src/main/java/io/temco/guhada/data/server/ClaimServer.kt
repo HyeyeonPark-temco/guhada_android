@@ -138,7 +138,7 @@ open class ClaimServer {
                 RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
                         .getMyClaimList(accessToken = "Bearer $accessToken", page = page, status = status).enqueue(object : Callback<BaseModel<MyPageClaim>> {
                             override fun onResponse(call: Call<BaseModel<MyPageClaim>>, response: Response<BaseModel<MyPageClaim>>) {
-                                listener.onResult(response.isSuccessful, response.body())
+                                resultListener(listener, call, response)
                             }
 
                             override fun onFailure(call: Call<BaseModel<MyPageClaim>>, t: Throwable) {

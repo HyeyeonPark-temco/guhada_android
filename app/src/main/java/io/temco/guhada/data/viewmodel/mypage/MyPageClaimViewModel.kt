@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
@@ -48,13 +49,42 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
         repository.getList()
     }
 
-    var emptyClaimVisible = ObservableBoolean(false) // ObservableInt(View.GONE)
+    var mypageClaimTotalCountTxt = ObservableField<String>("0")
         @Bindable
         get() = field
         set(value) {
             field = value
-            notifyPropertyChanged(BR.emptyClaimVisible)
+            notifyPropertyChanged(BR.mypageClaimTotalCountTxt)
         }
+
+    var mypageClaimTabVisibleSwitch = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mypageClaimTabVisibleSwitch)
+        }
+
+    var emptyClaimVisible1 = ObservableBoolean(false) // ObservableInt(View.GONE)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.emptyClaimVisible1)
+        }
+
+
+    var emptyClaimVisible2 = ObservableBoolean(false) // ObservableInt(View.GONE)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.emptyClaimVisible2)
+        }
+
+    fun clickTab(tabIndex : Int){
+        mypageClaimTabVisibleSwitch.set(tabIndex)
+    }
 
 
     fun reloadRecyclerView(listener : OnSwipeRefreshResultListener?){
@@ -65,11 +95,11 @@ class MyPageClaimViewModel (val context : Context) : BaseObservableViewModel() {
         repository.setInitData(selectClaimStatusFilter,listener)
     }
 
-    var claimMessages: MutableList<String> = mutableListOf("답변상태 : 전체","답변상태 : 미답변","답변상태 : 완료")
+    var claimMessages: MutableList<String> = mutableListOf("전체","미답변","완료")
         @Bindable
         get() = field
 
-    var selectedStatusMessage = ObservableField<String>("답변상태 : 전체") // 스피너 표시 메세지
+    var selectedStatusMessage = ObservableField<String>("전체") // 스피너 표시 메세지
         @Bindable
         get() = field
 
@@ -118,7 +148,7 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
         getMoreClaimList(status, listener)
     }
 
-    fun getMoreClaimList(status : Int,listener : OnSwipeRefreshResultListener?, nextPage : Int = 1){
+    fun getMoreClaimList(status : Int,listener : OnSwipeRefreshResultListener?, nextPage : Int = 0){
         var statusValue = ""
         when(status){
             1->statusValue = "PENDING"
@@ -141,8 +171,9 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
                             data.content.add(page)
                         }
                         if(data.content.size == 0 && data.pageable.pageNumber == 1){
-                            viewModel.emptyClaimVisible.set(true)
-                        } else viewModel.emptyClaimVisible.set(false)
+                            viewModel.emptyClaimVisible1.set(true)
+                        } else viewModel.emptyClaimVisible1.set(false)
+                        viewModel.mypageClaimTotalCountTxt.set(data.totalElements.toString())
 
                         viewModel.getListAdapter()!!.items.addAll(data.content)
                         viewModel.getListAdapter().notifyDataSetChanged()
@@ -150,27 +181,32 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
                     },
                     dataNotFoundTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","dataNotFoundTask")
-                        viewModel.emptyClaimVisible.set(true)
+                        viewModel.emptyClaimVisible1.set(true)
+                        viewModel.mypageClaimTotalCountTxt.set("0")
                         listener?.run { onResultCallback() }
                     },
                     failedTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","failedTask")
-                        viewModel.emptyClaimVisible.set(true)
+                        viewModel.emptyClaimVisible1.set(true)
+                        viewModel.mypageClaimTotalCountTxt.set("0")
                         listener?.run { onResultCallback() }
                     },
                     serverRuntimeErrorTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverRuntimeErrorTask")
-                        viewModel.emptyClaimVisible.set(true)
+                        viewModel.emptyClaimVisible1.set(true)
+                        viewModel.mypageClaimTotalCountTxt.set("0")
                         listener?.run { onResultCallback() }
                     },
                     serverLoginErrorTask = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","serverLoginErrorTask")
-                        viewModel.emptyClaimVisible.set(true)
+                        viewModel.emptyClaimVisible1.set(true)
+                        viewModel.mypageClaimTotalCountTxt.set("0")
                         listener?.run { onResultCallback() }
                     },
                     dataIsNull = {
                         if(CustomLog.flag)CustomLog.L("getMoreClaimList","dataIsNull")
-                        viewModel.emptyClaimVisible.set(true)
+                        viewModel.emptyClaimVisible1.set(true)
+                        viewModel.mypageClaimTotalCountTxt.set("0")
                         viewModel.listData.value = ArrayList()
                         viewModel.listData.value = viewModel.listData.value
                         listener?.run { onResultCallback() }

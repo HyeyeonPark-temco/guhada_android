@@ -45,7 +45,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private final int REQUEST_CODE_CATEGORY = 201;
     private final int REQUEST_CODE_BRAND = 202;
 
-    private Disposable disposable;
+    private Disposable disposable = null;
     //
 
     private MainPagerAdapter mPagerAdapter;

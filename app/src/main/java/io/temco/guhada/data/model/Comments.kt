@@ -48,7 +48,7 @@ class CommentImageList : Serializable {
     var fileName = ""
     var fileType = ""
     var fileSize = 0L
-    var createdAt = arrayOf<Int>()
+    var createdAt = Any()
     var createdTimestamp = 0L
 
     override fun toString(): String {

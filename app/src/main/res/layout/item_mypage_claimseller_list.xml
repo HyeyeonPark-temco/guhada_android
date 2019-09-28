@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="item"
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageClaimListItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/imageview_mypageclaimlist_topbar1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
+            android:src="@color/disable_border"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageview_mypageclaimlist_product"
+                style="@style/ProductImageType"
+                android:layout_width="90dp"
+                android:layout_height="120dp"
+                android:layout_marginRight="24dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:weightSum="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_mypageclaimlist_brand"
+                        style="@style/TextBold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_3"
+                        android:textSize="@dimen/text_13" />
+
+                    <Button
+                        android:id="@+id/button_mypageclaimlist_delete"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:visibility="gone"
+                        android:background="@drawable/mypage_icon_delete"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+                    <!-- SEASON -->
+                    <TextView
+                        android:id="@+id/textview_mypageclaimlist_season"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <!-- TITLE -->
+                    <TextView
+                        android:id="@+id/textview_mypageclaimlist_title"
+                        style="@style/TextRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <!-- 판매자 -->
+                <TextView
+                    android:id="@+id/textview_mypageclaimlist_seller"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_13" />
+
+                <!-- 작성일자 -->
+                <TextView
+                    android:id="@+id/textview_mypageclaimlist_date"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/warm_grey_two"
+                    android:textSize="@dimen/text_13" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_mypageclaimlist_modify"
+            style="@style/borderlessStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:visibility="gone"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/drawable_border_dsix"
+            android:text="@string/btn_claim_modify"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_13" />
+
+        <!-- 답변 미답변 접혀있는 화면
+             미답변은 눌렀을때 펼쳐지는 화면까지
+             답변완료는 눌렀을때 gone-->
+        <LinearLayout
+            android:id="@+id/linearlayout_mypageclaimlist_answer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_marginTop="28dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layerType="software"
+                android:src="@drawable/drawable_dash_line_eb"/>
+
+            <TextView
+                android:id="@+id/textview_mypageclaimlist_status"
+                style="@style/TextRegular"
+                android:layout_width="60dp"
+                android:layout_height="24dp"
+                android:text="@string/productdetail_qna_reply_pending"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:textSize="@dimen/text_12"
+                android:textColor="@color/greyish_brown_two"
+                android:background="@drawable/drawable_border_dsix"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:weightSum="1"
+                android:paddingBottom="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textview_mypageclaimlist_ask1"
+                    style="@style/TextRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:textSize="@dimen/text_13"
+                    android:ellipsize="end"/>
+
+                <ImageView
+                    android:id="@+id/imageview_mypageclaimlist_arrow1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/detail_icon_arrow_open"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayout_mypageclaimlist_answer2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:visibility="gone"
+            android:background="@color/color_fbfbfb"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:paddingBottom="1dp"
+                android:src="@color/disable_border"/>
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="60dp"
+                android:layout_height="24dp"
+                android:text="@string/productdetail_qna_reply_completed"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:textSize="@dimen/text_12"
+                android:textColor="@color/common_white"
+                android:background="@color/common_blue_purple"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:id="@+id/textview_mypageclaimlist_ask2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/text_13"
+                    android:text="안녕하세요. 고객님. 고객님의 상품 현재 배송중으로 금일 배송 완료 될 예정입니다. "/>
+
+                <ImageView
+                    android:id="@+id/imageview_mypageclaimlist_arrow2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/detail_icon_arrow_close"/>
+            </LinearLayout>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layerType="software"
+                android:layout_margin="20dp"
+                android:src="@drawable/drawable_dash_line_eb"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:weightSum="1"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageview_mypageclaimlist_arrow3"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/icon_qnareply"/>
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/blue_purple"
+                    android:textSize="@dimen/text_13"
+                    android:text="@string/productdetail_qna_reply"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:weightSum="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textview_mypageclaimlist_ask3"
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_13"
+                        android:textColor="@color/greyish_brown_two"
+                        android:text="안녕하세요. 고객님. 고객님의 상품 현재 배송중으로 금일 배송 완료 될 예정입니다. "/>
+
+                    <TextView
+                        android:id="@+id/textview_mypageclaimlist_date1"
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:textSize="@dimen/text_13"
+                        android:textColor="@color/warm_grey_two"
+                        android:text="판매자 19.02.05 18:57"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:src="@color/disable_border"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageview_mypageclaimlist_topbar2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
+            android:src="@color/disable_border"/>
+    </LinearLayout>
+</layout>

@@ -3,122 +3,265 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable name="clickListenerClaimStatus" type="android.view.View.OnClickListener" />
+        <variable name="clickListener" type="android.view.View.OnClickListener" />
         <import type="android.view.View" />
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageClaimViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/common_white">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefreshLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-            
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:weightSum="1">
+                android:layout_height="49dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <FrameLayout
-                    android:id="@+id/framelayout_payment_shippingmemo"
-                    android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:background="@color/white_five"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="20dp" >
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="49dp"
+                    android:orientation="vertical"
+                    android:onClick="@{()-> viewModel.clickTab(0)}"
+                    android:background="@{viewModel.mypageClaimTabVisibleSwitch == 0 ? @color/common_white : @color/pale_grey, default = @color/pale_grey}"
+                    android:layout_weight="1">
 
-                    <Spinner
-                        android:id="@+id/spinner_mypageclaim_status"
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@drawable/border_all_whitethree"
-                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:overlapAnchor="false"
-                        android:popupBackground="@null"
-                        android:spinnerMode="dropdown"
-                        app:bindCommonSpinner="@{viewModel.claimMessages}" />
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageClaimTabVisibleSwitch == 0 ? @color/black_four : @color/pale_grey, default = @color/pale_grey}" />
 
-                    <FrameLayout
-                        android:id="@+id/framelayout_mypageclaim_button"
+                    <TextView
+                        style="@style/TextRegular"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@color/white_three"
-                        android:padding="1dp">
+                        android:layout_height="47dp"
+                        android:gravity="center"
+                        android:text="@{@string/productdetail_qna_title}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_14" />
 
-                        <LinearLayout
-                            android:id="@+id/linearlayout_mypageclaim_message"
-                            android:layout_width="match_parent"
-                            android:layout_height="43dp"
-                            android:background="@color/common_white"
-                            android:orientation="horizontal"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="15dp"
-                            android:popupBackground="@null">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageClaimTabVisibleSwitch == 0 ? @color/common_white : @color/black_four, default = @color/pale_grey}" />
+                </LinearLayout>
 
-                            <TextView
-                                style="@style/PaymentContentGreyTextStyle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
-                                android:textSize="@dimen/text_13"
-                                android:text="@{viewModel.selectedStatusMessage}" />
-
-                            <ImageView
-                                android:id="@+id/imageview_payment_shippingmemo"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open" />
-                        </LinearLayout>
-                    </FrameLayout>
-                </FrameLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_mypageclaimlayout_list"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/common_white"
-                    app:setAdapter="@{viewModel.getListAdapter()}"
-                    android:visibility="@{viewModel.emptyClaimVisible ? View.GONE : View.VISIBLE, default = gone}"/>
+                    android:background="@color/black_four" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="49dp"
+                    android:orientation="vertical"
+                    android:onClick="@{()-> viewModel.clickTab(1)}"
+                    android:background="@{viewModel.mypageClaimTabVisibleSwitch == 1 ? @color/common_white : @color/pale_grey, default = @color/pale_grey}"
+                    android:layout_weight="1" >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageClaimTabVisibleSwitch == 1 ? @color/black_four : @color/pale_grey, default = @color/pale_grey}" />
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="47dp"
+                        android:gravity="center"
+                        android:text="@{@string/userclaim_seller_title}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@{viewModel.mypageClaimTabVisibleSwitch == 1 ? @color/common_white : @color/black_four, default = @color/pale_grey}" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    android:background="@color/common_white"
-                    android:paddingBottom="60dp"
-                    android:visibility="@{viewModel.emptyClaimVisible ? View.VISIBLE : View.GONE, default = gone}">
+                    android:visibility="@{viewModel.mypageClaimTabVisibleSwitch == 0 ? View.VISIBLE : View.GONE, default = visible}"
+                    android:weightSum="1">
 
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:background="@drawable/icon_no_data"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="bottom"
+                        android:weightSum="1"
+                        android:paddingBottom="4dp"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        style="@style/TextMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/no_list_item_claim_desc"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_13" />
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                            android:gravity="center"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/black_four"
+                            android:text="@string/mypage_recentlayout_totalsize1"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@{viewModel.mypageClaimTotalCountTxt}"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="2dp"
+                            android:textColor="@color/blue_purple"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                            android:text="@string/mypage_recentlayout_totalsize2"
+                            android:layout_marginBottom="1dp"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_13" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:onClick="@{clickListenerClaimStatus}"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="1dp"
+                                android:text="@{viewModel.selectedStatusMessage}"
+                                android:gravity="center"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_13" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="6dp"
+                                android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                                android:src="@drawable/detail_icon_arrow_open"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_mypageclaimlayout_list1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/common_white"
+                        app:setAdapter="@{viewModel.getListAdapter()}"
+                        android:visibility="@{viewModel.emptyClaimVisible1 ? View.GONE : View.VISIBLE, default = gone}"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/common_white"
+                        android:paddingBottom="60dp"
+                        android:visibility="@{viewModel.emptyClaimVisible1 ? View.VISIBLE : View.GONE, default = gone}">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/icon_no_data"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/no_list_item_claim_desc"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.mypageClaimTabVisibleSwitch == 1 ? View.VISIBLE : View.GONE, default = gone}"
+                    android:weightSum="1">
 
-    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="70dp"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_mypageclaimlayout_list2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/common_white"
+                        app:setAdapter="@{viewModel.getListAdapter()}"
+                        android:visibility="@{viewModel.emptyClaimVisible2 ? View.GONE : View.VISIBLE, default = gone}"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/common_white"
+                        android:paddingBottom="60dp"
+                        android:visibility="@{viewModel.emptyClaimVisible2 ? View.VISIBLE : View.GONE, default = gone}">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/icon_no_data"/>
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/no_list_item_claim_desc"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_13" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
