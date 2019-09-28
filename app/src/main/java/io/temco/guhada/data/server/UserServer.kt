@@ -13,6 +13,7 @@ import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.naver.NaverResponse
+import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.LikesModel
@@ -24,6 +25,7 @@ import io.temco.guhada.data.retrofit.service.UserService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import org.apache.commons.lang3.mutable.Mutable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -928,8 +930,6 @@ class UserServer {
         }
 
 
-
-
         /**
          * 회원 좋아요 저장하기 (비동기)
          * @since 2019.09.26
@@ -950,7 +950,23 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).deleteLikesAsync(accessToken = accessToken, userId = userId, id = id).await()
         }
 
+        /**
+         * 닉네임으로 유저 정보 가져오기
+         * @since 2019.09.28
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun getUserByNickName(listener: OnServerListener, nickName: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getUserByNickName(nickName = nickName)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
 
+        /**
+         * 은행 정보 가져오기
+         * @since 2019.09.28
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun getBanks(listener: OnServerListener) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getBanks()
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<PurchaseOrder.Bank>>>(successTask = { listener.onResult(true, it.body()) }))
     }
 }

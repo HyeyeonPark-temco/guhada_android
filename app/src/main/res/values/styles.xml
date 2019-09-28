@@ -529,5 +529,19 @@
         <item name="android:textSize">@dimen/text_13</item>
         <item name="android:textColor">@color/warm_grey</item>
     </style>
+
+    <!-- MYPAGE REFUND ACCOUNT -->
+    <style name="MypageRefundAccountTitleTextStyle" parent="TextBold">
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/black_four</item>
+    </style>
+    <style name="MypageRefundAccountSubTitleTextStyle" parent="TextMedium">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/black_four</item>
+    </style>
+    <style name="MypageRefundAccountHingTextStyle" parent="TextRegular">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/warm_grey</item>
+    </style>
 </resources>
 

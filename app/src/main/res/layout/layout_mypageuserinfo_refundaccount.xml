@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pale_grey">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/common_white"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                style="@style/SuccessRequestExchangeSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mypage_userinfo_refundaccount_title" />
+
+            <TextView
+                style="@style/MypageRefundAccountSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/mypage_userinfo_refundaccount_name" />
+
+
+            <FrameLayout
+                android:id="@+id/framelayout_requestorderstatus_cause"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp">
+
+                <Spinner
+                    android:id="@+id/spinner_requestorderstatus_bank"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupBackground="@null"
+                    android:spinnerMode="dropdown" />
+
+                <FrameLayout
+                    android:id="@+id/framelayout_requestorderstatus_causebutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white_three"
+                    android:padding="1dp">
+
+                    <LinearLayout
+                        android:id="@+id/linearlayout_requestorderstatus_cause"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/common_white"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:popupBackground="@null">
+
+                        <TextView
+                            android:id="@+id/textview_requestrefund_bankname"
+                            style="@style/MypageDeliveryWarmGreyTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/mypage_userinfo_refundaccount_name_hint"
+                            android:textSize="@dimen/text_13" />
+
+                        <ImageView
+                            android:id="@+id/imageview_requestorderstatus_cause"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/payment_icon_selectbox_open" />
+                    </LinearLayout>
+                </FrameLayout>
+
+            </FrameLayout>
+
+
+            <!-- 계좌번호 -->
+            <TextView
+                style="@style/MypageRefundAccountSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/mypage_userinfo_refundaccount_number" />
+
+            <EditText
+                android:id="@+id/edittext_requestrefund_banknum"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_all_whitethree"
+                android:hint="@string/mypage_userinfo_refundaccount_number_hint"
+                android:paddingStart="15dp"
+                android:inputType="number"
+                android:paddingEnd="15dp"
+                android:text="@={viewModel.mRefundRequest.refundBankAccountNumber}"
+                android:textColor="@color/black_four"
+                android:textColorHint="@color/warm_grey"
+                android:textSize="@dimen/text_13" />
+
+            <!-- 예금주명 -->
+            <TextView
+                style="@style/MypageRefundAccountSubTitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/mypage_userinfo_refundaccount_owner" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/edittext_requestrefund_bankowner"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/box_all_palegrey"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="@string/requestorderstatus_refund_bankhint3"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:textColorHint="@color/warm_grey"
+                    android:textSize="@dimen/text_13" />
+
+                <Button
+                    android:id="@+id/button_requestrefund_checkaccount"
+                    style="@style/borderlessStyle"
+                    android:layout_width="90dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:clickable="@{viewModel.mIsCheckAccountAvailable}"
+                    android:onClick="@{()->viewModel.checkAccount()}"
+                    android:text="@{viewModel.mIsCheckAccountAvailable? @string/requestorderstatus_refund_checkbank : @string/requestorderstatus_refund_checkbank_success, default=@string/requestorderstatus_refund_checkbank }"
+                    android:textSize="@dimen/text_13"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</layout>
