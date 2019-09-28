@@ -433,7 +433,7 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
                 binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
-                binding.imageDummy.setImageResource(item.imageRes)
+                binding.imageDummy.setBackgroundResource(item.imageRes)
             }
         }
     }

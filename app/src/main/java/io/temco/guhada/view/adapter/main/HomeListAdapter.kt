@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Handler
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -233,12 +234,16 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     margin = CommonViewUtil.dipToPixel(viewModel.context, 3)
                     layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 126)
                 }
-
-                binding.isViewMore = "BEST ITEM".equals(item.title)
+                var searchCondition = ""
+                when(item.title){
+                    "BEST ITEM" -> searchCondition = Type.SerchFilterCondition.BEST.name
+                    "NEW IN" -> searchCondition = Type.SerchFilterCondition.NEW.name
+                }
+                binding.isViewMore = !TextUtils.isEmpty(searchCondition)
                 binding.setClickListener {
                     var intent = Intent(itemView.context as MainActivity, ProductFilterListActivity::class.java)
                     intent.putExtra("type", Type.ProductListViewType.VIEW_MORE)
-                    intent.putExtra("search_word", "BEST")
+                    intent.putExtra("search_word", searchCondition)
                     (itemView.context as MainActivity).startActivityForResult(intent, Flag.RequestCode.BASE)
                 }
 
@@ -448,7 +453,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
                 binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
-                binding.imageDummy.setImageResource(item.imageRes)
+                binding.imageDummy.setBackgroundResource(item.imageRes)
             }
         }
     }

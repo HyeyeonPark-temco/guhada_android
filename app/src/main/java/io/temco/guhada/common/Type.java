@@ -774,5 +774,12 @@ public class Type {
         }
     }
 
+    // ProductListViewType
+    public enum SerchFilterCondition implements Serializable {
+        NEW,
+        BEST,
+        PLUS
+    }
+
     ////////////////////////////////////////////////
 }

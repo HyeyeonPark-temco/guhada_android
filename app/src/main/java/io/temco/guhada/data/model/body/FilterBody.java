@@ -59,7 +59,7 @@ public class FilterBody {
                 ", categoryIds=" + categoryIds +
                 ", filters=" + filters +
                 ", searchQueries=" + searchQueries +
-                ", searchCondition=" + searchCondition + '\'' +
+                ", searchCondition='" + searchCondition + '\'' +
                 ", searchResultOrder='" + searchResultOrder + '\'' +
                 '}';
     }

@@ -189,7 +189,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="140dp"
                 android:src="@drawable/community_banner_mobile"
                 android:background="#d6b5ad"/>
 

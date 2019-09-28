@@ -102,6 +102,9 @@ class ReportActivity : BindActivity<io.temco.guhada.databinding.ActivityReportBi
         mViewModel.writeUserInfo.observe(this, Observer {
             if(CustomLog.flag)CustomLog.L("ReportActivity",it.toString())
             mBinding.email = it.email
+            if(mViewModel.reportTarget == ReportTarget.USER){
+                mBinding.linearlayoutReportdetailType1.text01 = mViewModel.userData?.nickname ?: ""
+            }
         })
 
         mBinding.edittextReportText.addTextChangedListener(object  : TextWatcher {

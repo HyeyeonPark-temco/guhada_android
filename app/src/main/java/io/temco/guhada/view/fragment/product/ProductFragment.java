@@ -259,8 +259,12 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
             if (mType == Type.ProductListViewType.SEARCH) {
                 mBinding.layoutHeaderSearch.setTitle(title);
             }else if (mType == Type.ProductListViewType.VIEW_MORE) {
-                if(title.equalsIgnoreCase("best")){
+                if(title.equalsIgnoreCase(Type.SerchFilterCondition.BEST.name())){
                     mBinding.layoutHeader.setTitle("BEST ITEM");
+                }else  if(title.equalsIgnoreCase(Type.SerchFilterCondition.NEW.name())){
+                    mBinding.layoutHeader.setTitle("NEW IN");
+                }else  if(title.equalsIgnoreCase(Type.SerchFilterCondition.PLUS.name())){
+                    mBinding.layoutHeader.setTitle("Premium Item");
                 }
             }else{
                 mBinding.layoutHeader.setTitle(title);

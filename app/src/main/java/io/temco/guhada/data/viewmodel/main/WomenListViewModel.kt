@@ -71,9 +71,9 @@ class WomenListRepository(val context : Context){
         val event = MainEvent(0, HomeType.MainEvent, tmpList)
         ddd.add(event)
         list.value!!.add(event)*/
-        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 200))
+        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
         // ------------------------------------------------------------------
-        getNewIn()
+        getBestItem()
     }
 
 
@@ -113,7 +113,7 @@ class WomenListRepository(val context : Context){
                                 "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 1, newArrival,false)
                         list.value!!.add(subTitle)
                         list.value = list.value
-                        //getNewIn()
+                        getNewIn()
                     },
                     dataNotFoundTask = {
 
@@ -139,7 +139,7 @@ class WomenListRepository(val context : Context){
                         list.value!!.add(subTitle)
                         list.value = list.value
                         //getHotKeyword()
-                        getBestItem()
+                        //getBestItem()
                     },
                     dataNotFoundTask = {
 

@@ -90,7 +90,7 @@
                     android:layout_marginLeft="20dp"
                     android:onClick="@{onClickUserSize}"
                     android:gravity="center"
-                    android:visibility="@{viewModel.reviewUserSizeStatus ? View.VISIBLE : View.GONE , default = visible}"
+                    android:visibility="@{viewModel.reviewUserSizeStatus ? View.VISIBLE : View.GONE , default = gone}"
                     android:background="@color/blue_purple"
                     android:orientation="vertical">
 
@@ -98,16 +98,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginLeft="20dp"
                         android:gravity="center_vertical"
                         android:background="@color/blue_purple"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/TextRegular"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
                             android:layout_marginRight="7dp"
                             android:gravity="center"
                             android:textStyle="bold"
@@ -117,7 +115,7 @@
                             android:text="!" />
 
                         <TextView
-                            style="@style/TextRegular"
+                            style="@style/TextRegularSingleLine"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"

@@ -2,21 +2,15 @@ package io.temco.guhada.data.viewmodel.productdetail
 
 import android.view.View
 import androidx.databinding.Bindable
-import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
-import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.EventBusData
-import io.temco.guhada.common.EventBusHelper
-import io.temco.guhada.common.Flag
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.base.BaseModel
@@ -24,7 +18,6 @@ import io.temco.guhada.data.model.review.ReviewResponse
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import io.temco.guhada.view.fragment.mypage.MyPageTabType
 import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment
 
 class ProductDetailReviewViewModel : BaseObservableViewModel() {

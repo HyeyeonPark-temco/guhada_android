@@ -11,8 +11,10 @@ import android.widget.AdapterView
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
+import io.reactivex.functions.Consumer
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
@@ -31,6 +33,7 @@ import io.temco.guhada.view.activity.MyPageTempLoginActivity
 import io.temco.guhada.view.activity.VerifyEmailActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
+import io.temco.guhada.view.fragment.mypage.MyPageMainFragment
 
 /**
  * 19.07.22
@@ -253,19 +256,21 @@ class MyPageUserInfoLayout constructor(
             } else {
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----", it.data.toString())
                 var result = it.data.toString().split(",")
-                var resultCode = result[0].toInt()
-                var message: String? = result[1]
-                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----", resultCode, "resultCode", resultCode)
-                if (resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)) {
-                    var returnId = message?.toLong()
-                    if (returnId == CommonUtil.checkUserId()) {
-                        successLogin()
+                if(!TextUtils.isEmpty(it.data.toString()) && result.size > 1){
+                    var resultCode = result[0].toInt()
+                    var message: String? = result[1]
+                    if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----", resultCode, "resultCode", resultCode)
+                    if (resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)) {
+                        var returnId = message?.toLong()
+                        if (returnId == CommonUtil.checkUserId()) {
+                            successLogin()
+                        } else {
+                            CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                        }
                     } else {
-                        CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                        if (TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
+                        CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
                     }
-                } else {
-                    if (TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
-                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
                 }
             }
         }

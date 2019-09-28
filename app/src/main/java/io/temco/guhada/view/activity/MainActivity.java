@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.EventBusData;
@@ -44,6 +44,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private final int REQUEST_CODE_LOGIN = 101;
     private final int REQUEST_CODE_CATEGORY = 201;
     private final int REQUEST_CODE_BRAND = 202;
+
+    private Disposable disposable;
     //
 
     private MainPagerAdapter mPagerAdapter;
@@ -105,7 +107,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     mBinding.layoutContents.layoutPager.setCurrentItem(2);
                     selectTab(2, false);
                     if(((BaseApplication) getApplicationContext()).getMoveToMain().isInitMain()){
-                        EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
+                        EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
                     }
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(3);
@@ -114,7 +116,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     mBinding.layoutContents.layoutPager.setCurrentItem(4);
                     selectTab(4, false);
                     if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1){
-                        EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_MOVE,
+                        EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_MOVE,
                                 ((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex()));
                     }
                 }
@@ -144,7 +146,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 case Flag.RequestCode.CONFIRM_PURCHASE:
                 case Flag.RequestCode.CANCEL_ORDER:
                     EventBusData eventBusData = new EventBusData(requestCode, null);
-                    EventBusHelper.INSTANCE.sendEvent(eventBusData);
+                    EventBusHelper.sendEvent(eventBusData);
                     break;
 
                 case REQUEST_CODE_LOGIN:
@@ -171,17 +173,17 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     break;
 
                 case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.EDIT_SHIPPING_ADDRESS, null));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.EDIT_SHIPPING_ADDRESS, null));
                     ToastUtil.showMessage(getString(R.string.shippingaddress_message_edit_success));
                     break;
 
                 case Flag.RequestCode.ADD_SHIPPING_ADDRESS:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.ADD_SHIPPING_ADDRESS, null));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.ADD_SHIPPING_ADDRESS, null));
                     break;
 
                 case Flag.RequestCode.MODIFY_CLAIM:
                     Claim claim = (Claim) data.getExtras().getSerializable("inquiry");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.MODIFY_CLAIM, (claim != null ? claim : null)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MODIFY_CLAIM, (claim != null ? claim : null)));
                     break;
 
                 case Flag.RequestCode.SEARCH_WORD:
@@ -194,35 +196,35 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     break;
 
                 case Flag.RequestCode.REVIEW_WRITE:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_WRITE, null));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_WRITE, null));
                     break;
                 case Flag.RequestCode.REVIEW_MODIFY:
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_MODIFY, null));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.REVIEW_MODIFY, null));
                     break;
 
                 case Flag.RequestCode.KAKAO_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
                 case Flag.RequestCode.VERIFY_EMAIL:
                     assert data != null;
                     String email = data.getStringExtra("email");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(requestCode, email));
+                    EventBusHelper.sendEvent(new EventBusData(requestCode, email));
                     break;
             }
         } else {
@@ -234,22 +236,22 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 case Flag.RequestCode.KAKAO_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
             }
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -269,8 +271,34 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     ////////////////////////////////////////////////
 
     private void setEventBus() {
-        EventBusHelper.INSTANCE.getMSubject()
-                .subscribe(new Observer<EventBusData>() {
+        disposable = EventBusHelper.listen(EventBusData.class).subscribe(new Consumer<EventBusData>() {
+            @Override
+            public void accept(EventBusData data) throws Exception {
+                switch (data.getRequestCode()) {
+                    case Flag.RequestCode.PRODUCT_DETAIL:
+                        CommonUtil.startProductActivity(MainActivity.this, (Long) data.getData());
+                        break;
+                    case Flag.RequestCode.GO_TO_MAIN:
+                        finish();
+                        break;
+                    case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
+                        if (data.getData() != null) {
+                            UserShipping shippingAddress = (UserShipping) data.getData();
+                            Intent intent = new Intent(MainActivity.this, EditShippingAddressActivity.class);
+                            intent.putExtra("orderShippingAddress", shippingAddress);
+                            intent.putExtra("purchaseId", shippingAddress.getPId());
+                            intent.putExtra("addButtonVisible", true);
+                            startActivityForResult(intent, Flag.RequestCode.EDIT_SHIPPING_ADDRESS);
+                        }
+                }
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+
+            }
+        });
+               /* .subscribe(new Observer<EventBusData>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
@@ -280,8 +308,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     public void onNext(EventBusData data) {
                         switch (data.getRequestCode()) {
                             case Flag.RequestCode.PRODUCT_DETAIL:
-                                /*removeProductDetailFragment();
-                                addProductDetailView((Long) data.getData());*/
                                 CommonUtil.startProductActivity(MainActivity.this, (Long) data.getData());
                                 break;
                             case Flag.RequestCode.GO_TO_MAIN:
@@ -308,7 +334,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     public void onComplete() {
 
                     }
-                });
+                });*/
     }
 
     // Main Pager
@@ -489,6 +515,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             mDisposable.dispose();
             mDisposable = null;
         }
+        if(disposable != null){
+            disposable.dispose();
+        }
         super.onDestroy();
         BaseApplication.getInstance().setMoveToMain(null);
     }
@@ -499,5 +528,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     public GuhadaDB getmDb() {
         return mDb;
+    }
+
+    public Disposable getDisposable() {
+        return disposable;
     }
 }

@@ -69,9 +69,9 @@ class HomeListRepository(val context : Context){
          val event = MainEvent(0, HomeType.MainEvent, tmpList)
          ddd.add(event)
          list.value!!.add(event)*/
-        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 220))
+        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
         // ------------------------------------------------------------------
-        getNewIn()
+        getBestItem()
     }
 
     /**
@@ -110,9 +110,8 @@ class HomeListRepository(val context : Context){
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
                                 "BEST ITEM", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
-                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
                         list.value = list.value
-                        //getNewIn()
+                        getNewIn()
                     },
                     dataNotFoundTask = {
 
@@ -135,8 +134,9 @@ class HomeListRepository(val context : Context){
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
                                 "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
+                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
                         list.value = list.value
-                        getBestItem()
+                        //getBestItem()
                         //getHotKeyword()
                     },
                     dataNotFoundTask = {
