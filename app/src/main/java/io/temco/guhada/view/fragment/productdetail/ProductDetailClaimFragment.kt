@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -109,7 +110,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
         (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
         mViewModel.claimPageNo = 0
         mViewModel.claimPageSize = 5
-        mViewModel.claimResponse = ClaimResponse()
+        mViewModel.claimResponse = ObservableField(ClaimResponse())
         mViewModel.getClaims()
     }
 
@@ -118,9 +119,8 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
         @BindingAdapter("productClaims")
         fun RecyclerView.bindClaims(list: MutableList<Claim>?) {
             if (list != null && list.isNotEmpty()) {
-                if (this.adapter == null) {
+                if (this.adapter == null)
                     this.adapter = ProductDetailClaimAdapter()
-                }
 
                 if ((this.adapter as ProductDetailClaimAdapter).itemCount > 0) {
                     // MORE

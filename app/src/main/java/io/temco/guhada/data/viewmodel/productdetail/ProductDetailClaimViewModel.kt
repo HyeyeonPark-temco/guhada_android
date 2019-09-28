@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -32,7 +33,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
     var claimPageNo = 0
     var claimPageSize = 5
     var claimStatus = ""
-    var claimResponse: ClaimResponse = ClaimResponse()
+    var claimResponse: ObservableField<ClaimResponse> = ObservableField(ClaimResponse())
         @Bindable
         get() = field
 
@@ -40,7 +41,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         if (success) {
             val model = o as BaseModel<*>
             if (model.resultCode == Flag.ResultCode.DATA_NOT_FOUND) {
-                if (this.claimResponse.content.isNotEmpty() && this.claimResponse.last) {
+                if (this.claimResponse.get()?.content?.isNotEmpty()?:false && this.claimResponse.get()?.last?:false) {
                     listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
                 }
 
@@ -48,10 +49,10 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
                 emptyVisible = ObservableBoolean(true)
                 notifyPropertyChanged(BR.emptyVisible)
             } else {
-                this.claimResponse = model.data as ClaimResponse
+                this.claimResponse = ObservableField(model.data as ClaimResponse)
 
                 if (claimStatus == "" && !isMineChecked) {
-                    this.totalClaimCount = this.claimResponse.totalElements
+                    this.totalClaimCount = this.claimResponse.get()?.totalElements?:0
                     notifyPropertyChanged(BR.totalClaimCount)
                 }
 
@@ -71,7 +72,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
     }
 
     fun getClaims() {
-        if (!this.claimResponse.last) {
+        if (!(this.claimResponse.get()?.last?:false)) {
             ServerCallbackUtil.callWithToken(
                     task = { accessToken ->
                         ClaimServer.getClaims(getClaimListener, accessToken = accessToken, productId = productId, isMyInquiry = isMineChecked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)

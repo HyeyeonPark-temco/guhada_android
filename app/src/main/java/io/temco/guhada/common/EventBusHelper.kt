@@ -1,7 +1,6 @@
 package io.temco.guhada.common
 
 import io.reactivex.subjects.PublishSubject
-import io.temco.guhada.common.util.CustomLog
 
 object EventBusHelper {
     val mSubject = PublishSubject.create<EventBusData>()
