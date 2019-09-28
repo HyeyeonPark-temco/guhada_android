@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="io.temco.guhada">
+
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -274,7 +275,7 @@
             android:theme="@style/NoTitleBarDialog" />
         <activity
             android:name=".view.activity.CouponSelectDialogActivity"
-            android:theme="@style/Theme.Transparent"/>
+            android:theme="@style/Theme.Transparent" />
 
         <!-- get gallery Image file -->
         <activity
@@ -327,7 +328,12 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
         <!-- shipping tracking -->
-        <activity android:name=".view.activity.ShippingTrackingActivity"/>
+        <activity android:name=".view.activity.ShippingTrackingActivity" />
+
+        <!-- verify email -->
+        <activity
+            android:name=".view.activity.VerifyEmailActivity"
+            android:theme="@style/NoTitleBarDialog"/>
 
         <!-- Kakao -->
         <activity

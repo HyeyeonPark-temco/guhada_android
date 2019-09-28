@@ -219,6 +219,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
                     EventBusHelper.INSTANCE.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
+                case Flag.RequestCode.VERIFY_EMAIL:
+                    assert data != null;
+                    String email = data.getStringExtra("email");
+                    EventBusHelper.INSTANCE.sendEvent(new EventBusData(requestCode, email));
+                    break;
             }
         } else {
             switch (requestCode) {

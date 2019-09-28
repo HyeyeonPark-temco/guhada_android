@@ -69,7 +69,8 @@ public class Type {
         IMAGE_DETAIL,
         CUSTOM_WEBVIEW,
         VERIFY,
-        SHIPPING_TRACKING
+        SHIPPING_TRACKING,
+        VERIFY_EMAIL
     }
 
     // Main

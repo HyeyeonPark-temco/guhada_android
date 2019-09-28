@@ -80,8 +80,8 @@
                     android:layout_marginBottom="30dp"
                     android:background="@drawable/drawable_disable_inputform"
                     android:gravity="center_vertical"
+                    android:hint="@string/mypage_userinfo_passwaord_infotitle2"
                     android:paddingLeft="15dp"
-                    android:text="@string/mypage_userinfo_passwaord_infotitle2"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13" />
                 <!-- ====================================================================== -->
@@ -120,6 +120,7 @@
                             android:layout_margin="1dp"
                             android:background="@color/common_white"
                             android:gravity="center_vertical"
+                            android:hint="@string/mypage_userinfo_passwaord_infotitle3"
                             android:paddingStart="15dp"
                             android:paddingEnd="15dp"
                             android:text="@={viewModel.mNickName}"
@@ -168,18 +169,21 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_14" />
 
-                <io.temco.guhada.view.custom.BorderEditTextView
+                <TextView
+                    android:id="@+id/edittext_mypageuserinfo_email"
                     style="@style/TextMedium"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                     android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:layout_marginBottom="30dp"
+                    android:background="@drawable/border_all_whitethree"
                     android:gravity="center_vertical"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13"
-                    app:txt="@string/mypage_userinfo_passwaord_infotitle4"
-                    app:type="email" />
+                    android:text="@string/mypage_userinfo_passwaord_infotitle4"
+                    android:textColor="@color/warm_grey"
+                    android:textSize="@dimen/text_13" />
                 <!-- ====================================================================== -->
 
 

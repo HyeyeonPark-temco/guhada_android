@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="io.temco.guhada.data.viewmodel.VerifyEmailViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/common_white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/include_verifyemail_header"
+            layout="@layout/header_common_closebutton" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
+
+            <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittext_findpwd_emailname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:hint="@string/findpwd_hint_name"
+                app:txt="@={viewModel.mName}" />
+
+            <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittext_findpwd_emailid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hint="@string/findpwd_hint_email"
+                app:txt="@={viewModel.mEmail}"
+                app:type="email">
+
+                <Button
+                    style="@style/ActivatedButtonStyle"
+                    android:layout_width="100dp"
+                    android:layout_height="0dp"
+                    android:onClick="@{()->viewModel.onClickSendEmail()}"
+                    android:text="@string/findpwd_button_resend"
+                    android:visibility="@{viewModel.mVerifyEmailVisibility, default=gone}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </io.temco.guhada.view.custom.BorderEditTextView>
+
+            <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittext_findpwd_emailverify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:visibility="@{viewModel.mVerifyEmailVisibility, default = gone}"
+                app:hint="@string/findpwd_hint_verifynumber"
+                app:txt="@={viewModel.mVerifyNumber}"
+                app:type="number">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textview_verifyphone_minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.mTimerMinute}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_13" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:text=":"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_13" />
+
+                    <TextView
+                        android:id="@+id/textview_verifyphone_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.mTimerSecond}"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+            </io.temco.guhada.view.custom.BorderEditTextView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    style="@style/InactivatedButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="23dp"
+                    android:background="@{viewModel.mName.isEmpty() || viewModel.mEmail.isEmpty() ? @color/silver : @color/colorPrimary, default=@color/silver}"
+                    android:clickable="@{viewModel.mName.isEmpty() || viewModel.mEmail.isEmpty() ?false : true, default=false}"
+                    android:onClick="@{()->viewModel.onClickSendEmail()}"
+                    android:text="@string/findpwd_button_requestverify"
+                    android:visibility="@{viewModel.mVerifyEmailVisibility == View.VISIBLE ? View.GONE : View.VISIBLE, default=visible}" />
+
+                <Button
+                    style="@style/InactivatedButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="23dp"
+                    android:background="@{viewModel.mVerifyNumber.length() == 6 ? @color/colorPrimary : @color/silver, default=@color/silver}"
+                    android:clickable="@{viewModel.mVerifyNumber.length() == 6 ? true : false, default = false}"
+                    android:onClick="@{()->viewModel.onClickVerifyNumber()}"
+                    android:text="@string/findpwd_button_finishverify"
+                    android:visibility="@{viewModel.mVerifyEmailVisibility, default=gone}" />
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</layout>

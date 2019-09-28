@@ -1278,4 +1278,8 @@
     <string name="shippingtracking_status5">배송완료</string>
     <string name="shippingtracking_companyinfo_format">%s (%s)</string>
     <string name="shippingtracking_message_invalid">유효하지 않은 배송 정보입니다.</string>
+
+    <!-- VERIFY EMAIL -->
+    <string name="verifyemail_title">이메일 인증</string>
+    <string name="verifyemail_message_success">이메일 인증이 완료되었습니다.</string>
 </resources>

@@ -16,6 +16,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.util.CommonUtil
@@ -27,6 +28,7 @@ import io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageUserinfoBinding
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.activity.MyPageTempLoginActivity
+import io.temco.guhada.view.activity.VerifyEmailActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
@@ -80,6 +82,7 @@ class MyPageUserInfoLayout constructor(
         if (checkUserLogin()) {
             setInitView()
         }
+
         setEventBus()
 
         // 닉네임 변경
@@ -87,6 +90,12 @@ class MyPageUserInfoLayout constructor(
 
         // 환불 계좌정보
         initRefundAccountView()
+
+        // 이메일
+        mBinding.edittextMypageuserinfoEmail.setOnClickListener {
+            val intent = Intent(mBinding.root.context, VerifyEmailActivity::class.java)
+            (mBinding.root.context as Activity).startActivityForResult(intent, RequestCode.VERIFY_EMAIL.flag)
+        }
     }
 
     private fun setNickNameListener() {
@@ -237,24 +246,31 @@ class MyPageUserInfoLayout constructor(
     @SuppressLint("CheckResult")
     private fun setEventBus() {
         EventBusHelper.mSubject.subscribe {
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----", it.data.toString())
-            var result = it.data.toString().split(",")
-            var resultCode = result[0].toInt()
-            var message: String? = result[1]
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----", resultCode, "resultCode", resultCode)
-            if (resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)) {
-                var returnId = message?.toLong()
-                if (returnId == CommonUtil.checkUserId()) {
-                    successLogin()
-                } else {
-                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
-                }
+            if (it.requestCode == RequestCode.VERIFY_EMAIL.flag) {
+                val email = it.data as String?
+                mBinding.edittextMypageuserinfoEmail.text = email ?: ""
+                mBinding.executePendingBindings()
             } else {
-                if (TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
-                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
+                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----", it.data.toString())
+                var result = it.data.toString().split(",")
+                var resultCode = result[0].toInt()
+                var message: String? = result[1]
+                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----", resultCode, "resultCode", resultCode)
+                if (resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)) {
+                    var returnId = message?.toLong()
+                    if (returnId == CommonUtil.checkUserId()) {
+                        successLogin()
+                    } else {
+                        CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                    }
+                } else {
+                    if (TextUtils.isEmpty(message)) message = "회원 확인중 오류가 발생되었습니다."
+                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, message)
+                }
             }
         }
     }
+
 
     private fun successLogin() {
         Preferences.setPasswordConfirm(true)
