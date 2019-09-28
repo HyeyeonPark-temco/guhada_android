@@ -84,18 +84,20 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="98dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="98dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
                     android:onClick="@{onClickUserSize}"
                     android:gravity="center"
-                    android:visibility="@{viewModel.reviewUserSizeStatus ? View.VISIBLE : View.GONE , default = gone}"
+                    android:visibility="@{viewModel.reviewUserSizeStatus ? View.VISIBLE : View.GONE , default = visible}"
                     android:background="@color/blue_purple"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
                         android:gravity="center_vertical"

@@ -12,6 +12,7 @@ import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -87,10 +88,10 @@ public class RetrofitManager {
      */
     public static <S> S createService(Type.Server type, Class<S> service, boolean isLogged) {
         if (instance == null) {
-            instance = new RetrofitManager(type, isLogged);
+            instance = new RetrofitManager(type, CustomLog.getFlag() && isLogged);
         } else {
             if (type != instance.mCurrentType) {
-                instance = new RetrofitManager(type, isLogged);
+                instance = new RetrofitManager(type, CustomLog.getFlag() && isLogged);
             }
         }
         return instance.mManager.create(service);
@@ -108,10 +109,10 @@ public class RetrofitManager {
      */
     public static <S> S createService(Type.Server type, Class<S> service, boolean isLogged, boolean isParseJson) {
         if (parseJsonInstance == null) {
-            parseJsonInstance = new RetrofitManager(type, isLogged, isParseJson);
+            parseJsonInstance = new RetrofitManager(type, CustomLog.getFlag() && isLogged, isParseJson);
         } else {
             if (type != parseJsonInstance.mCurrentType) {
-                parseJsonInstance = new RetrofitManager(type, isLogged, isParseJson);
+                parseJsonInstance = new RetrofitManager(type, CustomLog.getFlag() && isLogged, isParseJson);
             }
         }
         return parseJsonInstance.mManager.create(service);

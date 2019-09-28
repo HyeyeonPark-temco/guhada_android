@@ -13,5 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="20dp">
 
+        <ImageView
+            android:id="@+id/image_dummy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"
+            android:background="#d6b5ad"/>
+
     </io.temco.guhada.view.custom.layout.HeightRelativeLayout>
 </layout>

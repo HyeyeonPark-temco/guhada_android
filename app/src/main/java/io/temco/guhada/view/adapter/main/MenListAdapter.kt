@@ -433,8 +433,7 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
                 binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
-                binding.heightLayout.setBackgroundResource(item.imageRes)
-
+                binding.imageDummy.setImageResource(item.imageRes)
             }
         }
     }

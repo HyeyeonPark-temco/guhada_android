@@ -189,8 +189,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:background="@drawable/ae_1_c_67_ff_2_b_46_ee_5_d_81725669_f_2179_f_79"/>
+                android:layout_height="60dp"
+                android:src="@drawable/community_banner_mobile"
+                android:background="#d6b5ad"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

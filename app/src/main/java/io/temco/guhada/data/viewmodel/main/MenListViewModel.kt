@@ -55,7 +55,7 @@ class MenListRepository(val context : Context){
 
     private fun setInitData() {
         list.value = ArrayList()
-        val ddd = ArrayList<MainBaseModel>()
+        /*val ddd = ArrayList<MainBaseModel>()
         val tmpList = java.util.ArrayList<EventData>()
         // 메인 홈 이벤트 화면의 더미 데이터 --------------------------------
         tmpList.add(EventData(0, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/a5e85e5d916e4e1e9d78d0a5e75a7411",
@@ -70,7 +70,8 @@ class MenListRepository(val context : Context){
                 R.drawable.main_05, "banner09", "", "", 4, ""))
         val event = MainEvent(0, HomeType.MainEvent, tmpList)
         ddd.add(event)
-        list.value!!.add(event)
+        list.value!!.add(event)*/
+        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 320))
         // ------------------------------------------------------------------
         getNewIn()
     }

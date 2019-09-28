@@ -77,14 +77,19 @@ class CreateUserInfo : Serializable {
     var birth : Array<Int>? = null
     var gender : String? = null
     var userStatus : String? = null
-    var withdrawalAt : Array<Int>? = null
-    var createdAt : Array<Int>? = null
+    var withdrawalAt : Any? = null
+    var createdAt : Long? = null
+    var updatedAt : Long? = null
+
+    override fun toString(): String {
+        return "CreateUserInfo(id=$id, email=$email, name=$name, userType=$userType, emailVerify=$emailVerify, nickname='$nickname'" +
+                ", mobile=$mobile, profileImageUrl=$profileImageUrl, zip=$zip, address=$address, roadAddress=$roadAddress, detailAddress=$detailAddress" +
+                ", birth=${Arrays.toString(birth)}, gender=$gender, userStatus=$userStatus, withdrawalAt=$withdrawalAt, createdAt=$createdAt, updatedAt=$updatedAt)"
+    }
     //var userDetail : UserDetail = UserDetail()
     //var roles : ArrayList<Roles> = arrayListOf()
 
-    override fun toString(): String {
-        return "CreateUserInfo(id=$id, email=$email, name=$name, userType=$userType, emailVerify=$emailVerify, nickname=$nickname, mobile=$mobile, profileImageUrl=$profileImageUrl, zip=$zip, address=$address, roadAddress=$roadAddress, detailAddress=$detailAddress, birth=$birth, gender=$gender, userStatus=$userStatus, withdrawalAt=$withdrawalAt, createdAt=${Arrays.toString(createdAt)})"/*, userDetail=$userDetail*/
-    }
+
 
 }
 
@@ -147,7 +152,6 @@ class Authorities : Serializable {
     var type : String? = null
     var description : String? = null
     var authority : String? = null
-
 }
 
 

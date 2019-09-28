@@ -92,9 +92,16 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
                     map.put(data.id, data)
                     adapter.mDepthTitle.put(data.depth, map)
                 }else{
-                    var map : MutableMap<Int, Category> = adapter.mDepthTitle.get(data.depth)!!
-                    map.put(data.id, data)
-                    adapter.mDepthTitle.put(data.depth, map)
+                    if((data.children != null && !data.children.isEmpty())) {
+                        adapter.mDepthTitle.remove(data.depth)
+                        var map : MutableMap<Int, Category> = mutableMapOf()
+                        map.put(data.id, data)
+                        adapter.mDepthTitle.put(data.depth, map)
+                    }else{
+                        var map : MutableMap<Int, Category> = adapter.mDepthTitle.get(data.depth)!!
+                        map.put(data.id, data)
+                        adapter.mDepthTitle.put(data.depth, map)
+                    }
                 }
                 if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","1---- start clickNormal data",data.toString())
                 if(adapter.mDepthTitle.containsKey(data.depth-1)){

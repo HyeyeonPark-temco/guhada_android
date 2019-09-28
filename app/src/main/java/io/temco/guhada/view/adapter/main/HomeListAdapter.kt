@@ -448,7 +448,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
                 binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
-                binding.heightLayout.setBackgroundResource(item.imageRes)
+                binding.imageDummy.setImageResource(item.imageRes)
             }
         }
     }

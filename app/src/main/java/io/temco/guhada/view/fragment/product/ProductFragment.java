@@ -80,8 +80,8 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.VISIBLE);
             }else if (mType == Type.ProductListViewType.VIEW_MORE) {
                 addConditionList();
-                mBinding.layoutHeader.layoutHeader.setVisibility(View.GONE);
-                mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.VISIBLE);
+                mBinding.layoutHeader.layoutHeader.setVisibility(View.VISIBLE);
+                mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.GONE);
             }
         });
     }
@@ -259,7 +259,9 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
             if (mType == Type.ProductListViewType.SEARCH) {
                 mBinding.layoutHeaderSearch.setTitle(title);
             }else if (mType == Type.ProductListViewType.VIEW_MORE) {
-                mBinding.layoutHeaderSearch.setTitle("BEST ITEM");
+                if(title.equalsIgnoreCase("best")){
+                    mBinding.layoutHeader.setTitle("BEST ITEM");
+                }
             }else{
                 mBinding.layoutHeader.setTitle(title);
             }

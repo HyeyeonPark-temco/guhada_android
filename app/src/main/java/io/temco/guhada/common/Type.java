@@ -101,6 +101,7 @@ public class Type {
         GATEWAY,
         STG_ORDER,
         WEB,
+        SETTLE,
         SHIP;
 
         public static String getUrl(Server type) {
@@ -135,6 +136,8 @@ public class Type {
                     return getWebUrl();
                 case SHIP:
                     return getShipUrl();
+                case SETTLE:
+                    return getShipUrl();
                 default:
                     return "";
             }
@@ -148,6 +151,20 @@ public class Type {
         SEARCH,
         VIEW_MORE,
         NONE
+    }
+
+    private static String getSettleUrl(){
+        switch (BuildConfig.BuildType) {
+            case QA:
+                return "http://settle.guhada.com/";
+            case STAGE:
+                return "http://settle.guhada.com/";
+            case RELEASE:
+                return "http://settle.guhada.com/";
+            default:
+                if(isTempProd)return "http://settle.guhada.com/";
+                else return "http://settle.guhada.com/";
+        }
     }
 
     private static String getShipUrl(){

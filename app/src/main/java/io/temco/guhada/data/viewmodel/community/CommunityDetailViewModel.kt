@@ -311,11 +311,11 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                         var data = (o as BaseModel<*>).data as CommunityDetail
                         viewModel.communityDetail.postValue(data)
                     },
-                    dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataNotFoundTask ") },
-                    failedTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData failedTask ") },
-                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData userLikeNotFoundTask ") },
-                    serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData serverRuntimeErrorTask ") },
-                    dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataIsNull ") }
+                    dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail dataNotFoundTask ") },
+                    failedTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail failedTask ") },
+                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail userLikeNotFoundTask ") },
+                    serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail serverRuntimeErrorTask ") },
+                    dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getBbsDetail dataIsNull ") }
             )
         }, viewModel.bbsId, CommonUtil.getUserIp())
     }

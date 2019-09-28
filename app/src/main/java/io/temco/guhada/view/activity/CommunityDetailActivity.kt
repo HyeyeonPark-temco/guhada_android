@@ -76,7 +76,6 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
         })
 
         setDetailView()
-
         setOnClick()
     }
 
@@ -164,6 +163,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private fun setDetailView(){
         if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "setDetailView ---------------------")
         mViewModel.communityDetail.observe(this, Observer {
+            if (CustomLog.flag) CustomLog.L("CommunityDetailActivity", "setDetailView ---------------------")
             mLoadingIndicatorUtil?.dismiss()
             if(it.use && !it.delete){
                 if(it.createUserInfo == null){
