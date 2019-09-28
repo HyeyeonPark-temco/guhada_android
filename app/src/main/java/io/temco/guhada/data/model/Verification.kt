@@ -25,7 +25,8 @@ class Verification {
     var identityVerifyMethod = IdentityVerifyMethod.MOBILE.code
 
     enum class IdentityVerifyMethod(val code: String) {
-        MOBILE("MOBILE")
+        MOBILE("MOBILE"),
+        EMAIL("EMAIL")
     }
 
     enum class Gender(val label: String, val code: String) {

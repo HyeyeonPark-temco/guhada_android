@@ -69,7 +69,8 @@ public class Type {
         IMAGE_DETAIL,
         CUSTOM_WEBVIEW,
         VERIFY,
-        SHIPPING_TRACKING
+        SHIPPING_TRACKING,
+        VERIFY_EMAIL
     }
 
     // Main
@@ -157,8 +158,8 @@ public class Type {
             case RELEASE:
                 return "https://ship.guhada.com/";
             default:
-//                return "http://dev.ship.guhada.com/";
-                return "http://ship.guhada.com/";
+                return "http://dev.ship.guhada.com/";
+//                return "http://ship.guhada.com/";
         }
     }
 
@@ -171,8 +172,8 @@ public class Type {
             case RELEASE:
                 return "https://search.guhada.com/";
             default:
-                return "https://search.guhada.com/";
-//                return "http://dev.search.guhada.com:9090/";
+//                return "https://search.guhada.com/";
+                return "http://dev.search.guhada.com:9090/";
         }
     }
 
@@ -185,8 +186,8 @@ public class Type {
             case RELEASE:
                 return "https://product.guhada.com/";
             default:
-                return "https://product.guhada.com/";
-//                return "http://dev.product.guhada.com:8080/";
+//                return "https://product.guhada.com/";
+                return "http://dev.product.guhada.com:8080/";
         }
     }
 
@@ -199,8 +200,8 @@ public class Type {
             case RELEASE:
                 return "https://bbs.guhada.com/";
             default:
-                return "https://bbs.guhada.com/";
-//                return "http://dev.bbs.guhada.com/";
+//                return "https://bbs.guhada.com/";
+                return "http://dev.bbs.guhada.com/";
         }
     }
 
@@ -213,8 +214,8 @@ public class Type {
             case RELEASE:
                 return "https://user.guhada.com/";
             default:
-                return "https://user.guhada.com/";
-//                return "http://dev.user.guhada.com/";
+//                return "https://user.guhada.com/";
+                return "http://dev.user.guhada.com/";
         }
     }
 
@@ -227,8 +228,8 @@ public class Type {
             case RELEASE:
                 return "https://claim.guhada.com/";
             default:
-                return "https://claim.guhada.com/";
-//                return "http://dev.claim.guhada.com/";//:8081
+//                return "https://claim.guhada.com/";
+                return "http://dev.claim.guhada.com/";//:8081
         }
     }
 
@@ -241,8 +242,8 @@ public class Type {
             case RELEASE:
                 return "https://order.guhada.com/";
             default:
-                return "https://order.guhada.com/";
-//                return "http://dev.order.guhada.com:8080/";
+//                return "https://order.guhada.com/";
+                return "http://dev.order.guhada.com:8080/";
         }
     }
 
@@ -255,8 +256,8 @@ public class Type {
             case RELEASE:
                 return "https://payment.guhada.com/";
             default:
-                return "https://payment.guhada.com/";
-//                return "http://dev.payment.guhada.com:8081/";
+//                return "https://payment.guhada.com/";
+                return "http://dev.payment.guhada.com:8081/";
         }
     }
 
@@ -269,8 +270,8 @@ public class Type {
             case RELEASE:
                 return "https://benefit.guhada.com/";
             default:
-                return "https://benefit.guhada.com/";
-//                return "http://dev.benefit.guhada.com:8080/";
+//                return "https://benefit.guhada.com/";
+                return "http://dev.benefit.guhada.com:8080/";
         }
     }
 
@@ -283,8 +284,8 @@ public class Type {
             case RELEASE:
                 return "https://gateway.guhada.com/";
             default:
-                return "https://gateway.guhada.com/";
-//                return "http://dev.gateway.guhada.com/";
+//                return "https://gateway.guhada.com/";
+                return "http://dev.gateway.guhada.com/";
         }
     }
 
@@ -298,8 +299,8 @@ public class Type {
             case RELEASE:
                 return "https://web.guhada.com/";
             default:
-                return "https://web.guhada.com/";
-//                return "http://dev.guhada.com/";
+//                return "https://web.guhada.com/";
+                return "http://dev.guhada.com/";
         }
     }
 
