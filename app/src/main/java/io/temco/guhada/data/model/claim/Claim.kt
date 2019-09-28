@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.claim
 
+import io.temco.guhada.common.util.CommonUtil
 import java.io.Serializable
 
 /**
@@ -23,7 +24,12 @@ class Claim : Serializable {
     var reply: String? = null
 
     // DATE TIME
-    var replyAt: ArrayList<Int> = arrayListOf()
-    var createdAt: ArrayList<Int> = arrayListOf()
-    var updatedAt: ArrayList<Int> = arrayListOf()
+    var replyAt = 0L
+    var createdAt = 0L
+    var updatedAt = 0L
+
+    fun getCreatedAtDate() =
+        CommonUtil.convertTimeStampToDate(createdAt)
+    fun getReplyAtAtDate() =
+            CommonUtil.convertTimeStampToDate(replyAt)
 }

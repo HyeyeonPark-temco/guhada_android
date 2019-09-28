@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_height="wrap_content"
-                android:text="@{claim.createdAt[0]+ `.` +claim.createdAt[1]+ `.` +claim.createdAt[2]+` `+ claim.createdAt[3] + `:` + claim.createdAt[4]+ `:` +claim.createdAt[5]}"
+                android:text="@{claim.getCreatedAtDate()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/imageview_productdetail_claim_new"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -219,7 +219,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@{claim.replyAt[0] + `.` +claim.replyAt[1] + `.` +claim.replyAt[2]+` `+ claim.replyAt[3] + `:` + claim.replyAt[4]+ `:` +claim.replyAt[5]}"
+                android:text="@{claim.getReplyAtAtDate()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_qna_replycontent" />
