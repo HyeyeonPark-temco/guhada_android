@@ -172,7 +172,6 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
         else -> BankAccount().apply {
             this.bankNumber = mRefundRequest.refundBankAccountNumber
             this.bankCode = mRefundRequest.refundBankCode
-            this.name = mRefundRequest.refundBankAccountOwner
         }.let {
             if (mIsCheckAccountAvailable.get()) {
                 OrderServer.checkAccount(OnServerListener { success, o ->

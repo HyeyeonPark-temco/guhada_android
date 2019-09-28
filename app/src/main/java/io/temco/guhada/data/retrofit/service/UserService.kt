@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
+import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.LikesModel
@@ -528,5 +529,13 @@ interface UserService {
      */
     @GET("/users/nickname/{nickname}")
     fun getUserByNickName(@Path("nickname") nickName: String): Call<BaseModel<Any>>
+
+    /**
+     * 은행 정보 가져오기 API
+     * @since 2019.09.28
+     * @author Hyeyeon Park
+     */
+    @GET("/banks")
+    fun getBanks() : Call<BaseModel<MutableList<PurchaseOrder.Bank>>>
 
 }

@@ -7,22 +7,27 @@ import android.content.Intent
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
+import android.widget.AdapterView
+import androidx.databinding.ObservableBoolean
+import androidx.lifecycle.Observer
+import io.reactivex.Observable
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnBaseDialogListener
-import io.temco.guhada.common.listener.OnBorderEditTextFocusListener
-import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.account.LoginViewModel
 import io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageUserinfoBinding
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.activity.MyPageTempLoginActivity
+import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -42,6 +47,8 @@ class MyPageUserInfoLayout constructor(
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_userinfo
+
+
     override fun init() {
         mViewModel = MyPageUserInfoViewModel(context)
         mBinding.viewModel = mViewModel
@@ -77,6 +84,9 @@ class MyPageUserInfoLayout constructor(
 
         // 닉네임 변경
         setNickNameListener()
+
+        // 환불 계좌정보
+        initRefundAccountView()
     }
 
     private fun setNickNameListener() {
@@ -86,6 +96,54 @@ class MyPageUserInfoLayout constructor(
                 mViewModel.getUserByNickName()
             }
         }
+    }
+
+    private fun initRefundAccountView() {
+        mViewModel.getRefundBanks()
+        mBinding.includeMypageuserinfoBank.viewModel = mViewModel
+        mViewModel.mBankNumInputAvailableTask = {
+            if (mViewModel.mIsCheckAccountAvailable.get())
+                mBinding.includeMypageuserinfoBank.buttonRequestrefundCheckaccount.text = resources.getString(R.string.requestorderstatus_refund_checkbank)
+            else
+                mBinding.includeMypageuserinfoBank.buttonRequestrefundCheckaccount.text = resources.getString(R.string.requestorderstatus_refund_checkbank_success)
+
+            mBinding.executePendingBindings()
+        }
+        mViewModel.mRefundBanks.observe(this, Observer { banks ->
+            val bankNameList = mutableListOf<String>()
+            Observable.fromIterable(banks)
+                    .map {
+                        it.bankName
+                    }.subscribe {
+                        bankNameList.add(it)
+                    }.dispose()
+
+            bankNameList.add(mBinding.root.context.getString(R.string.requestorderstatus_refund_bankhint1))
+            mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.adapter = CommonSpinnerAdapter(context = mBinding.root.context, layoutRes = R.layout.item_common_spinner, list = bankNameList).apply {
+                this.mItemCount = bankNameList.size - 1
+            }
+            mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    if (position < banks.size) {
+                        val selectedBank: PurchaseOrder.Bank? = banks[position]
+                        if (selectedBank != null) {
+                            mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text = selectedBank.bankName
+                            mViewModel.mRefundRequest.refundBankCode = selectedBank.bankCode
+
+                            mViewModel.mIsCheckAccountAvailable = ObservableBoolean(true)
+                            mViewModel.notifyPropertyChanged(BR.mIsCheckAccountAvailable)
+                        }
+                    }
+                }
+            }
+
+            mViewModel.mBankAccount.observe(this, Observer {
+                mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
+            })
+
+            mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)
+        })
     }
 
 
@@ -182,10 +240,10 @@ class MyPageUserInfoLayout constructor(
             if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----", it.data.toString())
             var result = it.data.toString().split(",")
             var resultCode = result[0].toInt()
-            var message = result[1]
+            var message: String? = result[1]
             if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----", resultCode, "resultCode", resultCode)
             if (resultCode == Activity.RESULT_OK && !TextUtils.isEmpty(message)) {
-                var returnId = message.toLong()
+                var returnId = message?.toLong()
                 if (returnId == CommonUtil.checkUserId()) {
                     successLogin()
                 } else {

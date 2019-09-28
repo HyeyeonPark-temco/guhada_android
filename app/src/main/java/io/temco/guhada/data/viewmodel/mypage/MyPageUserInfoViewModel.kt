@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -11,10 +12,16 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.data.model.BankAccount
+import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.User
+import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
+import java.util.*
 
 /**
  * 19.07.22
@@ -29,7 +36,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 ○ 비밀번호 1회 재입력은 로그인 API를 한번 더 호출하는 방식으로 처리되어있음
  *
  */
-class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel() {
+class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel(), Observer {
     val repository: MyPageUserInfoRepository = MyPageUserInfoRepository(this)
 
     var userId: Long = 0L
@@ -67,8 +74,19 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel() 
         @Bindable
         get() = field
 
+    // 환불 계좌 정보
+    var mRefundBanks = MutableLiveData<MutableList<PurchaseOrder.Bank>>()
+    var mBankAccount = MutableLiveData<BankAccount>(BankAccount())
+    var mIsCheckAccountAvailable = ObservableBoolean(true)
+    var mRefundRequest = RefundRequest()
+    var mBankNumInputAvailableTask : () -> Unit = {}
+
     fun userCheck(listener: OnCallBackListener) {
         repository.userData(listener)
+    }
+
+    init {
+        this.mRefundRequest.addObserver(this)
     }
 
     fun getUserByNickName() {
@@ -92,6 +110,57 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel() 
                         notifyPropertyChanged(BR.mNickNameBg)
                     })
         }, nickName = mNickName)
+    }
+
+    fun getRefundBanks() {
+        UserServer.getBanks(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        mRefundBanks.postValue(it.data as MutableList<PurchaseOrder.Bank>)
+                    })
+        })
+    }
+
+    fun checkAccount() = when {
+        mRefundRequest.refundBankCode.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_emptybankcode))
+        mRefundRequest.refundBankAccountNumber.isEmpty() -> ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_emptybanknumber))
+        else -> BankAccount().apply {
+            this.bankNumber = mRefundRequest.refundBankAccountNumber
+            this.bankCode = mRefundRequest.refundBankCode
+        }.let {
+            if (mIsCheckAccountAvailable.get()) {
+                OrderServer.checkAccount(OnServerListener { success, o ->
+                    if (success) {
+                        val bankAccount = (o as BaseModel<BankAccount>).data
+                        if (bankAccount.result) {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_succesbankaccount))
+                            mBankAccount.postValue(bankAccount)
+
+                            mRefundRequest.refundBankCode = bankAccount.bankCode
+                            mRefundRequest.refundBankAccountNumber = bankAccount.bankNumber
+                            mRefundRequest.refundBankAccountOwner = bankAccount.name
+
+                            mIsCheckAccountAvailable = ObservableBoolean(false)
+                            notifyPropertyChanged(BR.mIsCheckAccountAvailable)
+                            mBankNumInputAvailableTask()
+                        } else {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_invalidbankaccount))
+                        }
+                    }
+                }, bankAccount = it)
+            }
+
+        }
+    }
+
+    override fun update(o: Observable?, arg: Any?) {
+        if (arg is String) {
+            if (arg == "bankNumber") {
+                mIsCheckAccountAvailable = ObservableBoolean(true)
+                notifyPropertyChanged(BR.mIsCheckAccountAvailable)
+                mBankNumInputAvailableTask()
+            }
+        }
     }
 }
 

@@ -8,14 +8,13 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.mypage.delivery.RequestRefundViewModel" />
+            type="io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pale_grey"
-        android:visibility='@{viewModel.mPurchaseOrder.paymentMethod.equals("Card") ? View.GONE : View.VISIBLE}'>
+        android:background="@color/pale_grey">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="@string/mypage_userinfo_refundaccount_name" />
+                android:text="@string/mypage_userinfo_refundaccount_number" />
 
             <EditText
                 android:id="@+id/edittext_requestrefund_banknum"
@@ -111,6 +110,7 @@
                 android:background="@drawable/border_all_whitethree"
                 android:hint="@string/mypage_userinfo_refundaccount_number_hint"
                 android:paddingStart="15dp"
+                android:inputType="number"
                 android:paddingEnd="15dp"
                 android:text="@={viewModel.mRefundRequest.refundBankAccountNumber}"
                 android:textColor="@color/black_four"
@@ -155,8 +155,7 @@
                     android:background="@drawable/border_all_whitethree"
                     android:clickable="@{viewModel.mIsCheckAccountAvailable}"
                     android:onClick="@{()->viewModel.checkAccount()}"
-                    android:text="@{viewModel.mIsCheckAccountAvailable ? @string/requestorderstatus_refund_checkbank : @string/requestorderstatus_refund_checkbank_success,default=@string/requestorderstatus_refund_checkbank }"
-                    android:textColor="@color/black_four"
+                    android:text="@{viewModel.mIsCheckAccountAvailable? @string/requestorderstatus_refund_checkbank : @string/requestorderstatus_refund_checkbank_success, default=@string/requestorderstatus_refund_checkbank }"
                     android:textSize="@dimen/text_13"
                     android:textStyle="bold" />
             </LinearLayout>
