@@ -152,6 +152,13 @@ interface UserService {
     fun checkExistSnsUser(@Query("sns-type") snsType: String, @Query("uid") snsId: String, @Query("email") email: String): Call<BaseModel<Any>>
 
     /**
+     * 연동된 sns 종류 불러오기
+     * @param userId
+     */
+    @GET("/sns-users/{userId}/sns-type")
+    fun checkSnsUserType(@Path("userId") userId: Long): Call<BaseModel<Any>>
+
+    /**
      * SNS 회원가입 API
      */
     @POST("/sns-users")

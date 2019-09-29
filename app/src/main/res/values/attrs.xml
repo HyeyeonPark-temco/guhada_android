@@ -10,7 +10,7 @@
         <attr name="hint" format="reference|string" />
         <attr name="txt" format="reference|string" />
         <attr name="max" format="reference|integer" />
-        <attr name="readonly" format="reference|boolean"/>
+        <attr name="readonly" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="HeightRelativeLayout">

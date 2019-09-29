@@ -11,29 +11,31 @@ import android.widget.AdapterView
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnBaseDialogListener
+import io.temco.guhada.common.listener.OnBorderEditTextFocusListener
+import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.account.LoginViewModel
 import io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageUserinfoBinding
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.activity.MyPageTempLoginActivity
+import io.temco.guhada.view.activity.UserSizeUpdateActivity
 import io.temco.guhada.view.activity.VerifyEmailActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
+import io.temco.guhada.view.custom.BorderEditTextView
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
-import io.temco.guhada.view.fragment.mypage.MyPageMainFragment
 
 /**
  * 19.07.22
@@ -49,6 +51,9 @@ class MyPageUserInfoLayout constructor(
 ) : BaseListLayout<CustomlayoutMypageUserinfoBinding, MyPageUserInfoViewModel>(context, attrs, defStyleAttr), OnLoginListener {
 
     private lateinit var mUserInfoViewModel: LoginViewModel
+    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+    private var isPassFocus = false
+
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_userinfo
@@ -60,26 +65,36 @@ class MyPageUserInfoLayout constructor(
         mUserInfoViewModel = LoginViewModel(this)
         mBinding.includeMypageuserinfoUserpassword.viewModel = mUserInfoViewModel
         mBinding.includeMypageuserinfoUserpassword.userInfoViewModel = mViewModel
+        mLoadingIndicatorUtil = LoadingIndicatorUtil(context)
 
+        // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
         mBinding.includeMypageuserinfoUserpassword.setOnClickFacebook {
-            var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request", Flag.RequestCode.FACEBOOK_LOGIN)
-            (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.FACEBOOK_LOGIN)
+            if(mViewModel.mypageUserInfoLoginCheckType.get() == 3){
+                var intent = Intent(context, MyPageTempLoginActivity::class.java)
+                intent.putExtra("request", Flag.RequestCode.FACEBOOK_LOGIN)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.FACEBOOK_LOGIN)
+            }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickGoogle {
-            var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request", Flag.RequestCode.GOOGLE_LOGIN)
-            (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.RC_GOOGLE_LOGIN)
+            if(mViewModel.mypageUserInfoLoginCheckType.get() == 4){
+                var intent = Intent(context, MyPageTempLoginActivity::class.java)
+                intent.putExtra("request", Flag.RequestCode.GOOGLE_LOGIN)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.RC_GOOGLE_LOGIN)
+            }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickKakao {
-            var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request", Flag.RequestCode.KAKAO_LOGIN)
-            (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN)
+            if(mViewModel.mypageUserInfoLoginCheckType.get() == 2){
+                var intent = Intent(context, MyPageTempLoginActivity::class.java)
+                intent.putExtra("request", Flag.RequestCode.KAKAO_LOGIN)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN)
+            }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickNaver {
-            var intent = Intent(context, MyPageTempLoginActivity::class.java)
-            intent.putExtra("request", Flag.RequestCode.NAVER_LOGIN)
-            (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.NAVER_LOGIN)
+            if(mViewModel.mypageUserInfoLoginCheckType.get() == 1){
+                var intent = Intent(context, MyPageTempLoginActivity::class.java)
+                intent.putExtra("request", Flag.RequestCode.NAVER_LOGIN)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.NAVER_LOGIN)
+            }else showLoginTypeUser()
         }
 
         if (checkUserLogin()) {
@@ -87,18 +102,20 @@ class MyPageUserInfoLayout constructor(
         }
 
         setEventBus()
+    }
 
-        // 닉네임 변경
-        setNickNameListener()
-
-        // 환불 계좌정보
-        initRefundAccountView()
-
-        // 이메일
-        mBinding.edittextMypageuserinfoEmail.setOnClickListener {
-            val intent = Intent(mBinding.root.context, VerifyEmailActivity::class.java)
-            (mBinding.root.context as Activity).startActivityForResult(intent, RequestCode.VERIFY_EMAIL.flag)
+    // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
+    private fun showLoginTypeUser(){
+        var message = ""
+        when(mViewModel.mypageUserInfoLoginCheckType.get()){
+            0->message = "이메일로 "
+            1->message = "네이버로 "
+            2->message = "카카오로 "
+            3->message = "페이스북으로 "
+            4->message = "구글로 "
         }
+        message += "가입한 사용자 입니다."
+        CommonViewUtil.showDialog(context as MainActivity, message, false, false)
     }
 
     private fun setNickNameListener() {
@@ -228,23 +245,147 @@ class MyPageUserInfoLayout constructor(
 
     private fun setInitView() {
         mViewModel.userId = CommonUtil.checkUserId()
-        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setInitView ", "userId -----", mViewModel.userId)
         mViewModel.checkPasswordConfirm.set(true)
 
-        /*if(Preferences.getPasswordConfirm()){
+        mBinding.includeMypageuserinfoUserpassword.edittextviewLoginPwd.setEnable(false)
+
+        if(Preferences.getPasswordConfirm()){
+            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setInitView ", "true userId -----", mViewModel.userId)
             mViewModel.checkPasswordConfirm.set(true)
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "checkPasswordConfirm ", "true -----")
+            setUserData()
         }else{
-            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "checkPasswordConfirm ", "false -----")
+            if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setInitView ", "false userId -----", mViewModel.userId)
             mViewModel.checkPasswordConfirm.set(false)
-            mViewModel.userCheck(object : OnCallBackListener{
+            mLoadingIndicatorUtil.show()
+            mViewModel.userLoginType(object : OnCallBackListener{
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
-                    if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener","resultFlag",resultFlag, "value",value)
-                    if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener",  "userEmail -----",mViewModel.userEmail)
+                    if(mViewModel.mypageUserInfoLoginCheckType.get() == 0){
+                        mBinding.includeMypageuserinfoUserpassword.edittextviewLoginPwd.setEnable(true)
+                    }
+                    mLoadingIndicatorUtil.dismiss()
                 }
             })
-        }*/
+        }
     }
+
+    private fun setUserData(){
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setUserData ", "--/banks---", mViewModel.userId)
+        mViewModel.userCheck(object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener","resultFlag",resultFlag, "value",value)
+                if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener",  "userEmail -----",mViewModel.userEmail)
+            }
+        })
+
+        // 닉네임 변경
+        setNickNameListener()
+
+        // 환불 계좌정보
+        initRefundAccountView()
+
+        // 이메일
+        mBinding.edittextMypageuserinfoEmail.setOnClickListener {
+            val intent = Intent(mBinding.root.context, VerifyEmailActivity::class.java)
+            (mBinding.root.context as Activity).startActivityForResult(intent, RequestCode.VERIFY_EMAIL.flag)
+        }
+
+        // 유저 사이즈
+        getUserSize()
+
+
+        mBinding.buttonMypageuserinfoSizeinsert.setOnClickListener {
+            var intent = Intent(context as MainActivity, UserSizeUpdateActivity::class.java)
+            if(mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
+            (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
+        }
+
+        mBinding.buttonMypageuserinfoSizemodify.setOnClickListener {
+            var intent = Intent(context as MainActivity, UserSizeUpdateActivity::class.java)
+            if(mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
+            (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
+        }
+    }
+
+
+    private fun getUserSize(){
+        mViewModel.repository.getUserSize(object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(resultFlag){
+                    setUserSize()
+                }else{
+                    mBinding.linearlayoutMypageuserinfoSizeinfo.visibility = View.GONE
+                    mBinding.buttonMypageuserinfoSizeinsert.visibility = View.VISIBLE
+                    mBinding.buttonMypageuserinfoSizemodify.visibility = View.GONE
+                }
+            }
+        })
+    }
+
+
+    private fun setUserSize(){
+        if(mViewModel.mUserSize.weight > 0 || mViewModel.mUserSize.shoe > 0 || mViewModel.mUserSize.height > 0 || mViewModel.mUserSize.bottom > 0 || !TextUtils.isEmpty(mViewModel.mUserSize.top)){
+            mBinding.linearlayoutMypageuserinfoSizeinfo.visibility = View.VISIBLE
+            mBinding.buttonMypageuserinfoSizeinsert.visibility = View.GONE
+            mBinding.buttonMypageuserinfoSizemodify.visibility = View.VISIBLE
+
+            mBinding.textviewMypageuserinfoBottom.text = mViewModel.mUserSize.bottom.toString()
+            mBinding.textviewMypageuserinfoHeight.text = mViewModel.mUserSize.height.toString()
+            mBinding.textviewMypageuserinfoShoe.text = mViewModel.mUserSize.shoe.toString()
+            mBinding.textviewMypageuserinfoTop.text = mViewModel.mUserSize.top
+            mBinding.textviewMypageuserinfoWeight.text = mViewModel.mUserSize.weight.toString()
+        }else{
+            mBinding.linearlayoutMypageuserinfoSizeinfo.visibility = View.GONE
+            mBinding.buttonMypageuserinfoSizeinsert.visibility = View.VISIBLE
+            mBinding.buttonMypageuserinfoSizemodify.visibility = View.GONE
+        }
+        setEditTextFocusListener()
+        mBinding.executePendingBindings()
+    }
+
+
+    private fun setEditTextFocusListener() {
+        if (CustomLog.flag) CustomLog.L("JoinActivity", "setEditTextFocusListener")
+        mBinding.edittextJoinPassword.setOnBorderEditTextFocusListener(object : OnBorderEditTextFocusListener {
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                if (!isPassFocus) isPassFocus = hasFocus
+                if (isPassFocus && !hasFocus) {
+                    isPassFocus = false
+                    if (CustomLog.flag) CustomLog.L("JoinActivity", "edittextJoinPassword validationCheck", mBinding.edittextJoinPassword.text)
+                    if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text) && !CommonUtil.validatePassword(mBinding.edittextJoinPassword.text)) {
+                        mBinding.textviewJoinPasswordfocus.visibility = View.VISIBLE
+                    } else {
+                        mBinding.textviewJoinPasswordfocus.visibility = View.GONE
+                    }
+                } else
+                    mBinding.textviewJoinPasswordfocus.visibility = View.GONE
+            }
+        })
+        BorderEditTextView.setInverseBindingListener(mBinding.edittextJoinPassword) {
+            val pas1 = mBinding.edittextJoinPassword.text
+            val pas2 = mBinding.edittextJoinConfirmpassword.text
+            if (!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && pas1 != pas2) {
+                mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd)
+                mBinding.textviewJoinConfirmpasswordfocus.visibility = View.VISIBLE
+            } else {
+                if (!CommonUtil.validatePassword(mBinding.edittextJoinPassword.text)) {
+                    mBinding.textviewJoinPasswordfocus.visibility = View.VISIBLE
+                } else {
+                    mBinding.textviewJoinPasswordfocus.visibility = View.GONE
+                    mBinding.textviewJoinConfirmpasswordfocus.visibility = View.GONE
+                }
+            }
+        }
+        BorderEditTextView.setInverseBindingListener(mBinding.edittextJoinConfirmpassword) {
+            val pas1 = mBinding.edittextJoinPassword.text
+            val pas2 = mBinding.edittextJoinConfirmpassword.text
+            if (!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && pas1 != pas2) {
+                mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd)
+                mBinding.textviewJoinConfirmpasswordfocus.visibility = View.VISIBLE
+            } else
+                mBinding.textviewJoinConfirmpasswordfocus.visibility = View.GONE
+        }
+    }
+
 
     @SuppressLint("CheckResult")
     private fun setEventBus() {
@@ -253,7 +394,9 @@ class MyPageUserInfoLayout constructor(
                 val email = it.data as String?
                 mBinding.edittextMypageuserinfoEmail.text = email ?: ""
                 mBinding.executePendingBindings()
-            } else {
+            } else if(it.requestCode == Flag.RequestCode.USER_SIZE){
+                getUserSize()
+            }else {
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----", it.data.toString())
                 var result = it.data.toString().split(",")
                 if(!TextUtils.isEmpty(it.data.toString()) && result.size > 1){
@@ -278,8 +421,11 @@ class MyPageUserInfoLayout constructor(
 
 
     private fun successLogin() {
+        if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "successLogin ----------------------------------------")
         Preferences.setPasswordConfirm(true)
         mViewModel.checkPasswordConfirm.set(true)
+        CommonViewUtil.hideKeyborad(mBinding.includeMypageuserinfoUserpassword.edittextviewLoginPwd, context)
+        setUserData()
     }
 
 

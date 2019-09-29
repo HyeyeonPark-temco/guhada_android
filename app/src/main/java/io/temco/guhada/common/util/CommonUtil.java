@@ -232,7 +232,7 @@ public class CommonUtil {
         int length = password.length();
         if (length >= 8 && length <= 15) {
             if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("validatePassword 1","length",length);
-            final String PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,14}.$";
+            final String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,14}.$";
             Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
             Matcher matcher = pattern.matcher(password);
 

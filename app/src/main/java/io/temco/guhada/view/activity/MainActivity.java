@@ -27,6 +27,7 @@ import io.temco.guhada.data.db.GuhadaDB;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.UserShipping;
 import io.temco.guhada.data.model.claim.Claim;
+import io.temco.guhada.data.model.user.UserSize;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -225,6 +226,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     assert data != null;
                     String email = data.getStringExtra("email");
                     EventBusHelper.sendEvent(new EventBusData(requestCode, email));
+                    break;
+                case Flag.RequestCode.USER_SIZE:
+                    EventBusHelper.sendEvent(new EventBusData(requestCode, RESULT_OK));
                     break;
             }
         } else {

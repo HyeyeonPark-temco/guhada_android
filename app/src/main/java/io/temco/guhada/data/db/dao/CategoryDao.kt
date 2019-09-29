@@ -17,6 +17,9 @@ interface CategoryDao {
     @Query("SELECT * FROM category_data WHERE label == :label AND depth =:depth ORDER By c_id")
     fun getDepthAll(label : String, depth : Int) : List<CategoryEntity>
 
+    @Query("SELECT * FROM category_data WHERE label == :label AND depth <= :depth ORDER By c_id")
+    fun getDepthUnder(label : String, depth : Int) : List<CategoryEntity>
+
     @Query("SELECT * FROM category_data ORDER By c_id")
     fun getAll() : List<CategoryEntity>
 

@@ -968,5 +968,34 @@ class UserServer {
         @JvmStatic
         fun getBanks(listener: OnServerListener) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getBanks()
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<PurchaseOrder.Bank>>>(successTask = { listener.onResult(true, it.body()) }))
+
+
+
+        /**
+         * 연동된 sns 종류 불러오기
+         */
+        @JvmStatic
+        fun checkSnsUserType(listener: OnServerListener, userId: Long) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .checkSnsUserType(userId).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            resultListener(listener, call, response)
+                        }
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
+
+
+
+
     }
+
+
+
+
 }

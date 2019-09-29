@@ -25,7 +25,7 @@
             style="@style/TextBold"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="32dp"
             android:gravity="center_horizontal"
             android:textColor="@color/text_3"
             android:textSize="@dimen/text_20" />
@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_header"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <LinearLayout

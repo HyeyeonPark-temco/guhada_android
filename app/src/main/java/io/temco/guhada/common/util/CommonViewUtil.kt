@@ -17,6 +17,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
+import androidx.core.content.ContextCompat.getSystemService
+
+
 
 
 object CommonViewUtil{
@@ -68,8 +71,10 @@ object CommonViewUtil{
 
     fun hideKeyborad(v: View, context: Context) {
         v.postDelayed(Runnable {
-            val imgr = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imgr.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            /*val imgr = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imgr.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY)*/
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
         }, 300)
     }
 

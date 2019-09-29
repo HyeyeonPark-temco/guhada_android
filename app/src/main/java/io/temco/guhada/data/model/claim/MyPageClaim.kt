@@ -123,7 +123,7 @@ class MyPageClaim : BasePageModel(), Serializable {
         var replier : Long = 0L
 
         @SerializedName("replyAt")
-        var replyAt : Any? = null
+        var replyAt : Long? = null
 
         @SerializedName("replyUpdated")
         var replyUpdated : String = ""

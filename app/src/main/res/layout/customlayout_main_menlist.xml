@@ -16,17 +16,21 @@
             android:id="@+id/recyclerview_menlist"
             android:layout_width="match_parent"
             android:layout_height="37dp"
-            android:layout_marginBottom="6dp"
             android:layout_marginLeft="9dp"
             android:orientation="horizontal"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="38dp"
+            android:background="#eeeeee"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="43dp"
+            android:layout_marginTop="40dp"
             android:background="@color/common_white"
             app:setAdapter="@{viewModel.getListAdapter()}"/>
 

@@ -2,6 +2,7 @@ package io.temco.guhada.view.adapter.mypage
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Inquiry
 import io.temco.guhada.data.model.claim.MyPageClaim
@@ -81,7 +83,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             binding.buttonMypageclaimlistModify.setOnClickListener {
                 val context = (model as MyPageClaimViewModel).context as AppCompatActivity
                 val intent = Intent(context, WriteClaimActivity::class.java)
-                val claimContent = model.listData.value?.get(adapterPosition)
+                val claimContent = model.listData1.value?.get(adapterPosition)
 
                 val inquiry = Inquiry().apply {
                     content = claimContent?.inquiry?.inquiry ?: ""
@@ -117,8 +119,13 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             }
             binding.textviewMypageclaimlistBrand.text = data.item.brandName
             binding.textviewMypageclaimlistTitle.text = data.item.productName
-            binding.textviewMypageclaimlistSeller.text = data.item.sellerName
-            binding.textviewMypageclaimlistSeason.text = data.item.productSeason
+            binding.textviewMypageclaimlistSeller.text = if(TextUtils.isEmpty(data.item.sellerName)) "" else data.item.sellerName
+            if(TextUtils.isEmpty(data.item.productSeason)){
+                binding.textviewMypageclaimlistSeason.visibility = View.GONE
+            }else{
+                binding.textviewMypageclaimlistSeason.visibility = View.VISIBLE
+                binding.textviewMypageclaimlistSeason.text = data.item.productSeason
+            }
             var createdAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.createdAt }
             binding.textviewMypageclaimlistDate.text = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, createdAtCal ) + " 작성")
 
@@ -136,9 +143,9 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                 binding.textviewMypageclaimlistAsk2.text = data.inquiry.inquiry
                 binding.textviewMypageclaimlistAsk3.text = data.inquiry.reply
                 if(data.inquiry.replyAt != null && data.inquiry.replyAt is Long){
-                    var replyAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.replyAt!! as Long }
+                    var replyAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.replyAt!! }
                     binding.textviewMypageclaimlistDate1.text = ("판매자 " +  DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, replyAtCal ))
-                }else{
+                }/*else{
                     try{
                         var replyAt = data.inquiry.replyAt as Array<Int>
                         binding.textviewMypageclaimlistDate1.text = ("판매자 " + (replyAt[0] - 2000) +
@@ -149,7 +156,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                     }catch (e : Exception){
                         if(CustomLog.flag)CustomLog.E(e)
                     }
-                }
+                }*/
                 binding.linearlayoutMypageclaimlistAnswer1.contentDescription = position.toString()
                 binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener(layoutClickListener)
                 binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener(layoutClickListener)
@@ -170,8 +177,13 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
                     binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
                 }
                 binding.buttonMypageclaimlistDelete.setOnClickListener {
-                    var loading = LoadingIndicatorUtil((model as MyPageClaimViewModel).context as AppCompatActivity)
-                    (model as MyPageClaimViewModel).deleteClaimItem(position,data.inquiry.productId, data.inquiry.id, loading)
+
+                    CommonViewUtil.showDialog((itemView.context as AppCompatActivity),"삭제하시겠습니까?",true, object : OnBaseDialogListener {
+                        override fun onClickOk() {
+                            var loading = LoadingIndicatorUtil((model as MyPageClaimViewModel).context as AppCompatActivity)
+                            (model as MyPageClaimViewModel).deleteClaimItem(position,data.inquiry.productId, data.inquiry.id, loading)
+                        }
+                    })
                 }
 
             }

@@ -163,7 +163,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void initFilterBody(){
-        if(CustomLog.getFlag())CustomLog.L("initFilterBody","mIsCategory",mIsCategory.name(),"mText",mText);
         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
             if(filterBody == null){
                 filterBody = new FilterBody();
@@ -958,11 +957,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if(CustomLog.getFlag())CustomLog.L("initTagLayout","depth----",depth);
                 if(depth > 1){
                     filterBody.categoryIds.clear();
-                    Iterator<Integer> sub = mDepthTitle.get(depth-1).keySet().iterator();
+                    /*Iterator<Integer> sub = mDepthTitle.get(depth-1).keySet().iterator();
                     while (sub.hasNext()) {
                         int id = sub.next();
                         filterBody.categoryIds.add(id);
-                    }
+                    }*/
                     Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
                     while (idList.hasNext()) {
                         int id = idList.next();
@@ -977,6 +976,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     }
                 }else{
                     Iterator<Integer> idList = mDepthTitle.get(depth).keySet().iterator();
+                    filterBody.categoryIds.clear();
                     while (idList.hasNext()) {
                         int id = idList.next();
                         if(mCategoryData != null && id != mCategoryData.id) {
@@ -1005,8 +1005,11 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     if (tagData instanceof Category) {
                         Category c = (Category) tagData;
                         changeCategoryData(c, false);
-                        mDepthTitle.get(c.depth).remove(c.id);
-                        if(CustomLog.getFlag())CustomLog.L("initTagList","index", index,"Category", c);
+                        int depth = c.depth;
+                        if(c.depth == -1){
+                            depth = c.hierarchies.length-1;
+                        }
+                        mDepthTitle.get(depth).remove(c.id);
                         if(filterBody.categoryIds != null && filterBody.categoryIds.size() > 0){
                             for (int i = 0; i < filterBody.categoryIds.size();i++){
                                 if(c.id == filterBody.categoryIds.get(i)){

@@ -50,8 +50,6 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
     }
 
     override fun init() {
-        if (CustomLog.flag) CustomLog.L(getBaseTag(), info.communityCategorySub.toString())
-
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         initViewModel()
         initSpinner()

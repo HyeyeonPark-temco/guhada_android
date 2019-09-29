@@ -6,6 +6,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.claim.MyPageClaim
+import io.temco.guhada.data.model.claim.MyPageClaimSeller
 import io.temco.guhada.data.model.order.CancelOrderStatus
 import io.temco.guhada.data.model.order.OrderHistoryResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
@@ -57,10 +58,25 @@ interface ClaimService {
 
 
     /**
+     * 마이페이지 상품 문의 리스트 API
+     */
+    @GET("/users/{userId}/seller-claims")
+    fun getMySellerClaimList(@Header("Authorization") accessToken: String, @Path("userId") userId: Int, @Query("pageNo") pageNo: Int, @Query("size") size: Int = 20): Call<BaseModel<MyPageClaimSeller>>
+
+
+    /**
      * 상품 상세 문의 삭제 API
      */
     @DELETE("products/{productId}/inquiries/{inquiryId}")
     fun deleteClaim(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Path("inquiryId") inquiryId: Long): Call<BaseModel<JsonObject>>
+
+
+    /**
+     * 판매자 문의 삭제하기 API
+     */
+    @DELETE("/users/{userId}/seller-claims/{id}")
+    fun deleteSellerClaim(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Path("id") id: Int): Call<BaseModel<JsonObject>>
+
 
     /**
      * 주문 취소/교환/반품 리스트 조회 API

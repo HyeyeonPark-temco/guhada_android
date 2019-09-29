@@ -87,6 +87,11 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
             if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","0---- start clickNormal data",data.toString())
             if(!data.isSelected){
                 data.isSelected = true
+                var depthIndex = adapter.mDepthTitle.keys.iterator()
+                if(depthIndex.hasNext()){
+                    var di = depthIndex.next()
+                    if(di > data.depth)adapter.mDepthTitle.remove(di)
+                }
                 if(!adapter.mDepthTitle.contains(data.depth)){
                     var map : MutableMap<Int, Category> = mutableMapOf()
                     map.put(data.id, data)
@@ -103,6 +108,7 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
                         adapter.mDepthTitle.put(data.depth, map)
                     }
                 }
+                if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","0---- start clickNormal mDepthTitle",adapter.mDepthTitle.toString())
                 if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","1---- start clickNormal data",data.toString())
                 if(adapter.mDepthTitle.containsKey(data.depth-1)){
                     for (c in adapter.mList){
@@ -112,6 +118,11 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
                     }
                 }
                 if(data.children != null && data.children.size > 0){
+                    var depthIndex = adapter.mDepthIndex.keys.iterator()
+                    if(depthIndex.hasNext()){
+                        var di = depthIndex.next()
+                        if(di > data.depth)adapter.mDepthIndex.remove(di)
+                    }
                     if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","1---- start clickNormal data",data.toString())
                     if(!adapter.mDepthIndex.containsKey(data.depth)){
                         adapter.mDepthIndex.put(data.depth, position)
@@ -156,6 +167,11 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
             if(CustomLog.flag)CustomLog.L("CategoryListViewHolder","clickAll tmp",data.toString())
             selectTitleRemove(adapter, data)
             if(!data.children.isNullOrEmpty()){
+                var depthIndex = adapter.mDepthIndex.keys.iterator()
+                if(depthIndex.hasNext()){
+                    var di = depthIndex.next()
+                    if(di > data.depth)adapter.mDepthIndex.remove(di)
+                }
                 adapter.mDepthIndex.remove(data.depth)
                 removeChild(adapter, position, data)
             }
@@ -179,6 +195,11 @@ class CategoryListViewHolder(containerView: View) : CategoryBaseListViewHolder<C
             }
 
             data.isSelected = true
+            var depthIndex = adapter.mDepthTitle.keys.iterator()
+            if(depthIndex.hasNext()){
+                var di = depthIndex.next()
+                if(di > data.depth)adapter.mDepthTitle.remove(di)
+            }
             if(!adapter.mDepthTitle.contains(data.depth)){
                 var map : MutableMap<Int, Category> = mutableMapOf()
                 map.put(data.id, data)

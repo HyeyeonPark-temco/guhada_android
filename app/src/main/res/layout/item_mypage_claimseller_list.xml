@@ -167,6 +167,15 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textview_mypageclaimlist_ask10"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/blue_purple"
+                    android:textSize="@dimen/text_13"/>
+
+                <TextView
                     android:id="@+id/textview_mypageclaimlist_ask1"
                     style="@style/TextRegular"
                     android:layout_width="0dp"
@@ -222,13 +231,21 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textview_mypageclaimlist_ask20"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/blue_purple"
+                    android:textSize="@dimen/text_13"/>
+
+                <TextView
                     style="@style/TextRegular"
                     android:id="@+id/textview_mypageclaimlist_ask2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="@dimen/text_13"
-                    android:text="안녕하세요. 고객님. 고객님의 상품 현재 배송중으로 금일 배송 완료 될 예정입니다. "/>
+                    android:textSize="@dimen/text_13"/>
 
                 <ImageView
                     android:id="@+id/imageview_mypageclaimlist_arrow2"
@@ -283,8 +300,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_13"
-                        android:textColor="@color/greyish_brown_two"
-                        android:text="안녕하세요. 고객님. 고객님의 상품 현재 배송중으로 금일 배송 완료 될 예정입니다. "/>
+                        android:textColor="@color/greyish_brown_two"/>
 
                     <TextView
                         android:id="@+id/textview_mypageclaimlist_date1"

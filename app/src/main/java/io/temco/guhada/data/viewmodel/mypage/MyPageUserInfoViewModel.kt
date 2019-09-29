@@ -3,13 +3,17 @@ package io.temco.guhada.data.viewmodel.mypage
 import android.content.Context
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
@@ -18,6 +22,7 @@ import io.temco.guhada.data.model.RefundRequest
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.User
+import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -40,10 +45,12 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel(),
     val repository: MyPageUserInfoRepository = MyPageUserInfoRepository(this)
 
     var userId: Long = 0L
-    var defaultSnsType = "NAVER"
+    var defaultSnsType = ""
     var userEmail = ""
 
-    var checkPasswordConfirm = ObservableBoolean(false)
+    var mUserSize = UserSize()
+
+    var checkPasswordConfirm = ObservableBoolean(true)
         @Bindable
         get() = field
         set(value) {
@@ -62,7 +69,7 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel(),
 
 
     // 유저 닉네임 중복 체크
-    var mNickName = ""
+    var nickName = ""
     var isNickNameFocus = false
     var mIsNicknameValid = ObservableBoolean(true)
         @Bindable
@@ -81,13 +88,15 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel(),
     var mRefundRequest = RefundRequest()
     var mBankNumInputAvailableTask : () -> Unit = {}
 
-    fun userCheck(listener: OnCallBackListener) {
-        repository.userData(listener)
+    fun userLoginType(listener: OnCallBackListener){
+        repository.checkSnsUserType(listener)
     }
 
-    init {
+    fun userCheck(listener: OnCallBackListener) {
+        repository.userData(listener)
         this.mRefundRequest.addObserver(this)
     }
+
 
     fun getUserByNickName() {
         isNickNameFocus = false
@@ -109,7 +118,7 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel(),
                         notifyPropertyChanged(BR.mNickNameCheckIconVisible)
                         notifyPropertyChanged(BR.mNickNameBg)
                     })
-        }, nickName = mNickName)
+        }, nickName = nickName)
     }
 
     fun getRefundBanks() {
@@ -162,39 +171,43 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel(),
             }
         }
     }
+
+
+    // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
+    fun setSnsType(){
+        when(defaultSnsType){
+            "EMAIL"-> mypageUserInfoLoginCheckType.set(0)
+            "NAVER"-> mypageUserInfoLoginCheckType.set(1)
+            "KAKAO"-> mypageUserInfoLoginCheckType.set(2)
+            "FACEBOOK"-> mypageUserInfoLoginCheckType.set(3)
+            "GOOGLE"-> mypageUserInfoLoginCheckType.set(4)
+        }
+    }
 }
 
 
 class MyPageUserInfoRepository(val mViewModel: MyPageUserInfoViewModel) {
 
-    fun userLoginTypeCheck(listener: OnCallBackListener) {
-        UserServer.checkExistSnsUser2(OnServerListener { success, o ->
+    fun checkSnsUserType(listener: OnCallBackListener) {
+        UserServer.checkSnsUserType(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        var value = (it as BaseModel<Any>).data
-                        if (CustomLog.flag) CustomLog.L("userLoginTypeCheck value", it)
-                        var typeName = (it as BaseModel<Any>).result.split("_")[0]
-                        if (CustomLog.flag) CustomLog.L("userLoginTypeCheck value", "typeName", typeName)
-                        if ("email".equals(typeName, ignoreCase = true)) {
-                            mViewModel.mypageUserInfoLoginCheckType.set(0)
-                        } else if ("naver".equals(typeName, ignoreCase = true)) {
-                            mViewModel.mypageUserInfoLoginCheckType.set(1)
-                        } else if ("kakao".equals(typeName, ignoreCase = true)) {
-                            mViewModel.mypageUserInfoLoginCheckType.set(2)
-                        } else if ("facebook".equals(typeName, ignoreCase = true)) {
-                            mViewModel.mypageUserInfoLoginCheckType.set(3)
-                        } else if ("google".equals(typeName, ignoreCase = true)) {
-                            mViewModel.mypageUserInfoLoginCheckType.set(4)
-                        }
-                        listener.callBackListener(true, value)
+                        var value = (it as BaseModel<Any>).list
+                        if (CustomLog.flag) CustomLog.L("userLoginTypeCheck value", value)
+                        mViewModel.defaultSnsType = value[0] as String
+                        mViewModel.setSnsType()
+                        listener.callBackListener(true, value[0])
                     },
                     dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
                     failedTask = { listener.callBackListener(false, "failedTask") },
                     userLikeNotFoundTask = { listener.callBackListener(false, "userLikeNotFoundTask") },
                     serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") },
-                    dataIsNull = { listener.callBackListener(false, it) }
+                    dataIsNull = {
+                        mViewModel.defaultSnsType = "EMAIL"
+                        mViewModel.setSnsType()
+                        listener.callBackListener(true, "EMAIL") }
             )
-        }, mViewModel.defaultSnsType, mViewModel.userId.toString(), mViewModel.userEmail)
+        }, mViewModel.userId)
     }
 
 
@@ -214,6 +227,29 @@ class MyPageUserInfoRepository(val mViewModel: MyPageUserInfoViewModel) {
                     dataIsNull = { listener.callBackListener(false, it) }
             )
         }, mViewModel.userId.toInt())
+    }
+
+
+    fun getUserSize(listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (it != null){
+                        UserServer.getUserSize(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var data = (o as BaseModel<*>).data as UserSize
+                                        mViewModel.mUserSize = data
+                                        listener.callBackListener(true, data)
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false, "") },
+                                    failedTask = { listener.callBackListener(false, "")  },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "")  },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "")  },
+                                    dataIsNull = { listener.callBackListener(false, "")  }
+                            )
+                        }, accessToken = it)
+                    }
+                }, invalidTokenTask = { })
     }
 
 }

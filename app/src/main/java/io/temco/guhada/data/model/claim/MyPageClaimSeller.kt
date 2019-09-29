@@ -14,6 +14,18 @@ class MyPageClaimSeller : BasePageModel(), Serializable {
 class MyPageClaimSellerContent : Serializable {
 
     var id = 0
+    var contents = ""
+    var productName = ""
+    var nickname = ""
+    var productImageUrl = ""
+    var brandName = ""
+    var season : String? = null
+    var createdAt : Long? = null
+    var repliedAt : Long? = null
+    var reply : Any? = null
+    var type = ""
+
+    /*var id = 0
     var orderProdGroupId = 0
     var sellerId = 0
     var type = MyPageClaimSellerType()
@@ -25,19 +37,20 @@ class MyPageClaimSellerContent : Serializable {
     var replied = false
     var replyUpdated = false
     var createdAt = 0L
-    var repliedAt : Any? = null
+    var repliedAt : Any? = null*/
 
 
     var totalPages : Int = -1
     var pageNumber : Int = -1
 
     override fun toString(): String {
-        return "MyPageClaimSeller(id=$id, orderProdGroupId=$orderProdGroupId, sellerId=$sellerId, type=$type, title='$title'" +
-                ", contents='$contents', userId=$userId, reply=$reply, replier=$replier, replied=$replied, replyUpdated=$replyUpdated, createdAt=$createdAt, repliedAt=$repliedAt)"
+        return "MyPageClaimSellerContent(id=$id, contents='$contents', productName='$productName', nickname='$nickname', productImageUrl='$productImageUrl', brandName='$brandName', season=$season, createdAt=$createdAt, repliedAt=$repliedAt, reply=$reply, type='$type', totalPages=$totalPages, pageNumber=$pageNumber)"
     }
+
 }
 
+/*
 class MyPageClaimSellerType : Serializable {
     var name = ""
     var description = ""
-}
+}*/

@@ -262,12 +262,13 @@ class KidsListLayout constructor(
     private fun getCategory(){
         var db = GuhadaDB.getInstance(context = context)!!
         (context as MainActivity).getmDisposable().add(Observable.fromCallable<List<CategoryEntity>> {
-            db.categoryDao().getDepthAll(CategoryLabelType.Kids.name,1)
+            db.categoryDao().getDepthUnder(CategoryLabelType.Kids.name,1)
         }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if(!it.isNullOrEmpty()){
                         mViewModel.categoryList = it.toMutableList()
+                        mViewModel.categoryList!![0].title = "전체보기"
                         if (mBinding.recyclerviewKidslist.adapter == null) {
                             mBinding.recyclerviewKidslist.adapter = SubTitleListAdapter().apply { mList = mViewModel.categoryList!! }
                             (mBinding.recyclerviewKidslist.adapter as SubTitleListAdapter).mClickSelectItemListener = object : OnClickSelectItemListener {

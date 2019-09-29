@@ -411,7 +411,7 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                     R.id.textview_term_privacy_terms ->{CommonUtilKotlin.startTermsPersonal(containerView.context as Activity) }
                     R.id.textview_term_partner ->{}
                     R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
-                    R.id.textview_term_company ->{}
+                    R.id.textview_term_company ->{CommonUtilKotlin.startTermsCompany(containerView.context as Activity) }
                     R.id.textview_term_call ->{
                         val phone = (itemView.context as Activity).resources.getString(R.string.information_company_call)
                         val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))

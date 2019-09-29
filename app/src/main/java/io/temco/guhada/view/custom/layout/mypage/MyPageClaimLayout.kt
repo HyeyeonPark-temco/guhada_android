@@ -44,9 +44,14 @@ class MyPageClaimLayout constructor(
 
         mBinding.recyclerviewMypageclaimlayoutList1.layoutManager = WrapContentLinearLayoutManager(context as Activity, LinearLayoutManager.VERTICAL, false)
         mBinding.recyclerviewMypageclaimlayoutList1.setHasFixedSize(true)
-
         (mBinding.recyclerviewMypageclaimlayoutList1.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
         (mBinding.recyclerviewMypageclaimlayoutList1.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
+
+
+        mBinding.recyclerviewMypageclaimlayoutList2.layoutManager = WrapContentLinearLayoutManager(context as Activity, LinearLayoutManager.VERTICAL, false)
+        mBinding.recyclerviewMypageclaimlayoutList2.setHasFixedSize(true)
+        (mBinding.recyclerviewMypageclaimlayoutList2.layoutManager as WrapContentLinearLayoutManager).orientation = RecyclerView.VERTICAL
+        (mBinding.recyclerviewMypageclaimlayoutList2.layoutManager as WrapContentLinearLayoutManager).recycleChildrenOnDetach = true
 
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
 
@@ -76,8 +81,13 @@ class MyPageClaimLayout constructor(
             override fun onResultCallback() {
                 if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onResultCallback ", "init -----")
                 this@MyPageClaimLayout.handler.postDelayed({
-                    mViewModel.getListAdapter().notifyDataSetChanged()
-                    if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onResultCallback ", "getListAdapter -----", mViewModel.getListAdapter().items.size)
+                    if(mViewModel.mypageClaimTabVisibleSwitch.get() == 0){
+                        mViewModel.getListAdapter1().notifyDataSetChanged()
+                        if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onResultCallback ", "getListAdapter1 -----", mViewModel.getListAdapter1().items.size)
+                    }else if(mViewModel.mypageClaimTabVisibleSwitch.get() == 0){
+                        mViewModel.getListAdapter2().notifyDataSetChanged()
+                        if (CustomLog.flag) CustomLog.L("MyPageClaimLayout", "onResultCallback ", "getListAdapter2 -----", mViewModel.getListAdapter2().items.size)
+                    }
                     mBinding.swipeRefreshLayout.isRefreshing = false
                 },200)
             }
@@ -89,8 +99,8 @@ class MyPageClaimLayout constructor(
          EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
                 RequestCode.MODIFY_CLAIM.flag -> {
-                    mViewModel.getListAdapter().items[mViewModel.selectedIndex].inquiry.inquiry = (requestCode.data as Claim).inquiry
-                    mViewModel.getListAdapter().notifyItemChanged(mViewModel.selectedIndex)
+                    mViewModel.getListAdapter1().items[mViewModel.selectedIndex].inquiry.inquiry = (requestCode.data as Claim).inquiry
+                    mViewModel.getListAdapter1().notifyItemChanged(mViewModel.selectedIndex)
                 }
             }
         }

@@ -71,7 +71,7 @@ class MenListRepository(val context : Context){
         val event = MainEvent(0, HomeType.MainEvent, tmpList)
         ddd.add(event)
         list.value!!.add(event)*/
-        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
+        //list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
         // ------------------------------------------------------------------
         getBestItem()
     }

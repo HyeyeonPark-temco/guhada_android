@@ -17,6 +17,7 @@ import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.claim.MyPageClaim
+import io.temco.guhada.data.model.claim.MyPageClaimSeller
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.ClaimService
 import retrofit2.Call
@@ -193,6 +194,52 @@ open class ClaimServer {
                         })
             }
         }
+
+
+        /**
+         * 마이페이지 상품문의 리스트 조회
+         */
+        @JvmStatic
+        fun deleteSellerClaim(listener: OnServerListener, userId: Long, id: Int) {
+            val accessToken = Preferences.getToken()?.accessToken
+            if (accessToken.isNullOrBlank()) {
+                // 로그인 팝업 노출
+                Toast.makeText(BaseApplication.getInstance().applicationContext, BaseApplication.getInstance().getString(R.string.login_message_requiredlogin), Toast.LENGTH_SHORT).show()
+            } else {
+                RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                        .deleteSellerClaim(accessToken = "Bearer $accessToken", userId = userId, id = id).enqueue(object : Callback<BaseModel<JsonObject>> {
+                            override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                                resultListener(listener,call,response)
+                            }
+
+                            override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
+            }
+        }
+
+
+
+
+        /**
+         * 마이페이지 판매자 문의 리스트 조회
+         */
+        @JvmStatic
+        fun getMyPageSellerClaimList(listener: OnServerListener, accessToken: String, id : Int, page: Int, status: String) {
+            if(CustomLog.flag)CustomLog.L("getMyPageSellerClaimList","accessToken",accessToken)
+            RetrofitManager.createService(Type.Server.CLAIM, ClaimService::class.java, true)
+                    .getMySellerClaimList(accessToken = accessToken, userId = id, pageNo = page).enqueue(object : Callback<BaseModel<MyPageClaimSeller>> {
+                        override fun onResponse(call: Call<BaseModel<MyPageClaimSeller>>, response: Response<BaseModel<MyPageClaimSeller>>) {
+                            resultListener(listener, call, response)
+                        }
+                        override fun onFailure(call: Call<BaseModel<MyPageClaimSeller>>, t: Throwable) {
+                            listener.onResult(false, t.message)
+                        }
+                    }
+            )
+        }
+
 
         /**
          * 마이페이지 취소교환반품 리스트 조회

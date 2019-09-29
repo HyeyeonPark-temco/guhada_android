@@ -33,7 +33,7 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var purchaseStatus = ""
     var purchaseStatusText = ""
 
-    var shipCompleteDate = "" // 2019-05-10
+    var shipCompleteDate : Any? = null // 2019-05-10
     var shipCompleteTimestamp: String = ""
     var shipPrice = 0
     var statusMessage = "" // 주문 완료 메세지

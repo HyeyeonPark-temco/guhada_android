@@ -118,8 +118,11 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
                 if(isPassFocus && !hasFocus){
                     isPassFocus = false;
                     if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("JoinActivity","edittextJoinPassword validationCheck",mBinding.edittextJoinPassword.getText());
-                    if(!TextUtils.isEmpty(mBinding.edittextJoinPassword.getText()) && !CommonUtil.validatePassword(mBinding.edittextJoinPassword.getText())) mBinding.textviewJoinPasswordfocus.setVisibility(View.VISIBLE);
-                    else mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
+                    if(!TextUtils.isEmpty(mBinding.edittextJoinPassword.getText()) && !CommonUtil.validatePassword(mBinding.edittextJoinPassword.getText())){
+                        mBinding.textviewJoinPasswordfocus.setVisibility(View.VISIBLE);
+                    }else {
+                        mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
+                    }
                 }else mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
             }
         });
@@ -131,7 +134,14 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
                 if(!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && !(pas1.equals(pas2))){
                     mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd);
                     mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.VISIBLE);
-                }else mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.GONE);
+                }else{
+                    if(!CommonUtil.validatePassword(mBinding.edittextJoinPassword.getText())){
+                        mBinding.textviewJoinPasswordfocus.setVisibility(View.VISIBLE);
+                    }else{
+                        mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
+                        mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.GONE);
+                    }
+                }
                 mViewModel.setEssentialChecked(mViewModel.getEssentialChecked().get());
             }
         });

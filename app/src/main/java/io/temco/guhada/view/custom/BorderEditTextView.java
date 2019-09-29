@@ -150,4 +150,8 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
     public void setOnBorderEditTextFocusListener(OnBorderEditTextFocusListener onBorderEditTextFocusListener) {
         this.onBorderEditTextFocusListener = onBorderEditTextFocusListener;
     }
+
+    public void setEnable(boolean endable){
+        binding.editText.setEnabled(endable);
+    }
 }

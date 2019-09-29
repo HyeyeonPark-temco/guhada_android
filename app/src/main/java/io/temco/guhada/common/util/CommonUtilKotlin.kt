@@ -67,6 +67,7 @@ object CommonUtilKotlin  {
     fun startTermsYouth(activity: Activity)=startActivityWebview(activity,"청소년 보호법 이용 약관", Type.Server.getUrl(Type.Server.WEB)+"terms/youth")
     fun startTermsPrivacy(activity: Activity)=startActivityWebview(activity,"개인 정보 보호 조치", Type.Server.getUrl(Type.Server.WEB)+"terms/privacy")
     fun startTermsGuarantee(activity: Activity)=startActivityWebview(activity,"채무 보증확인", Type.Server.getUrl(Type.Server.WEB)+"terms/guarantee")
+    fun startTermsCompany(activity: Activity)=startActivityWebview(activity,"사업자정보확인", "http://ftc.go.kr/bizCommPop.do?wrkr_no=8768601259")
 
 
 

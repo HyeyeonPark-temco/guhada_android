@@ -103,6 +103,9 @@ class SearchWordAdapter (private val model : ViewModel, list : ArrayList<SearchW
                         R.id.imagebutton_itemsearchwordrecent_delete -> {
                             viewModel.deleteRecentWord(item.recent.searchWord)
                             viewModel.getRecentAdapter().items.removeAt(position)
+                            if(viewModel.getRecentAdapter().items.size == 0){
+                                viewModel.recentEmptyViewVisible.set(true)
+                            }
                             viewModel.getRecentAdapter().notifyDataSetChanged()
                         }
                     }
