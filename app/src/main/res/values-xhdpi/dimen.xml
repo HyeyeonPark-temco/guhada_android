@@ -3,5 +3,6 @@
 
     <!-- TEXT SIZE-->
     <dimen name="grid_span_3_width">110dp</dimen>
+    <dimen name="grid_span_2_width">160dp</dimen>
 
 </resources>

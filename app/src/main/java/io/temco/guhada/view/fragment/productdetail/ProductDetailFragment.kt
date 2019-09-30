@@ -396,6 +396,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             mBinding.includeProductdetailContentsummary.averageReviewsRating = averageReviewsRating
             mBinding.executePendingBindings()
         }
+        mReviewFragment.notifyTotalCount = { totalReviewsCount ->
+            mBinding.includeProductdetailContentsummary.totalReviewsCount = totalReviewsCount
+            mBinding.executePendingBindings()
+        }
 
 //        if (mViewModel.product.value?.productId != null && mViewModel.product.value?.productId?:0 > 0)
 //            mReviewFragment.setProductId(productId = mViewModel.product.value?.productId!!)

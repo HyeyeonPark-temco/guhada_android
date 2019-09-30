@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import android.view.View
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
@@ -9,6 +10,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
@@ -123,9 +125,8 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
             mFilterFragment.show(supportFragmentManager, baseTag)
         }
 
-        // mViewModel.getSellerInfo()
+        mViewModel.getSellerInfo()
         mViewModel.getSellerStoreInfo()
-        mViewModel.getBusinessSellerInfo()
         mViewModel.getSellerBookMark()
 //        mViewModel.getSellerSatisfaction()
 //        mViewModel.getSellerFollowCount()
@@ -153,6 +154,7 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
         mViewModel.mSellerStore.observe(this@SellerInfoActivity, Observer {
             mBinding.sellerStore = it
             mBinding.includeSellerstoreInfo.sellerStore = it
+            mViewModel.getBusinessSellerInfo()
         })
         mViewModel.mSellerBookMark.observe(this@SellerInfoActivity, Observer { mBinding.bookMark = it })
         mViewModel.mSellerSatisfaction.observe(this@SellerInfoActivity, Observer { mBinding.satisfaction = it })
@@ -162,8 +164,16 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
         mViewModel.mBusinessSeller.observe(this, Observer {
             mBinding.businessSeller = it
             mBinding.includeSellerstoreInfo.businessSeller = it
-            mBinding.includeSellerstoreHeader.title = it.sellerUser.user.nickname
+            if(TextUtils.isEmpty(it.sellerUser.user.nickname))
+                mBinding.includeSellerstoreHeader.title = it.sellerUser.user.nickname
+            if(CustomLog.flag)CustomLog.L("mBusinessSeller","it",it)
         })
+        mViewModel.mSeller.observe(this, Observer {
+            if(CustomLog.flag)CustomLog.L("mSeller","it",it)
+            mBinding.includeSellerstoreHeader.textviewSellerstoreTitle.text = it.user.nickname
+            mBinding.seller = it
+        })
+
         mViewModel.mSellerProductList.observe(this@SellerInfoActivity, Observer {
             if (mViewModel.mPage == 1) // first
                 mBinding.recyclerivewSellerstoreProductlist.adapter = SellerInfoProductAdapter().apply {

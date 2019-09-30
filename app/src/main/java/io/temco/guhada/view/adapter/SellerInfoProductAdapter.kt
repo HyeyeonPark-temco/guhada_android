@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ItemSellerinfoProductBinding
@@ -48,7 +49,10 @@ class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.H
             mBinding.executePendingBindings()
         }
 
+
         private fun setSpacing() {
+            val mSpanCount = 2
+            val RIGHT_MARGIN = CommonViewUtil.convertDpToPixel(dp = 10, context = mBinding.root.context)
             (mBinding.constraintlayoutSellerinfoStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
                 rightMargin = if ((adapterPosition + 1) % mSpanCount == 0) 0
                 else RIGHT_MARGIN
@@ -56,6 +60,14 @@ class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.H
                 mBinding.constraintlayoutSellerinfoStore.layoutParams = it
             }
         }
+       /* private fun setSpacing() {
+            (mBinding.constraintlayoutSellerinfoStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                rightMargin = if ((adapterPosition + 1) % mSpanCount == 0) 0
+                else RIGHT_MARGIN
+            }.let {
+                mBinding.constraintlayoutSellerinfoStore.layoutParams = it
+            }
+        }*/
 
         private fun redirectProductDetailActivity(dealId: Long) {
             val intent = Intent(binding.root.context, ProductFragmentDetailActivity::class.java)

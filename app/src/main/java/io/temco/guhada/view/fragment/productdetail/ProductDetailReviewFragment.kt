@@ -61,6 +61,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
     var productId = 0L
     private lateinit var loadingIndicatorUtil: LoadingIndicatorUtil
     lateinit var mViewModel: ProductDetailReviewViewModel
+    lateinit var notifyTotalCount: (totalReviewsCount: Int) -> Unit
     lateinit var notifySummary: (averageReviewsRating: Float) -> Unit
 
     override fun getBaseTag(): String = ProductDetailReviewFragment::class.java.simpleName
@@ -100,6 +101,10 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
 
             override fun notifySummary(averageReviewsRating: Float) {
                 this@ProductDetailReviewFragment.notifySummary(averageReviewsRating)
+            }
+
+            override fun notifyTotalCount(totalReviewsCount: Int) {
+                this@ProductDetailReviewFragment.notifyTotalCount(totalReviewsCount)
             }
 
             override fun onClickWriteReview() {
@@ -269,6 +274,7 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         fun showMessage(message: String)
         fun showLoadingIndicator(task: () -> Unit)
         fun hideLoadingIndicator()
+        fun notifyTotalCount(totalReviewsCount: Int)
         fun notifySummary(averageReviewsRating: Float)
         fun onClickWriteReview()
     }

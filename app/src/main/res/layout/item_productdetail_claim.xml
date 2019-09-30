@@ -197,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="@{String.valueOf(claim.replier)}"
+                android:text="@{(claim.replier==null?@string/blank : String.valueOf(claim.replier))}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/textview_productdetail_qna_replycontent" />

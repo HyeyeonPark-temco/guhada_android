@@ -54,6 +54,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
 
                                 if (::listener.isInitialized)
                                     listener.notifySummary(reviewSummary.averageReviewsRating)
+                                if (::listener.isInitialized)
+                                    listener.notifyTotalCount(reviewSummary.totalReviewsCount)
                             } catch (e: Exception) {
                                 if (CustomLog.flag) CustomLog.E(e)
                             }

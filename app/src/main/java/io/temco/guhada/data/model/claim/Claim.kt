@@ -12,7 +12,7 @@ class Claim : Serializable {
     var id: Int = 0
     var productId: Int = 0
     var inquirer: Int = 0
-    var replier: Int = 0
+    var replier: Any? = null
 
     var replyUpdated: Boolean = false
     var enable: Boolean = false

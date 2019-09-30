@@ -29,4 +29,9 @@ class BusinessSeller {
 //    var updatedAt = 0L
     var updatedBy: String? = null
     var mailorderBusiness = false
+
+    override fun toString(): String {
+        return "BusinessSeller(id=$id, sellerUser=$sellerUser, companyName='$companyName', businessDivision='$businessDivision', corporationRegistrationNumber='$corporationRegistrationNumber', mailorderRegistrationNumber='$mailorderRegistrationNumber', representativeName='$representativeName', businessType='$businessType', businessItem='$businessItem', notReportingType='$notReportingType', businessRegistrationUrl='$businessRegistrationUrl', mailorderRegistrationUrl='$mailorderRegistrationUrl', certificateSealUrl='$certificateSealUrl', representativeBankCopyUrl='$representativeBankCopyUrl', entityRegistrationCertificateUrl='$entityRegistrationCertificateUrl', updatedBy=$updatedBy, mailorderBusiness=$mailorderBusiness)"
+    }
+
 }

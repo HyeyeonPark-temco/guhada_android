@@ -10,6 +10,9 @@
         <variable
             name="averageReviewsRating"
             type="Float" />
+        <variable
+            name="totalReviewsCount"
+            type="Integer" />
 
         <variable
             name="viewModel"
@@ -420,7 +423,7 @@
                     style="@style/ProductDetailTitleBlackTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text="@{String.valueOf(totalReviewsCount)}"
                     android:textSize="@dimen/text_13"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

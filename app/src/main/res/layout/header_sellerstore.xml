@@ -67,8 +67,8 @@
 
         <ImageButton
             android:id="@+id/imagebutton_sellerstore_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="5dp"
             android:src="@drawable/top_btn_search"
             android:onClick="@{onClickSearch}"
@@ -78,8 +78,8 @@
 
         <ImageButton
             android:id="@+id/imagebutton_sellerstore_cart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:onClick="@{onClickCart}"
             android:src="@drawable/top_btn_bag"
             app:layout_constraintBottom_toBottomOf="parent"

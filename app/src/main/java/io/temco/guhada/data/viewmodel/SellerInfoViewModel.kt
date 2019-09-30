@@ -10,6 +10,7 @@ import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ProductOrderType
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.*
@@ -40,7 +41,7 @@ class SellerInfoViewModel : BaseObservableViewModel() {
         get() = field
 
     var mPage = 1
-    var UNIT_PER_PAGE = 14
+    var UNIT_PER_PAGE = 44
 
     enum class SellerInfoMore(val pos: Int) {
         SELLER_STORE(0),
@@ -82,6 +83,7 @@ class SellerInfoViewModel : BaseObservableViewModel() {
             UserServer.getBusinessSeller(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
+                            if(CustomLog.flag)CustomLog.L("getBusinessSellerInfo",(it.data as BusinessSeller).toString())
                             mBusinessSeller.postValue(it.data as BusinessSeller)
                         })
             }, sellerId = mSellerId)
