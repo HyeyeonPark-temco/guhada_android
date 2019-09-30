@@ -17,6 +17,7 @@ import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.viewmodel.mypage.delivery.RequestExchangeViewModel
 import io.temco.guhada.databinding.ActivityRequestexchangeBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -342,9 +343,15 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         }
 
         // 교환상품 배송지
-        mBinding.includeRequestexchangeExchangeshipping.name = "교환 배송지 명 추가 예정"
-        mBinding.includeRequestexchangeExchangeshipping.address = "[${purchaseOrder.exchangeBuyerZip}] ${purchaseOrder.exchangeBuyerRoadAddress} ${purchaseOrder.exchangeBuyerDetailAddress}"
+        mBinding.includeRequestexchangeExchangeshipping.name = purchaseOrder.receiverAddressName
+        mBinding.includeRequestexchangeExchangeshipping.address = "[${purchaseOrder.receiverZipcode}] ${purchaseOrder.receiverRoadAddress} ${purchaseOrder.receiverAddressDetail}"
         mBinding.includeRequestexchangeExchangeshipping.defaultAddress = false
+        mViewModel.mExchangeRequest.exchangeShippingAddress.zip = purchaseOrder.receiverZipcode
+        mViewModel.mExchangeRequest.exchangeShippingAddress.address = purchaseOrder.receiverRoadAddress
+        mViewModel.mExchangeRequest.exchangeShippingAddress.roadAddress = purchaseOrder.receiverRoadAddress
+        mViewModel.mExchangeRequest.exchangeShippingAddress.detailAddress = purchaseOrder.receiverAddressDetail
+        mViewModel.mExchangeRequest.exchangeShippingAddress.recipientName = purchaseOrder.receiverName
+        mViewModel.mExchangeRequest.exchangeShippingAddress.recipientMobile = purchaseOrder.receiverPhone
 
         // 배송지 변경
         mBinding.includeRequestexchangeExchangeshipping.setChangeShippingListener {
@@ -353,20 +360,20 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         }
 
         // 배송 메세지
-        for (i in 0 until purchaseOrder.shippingMessageList.size) {
-            val shippingMessage = purchaseOrder.shippingMessageList[i]
-            if (shippingMessage.message == purchaseOrder.exchangeBuyerShippingMessage) {
-                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = purchaseOrder.exchangeBuyerShippingMessage
-                        ?: ""
-                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.GONE
-                break
-            } else if (i == purchaseOrder.shippingMessageList.size - 1) {
-                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
-                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.setText(purchaseOrder.exchangeBuyerShippingMessage
-                        ?: "")
-                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
-            }
-        }
+//        for (i in 0 until purchaseOrder.shippingMessageList.size) {
+//            val shippingMessage = purchaseOrder.shippingMessageList[i]
+//            if (shippingMessage.message == purchaseOrder.exchangeBuyerShippingMessage) {
+//                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = purchaseOrder.exchangeBuyerShippingMessage
+//                        ?: ""
+//                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.GONE
+//                break
+//            } else if (i == purchaseOrder.shippingMessageList.size - 1) {
+//                mBinding.includeRequestexchangeExchangeshipping.textviewRequestorderstatusShippingmemo.text = BaseApplication.getInstance().getString(R.string.shippingmemo_self)
+//                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.setText(purchaseOrder.exchangeBuyerShippingMessage
+//                        ?: "")
+//                mBinding.includeRequestexchangeExchangeshipping.edittextRequestorderstatusShippingmemo.visibility = View.VISIBLE
+//            }
+//        }
 
         // 배송 메세지 리스트
         mViewModel.mShippingMessageList.observe(this, Observer {
