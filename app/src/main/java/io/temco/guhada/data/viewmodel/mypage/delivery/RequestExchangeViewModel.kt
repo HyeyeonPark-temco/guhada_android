@@ -167,27 +167,32 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     }
 
     fun requestExchange() {
-        ServerCallbackUtil.callWithToken(task = { accessToken ->
-            ClaimServer.requestExchange(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            val result = it.data as PurchaseOrder
-                            mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
-                            mPurchaseOrder.value?.orderStatusText = result.orderStatusText
-                            mPurchaseOrder.value?.claimStatusText = result.claimStatusText
-                            mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
-                        }, failedTask = {
-                    ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
-                }, dataIsNull = {
-                    if (it is BaseModel<*>) {
-                        CommonUtil.debug(it.message)
-                        ToastUtil.showMessage(it.message)
-                    } else {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-                    }
-                })
-            }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
-        })
+        if (mExchangeRequest.exchangeShippingAddress.shippingMessage.isEmpty() ||
+                mExchangeRequest.exchangeShippingAddress.shippingMessage.equals(BaseApplication.getInstance().getString(R.string.shippingmemo_default))) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingmemo_default))
+        } else {
+            ServerCallbackUtil.callWithToken(task = { accessToken ->
+                ClaimServer.requestExchange(OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                val result = it.data as PurchaseOrder
+                                mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
+                                mPurchaseOrder.value?.orderStatusText = result.orderStatusText
+                                mPurchaseOrder.value?.claimStatusText = result.claimStatusText
+                                mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
+                            }, failedTask = {
+                        ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                    }, dataIsNull = {
+                        if (it is BaseModel<*>) {
+                            CommonUtil.debug(it.message)
+                            ToastUtil.showMessage(it.message)
+                        } else {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                        }
+                    })
+                }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
+            })
+        }
     }
 
     fun updateExchange() {
