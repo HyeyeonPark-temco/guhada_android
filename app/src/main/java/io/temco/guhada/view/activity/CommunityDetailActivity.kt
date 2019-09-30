@@ -19,6 +19,7 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
@@ -154,6 +155,8 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private fun initIntent(){
         if(intent?.extras?.containsKey("bbsId")!!){
             mViewModel.bbsId = intent.extras.getLong("bbsId")
+            mViewModel.info = intent.extras.getSerializable("info") as CommunityInfo
+            if(CustomLog.flag) CustomLog.L("CommunityDetailActivity", "mViewModel.info ",mViewModel.info.toString())
         }
     }
 
@@ -201,6 +204,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
             },100)
         })
         mViewModel.getDetailData()
+        mBinding.headerTitle = mViewModel.info.communityCategoryName
     }
 
 

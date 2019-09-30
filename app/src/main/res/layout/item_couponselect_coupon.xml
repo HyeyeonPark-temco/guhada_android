@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:ellipsize="middle"
-            android:text="@{couponWallet.couponTitle}"
+
             android:textSize="@dimen/text_13"
 
             app:selectedCouponId="@{couponWallet.couponNumber}"

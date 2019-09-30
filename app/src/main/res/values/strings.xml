@@ -502,8 +502,8 @@
     <string name="payment_text_freeshipping">무료배송</string>
     <string name="payment_text_verify">본인인증</string>
     <string name="payment_text_required">[필수]</string>
-    <string name="payment_text_totalorderprice">총 주문금액</string>
-    <string name="payment_text_totaldiscount">할인금액</string>
+    <string name="payment_text_totalorderprice">상품금액</string>
+    <string name="payment_text_totaldiscount">할인・포인트</string>
     <string name="payment_text_totalpayprice">최종 결제금액</string>
     <string name="payment_text_discountcoupon">쿠폰 할인</string>
     <string name="payment_text_discountproduct">상품 할인</string>
@@ -531,7 +531,7 @@
     <string name="payment_button_allpoint">전액 사용</string>
 
     <string name="payment_message_cancel">결제가 취소되었습니다</string>
-    <string name="payment_coupon_format">%,2d원(%d장)</string>
+    <string name="payment_coupon_format">%,2d원 (%d장)</string>
     <string name="payment_couponcount_format"><![CDATA[(사용가능 <font color="#111111">%,2d</font>장 / 보유 %,2d장)]]></string>
     <string name="payment_availablepoint_format"><![CDATA[(사용가능 <font color="#111111">%,2d</font>P / 보유 %,2dP)]]></string>
     <string name="payment_coupon_hint">0원 (0장)</string>
@@ -554,9 +554,9 @@
     <string name="paymentresult_history">주문내역보기</string>
     <string name="paymentresult_paymentway">결제방법</string>
 
-    <string name="paymentresult_totalprice">총 주문금액</string>
+    <string name="paymentresult_totalprice">상품금액</string>
     <string name="paymentresult_shippingprice">배송비</string>
-    <string name="paymentresult_totaldiscountprice">총 할인금액</string>
+    <string name="paymentresult_totaldiscountprice">할인・포인트</string>
     <string name="paymentresult_coupondiscount">쿠폰 할인</string>
     <string name="paymentresult_productdiscount">상품 할인</string>
     <string name="paymentresult_pointused">포인트 사용</string>
@@ -776,29 +776,29 @@
     <string name="mypage_deliverydetail_shippinginfo_memo">배송 메모</string>
 
     <string name="mypage_deliverydetail_paymentinfo_title">결제 정보</string>
-    <string name="mypage_deliverydetail_paymentinfo_order1">총 주문금액</string>
-    <string name="mypage_deliverydetail_paymentinfo_order2">상품합계 (총%d개)</string>
+    <string name="mypage_deliverydetail_paymentinfo_order1">주문금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_order2">상품금액 (총%d개)</string>
     <string name="mypage_deliverydetail_paymentinfo_order3">배송비</string>
-    <string name="mypage_deliverydetail_paymentinfo_discount1">총 할인금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_discount1">할인・포인트</string>
     <string name="mypage_deliverydetail_paymentinfo_discount2">상품 할인 쿠폰</string>
-    <string name="mypage_deliverydetail_paymentinfo_fiinal1">최종 결제 금액</string>
+    <string name="mypage_deliverydetail_paymentinfo_fiinal1">최종 결제금액</string>
     <string name="mypage_deliverydetail_paymentinfo_fiinal2">총 결제금액 (%s)</string>
     <string name="mypage_deliverydetail_paymentinfo_fiinal3">포인트 사용</string>
 
-    <string name="mypage_deliverydetail_reufndinfo_title">환불예상금액 확인</string>
-    <string name="mypage_deliverydetail_reufndinfo_order1">취소 상품 주문금액</string>
-    <string name="mypage_deliverydetail_reufndinfo_order2">취소 상품 금액 합계</string>
-    <string name="mypage_deliverydetail_reufndinfo_order3">취소 배송비 합계</string>
-    <string name="mypage_deliverydetail_reufndinfo_order4">상품 ・ 주문할인취소</string>
+    <string name="mypage_deliverydetail_reufndinfo_title">환불 정보</string>
+    <string name="mypage_deliverydetail_reufndinfo_order1">주문금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_order2">상품금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_order3">배송비</string>
+    <string name="mypage_deliverydetail_reufndinfo_order4">상품・주문할인취소</string>
     <string name="mypage_deliverydetail_reufndinfo_order5">스토어할인 취소</string>
     <string name="mypage_deliverydetail_reufndinfo_order6">배송비할인 취소</string>
-    <string name="mypage_deliverydetail_reufndinfo_discount1">환불금액 차감내역</string>
+    <string name="mypage_deliverydetail_reufndinfo_discount1">차감금액</string>
     <string name="mypage_deliverydetail_reufndinfo_discount2">배송비 추가금액</string>
     <string name="mypage_deliverydetail_reufndinfo_discount3">할인변동금액</string>
     <string name="mypage_deliverydetail_reufndinfo_discount4">취소 ・ 반품비용 차감</string>
-    <string name="mypage_deliverydetail_reufndinfo_final1">총 환불금액</string>
-    <string name="mypage_deliverydetail_reufndinfo_final2">신용카드 환불금액</string>
-    <string name="mypage_deliverydetail_reufndinfo_final3">포인트 환불금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_final1">환불 예정 금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_final2">최종 결제금액</string>
+    <string name="mypage_deliverydetail_reufndinfo_final3">포인트 사용</string>
 
     <string name="mypage_deliverydetail_priceformat_minus">- %,2d원</string>
 
@@ -966,6 +966,9 @@
     <string name="couponselect_productcount_format">총 %d개 상품</string>
     <string name="couponselect_productcount_default">총 0개 상품</string>
     <string name="couponselect_overmaxdiscountprice">해당 쿠폰의 최대 할인 금액은 %,2d원 입니다.</string>
+    <string name="couponselect_titleprice_format">%,2d원 할인 [%s]</string>
+    <string name="couponselect_titlerate_format">%s 할인 [%s] (%,2d원 할인)</string>
+    <string name="couponselect_titlerate_format_withoutprice">%s 할인 [%s]</string>
 
     <!-- MAIN LIST SUBTITLE -->
     <string name="mainlistsubtitle_all">전체</string>

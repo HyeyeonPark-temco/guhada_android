@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.data.model.coupon.AvailableCouponWallet
+import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.viewmodel.CouponSelectDialogViewModel
@@ -45,10 +47,12 @@ class CouponDealAdapter : RecyclerView.Adapter<CouponDealAdapter.Holder>() {
                     this.couponId = CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_ID
                     this.couponNumber = CouponSelectDialogActivity.CouponFlag().NOT_SELECT_COUPON_NUMBER
                     this.couponTitle = "적용 안함"
+                    this.discountType = Coupon.DiscountType.NONE.type
                 }.let { couponWallet.couponWalletResponseList.add(it) }
                 this.mList = couponWallet.couponWalletResponseList
                 this.mProduct = product
             }
+
 
             mBinding.product = product
             mBinding.viewModel = mViewModel

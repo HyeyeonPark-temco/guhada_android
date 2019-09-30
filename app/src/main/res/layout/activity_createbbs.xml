@@ -155,14 +155,15 @@
                 android:weightSum="1"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="51dp"
                     android:visibility="@{viewModel.filterListVisible ? View.VISIBLE : View.GONE , default = gone}" >
 
                     <io.temco.guhada.view.CustomSpinner
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:layout_marginBottom="1dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:background="@drawable/border_all_whitethree"
@@ -221,12 +222,15 @@
                                 android:layout_marginRight="20dp"/>
                         </LinearLayout>
                     </FrameLayout>
-                </FrameLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/white_four"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/white_four"/>
+
+                </RelativeLayout>
+
 
                 <EditText
                     android:id="@+id/edittext_report_title"

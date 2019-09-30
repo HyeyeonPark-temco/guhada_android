@@ -123,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@{`-` + @string/common_priceunit_format(viewModel.purchaseOrderResponse.totalDiscountDiffPrice)}"
+            android:text="@{`-` + @string/common_priceunit_format(viewModel.purchaseOrderResponse.totalDiscountDiffPrice + viewModel.purchaseOrderResponse.payment.pointPayment)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line2" />
 
@@ -147,6 +147,28 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discounttotal_content" />
 
+        <TextView
+            android:id="@+id/textview_deliverydetail_paymentpoint_title"
+            style="@style/MypageDeliveryWarmGreyTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/mypage_deliverydetail_paymentinfo_fiinal3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_disountproduct_title"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/textview_deliverydetail_paymentpoint_content"
+            style="@style/MypageDeliveryWarmGreyTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@{@string/mypage_deliverydetail_priceformat_minus(viewModel.purchaseOrderResponse.payment.pointPayment)}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_disountproduct_content"
+            app:layout_constraintVertical_bias="0" />
+
         <View
             android:id="@+id/view_deliverydetail_paymentinfo_line3"
             android:layout_width="match_parent"
@@ -155,7 +177,7 @@
             android:background="@color/line_6"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_disountproduct_title" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_paymentpoint_title" />
 
         <TextView
             android:id="@+id/textview_deliverydetail_paymenttotal_title"
@@ -173,7 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/common_price_format(viewModel.purchaseOrderResponse.totalPaymentPrice)}"
+            android:text="@{@string/common_price_format(viewModel.purchaseOrderResponse.totalPaymentPrice - viewModel.purchaseOrderResponse.payment.pointPayment)}"
             android:textSize="@dimen/text_20"
             app:layout_constraintBottom_toTopOf="@+id/textview_deliverydetail_paymentprice_content"
             app:layout_constraintRight_toLeftOf="@+id/textview_deliverydetail_paymenttotal_content1"
@@ -207,33 +229,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:text="@{@string/common_priceunit_format(viewModel.purchaseOrderResponse.totalPaymentPrice)}"
+            android:text="@{@string/common_priceunit_format(viewModel.purchaseOrderResponse.totalPaymentPrice - viewModel.purchaseOrderResponse.payment.pointPayment)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_paymenttotal_content1" />
-
-        <TextView
-            android:id="@+id/textview_deliverydetail_paymentpoint_title"
-            style="@style/MypageDeliveryWarmGreyTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="@string/mypage_deliverydetail_paymentinfo_fiinal3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_paymentprice_title"
-            app:layout_constraintVertical_bias="0" />
-
-        <TextView
-            android:id="@+id/textview_deliverydetail_paymentpoint_content"
-            style="@style/MypageDeliveryWarmGreyTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="@{@string/mypage_deliverydetail_priceformat_minus(viewModel.purchaseOrderResponse.payment.pointPayment)}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_paymentprice_content"
-            app:layout_constraintVertical_bias="0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

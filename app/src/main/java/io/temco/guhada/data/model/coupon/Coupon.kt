@@ -44,8 +44,9 @@ class Coupon() : Parcelable {
     var sellerName: String? = ""
 
     enum class DiscountType(val type: String) {
-        RATE("RATE"),   // 정률
-        PRICE("PRICE")  // 정액
+        RATE("RATE"),    // 정률
+        PRICE("PRICE"),  // 정액
+        NONE("NONT")    // 적용 안함
     }
 
 
