@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 
 import com.google.gson.JsonObject;
 
@@ -29,7 +30,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     private OnFindAccountListener findAccountListener;
     private boolean checkedFindIdByInfo = false;
     private boolean checkedFindIdByVerifyingPhone = false;
-    private int resultVisibility = View.GONE;
+    private ObservableInt resultVisibility = new ObservableInt(View.GONE);
 
     public User user = new User();
     public String di = "";
@@ -87,11 +88,11 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     }
 
     @Bindable
-    public int getResultVisibility() {
+    public ObservableInt getResultVisibility() {
         return resultVisibility;
     }
 
-    public void setResultVisibility(int resultVisibility) {
+    public void setResultVisibility(ObservableInt resultVisibility) {
         this.resultVisibility = resultVisibility;
     }
 
@@ -249,7 +250,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                         Objects.requireNonNull(this.user).setPhoneNumber(user.getPhoneNumber());
                         Objects.requireNonNull(this.user).setEmail(user.getEmail());
                         Objects.requireNonNull(this.user).setJoinAt(user.getJoinAt());
-                        setResultVisibility(View.VISIBLE);
+                        resultVisibility = new ObservableInt(View.VISIBLE);
 
                         notifyPropertyChanged(BR.user);
                         notifyPropertyChanged(BR.resultVisibility);
@@ -295,16 +296,17 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                         this.user.setPhoneNumber(obj.getPhoneNumber());
                         this.user.setJoinAt(obj.getJoinAt());
 
-                        setResultVisibility(View.VISIBLE);
+                        resultVisibility = new ObservableInt(View.VISIBLE);
                         notifyPropertyChanged(BR.resultVisibility);
                         notifyPropertyChanged(BR.user);
-                        return;
+                        break;
                     case Flag.ResultCode.DATA_NOT_FOUND:
                         String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
                         findAccountListener.showSnackBar(message);
-                        return;
+                        break;
                     default:
                         findAccountListener.showMessage(model.message);
+                        break;
                 }
             } else {
                 findAccountListener.showMessage(model.message);
@@ -337,7 +339,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                     user.setMobile(phoneNumber);
                     this.user = user;
 
-                    setResultVisibility(View.VISIBLE);
+                    resultVisibility = new ObservableInt(View.VISIBLE);
                     notifyPropertyChanged(BR.resultVisibility);
                     notifyPropertyChanged(BR.user);
                 } else {

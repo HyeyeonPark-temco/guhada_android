@@ -3,7 +3,9 @@ package io.temco.guhada.data.viewmodel.account;
 import android.view.View;
 
 import androidx.databinding.Bindable;
+import androidx.databinding.ObservableInt;
 
+import com.google.gson.JsonObject;
 import com.google.gson.internal.LinkedTreeMap;
 
 import java.util.Observable;
@@ -21,6 +23,7 @@ import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Verification;
+import io.temco.guhada.data.model.base.BaseErrorModel;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.server.UserServer;
@@ -37,7 +40,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     // VERIFY
     private int verifyEmailVisibility = View.GONE;
     private int verifyPhoneVisibility = View.GONE;
-    private int resultVisibility = View.GONE;
+    private ObservableInt resultVisibility = new ObservableInt(View.GONE);
     private String timerMinute = "02";
     private String timerSecond = "60";
 
@@ -87,11 +90,11 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     }
 
     @Bindable
-    public int getResultVisibility() {
+    public ObservableInt getResultVisibility() {
         return resultVisibility;
     }
 
-    public void setResultVisibility(int resultVisibility) {
+    public void setResultVisibility(ObservableInt resultVisibility) {
         this.resultVisibility = resultVisibility;
     }
 
@@ -278,6 +281,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             break;
                         case 6005:
                             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
+                            break;
+                        default:
+                            listener.showSnackBar(model.message);
                     }
                 } else {
                     String message = (String) o;
@@ -297,28 +303,26 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     public void onClickVerifyNumber() {
         Verification verification = new Verification();
         verification.setVerificationNumber(verifyNumber);
-        verification.setVerificationTarget(user.getEmail());
 
         if (checkedFindPwdByEmail) {
             verification.setVerificationTargetType("EMAIL");
-
+            verification.setVerificationTarget(user.getEmail());
         } else if (checkedFindPwdByPhone) {
             verification.setVerificationTargetType("MOBILE");
+            verification.setVerificationTarget(user.getMobile());
         }
 
         listener.showLoadingIndicator();
         user.deleteObserver(this);
         UserServer.verifyNumber((success, o) -> {
+            BaseModel model = (BaseModel) o;
             if (success) {
-                BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
-                        resultVisibility = View.VISIBLE;
+                        resultVisibility = new ObservableInt(View.VISIBLE);
                         verifiedEmail = user.getEmail();
                         notifyPropertyChanged(BR.resultVisibility);
                         notifyPropertyChanged(BR.verifiedEmail);
-                        listener.hideKeyboard();
-                        listener.hideLoadingIndicator();
                         break;
                     case Flag.ResultCode.EXPIRED_VERIFICATION_NUMBER:
                         listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
@@ -328,10 +332,11 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                         listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invaludverification));
                         listener.hideLoadingIndicator();
                         break;
+                    default:
+                        listener.showSnackBar(model.message);
                 }
             } else {
-                String message = (String) o;
-                listener.showSnackBar(message);
+                listener.showSnackBar(model.message);
             }
             listener.hideLoadingIndicator();
             user.addObserver(this);
@@ -349,6 +354,8 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                 verification.setNewPassword(newPassword);
                 verification.setVerificationNumber(verifyNumber);
                 verification.setDiCode(di);
+                verification.setVerificationTarget(user.getMobile());
+                verification.setVerificationTargetType(Verification.IdentityVerifyMethod.MOBILE.getCode());
                 verification.setPhoneNumber(user.getMobile() == null ? "" : user.getMobile());
                 verification.setMobile(user.getMobile() == null ? "" : user.getMobile());
                 verification.setName(user.getName() == null ? "" : user.getName());
@@ -358,39 +365,19 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                 listener.showLoadingIndicator();
                 user.deleteObserver(this);
                 OnServerListener serverListener = (success, o) -> {
-                    if (success) {
-                        BaseModel model = (BaseModel) o;
+                    BaseModel model = (BaseModel) o;
+                    if (success && model.resultCode == Flag.ResultCode.SUCCESS) {
                         listener.hideLoadingIndicator();
 
                         if (CustomLog.INSTANCE.getFlag())
                             CustomLog.INSTANCE.L("비밀번호 재설정 response", "본인인증으로 진행 여부:" + checkedFindPwdByVerifyingPhone + "   RESULT MSG:" + model.message);
-                        if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
-                            listener.closeActivity();
-                        } else {
-                            String message = ((BaseModel) o).message != null && !((BaseModel) o).message.isEmpty() ? ((BaseModel) o).message : BaseApplication.getInstance().getString(R.string.common_message_servererror);
-                            listener.showSnackBar(message);
-                        }
 
-//                        switch (model.resultCode) {
-//                            case Flag.ResultCode.SUCCESS:
-//                                ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
-//                                listener.closeActivity();
-//                                break;
-//                            case Flag.ResultCode.DATA_NOT_FOUND:
-//                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
-//                                break;
-//                            case Flag.ResultCode.INVALID_VERIFICATION_NUMBER:
-//                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_expiredverification));
-//                                break;
-//                            case Flag.ResultCode.NOT_FOUND_VERIFY_INFO:
-//                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidverificationdata));
-//                                break;
-//                            default:
-//                                listener.showSnackBar(((BaseModel) o).message);
-//                        }
+                        ToastUtil.showMessage(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_successchangepwd));
+                        listener.closeActivity();
+
                     } else {
-                        listener.showSnackBar((String) o);
+                        String message = ((BaseModel) o).message != null && !((BaseModel) o).message.isEmpty() ? ((BaseModel) o).message : BaseApplication.getInstance().getString(R.string.common_message_servererror);
+                        listener.showSnackBar(message);
                     }
                     listener.hideLoadingIndicator();
                     user.addObserver(this);
@@ -398,8 +385,33 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
 
                 if (checkedFindPwdByVerifyingPhone) {
                     // 본인인증으로 비밀번호 재설정
-                    UserServer.changePasswordByIdentifying(serverListener, verification);
+                    verification.setVerificationNumber(verifyNumber);
+                    verification.setVerificationTarget(user.getMobile());
+                    verification.setVerificationTargetType(Verification.IdentityVerifyMethod.MOBILE.getCode());
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("diCode", di);
+
+                    UserServer.getIdentityVerify((success, o) -> {
+                        BaseModel<Object> model = (BaseModel<Object>) o;
+                        if (success && model.resultCode == Flag.ResultCode.SUCCESS) {
+                            UserServer.changePasswordByIdentifying(serverListener, verification);
+                        } else {
+                            ToastUtil.showMessage(model.message);
+                        }
+                    }, jsonObject);
                 } else {
+                    if (checkedFindPwdByEmail) {
+                        verification.setVerificationNumber(verifyNumber);
+                        verification.setVerificationTarget(user.getEmail());
+                        verification.setIdentityVerifyMethod(Verification.IdentityVerifyMethod.EMAIL.getCode());
+                        verification.setVerificationTargetType(Verification.IdentityVerifyMethod.EMAIL.getCode());
+                    } else {
+                        verification.setVerificationNumber(verifyNumber);
+                        verification.setVerificationTarget(user.getMobile());
+                        verification.setIdentityVerifyMethod(Verification.IdentityVerifyMethod.MOBILE.getCode());
+                        verification.setVerificationTargetType(Verification.IdentityVerifyMethod.MOBILE.getCode());
+                    }
+
                     UserServer.changePassword(serverListener, verification);
                 }
             } else {
