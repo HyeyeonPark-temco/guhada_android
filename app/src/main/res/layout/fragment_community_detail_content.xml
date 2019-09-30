@@ -191,9 +191,8 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:src="@drawable/community_banner_mobile"
-                android:background="#d6b5ad"/>
+                android:layout_height="134dp"
+                android:background="@drawable/community_banner_mobile"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

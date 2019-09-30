@@ -16,9 +16,10 @@
             type="io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/layout_appbar"
@@ -92,53 +93,58 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintEnd_toStartOf="@+id/scrollview_communitydetail"
-            app:layout_constraintStart_toStartOf="@+id/scrollview_communitydetail">
+            android:layout_height="match_parent">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/scrollview_communitydetail"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/linearlayout_communitydetail_commentwrite"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_weight="1">
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintEnd_toStartOf="@+id/scrollview_communitydetail"
+                app:layout_constraintStart_toStartOf="@+id/scrollview_communitydetail">
 
-                <LinearLayout
-                    android:id="@+id/linearlayout_communitydetail_parent"
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/scrollview_communitydetail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@id/linearlayout_communitydetail_commentwrite"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_weight="1">
 
-                    <FrameLayout
-                        android:id="@+id/framelayout_communitydetail_detail"
+                    <LinearLayout
+                        android:id="@+id/linearlayout_communitydetail_parent"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <FrameLayout
-                        android:id="@+id/framelayout_communitydetail_comment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                        <FrameLayout
+                            android:id="@+id/framelayout_communitydetail_detail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
-            </androidx.core.widget.NestedScrollView>
+                        <FrameLayout
+                            android:id="@+id/framelayout_communitydetail_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
 
-            <include
-                android:id="@+id/linearlayout_communitydetail_commentwrite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{viewModel.userLoginCheck ? View.VISIBLE : View.GONE , default = gone}"
-                layout="@layout/bottom_comment_layout"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scrollview_communitydetail"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <include
+                    android:id="@+id/linearlayout_communitydetail_commentwrite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{viewModel.userLoginCheck ? View.VISIBLE : View.GONE , default = gone}"
+                    layout="@layout/bottom_comment_layout"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/scrollview_communitydetail"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
 </layout>
