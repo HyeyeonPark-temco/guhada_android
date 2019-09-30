@@ -63,7 +63,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         }
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         mViewModel = MyPageDeliveryDetailViewModel().apply {
             intent.getLongExtra("purchaseId", 0).let { purchaseId ->
                 if (purchaseId > 0) {
@@ -77,7 +77,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         }
     }
 
-    private fun initExpectedRefundPrice(){
+    private fun initExpectedRefundPrice() {
         intent.getLongExtra("orderClaimGroupId", 0).let { orderClaimGroupId ->
             if (orderClaimGroupId > 0) {
                 mViewModel.mOrderClaimGroupId = orderClaimGroupId
@@ -87,11 +87,13 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
 
         mViewModel.mExpectedRefundPrice.observe(this, Observer {
             mBinding.includeDeliverydetailRefundinfo.expectedRefundPrice = it
+            mBinding.includeDeliverydetailPaymentinfo.expectedRefundPrice = it
             mBinding.executePendingBindings()
         })
 
         mViewModel.mExpectedRefundInfo.observe(this, Observer {
             mBinding.includeDeliverydetailRefundinfo.expectedRefundInfo = it
+            mBinding.includeDeliverydetailPaymentinfo.expectedRefundInfo = it
             mBinding.executePendingBindings()
         })
     }

@@ -3,9 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
+
+        <variable
+            name="expectedRefundPrice"
+            type="io.temco.guhada.data.model.ExpectedRefundPrice" />
+
+        <variable
+            name="expectedRefundInfo"
+            type="io.temco.guhada.data.model.ExpectedRefundPrice.ExpectedRefundInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -123,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@{`-` + @string/common_priceunit_format(viewModel.purchaseOrderResponse.totalDiscountDiffPrice + viewModel.purchaseOrderResponse.payment.pointPayment)}"
+            android:text="@{`-` + @string/common_priceunit_format(viewModel.purchaseOrderResponse.totalDiscountDiffPrice + expectedRefundInfo.pointPayment)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line2" />
 
@@ -164,7 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/mypage_deliverydetail_priceformat_minus(viewModel.purchaseOrderResponse.payment.pointPayment)}"
+            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundInfo.pointPayment)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_disountproduct_content"
             app:layout_constraintVertical_bias="0" />
@@ -195,7 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/common_price_format(viewModel.purchaseOrderResponse.totalPaymentPrice - viewModel.purchaseOrderResponse.payment.pointPayment)}"
+            android:text="@{@string/common_price_format(expectedRefundInfo.totalPaymentPrice - expectedRefundInfo.pointPayment)}"
             android:textSize="@dimen/text_20"
             app:layout_constraintBottom_toTopOf="@+id/textview_deliverydetail_paymentprice_content"
             app:layout_constraintRight_toLeftOf="@+id/textview_deliverydetail_paymenttotal_content1"
@@ -229,7 +238,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:text="@{@string/common_priceunit_format(viewModel.purchaseOrderResponse.totalPaymentPrice - viewModel.purchaseOrderResponse.payment.pointPayment)}"
+            android:text="@{@string/common_priceunit_format(expectedRefundInfo.totalPaymentPrice - expectedRefundInfo.pointPayment)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_paymenttotal_content1" />
 
