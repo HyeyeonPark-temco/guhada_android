@@ -13,9 +13,6 @@ class BookMarkProduct {
     @SerializedName("totalElements")
     var totalElements : Int = 0
 
-    override fun toString(): String {
-        return "BookMarkProduct(deals=$deals, totalPage=$totalPage, totalElements=$totalElements)"
-    }
 
 
 }

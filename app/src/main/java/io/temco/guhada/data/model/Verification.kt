@@ -34,7 +34,4 @@ class Verification {
         MALE("MALE", "1")
     }
 
-    override fun toString(): String {
-        return "name:$name, email:$email, phoneNumber:$phoneNumber, mobile:$mobile, diCode:$diCode, newPassword:$newPassword, verificationNumber:$verificationNumber, verificationTarget:$verificationTarget, verificationTargetType:$verificationTargetType "
-    }
 }

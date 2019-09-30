@@ -31,7 +31,4 @@ data class RecentDealEntity (@PrimaryKey(autoGenerate = true) val idx : Int,
         return this
     }
 
-    override fun toString(): String {
-        return "RecentDealEntity(idx=$idx, date=$date, dealId=$dealId, data='$data, userData='$userData')"
-    }
 }

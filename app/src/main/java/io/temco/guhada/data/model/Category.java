@@ -57,23 +57,5 @@ public class Category {
 
     public int parentId = -1;
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "type=" + type +
-                ", isSelected=" + isSelected +
-                ", isExpand=" + isExpand +
-                ", depth=" + depth +
-                ", id=" + id +
-                ", parentId=" + parentId +
-                ", title='" + title + '\'' +
-                ", key='" + key + '\'' +
-                ", hierarchy='" + hierarchy + '\'' +
-                ", fullDepthName='" + fullDepthName + '\'' +
-                ", immediateChildrenCount=" + immediateChildrenCount +
-                ", hierarchies=" + Arrays.toString(hierarchies) +
-                ", isUnisex=" + isUnisex +
-                '}';
-    }
 
 }

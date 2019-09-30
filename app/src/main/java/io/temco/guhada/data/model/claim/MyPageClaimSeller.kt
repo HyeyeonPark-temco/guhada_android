@@ -43,9 +43,6 @@ class MyPageClaimSellerContent : Serializable {
     var totalPages : Int = -1
     var pageNumber : Int = -1
 
-    override fun toString(): String {
-        return "MyPageClaimSellerContent(id=$id, contents='$contents', productName='$productName', nickname='$nickname', productImageUrl='$productImageUrl', brandName='$brandName', season=$season, createdAt=$createdAt, repliedAt=$repliedAt, reply=$reply, type='$type', totalPages=$totalPages, pageNumber=$pageNumber)"
-    }
 
 }
 

@@ -7,8 +7,4 @@ class CommunityCategoryfilter : Serializable {
     var communityCategoryId = 0
     var name = ""
 
-    override fun toString(): String {
-        return "CommunityCategoryfilter(id=$id, communityCategoryId=$communityCategoryId, name='$name')"
-    }
-
 }

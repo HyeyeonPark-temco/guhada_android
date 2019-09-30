@@ -36,14 +36,6 @@ class BookMark : BasePageModel() {
         var userId: Long = 0L
         var createdAt : String = ""
 
-        override fun toString(): String {
-            return "Content(id=$id, target='$target', targetId=$targetId, userId=$userId, createdAt='$createdAt')"
-        }
     }
-
-    override fun toString(): String {
-        return "BookMark(content=$content, result='$result', data='$data', message='$message', resultCode=$resultCode, isBookMarkSet=$isBookMarkSet)"
-    }
-
 
 }

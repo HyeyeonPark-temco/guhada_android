@@ -13,7 +13,7 @@ object CustomLog {
     var err = 0
 
     @JvmStatic
-    val flag = true
+    val flag = false
 
     val maxLogStringSize = 1000
 

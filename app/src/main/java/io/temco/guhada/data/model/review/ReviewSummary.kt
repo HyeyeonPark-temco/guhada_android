@@ -25,13 +25,8 @@ class ReviewSummary {
         var name: String = ""
         var description: String = ""
         var count: Int = 0
-        override fun toString(): String {
-            return "SatisfactionContent(name='$name', description='$description', count=$count)"
-        }
+
 
     }
 
-    override fun toString(): String {
-        return "ReviewSummary(satisfaction=$satisfaction, totalReviewsCount=$totalReviewsCount, averageReviewsRating=$averageReviewsRating)"
-    }
 }

@@ -106,9 +106,7 @@ class Coupon() : Parcelable {
     }
 
     override fun describeContents(): Int = 0
-    override fun toString(): String {
-        return "Coupon(userId=$userId, serviceType=$serviceType, applyType=$applyType, couponId=$couponId, couponSaveId=$couponSaveId, couponNumber='$couponNumber', couponTitle=$couponTitle, couponType=$couponType, status=$status, saveType='$saveType', saveTargetType='$saveTargetType', discountType=$discountType, discountRate=$discountRate, discountPrice=$discountPrice, minimumPrice=$minimumPrice, maximumDiscountPrice=$maximumDiscountPrice, startAt=$startAt, endAt=$endAt, createdAt=$createdAt, expireDueDay=$expireDueDay, sellerId=$sellerId, sellerImgUrl=$sellerImgUrl, sellerName=$sellerName)"
-    }
+
 
     companion object CREATOR : Parcelable.Creator<Coupon> {
         override fun createFromParcel(parcel: Parcel): Coupon {

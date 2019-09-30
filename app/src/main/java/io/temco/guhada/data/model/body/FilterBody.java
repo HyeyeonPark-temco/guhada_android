@@ -52,15 +52,4 @@ public class FilterBody {
     @SerializedName("searchCondition")
     public String searchCondition;
 
-    @Override
-    public String toString() {
-        return "FilterBody{" +
-                "brandIds=" + brandIds +
-                ", categoryIds=" + categoryIds +
-                ", filters=" + filters +
-                ", searchQueries=" + searchQueries +
-                ", searchCondition='" + searchCondition + '\'' +
-                ", searchResultOrder='" + searchResultOrder + '\'' +
-                '}';
-    }
 }

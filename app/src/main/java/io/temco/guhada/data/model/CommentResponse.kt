@@ -22,8 +22,5 @@ class CommentResponse {
     @Expose
     var imageList : Array<ImageResponse>? = null
 
-    override fun toString(): String {
-        return "CommentResponse(communityBbsId=$communityBbsId, contents='$contents', id=$id, originCommentId=$originCommentId, parentCommentId=$parentCommentId, imageList=$imageList)"
-    }
 
 }

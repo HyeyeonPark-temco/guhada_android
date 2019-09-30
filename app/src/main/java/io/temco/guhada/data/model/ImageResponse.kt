@@ -14,8 +14,4 @@ class ImageResponse : Serializable{
     @Expose
     var index : Int? = 0
 
-    override fun toString(): String {
-        return "ImageResponse(url='$url', fileName='$fileName', fileContentType='$fileContentType', fileSize=$fileSize, imageWidth=$imageWidth, imageHeight=$imageHeight, index=$index)"
-    }
-
 }

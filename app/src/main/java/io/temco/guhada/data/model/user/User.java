@@ -301,33 +301,5 @@ public class User extends Observable implements Serializable {
         return userDetail;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "agreeCollectPersonalInfoTos=" + agreeCollectPersonalInfoTos +
-                ", agreePurchaseTos=" + agreePurchaseTos +
-                ", agreeSaleTos=" + agreeSaleTos +
-                ", agreeSmsReception=" + agreeSmsReception +
-                ", agreeEmailReception=" + agreeEmailReception +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", joinAt='" + joinAt + '\'' +
-                ", withdrawalAt='" + withdrawalAt + '\'' +
-                ", birth='" + birth + '\'' +
-                ", address='" + address + '\'' +
-                ", roadAddress='" + roadAddress + '\'' +
-                ", detailAddress='" + detailAddress + '\'' +
-                ", zip='" + zip + '\'' +
-                ", emailVerify=" + emailVerify +
-                ", profileImageUrl='" + profileImageUrl + '\'' +
-                ", gender=" + gender +
-                ", mobileCarriers=" + mobileCarriers +
-                ", nationality=" + nationality +
-                ", confirmPassword='" + confirmPassword + '\'' +
-                '}';
-    }
 
 }

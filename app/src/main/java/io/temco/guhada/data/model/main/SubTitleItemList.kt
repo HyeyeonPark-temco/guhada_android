@@ -17,9 +17,6 @@ class SubTitleItemList(index: Int,
                        var data : Any,
                        var isMoreView : Boolean) : MainBaseModel(index, type,2){
 
-    override fun toString(): String {
-        if(CustomLog.flag)return "SubTitleItemList(title='$title', listSize=${Arrays.toString(listSize)}, currentSubTitleIndex=$currentSubTitleIndex, isMoreView=$isMoreView)"
-        else return ""
-    }
+
 }
 

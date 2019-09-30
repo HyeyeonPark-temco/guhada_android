@@ -19,7 +19,5 @@ class UserSize : Serializable {
     @SerializedName("shoe")
     var shoe : Int = 0
 
-    override fun toString(): String {
-        return "UserSize(height=$height, weight=$weight, top='$top', bottom=$bottom, shoe=$shoe)"
-    }
+
 }

@@ -36,8 +36,4 @@ data class SearchWordEntity (@PrimaryKey(autoGenerate = true) val idx : Int,
         return this
     }
 
-    override fun toString(): String {
-        return "SearchWordEntity(idx=$idx, insertDate=$insertDate, searchWord='$searchWord', userData='$userData', tempField1='$tempField1', tempField2='$tempField2', tempField3='$tempField3')"
-    }
-
 }

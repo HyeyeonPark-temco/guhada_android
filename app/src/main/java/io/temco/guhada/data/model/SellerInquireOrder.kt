@@ -18,8 +18,5 @@ class SellerInquireOrder {
     var status = ""
     var statusText = ""
 
-    override fun toString(): String {
-        return "SellerInquireOrder(purchaseId=$purchaseId, dealId=$dealId, productId=$productId, orderProdGroupId=$orderProdGroupId, imageName='$imageName', imageUrl='$imageUrl', brandName='$brandName', season='$season', productName='$productName', quantity='$quantity', status='$status', statusText='$statusText')"
-    }
 
 }

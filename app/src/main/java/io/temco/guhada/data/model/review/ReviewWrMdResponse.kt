@@ -20,9 +20,6 @@ class ReviewWrMdResponse {
     var reviewId  = 0L
     var textReview = ""
     var reviewPhotos : MutableList<ReviewPhoto> = mutableListOf()
-    override fun toString(): String {
-        return "ReviewWrMdResponse(colorSatisfaction='$colorSatisfaction', lengthSatisfaction='$lengthSatisfaction', orderProductGroupId=$orderProductGroupId, productRating='$productRating', sellerId=$sellerId, sizeSatisfaction='$sizeSatisfaction', productId=$productId, reviewId=$reviewId, textReview='$textReview', reviewPhotos=$reviewPhotos)"
-    }
 
 
 }
@@ -34,8 +31,5 @@ class ReviewPhoto {
     var imageStatus = ""
     var photoOrder = 0
     var reviewPhotoUrl = ""
-    override fun toString(): String {
-        return "ReviewPhoto(id=$id, imageStatus='$imageStatus', photoOrder=$photoOrder, reviewPhotoUrl='$reviewPhotoUrl')"
-    }
 
 }

@@ -23,7 +23,4 @@ data class BrandEntity (@PrimaryKey(autoGenerate = true) val idx : Int,
                            @ColumnInfo(name = "nameKo") var nameKo : String?,
                            @ColumnInfo(name = "isFavorite") var isFavorite : Boolean) : Serializable {
 
-    override fun toString(): String {
-        return "BrandEntity(idx=$idx, id=$id, nameDefault='$nameDefault', nameEn='$nameEn', nameKo='$nameKo', isFavorite=$isFavorite)"
-    }
 }

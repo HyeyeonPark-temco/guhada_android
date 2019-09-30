@@ -11,8 +11,4 @@ class ReportResponse {
     var targetId = 0L
     var title = ""
 
-    override fun toString(): String {
-        return "ReportResponse(content='$content', imageUrls=$imageUrls, reportTarget='$reportTarget', reportType=$reportType, reporter=$reporter, targetId=$targetId, title='$title')"
-    }
-
 }

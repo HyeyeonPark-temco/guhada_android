@@ -66,9 +66,7 @@ open class BasePageModel : Serializable {
         @SerializedName("sort")
         var sort : Sort = Sort()
 
-        override fun toString(): String {
-            return "Pageable(pageSize=$pageSize, pageNumber=$pageNumber, offset=$offset, paged=$paged, unpaged=$unpaged, sort=$sort)"
-        }
+
 
     }
 
@@ -83,14 +81,9 @@ open class BasePageModel : Serializable {
         @SerializedName("empty")
         var empty = false
 
-        override fun toString(): String {
-            return "Sort(sorted=$sorted, unsorted=$unsorted, empty=$empty)"
-        }
 
     }
 
-    override fun toString(): String {
-        return "BasePageModel(pageable=$pageable, pageSize=$pageSize, totalElements=$totalElements, totalPages=$totalPages, last=$last, first=$first, size=$size, number=$number, numberOfElements=$numberOfElements, empty=$empty, sort=$sort)"
-    }
+
 
 }

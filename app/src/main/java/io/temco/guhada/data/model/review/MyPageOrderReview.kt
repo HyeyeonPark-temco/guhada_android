@@ -117,10 +117,5 @@ class ReviewAvailableOrder :  MyPageReviewBase(), Serializable {
     var purchaseStatusText : String = ""
 
 
-    override fun toString(): String {
-        return "ReviewOrder(purchaseId=$purchaseId, productId=$productId, orderTimestamp=$orderTimestamp, brandName='$brandName', season='$season', prodName='$prodName', imageName='$imageName', imageUrl='$imageUrl', optionAttribute1='$optionAttribute1', optionAttribute2='$optionAttribute2', optionAttribute3='$optionAttribute3', quantity=$quantity, discountPrice=$discountPrice, originalPrice=$originalPrice, orderPrice=$orderPrice, shipPrice=$shipPrice, sellerId=$sellerId, sellerName='$sellerName', purchaseStatus='$purchaseStatus', statusMessage='$statusMessage', expireTimestamp='$expireTimestamp', orderProdGroupId=$orderProdGroupId, purchaseConfirm=$purchaseConfirm, shipCompleteTimestamp=$shipCompleteTimestamp, reviewId=$reviewId, dealId=$dealId, purchaseStatusText='$purchaseStatusText')"
-    }
-
-
 }
 

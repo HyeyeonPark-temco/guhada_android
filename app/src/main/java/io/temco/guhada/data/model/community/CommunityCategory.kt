@@ -20,8 +20,5 @@ class CommunityCategory : Serializable {
     var updatedAt = ""
     var updatedBy = ""
 
-    override fun toString(): String {
-        return "CommunityCategory(id=$id, priority=$priority, use=$use, name='$name', imageUr='$imageUr', desc='$desc', createdAt='$createdAt', createdBy='$createdBy', updatedAt='$updatedAt', updatedBy='$updatedBy')"
-    }
 
 }

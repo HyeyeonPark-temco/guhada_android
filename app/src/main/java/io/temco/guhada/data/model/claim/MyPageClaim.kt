@@ -22,9 +22,7 @@ class MyPageClaim : BasePageModel(), Serializable {
 
         var pageNumber : Int = -1
 
-        override fun toString(): String {
-            return "Content(inquiry=$inquiry, item=$item, totalPages=$totalPages, pageNumber=$pageNumber)"
-        }
+
     }
 
     inner class Item{
@@ -86,14 +84,9 @@ class MyPageClaim : BasePageModel(), Serializable {
             @SerializedName("attributes")
             var attributes : Array<String> = arrayOf()
 
-            override fun toString(): String {
-                return "Options(type=$type, attributes=${Arrays.toString(attributes)})"
-            }
+
         }
 
-        override fun toString(): String {
-            return "Item(brandId=$brandId, brandName='$brandName', sellerId=$sellerId, sellerName='$sellerName', productId=$productId, productName='$productName', imageName='$imageName', imageUrl='$imageUrl', dealId=$dealId, dealName='$dealName', totalStock=$totalStock, sellPrice=$sellPrice, discountRate=$discountRate, discountPrice=$discountPrice, shipExpenseType='$shipExpenseType', productSeason='$productSeason', options=$options)"
-        }
 
     }
 
@@ -140,16 +133,9 @@ class MyPageClaim : BasePageModel(), Serializable {
         @SerializedName("private")
         var private : Boolean = false
 
-        override fun toString(): String {
-            return "Inquiry(id=$id, productId=$productId, status='$status', inquiry='$inquiry', inquirer=$inquirer, nickname='$nickname', reply='$reply', replier=$replier, replyAt=$replyAt, replyUpdated='$replyUpdated', enable=$enable, createdAt=$createdAt, updatedAt=$updatedAt, private=$private)"
-        }
-
 
     }
 
-    override fun toString(): String {
-        return "MyPageClaim(pageable=$pageable, pageSize=$pageSize, totalElements=$totalElements, totalPages=$totalPages, last=$last, first=$first, size=$size, number=$number, numberOfElements=$numberOfElements, empty=$empty, sort=$sort)"
-    }
 
 
 }

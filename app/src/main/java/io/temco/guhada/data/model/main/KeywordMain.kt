@@ -12,10 +12,6 @@ class Keyword : Serializable{
     var width = 0
     var height = 0
 
-    override fun toString(): String {
-        return "KeywordMain(id=$id, priority=$priority, keyword='$keyword', url='$url', width=$width, height=$height)"
-    }
-
 }
 
 class KeywordMain(index: Int,

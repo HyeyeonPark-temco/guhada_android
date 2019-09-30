@@ -29,8 +29,4 @@ class CommunityTempInfo : Serializable{
         return data
     }
 
-    override fun toString(): String {
-        return "CommunityTempInfo(id=$id, brandId=$brandId, brandName=$brandName, dealId=$dealId, dealName=$dealName, title=$title, contents=$contents, createdTimestamp=$createdTimestamp, createdBy=$createdBy)"
-    }
-
 }

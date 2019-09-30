@@ -27,18 +27,4 @@ public class Brand extends BaseStickyHeaderModel implements Serializable {
     @SerializedName("isFavorite")
     public boolean isFavorite;
 
-    @Override
-    public String toString() {
-        return "Brand{" +
-                "isSelected=" + isSelected +
-                ", id=" + id +
-                ", nameDefault='" + nameDefault + '\'' +
-                ", nameEn='" + nameEn + '\'' +
-                ", nameKo='" + nameKo + '\'' +
-                ", isFavorite=" + isFavorite +
-                ", type=" + type +
-                ", position=" + position +
-                ", layoutRes=" + layoutRes +
-                '}';
-    }
 }

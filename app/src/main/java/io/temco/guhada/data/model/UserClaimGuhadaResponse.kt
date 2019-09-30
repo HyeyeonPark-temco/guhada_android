@@ -6,7 +6,4 @@ class UserClaimGuhadaResponse {
         var title = ""
         var typeCode = ""
 
-    override fun toString(): String {
-        return "UserClaimGuhadaResponse(content='$content', imageUrls=$imageUrls, title='$title', typeCode='$typeCode')"
-    }
 }

@@ -49,10 +49,6 @@ data class CategoryEntity (@PrimaryKey(autoGenerate = true) val idx : Int,
         return this
     }
 
-    override fun toString(): String {
-        return "CategoryEntity(idx=$idx, id=$id, label='$label', key='$key', hierarchy='$hierarchy', fullDepthName='$fullDepthName', depth=$depth, " +
-                "immediateChildrenCount=$immediateChildrenCount, endHierarchies=$endHierarchies, title='$title', isUnisex=$isUnisex)"
-    }
 
 
 }

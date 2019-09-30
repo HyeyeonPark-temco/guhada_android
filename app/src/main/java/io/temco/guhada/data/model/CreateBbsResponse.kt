@@ -17,9 +17,7 @@ class CreateBbsResponse : Serializable{
     var title = ""
     var use = true
 
-    override fun toString(): String {
-        return "CreateBbsResponse(brandId=$brandId, brandName='$brandName', categoryFilterId=$categoryFilterId, categoryId=$categoryId, contents='$contents', dealId=$dealId, dealName='$dealName', delete=$delete, imageList=$imageList, imageUrl='$imageUrl', title='$title', use=$use)"
-    }
+
 }
 
 
@@ -34,9 +32,7 @@ class CreateBbsTempResponse : Serializable{
     var imageList : ArrayList<ImageResponse> = arrayListOf()
     var title = ""
 
-    override fun toString(): String {
-        return "CreateBbsTempResponse(brandId=$brandId, brandName='$brandName', contents='$contents', dealId=$dealId, dealName='$dealName', imageList=$imageList, title='$title')"
-    }
+
 
 }
 

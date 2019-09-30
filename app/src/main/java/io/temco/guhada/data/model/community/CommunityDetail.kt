@@ -50,14 +50,6 @@ class CommunityDetail : Serializable {
         return data
     }
 
-    override fun toString(): String {
-        return "CommunityDetail(id=$id, guhadaClientPlatform=$guhadaClientPlatform, categoryId=$categoryId, categoryFilterId=$categoryFilterId, imageUrl=$imageUrl, title=$title, " +
-                "contents=$contents, use=$use, delete=$delete, deletedTimestamp=$deletedTimestamp, like=$like, bookmark=$bookmark, " +
-                "commentCount=$commentCount, hitCount=$hitCount, likeCount=$likeCount, brandId=$brandId, brandName=$brandName, dealId=$dealId, " +
-                "dealName=$dealName, dspCreatedAt=$dspCreatedAt, createdTimestamp=$createdTimestamp, currentTimestamp=$currentTimestamp, userId=$userId," +
-                " createUserInfo=$createUserInfo, userDetail=$userDetail, bbsImageList=$bbsImageList)"
-    }
-
 }
 
 
@@ -81,11 +73,6 @@ class CreateUserInfo : Serializable {
     var createdAt : Long? = null
     var updatedAt : Long? = null
 
-    override fun toString(): String {
-        return "CreateUserInfo(id=$id, email=$email, name=$name, userType=$userType, emailVerify=$emailVerify, nickname='$nickname'" +
-                ", mobile=$mobile, profileImageUrl=$profileImageUrl, zip=$zip, address=$address, roadAddress=$roadAddress, detailAddress=$detailAddress" +
-                ", birth=${Arrays.toString(birth)}, gender=$gender, userStatus=$userStatus, withdrawalAt=$withdrawalAt, createdAt=$createdAt, updatedAt=$updatedAt)"
-    }
     //var userDetail : UserDetail = UserDetail()
     //var roles : ArrayList<Roles> = arrayListOf()
 
@@ -132,11 +119,6 @@ class UserDetail : Serializable {
     var createdAt: Any? = null
     var updatedAt: Any? = null
     var updatedBy: Any? = null
-
-    override fun toString(): String {
-        return "UserDetail(id=$id, verifiedIdentity=$verifiedIdentity, verifiedName=$verifiedName, identityVerifyMethod=$identityVerifyMethod, adult=$adult, agreeCollectPersonalInfoTos=$agreeCollectPersonalInfoTos, agreePurchaseTos=$agreePurchaseTos, agreeSaleTos=$agreeSaleTos, agreeSmsReception=$agreeSmsReception, agreeEmailReception=$agreeEmailReception, interestLocation1=$interestLocation1, interestLocation2=$interestLocation2, interestLocation3=$interestLocation3, agreeSavingAccount=$agreeSavingAccount, bankCode=$bankCode, bankName=$bankName, accountHolder=$accountHolder, adultProductOpen=$adultProductOpen, ciCode=$ciCode, diCode=$diCode, createdAt=$createdAt, updatedAt=$updatedAt, updatedBy=$updatedBy)"
-    }
-
 
 }
 

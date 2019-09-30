@@ -347,7 +347,9 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                         setResult(Activity.RESULT_OK)
                         finish()
                     }else{
-                        CommonUtil.startPointDialogActivity(this@ReviewWriteActivity, 1)
+                        //CommonUtil.startPointDialogActivity(this@ReviewWriteActivity, 1)
+                        this@ReviewWriteActivity.setResult(Activity.RESULT_OK)
+                        this@ReviewWriteActivity.finish()
                     }
                 }
             }

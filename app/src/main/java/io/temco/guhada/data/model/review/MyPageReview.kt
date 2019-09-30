@@ -11,9 +11,6 @@ class MyPageReview : BasePageModel(){
     @SerializedName("content")
     var content : List<MyPageReviewContent> = arrayListOf()
 
-    override fun toString(): String {
-        return "MyPageReview(content=$content)"
-    }
 
 }
 
@@ -43,10 +40,6 @@ class MyPageReviewContent : MyPageReviewBase(){
     var bookmarksUserIds = JSONObject()*/
     //"bookmarksUserIds": null
 
-
-    override fun toString(): String {
-        return "MyPageReviewContent(review=$review, reviewTexts=$reviewTexts, order=$order, reviewPhotos=$reviewPhotos, productOption=$productOption, userSize=$userSize)"
-    }
 
 }
 class ReviewData : Serializable {
@@ -130,9 +123,6 @@ class ReviewData : Serializable {
     }
 
 
-    override fun toString(): String {
-        return "ReviewData(userNickname='$userNickname', userId=$userId, createdAt='$createdAt', productId=$productId, textReview='$textReview', productRating='$productRating', orderProductGroupId=$orderProductGroupId, sizeSatisfaction='$sizeSatisfaction', colorSatisfaction='$colorSatisfaction', lengthSatisfaction='$lengthSatisfaction', photoCount=$photoCount, bookmarkCount=$bookmarkCount, profileImageUrl='$profileImageUrl', id=$id)"
-    }
 }
 
 class ReviewTexts : Serializable  {
@@ -145,9 +135,6 @@ class ReviewTexts : Serializable  {
     @SerializedName("length")
     var length : String = ""
 
-    override fun toString(): String {
-        return "ReviewTexts(size='$size', color='$color', length='$length')"
-    }
 }
 
 class ReviewOrder : Serializable {
@@ -241,9 +228,6 @@ class ReviewOrder : Serializable {
     @SerializedName("purchaseStatusText")
     var purchaseStatusText : String = ""
 
-    override fun toString(): String {
-        return "ReviewOrder(purchaseId=$purchaseId, productId=$productId, orderTimestamp=$orderTimestamp, brandName='$brandName', season='$season', prodName='$prodName', imageName='$imageName', imageUrl='$imageUrl', optionAttribute1='$optionAttribute1', optionAttribute2='$optionAttribute2', optionAttribute3='$optionAttribute3', quantity=$quantity, discountPrice=$discountPrice, originalPrice=$originalPrice, orderPrice=$orderPrice, shipPrice=$shipPrice, sellerId=$sellerId, sellerName='$sellerName', purchaseStatus='$purchaseStatus', statusMessage='$statusMessage', expireTimestamp='$expireTimestamp', orderProdGroupId=$orderProdGroupId, purchaseConfirm=$purchaseConfirm, shipCompleteTimestamp=$shipCompleteTimestamp, reviewId=$reviewId, dealId=$dealId, purchaseStatusText='$purchaseStatusText')"
-    }
 
 
 }
@@ -263,9 +247,7 @@ class ReviewPhotos : Serializable {
 
     var imageStatus : String = ""
 
-    override fun toString(): String {
-        return "ReviewPhotos(id=$id, userProductReviewId=$userProductReviewId, reviewPhotoUrl='$reviewPhotoUrl', photoOrder=$photoOrder, imageStatus=$imageStatus)"
-    }
+
 }
 
 class ProductOption : Serializable {
@@ -273,9 +255,6 @@ class ProductOption : Serializable {
     var color : String = ""
     //var size": null
 
-    override fun toString(): String {
-        return "ProductOption(color='$color')"
-    }
 }
 
 

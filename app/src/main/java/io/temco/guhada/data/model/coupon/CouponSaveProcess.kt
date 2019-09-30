@@ -35,8 +35,5 @@ class CouponSaveProcess {
     @Expose
     var couponId = 0L
 
-    override fun toString(): String {
-        return "CouponSaveProcess(dcategoryId=$dcategoryId, lcategoryId=$lcategoryId, mcategoryId=$mcategoryId, scategoryId=$scategoryId, sellerId=$sellerId, dealId=$dealId, keyId=$keyId, saveActionType='$saveActionType', serviceType='$serviceType', expirePeriod=$expirePeriod, userId=$userId, discountPrice=$discountPrice, discountRate=$discountRate, maximumDiscountPrice=$maximumDiscountPrice, minimumPrice=$minimumPrice, paymentPrice=$paymentPrice, totalDiscountPrice=$totalDiscountPrice, discountType='$discountType', couponId=$couponId)"
-    }
 
 }

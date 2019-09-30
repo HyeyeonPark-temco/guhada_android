@@ -20,8 +20,5 @@ class AppVersionCheck {
         return flag
     }
 
-    override fun toString(): String {
-        return "AppVersionCheck(osType='$osType', appVersion='$appVersion', createAt='$createAt', updateAt='$updateAt')"
-    }
 
 }

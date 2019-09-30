@@ -33,8 +33,5 @@ class CommunityInfo : Serializable {
     var communityCategorySub = CommunityCategorySub()
 
 
-    override fun toString(): String {
-        return "CommunityTab(type=$type, communityName='$communityName', communityCategoryName='$communityCategoryName', communityId=$communityId, communityCategoryId=$communityCategoryId, communityCategory=$communityCategory, communityCategorySub=$communityCategorySub)"
-    }
 
 }

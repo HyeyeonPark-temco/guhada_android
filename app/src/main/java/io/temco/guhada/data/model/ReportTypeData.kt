@@ -10,7 +10,4 @@ class ReportTypeData {
     var description : String = ""
     var name : String = ""
 
-    override fun toString(): String {
-        return "ReportTypeData(targets=${Arrays.toString(targets)}, description='$description', name='$name')"
-    }
 }

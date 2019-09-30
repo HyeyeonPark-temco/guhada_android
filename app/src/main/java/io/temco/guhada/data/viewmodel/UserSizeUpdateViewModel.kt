@@ -143,7 +143,9 @@ class UserSizeUpdateViewModel (val context : Context) : BaseObservableViewModel(
                                                 successTask = {
                                                     var data = (o as BaseModel<*>).data as Any
                                                     if (CustomLog.flag) CustomLog.L("UserSizeUpdateViewModel", "saveUserSize successTask ",data.toString())
-                                                    CommonUtil.startPointDialogActivity(context as Activity, 2)
+                                                    //CommonUtil.startPointDialogActivity(context as Activity, 2)
+                                                    (context as Activity).setResult(Activity.RESULT_OK)
+                                                    (context as Activity).finish()
                                                 },
                                                 dataNotFoundTask = {failDialogShow() },
                                                 failedTask = {failDialogShow()  },

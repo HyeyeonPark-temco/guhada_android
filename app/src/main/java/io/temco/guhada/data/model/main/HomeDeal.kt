@@ -25,10 +25,7 @@ class HomeDeal {
     @SerializedName("KIDS")
     var kidsList: List<Deal>? = null
 
-    override fun toString(): String {
-        if(CustomLog.flag)return "HomeDeal(allList=$allList, womenList=$womenList, menList=$menList, kidsList=$kidsList)"
-        else return ""
-    }
+
 
 
 }
