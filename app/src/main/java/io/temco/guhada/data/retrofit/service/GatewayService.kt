@@ -18,7 +18,7 @@ interface GatewayService {
 
     // http://dev.gateway.guhada.com/my-page/bookmark-products?offset=0&page=1&size=20
     @GET("/my-page/bookmark-products")
-    fun getBookMarkProduct(@Header("Authorization") accessToken: String, /*@Query("offset") offset: Int = 0,*/  @Query("page") page: Int,@Query("size") size: Int = 20): Call<BaseModel<BookMarkProduct>>
+    fun getBookMarkProduct(@Header("Authorization") accessToken: String, @Query("page") page: Int,@Query("size") size: Int = 20): Call<BaseModel<BookMarkProduct>>
 
     @Multipart
     @POST("/upload/image")

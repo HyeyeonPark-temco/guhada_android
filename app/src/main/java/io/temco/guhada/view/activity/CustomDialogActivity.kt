@@ -19,12 +19,12 @@ import io.temco.guhada.view.activity.base.BindActivity
  * Side Menu Activity
  *
  */
-class CustomDialogActivity : BindActivity<io.temco.guhada.databinding.ActivityReviewpointdialogBinding>() {
+class CustomDialogActivity : BindActivity<io.temco.guhada.databinding.ActivityCustomdialogBinding>() {
 
     private lateinit var mViewModel: CustomDialogActivityViewModel
 
     override fun getBaseTag(): String = CustomDialogActivity::class.java.simpleName
-    override fun getLayoutId(): Int = R.layout.activity_reviewpointdialog
+    override fun getLayoutId(): Int = R.layout.activity_customdialog
     override fun getViewType(): Type.View = Type.View.REVIEW_POINT_DIALOG
 
     override fun init() {

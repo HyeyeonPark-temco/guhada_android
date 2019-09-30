@@ -286,7 +286,13 @@
         <!-- Review Point Dialog -->
         <activity
             android:name=".view.activity.ReviewPointDialogActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.Transparent" />
+
+        <!-- Review Point Dialog -->
+        <activity
+            android:name=".view.activity.CustomDialogActivity"
+            android:screenOrientation="unspecified"
             android:theme="@style/Theme.Transparent" />
 
 
