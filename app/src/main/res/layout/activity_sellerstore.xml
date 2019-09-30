@@ -43,476 +43,486 @@
                 android:id="@+id/include_sellerstore_header"
                 layout="@layout/header_sellerstore" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="230dp">
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/imageview_sellerstore_profilebg"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:src="@color/pale_lilac"
-                    app:layout_constraintBottom_toTopOf="@+id/constraintlayout_sellerstore_profile"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_weight="1" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintlayout_sellerstore_profile"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageview_sellerstore_profilebg"
-                    app:layout_constraintVertical_weight="1">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp">
 
-                    <TextView
-                        style="@style/TextMedium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="14dp"
-                        android:text="@{sellerStore.nickname}"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        <ImageView
+                            android:id="@+id/imageview_sellerstore_profilebg"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:src="@color/pale_lilac"
+                            app:layout_constraintBottom_toTopOf="@+id/constraintlayout_sellerstore_profile"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_weight="1" />
 
-                    <ImageButton
-                        android:id="@+id/imagebutton_sellerstore_more"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:src="@drawable/icon_more"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintlayout_sellerstore_profile"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageview_sellerstore_profilebg"
+                            app:layout_constraintVertical_weight="1">
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="14dp"
+                                android:text="@{sellerStore.nickname}"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_24"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <ImageButton
+                                android:id="@+id/imagebutton_sellerstore_more"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:src="@drawable/icon_more"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageview_sellerstore_profile"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        app:ovalImageUrl="@{businessSeller.sellerUser.user.profileImageUrl}" />
-
-                    <FrameLayout
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:visibility="gone"
-                        android:layout_gravity="bottom|right"
-                        android:background="@drawable/border_all_whitethree_r11">
-
-                        <TextView
+                        <FrameLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="99"
-                            android:textColor="@color/greyish_brown_two"
-                            android:textSize="@dimen/text_10" />
-                    </FrameLayout>
-                </FrameLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/imageview_sellerstore_profile"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
+                                app:ovalImageUrl="@{businessSeller.sellerUser.user.profileImageUrl}" />
 
-                <LinearLayout
-                    android:id="@+id/linearlayout_sellerstore_follower"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="24dp"
-                    android:orientation="vertical"
-                    app:layout_constraintRight_toLeftOf="@+id/view_sellerstore_line"
-                    app:layout_constraintTop_toTopOf="parent">
+                            <FrameLayout
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="bottom|right"
+                                android:background="@drawable/border_all_whitethree_r11"
+                                android:visibility="gone">
 
-                    <TextView
-                        android:id="@+id/textview_sellerstore_followertitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/sellerstore_follower"
-                        android:textColor="@color/warm_grey"
-                        android:textSize="@dimen/text_11" />
-
-                    <TextView
-                        android:id="@+id/textview_sellerstore_followercount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:text="@{@string/common_format_people(sellerStore.followerCount)}"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_16" />
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/view_sellerstore_line"
-                    android:layout_width="1dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@color/line_6"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_sellerstore_product"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:orientation="vertical"
-                    app:layout_constraintLeft_toRightOf="@+id/view_sellerstore_line"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/textview_sellerstore_producttitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/sellerstore_soldproductcount"
-                        android:textColor="@color/warm_grey"
-                        android:textSize="@dimen/text_11" />
-
-                    <TextView
-                        android:id="@+id/textview_sellerstore_soldproductcount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:text="@{@string/common_format_product(sellerStore.sellingCount)}"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_16" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textview_sellerstore_introduction"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center"
-                    android:text="@{sellerStore.storeIntroduction}"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_12"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearlayout_sellerstore_follower" />
-                <!--android:text="@{businessSeller.sellerUser.storeIntroduction}"-->
-                <FrameLayout
-                    android:id="@+id/framelayout_sellerstore_follow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@{bookMark.content.size() > 0 ? @drawable/border_all_whitethree_r50 : @drawable/background_purple_r50}"
-                    android:onClick="@{()->viewModel.onClickFollow()}"
-                    android:paddingStart="39dp"
-                    android:paddingTop="9dp"
-                    android:paddingEnd="39dp"
-                    android:paddingBottom="9dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_introduction">
-                    <!--android:background="@{sellerStore.followed ? @drawable/border_all_whitethree_r50 : @drawable/background_purple_r50}"-->
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@{bookMark.content.size() > 0 ? @string/productdetail_button_following : @string/productdetail_button_follow}"
-                        android:textColor="@{bookMark.content.size() > 0 ? @color/black_four : @color/common_white}"
-                        android:textSize="@dimen/text_16" />
-                    <!--android:text="@{sellerStore.followed ? @string/productdetail_button_following : @string/productdetail_button_follow}"-->
-                    <!--android:textColor="@{sellerStore.followed ? @color/black_four : @color/common_white}"-->
-
-                </FrameLayout>
-
-
-                <TextView
-                    android:id="@+id/textview_sellerstore_satisfaction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/sellerstore_satisfaction"
-                    android:textColor="@color/warm_grey"
-                    android:textSize="@dimen/text_13"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/framelayout_sellerstore_follow" />
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_sellerstore_satisfaction1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginEnd="30dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintRight_toLeftOf="@+id/linearlayout_sellerstore_satisfaction2"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_satisfaction">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/detail_icon_seller_good" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@{@string/sellerstore_satisfaction_good(sellerStore.goodSatisfactionCount)}"
-                        android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_sellerstore_satisfaction2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_satisfaction">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/icon_soso" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@{@string/sellerstore_satisfaction_good(sellerStore.normalSatisfactionCount)}"
-                        android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_12" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_sellerstore_satisfaction3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintLeft_toRightOf="@+id/linearlayout_sellerstore_satisfaction2"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_satisfaction">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/detail_icon_seller_bad" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@{@string/sellerstore_satisfaction_good(sellerStore.badSatisfactionCount)}"
-                        android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_12" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textview_sellerstore_offlinestoretitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/sellerstore_offlinestore"
-                    android:textColor="@color/warm_grey"
-                    android:textSize="@dimen/text_13"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearlayout_sellerstore_satisfaction2" />
-
-                <LinearLayout
-                    android:id="@+id/linearlayout_sellerstore_offlinestore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_offlinestoretitle">
-
-                    <TextView
-                        style="@style/TextRegularSingleLine"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{sellerStore.offlineStoreAddress}"
-                        android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/payment_link_arrow" />
-                </LinearLayout>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="41dp"
-                android:layout_marginEnd="20dp">
-
-                <Button
-                    android:id="@+id/button_sellerstore_productlist"
-                    style="@style/TextRegularSingleLine"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@{viewModel.mSelectedTabPos == 0 ? @drawable/border_all_purple_top : @drawable/border_all_whitesix_top, default =  @drawable/border_all_purple_top }"
-                    android:onClick="@{()->viewModel.onClickTab(0)}"
-                    android:text="@string/sellerstore_menu1"
-                    android:textColor="@{viewModel.mSelectedTabPos == 0 ? @color/common_blue_purple : @color/greyish_brown_two, default = @color/common_blue_purple }"
-                    android:textSize="@dimen/text_15" />
-
-                <Button
-                    android:id="@+id/button_sellerstore_sellerinfo"
-                    style="@style/TextRegularSingleLine"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="1"
-                    android:background="@{viewModel.mSelectedTabPos == 1 ? @drawable/border_all_purple_top : @drawable/border_all_whitesix_top, default =  @drawable/border_all_whitesix_top}"
-                    android:onClick="@{()->viewModel.onClickTab(1)}"
-                    android:text="@string/sellerstore_menu2"
-                    android:textColor="@{viewModel.mSelectedTabPos == 1 ? @color/common_blue_purple : @color/greyish_brown_two, default =  @color/greyish_brown_two}"
-                    android:textSize="@dimen/text_15" />
-            </LinearLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp">
-
-                <!-- 셀러 스토어 -->
-                <LinearLayout
-                    android:id="@+id/linearlayout_sellerstore_productlist"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.mSelectedTabPos == 0 ? View.VISIBLE : View.GONE, default = visible}">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="99"
+                                    android:textColor="@color/greyish_brown_two"
+                                    android:textSize="@dimen/text_10" />
+                            </FrameLayout>
+                        </FrameLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/textview_sellerstore_productcount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:text="@{@string/common_format_totalproduct(1234)}"
-                            android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_13"
-                            android:visibility="gone"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
                         <LinearLayout
-                            android:id="@+id/linearlayout_sellerstore_filter"
+                            android:id="@+id/linearlayout_sellerstore_follower"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="20dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintRight_toRightOf="parent"
+                            android:layout_marginEnd="24dp"
+                            android:orientation="vertical"
+                            app:layout_constraintRight_toLeftOf="@+id/view_sellerstore_line"
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textview_sellerstore_filter"
+                                android:id="@+id/textview_sellerstore_followertitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="신상품순"
+                                android:layout_gravity="center"
+                                android:text="@string/sellerstore_follower"
+                                android:textColor="@color/warm_grey"
+                                android:textSize="@dimen/text_11" />
+
+                            <TextView
+                                android:id="@+id/textview_sellerstore_followercount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:text="@{@string/common_format_people(sellerStore.followerCount)}"
                                 android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_16" />
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/view_sellerstore_line"
+                            android:layout_width="1dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/line_6"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_product"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:orientation="vertical"
+                            app:layout_constraintLeft_toRightOf="@+id/view_sellerstore_line"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textview_sellerstore_producttitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/sellerstore_soldproductcount"
+                                android:textColor="@color/warm_grey"
+                                android:textSize="@dimen/text_11" />
+
+                            <TextView
+                                android:id="@+id/textview_sellerstore_soldproductcount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:text="@{@string/common_format_product(sellerStore.sellingCount)}"
+                                android:textColor="@color/black_four"
+                                android:textSize="@dimen/text_16" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textview_sellerstore_introduction"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="16dp"
+                            android:gravity="center"
+                            android:text="@{sellerStore.storeIntroduction}"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_12"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearlayout_sellerstore_follower" />
+                        <!--android:text="@{businessSeller.sellerUser.storeIntroduction}"-->
+                        <FrameLayout
+                            android:id="@+id/framelayout_sellerstore_follow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:background="@{bookMark.content.size() > 0 ? @drawable/border_all_whitethree_r50 : @drawable/background_purple_r50}"
+                            android:onClick="@{()->viewModel.onClickFollow()}"
+                            android:paddingStart="39dp"
+                            android:paddingTop="9dp"
+                            android:paddingEnd="39dp"
+                            android:paddingBottom="9dp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_introduction">
+                            <!--android:background="@{sellerStore.followed ? @drawable/border_all_whitethree_r50 : @drawable/background_purple_r50}"-->
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@{bookMark.content.size() > 0 ? @string/productdetail_button_following : @string/productdetail_button_follow}"
+                                android:textColor="@{bookMark.content.size() > 0 ? @color/black_four : @color/common_white}"
+                                android:textSize="@dimen/text_16" />
+                            <!--android:text="@{sellerStore.followed ? @string/productdetail_button_following : @string/productdetail_button_follow}"-->
+                            <!--android:textColor="@{sellerStore.followed ? @color/black_four : @color/common_white}"-->
+
+                        </FrameLayout>
+
+
+                        <TextView
+                            android:id="@+id/textview_sellerstore_satisfaction"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/sellerstore_satisfaction"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="@dimen/text_13"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/framelayout_sellerstore_follow" />
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_satisfaction1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginEnd="30dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintRight_toLeftOf="@+id/linearlayout_sellerstore_satisfaction2"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_satisfaction">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/detail_icon_seller_good" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:text="@{@string/sellerstore_satisfaction_good(sellerStore.goodSatisfactionCount)}"
+                                android:textColor="@color/greyish_brown_two"
+                                android:textSize="@dimen/text_12" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_satisfaction2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_satisfaction">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/icon_soso" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:text="@{@string/sellerstore_satisfaction_good(sellerStore.normalSatisfactionCount)}"
+                                android:textColor="@color/greyish_brown_two"
+                                android:textSize="@dimen/text_12" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_satisfaction3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintLeft_toRightOf="@+id/linearlayout_sellerstore_satisfaction2"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_satisfaction">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/detail_icon_seller_bad" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:text="@{@string/sellerstore_satisfaction_good(sellerStore.badSatisfactionCount)}"
+                                android:textColor="@color/greyish_brown_two"
+                                android:textSize="@dimen/text_12" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textview_sellerstore_offlinestoretitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/sellerstore_offlinestore"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="@dimen/text_13"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearlayout_sellerstore_satisfaction2" />
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_offlinestore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_offlinestoretitle">
+
+                            <TextView
+                                style="@style/TextRegularSingleLine"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{sellerStore.offlineStoreAddress}"
+                                android:textColor="@color/greyish_brown_two"
                                 android:textSize="@dimen/text_13" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="7dp"
-                                android:src="@drawable/list_btn_lineup" />
-                        </LinearLayout>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerivew_sellerstore_productlist"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginEnd="10dp"
-                            android:nestedScrollingEnabled="false"
-                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_productcount"
-                            app:spanCount="2" />
-
-                        <View
-                            android:id="@+id/view_sellerstore_line1"
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@color/line_6"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/recyclerivew_sellerstore_productlist" />
-
-                        <LinearLayout
-                            android:id="@+id/linearlayout_sellerstore_more"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="@{()->viewModel.onClickMore()}"
-                            android:orientation="horizontal"
-                            android:paddingStart="40dp"
-                            android:paddingTop="17dp"
-                            android:paddingEnd="40dp"
-                            android:paddingBottom="17dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/view_sellerstore_line1">
-
-                            <TextView
-                                style="@style/CommonMoreTextViewStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/common_more" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:src="@drawable/detail_btn_more_open" />
+                                android:src="@drawable/payment_link_arrow" />
                         </LinearLayout>
+
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="41dp"
+                        android:layout_marginEnd="20dp">
+
+                        <Button
+                            android:id="@+id/button_sellerstore_productlist"
+                            style="@style/TextRegularSingleLine"
+                            android:layout_width="0dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="1"
+                            android:background="@{viewModel.mSelectedTabPos == 0 ? @drawable/border_all_purple_top : @drawable/border_all_whitesix_top, default =  @drawable/border_all_purple_top }"
+                            android:onClick="@{()->viewModel.onClickTab(0)}"
+                            android:text="@string/sellerstore_menu1"
+                            android:textColor="@{viewModel.mSelectedTabPos == 0 ? @color/common_blue_purple : @color/greyish_brown_two, default = @color/common_blue_purple }"
+                            android:textSize="@dimen/text_15" />
+
+                        <Button
+                            android:id="@+id/button_sellerstore_sellerinfo"
+                            style="@style/TextRegularSingleLine"
+                            android:layout_width="0dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="1"
+                            android:background="@{viewModel.mSelectedTabPos == 1 ? @drawable/border_all_purple_top : @drawable/border_all_whitesix_top, default =  @drawable/border_all_whitesix_top}"
+                            android:onClick="@{()->viewModel.onClickTab(1)}"
+                            android:text="@string/sellerstore_menu2"
+                            android:textColor="@{viewModel.mSelectedTabPos == 1 ? @color/common_blue_purple : @color/greyish_brown_two, default =  @color/greyish_brown_two}"
+                            android:textSize="@dimen/text_15" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp">
+
+                        <!-- 셀러 스토어 -->
+                        <LinearLayout
+                            android:id="@+id/linearlayout_sellerstore_productlist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.mSelectedTabPos == 0 ? View.VISIBLE : View.GONE, default = visible}">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/textview_sellerstore_productcount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="20dp"
+                                    android:text="@{@string/common_format_totalproduct(1234)}"
+                                    android:textColor="@color/black_four"
+                                    android:textSize="@dimen/text_13"
+                                    android:visibility="gone"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <LinearLayout
+                                    android:id="@+id/linearlayout_sellerstore_filter"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="20dp"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/textview_sellerstore_filter"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="신상품순"
+                                        android:textColor="@color/black_four"
+                                        android:textSize="@dimen/text_13" />
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="7dp"
+                                        android:src="@drawable/list_btn_lineup" />
+                                </LinearLayout>
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recyclerivew_sellerstore_productlist"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginTop="20dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:nestedScrollingEnabled="false"
+                                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textview_sellerstore_productcount"
+                                    app:spanCount="2" />
+
+                                <View
+                                    android:id="@+id/view_sellerstore_line1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@color/line_6"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/recyclerivew_sellerstore_productlist" />
+
+                                <LinearLayout
+                                    android:id="@+id/linearlayout_sellerstore_more"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="@{()->viewModel.onClickMore()}"
+                                    android:orientation="horizontal"
+                                    android:paddingStart="40dp"
+                                    android:paddingTop="17dp"
+                                    android:paddingEnd="40dp"
+                                    android:paddingBottom="17dp"
+                                    app:layout_constraintLeft_toLeftOf="parent"
+                                    app:layout_constraintRight_toRightOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/view_sellerstore_line1">
+
+                                    <TextView
+                                        style="@style/CommonMoreTextViewStyle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/common_more" />
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/detail_btn_more_open" />
+                                </LinearLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+
+                        <!-- 셀러 정보 -->
+                        <include
+                            android:id="@+id/include_sellerstore_info"
+                            layout="@layout/layout_sellerstore_info"
+                            android:visibility="@{viewModel.mSelectedTabPos == 1 ? View.VISIBLE : View.GONE, default=visible}" />
+                    </FrameLayout>
                 </LinearLayout>
-
-                <!-- 셀러 정보 -->
-                <include
-                    android:id="@+id/include_sellerstore_info"
-                    layout="@layout/layout_sellerstore_info"
-                    android:visibility="@{viewModel.mSelectedTabPos == 1 ? View.VISIBLE : View.GONE, default=visible}" />
-            </FrameLayout>
-
+            </androidx.core.widget.NestedScrollView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>
