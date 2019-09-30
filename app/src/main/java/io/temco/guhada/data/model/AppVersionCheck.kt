@@ -8,12 +8,20 @@ class AppVersionCheck {
     var createAt = ""
     var updateAt = ""
 
-
     fun isUpdateApp(currentAppVersion : String) : Boolean {
         var flag = false
-        if(TextUtils.isEmpty(appVersion) && TextUtils.isEmpty(currentAppVersion)){
-
+        if(!TextUtils.isEmpty(appVersion) && !TextUtils.isEmpty(currentAppVersion)){
+            var appVersionSplit = appVersion.split(".")
+            var version = (1000000 * appVersionSplit[0].toInt()) + (10000 * appVersionSplit[1].toInt()) + (100 * appVersionSplit[2].toInt())
+            var appcVersionSplit = currentAppVersion.split(".")
+            var cVersion = (1000000 * appcVersionSplit[0].toInt()) + (10000 * appcVersionSplit[1].toInt()) + (100 * appcVersionSplit[2].toInt())
+            if(version < cVersion) flag = true
         }
         return flag
     }
+
+    override fun toString(): String {
+        return "AppVersionCheck(osType='$osType', appVersion='$appVersion', createAt='$createAt', updateAt='$updateAt')"
+    }
+
 }

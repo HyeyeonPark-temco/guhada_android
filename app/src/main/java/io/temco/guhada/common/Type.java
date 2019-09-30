@@ -138,7 +138,7 @@ public class Type {
                 case SHIP:
                     return getShipUrl();
                 case SETTLE:
-                    return getShipUrl();
+                    return getSettleUrl();
                 default:
                     return "";
             }

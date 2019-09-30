@@ -1,6 +1,8 @@
 package io.temco.guhada.view.activity
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import io.reactivex.Observable
@@ -13,13 +15,19 @@ import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.CategoryEntity
+import io.temco.guhada.data.model.AppVersionCheck
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.Category
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.server.ProductServer
+import io.temco.guhada.data.server.SettleServer
 import io.temco.guhada.databinding.ActivitySplashBinding
 import io.temco.guhada.view.activity.base.BindActivity
+
+
 
 
 class SplashActivity : BindActivity<ActivitySplashBinding>() {
@@ -47,8 +55,7 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
         mDisposable = CompositeDisposable()
         db = GuhadaDB.getInstance(this)!!
         BaseApplication.getInstance().moveToMain = null
-        getCategories()
-        setPasswordConfirm()
+        getAppVersionData()
     }
 
     ////////////////////////////////////////////////
@@ -147,5 +154,47 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
         GuhadaDB.destroyInstance()
     }
 
+
+    private fun getAppVersionData(){
+        SettleServer.checkAppVersion(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var check = (o as BaseModel<*>).list as List<AppVersionCheck>
+                        if (CustomLog.flag) CustomLog.L("getAppVersionData", check)
+                        try {
+                            val pInfo = this@SplashActivity.getPackageManager().getPackageInfo(packageName, 0)
+                            val version = pInfo.versionName
+                            for(d in check){
+                                if("AOS".equals(d.osType)){
+                                    /**
+                                     * 서버에서 내려오는 버전 보다 현재 앱의 버전이 낮은 경우 업데이트 이동
+                                     */
+                                    if(d.isUpdateApp(version)){
+                                        val appPackageName = packageName
+                                        try {
+                                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName")))
+                                        } catch (anfe: android.content.ActivityNotFoundException) {
+                                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")))
+                                        }
+                                        finish()
+                                    }else{
+                                        getCategories()
+                                        setPasswordConfirm()
+                                    }
+                                }
+                            }
+                        } catch (e: PackageManager.NameNotFoundException) {
+                            e.printStackTrace()
+                        }
+
+                    },
+                    dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail dataNotFoundTask ") },
+                    failedTask = {if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail failedTask ") },
+                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail userLikeNotFoundTask ") },
+                    serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail serverRuntimeErrorTask ") },
+                    dataIsNull = { if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail dataIsNull ") }
+            )
+        })
+    }
     ////////////////////////////////////////////////
 }
