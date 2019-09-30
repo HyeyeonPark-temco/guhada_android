@@ -213,7 +213,7 @@ interface ClaimService {
      * @since 2019.09.26
      */
     @GET("/order-claim/claim-complete-form/{orderClaimGroupId}")
-    fun getExpectedRefundPrice(@Header("Authorization") accessToken: String, @Path("orderClaimGroupId") orderClaimGroupId: Long): Call<BaseModel<ExpectedRefundPrice.ExpectedRefuncInfo>>
+    fun getExpectedRefundPrice(@Header("Authorization") accessToken: String, @Path("orderClaimGroupId") orderClaimGroupId: Long): Call<BaseModel<ExpectedRefundPrice.ExpectedRefundInfo>>
 
     /**
      * 취소신청, 반품신청 환불 예상 금액 조회 API

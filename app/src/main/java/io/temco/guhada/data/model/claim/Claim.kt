@@ -20,7 +20,8 @@ class Claim : Serializable {
 
     var status: String = ""
     var inquiry: String = ""
-    var nickname: String = ""
+    var nickname: String = ""           // 작성자 닉네임
+    var sellerNickname : String = ""    // 답변자 닉네임
     var reply: String? = null
 
     // DATE TIME

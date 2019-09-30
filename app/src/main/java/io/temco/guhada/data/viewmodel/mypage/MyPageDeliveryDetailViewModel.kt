@@ -24,6 +24,7 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
     var mOrderProdGroupId: Long = 0L
     var mOrderClaimGroupId :Long = 0L
     var mExpectedRefundPrice = MutableLiveData<ExpectedRefundPrice>()
+    var mExpectedRefundInfo =  MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
     var refundInfoVisible = false
     var purchaseOrderResponse = PurchaseOrderResponse()
         @Bindable
@@ -70,7 +71,8 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             ClaimServer.getExpectedRefundPrice(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o, successTask = {
-                    mExpectedRefundPrice.postValue((it.data as ExpectedRefundPrice.ExpectedRefuncInfo).refundResponse)
+                    mExpectedRefundInfo.postValue(it.data as ExpectedRefundPrice.ExpectedRefundInfo)
+                    mExpectedRefundPrice.postValue((it.data as ExpectedRefundPrice.ExpectedRefundInfo).refundResponse)
                 })
             }, accessToken = accessToken, orderClaimGroupId = mOrderClaimGroupId)
         })
