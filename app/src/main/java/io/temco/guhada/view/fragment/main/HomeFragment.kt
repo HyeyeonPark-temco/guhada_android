@@ -1,6 +1,7 @@
 package io.temco.guhada.view.fragment.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Point
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.FragmentMainHomeBinding
+import io.temco.guhada.view.activity.CustomDialogActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.custom.layout.main.HomeListLayout

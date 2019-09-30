@@ -46,6 +46,7 @@ public class Flag {
         public static final int USER_CLAIM_GUHADA = 10033;
         public static final int USER_CLAIM_SELLER = 10034;
         public static final int VERIFY_EMAIL = 10035;
+        public static final int WELCOME_DIALOG = 10036;
 
         public static final int MYPAGE_MOVE = 20000;
         public static final int HOME_MOVE = 20001;

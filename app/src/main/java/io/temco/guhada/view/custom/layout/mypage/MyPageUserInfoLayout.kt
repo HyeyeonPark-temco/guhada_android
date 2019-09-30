@@ -261,6 +261,7 @@ class MyPageUserInfoLayout constructor(
                 override fun callBackListener(resultFlag: Boolean, value: Any) {
                     if(mViewModel.mypageUserInfoLoginCheckType.get() == 0){
                         mBinding.includeMypageuserinfoUserpassword.edittextviewLoginPwd.setEnable(true)
+                        mUserInfoViewModel.id = CommonUtil.checkUserEmail()
                     }
                     mLoadingIndicatorUtil.dismiss()
                 }

@@ -117,7 +117,6 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickSignIn() {
-        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("LoginViewModel onClickSignIn","id",id);
         if (CommonUtil.validateEmail(id)) {
             UserServer.signIn((success, o) -> {
                 if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("LoginViewModel onClickSignIn","success",success);

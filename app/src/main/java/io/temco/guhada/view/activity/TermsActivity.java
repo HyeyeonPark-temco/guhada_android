@@ -1,8 +1,12 @@
 package io.temco.guhada.view.activity;
 
+import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import io.temco.guhada.R;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnTermsListener;
 import io.temco.guhada.data.viewmodel.account.TermsViewModel;
@@ -51,7 +55,8 @@ public class TermsActivity extends BindActivity<ActivityTermsBinding> {
                 getIntent().putExtra("agreeSmsReception", mViewModel.getUser().getAgreeSmsReception());
 
                 setResult(resultCode, getIntent());
-                finish();
+
+                TermsActivity.this.startActivityForResult(new Intent(TermsActivity.this, CustomDialogActivity.class), Flag.RequestCode.WELCOME_DIALOG);
             }
 
             @Override
@@ -63,4 +68,22 @@ public class TermsActivity extends BindActivity<ActivityTermsBinding> {
         mBinding.includeTermsHeader.setViewModel(mViewModel);
         mBinding.executePendingBindings();
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Flag.RequestCode.WELCOME_DIALOG && resultCode == RESULT_OK){
+
+            getIntent().putExtra("agreeCollectPersonalInfoTos", mViewModel.getUser().getAgreeCollectPersonalInfoTos());
+            getIntent().putExtra("agreeEmailReception", mViewModel.getUser().getAgreeEmailReception());
+            getIntent().putExtra("agreePurchaseTos", mViewModel.getUser().getAgreePurchaseTos());
+            getIntent().putExtra("agreeSaleTos", mViewModel.getUser().getAgreeSaleTos());
+            getIntent().putExtra("agreeSmsReception", mViewModel.getUser().getAgreeSmsReception());
+
+            setResult(resultCode, getIntent());
+            finish();
+        }
+    }
+
 }

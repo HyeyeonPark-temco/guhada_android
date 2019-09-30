@@ -10,10 +10,6 @@
             name="onClickOk"
             type="android.view.View.OnClickListener" />
 
-        <variable
-            name="onClickClose"
-            type="android.view.View.OnClickListener" />
-
         <import type="android.view.View" />
     </data>
 
@@ -37,7 +33,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/close_btn"
-                android:onClick="@{onClickClose}"
+                android:onClick="@{onClickOk}"
                 android:padding="5dp" />
 
             <LinearLayout
@@ -88,11 +84,13 @@
 
                 <TextView
                     android:id="@+id/textview_reviewpointdialog_complete"
-                    style="@style/TextRegular"
+                    style="@style/TextMedium"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="20dp"
                     android:layout_marginBottom="60dp"
                     android:gravity="center"
+                    android:text="@{email}"
                     android:textColor="@color/blue_purple"
                     android:textSize="@dimen/text_13"
                     app:isHtml="true" />

@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Handler
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -20,12 +21,15 @@ import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
 import io.temco.guhada.data.viewmodel.main.KidsListViewModel
 import io.temco.guhada.databinding.*
+import io.temco.guhada.view.activity.MainActivity
+import io.temco.guhada.view.activity.ProductFilterListActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
@@ -228,6 +232,21 @@ class KidsListAdapter(private val model : KidsListViewModel, list : ArrayList<Ma
                     margin = CommonViewUtil.dipToPixel(viewModel.context, 3)
                     layoutHeight = height + CommonViewUtil.dipToPixel(viewModel.context, 126)
                 }
+
+                var searchCondition = ""
+                when(item.title){
+                    "BEST ITEM" -> searchCondition = Type.SerchFilterCondition.BEST.name
+                    "NEW IN" -> searchCondition = Type.SerchFilterCondition.NEW.name
+                    "Premium Item" -> searchCondition = Type.SerchFilterCondition.PLUS.name
+                }
+                binding.isViewMore = !TextUtils.isEmpty(searchCondition)
+                binding.setClickListener {
+                    var intent = Intent(itemView.context as MainActivity, ProductFilterListActivity::class.java)
+                    intent.putExtra("type", Type.ProductListViewType.VIEW_MORE)
+                    intent.putExtra("search_word", searchCondition)
+                    (itemView.context as MainActivity).startActivityForResult(intent, Flag.RequestCode.BASE)
+                }
+
                 // Thumbnail
                 var size = item.listSize[item.currentSubTitleIndex] - 1
                 binding.title.text = item.title

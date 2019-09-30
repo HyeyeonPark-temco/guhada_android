@@ -71,7 +71,7 @@ class HomeListRepository(val context : Context){
          list.value!!.add(event)*/
         list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
         // ------------------------------------------------------------------
-        getBestItem()
+        getPlusItem()
     }
 
     /**
@@ -86,7 +86,7 @@ class HomeListRepository(val context : Context){
                                 "Premium Item", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
                         //if(CustomLog.flag)CustomLog.L("HomeListRepository getNewArrivals","",list.value!!.size)
-                        //getBestItem()
+                        getBestItem()
                     },
                     dataNotFoundTask = {
 
@@ -134,10 +134,8 @@ class HomeListRepository(val context : Context){
                         var subTitle = SubTitleItemList(list.value!!.size, HomeType.SubTitleList,
                                 "NEW IN", arrayOf(newArrival.allList!!.size, newArrival.womenList!!.size, newArrival.menList!!.size, newArrival.kidsList!!.size), 0, newArrival,false)
                         list.value!!.add(subTitle)
-                        list.value!!.add(MainBaseModel(list.value!!.size,HomeType.Footer,2))
                         list.value = list.value
-                        //getBestItem()
-                        //getHotKeyword()
+                        getHotKeyword()
                     },
                     dataNotFoundTask = {
 

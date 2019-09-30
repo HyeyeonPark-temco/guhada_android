@@ -1,14 +1,17 @@
 package io.temco.guhada.view.activity;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.InverseBindingListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import io.temco.guhada.R;
+import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBorderEditTextFocusListener;
 import io.temco.guhada.common.listener.OnJoinListener;
@@ -51,7 +54,7 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
-                finish();
+                JoinActivity.this.startActivityForResult(new Intent(JoinActivity.this, CustomDialogActivity.class), Flag.RequestCode.WELCOME_DIALOG);
             }
 
             @Override
@@ -159,4 +162,11 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Flag.RequestCode.WELCOME_DIALOG && resultCode == RESULT_OK){
+            finish();
+        }
+    }
 }
