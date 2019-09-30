@@ -20,82 +20,93 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/layout_appbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background_default"
-            android:fitsSystemWindows="true"
-            app:elevation="0dp">
+            android:orientation="vertical">
 
-            <!-- HEADER -->
-            <androidx.appcompat.widget.Toolbar
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                app:contentInsetEnd="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetRight="0dp"
-                app:contentInsetStart="0dp"
-                app:layout_scrollFlags="scroll|enterAlways">
+                android:gravity="center_vertical"
+                android:background="@color/common_white"
+                android:weightSum="1"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:gravity="center_vertical"
-                    android:background="@color/common_white"
-                    android:weightSum="1"
-                    android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/button_communitydetail_back"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:onClick="@{clickListener}"
+                    android:src="@drawable/top_btn_back" />
 
-                    <ImageButton
-                        android:id="@+id/button_communitydetail_back"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:onClick="@{clickListener}"
-                        android:src="@drawable/top_btn_back" />
+                <TextView
+                    android:id="@+id/textview_communitydetail_recenttitle"
+                    style="@style/TextRegularSingleLine"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="35dp"
+                    android:gravity="center"
+                    android:textColor="@color/black_four"
+                    android:text="@{headerTitle}"
+                    android:textSize="@dimen/text_17" />
 
-                    <TextView
-                        android:id="@+id/textview_communitydetail_recenttitle"
-                        style="@style/TextRegularSingleLine"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="35dp"
-                        android:gravity="center"
-                        android:text="@{headerTitle}"
-                        android:textSize="@dimen/text_17" />
+                <ImageButton
+                    android:id="@+id/imagebutton_headerproductdetail_search"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/btn_search"
+                    android:onClick="@{clickListener}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_bag"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageButton
-                        android:id="@+id/imagebutton_headerproductdetail_search"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginEnd="5dp"
-                        android:src="@drawable/btn_search"
-                        android:onClick="@{clickListener}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_bag"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <ImageButton
+                    android:id="@+id/imagebutton_headerproductdetail_bag"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/top_btn_bag"
+                    android:onClick="@{clickListener}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </LinearLayout>
 
-                    <ImageButton
-                        android:id="@+id/imagebutton_headerproductdetail_bag"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginEnd="10dp"
-                        android:src="@drawable/top_btn_bag"
-                        android:onClick="@{clickListener}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ebebeb"/>
+        </LinearLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/layout_appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_default"
+                android:fitsSystemWindows="true"
+                app:elevation="0dp">
+
+                <!-- HEADER -->
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -139,6 +150,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="@{viewModel.userLoginCheck ? View.VISIBLE : View.GONE , default = gone}"
                     layout="@layout/bottom_comment_layout"
+                    app:layout_behavior="io.temco.guhada.view.custom.FixScrollingFooterBehavior"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
