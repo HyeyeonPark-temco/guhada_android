@@ -31,6 +31,7 @@
             android:textSize="@dimen/text_20" />
 
         <LinearLayout
+            android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_header"
             android:gravity="center"
@@ -352,7 +353,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_3"
-                                android:textSize="@dimen/text_15" />
+                                android:textSize="@dimen/text_14" />
 
                             <TextView
                                 android:id="@+id/text_pricediscount_0"
@@ -361,7 +362,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/warm_grey_two"
-                                android:textSize="@dimen/text_11" />
+                                android:textSize="@dimen/text_10" />
 
 
                             <TextView
@@ -371,7 +372,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/common_blue_purple"
-                                android:textSize="@dimen/text_13" />
+                                android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -517,7 +518,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_3"
-                                android:textSize="@dimen/text_15" />
+                                android:textSize="@dimen/text_14" />
 
                             <TextView
                                 android:id="@+id/text_pricediscount_1"
@@ -526,7 +527,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/warm_grey_two"
-                                android:textSize="@dimen/text_11" />
+                                android:textSize="@dimen/text_10" />
 
 
                             <TextView
@@ -536,7 +537,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/common_blue_purple"
-                                android:textSize="@dimen/text_13" />
+                                android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -697,7 +698,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_3"
-                                android:textSize="@dimen/text_15" />
+                                android:textSize="@dimen/text_14" />
 
                             <TextView
                                 android:id="@+id/text_pricediscount_2"
@@ -706,7 +707,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/warm_grey_two"
-                                android:textSize="@dimen/text_11" />
+                                android:textSize="@dimen/text_10" />
 
 
                             <TextView
@@ -716,7 +717,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/common_blue_purple"
-                                android:textSize="@dimen/text_13" />
+                                android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -862,7 +863,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_3"
-                                android:textSize="@dimen/text_15" />
+                                android:textSize="@dimen/text_14" />
 
                             <TextView
                                 android:id="@+id/text_pricediscount_3"
@@ -871,7 +872,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/warm_grey_two"
-                                android:textSize="@dimen/text_11" />
+                                android:textSize="@dimen/text_10" />
 
 
                             <TextView
@@ -881,7 +882,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/common_blue_purple"
-                                android:textSize="@dimen/text_13" />
+                                android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -1041,7 +1042,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_3"
-                                android:textSize="@dimen/text_15" />
+                                android:textSize="@dimen/text_14" />
 
                             <TextView
                                 android:id="@+id/text_pricediscount_4"
@@ -1050,7 +1051,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/warm_grey_two"
-                                android:textSize="@dimen/text_11" />
+                                android:textSize="@dimen/text_10" />
 
 
                             <TextView
@@ -1060,7 +1061,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/common_blue_purple"
-                                android:textSize="@dimen/text_13" />
+                                android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -1206,7 +1207,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_3"
-                                android:textSize="@dimen/text_15" />
+                                android:textSize="@dimen/text_14" />
 
                             <TextView
                                 android:id="@+id/text_pricediscount_5"
@@ -1215,7 +1216,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/warm_grey_two"
-                                android:textSize="@dimen/text_11" />
+                                android:textSize="@dimen/text_10" />
 
 
                             <TextView
@@ -1225,7 +1226,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:textColor="@color/common_blue_purple"
-                                android:textSize="@dimen/text_13" />
+                                android:textSize="@dimen/text_12" />
                         </LinearLayout>
 
                         <LinearLayout

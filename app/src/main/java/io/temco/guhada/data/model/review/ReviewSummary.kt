@@ -13,6 +13,8 @@ class ReviewSummary {
     var totalReviewsCount: Int = 0
     var averageReviewsRating: Float = 0.0f
 
+
+
     class Satisfaction {
         var sizes: List<SatisfactionContent> = ArrayList()
         var colors: List<SatisfactionContent> = ArrayList()
@@ -23,5 +25,13 @@ class ReviewSummary {
         var name: String = ""
         var description: String = ""
         var count: Int = 0
+        override fun toString(): String {
+            return "SatisfactionContent(name='$name', description='$description', count=$count)"
+        }
+
+    }
+
+    override fun toString(): String {
+        return "ReviewSummary(satisfaction=$satisfaction, totalReviewsCount=$totalReviewsCount, averageReviewsRating=$averageReviewsRating)"
     }
 }

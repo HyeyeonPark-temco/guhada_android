@@ -91,8 +91,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                         if (option.rgb1?.isNotEmpty() ?: false) {
                             mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
                             mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
-                        } else
-                            mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
+                        } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
 
                         mBinding.linearlayoutProductdetailOption.visibility = View.GONE
                         mBinding.textviewProductdetailOptionselected.text = mMenuSpinnerAdapter.getOptionText(option)

@@ -68,9 +68,9 @@
 
             <ImageView
                 android:id="@+id/imageview_confirmpurchase_product"
-                android:layout_width="70dp"
-                android:layout_height="92dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="28dp"
                 android:src="@color/black_four"
                 app:imageUrl="@{viewModel.purchaseOrder.imageUrl}"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -167,6 +167,7 @@
                     android:layout_height="14dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="6dp"
+                    android:visibility="gone"
                     android:background="@drawable/border_all_whitethree">
 
                     <TextView

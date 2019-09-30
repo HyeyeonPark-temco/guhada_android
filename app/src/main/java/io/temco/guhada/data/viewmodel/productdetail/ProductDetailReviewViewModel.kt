@@ -49,6 +49,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                         successTask = {
                             try {
                                 this.reviewSummary = it.data as ReviewSummary
+                                if(CustomLog.flag)CustomLog.L("getProductReviewSummary","reviewSummary",reviewSummary)
                                 notifyPropertyChanged(BR.reviewSummary)
 
                                 if (::listener.isInitialized)

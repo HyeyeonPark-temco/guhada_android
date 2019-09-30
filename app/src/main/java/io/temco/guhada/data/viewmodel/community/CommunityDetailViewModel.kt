@@ -18,11 +18,10 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
+import io.temco.guhada.common.util.SingleLiveEvent
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.community.CommunityDetail
-import io.temco.guhada.data.model.community.CommunityInfo
-import io.temco.guhada.data.model.community.CommunityMobileDetail
+import io.temco.guhada.data.model.community.*
 import io.temco.guhada.data.server.CommunityServer
 import io.temco.guhada.data.server.GatewayServer
 import io.temco.guhada.data.server.UserServer
@@ -30,9 +29,16 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.adapter.CommentListAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel() {
     val repository = CommunityDetailRepository(this)
+
+    var communityInfoList : ArrayList<CommunityInfo> = arrayListOf()
+    var communityInfoMap : SortedMap<Int, CommunityCategory> = sortedMapOf()
+    var communityCategoryMap : SortedMap<Int, SortedMap<Int,CommunityCategorySub>> = sortedMapOf()
+    var totalCategoryCount = 0
 
     var mobileContentsList : ArrayList<CommunityMobileDetail> = arrayListOf()
 
@@ -43,6 +49,10 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
     var commentAdapter : CommentListAdapter? = null
 
     var info : CommunityInfo = CommunityInfo()
+
+    init {
+        repository.getCommunityInfo()
+    }
 
     var initBookMarkData = false
 
@@ -625,6 +635,102 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                         )
                     }, accessToken = it, target = target, targetId = targetId)
                 }, invalidTokenTask = { })
+    }
+
+
+    /**
+     * @author park jungho
+     *
+     * 커뮤니티 탭 정보 가져오기
+     */
+    fun getCommunityInfo(){
+        viewModel.totalCategoryCount = 0
+        CommunityServer.getCommunityAll(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var data = (o as BaseModel<*>).list as List<CommunityCategory>
+                        for (info in data){
+                            viewModel.communityInfoMap.put(info.id, info)
+                            getCommunityCategory(info.id)
+                        }
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData successTask ",data.toString())
+                    },
+                    dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataNotFoundTask ") },
+                    failedTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData failedTask ") },
+                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData userLikeNotFoundTask ") },
+                    serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData serverRuntimeErrorTask ") },
+                    dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataIsNull ") }
+            )
+        })
+    }
+
+    private fun getCommunityCategory(categoryId : Int){
+        CommunityServer.getCommunityCategoryAll(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var data = (o as BaseModel<*>).list as List<CommunityCategorySub>
+                        for (info in data){
+                            if(!viewModel.communityCategoryMap.containsKey(categoryId) || viewModel.communityCategoryMap.get(categoryId).isNullOrEmpty()){
+                                var map : SortedMap<Int, CommunityCategorySub> = sortedMapOf()
+                                map.put(info.id, info)
+                                viewModel.communityCategoryMap.put(categoryId,map)
+                            }else{
+                                viewModel.communityCategoryMap.get(categoryId)?.put(info.id, info)
+                            }
+                            getCommunityCategoryFilter(categoryId, info.id)
+                        }
+                        viewModel.totalCategoryCount += data.size
+                        if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getCommunityCategory successTask ",viewModel.communityCategoryMap.toString())
+                    },
+                    dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataNotFoundTask ") },
+                    failedTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData failedTask ") },
+                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData userLikeNotFoundTask ") },
+                    serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData serverRuntimeErrorTask ") },
+                    dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataIsNull ") }
+            )
+        },categoryId)
+    }
+
+
+    private  fun getCommunityCategoryFilter(communityId : Int, categoryId : Int){
+        CommunityServer.getCategoryFilter(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var data = (o as BaseModel<*>).list as List<CommunityCategoryfilter>
+                        viewModel.communityCategoryMap.get(communityId)?.get(categoryId)?.categoryFilterList?.addAll(data)
+                        viewModel.totalCategoryCount -= 1
+                        if(viewModel.totalCategoryCount == 0){
+                            if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "setDetailView getCommunityCategoryFilter 0 ",viewModel.communityCategoryMap.toString())
+                            var list : java.util.ArrayList<CommunityInfo> = arrayListOf()
+                            var communityKeys : Iterator<Int> = viewModel.communityCategoryMap.keys.iterator()
+                            while (communityKeys.hasNext()){
+                                var key = communityKeys.next()
+                                var communityCategoryKeys : Iterator<Int> = viewModel.communityCategoryMap[key]!!.keys.iterator()
+                                while (communityCategoryKeys.hasNext()){
+                                    var cId = communityCategoryKeys.next()
+                                    var info = viewModel.communityCategoryMap[key]!![cId]
+                                    var tab = CommunityInfo()
+                                    tab.communityId = info!!.communityId
+                                    tab.communityCategoryId = info!!.id
+                                    tab.communityCategory = viewModel.communityInfoMap[info!!.communityId]!!
+                                    tab.communityCategorySub = info
+                                    tab.communityName = viewModel.communityInfoMap[info!!.communityId]!!.name
+                                    tab.communityCategoryName = info!!.name
+                                    list.add(tab)
+                                }
+                            }
+                            viewModel.communityInfoList = list
+                        }else{
+                            if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getCommunityCategoryFilter totalCategoryCount ",viewModel.totalCategoryCount)
+                        }
+                    },
+                    dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataNotFoundTask ") },
+                    failedTask = {if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData failedTask ") },
+                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData userLikeNotFoundTask ") },
+                    serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData serverRuntimeErrorTask ") },
+                    dataIsNull = { if (CustomLog.flag) CustomLog.L("CommunityDetailViewModel", "getDetaileData dataIsNull ") }
+            )
+        },categoryId)
     }
 
 }

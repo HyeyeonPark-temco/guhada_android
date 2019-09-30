@@ -128,6 +128,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
     private fun setFilterList(){
         if(communityInfoList.value!![selectedCategoryIndex].communityCategorySub.categoryFilterList.isNullOrEmpty()){
             filterListVisible.set(false)
+            selectedFilterIndex = -1
         }else{
             filterListVisible.set(true)
             var list = arrayListOf<String>()

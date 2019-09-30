@@ -225,6 +225,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
 
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is SubTitleItemList){
+                binding.subtitle.visibility = View.VISIBLE
                 var homeDeal = item.data as HomeDeal
                 if(width == 0){
                     val matrix = DisplayMetrics()
