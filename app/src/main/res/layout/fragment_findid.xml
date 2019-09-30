@@ -105,8 +105,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        app:txt="@={viewModel.user.phoneNumber}"
                         app:hint="@string/findid_info_hint_phonenumber"
+                        app:txt="@={viewModel.user.phoneNumber}"
                         app:type="number" />
 
                     <Button
@@ -164,11 +164,11 @@
                     android:visibility="@{viewModel.checkedFindIdByVerifyingPhone ? View.VISIBLE : View.GONE, default= gone}">
 
                     <TextView
+                        style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
-                        style="@style/TextBold"
                         android:gravity="center"
                         android:text="@string/verifyphone_content2"
                         android:textColor="@color/greyish_brown"
@@ -222,7 +222,6 @@
                             android:layout_height="wrap_content"
                             android:text="@string/verifyphone_description2"
                             android:textColor="@color/warm_grey_three" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -295,8 +294,7 @@
 
             <include
                 android:id="@+id/include_findid_result"
-                layout="@layout/layout_findaccount_resultid"
-                android:visibility="@{viewModel.resultVisibility, default= gone}" />
+                layout="@layout/layout_findaccount_resultid" />
         </FrameLayout>
 
     </ScrollView>

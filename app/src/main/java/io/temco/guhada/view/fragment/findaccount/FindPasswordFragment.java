@@ -45,6 +45,7 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
     protected void init() {
         mBinding.setViewModel(mViewModel);
         mBinding.constraintlayoutFindpwdResult.bringToFront();
+        mBinding.includeFindpwdResult.setViewModel(mViewModel);
         mBinding.executePendingBindings();
     }
 

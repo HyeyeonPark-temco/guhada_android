@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.ObservableInt;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -129,7 +130,7 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
                     passwordViewModel.setMobile(mViewModel.user.getMobile());
                     passwordViewModel.setDi(mViewModel.di);
-                    passwordViewModel.setResultVisibility(View.VISIBLE);
+                    passwordViewModel.setResultVisibility(new ObservableInt(View.VISIBLE));
                     passwordViewModel.setUser(mViewModel.user);
                     passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
                     passwordViewModel.notifyPropertyChanged(BR.user);
@@ -275,6 +276,18 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     mViewModel.user.setName(name);
                     mViewModel.di = di;
                     mViewModel.getIdentityVerify(di);
+
+                    //
+                    if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
+                        FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
+                        passwordViewModel.setMobile(mViewModel.user.getMobile());
+                        passwordViewModel.setDi(mViewModel.di);
+                        passwordViewModel.setResultVisibility(new ObservableInt(View.VISIBLE));
+                        passwordViewModel.setUser(mViewModel.user);
+
+                        passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
+                        passwordViewModel.notifyPropertyChanged(BR.user);
+                    }
                 }
             }
         }

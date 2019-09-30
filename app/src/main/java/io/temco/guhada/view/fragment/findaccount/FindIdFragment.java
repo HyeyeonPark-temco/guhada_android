@@ -37,6 +37,7 @@ public class FindIdFragment extends BaseFragment<FragmentFindidBinding> {
         if(mViewModel != null){
             mBinding.setViewModel(mViewModel);
             mBinding.includeFindidResult.setViewModel(mViewModel);
+            mBinding.includeFindidResult.linearlayoutFindaccountResult.bringToFront();
             mBinding.executePendingBindings();
         }
     }

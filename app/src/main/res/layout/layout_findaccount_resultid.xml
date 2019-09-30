@@ -10,6 +10,8 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/linearlayout_findaccount_result"
+        android:visibility="@{viewModel.resultVisibility, default= gone}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="33dp"
