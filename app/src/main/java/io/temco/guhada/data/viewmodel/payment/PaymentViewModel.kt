@@ -125,7 +125,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             field = value
             notifyPropertyChanged(BR.usedPoint)
         }
-    var order= Order()
+    var order = Order()
         @Bindable
         get() = field
         set(value) {
@@ -138,7 +138,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             // 본인인증
             this.mMobileVerification = ObservableBoolean(value.user.name != null && value.user.mobile != null)
-            this.mEmailVerification = ObservableBoolean( value.user.emailVerify)
+            this.mEmailVerification = ObservableBoolean(value.user.emailVerify)
             notifyPropertyChanged(BR.mMobileVerification)
             notifyPropertyChanged(BR.mEmailVerification)
 
@@ -214,11 +214,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         get() = field
 
     var mMobileVerification = ObservableBoolean(false)
-    @Bindable
-    get() = field
+        @Bindable
+        get() = field
     var mEmailVerification = ObservableBoolean(false)
         @Bindable
         get() = field
+
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
             if (success) {
@@ -456,7 +457,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     fun onClickUseAllPoint() {
         usedPointNumber = if (mTotalDiscountPrice.get() + holdingPoint > mTotalPaymentPrice.get()) {
-          product.totalPrice - mCouponDiscountPrice.toLong()
+            product.totalPrice - mCouponDiscountPrice.toLong()
         } else {
             holdingPoint
         }
@@ -532,18 +533,18 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
                                 mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
 
-                                if (::cart.isInitialized)
-                                    mRequestOrder.cartItemPayments.add(RequestOrder.CartItemPayment().apply { this.cartItemId = this@PaymentViewModel.cart.cartItemId })
-                                else
-                                    Observable.fromIterable(cartIdList)
-                                            .map { cartItemId ->
-                                                RequestOrder.CartItemPayment().apply {
-                                                    this.cartItemId = cartItemId.toLong()
-                                                    this.couponNumber = getCouponNumberByCartItemId(cartItemId.toLong())
-                                                }
-                                            }.subscribe {
-                                                mRequestOrder.cartItemPayments.add(it)
-                                            }
+//                                if (::cart.isInitialized)
+//                                    mRequestOrder.cartItemPayments.add(RequestOrder.CartItemPayment().apply { this.cartItemId = this@PaymentViewModel.cart.cartItemId })
+//                                else {
+                                    for (item in cartIdList) {
+                                        RequestOrder.CartItemPayment().apply {
+                                            this.cartItemId = item.toLong()
+                                            this.couponNumber = getCouponNumberByCartItemId(item.toLong())
+                                        }.let {
+                                            mRequestOrder.cartItemPayments.add(it)
+                                        }
+                                    }
+//                                }
                             }
 
                             // 사용 포인트

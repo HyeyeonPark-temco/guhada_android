@@ -20,6 +20,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintlayout_requestcancelorder_refund"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -29,7 +30,7 @@
         android:paddingTop="40dp"
         android:paddingRight="20dp"
         android:paddingBottom="40dp"
-        android:visibility="@{viewModel.refundInfoVisible &amp;&amp; !expectedRefundInfo.getIsRefundValid() ? View.VISIBLE: View.GONE }">
+        android:visibility="@{viewModel == null || (viewModel.refundInfoVisible &amp;&amp; !expectedRefundInfo.getIsRefundValid()) ? View.VISIBLE: View.GONE }">
 
         <TextView
             android:id="@+id/textview_deliverydetail_refundinfo_title"

@@ -70,6 +70,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     }
 
     private fun initExpectedRefundPrice() {
+        mBinding.includeRequestcancelorderRefund.constraintlayoutRequestcancelorderRefund.visibility = View.VISIBLE
         mViewModel.mExpectedRefundPrice.observe(this, Observer {
             mBinding.includeRequestcancelorderRefund.expectedRefundPrice = it
             mBinding.executePendingBindings()

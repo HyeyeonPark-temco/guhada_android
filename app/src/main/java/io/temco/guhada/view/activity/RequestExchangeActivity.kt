@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.Html
+import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import androidx.core.widget.addTextChangedListener
@@ -321,7 +322,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (purchaseOrder.receiverMessage.isNotEmpty() && position > (purchaseOrder.shippingMessageList.size - 2)) {
+                if (TextUtils.isEmpty(purchaseOrder.receiverMessage) && position > (purchaseOrder.shippingMessageList.size - 2)) {
 
                 } else {
                     val shippingMessage = mViewModel.mShippingMessageList.value?.get(position)

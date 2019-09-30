@@ -22,6 +22,7 @@ class CancelOrderViewModel : BaseObservableViewModel() {
     var cause = ""
     var successCancelOrderTask: (result: PurchaseOrder) -> Unit = {}
     var mExpectedRefundPrice = MutableLiveData<ExpectedRefundPrice>()
+    var mExpectedRefundInfo =  MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
 
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
