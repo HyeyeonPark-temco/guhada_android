@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.product.BaseProduct
@@ -55,6 +54,29 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                 mBinding.executePendingBindings()
             }
 
+            mBinding.textviewCouponselectCouponname.text =
+                    if (item.maximumDiscountPrice == null || item.maximumDiscountPrice == 0) {
+                        // maximumDiscountPrice 없는 경우, 정률 쿠폰 할인 금액 미표시
+                        when {
+                            item.discountType == Coupon.DiscountType.RATE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titlerate_format_withoutprice), "${(item.discountRate * 100).toInt()}%", item.couponTitle)
+                            item.discountType == Coupon.DiscountType.PRICE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titleprice_format), item.discountPrice, item.couponTitle)
+                            else -> item.couponTitle ?: ""
+                        }
+                    } else {
+                        val discountPrice = if (item.discountType == Coupon.DiscountType.RATE.type) {
+                            val price = (Math.round(mProduct.sellPrice * item.discountRate)).toInt()
+                            if (price > item.maximumDiscountPrice ?: 0) item.maximumDiscountPrice
+                            else price
+                        } else item.discountPrice
+
+                        when {
+                            item.discountType == Coupon.DiscountType.RATE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titlerate_format), "${(item.discountRate * 100).toInt()}%", item.couponTitle, discountPrice
+                                    ?: 0)
+                            item.discountType == Coupon.DiscountType.PRICE.type -> String.format(BaseApplication.getInstance().getString(R.string.couponselect_titleprice_format), item.discountPrice, item.couponTitle)
+                            else -> item.couponTitle ?: ""
+                        }
+                    }
+
             mBinding.dealId = mProduct.dealId
             mBinding.couponWallet = item
             mBinding.viewModel = mViewModel
@@ -75,9 +97,9 @@ class CouponWalletAdapter : RecyclerView.Adapter<CouponWalletAdapter.Holder>() {
                         couponWallet.discountType == Coupon.DiscountType.PRICE.type -> couponWallet.discountPrice
                         couponWallet.discountType == Coupon.DiscountType.RATE.type -> {
                             val price = Math.round(productPrice * couponWallet.discountRate).toInt()
-                            if (price > couponWallet.maximumDiscountPrice) {
-                               //  ToastUtil.showMessage(String.format(BaseApplication.getInstance().getString(R.string.couponselect_overmaxdiscountprice), couponWallet.maximumDiscountPrice))
-                                couponWallet.maximumDiscountPrice
+                            if (price > couponWallet.maximumDiscountPrice ?: 0) {
+                                //  ToastUtil.showMessage(String.format(BaseApplication.getInstance().getString(R.string.couponselect_overmaxdiscountprice), couponWallet.maximumDiscountPrice))
+                                couponWallet.maximumDiscountPrice ?: 0
                             } else {
                                 price
                             }

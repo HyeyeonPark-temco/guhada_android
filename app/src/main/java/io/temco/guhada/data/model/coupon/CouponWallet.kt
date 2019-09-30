@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.coupon
 
+import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import java.io.Serializable
 
 /**
@@ -26,11 +28,11 @@ class CouponWallet : Serializable {
     var saveTargetType = ""
 
     // PRICE
-    var discountType: String? = ""          // 할인 방식 (PRICE, RATE)f
+    var discountType: String? = ""          // 할인 방식 (PRICE, RATE)
     var discountRate: Double = 0.0          // 할인률 (정률인 경우)
     var discountPrice: Int = 0              // 할인 금액 (정액인 경우)
     var minimumPrice: Int = 0               // 쿠폰을 적용받기위한 최소 금액 (전체 주문금액이 아닌, 해당 상품금액에만 적용)
-    var maximumDiscountPrice: Int = 0       // 정액인 경우, 최대 할인가능 금액
+    var maximumDiscountPrice: Int? = 0       // 정액인 경우, 최대 할인가능 금액
 
     // DATE
     var startAt = intArrayOf()
@@ -49,6 +51,16 @@ class CouponWallet : Serializable {
 
     override fun toString(): String {
         return "CouponWallet(couponId=$couponId, couponNumber=$couponNumber, couponTitle=$couponTitle, couponType=$couponType, discountType=$discountType, discountRate=$discountRate, discountPrice=$discountPrice)"
+    }
+
+    fun getCouponDiscountTitle(): String {
+        return if (discountType == Coupon.DiscountType.RATE.type) {
+            String().format(BaseApplication.getInstance().getString(R.string.couponselect_titlerate_format), discountRate * 100, couponTitle
+                    ?: "", discountPrice)
+        } else {
+            String().format(BaseApplication.getInstance().getString(R.string.couponselect_titleprice_format), discountPrice, couponTitle
+                    ?: "")
+        }
     }
 
 }
