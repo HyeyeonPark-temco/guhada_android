@@ -28,11 +28,6 @@
 
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,9 +37,15 @@
             <include
                 android:id="@+id/include_sellerstore_header"
                 layout="@layout/header_sellerstore" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/white_four"/>
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
+                android:fillViewport="true"
+                android:overScrollMode="never"
                 android:layout_height="match_parent">
 
                 <LinearLayout
@@ -524,5 +525,4 @@
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 </layout>
