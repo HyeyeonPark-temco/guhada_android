@@ -1,5 +1,8 @@
 package io.temco.guhada.data.model
 
+import io.temco.guhada.common.enum.PurchaseStatus
+import io.temco.guhada.data.model.order.PurchaseOrder
+
 /**
  * 환불 예상 금액 model
  * @author Hyeyeoon Park
@@ -13,7 +16,10 @@ class ExpectedRefundPrice {
     var totalPaymentCancelPrice = 0     // "신용카드 환불금액" ///// 신용카드가 아니고 결제수단에 맞춰서 텍스트 보여주시면 됩니다!
     var totalPointCancelPrice = 0       // "포인트 환불금액" ///// 포인트에 그대로 쓰시면됩니다.
 
-    class ExpectedRefuncInfo{
+    class ExpectedRefundInfo : PurchaseOrder(){
         var refundResponse = ExpectedRefundPrice()
+
+        // purchaseStatus가 WAITING_PAYMENT인 경우(== 무통장 입금인 경우), "환불 정보" 비노출
+        fun getIsRefundValid() :Boolean = purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status
     }
 }

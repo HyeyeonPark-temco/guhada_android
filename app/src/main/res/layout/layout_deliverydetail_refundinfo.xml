@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel" />
@@ -11,6 +13,10 @@
         <variable
             name="expectedRefundPrice"
             type="io.temco.guhada.data.model.ExpectedRefundPrice" />
+
+        <variable
+            name="expectedRefundInfo"
+            type="io.temco.guhada.data.model.ExpectedRefundPrice.ExpectedRefundInfo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +28,8 @@
         android:paddingLeft="20dp"
         android:paddingTop="40dp"
         android:paddingRight="20dp"
-        android:paddingBottom="40dp">
+        android:paddingBottom="40dp"
+        android:visibility="@{viewModel.refundInfoVisible &amp;&amp; !expectedRefundInfo.getIsRefundValid() ? View.VISIBLE: View.GONE }">
 
         <TextView
             android:id="@+id/textview_deliverydetail_refundinfo_title"

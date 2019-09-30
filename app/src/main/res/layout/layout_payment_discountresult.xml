@@ -105,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.order.totalShipPrice != 0.0 ? @string/payment_shipping_format(Math.round(viewModel.order.totalShipPrice)) : @string/payment_text_freeshipping}"
                     android:textColor="@color/cool_grey"
+                    android:visibility="gone"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toTopOf="@+id/linearlayout_payment_discounttotalprice"
                     app:layout_constraintEnd_toEndOf="parent"

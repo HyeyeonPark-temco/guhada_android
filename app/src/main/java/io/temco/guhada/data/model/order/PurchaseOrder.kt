@@ -12,7 +12,7 @@ import java.io.Serializable
  * @see PurchaseOrderResponse
  * @author Hyeyeon Park
  */
-class PurchaseOrder : OrderItemResponse(), Serializable {
+open class PurchaseOrder : OrderItemResponse(), Serializable {
     var purchaseId: Long = 0
     var expireTimestamp: Long = 0
     var orderTimestamp: Long = 0
@@ -21,10 +21,10 @@ class PurchaseOrder : OrderItemResponse(), Serializable {
     var optionAttribute2: String = ""
     var optionAttribute3: String = ""
 
-    var orderPrice = 0
+    var orderPrice = 0                  // 결제금액(카드)
     var orderProdGroupId: Long = 0
     var orderProdId: Long = 0
-    var originalPrice = 0
+    var originalPrice = 0               //  샐러가 처음에 등록한 원래 상품가격
 
     @SerializedName("prodName")
     var productName = ""

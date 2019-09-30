@@ -89,8 +89,12 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailRefundinfo.expectedRefundPrice = it
             mBinding.executePendingBindings()
         })
-    }
 
+        mViewModel.mExpectedRefundInfo.observe(this, Observer {
+            mBinding.includeDeliverydetailRefundinfo.expectedRefundInfo = it
+            mBinding.executePendingBindings()
+        })
+    }
 
     private fun initHeader() {
         mBinding.includeDeliverydetailHeader.title = "주문 내역 상세"

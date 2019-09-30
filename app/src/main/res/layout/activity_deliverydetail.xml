@@ -73,8 +73,7 @@
 
                 <include
                     android:id="@+id/include_deliverydetail_refundinfo"
-                    layout="@layout/layout_deliverydetail_refundinfo"
-                    android:visibility="@{viewModel.refundInfoVisible ? View.VISIBLE : View.GONE, default= gone}" />
+                    layout="@layout/layout_deliverydetail_refundinfo" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
