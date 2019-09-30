@@ -545,4 +545,11 @@ interface UserService {
     @GET("/banks")
     fun getBanks() : Call<BaseModel<MutableList<PurchaseOrder.Bank>>>
 
+    /**
+     * 아이디 발송하기
+     * @since 2019.09.29
+     * @author Hyeyeon Park
+     */
+    @POST("/notification/mobile/id")
+    fun sendEmailToPhone(@Body jsonObject: JsonObject) : Call<BaseModel<Any>>
 }

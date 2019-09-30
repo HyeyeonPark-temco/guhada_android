@@ -17,6 +17,8 @@ import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnFindAccountListener;
+import io.temco.guhada.common.listener.OnServerListener;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.server.UserServer;
@@ -33,6 +35,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     private ObservableInt resultVisibility = new ObservableInt(View.GONE);
 
     public User user = new User();
+    public String validPhoneNumber = "";
     public String di = "";
     public ObservableField<User> mUser = new ObservableField<User>(new User()); // 삭ㅈㅔ 예정
 
@@ -196,7 +199,22 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
     }
 
     public void onClickSendId() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("mobile", validPhoneNumber);
+        jsonObject.addProperty("name", user.getName());
 
+        if (checkedFindIdByVerifyingPhone)
+            jsonObject.addProperty("diCode", di);
+
+        UserServer.sendEmailToPhone((success, o) -> {
+            BaseModel<Object> model = (BaseModel<Object>) o;
+            if (success && model.resultCode == Flag.ResultCode.SUCCESS)
+                ToastUtil.showMessage("문자 메시지로 아이디가 발송되었습니다.");
+            else if (model.resultCode == Flag.ResultCode.DATA_NOT_FOUND)
+                ToastUtil.showMessage("일치하는 회원정보가 없습니다.");
+            else
+                ToastUtil.showMessage(model.message);
+        }, jsonObject);
     }
 
     public void onClickCopyId() {
@@ -245,8 +263,9 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                 BaseModel model = (BaseModel) o;
                 switch (model.resultCode) {
                     case Flag.ResultCode.SUCCESS:
+                        this.validPhoneNumber = this.user.getPhoneNumber();
+
                         User user = (User) model.data;
-                        this.user = user;
                         Objects.requireNonNull(this.user).setPhoneNumber(user.getPhoneNumber());
                         Objects.requireNonNull(this.user).setEmail(user.getEmail());
                         Objects.requireNonNull(this.user).setJoinAt(user.getJoinAt());

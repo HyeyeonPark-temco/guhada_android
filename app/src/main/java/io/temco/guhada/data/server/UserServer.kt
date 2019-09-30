@@ -37,7 +37,7 @@ class UserServer {
     companion object {
 
         @JvmStatic
-        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+        fun <C, R> resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>) {
             if (response.code() in 200..400 && response.body() != null) {
                 listener.onResult(true, response.body())
             } else {
@@ -881,7 +881,7 @@ class UserServer {
          */
         @JvmStatic
         fun getIdentityVerify(listener: OnServerListener, jsonObject: JsonObject) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getIdentityVerify(jsonObject = jsonObject)
-                .enqueue(object : Callback<BaseModel<Any>>{
+                .enqueue(object : Callback<BaseModel<Any>> {
                     override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
@@ -978,7 +978,6 @@ class UserServer {
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<PurchaseOrder.Bank>>>(successTask = { listener.onResult(true, it.body()) }))
 
 
-
         /**
          * 연동된 sns 종류 불러오기
          */
@@ -989,21 +988,33 @@ class UserServer {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
+        @JvmStatic
+        fun sendEmailToPhone(listener: OnServerListener, jsonObject: JsonObject) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .sendEmailToPhone(jsonObject).enqueue(object : Callback<BaseModel<Any>> {
+                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                            resultListener(listener, call, response)
+                        }
 
+                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    })
+        }
 
 
     }
-
-
 
 
 }

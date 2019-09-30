@@ -10,7 +10,6 @@ import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import io.reactivex.Observable
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -533,18 +532,14 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             if (mRequestOrder.cartItemPayments.size < cartIdList.size) {
                                 mRequestOrder.shippingAddress = this@PaymentViewModel.selectedShippingAddress!!
 
-//                                if (::cart.isInitialized)
-//                                    mRequestOrder.cartItemPayments.add(RequestOrder.CartItemPayment().apply { this.cartItemId = this@PaymentViewModel.cart.cartItemId })
-//                                else {
-                                    for (item in cartIdList) {
-                                        RequestOrder.CartItemPayment().apply {
-                                            this.cartItemId = item.toLong()
-                                            this.couponNumber = getCouponNumberByCartItemId(item.toLong())
-                                        }.let {
-                                            mRequestOrder.cartItemPayments.add(it)
-                                        }
+                                for (item in cartIdList) {
+                                    RequestOrder.CartItemPayment().apply {
+                                        this.cartItemId = item.toLong()
+                                        this.couponNumber = getCouponNumberByCartItemId(item.toLong())
+                                    }.let {
+                                        mRequestOrder.cartItemPayments.add(it)
                                     }
-//                                }
+                                }
                             }
 
                             // 사용 포인트
