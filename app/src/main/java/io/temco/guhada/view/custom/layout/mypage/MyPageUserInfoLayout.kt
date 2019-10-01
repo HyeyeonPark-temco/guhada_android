@@ -172,6 +172,7 @@ class MyPageUserInfoLayout constructor(
     }
 
     private fun setUserData(){
+        mBinding.includeMypageuserinfoUserpassword.edittextviewLoginPwd.text = ""
         var intent = Intent(context as MainActivity, UserInfoActivity::class.java)
         (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.USER_INFO)
     }

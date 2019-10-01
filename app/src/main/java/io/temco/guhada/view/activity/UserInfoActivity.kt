@@ -63,9 +63,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         mViewModel = UserInfoViewModel(this@UserInfoActivity)
         mBinding.viewModel = mViewModel
         mBinding.setOnClickCloseButton { finish() }
-        if (checkUserLogin()) {
-            setInitView()
-        }
     }
 
     override fun onResume() {
@@ -84,11 +81,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             getUserSize()
         }
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
 
     private fun checkUserLogin(): Boolean {
         if (!CommonUtil.checkToken()) {
@@ -112,7 +104,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         // 유저 정보 가져오기
         mViewModel.userCheck(object : OnCallBackListener{
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-
+                mBinding.user = mViewModel.user
+                mBinding.executePendingBindings()
                 if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener","resultFlag",resultFlag, "value",value)
                 if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener",  "userEmail -----",mViewModel.userEmail)
             }

@@ -47,6 +47,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     var userId: Long = 0L
     var defaultSnsType = ""
     var userEmail = ""
+    var user = User()
 
     var mUserSize = UserSize()
 
@@ -209,6 +210,7 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
                     successTask = {
                         var value = (it as BaseModel<User>).data
                         if (CustomLog.flag) CustomLog.L("userLoginTypeCheck value", it)
+                        mViewModel.user = value
                         mViewModel.userEmail = value.email
                         listener.callBackListener(true, value)
                     },

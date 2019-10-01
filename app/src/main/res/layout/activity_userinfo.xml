@@ -11,6 +11,9 @@
             name="onClickOkButton"
             type="android.view.View.OnClickListener" />
         <variable
+            name="user"
+            type="io.temco.guhada.data.model.user.User" />
+        <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel" />
     </data>
@@ -47,7 +50,7 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textSize="@dimen/text_17"
-                android:text="회원 정보 수정" />
+                android:text="회원정보 수정" />
 
         </LinearLayout>
 
@@ -108,6 +111,7 @@
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/drawable_disable_inputform"
                         android:gravity="center_vertical"
+                        android:text="@{user.name}"
                         android:hint="@string/mypage_userinfo_passwaord_infotitle2"
                         android:paddingLeft="15dp"
                         android:textColor="@color/black_four"
