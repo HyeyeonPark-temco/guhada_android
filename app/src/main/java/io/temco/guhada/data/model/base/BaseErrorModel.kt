@@ -7,6 +7,10 @@ data class BaseErrorModel(var code : Int,
                           var url : String,
                           var Message : Message){
 
+    override fun toString(): String {
+        if(CustomLog.flag) return "BaseErrorModel(code=$code, url='$url', Message=$Message)"
+        else return ""
+    }
 }
 
 

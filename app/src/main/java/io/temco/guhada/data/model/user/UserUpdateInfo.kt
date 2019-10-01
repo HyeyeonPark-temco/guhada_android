@@ -15,14 +15,28 @@ class UserUpdateInfo {
     var userSizeParam = UserSizeParam()
     var verifiedIdentity = false
 
-    fun setData(user : User){
+    fun setData(user : User, userSize: UserSize?){
         accountHolder = user.name
         agreeEmailReception = user.agreeEmailReception
         agreeSmsReception = user.agreeSmsReception
         email = user.email
+
         identityVerifyParam.birth = user.birth
         identityVerifyParam.diCode = user.userDetail.diCode ?: ""
         identityVerifyParam.gender = user.userGender
+        identityVerifyParam.identityVerifyMethod = ""
+        identityVerifyParam.mobile = user.mobile
+        identityVerifyParam.name = user.name
+
+        inputUserSize = userSize != null
+        if(userSize!=null){
+            userSizeParam.bottom = userSize.bottom
+            userSizeParam.height = userSize.height
+            userSizeParam.shoe = userSize.shoe
+            userSizeParam.top = userSize.top
+            userSizeParam.weight = userSize.weight
+        }
+        verifiedIdentity = false
     }
 
 }
