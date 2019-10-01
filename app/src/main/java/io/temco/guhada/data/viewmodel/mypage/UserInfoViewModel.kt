@@ -205,11 +205,11 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
 
 
     fun userData(listener: OnCallBackListener) {
-        UserServer.getUserById(OnServerListener { success, o ->
+        UserServer.findUsers(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var value = (it as BaseModel<User>).data
-                        if (CustomLog.flag) CustomLog.L("userLoginTypeCheck value", it)
+                        if (CustomLog.flag) CustomLog.L("userData value", it)
                         mViewModel.user = value
                         mViewModel.userEmail = value.email
                         listener.callBackListener(true, value)

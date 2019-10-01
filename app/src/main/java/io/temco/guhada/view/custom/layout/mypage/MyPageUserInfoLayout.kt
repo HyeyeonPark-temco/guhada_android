@@ -39,7 +39,6 @@ class MyPageUserInfoLayout constructor(
 
     private lateinit var mUserInfoViewModel: LoginViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
-    private var isPassFocus = false
 
 
     override fun getBaseTag() = this::class.simpleName.toString()

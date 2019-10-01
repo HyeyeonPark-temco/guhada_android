@@ -232,6 +232,24 @@ class UserServer {
         }
 
         /**
+         * 개별 회원 정보 조회 API 2. GET : /users -> 유저 데이터 불러오기
+         */
+        @JvmStatic
+        fun findUsers(listener: OnServerListener, userId: Int) {
+            val call = RetrofitManager.createService(Type.Server.USER, UserService::class.java).findUsers(userId)
+            RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<User>> {
+                override fun onFailure(call: Call<BaseModel<User>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+
+                override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
+                    listener.onResult(true, response.body())
+                }
+            })
+        }
+
+
+        /**
          * 중복된 이메일인지 검증
          */
         @JvmStatic

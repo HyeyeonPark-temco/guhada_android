@@ -5,6 +5,12 @@
     <data>
         <import type="android.view.View" />
         <variable
+            name="onClickEmailButton"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="onClickSmsButton"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="onClickCloseButton"
             type="android.view.View.OnClickListener" />
         <variable
@@ -561,6 +567,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:onClick="@{onClickSmsButton}"
                             android:gravity="center_vertical">
 
                             <CheckBox
@@ -568,6 +575,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/selector_checkbox_all"
+                                android:checked="@{user.agreeSmsReception}"
                                 android:button="@null" />
 
                             <TextView
@@ -586,6 +594,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:onClick="@{onClickEmailButton}"
                             android:gravity="center_vertical">
 
                             <CheckBox
@@ -593,6 +602,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/selector_checkbox_all"
+                                android:checked="@{user.agreeEmailReception}"
                                 android:button="@null" />
 
                             <TextView

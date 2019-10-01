@@ -47,6 +47,13 @@ interface UserService {
     fun findUserById(@Path("userId") id: Int): Call<BaseModel<User>>
 
     /**
+     * 개별 회원 정보 조회 API 2. GET : /users -> 유저 데이터 불러오기
+     * @param userId
+     */
+    @GET("/users")
+    fun findUsers(@Query("userIds") id: Int): Call<BaseModel<User>>
+
+    /**
      * 셀러 정보 조회 API
      * @param sellerId
      */
