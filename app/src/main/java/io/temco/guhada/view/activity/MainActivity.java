@@ -206,22 +206,22 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 case Flag.RequestCode.KAKAO_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                 case Flag.RequestCode.VERIFY_EMAIL:
                     assert data != null;
                     String email = data.getStringExtra("email");
@@ -240,22 +240,22 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 case Flag.RequestCode.KAKAO_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.KAKAO_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.NAVER_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.NAVER_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.RC_GOOGLE_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN:
                     msg = "";
                     if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.FACEBOOK_LOGIN, (resultCode+","+msg)));
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
             }
             super.onActivityResult(requestCode, resultCode, data);
         }

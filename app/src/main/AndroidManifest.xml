@@ -341,6 +341,11 @@
             android:name=".view.activity.VerifyEmailActivity"
             android:theme="@style/NoTitleBarDialog"/>
 
+        <activity
+            android:name=".view.activity.UserInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <!-- Kakao -->
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"

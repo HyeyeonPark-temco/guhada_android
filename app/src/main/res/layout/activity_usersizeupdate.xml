@@ -99,6 +99,7 @@
                         android:id="@+id/spinner_usersizeupdate_sub1"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
+                        android:dropDownWidth="match_parent"
                         android:background="@drawable/border_all_whitethree"
                         android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub1Selected(pos)}"
                         android:orientation="horizontal"

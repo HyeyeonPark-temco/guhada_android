@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel" />
+            type="io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel" />
     </data>
 
     <FrameLayout

@@ -57,6 +57,7 @@ public class Type {
         IMAGE_GET,
         REVIEW_POINT_DIALOG,
         USER_SIZE_UPDATE,
+        USER_INFO,
         REPORT_WRITE,
         CONFIRM_PURCHASE,
         COUPON_DOWNLOAD,

@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.Toolbar
       android:id="@+id/toolbar_productdetail_header"
         android:layout_width="match_parent"
+        android:background="@drawable/borderline_under_e6"
         android:layout_height="@dimen/height_header">
 
         <androidx.constraintlayout.widget.ConstraintLayout

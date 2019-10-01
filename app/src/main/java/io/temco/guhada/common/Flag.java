@@ -11,6 +11,9 @@ public class Flag {
         public static final int POINT_RESULT_DIALOG = 5003;
         public static final int VERIFY_PHONE = 10001;
 
+
+        public static final int MYPAGE_USERINFO_LOGIN = 20102;
+
         public static final int KAKAO_LOGIN = 10002;
         public static final int NAVER_LOGIN = 10003;
         public static final int FACEBOOK_LOGIN = 64206;
@@ -34,6 +37,7 @@ public class Flag {
         public static final int REVIEW_MODIFY = 10021;
         public static final int USER_SIZE = 10022;
 
+
         public static final int CONFIRM_PURCHASE = 10023;
         public static final int CANCEL_ORDER = 10024;
         public static final int EXCHANGE = 10025;
@@ -47,6 +51,8 @@ public class Flag {
         public static final int USER_CLAIM_SELLER = 10034;
         public static final int VERIFY_EMAIL = 10035;
         public static final int WELCOME_DIALOG = 10036;
+
+        public static final int USER_INFO = 10037;
 
         public static final int MYPAGE_MOVE = 20000;
         public static final int HOME_MOVE = 20001;
