@@ -227,19 +227,24 @@
                     android:layout_height="45dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/border_all_whitethree">
+                    android:background="@{viewModel.getEmailValidation() ? @drawable/box_all_palegrey : @drawable/border_all_whitethree, default= @drawable/border_all_whitethree}">
 
-                    <TextView
+                    <EditText
                         style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="1dp"
-                        android:background="@color/pale_grey"
+                        android:background="@null"
+                        android:focusable="@{viewModel.getEmailValidation() ? false : true, default = true}"
+                        android:clickable="@{viewModel.getEmailValidation() ? false : true, default = true}"
                         android:gravity="center_vertical"
+                        android:hint="@{viewModel.getEmailValidation() ? viewModel.mUser.email : @string/verify_hint_email, default = @string/verify_hint_email}"
                         android:paddingStart="15dp"
-                        android:text="@{viewModel.mUser.email}"
+                        android:paddingEnd="15dp"
+                        android:text="@={viewModel.mUser.email}"
                         android:textColor="@color/black_four"
+                        android:textColorHint="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
 
                     <Button

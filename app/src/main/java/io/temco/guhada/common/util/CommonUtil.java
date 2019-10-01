@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -35,10 +33,8 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -243,6 +239,12 @@ public class CommonUtil {
         }
     }
 
+    /**
+     * 이메일 유효성 검사(.io는 안됨)
+     * @param email
+     * @return isValid
+     * @author Hyeyeon Park
+     */
     public static boolean validateEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
