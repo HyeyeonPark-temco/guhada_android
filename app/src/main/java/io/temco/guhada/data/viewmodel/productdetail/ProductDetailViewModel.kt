@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.JsonParser
-import io.reactivex.Observable
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -34,7 +33,6 @@ import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewSummary
 import io.temco.guhada.data.model.seller.Seller
-import io.temco.guhada.data.model.seller.SellerAddress
 import io.temco.guhada.data.model.seller.SellerSatisfaction
 import io.temco.guhada.data.model.seller.SellerStore
 import io.temco.guhada.data.server.BenefitServer

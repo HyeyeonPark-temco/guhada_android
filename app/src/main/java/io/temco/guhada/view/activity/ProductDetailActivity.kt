@@ -20,13 +20,12 @@ import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.Brand
-import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.option.OptionAttr
+import io.temco.guhada.data.model.product.BaseProduct
+import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding

@@ -95,7 +95,7 @@
                     android:overScrollMode="never"
                     android:visibility="@{viewModel.productVisible ? View.VISIBLE : View.GONE, default = visible}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:paymentProduct="@{viewModel.productList}" />
+                    app:orderItem="@{viewModel.order.orderItemList}" />
 
             </LinearLayout>
 

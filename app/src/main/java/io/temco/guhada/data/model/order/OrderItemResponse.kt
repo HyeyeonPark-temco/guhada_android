@@ -31,7 +31,7 @@ open class OrderItemResponse : Serializable {
     var brandName = ""
 
     // PRODUCT
-    var productId: Long  = 0
+    var productId: Long = 0
     var season = ""
     var dealId: Long = 0
     var dealName = ""
@@ -57,6 +57,25 @@ open class OrderItemResponse : Serializable {
 
     class OrderOption {
         var price = 0
+    }
+
+    fun getOptionText(): String {
+        var optionText = ""
+        if (itemOptionResponse != null) {
+            if (!itemOptionResponse!!.attribute1.isNullOrEmpty())
+                optionText = "${itemOptionResponse!!.attribute1}"
+
+            if (!itemOptionResponse!!.attribute2.isNullOrEmpty())
+                optionText = "$optionText, ${itemOptionResponse!!.attribute2}"
+
+            if (!itemOptionResponse!!.attribute3.isNullOrEmpty())
+                optionText = "$optionText, ${itemOptionResponse!!.attribute3}"
+        }
+
+        optionText = if (optionText.isNotEmpty()) "$optionText, ${quantity}개"
+        else "${quantity}개"
+
+        return optionText
     }
 
 }

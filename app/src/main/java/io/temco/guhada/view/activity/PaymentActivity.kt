@@ -27,6 +27,7 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.coupon.CouponWallet
+import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.RequestOrder
 import io.temco.guhada.data.model.payment.PGAuth
@@ -37,6 +38,7 @@ import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
+import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter
 import io.temco.guhada.view.adapter.payment.PaymentProductAdapter
 import io.temco.guhada.view.adapter.payment.PaymentSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
@@ -77,7 +79,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         initDueSavePoint()
 
         // 상품 리스트
-        mBinding.recyclerviewPaymentProduct.adapter = PaymentProductAdapter()
+        mBinding.recyclerviewPaymentProduct.adapter = PaymentOrderItemAdapter()//PaymentProductAdapter()
 
         mBinding.includePaymentDiscount.viewModel = mViewModel
         mBinding.includePaymentDiscountresult.viewModel = mViewModel
@@ -430,7 +432,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     val di = data?.getStringExtra("di")
                     val gender = data?.getStringExtra("gender")
 
-                    if (!mViewModel.mMobileVerification.get()){
+                    if (!mViewModel.mMobileVerification.get()) {
                         if (name != null && phoneNumber != null) {
                             mViewModel.mRequestOrder.user.name = name
                             mViewModel.mRequestOrder.user.mobile = phoneNumber
@@ -448,7 +450,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                         mViewModel.notifyPropertyChanged(BR.mMobileVerification)
                     }
 
-                    if (!mViewModel.mEmailVerification.get()){
+                    if (!mViewModel.mEmailVerification.get()) {
                         mViewModel.mEmailVerification = ObservableBoolean(emailVerification
                                 ?: false)
                         mViewModel.notifyPropertyChanged(BR.mEmailVerification)
@@ -543,6 +545,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         fun RecyclerView.bindPaymentProduct(list: ArrayList<BaseProduct>?) {
             if (this.adapter != null && list != null) {
                 (this.adapter as PaymentProductAdapter).setItems(list)
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("orderItem")
+        fun RecyclerView.bindPaymentOrderItem(list: List<OrderItemResponse>?) {
+            if (this.adapter != null && list != null) {
+                (this.adapter as PaymentOrderItemAdapter).setItems(list.toMutableList())
             }
         }
     }
