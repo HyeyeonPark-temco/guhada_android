@@ -2,6 +2,7 @@ package io.temco.guhada.view.fragment.mypage
 
 import android.view.View
 import io.temco.guhada.R
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.viewmodel.mypage.MyPageCouponViewModel
 import io.temco.guhada.view.adapter.mypage.MyPageCouponAdapter
@@ -22,6 +23,9 @@ class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCo
 
     override fun init() {
         if (::mViewModel.isInitialized) {
+            // TODO 쿠폰 등록
+            mBinding.buttonMypagecouponAdd.setOnClickListener { ToastUtil.showMessage("유효하지 않은 쿠폰입니다.") }
+
             mBinding.recyclerviewMypagecouponEnabledlist.adapter = MyPageCouponAdapter().apply {
                 this.mViewModel = this@MyPageCouponFragment.mViewModel
                 this.mIsAvailable = this@MyPageCouponFragment.mIsAvailable
