@@ -65,7 +65,7 @@ class CouponSelectDialogActivity : BindActivity<ActivityCouponselectdialogBindin
                 this.mCouponWalletMap = mViewModel.mCouponWalletMap
             }
 
-            mBinding.totalProductPrice = order.totalProdPrice
+            mBinding.totalProductPrice = order.totalPaymentPrice //order.totalProdPrice
         })
 
         intent.getSerializableExtra("productList").let {

@@ -132,9 +132,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@{`-` + @string/common_priceunit_format(viewModel.purchaseOrderResponse.totalDiscountDiffPrice + expectedRefundInfo.pointPayment)}"
+            android:text="@{`-` + @string/common_priceunit_format(expectedRefundInfo.pointPayment != 0 ? viewModel.purchaseOrderResponse.totalDiscountDiffPrice + viewModel.purchaseOrderResponse.couponDiscountPrice + expectedRefundInfo.pointPayment : viewModel.purchaseOrderResponse.totalDiscountDiffPrice + viewModel.purchaseOrderResponse.couponDiscountPrice  + viewModel.purchaseOrderResponse.payment.pointPayment)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line2" />
+
+        <TextView
+            android:id="@+id/textview_deliverydetail_disountcoupon_title"
+            style="@style/MypageDeliveryWarmGreyTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/payment_text_discountcoupon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discounttotal_title" />
+
+        <TextView
+            android:id="@+id/textview_deliverydetail_disountcoupon_content"
+            style="@style/MypageDeliveryWarmGreyTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@{`-` + @string/common_priceunit_format(viewModel.purchaseOrderResponse.couponDiscountPrice)}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discounttotal_content" />
 
         <TextView
             android:id="@+id/textview_deliverydetail_disountproduct_title"
@@ -142,9 +162,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@string/mypage_deliverydetail_paymentinfo_discount2"
+            android:text="@string/payment_text_discountproduct"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discounttotal_title" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_disountcoupon_title" />
 
         <TextView
             android:id="@+id/textview_deliverydetail_disountproduct_content"
@@ -154,7 +174,7 @@
             android:layout_marginTop="18dp"
             android:text="@{`-` + @string/common_priceunit_format(viewModel.purchaseOrderResponse.totalDiscountDiffPrice)}"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discounttotal_content" />
+            app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_disountcoupon_content" />
 
         <TextView
             android:id="@+id/textview_deliverydetail_paymentpoint_title"
@@ -173,7 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundInfo.pointPayment)}"
+            android:text="@{@string/mypage_deliverydetail_priceformat_minus(viewModel.purchaseOrderResponse.payment.pointPayment == 0 ? expectedRefundInfo.pointPayment : viewModel.purchaseOrderResponse.payment.pointPayment)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_disountproduct_content"
             app:layout_constraintVertical_bias="0" />
@@ -204,7 +224,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/common_price_format(expectedRefundInfo.totalPaymentPrice - expectedRefundInfo.pointPayment)}"
+            android:text="@{@string/common_price_format(viewModel.purchaseOrderResponse.totalAmount)}"
             android:textSize="@dimen/text_20"
             app:layout_constraintBottom_toTopOf="@+id/textview_deliverydetail_paymentprice_content"
             app:layout_constraintRight_toLeftOf="@+id/textview_deliverydetail_paymenttotal_content1"
@@ -238,7 +258,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:text="@{@string/common_priceunit_format(expectedRefundInfo.totalPaymentPrice - expectedRefundInfo.pointPayment)}"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalPaymentCancelPrice == 0 ? viewModel.purchaseOrderResponse.totalAmount : expectedRefundPrice.totalPaymentCancelPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_paymenttotal_content1" />
 

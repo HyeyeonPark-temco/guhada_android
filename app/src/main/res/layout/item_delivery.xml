@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginTop="6dp"
-            android:text="@{@string/mypage_price_format(item.discountPrice)}"
+            android:text="@{@string/mypage_price_format(item.originalPrice)}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_delivery_profile"

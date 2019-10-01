@@ -77,7 +77,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
 
     private fun changeTotalPrice(count: Int) {
         productCount = ObservableInt(count)
-        totalPrice = ObservableInt((product.discountPrice + extraPrice.get()) * count)
+        totalPrice = ObservableInt((product.sellPrice + extraPrice.get()) * count)
         notifyPropertyChanged(BR.productCount)
         notifyPropertyChanged(BR.totalPrice)
     }

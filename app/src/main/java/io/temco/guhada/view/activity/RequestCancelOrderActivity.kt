@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.OrderChangeCause
 import io.temco.guhada.data.model.order.PurchaseOrder
@@ -53,6 +54,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
                 initCauseInfo(it)
                 initButton()
 
+                mBinding.includeRequestcancelorderRefund.constraintlayoutRequestcancelorderRefund.visibility = if(it.orderStatus ==  PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
                 mViewModel.mOrderProdGroupId = it.orderProdGroupId
                 mViewModel.getExpectedRefundPriceForRequest(it.quantity)
                 mBinding.viewModel = mViewModel
@@ -70,7 +72,6 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
     }
 
     private fun initExpectedRefundPrice() {
-        mBinding.includeRequestcancelorderRefund.constraintlayoutRequestcancelorderRefund.visibility = View.VISIBLE
         mViewModel.mExpectedRefundPrice.observe(this, Observer {
             mBinding.includeRequestcancelorderRefund.expectedRefundPrice = it
             mBinding.executePendingBindings()

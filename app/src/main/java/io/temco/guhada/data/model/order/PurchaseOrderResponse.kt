@@ -9,7 +9,7 @@ import java.io.Serializable
  * 주문 완료 화면에서 사용
  * @author Hyeyeon Park
  */
-class PurchaseOrderResponse : Serializable{
+class PurchaseOrderResponse : Serializable {
     var defaultAddress = false
     var orderList: MutableList<PurchaseOrder> = ArrayList()
     var orderNumber: Long = 0
@@ -20,13 +20,15 @@ class PurchaseOrderResponse : Serializable{
     var totalPaymentPrice = 0
     var totalProdPrice = 0
     var totalShipPrice = 0
+    var totalAmount = 0
+    var couponDiscountPrice = 0
 
     var buyerName = ""
     var buyerEmail = ""
     var buyerPhone = ""
 
-    fun getOrderTimestamp() : Long {
-        return if(orderList.isNotEmpty())
+    fun getOrderTimestamp(): Long {
+        return if (orderList.isNotEmpty())
             orderList[0].orderTimestamp
         else
             0

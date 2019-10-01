@@ -202,13 +202,13 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
             when (status) {
                 PurchaseStatus.WAITING_PAYMENT.status,
                 PurchaseStatus.COMPLETE_PAYMENT.status -> {
-                    buttons.add(DeliveryButton().apply {
-                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_orderinfo)
-                        task = View.OnClickListener {
-                            redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId,
-                                    if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId)
-                        }
-                    })
+//                    buttons.add(DeliveryButton().apply {
+//                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_orderinfo)
+//                        task = View.OnClickListener {
+//                            redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId,
+//                                    if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId)
+//                        }
+//                    })
 //                    buttons.add(DeliveryButton().apply {
 //                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_ordermodify)
 //                    })
@@ -223,10 +223,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 }
                 PurchaseStatus.SELLER_IDENTIFIED.status,
                 PurchaseStatus.RELEASE_PRODUCT.status -> {
-                    buttons.add(DeliveryButton().apply {
-                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_orderinfo)
-                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId, if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId) }
-                    })
+//                    buttons.add(DeliveryButton().apply {
+//                        text = mBinding.root.context.getString(R.string.mypage_delivery_button_orderinfo)
+//                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId, if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId) }
+//                    })
                 }
 
                 PurchaseStatus.RESEND_EXCHANGE.status,

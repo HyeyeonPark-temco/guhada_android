@@ -144,6 +144,7 @@ class CartViewModel : BaseObservableViewModel() {
                 this.optionStr = cart.getOptionStr() ?: ""
                 this.sellPrice = cart.sellPrice
                 this.discountPrice = cart.discountPrice
+                this.totalCount = cart.tempQuantity
             }.let {
                 list.add(it)
             }
