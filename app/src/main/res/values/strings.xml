@@ -1287,6 +1287,9 @@
     <string name="shippingtracking_message_invalid">유효하지 않은 배송 정보입니다.</string>
 
     <!-- VERIFY EMAIL -->
-    <string name="verifyemail_title">이메일 인증</string>
-    <string name="verifyemail_message_success">이메일 인증이 완료되었습니다.</string>
+    <string name="verifyeuserinfo_emailtitle">이메일 인증</string>
+    <string name="verifyeuserinfo_mobiletitle">휴대폰 인증</string>
+    <string name="verifyuserinfo_emailmessage_success">이메일 인증이 완료되었습니다.</string>
+    <string name="verifyuserinfo_mobilemessage_success">휴대폰 인증이 완료되었습니다.</string>
+    <string name="verifyuserinfo_invaliemobile_message">휴대폰 번호가 올바르지 않습니다.</string>
 </resources>

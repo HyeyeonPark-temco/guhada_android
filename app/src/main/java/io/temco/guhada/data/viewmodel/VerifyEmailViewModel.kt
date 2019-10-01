@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
@@ -21,6 +22,7 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class VerifyEmailViewModel : BaseObservableViewModel() {
+    var mIsEmail = true
     var mOnSuccessVerify: () -> Unit = {}
     var mVerifyEmailVisibility = ObservableInt(View.GONE)
         @Bindable
@@ -35,8 +37,17 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
         set(value) {
+            Log.e("ㅇㅇㅇ", value.get())
             field = value
             notifyPropertyChanged(BR.mEmail)
+        }
+    var mMobile = ObservableField("")
+        @Bindable
+        get() = field
+        set(value) {
+            Log.e("ㄴㄴㄴ", value.get())
+            field = value
+            notifyPropertyChanged(BR.mMobile)
         }
     var mName = ObservableField("")
         @Bindable
@@ -49,49 +60,69 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
 
+
     /**
      * 이메일로 인증번호 발송
      * @author Hyeyeon Park
      * @since 2019.09.28
      */
-    fun onClickSendEmail() {
-        if (CommonUtil.validateEmail(mEmail.get())) {
-            User().apply {
-                this.email = mEmail.get()
-                this.name = mName.get()
-            }.let { user ->
-                UserServer.verifyEmail(OnServerListener { success, o ->
-                    if (success) {
-                        val model = o as BaseModel<*>
-                        when (model.resultCode) {
-                            200 -> {
-                                mVerifyEmailVisibility = ObservableInt(View.VISIBLE)
-                                notifyPropertyChanged(BR.mVerifyEmailVisibility)
-
-                                val second = java.lang.Double.parseDouble((o.data as LinkedTreeMap<*, *>)["data"]!!.toString())
-                                val minute = (second / 60000).toInt()
-                                if (minute.toString().length == 1) {
-                                    mTimerSecond = ObservableField("60")
-                                    mTimerMinute = ObservableField("0${minute - 1}")
-                                    startTimer()
-                                } else {
-                                    mTimerSecond = ObservableField("60")
-                                    mTimerMinute = ObservableField("${minute - 1}")
-                                    startTimer()
-                                }
-                            }
-                            6005 -> ToastUtil.showMessage(BaseApplication.getInstance().resources.getString(R.string.findpwd_message_wronginfo))
-                        }
-                    } else {
-                        val message = o as String
-                        ToastUtil.showMessage((message))
-                    }
-                }, user)
+    fun onClickSendVerifyNumber() {
+        if (mIsEmail) {
+            if (CommonUtil.validateEmail(mEmail.get())) {
+                User().apply {
+                    this.email = mEmail.get()
+                    this.name = mName.get()
+                }.let { user -> sendVerifyNumber(user) }
+            } else {
+                ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.findpwd_message_invalidemailformat)))
             }
         } else {
-            ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.findpwd_message_invalidemailformat)))
+            if (mMobile.get()?.length ?: 0 < 10 || mMobile.get()?.length ?: 0 > 11) {
+                ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.verifyuserinfo_invaliemobile_message)))
+            } else {
+                User().apply {
+                    this.mobile = mMobile.get()
+                    this.name = mName.get()
+                }.let { user -> sendVerifyNumber(user) }
+            }
         }
+
     }
+
+    private fun sendVerifyNumber(user: User) {
+        val successTask: (success: Boolean, o: BaseModel<*>) -> Unit = { success, o: BaseModel<*> ->
+            val model = o as BaseModel<*>
+            if (success) {
+                when (model.resultCode) {
+                    200 -> {
+                        mVerifyEmailVisibility = ObservableInt(View.VISIBLE)
+                        notifyPropertyChanged(BR.mVerifyEmailVisibility)
+
+                        val second = java.lang.Double.parseDouble((o.data as LinkedTreeMap<*, *>)["data"]!!.toString())
+                        val minute = (second / 60000).toInt()
+                        if (minute.toString().length == 1) {
+                            mTimerSecond = ObservableField("60")
+                            mTimerMinute = ObservableField("0${minute - 1}")
+                            startTimer()
+                        } else {
+                            mTimerSecond = ObservableField("60")
+                            mTimerMinute = ObservableField("${minute - 1}")
+                            startTimer()
+                        }
+                    }
+                    6005 -> ToastUtil.showMessage(BaseApplication.getInstance().resources.getString(R.string.findpwd_message_wronginfo))
+                    else -> ToastUtil.showMessage(model.message)
+                }
+            } else {
+                ToastUtil.showMessage(model.message)
+            }
+        }
+
+        if (mIsEmail) UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
+        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
+
+    }
+
 
     /**
      * 인증번호 검증
@@ -99,31 +130,21 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
     fun onClickVerifyNumber() {
         val verification = Verification()
         verification.verificationNumber = mVerifyNumber.get() ?: ""
-        verification.verificationTarget = mEmail.get() ?: ""
-        verification.verificationTargetType = Verification.IdentityVerifyMethod.EMAIL.code
+        verification.verificationTarget = if (mIsEmail) mEmail.get() ?: "" else mMobile.get() ?: ""
+        verification.verificationTargetType = if (mIsEmail) Verification.IdentityVerifyMethod.EMAIL.code else Verification.IdentityVerifyMethod.MOBILE.code
 
         UserServer.verifyNumber(OnServerListener { success, o ->
+            val model = o as BaseModel<*>
             if (success) {
-                val model = o as BaseModel<*>
                 when (model.resultCode) {
-                    Flag.ResultCode.SUCCESS -> {
-                        mOnSuccessVerify()
-                    }
-                    Flag.ResultCode.EXPIRED_VERIFICATION_NUMBER -> {
-                        ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.findpwd_message_expiredverification)))
-                    }
-                    Flag.ResultCode.INVALID_VERIFICATION_NUMBER -> {
-                        ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.findpwd_message_invaludverification)))
-                    }
-                    else -> {
-                        ToastUtil.showMessage(model.message)
-                    }
+                    Flag.ResultCode.SUCCESS -> mOnSuccessVerify()
+                    Flag.ResultCode.EXPIRED_VERIFICATION_NUMBER -> ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.findpwd_message_expiredverification)))
+                    Flag.ResultCode.INVALID_VERIFICATION_NUMBER -> ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.findpwd_message_invaludverification)))
+                    else -> ToastUtil.showMessage(model.message)
                 }
             } else {
-                val message = o as String
-                ToastUtil.showMessage(message)
+                ToastUtil.showMessage(model.message)
             }
-
         }, verification)
     }
 

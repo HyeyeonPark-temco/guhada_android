@@ -1,6 +1,5 @@
 package io.temco.guhada.view.fragment.productdetail
 
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity

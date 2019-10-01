@@ -1,16 +1,12 @@
 package io.temco.guhada.view.activity
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.text.TextUtils
-import android.util.AttributeSet
 import android.content.Intent
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.LoadingIndicatorUtil
-import io.temco.guhada.data.viewmodel.account.LoginViewModel
 import io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel
 import io.temco.guhada.databinding.ActivityUserinfoBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -21,27 +17,19 @@ import androidx.lifecycle.Observer
 import io.reactivex.Observable
 import io.temco.guhada.BR
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnBorderEditTextFocusListener
 import io.temco.guhada.common.listener.OnCallBackListener
-import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel
-import io.temco.guhada.databinding.CustomlayoutMypageUserinfoBinding
-import io.temco.guhada.view.activity.MainActivity
-import io.temco.guhada.view.activity.MyPageTempLoginActivity
-import io.temco.guhada.view.activity.UserSizeUpdateActivity
-import io.temco.guhada.view.activity.VerifyEmailActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
-import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
  * @author park jungho
+ * @author Hyeyeon Park
  *
  * 회원 정보 등록
  *
@@ -73,12 +61,24 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RequestCode.VERIFY_EMAIL.flag) {
-            val email = data as String?
-            mBinding.edittextMypageuserinfoEmail.text = email ?: ""
-            mBinding.executePendingBindings()
-        } else if(requestCode == Flag.RequestCode.USER_SIZE){
-            getUserSize()
+
+        when (requestCode) {
+            RequestCode.VERIFY_USERINFO.flag -> { // 이메일, 휴대폰번호 인증
+                if (resultCode == Activity.RESULT_OK) {
+                    val email = data?.getStringExtra("email")
+                    val mobile = data?.getStringExtra("mobile")
+
+                    if (email != null) mBinding.edittextMypageuserinfoEmail.text = email
+                    if (mobile != null) mBinding.textviewMypageuserinfoMobile.text = mobile
+
+                    mViewModel.user.email = email
+                    mViewModel.user.mobile = mobile
+                    mViewModel.user.phoneNumber = mobile
+
+                    mBinding.executePendingBindings()
+                }
+            }
+            Flag.RequestCode.USER_SIZE -> if (resultCode == Activity.RESULT_OK) getUserSize()
         }
     }
 
@@ -99,15 +99,15 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         setUserData()
     }
 
-    private fun setUserData(){
+    private fun setUserData() {
         if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setUserData ", "--/banks---", mViewModel.userId)
         // 유저 정보 가져오기
-        mViewModel.userCheck(object : OnCallBackListener{
+        mViewModel.userCheck(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mBinding.user = mViewModel.user
                 mBinding.executePendingBindings()
-                if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener","resultFlag",resultFlag, "value",value)
-                if(CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener",  "userEmail -----",mViewModel.userEmail)
+                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "value", value)
+                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "userEmail -----", mViewModel.userEmail)
             }
         })
 
@@ -117,36 +117,40 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         // 환불 계좌정보
         initRefundAccountView()
 
-        // 이메일
-        mBinding.edittextMypageuserinfoEmail.setOnClickListener {
-            val intent = Intent(mBinding.root.context, VerifyEmailActivity::class.java)
-            (mBinding.root.context as Activity).startActivityForResult(intent, RequestCode.VERIFY_EMAIL.flag)
-        }
+        // 이메일 인증
+        mBinding.edittextMypageuserinfoEmail.setOnClickListener { redirectUserInfoVerifyActivity(true) }
+
+        // 휴대폰 번호 인증
+        mBinding.textviewMypageuserinfoMobile.setOnClickListener { redirectUserInfoVerifyActivity(false) }
 
         // 유저 사이즈
         getUserSize()
 
-
         mBinding.buttonMypageuserinfoSizeinsert.setOnClickListener {
             var intent = Intent(this@UserInfoActivity, UserSizeUpdateActivity::class.java)
-            if(mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
+            if (mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
             (this@UserInfoActivity).startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
         }
 
         mBinding.buttonMypageuserinfoSizemodify.setOnClickListener {
             var intent = Intent(this@UserInfoActivity, UserSizeUpdateActivity::class.java)
-            if(mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
+            if (mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
             (this@UserInfoActivity).startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
         }
     }
 
+    private fun redirectUserInfoVerifyActivity(isEmail: Boolean) {
+        val intent = Intent(mBinding.root.context, VerifyUserInfoActivity::class.java)
+        intent.putExtra("isEmail", isEmail)
+        (mBinding.root.context as Activity).startActivityForResult(intent, RequestCode.VERIFY_USERINFO.flag)
+    }
 
-    private fun getUserSize(){
-        mViewModel.repository.getUserSize(object : OnCallBackListener{
+    private fun getUserSize() {
+        mViewModel.repository.getUserSize(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-                if(resultFlag){
+                if (resultFlag) {
                     setUserSize()
-                }else{
+                } else {
                     mBinding.linearlayoutMypageuserinfoSizeinfo.visibility = View.GONE
                     mBinding.buttonMypageuserinfoSizeinsert.visibility = View.VISIBLE
                     mBinding.buttonMypageuserinfoSizemodify.visibility = View.GONE
@@ -156,8 +160,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     }
 
 
-    private fun setUserSize(){
-        if(mViewModel.mUserSize.weight > 0 || mViewModel.mUserSize.shoe > 0 || mViewModel.mUserSize.height > 0 || mViewModel.mUserSize.bottom > 0 || !TextUtils.isEmpty(mViewModel.mUserSize.top)){
+    private fun setUserSize() {
+        if (mViewModel.mUserSize.weight > 0 || mViewModel.mUserSize.shoe > 0 || mViewModel.mUserSize.height > 0 || mViewModel.mUserSize.bottom > 0 || !TextUtils.isEmpty(mViewModel.mUserSize.top)) {
             mBinding.linearlayoutMypageuserinfoSizeinfo.visibility = View.VISIBLE
             mBinding.buttonMypageuserinfoSizeinsert.visibility = View.GONE
             mBinding.buttonMypageuserinfoSizemodify.visibility = View.VISIBLE
@@ -167,7 +171,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             mBinding.textviewMypageuserinfoShoe.text = mViewModel.mUserSize.shoe.toString()
             mBinding.textviewMypageuserinfoTop.text = mViewModel.mUserSize.top
             mBinding.textviewMypageuserinfoWeight.text = mViewModel.mUserSize.weight.toString()
-        }else{
+        } else {
             mBinding.linearlayoutMypageuserinfoSizeinfo.visibility = View.GONE
             mBinding.buttonMypageuserinfoSizeinsert.visibility = View.VISIBLE
             mBinding.buttonMypageuserinfoSizemodify.visibility = View.GONE
@@ -222,14 +226,14 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
 
     // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
-    private fun showLoginTypeUser(){
+    private fun showLoginTypeUser() {
         var message = ""
-        when(mViewModel.mypageUserInfoLoginCheckType.get()){
-            0->message = "이메일로 "
-            1->message = "네이버로 "
-            2->message = "카카오로 "
-            3->message = "페이스북으로 "
-            4->message = "구글로 "
+        when (mViewModel.mypageUserInfoLoginCheckType.get()) {
+            0 -> message = "이메일로 "
+            1 -> message = "네이버로 "
+            2 -> message = "카카오로 "
+            3 -> message = "페이스북으로 "
+            4 -> message = "구글로 "
         }
         message += "가입한 사용자 입니다."
         CommonViewUtil.showDialog(baseContext as MainActivity, message, false, false)
@@ -285,6 +289,11 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             }
 
             mViewModel.mBankAccount.observe(this, Observer {
+                // 환불 계좌 정보
+                val accountOwner = mViewModel.mRefundRequest.refundBankAccountOwner
+                val accountNumber = mViewModel.mRefundRequest.refundBankAccountNumber
+                val accountBankCode = mViewModel.mRefundRequest.refundBankCode
+
                 mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
             })
 

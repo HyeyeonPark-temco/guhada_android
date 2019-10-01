@@ -36,5 +36,5 @@ enum class RequestCode(val flag: Int) {
     COUPON_DOWNLOAD(10029),
     COUPON_SELECT(10030),
     PAYMENT_RESULT(10031),
-    VERIFY_EMAIL (10035)
+    VERIFY_USERINFO(10035)
 }
