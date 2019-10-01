@@ -54,7 +54,8 @@ interface ClaimService {
      * 마이페이지 상품 문의 리스트 API
      */
     @GET("users/my-page/inquiries")
-    fun getMyClaimList(@Header("Authorization") accessToken: String, @Query("page") page: Int, @Query("status") status: String, @Query("size") size: Int = 20): Call<BaseModel<MyPageClaim>>
+    fun getMyClaimList(@Header("Authorization") accessToken: String, @Query("page") page: Int, @Query("status") status: String
+                       , @Query("size") size: Int = 20, @Query("sort")sort:String = "createdAt,desc"): Call<BaseModel<MyPageClaim>>
 
 
     /**

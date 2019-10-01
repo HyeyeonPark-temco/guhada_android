@@ -4,6 +4,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
 
         <variable
             name="businessSeller"
@@ -20,6 +21,13 @@
         android:layout_height="match_parent"
         android:paddingBottom="40dp"
         android:orientation="vertical">
+
+        <WebView
+            android:id="@+id/webview_sellerstore_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{TextUtils.isEmpty(sellerStore.storeIntroductionDetail) ? View.GONE : View.VISIBLE , default = gone}"
+            android:layout_margin="20dp" />
 
         <FrameLayout
             android:id="@+id/framelayout_sellerstore_content"

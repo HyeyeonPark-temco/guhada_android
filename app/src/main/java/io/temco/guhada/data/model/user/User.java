@@ -55,8 +55,11 @@ public class User extends Observable implements Serializable {
     private UserDetail userDetail = new UserDetail();
 
 
-    @SerializedName("temp")
+    @SerializedName("temp") // 본인 인증을 위해 사용하는 gender
     private int gender = -1; // 1: MALE; 2: FEMALE;
+
+    @SerializedName("gender") // 서버로 부터 내려받은 유저의 gender
+    private String userGender = ""; // 1: MALE; 2: FEMALE;
 
     private int mobileCarriers = -1; // 1: SKT; 2: KT; 3: LG
     private int nationality = -1; // 1: INTERNAL; 2: FOREIGNER
@@ -187,6 +190,14 @@ public class User extends Observable implements Serializable {
 
     public void setGender(int gender) {
         this.gender = gender;
+    }
+
+    public String getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(String userGender) {
+        this.userGender = userGender;
     }
 
     public String getBirth() {

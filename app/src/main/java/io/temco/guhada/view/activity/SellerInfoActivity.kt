@@ -2,8 +2,10 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.text.TextUtils
 import android.view.View
+import android.webkit.*
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
@@ -13,6 +15,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerStore
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ActivitySellerstoreBinding
 import io.temco.guhada.view.activity.base.BindActivity
@@ -152,8 +155,10 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
 //            initHeader(it)
 //        })
         mViewModel.mSellerStore.observe(this@SellerInfoActivity, Observer {
+            if(CustomLog.flag)CustomLog.L("mBusinessSeller","it",it)
             mBinding.sellerStore = it
             mBinding.includeSellerstoreInfo.sellerStore = it
+            setStoreIntroDetail(it)
             mViewModel.getBusinessSellerInfo()
         })
         mViewModel.mSellerBookMark.observe(this@SellerInfoActivity, Observer { mBinding.bookMark = it })
@@ -195,6 +200,41 @@ class SellerInfoActivity : BindActivity<ActivitySellerstoreBinding>() {
         mBinding.includeSellerstoreHeader.setOnClickMenu { CommonUtil.startMenuActivity(this@SellerInfoActivity, Flag.RequestCode.SIDE_MENU) }
         mBinding.includeSellerstoreHeader.setOnClickCart { CommonUtil.startCartActivity(this@SellerInfoActivity) }
         mBinding.includeSellerstoreHeader.setOnClickSearch { CommonUtil.startSearchWordActivity(this@SellerInfoActivity, null, true) }
+    }
+
+
+    private fun setStoreIntroDetail(sellerStroe : SellerStore){
+        if(!TextUtils.isEmpty(sellerStroe.storeIntroductionDetail)){
+            val data = StringBuilder()
+            data.append("<style>img{display: inline;height: auto;max-width: 100%;}" +
+                    "body{word-break: break-all; word-break: break-word}" +
+                    "h1{font-size:large; word-break: break-all; word-break: break-word}" +
+                    "h2{font-size:medium; word-break: break-all; word-break: break-word}</style>")
+            data.append(sellerStroe.storeIntroductionDetail!!.replace("\"//www","\"https://www"))
+            mBinding.includeSellerstoreInfo.webviewSellerstoreContent.settings.apply {
+                javaScriptEnabled = true
+                javaScriptCanOpenWindowsAutomatically = true
+                setSupportMultipleWindows(true)
+                allowFileAccess = true
+                pluginState = WebSettings.PluginState.ON
+                pluginState = WebSettings.PluginState.ON_DEMAND
+                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+                loadsImagesAutomatically = true
+                defaultFontSize = baseContext?.resources?.getDimension(R.dimen.text_4)?.toInt() ?: 20
+                setAppCacheEnabled(true)
+                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+                if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
+            }
+            mBinding.includeSellerstoreInfo.webviewSellerstoreContent.webViewClient = object  : WebViewClient(){
+                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                    //return super.shouldOverrideUrlLoading(view, request)
+                    view?.webChromeClient = WebChromeClient()
+                    if(CustomLog.flag)CustomLog.L("CommunityDetailContentsFragment",request?.url!!.toString())
+                    return true
+                }
+            }
+            mBinding.includeSellerstoreInfo.webviewSellerstoreContent.loadData(data.toString(), "text/html", null)
+        }
     }
 }
 

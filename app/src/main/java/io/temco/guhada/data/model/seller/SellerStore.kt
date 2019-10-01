@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.seller
 
+import io.temco.guhada.common.util.CustomLog
+
 /**
  * 셀러 스토어 정보
  * @author Hyeyeon Park
@@ -24,4 +26,10 @@ class SellerStore {
     var followed = false
     var storeIntroductionDetail: String? = ""
     var businessHours: String? = ""
+    override fun toString(): String {
+        if(CustomLog.flag)return "SellerStore(nickname='$nickname', offlineStoreAddress='$offlineStoreAddress', storeIntroduction='$storeIntroduction', representativeName='$representativeName', companyRegistrationNumber='$companyRegistrationNumber', mailorderRegistrationNumber='$mailorderRegistrationNumber', zip='$zip', claimTelephone='$claimTelephone', followerCount=$followerCount, sellingCount=$sellingCount, goodSatisfactionCount=$goodSatisfactionCount, normalSatisfactionCount=$normalSatisfactionCount, badSatisfactionCount=$badSatisfactionCount, followed=$followed, storeIntroductionDetail=$storeIntroductionDetail, businessHours=$businessHours)"
+        else return ""
+    }
+
+
 }

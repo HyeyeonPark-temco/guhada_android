@@ -178,8 +178,7 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                                         }
                                         finish()
                                     }else{
-                                        getCategories()
-                                        setPasswordConfirm()
+                                        initData()
                                     }
                                 }
                             }
@@ -188,13 +187,18 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
                         }
 
                     },
-                    dataNotFoundTask = {if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail dataNotFoundTask ") },
-                    failedTask = {if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail failedTask ") },
-                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail userLikeNotFoundTask ") },
-                    serverRuntimeErrorTask = { if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail serverRuntimeErrorTask ") },
-                    dataIsNull = { if (CustomLog.flag) CustomLog.L("getDetailData", "getBbsDetail dataIsNull ") }
+                    dataNotFoundTask = {initData()},
+                    failedTask = {initData()},
+                    userLikeNotFoundTask = {initData()},
+                    serverRuntimeErrorTask = {initData()},
+                    dataIsNull = {initData()}
             )
         })
+    }
+
+    private fun initData(){
+        getCategories()
+        setPasswordConfirm()
     }
     ////////////////////////////////////////////////
 }
