@@ -22,6 +22,7 @@ import io.temco.guhada.view.activity.base.BindActivity
  */
 class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     private lateinit var mViewModel: MyPageDeliveryDetailViewModel
+    var refundVisible = false
 
     override fun getBaseTag(): String = DeliveryDetailActivity::class.java.simpleName
 
@@ -78,6 +79,11 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     }
 
     private fun initExpectedRefundPrice() {
+        intent.getBooleanExtra("refundVisible", false).let {
+            refundVisible = it
+            mBinding.includeDeliverydetailRefundinfo.constraintlayoutRequestcancelorderRefund.visibility = if (refundVisible) View.VISIBLE else View.GONE
+        }
+
         intent.getLongExtra("orderClaimGroupId", 0).let { orderClaimGroupId ->
             if (orderClaimGroupId > 0) {
                 mViewModel.mOrderClaimGroupId = orderClaimGroupId

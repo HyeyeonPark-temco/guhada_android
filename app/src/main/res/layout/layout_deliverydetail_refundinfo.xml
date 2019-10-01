@@ -30,6 +30,7 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingTop="40dp"
+        android:visibility="gone"
         android:paddingRight="20dp"
         android:paddingBottom="40dp">
         <!--android:visibility="@{viewModel != null || (!viewModel.refundInfoVisible &amp;&amp; expectedRefundInfo.getIsRefundValid()) ? View.GONE: View.VISIBLE }"-->
