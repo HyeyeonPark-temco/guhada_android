@@ -39,8 +39,9 @@
                 app:txt="@={viewModel.mName}" />
 
             <io.temco.guhada.view.custom.BorderEditTextView
-                android:id="@+id/edittext_findpwd_emailid"
+                android:id="@+id/edittext_verifyuserinfo_email"
                 android:layout_width="match_parent"
+                android:visibility="@{viewModel.mIsEmail ? View.VISIBLE : View.GONE}"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:hint="@string/findpwd_hint_email"
@@ -51,13 +52,37 @@
                     style="@style/ActivatedButtonStyle"
                     android:layout_width="100dp"
                     android:layout_height="0dp"
-                    android:onClick="@{()->viewModel.onClickSendEmail()}"
+                    android:onClick="@{()->viewModel.onClickSendVerifyNumber()}"
                     android:text="@string/findpwd_button_resend"
                     android:visibility="@{viewModel.mVerifyEmailVisibility, default=gone}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </io.temco.guhada.view.custom.BorderEditTextView>
+
+            <io.temco.guhada.view.custom.BorderEditTextView
+                android:id="@+id/edittext_verifyuserinfo_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="@{viewModel.mIsEmail ? View.GONE : View.VISIBLE}"
+                app:hint="@string/findpwd_hint_phone"
+                app:txt="@={viewModel.mMobile}"
+                app:type="number">
+
+                <Button
+                    style="@style/ActivatedButtonStyle"
+                    android:layout_width="100dp"
+                    android:layout_height="0dp"
+                    android:onClick="@{()->viewModel.onClickSendVerifyNumber()}"
+                    android:text="@string/findpwd_button_resend"
+                    android:visibility="@{viewModel.mVerifyEmailVisibility, default=gone}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </io.temco.guhada.view.custom.BorderEditTextView>
+
+
 
             <io.temco.guhada.view.custom.BorderEditTextView
                 android:id="@+id/edittext_findpwd_emailverify"
@@ -118,9 +143,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="23dp"
-                    android:background="@{viewModel.mName.isEmpty() || viewModel.mEmail.isEmpty() ? @color/silver : @color/colorPrimary, default=@color/silver}"
-                    android:clickable="@{viewModel.mName.isEmpty() || viewModel.mEmail.isEmpty() ?false : true, default=false}"
-                    android:onClick="@{()->viewModel.onClickSendEmail()}"
+                    android:background="@{!viewModel.mName.isEmpty() &amp;&amp; (!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? @color/colorPrimary : @color/silver, default=@color/silver}"
+                    android:clickable="@{!viewModel.mName.isEmpty() &amp;&amp; (!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? true : false, default=false}"
+                    android:onClick="@{()->viewModel.onClickSendVerifyNumber()}"
                     android:text="@string/findpwd_button_requestverify"
                     android:visibility="@{viewModel.mVerifyEmailVisibility == View.VISIBLE ? View.GONE : View.VISIBLE, default=visible}" />
 

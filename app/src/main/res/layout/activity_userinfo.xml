@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="onClickEmailButton"
             type="android.view.View.OnClickListener" />
@@ -13,12 +15,15 @@
         <variable
             name="onClickCloseButton"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="onClickOkButton"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="user"
             type="io.temco.guhada.data.model.user.User" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel" />
@@ -27,27 +32,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:paddingRight="40dp"
-            android:weightSum="1"
-            android:gravity="center_vertical"
             android:background="@drawable/borderline_under_e6"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingRight="40dp"
+            android:weightSum="1">
 
             <ImageButton
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
                 android:onClick="@{onClickCloseButton}"
                 android:src="@drawable/top_btn_back"
-                android:layout_marginLeft="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 style="@style/HeaderTextStyle"
@@ -55,8 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:textSize="@dimen/text_17"
-                android:text="회원정보 수정" />
+                android:text="회원정보 수정"
+                android:textSize="@dimen/text_17" />
 
         </LinearLayout>
 
@@ -117,9 +122,9 @@
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/drawable_disable_inputform"
                         android:gravity="center_vertical"
-                        android:text="@{user.name}"
                         android:hint="@string/mypage_userinfo_passwaord_infotitle2"
                         android:paddingLeft="15dp"
+                        android:text="@{user.name}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
                     <!-- ====================================================================== -->
@@ -214,11 +219,11 @@
                         android:layout_height="45dp"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/drawable_disable_inputform"
+                        android:gravity="center_vertical"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:layout_marginBottom="30dp"
-                        android:background="@drawable/border_all_whitethree"
-                        android:gravity="center_vertical"
                         android:text="@string/mypage_userinfo_passwaord_infotitle4"
                         android:textColor="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
@@ -238,18 +243,21 @@
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14" />
 
-                    <io.temco.guhada.view.custom.BorderEditTextView
+                    <TextView
+                        android:id="@+id/textview_mypageuserinfo_mobile"
                         style="@style/TextMedium"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="30dp"
+                        android:background="@drawable/drawable_disable_inputform"
                         android:gravity="center_vertical"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_13"
-                        app:hint="@string/mypage_userinfo_passwaord_infotitle5"
-                        app:type="number" />
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:text="@string/mypage_userinfo_passwaord_infotitle5"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="@dimen/text_13" />
                     <!-- ====================================================================== -->
 
 
@@ -281,17 +289,17 @@
                         app:type="password" />
 
                     <TextView
-                        style="@style/TextRegular"
                         android:id="@+id/textview_join_passwordfocus"
+                        style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="10dp"
-                        android:visibility="gone"
+                        android:text="@string/findpwd_message_invalidformat"
                         android:textColor="@color/brick"
                         android:textSize="@dimen/text_12"
-                        android:text="@string/findpwd_message_invalidformat"/>
+                        android:visibility="gone" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_join_confirmpassword"
@@ -308,18 +316,18 @@
                         app:type="password" />
 
                     <TextView
-                        style="@style/TextRegular"
                         android:id="@+id/textview_join_confirmpasswordfocus"
+                        style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+                        android:layout_marginTop="2dp"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="10dp"
-                        android:visibility="gone"
+                        android:text="@string/findpwd_message_notequalpwd"
                         android:textColor="@color/brick"
                         android:textSize="@dimen/text_12"
-                        android:text="@string/findpwd_message_notequalpwd"/>
+                        android:visibility="gone" />
 
                     <TextView
                         style="@style/TextMedium"
@@ -346,8 +354,8 @@
                         android:gravity="center_vertical"
                         android:text="@string/mypage_userinfo_passwaord_infotitle7"
                         android:textColor="@color/black_four"
-                        android:visibility="gone"
-                        android:textSize="@dimen/text_14" />
+                        android:textSize="@dimen/text_14"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -623,9 +631,9 @@
                         android:layout_height="25dp"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginTop="12dp"
-                        android:visibility="gone"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:visibility="gone">
 
                         <CheckBox
                             android:id="@+id/checkbox_mypageuserinfo_marketing"
@@ -656,10 +664,10 @@
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="13dp"
                         android:gravity="center_vertical"
-                        android:visibility="gone"
                         android:text="@string/mypage_userinfo_passwaord_infotitle15"
                         android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14" />
+                        android:textSize="@dimen/text_14"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -726,10 +734,10 @@
                         android:layout_height="25dp"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginTop="12dp"
-                        android:visibility="gone"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="40dp"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:visibility="gone">
 
                         <CheckBox
                             android:id="@+id/checkbox_mypageuserinfo_notiemail"
@@ -1230,8 +1238,8 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal"
-            app:layout_behavior="io.temco.guhada.view.custom.FixScrollingFooterBehavior"
-            android:weightSum="2">
+            android:weightSum="2"
+            app:layout_behavior="io.temco.guhada.view.custom.FixScrollingFooterBehavior">
 
             <Button
                 android:id="@+id/button_mypageuserinfo_modifycancle"
@@ -1240,8 +1248,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/greyish_brown_two"
-                android:text="@string/mypage_userinfo_passwaord_infotitle30"
                 android:onClick="@{onClickCloseButton}"
+                android:text="@string/mypage_userinfo_passwaord_infotitle30"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_13" />
 
@@ -1251,8 +1259,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:onClick="@{onClickOkButton}"
                 android:background="@color/blue_purple"
+                android:onClick="@{onClickOkButton}"
                 android:text="@string/mypage_userinfo_passwaord_infotitle31"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_13" />

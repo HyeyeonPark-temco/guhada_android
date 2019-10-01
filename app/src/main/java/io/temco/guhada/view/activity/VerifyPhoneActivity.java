@@ -24,6 +24,10 @@ import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.databinding.ActivityVerifyphoneBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 
+/**
+ * 본인인증(PASS)
+ * @author Hyeyeon Park
+ */
 public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding> {
 
     @Override

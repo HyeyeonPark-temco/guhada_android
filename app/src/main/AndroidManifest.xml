@@ -338,7 +338,7 @@
 
         <!-- verify email -->
         <activity
-            android:name=".view.activity.VerifyEmailActivity"
+            android:name=".view.activity.VerifyUserInfoActivity"
             android:theme="@style/NoTitleBarDialog"/>
 
         <activity

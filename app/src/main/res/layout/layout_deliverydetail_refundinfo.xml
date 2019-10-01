@@ -30,7 +30,7 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingTop="40dp"
-        android:visibility="gone"
+
         android:paddingRight="20dp"
         android:paddingBottom="40dp">
         <!--android:visibility="@{viewModel != null || (!viewModel.refundInfoVisible &amp;&amp; expectedRefundInfo.getIsRefundValid()) ? View.GONE: View.VISIBLE }"-->
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundPrice.totalCancelShipPrice)}"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelShipPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice1_content" />
 
@@ -185,7 +185,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelDiscountPrice)}"
+            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundPrice.totalCancelDiscountPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line2" />
 
@@ -206,7 +206,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelDiscountPrice)}"
+            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundPrice.totalCancelDiscountPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discount1_content" />
 
@@ -218,6 +218,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/mypage_deliverydetail_reufndinfo_discount2"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice3_title" />
 
@@ -228,6 +229,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="- 0원"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice3_content" />
 
@@ -239,6 +241,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/mypage_deliverydetail_reufndinfo_discount3"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discount2_title" />
 
@@ -249,6 +252,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="0원"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discount2_content" />
 
@@ -259,6 +263,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/mypage_deliverydetail_reufndinfo_discount4"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discount3_title" />
 
@@ -269,6 +274,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="0원"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discount3_content" />
 

@@ -11,6 +11,7 @@ import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.enum.VerificationType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnTimerListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CountTimer
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
@@ -159,5 +160,7 @@ class VerifyViewModel : BaseObservableViewModel() {
             }, accessToken = it, verification = mVerification)
         })
     }
+
+    fun getEmailValidation(): Boolean = CommonUtil.validateEmail(mUser.email)
 
 }
