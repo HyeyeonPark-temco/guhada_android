@@ -42,7 +42,7 @@ class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>(
         mBinding.includeSuccessrefundProductinfo.brandName = purchaseOrder.brandName
         mBinding.includeSuccessrefundProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeSuccessrefundProductinfo.optionStr = purchaseOrder.getOptionStr()
-        mBinding.includeSuccessrefundProductinfo.price = purchaseOrder.orderPrice
+        mBinding.includeSuccessrefundProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeSuccessrefundProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
     }
 }

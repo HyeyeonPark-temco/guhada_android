@@ -30,10 +30,10 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingTop="40dp"
-
+        android:visibility="@{viewModel != null || (!viewModel.refundInfoVisible &amp;&amp; expectedRefundInfo.getIsRefundValid()) ? View.GONE: View.VISIBLE }"
         android:paddingRight="20dp"
         android:paddingBottom="40dp">
-        <!--android:visibility="@{viewModel != null || (!viewModel.refundInfoVisible &amp;&amp; expectedRefundInfo.getIsRefundValid()) ? View.GONE: View.VISIBLE }"-->
+
         <TextView
             android:id="@+id/textview_deliverydetail_refundinfo_title"
             style="@style/MypageDeliveryBlackTitleTextStyle"
@@ -185,7 +185,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundPrice.totalCancelDiscountPrice)}"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelDiscountPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line2" />
 
@@ -206,7 +206,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/mypage_deliverydetail_priceformat_minus(expectedRefundPrice.totalCancelDiscountPrice)}"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelDiscountPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_discount1_content" />
 

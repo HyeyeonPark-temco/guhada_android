@@ -80,7 +80,6 @@
                         layout="@layout/layout_deliverydetail_paymentinfoclaim" />
                 </FrameLayout>
 
-
                 <include
                     android:id="@+id/include_deliverydetail_refundinfo"
                     layout="@layout/layout_deliverydetail_refundinfo" />
