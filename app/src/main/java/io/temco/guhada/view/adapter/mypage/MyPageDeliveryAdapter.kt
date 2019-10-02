@@ -94,8 +94,6 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
         }
 
         private fun redirectDeliveryDetailActivity(purchaseId: Long, isDeliveryCer: Boolean, orderProdGroupId: Long, status: String, orderClaimGroupId: Long, refundVisible : Boolean = false) {
-            if(CustomLog.flag)CustomLog.L("redirectDeliveryDetailActivity","purchaseId",purchaseId,"isDeliveryCer",isDeliveryCer,"orderProdGroupId",orderProdGroupId)
-            if(CustomLog.flag)CustomLog.L("redirectDeliveryDetailActivity","orderClaimGroupId",orderClaimGroupId,"refundVisible",refundVisible)
             val intent = Intent(binding.root.context, DeliveryDetailActivity::class.java)
             intent.putExtra("purchaseId", purchaseId)
             intent.putExtra("isDeliveryCer", isDeliveryCer)
