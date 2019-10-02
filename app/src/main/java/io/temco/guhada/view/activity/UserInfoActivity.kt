@@ -40,6 +40,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     private lateinit var mViewModel: UserInfoViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private var isPassFocus = false
+    private var loginType = -1
 
 
     override fun getBaseTag() = this::class.simpleName.toString()
@@ -48,6 +49,9 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
 
     override fun init() {
+        // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
+        loginType = intent?.extras?.getInt("loginType") ?: 0
+
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = UserInfoViewModel(this@UserInfoActivity)
         mBinding.viewModel = mViewModel
@@ -112,6 +116,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         mViewModel.userCheck(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mBinding.user = mViewModel.user
+                mViewModel.nickName = mViewModel.user.name
                 mBinding.executePendingBindings()
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "value", value)
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "userEmail -----", mViewModel.userEmail)
