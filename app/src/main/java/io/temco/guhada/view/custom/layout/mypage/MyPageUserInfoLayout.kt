@@ -6,16 +6,16 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import android.util.AttributeSet
+import com.auth0.android.jwt.JWT
+import com.kakao.usermgmt.response.model.UserProfile
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.listener.OnBaseDialogListener
-import io.temco.guhada.common.listener.OnCallBackListener
-import io.temco.guhada.common.listener.OnLoginListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CommonViewUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.listener.*
+import io.temco.guhada.common.sns.SnsLoginModule
+import io.temco.guhada.common.util.*
+import io.temco.guhada.data.model.Token
+import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.viewmodel.account.LoginViewModel
 import io.temco.guhada.data.viewmodel.mypage.MyPageUserInfoViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageUserinfoBinding
@@ -39,6 +39,7 @@ class MyPageUserInfoLayout constructor(
 
     private lateinit var mUserInfoViewModel: LoginViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+    private lateinit var mLoginListener: OnSnsLoginListener
 
 
     override fun getBaseTag() = this::class.simpleName.toString()
@@ -69,10 +70,12 @@ class MyPageUserInfoLayout constructor(
             }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickKakao {
+            if(CustomLog.flag)CustomLog.L("setOnClickKakao","setOnClickKakao")
             if(mViewModel.mypageUserInfoLoginCheckType.get() == 2){
-                var intent = Intent(context, MyPageTempLoginActivity::class.java)
+                /*var intent = Intent(context, MyPageTempLoginActivity::class.java)
                 intent.putExtra("request", Flag.RequestCode.KAKAO_LOGIN)
-                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN)*/
+                mBinding.includeMypageuserinfoUserpassword.buttonLoginKakao.performClick()
             }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickNaver {
@@ -86,6 +89,36 @@ class MyPageUserInfoLayout constructor(
         if (checkUserLogin()) {
             setInitView()
         }
+
+
+        // INIT SNS LOGIN
+        mLoginListener = object : OnSnsLoginListener {
+            override fun kakaoLogin(result: UserProfile) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener kakaoLogin")
+                SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
+            }
+            override fun redirectTermsActivity(type: Int, data: Any) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectTermsActivity")
+                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
+            }
+
+            override fun redirectMainActivity(data: Token) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectMainActivity")
+                val id = JWT(data.accessToken!!).getClaim("userId").asString()
+                if(id?.toLong() ?: 0L == CommonUtil.checkUserId()){
+                    setUserData()
+                }else{
+                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                }
+            }
+
+            override fun showMessage(message: String) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener showMessage")
+                //setResultFinish(Activity.RESULT_CANCELED,message)
+            }
+        }
+
+        SnsLoginModule.initKakaoLogin(mLoginListener)
 
         setEventBus()
     }
@@ -210,5 +243,41 @@ class MyPageUserInfoLayout constructor(
         setUserData()
     }
 
+
+    private fun getSnsLoginServerListener(): OnServerListener {
+        return OnServerListener{ success, o ->
+            if (success) {
+                val model = o as BaseModel<*>
+                when (model.resultCode) {
+                    Flag.ResultCode.SUCCESS -> {
+                        // SNS 로그인
+                        val token = model.data as Token
+                        val id = JWT(token.accessToken!!).getClaim("userId").asString()
+                        setUserData()
+                    }
+                    Flag.ResultCode.DATA_NOT_FOUND ->
+                        // SNS 회원가입
+                        mUserInfoViewModel.joinSnsUser { success1, o1 ->
+                            if (success1) {
+                                val m = o1 as BaseModel<Token>
+                                if (m.resultCode == Flag.ResultCode.SUCCESS) {
+                                    val t = Token()
+                                    t.accessToken = m.data.accessToken
+                                    t.refreshToken = m.data.refreshToken
+                                    t.expiresIn = m.data.expiresIn
+                                    //setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
+                                } else {
+                                    ToastUtil.showMessage(m.message)
+                                }
+                            }
+                        }
+                }
+            } else {
+                val message = o as String
+                ToastUtil.showMessage(message)
+            }
+        }
+    }
 
 }

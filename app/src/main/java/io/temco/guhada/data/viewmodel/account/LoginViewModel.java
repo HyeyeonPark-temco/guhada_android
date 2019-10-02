@@ -170,6 +170,7 @@ public class LoginViewModel extends BaseObservableViewModel {
     }
 
     public void onClickKakao() {
+        if(CustomLog.getFlag())CustomLog.L("MyPageTempLoginActivity","requestCode onClickKakao");
         loginListener.onKakaoLogin();
     }
 

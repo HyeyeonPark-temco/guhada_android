@@ -61,10 +61,12 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
         // INIT SNS LOGIN
         mLoginListener = object : OnSnsLoginListener {
             override fun kakaoLogin(result: UserProfile) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener kakaoLogin")
                 SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
             }
 
             override fun redirectTermsActivity(type: Int, data: Any) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectTermsActivity")
                 setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
                 /*mViewModel.setSnsUser(data)
                 val intent = Intent(this@MyPageTempLoginActivity, TermsActivity::class.java)
@@ -72,6 +74,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             }
 
             override fun redirectMainActivity(data: Token) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectMainActivity")
                 val id = JWT(data.accessToken!!).getClaim("userId").asString()
                 setResultFinish(Activity.RESULT_OK,id+"")
                 /*Preferences.setToken(data)
@@ -80,6 +83,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             }
 
             override fun showMessage(message: String) {
+                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener showMessage")
                 setResultFinish(Activity.RESULT_CANCELED,message)
             }
         }
@@ -109,6 +113,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             }
 
             override fun onKakaoLogin() {
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "buttonLoginKakao performClick")
                 mBinding.buttonLoginKakao.performClick()
             }
 
@@ -143,10 +148,12 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             }
         })
         mBinding.viewModel = mViewModel
+        mBinding.includeLoginHeader.viewModel = mViewModel
         mBinding.executePendingBindings()
 
         if(intent.extras.containsKey("request")){
             var requestCode = intent.extras?.getInt("request")
+            if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","requestCode",requestCode!!)
             when(requestCode){
                 Flag.RequestCode.GOOGLE_LOGIN -> mViewModel.onClickGoogle()
                 Flag.RequestCode.NAVER_LOGIN -> mViewModel.onClickNaver()
