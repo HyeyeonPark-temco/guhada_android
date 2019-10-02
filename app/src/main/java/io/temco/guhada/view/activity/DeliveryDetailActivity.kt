@@ -51,7 +51,8 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
 
             mBinding.viewModel = mViewModel
             mBinding.includeDeliverydetailOrderinfo.viewModel = mViewModel
-            mBinding.includeDeliverydetailPaymentinfo.viewModel = mViewModel
+            mBinding.includeDeliverydetailPaymentinfo1.viewModel = mViewModel
+            mBinding.includeDeliverydetailPaymentinfo2.viewModel = mViewModel
 //            mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
 
@@ -87,19 +88,31 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         intent.getLongExtra("orderClaimGroupId", 0).let { orderClaimGroupId ->
             if (orderClaimGroupId > 0) {
                 mViewModel.mOrderClaimGroupId = orderClaimGroupId
+                mViewModel.getOrder()
                 mViewModel.getExpectedRefundPrice()
+                mBinding.recyclerviewDeliverydetailProductlist.visibility = View.GONE
+                mBinding.includeDeliverydetailProductinfo.constraintlayoutDeliverydetailProductinfo.visibility = View.VISIBLE
+                mBinding.includeDeliverydetailPaymentinfo1.constraintlayoutPaymentinfoContainer.visibility = View.GONE
+            } else {
+                mViewModel.getOrder()
+                mBinding.recyclerviewDeliverydetailProductlist.visibility = View.VISIBLE
+                mBinding.includeDeliverydetailProductinfo.constraintlayoutDeliverydetailProductinfo.visibility = View.GONE
+                mBinding.includeDeliverydetailPaymentinfo2.constraintlayoutPaymentinfoContainer.visibility = View.GONE
             }
         }
 
         mViewModel.mExpectedRefundPrice.observe(this, Observer {
             mBinding.includeDeliverydetailRefundinfo.expectedRefundPrice = it
-            mBinding.includeDeliverydetailPaymentinfo.expectedRefundPrice = it
+            mBinding.includeDeliverydetailPaymentinfo1.expectedRefundPrice = it
+            mBinding.includeDeliverydetailPaymentinfo2.expectedRefundPrice = it
             mBinding.executePendingBindings()
         })
 
         mViewModel.mExpectedRefundInfo.observe(this, Observer {
             mBinding.includeDeliverydetailRefundinfo.expectedRefundInfo = it
-            mBinding.includeDeliverydetailPaymentinfo.expectedRefundInfo = it
+            mBinding.includeDeliverydetailPaymentinfo1.expectedRefundInfo = it
+            mBinding.includeDeliverydetailPaymentinfo2.expectedRefundInfo = it
+            mBinding.includeDeliverydetailProductinfo.info = it
             mBinding.executePendingBindings()
         })
     }

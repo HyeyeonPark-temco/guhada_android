@@ -33,7 +33,7 @@ open class PurchaseOrder : OrderItemResponse(), Serializable {
     var purchaseStatus = ""
     var purchaseStatusText = ""
 
-    var shipCompleteDate : Any? = null // 2019-05-10
+    var shipCompleteDate: Any? = null // 2019-05-10
     var shipCompleteTimestamp: String = ""
     var shipPrice = 0
     var statusMessage = "" // 주문 완료 메세지
@@ -108,6 +108,7 @@ open class PurchaseOrder : OrderItemResponse(), Serializable {
 
     var resendShipCompany = ""
     var resendInvoiceNo = ""
+    var couponPointProdDiscountPrice = 0
 
     fun getOptionStr(): String {
         var result = ""
