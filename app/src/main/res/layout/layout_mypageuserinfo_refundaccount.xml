@@ -5,7 +5,10 @@
     <data>
 
         <import type="android.view.View" />
-
+        <import type="android.text.TextUtils" />
+        <variable
+            name="user"
+            type="io.temco.guhada.data.model.user.User" />
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel" />
@@ -79,7 +82,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
-                            android:text="@string/mypage_userinfo_refundaccount_name_hint"
+                            android:text="@{TextUtils.isEmpty(user.userDetail.bankName) ? @string/mypage_userinfo_refundaccount_name_hint : user.userDetail.bankName}"
                             android:textSize="@dimen/text_13" />
 
                         <ImageView
@@ -94,7 +97,8 @@
             </FrameLayout>
 
 
-            <!-- 계좌번호 -->
+            <!-- 계좌번호
+                android:text="@={viewModel.mRefundRequest.refundBankAccountNumber}"-->
             <TextView
                 style="@style/MypageRefundAccountSubTitleTextStyle"
                 android:layout_width="wrap_content"
@@ -112,7 +116,7 @@
                 android:paddingStart="15dp"
                 android:inputType="number"
                 android:paddingEnd="15dp"
-                android:text="@={viewModel.mRefundRequest.refundBankAccountNumber}"
+                android:text="@{TextUtils.isEmpty(user.userDetail.accountNumber) ? @string/mypage_userinfo_refundaccount_name_hint : user.userDetail.accountNumber}"
                 android:textColor="@color/black_four"
                 android:textColorHint="@color/warm_grey"
                 android:textSize="@dimen/text_13" />
@@ -142,6 +146,7 @@
                     android:hint="@string/requestorderstatus_refund_bankhint3"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
+                    android:text="@{TextUtils.isEmpty(user.userDetail.verifiedName) ? @string/requestorderstatus_refund_bankhint3 : user.userDetail.verifiedName}"
                     android:textColorHint="@color/warm_grey"
                     android:textSize="@dimen/text_13" />
 

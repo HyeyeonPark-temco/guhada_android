@@ -91,7 +91,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     }
 
 
-    fun getUserByNickName() {
+    fun getUserByNickName(listener: OnCallBackListener?) {
         isNickNameFocus = false
         UserServer.getUserByNickName(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -102,14 +102,17 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
                         notifyPropertyChanged(BR.mIsNicknameValid)
                         notifyPropertyChanged(BR.mNickNameCheckIconVisible)
                         notifyPropertyChanged(BR.mNickNameBg)
+                        listener?.callBackListener(false, "successTask")
                     },
                     dataNotFoundTask = {
                         mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.common_blue_purple))
                         mNickNameCheckIconVisible = ObservableBoolean(true)
                         mIsNicknameValid = ObservableBoolean(true)
+                        mUser.value!!.nickname = nickName
                         notifyPropertyChanged(BR.mIsNicknameValid)
                         notifyPropertyChanged(BR.mNickNameCheckIconVisible)
                         notifyPropertyChanged(BR.mNickNameBg)
+                        listener?.callBackListener(true, "dataNotFoundTask")
                     })
         }, nickName = nickName)
     }

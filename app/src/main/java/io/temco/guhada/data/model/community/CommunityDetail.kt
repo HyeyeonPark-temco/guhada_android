@@ -114,6 +114,7 @@ class UserDetail : Serializable {
     var bankCode : String? = null
     var bankName : String? = null
     var accountHolder : String? = null
+    var accountNumber : String? = null
     var adultProductOpen = false
     var ciCode : String? = null
     var diCode : String? = null

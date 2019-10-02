@@ -1,27 +1,35 @@
 package io.temco.guhada.data.model.user
 
+import com.google.gson.annotations.Expose
 import io.temco.guhada.common.util.CustomLog
 
 class UserUpdateInfo {
 
-    var accountHolder = ""
     var agreeEmailReception = false
     var agreeSmsReception = false
-    var bankCode = ""
-    var bankName = ""
+
     var email = ""
-    var identityVerifyParam = IdentityVerifyParam()
-    var inputUserSize = false
     var nickname = ""
     var password = ""
+
+
+    @Expose
+    var accountHolder : String? = null
+    @Expose
+    var bankCode : String? = null
+    @Expose
+    var bankName : String? = null
+
+    var inputUserSize = false
     var userSizeParam = UserSizeParam()
+    var identityVerifyParam = IdentityVerifyParam()
     var verifiedIdentity = false
 
     fun setData(user : User, userSize: UserSize?){
-        accountHolder = user.name
         agreeEmailReception = user.agreeEmailReception
         agreeSmsReception = user.agreeSmsReception
         email = user.email
+        nickname = user.nickname
 
         verifiedIdentity = false
 
@@ -40,6 +48,9 @@ class UserUpdateInfo {
             userSizeParam.top = userSize.top
             userSizeParam.weight = userSize.weight
         }
+
+        accountHolder = user.name
+        bankCode = user.userDetail.bankCode
     }
 
     override fun toString(): String {

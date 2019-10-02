@@ -261,7 +261,7 @@
                         android:gravity="center_vertical"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:text="@string/mypage_userinfo_passwaord_infotitle5"
+                        android:text="@{TextUtils.isEmpty(user.mobile) ? @string/mypage_userinfo_passwaord_infotitle5 : user.mobile}"
                         android:textColor="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
                     <!-- ====================================================================== -->

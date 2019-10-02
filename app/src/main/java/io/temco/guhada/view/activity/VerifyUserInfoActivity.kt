@@ -25,7 +25,11 @@ class VerifyUserInfoActivity : AppCompatActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_verifyuserinfo)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        mViewModel = VerifyEmailViewModel().apply { this.mIsEmail = intent.getBooleanExtra("isEmail", false) }
+        mViewModel = VerifyEmailViewModel().apply {
+            this.mIsEmail = intent.getBooleanExtra("isEmail", false)
+            this.mEmail.set(intent.getStringExtra("email"))
+            this.mName.set(intent.getStringExtra("name"))
+        }
         mViewModel.mOnSuccessVerify = {
             if (mViewModel.mIsEmail) {
                 ToastUtil.showMessage(getString(R.string.verifyuserinfo_emailmessage_success))

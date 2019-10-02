@@ -61,9 +61,17 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
         mBinding.setOnClickCloseButton { finish() }
         mBinding.setOnClickOkButton {
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
-            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null) }
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","mViewModel.isNickNameFocus",mViewModel.isNickNameFocus)
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","mViewModel.mIsNicknameValid",mViewModel.mIsNicknameValid.get())
+            if(mViewModel.isNickNameFocus && mViewModel.mIsNicknameValid.get()){
+                mViewModel.getUserByNickName(object : OnCallBackListener{
+                    override fun callBackListener(resultFlag: Boolean, value: Any) {
+                        sendData()
+                    }
+                })
+            }else{
+                sendData()
+            }
         }
     }
 
@@ -96,6 +104,12 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         }
     }
 
+    private fun sendData(){
+        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
+        var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null) }
+        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+    }
+
     private fun checkUserLogin(): Boolean {
         if (!CommonUtil.checkToken()) {
             CommonViewUtil.showDialog(this@UserInfoActivity, "로그인이 필요한 화면입니다.", false, object : OnBaseDialogListener {
@@ -119,6 +133,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         mViewModel.userCheck(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mBinding.user = mViewModel.mUser.value!!
+                mBinding.includeMypageuserinfoBank.user = mViewModel.mUser.value!!
                 mViewModel.nickName = mViewModel.mUser.value!!.name
                 mBinding.executePendingBindings()
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "mViewModel.user", mViewModel.mUser.value!!)
@@ -157,6 +172,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     private fun redirectUserInfoVerifyActivity(isEmail: Boolean) {
         val intent = Intent(mBinding.root.context, VerifyUserInfoActivity::class.java)
         intent.putExtra("isEmail", isEmail)
+        intent.putExtra("name", mViewModel.mUser?.value?.name ?: "")
+        intent.putExtra("email", mViewModel.mUser?.value?.email ?: "")
         (mBinding.root.context as Activity).startActivityForResult(intent, RequestCode.VERIFY_USERINFO.flag)
     }
 
@@ -259,7 +276,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         mBinding.edittextMypageuserinfoNickname.setOnFocusChangeListener { v, hasFocus ->
             if (!mViewModel.isNickNameFocus) mViewModel.isNickNameFocus = hasFocus
             if (mViewModel.isNickNameFocus && !hasFocus) {
-                mViewModel.getUserByNickName()
+                mViewModel.getUserByNickName(null)
             }
         }
     }
