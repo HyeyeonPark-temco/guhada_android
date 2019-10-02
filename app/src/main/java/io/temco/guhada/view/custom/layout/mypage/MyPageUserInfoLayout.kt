@@ -58,31 +58,31 @@ class MyPageUserInfoLayout constructor(
         mBinding.includeMypageuserinfoUserpassword.setOnClickFacebook {
             if(mViewModel.mypageUserInfoLoginCheckType.get() == 3){
                 var intent = Intent(context, MyPageTempLoginActivity::class.java)
-                intent.putExtra("request", Flag.RequestCode.FACEBOOK_LOGIN)
-                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.FACEBOOK_LOGIN)
+                intent.putExtra("request", Flag.RequestCode.FACEBOOK_LOGIN_MY)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.FACEBOOK_LOGIN_MY)
             }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickGoogle {
             if(mViewModel.mypageUserInfoLoginCheckType.get() == 4){
                 var intent = Intent(context, MyPageTempLoginActivity::class.java)
-                intent.putExtra("request", Flag.RequestCode.GOOGLE_LOGIN)
-                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.RC_GOOGLE_LOGIN)
+                intent.putExtra("request", Flag.RequestCode.GOOGLE_LOGIN_MY)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.RC_GOOGLE_LOGIN_MY)
             }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickKakao {
             if(CustomLog.flag)CustomLog.L("setOnClickKakao","setOnClickKakao")
             if(mViewModel.mypageUserInfoLoginCheckType.get() == 2){
                 /*var intent = Intent(context, MyPageTempLoginActivity::class.java)
-                intent.putExtra("request", Flag.RequestCode.KAKAO_LOGIN)
-                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN)*/
+                intent.putExtra("request", Flag.RequestCode.KAKAO_LOGIN_MY)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN_MY)*/
                 mBinding.includeMypageuserinfoUserpassword.buttonLoginKakao.performClick()
             }else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickNaver {
             if(mViewModel.mypageUserInfoLoginCheckType.get() == 1){
                 var intent = Intent(context, MyPageTempLoginActivity::class.java)
-                intent.putExtra("request", Flag.RequestCode.NAVER_LOGIN)
-                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.NAVER_LOGIN)
+                intent.putExtra("request", Flag.RequestCode.NAVER_LOGIN_MY)
+                (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.NAVER_LOGIN_MY)
             }else showLoginTypeUser()
         }
 

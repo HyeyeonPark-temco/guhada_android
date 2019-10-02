@@ -20,6 +20,13 @@ public class Flag {
         public static final int GOOGLE_LOGIN = 10005;
         public static final int RC_GOOGLE_LOGIN = 10006;
 
+
+        public static final int KAKAO_LOGIN_MY = 12002;
+        public static final int NAVER_LOGIN_MY = 12003;
+        public static final int FACEBOOK_LOGIN_MY = 12004;
+        public static final int GOOGLE_LOGIN_MY = 12005;
+        public static final int RC_GOOGLE_LOGIN_MY = 12006;
+
         public static final int WRITE_CLAIM = 10007;
         public static final int LOGIN = 101;//10008;
         public static final int PAYMENT = 10009;

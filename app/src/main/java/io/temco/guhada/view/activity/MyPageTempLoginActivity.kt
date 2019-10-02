@@ -155,10 +155,10 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             var requestCode = intent.extras?.getInt("request")
             if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","requestCode",requestCode!!)
             when(requestCode){
-                Flag.RequestCode.GOOGLE_LOGIN -> mViewModel.onClickGoogle()
-                Flag.RequestCode.NAVER_LOGIN -> mViewModel.onClickNaver()
-                Flag.RequestCode.FACEBOOK_LOGIN -> mViewModel.onClickFacebook()
-                Flag.RequestCode.KAKAO_LOGIN -> mViewModel.onClickKakao()
+                Flag.RequestCode.GOOGLE_LOGIN_MY -> mViewModel.onClickGoogle()
+                Flag.RequestCode.NAVER_LOGIN_MY -> mViewModel.onClickNaver()
+                Flag.RequestCode.FACEBOOK_LOGIN_MY -> mViewModel.onClickFacebook()
+                Flag.RequestCode.KAKAO_LOGIN_MY -> mViewModel.onClickKakao()
             }
         }
     }
@@ -193,21 +193,21 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                Flag.RequestCode.KAKAO_LOGIN -> {
+                Flag.RequestCode.KAKAO_LOGIN_MY -> {
                     mViewModel.tempSnsUser.snsType = "KAKAO"
                     SnsLoginModule.kakaoLogin(mViewModel.snsUser as UserProfile, getSnsLoginServerListener())
                 }
-                Flag.RequestCode.NAVER_LOGIN -> {
+                Flag.RequestCode.NAVER_LOGIN_MY -> {
                     mViewModel.tempSnsUser.snsType = "NAVER"
                     SnsLoginModule.naverLogin(mViewModel.snsUser as NaverUser, getSnsLoginServerListener())
                 }
-                Flag.RequestCode.RC_GOOGLE_LOGIN -> {
+                Flag.RequestCode.RC_GOOGLE_LOGIN_MY -> {
                     if (mViewModel.snsUser == null)
                         if (CustomLog.flag) CustomLog.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----")
                     mViewModel.tempSnsUser.snsType = "GOOGLE"
                     SnsLoginModule.googleLogin(mViewModel.snsUser as GoogleSignInAccount?, getSnsLoginServerListener())
                 }
-                Flag.RequestCode.FACEBOOK_LOGIN -> mViewModel.tempSnsUser.snsType = "FACEBOOK"
+                Flag.RequestCode.FACEBOOK_LOGIN_MY -> mViewModel.tempSnsUser.snsType = "FACEBOOK"
             }
         } else {
             mViewModel.snsUser = null

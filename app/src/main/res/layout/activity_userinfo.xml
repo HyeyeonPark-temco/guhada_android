@@ -166,7 +166,7 @@
                                 android:hint="@string/mypage_userinfo_passwaord_infotitle3"
                                 android:paddingStart="15dp"
                                 android:paddingEnd="15dp"
-                                android:text="@={viewModel.nickName}"
+                                android:text="@{user.nickname}"
                                 android:textColor="@color/black_four"
                                 android:textSize="@dimen/text_13" />
                         </FrameLayout>
