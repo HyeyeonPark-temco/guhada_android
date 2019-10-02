@@ -145,6 +145,10 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
                             mRefundRequest.refundBankAccountNumber = bankAccount.bankNumber
                             mRefundRequest.refundBankAccountOwner = bankAccount.name
 
+                            mUser.value!!.userDetail.bankCode = bankAccount.bankCode
+                            mUser.value!!.userDetail.bankName = bankAccount.name
+                            mUser.value!!.userDetail.accountNumber = bankAccount.bankNumber
+
                             mIsCheckAccountAvailable = ObservableBoolean(false)
                             notifyPropertyChanged(BR.mIsCheckAccountAvailable)
                             mBankNumInputAvailableTask()

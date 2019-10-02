@@ -16,6 +16,8 @@ class UserUpdateInfo {
     @Expose
     var accountHolder : String? = null
     @Expose
+    var accountNumber : String? = null
+    @Expose
     var bankCode : String? = null
     @Expose
     var bankName : String? = null
@@ -25,7 +27,7 @@ class UserUpdateInfo {
     var identityVerifyParam = IdentityVerifyParam()
     var verifiedIdentity = false
 
-    fun setData(user : User, userSize: UserSize?){
+    fun setData(user : User, userSize: UserSize?, account : Boolean){
         agreeEmailReception = user.agreeEmailReception
         agreeSmsReception = user.agreeSmsReception
         email = user.email
@@ -49,8 +51,12 @@ class UserUpdateInfo {
             userSizeParam.weight = userSize.weight
         }
 
-        accountHolder = user.name
-        bankCode = user.userDetail.bankCode
+        if(account){
+            this.accountHolder = user.userDetail.accountHolder
+            this.accountNumber = user.userDetail.accountNumber
+            this.bankCode = user.userDetail.bankCode
+            this.bankName = user.userDetail.bankName
+        }
     }
 
     override fun toString(): String {

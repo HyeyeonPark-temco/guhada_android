@@ -105,9 +105,20 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     }
 
     private fun sendData(){
-        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
-        var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null) }
-        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+        if(!TextUtils.isEmpty(mBinding.textviewJoinPasswordfocus.text) &&
+                !TextUtils.isEmpty(mBinding.textviewJoinConfirmpasswordfocus.text) &&
+                CommonUtil.validatePassword(mBinding.textviewJoinPasswordfocus.text.toString()) &&
+                mBinding.textviewJoinPasswordfocus.text.equals(mBinding.textviewJoinConfirmpasswordfocus.text)){
+            mViewModel.mUser.value!!.password = mBinding.textviewJoinPasswordfocus.text.toString()
+
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
+            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null, false) }
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+        }else{
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
+            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null, false) }
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+        }
     }
 
     private fun checkUserLogin(): Boolean {
