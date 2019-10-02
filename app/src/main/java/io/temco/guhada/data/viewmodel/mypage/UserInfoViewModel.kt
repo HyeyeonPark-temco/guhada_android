@@ -90,7 +90,6 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
         this.mRefundRequest.addObserver(this)
     }
 
-
     fun getUserByNickName(listener: OnCallBackListener?) {
         isNickNameFocus = false
         UserServer.getUserByNickName(OnServerListener { success, o ->

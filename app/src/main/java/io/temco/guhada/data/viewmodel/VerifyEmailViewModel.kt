@@ -87,6 +87,9 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
 
     }
 
+    /**
+     * 인증번호 발송
+     */
     private fun sendVerifyNumber(user: User) {
         val successTask: (success: Boolean, o: BaseModel<*>) -> Unit = { success, o: BaseModel<*> ->
             val model = o as BaseModel<*>

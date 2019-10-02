@@ -38,6 +38,7 @@ class VerifyUserInfoActivity : AppCompatActivity() {
                 ToastUtil.showMessage(getString(R.string.verifyuserinfo_mobilemessage_success))
                 intent.putExtra("mobile", mViewModel.mMobile.get())
             }
+            intent.putExtra("name", mViewModel.mName.get())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
