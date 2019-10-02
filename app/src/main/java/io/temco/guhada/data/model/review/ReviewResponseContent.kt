@@ -12,7 +12,7 @@ class ReviewResponseContent {
     var order: Any? = null    // 확인 필요
     var reviewPhotos: MutableList<ReviewPhoto>? = ArrayList()
     var productOption: ProductOption = ProductOption()
-    var userSize : UserSize?= UserSize()
+    var userSize: UserSize? = UserSize()
     var likesUserIds: Array<Long>? = arrayOf()
     var reviewTexts: ReviewSatisfactionText = ReviewSatisfactionText()
 
@@ -32,19 +32,20 @@ class ReviewResponseContent {
         var top = ""
     }
 
-    class ReviewPhoto{
+    class ReviewPhoto {
         var id = 0L
         var userProductReviewId = 0L
         var reviewPhotoUrl: String = ""
         var photoOrder = 0
     }
 
-    fun getOption():String{
-        return if(productOption.color.isNullOrEmpty() && productOption.size.isNullOrEmpty())
+    fun getOption(): String {
+        return if (!productOption.color.isNullOrEmpty() && !productOption.size.isNullOrEmpty())
             "${productOption.color}/${productOption.size}"
-        else if(!productOption.color.isNullOrEmpty() && productOption.size.isNullOrEmpty())
+        else if (!productOption.color.isNullOrEmpty() && productOption.size.isNullOrEmpty())
             productOption.color
-        else
+        else if (!productOption.color.isNullOrEmpty() && !productOption.size.isNullOrEmpty())
             productOption.size
+        else ""
     }
 }
