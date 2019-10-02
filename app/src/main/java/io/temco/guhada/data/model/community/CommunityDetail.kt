@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.community
 
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.CreateBbsResponse
 import io.temco.guhada.data.model.ImageResponse
 import java.io.Serializable
@@ -119,6 +120,12 @@ class UserDetail : Serializable {
     var createdAt: Any? = null
     var updatedAt: Any? = null
     var updatedBy: Any? = null
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "UserDetail(id=$id, verifiedIdentity=$verifiedIdentity, verifiedName=$verifiedName, identityVerifyMethod=$identityVerifyMethod, adult=$adult, agreeCollectPersonalInfoTos=$agreeCollectPersonalInfoTos, agreePurchaseTos=$agreePurchaseTos, agreeSaleTos=$agreeSaleTos, agreeSmsReception=$agreeSmsReception, agreeEmailReception=$agreeEmailReception, interestLocation1=$interestLocation1, interestLocation2=$interestLocation2, interestLocation3=$interestLocation3, agreeSavingAccount=$agreeSavingAccount, bankCode=$bankCode, bankName=$bankName, accountHolder=$accountHolder, adultProductOpen=$adultProductOpen, ciCode=$ciCode, diCode=$diCode, createdAt=$createdAt, updatedAt=$updatedAt, updatedBy=$updatedBy)"
+        else return ""
+    }
+
 
 }
 

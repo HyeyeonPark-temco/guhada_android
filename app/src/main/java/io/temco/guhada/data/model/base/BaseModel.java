@@ -37,4 +37,17 @@ public class BaseModel<T> {
 
     public BaseErrorModel errorModel = null;
 
+    @Override
+    public String toString() {
+        if(CustomLog.getFlag())return "BaseModel{" +
+                "resultCode=" + resultCode +
+                ", message='" + message + '\'' +
+                ", list=" + list +
+                ", data=" + data +
+                ", error='" + error + '\'' +
+                ", result='" + result + '\'' +
+                ", errorModel=" + errorModel +
+                '}';
+        else return "";
+    }
 }

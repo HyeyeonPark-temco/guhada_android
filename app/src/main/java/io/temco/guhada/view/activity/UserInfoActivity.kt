@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.text.TextUtils
 import android.content.Intent
+import android.text.Editable
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonViewUtil
@@ -24,6 +25,7 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserUpdateInfo
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
@@ -58,8 +60,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
         mBinding.setOnClickCloseButton { finish() }
         mBinding.setOnClickOkButton {
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.user)
-            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.user,null) }
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
+            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null) }
             if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
         }
     }
@@ -82,9 +84,9 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     if (email != null) mBinding.edittextMypageuserinfoEmail.text = email
                     if (mobile != null) mBinding.textviewMypageuserinfoMobile.text = mobile
 
-                    mViewModel.user.email = email
-                    mViewModel.user.mobile = mobile
-                    mViewModel.user.phoneNumber = mobile
+                    mViewModel.mUser.value!!.email = email
+                    mViewModel.mUser.value!!.mobile = mobile
+                    mViewModel.mUser.value!!.phoneNumber = mobile
 
                     mBinding.executePendingBindings()
                 }
@@ -115,10 +117,10 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         // 유저 정보 가져오기
         mViewModel.userCheck(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-                mBinding.user = mViewModel.user
-                mViewModel.nickName = mViewModel.user.name
+                mBinding.user = mViewModel.mUser.value!!
+                mViewModel.nickName = mViewModel.mUser.value!!.name
                 mBinding.executePendingBindings()
-                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "value", value)
+                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "mViewModel.user", mViewModel.mUser.value!!)
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "userEmail -----", mViewModel.userEmail)
             }
         })
@@ -170,6 +172,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             }
         })
     }
+
 
 
     private fun setUserSize() {

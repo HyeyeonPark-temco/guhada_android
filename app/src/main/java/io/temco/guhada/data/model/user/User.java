@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.Observable;
 
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.community.UserDetail;
 
 /**
@@ -313,4 +314,36 @@ public class User extends Observable implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        if(CustomLog.getFlag())return "User{" +
+                "agreeCollectPersonalInfoTos=" + agreeCollectPersonalInfoTos +
+                ", agreePurchaseTos=" + agreePurchaseTos +
+                ", agreeSaleTos=" + agreeSaleTos +
+                ", agreeSmsReception=" + agreeSmsReception +
+                ", agreeEmailReception=" + agreeEmailReception +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", joinAt='" + joinAt + '\'' +
+                ", withdrawalAt='" + withdrawalAt + '\'' +
+                ", birth='" + birth + '\'' +
+                ", address='" + address + '\'' +
+                ", roadAddress='" + roadAddress + '\'' +
+                ", detailAddress='" + detailAddress + '\'' +
+                ", zip='" + zip + '\'' +
+                ", emailVerify=" + emailVerify +
+                ", profileImageUrl='" + profileImageUrl + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", userDetail=" + userDetail +
+                ", gender=" + gender +
+                ", userGender='" + userGender + '\'' +
+                ", mobileCarriers=" + mobileCarriers +
+                ", nationality=" + nationality +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                '}';
+        else return "";
+    }
 }

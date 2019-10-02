@@ -47,7 +47,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     var userId: Long = 0L
     var defaultSnsType = ""
     var userEmail = ""
-    var user = User()
+    var mUser : MutableLiveData<User> = MutableLiveData()
 
     var mUserSize = UserSize()
 
@@ -208,11 +208,13 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
         UserServer.findUsers(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        var value = (it as BaseModel<User>).data
-                        if (CustomLog.flag) CustomLog.L("userData value", it)
-                        mViewModel.user = value
-                        mViewModel.userEmail = value.email
-                        listener.callBackListener(true, value)
+                        var value = (it as BaseModel<*>).list as List<User>
+                        if (CustomLog.flag) CustomLog.L("userData value", value)
+                        if(!value.isNullOrEmpty() && value.size > 0){
+                            mViewModel.mUser.value = value[0]
+                            mViewModel.userEmail = value[0].email
+                            listener.callBackListener(true, value[0])
+                        }
                     },
                     dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
                     failedTask = { listener.callBackListener(false, "failedTask") },

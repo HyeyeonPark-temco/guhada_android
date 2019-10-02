@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
 
         <variable
             name="onClickEmailButton"
@@ -122,7 +123,6 @@
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/drawable_disable_inputform"
                         android:gravity="center_vertical"
-                        android:hint="@string/mypage_userinfo_passwaord_infotitle2"
                         android:paddingLeft="15dp"
                         android:text="@{user.name}"
                         android:textColor="@color/black_four"
@@ -224,7 +224,7 @@
                         android:gravity="center_vertical"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:text="@string/mypage_userinfo_passwaord_infotitle4"
+                        android:text="@{TextUtils.isEmpty(user.email) ? @string/mypage_userinfo_passwaord_infotitle4 : user.email}"
                         android:textColor="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
                     <!-- ====================================================================== -->
@@ -614,7 +614,6 @@
                                 android:button="@null" />
 
                             <TextView
-                                android:id="@+id/textview_mypageuserinfo_email"
                                 style="@style/TextMedium"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -1053,7 +1052,7 @@
                             android:popupBackground="@null">
 
                             <TextView
-                                android:id="@+id/textview_payment_discountcoupon"
+                                android:id="@+id/textview_mypageuserinfo_birth_y"
                                 style="@style/PaymentContentGreyTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -1083,6 +1082,7 @@
                             android:popupBackground="@null">
 
                             <TextView
+                                android:id="@+id/textview_mypageuserinfo_birth_m"
                                 style="@style/PaymentContentGreyTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -1111,6 +1111,7 @@
                             android:popupBackground="@null">
 
                             <TextView
+                                android:id="@+id/textview_mypageuserinfo_birth_d"
                                 style="@style/PaymentContentGreyTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -1165,6 +1166,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/selector_ovalradiobutton_all"
+                                android:checked='@{!TextUtils.isEmpty(user.userGender) ?(user.userGender.equals("MALE") ? true : false) : false}'
                                 android:button="@null" />
 
                             <TextView
@@ -1188,6 +1190,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/selector_ovalradiobutton_all"
+                                android:checked='@{!TextUtils.isEmpty(user.userGender) ?(user.userGender.equals("FEMALE") ? true : false) : false}'
                                 android:button="@null" />
 
                             <TextView
