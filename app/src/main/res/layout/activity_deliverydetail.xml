@@ -59,17 +59,27 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:purchaseOrders="@{viewModel.purchaseOrderResponse.orderList}" />
 
-                <!--<include-->
-                <!--android:id="@+id/include_deliverydetail_productinfo"-->
-                <!--layout="@layout/layout_deliverydetail_productinfo" />-->
+                <include
+                    android:id="@+id/include_deliverydetail_productinfo"
+                    layout="@layout/layout_deliverydetail_productinfo" />
 
                 <include
                     android:id="@+id/include_deliverydetail_userinfo"
                     layout="@layout/layout_deliverydetail_userinfo" />
 
-                <include
-                    android:id="@+id/include_deliverydetail_paymentinfo"
-                    layout="@layout/layout_deliverydetail_paymentinfo" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include
+                        android:id="@+id/include_deliverydetail_paymentinfo1"
+                        layout="@layout/layout_deliverydetail_paymentinfo" />
+
+                    <include
+                        android:id="@+id/include_deliverydetail_paymentinfo2"
+                        layout="@layout/layout_deliverydetail_paymentinfoclaim" />
+                </FrameLayout>
+
 
                 <include
                     android:id="@+id/include_deliverydetail_refundinfo"

@@ -19,6 +19,9 @@ class ExpectedRefundPrice {
     class ExpectedRefundInfo : PurchaseOrder(){
         var refundResponse = ExpectedRefundPrice()
 
+        var totalAmount = 0
+        var parentMethod = 0
+
         // purchaseStatus가 WAITING_PAYMENT인 경우(== 무통장 입금인 경우), "환불 정보" 비노출
         fun getIsRefundValid() :Boolean = purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status
     }
