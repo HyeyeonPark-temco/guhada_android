@@ -36,7 +36,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <FrameLayout
                     android:id="@+id/framelayout_cart_empty"
@@ -129,8 +129,8 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintlayout_cart_result"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="@color/white_five"
                         android:paddingStart="20dp"
                         android:paddingTop="40dp"
@@ -361,7 +361,7 @@
 
                     <FrameLayout
                         android:id="@+id/framelayout_cart_confirm"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:background="@color/common_blue_purple"
                         android:onClick="@{()->viewModel.onClickPayment()}"
