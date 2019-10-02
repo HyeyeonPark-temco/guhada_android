@@ -95,7 +95,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginTop="6dp"
 
-            android:text="@{@string/mypage_price_format(info.totalPaymentPrice)}"
+            android:text="@{@string/mypage_price_format(info.originalPrice)}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_14"
             app:layout_constraintLeft_toRightOf="@id/imageview_deliverydetail_profile"

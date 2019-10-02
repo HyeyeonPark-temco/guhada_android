@@ -44,7 +44,7 @@ class SuccessCancelOrderActivity : BindActivity<ActivitySuccesscancelorderBindin
                 mBinding.includeSuccesscancelorderProductinfo.brandName = purchaseOrder.brandName
                 mBinding.includeSuccesscancelorderProductinfo.productName = if(purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName else "${purchaseOrder.season} ${purchaseOrder.productName}"
                 mBinding.includeSuccesscancelorderProductinfo.optionStr = purchaseOrder.getOptionStr()
-                mBinding.includeSuccesscancelorderProductinfo.price = purchaseOrder.orderPrice
+                mBinding.includeSuccesscancelorderProductinfo.price = purchaseOrder.originalPrice
                 mBinding.includeSuccesscancelorderProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
                 mBinding.executePendingBindings()
             }

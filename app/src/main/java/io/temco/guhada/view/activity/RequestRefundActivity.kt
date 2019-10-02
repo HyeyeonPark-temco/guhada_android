@@ -121,7 +121,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         }
         mViewModel.mPurchaseOrder.observe(this, Observer {
             if (it.purchaseId > 0) {
-                mBinding.includeRequestrefundRefund.constraintlayoutRequestcancelorderRefund.visibility = if(it.orderStatus ==  PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
+                mBinding.includeRequestrefundRefund.constraintlayoutRequestcancelorderRefund.visibility = if (it.orderStatus == PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
 
                 initOrderInfo(it)
                 initProductInfo(it)
@@ -183,6 +183,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             if (quantity - 1 <= 0) ToastUtil.showMessage("반품 가능 최소 수량 1개")
             else {
                 mBinding.includeRequestrefundCause.quantity = quantity - 1
+                mViewModel.mRefundRequest.quantity = quantity - 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity - 1)
             }
         }
@@ -191,6 +192,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage("반품 가능 최대 수량 ${purchaseOrder.quantity}개")
             else {
                 mBinding.includeRequestrefundCause.quantity = quantity + 1
+                mViewModel.mRefundRequest.quantity = quantity + 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity + 1)
             }
         }

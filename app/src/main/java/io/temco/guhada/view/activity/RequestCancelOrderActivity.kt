@@ -110,6 +110,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overmaxquantity))
             else {
                 mBinding.includeRequestcancelorderCause.quantity = quantity + 1
+                mViewModel.quantity = quantity + 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity + 1)
             }
         }
@@ -118,6 +119,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
             if (quantity - 1 <= 0) ToastUtil.showMessage(getString(R.string.requestorderstatus_common_message_overminquantity))
             else {
                 mBinding.includeRequestcancelorderCause.quantity = quantity - 1
+                mViewModel.quantity = quantity - 1
                 mViewModel.getExpectedRefundPriceForRequest(quantity - 1)
             }
         }
