@@ -71,7 +71,7 @@ object CustomLog {
                 try {
                     var msg = ""
                     args.forEach {
-                        if(!"".equals(msg)) msg += " "
+                        if (!"".equals(msg)) msg += " "
                         msg += it.toString()
                     }
                     for (i in 0..msg.length / maxLogStringSize) {
@@ -133,7 +133,7 @@ object CustomLog {
                                         num++
                                 ) + "]  " + "Double value " + msg!!.toString()
                         )
-                    } else if (msg is HashMap<*,*>) {
+                    } else if (msg is HashMap<*, *>) {
                         Log.d(
                                 tag,
                                 "[" + String.format("%25s", tag) + "]" + "  [" + String.format(
@@ -430,7 +430,7 @@ object CustomLog {
                                         num++
                                 ) + "]  " + "Double value " + msg.toString()
                         )
-                    } else if (msg is HashMap<*,*>) {
+                    } else if (msg is HashMap<*, *>) {
                         Log.d(
                                 tag.javaClass.canonicalName,
                                 "[" + String.format("%25s", tag.javaClass.simpleName) + "]" + "  [" + String.format(

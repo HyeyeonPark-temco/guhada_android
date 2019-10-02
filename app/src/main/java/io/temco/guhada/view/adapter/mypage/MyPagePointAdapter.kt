@@ -36,19 +36,20 @@ class MyPagePointAdapter(val mViewModel: MyPagePointViewModel) : RecyclerView.Ad
         fun bind(item: PointHistory.PointHistoryContent) {
             mBinding.item = item
             mBinding.colorRes = when (item.status) {
+                PointStatus.CONSUMPTION_CANCEL.status,
                 PointStatus.SAVED.status,
                 PointStatus.RESTORE.status -> BaseApplication.getInstance().resources.getColor(R.color.common_blue_purple)
 
                 PointStatus.CONSUMPTION.status,
-                PointStatus.DUE_CONSUMPTION.status,
-                PointStatus.DUE_SAVE_CANCEL.status,
                 PointStatus.SAVED_CANCEL.status,
-                PointStatus.DUE_CONSUMPTION_CANCEL.status,
                 PointStatus.CONSUMPTION_CANCEL.status,
                 PointStatus.RESTORE_CANCEL.status,
                 PointStatus.EXPIRED_CANCEL.status,
                 PointStatus.EXPIRED.status -> BaseApplication.getInstance().resources.getColor(R.color.brick)
 
+                PointStatus.DUE_CONSUMPTION_CANCEL.status,
+                PointStatus.DUE_CONSUMPTION.status,
+                PointStatus.DUE_SAVE_CANCEL.status,
                 PointStatus.DUE_SAVE.status -> BaseApplication.getInstance().resources.getColor(R.color.warm_grey) // 적립 예정
                 else -> BaseApplication.getInstance().resources.getColor(R.color.perrywinkle)
             }

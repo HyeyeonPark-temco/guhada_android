@@ -48,7 +48,7 @@ class PointHistory : BasePageModel() {
 
         fun getPointStr(): String {
             val point = DecimalFormat("#,###,###").format(point)
-            return if (status == PointStatus.SAVED.status || status == PointStatus.DUE_SAVE.status || status == PointStatus.RESTORE.status) {
+            return if (status == PointStatus.SAVED.status || status == PointStatus.DUE_SAVE.status || status == PointStatus.RESTORE.status || status == PointStatus.CONSUMPTION_CANCEL.status) {
                 "+$point"
             } else {
                 "-$point"
