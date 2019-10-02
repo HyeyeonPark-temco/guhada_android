@@ -275,7 +275,6 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                         buttons.add(DeliveryButton().apply {
                             text = mBinding.root.context.getString(R.string.mypage_delivery_button_requestrefund)
                             task = View.OnClickListener {
-                                Log.e("ㅇㅇㅇ", item.orderClaimGroupId.toString())
                                 val intent = Intent(binding.root.context, RequestRefundActivity::class.java)
                                 intent.putExtra("orderProdGroupId", item.orderProdGroupId)
                                 (binding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.DELIVERY.flag)
