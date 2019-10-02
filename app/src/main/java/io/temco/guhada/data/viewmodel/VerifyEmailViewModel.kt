@@ -37,7 +37,6 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
         set(value) {
-            Log.e("ㅇㅇㅇ", value.get())
             field = value
             notifyPropertyChanged(BR.mEmail)
         }
@@ -45,7 +44,6 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
         set(value) {
-            Log.e("ㄴㄴㄴ", value.get())
             field = value
             notifyPropertyChanged(BR.mMobile)
         }

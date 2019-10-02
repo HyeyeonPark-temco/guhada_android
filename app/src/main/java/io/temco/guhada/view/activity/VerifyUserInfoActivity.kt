@@ -27,17 +27,17 @@ class VerifyUserInfoActivity : AppCompatActivity() {
 
         mViewModel = VerifyEmailViewModel().apply { this.mIsEmail = intent.getBooleanExtra("isEmail", false) }
         mViewModel.mOnSuccessVerify = {
-            if (mViewModel.mIsEmail){
+            if (mViewModel.mIsEmail) {
                 ToastUtil.showMessage(getString(R.string.verifyuserinfo_emailmessage_success))
                 intent.putExtra("email", mViewModel.mEmail.get())
-            }else{
+            } else {
                 ToastUtil.showMessage(getString(R.string.verifyuserinfo_mobilemessage_success))
                 intent.putExtra("mobile", mViewModel.mMobile.get())
             }
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
-        mBinding.includeVerifyemailHeader.title = if(mViewModel.mIsEmail) getString(R.string.verifyeuserinfo_emailtitle) else getString(R.string.verifyeuserinfo_mobiletitle)
+        mBinding.includeVerifyemailHeader.title = if (mViewModel.mIsEmail) getString(R.string.verifyeuserinfo_emailtitle) else getString(R.string.verifyeuserinfo_mobiletitle)
         mBinding.includeVerifyemailHeader.setOnClickCloseButton { finish() }
         mBinding.viewModel = mViewModel
     }

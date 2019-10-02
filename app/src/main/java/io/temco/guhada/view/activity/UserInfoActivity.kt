@@ -51,6 +51,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     override fun init() {
         // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
         loginType = intent?.extras?.getInt("loginType") ?: 0
+        mBinding.loginType = loginType
 
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = UserInfoViewModel(this@UserInfoActivity)

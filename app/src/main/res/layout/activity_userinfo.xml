@@ -9,9 +9,11 @@
         <variable
             name="onClickEmailButton"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="onClickSmsButton"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="onClickCloseButton"
             type="android.view.View.OnClickListener" />
@@ -23,6 +25,10 @@
         <variable
             name="user"
             type="io.temco.guhada.data.model.user.User" />
+
+        <variable
+            name="loginType"
+            type="Integer" />
 
         <variable
             name="viewModel"
@@ -272,7 +278,8 @@
                         android:gravity="center_vertical"
                         android:text="@string/mypage_userinfo_passwaord_infotitle6"
                         android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14" />
+                        android:textSize="@dimen/text_14"
+                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_join_password"
@@ -285,6 +292,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
+                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"
                         app:hint="@string/findpwd_hint_newpwd"
                         app:type="password" />
 
@@ -312,6 +320,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
+                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"
                         app:hint="@string/findpwd_hint_newpwdconfirm"
                         app:type="password" />
 
@@ -334,12 +343,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
+
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="28dp"
                         android:gravity="center_vertical"
                         android:text="@string/mypage_userinfo_passwaord_infodesc1"
                         android:textColor="@color/warm_grey"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_12"
+                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}" />
                     <!-- ====================================================================== -->
 
 
@@ -355,7 +366,7 @@
                         android:text="@string/mypage_userinfo_passwaord_infotitle7"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14"
-                        android:visibility="gone" />
+                        android:visibility="@{loginType != 0 ? View.VISIBLE: View.GONE, default= gone}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -364,7 +375,7 @@
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="@{loginType != 0 ? View.VISIBLE: View.GONE, default= gone}"
                         android:weightSum="2">
 
 
@@ -383,7 +394,7 @@
                                 <ImageView
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
-                                    android:src="@drawable/member_btn_naver_off" />
+                                    android:src="@{loginType == 1 ? @drawable/member_btn_naver_on : @drawable/member_btn_naver_off}" />
 
                                 <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
                                     android:layout_width="wrap_content"
@@ -420,7 +431,7 @@
                                 <ImageView
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
-                                    android:src="@drawable/member_btn_kakao_on" />
+                                    android:src="@{loginType == 2 ? @drawable/member_btn_kakao_on : @drawable/member_btn_kakao_off}" />
 
                                 <com.kakao.usermgmt.LoginButton
                                     android:layout_width="wrap_content"
@@ -452,7 +463,7 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="@{loginType != 0 ? View.VISIBLE: View.GONE, default= gone}"
                         android:weightSum="2">
 
 
@@ -471,7 +482,7 @@
                                 <ImageView
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
-                                    android:src="@drawable/member_btn_facebook_off" />
+                                    android:src="@{loginType == 3 ? @drawable/member_btn_facebook_on : @drawable/member_btn_facebook_off}" />
 
                                 <com.facebook.login.widget.LoginButton
                                     android:layout_width="wrap_content"
@@ -504,7 +515,7 @@
                             <ImageView
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
-                                android:src="@drawable/member_btn_google_off" />
+                                android:src="@{loginType == 4 ? @drawable/member_btn_google_on : @drawable/member_btn_google_off}" />
 
                             <TextView
                                 style="@style/TextMedium"
@@ -575,16 +586,16 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick="@{onClickSmsButton}"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:onClick="@{onClickSmsButton}">
 
                             <CheckBox
                                 android:id="@+id/checkbox_mypageuserinfo_sms"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/selector_checkbox_all"
-                                android:checked="@{user.agreeSmsReception}"
-                                android:button="@null" />
+                                android:button="@null"
+                                android:checked="@{user.agreeSmsReception}" />
 
                             <TextView
                                 android:id="@+id/textview_mypageuserinfo_sms"
@@ -602,16 +613,16 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick="@{onClickEmailButton}"
-                            android:gravity="center_vertical">
+                            android:gravity="center_vertical"
+                            android:onClick="@{onClickEmailButton}">
 
                             <CheckBox
                                 android:id="@+id/checkbox_mypageuserinfo_email"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/selector_checkbox_all"
-                                android:checked="@{user.agreeEmailReception}"
-                                android:button="@null" />
+                                android:button="@null"
+                                android:checked="@{user.agreeEmailReception}" />
 
                             <TextView
                                 android:id="@+id/textview_mypageuserinfo_email"
