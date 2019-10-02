@@ -42,7 +42,7 @@ class SuccessCancelOrderActivity : BindActivity<ActivitySuccesscancelorderBindin
                 val purchaseOrder = it as PurchaseOrder
                 mBinding.includeSuccesscancelorderProductinfo.imageUrl = purchaseOrder.imageUrl
                 mBinding.includeSuccesscancelorderProductinfo.brandName = purchaseOrder.brandName
-                mBinding.includeSuccesscancelorderProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.dealName}"
+                mBinding.includeSuccesscancelorderProductinfo.productName = if(purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName else "${purchaseOrder.season} ${purchaseOrder.productName}"
                 mBinding.includeSuccesscancelorderProductinfo.optionStr = purchaseOrder.getOptionStr()
                 mBinding.includeSuccesscancelorderProductinfo.price = purchaseOrder.orderPrice
                 mBinding.includeSuccesscancelorderProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
