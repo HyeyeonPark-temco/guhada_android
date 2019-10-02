@@ -31,11 +31,11 @@ class PurchaseOrderResponse : Serializable {
     var totalPointPayment = 0
     var totalAmount = 0
 
-
     fun getOrderTimestamp(): Long {
         return if (orderList.isNotEmpty())
             orderList[0].orderTimestamp
         else
             0
     }
+
 }

@@ -1,6 +1,7 @@
 package io.temco.guhada.data.model.payment
 
 import com.google.gson.annotations.Expose
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.order.RequestOrder.CashReceiptType
 import io.temco.guhada.data.model.order.RequestOrder.CashReceiptUsage
 import java.io.Serializable
@@ -27,6 +28,7 @@ class Payment : Serializable {
     var vbankBankName = ""
     var vbankDepositorName = ""
     var vbankExpireAt = intArrayOf()
+    var vbankExpireTimestamp = 0L
     var vbankNo = ""
     var vbankRemitterName = ""
 
@@ -51,5 +53,8 @@ class Payment : Serializable {
 
     @Expose
     var completeAtText = ""
+
+    fun getVBankExpiredAt(): String = "${CommonUtil.convertTimeStampToDate(vbankExpireTimestamp)} 까지"
+
 
 }

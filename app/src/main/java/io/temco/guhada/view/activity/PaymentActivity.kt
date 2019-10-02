@@ -22,10 +22,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.RequestCode
-import io.temco.guhada.common.util.CommonUtilKotlin
-import io.temco.guhada.common.util.LoadingIndicatorUtil
-import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.OrderItemResponse
@@ -88,6 +85,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentPaymentway.viewModel = mViewModel
         mBinding.viewModel = mViewModel
         mBinding.includePaymentPaymentway.setPurchaseClickListener { CommonUtilKotlin.startTermsPurchase(this@PaymentActivity) }
+
         mBinding.executePendingBindings()
     }
 
