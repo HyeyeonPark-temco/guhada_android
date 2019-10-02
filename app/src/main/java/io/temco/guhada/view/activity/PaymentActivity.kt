@@ -24,6 +24,7 @@ import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.coupon.CouponWallet
@@ -74,7 +75,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         initRecipient()
 
         // 적립 예정 포인트
-        initDueSavePoint()
+        // initDueSavePoint()
 
         // 하단 결제 금액
         initCalculatePaymentInfo()
@@ -168,6 +169,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 startActivityForResult(intent, RequestCode.VERIFY.flag)
             }
         }
+
         // [장바구니]에서 진입
         if (intent.getSerializableExtra("productList") != null) {
             mViewModel.productList = intent.getSerializableExtra("productList") as ArrayList<BaseProduct>
@@ -195,6 +197,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
                 // 적립 예정 포인트
                 intent.putExtra("expectedPoint", mViewModel.mExpectedPoint.value)
+                intent.putExtra("calculatePaymentInfo", mViewModel.mCalculatePaymentInfo.value)
 
                 this@PaymentActivity.startActivityForResult(intent, RequestCode.PAYMENT_RESULT.flag)
                 // finish()
@@ -216,6 +219,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
     }
 
+
     private fun initCalculatePaymentInfo() {
         mBinding.includePaymentDiscountresult.couponDiscount = 0
         mBinding.includePaymentDiscountresult.productDiscount = 0
@@ -224,10 +228,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         mViewModel.mCalculatePaymentInfo.observe(this, Observer {
             mBinding.includePaymentDiscountresult.item = it
-            setDiscountPriceAndDueSavePoint(it)
+            if(it.totalDueSavePoint > 0)
+                setDiscountPriceAndDueSavePoint(it)
         })
-
-        mViewModel.getCalculatePaymentInfo()
     }
 
     private fun setDiscountPriceAndDueSavePoint(info: CalculatePaymentInfo) {
@@ -260,7 +263,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentDiscountresult.linearlayoutDiscountresultBuypoint.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
         mBinding.includePaymentDiscountresult.linearlayoutDiscountresultReviewpoint.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
 
-        mBinding.executePendingBindings()
+        mBinding.includePaymentDiscountresult.executePendingBindings()
     }
 
 
@@ -414,7 +417,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     // 사용 가능 쿠폰, 포인트 조회 (미사용)
     private fun initAvailableBenefitCount() {
         mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, mViewModel.order.totalCouponCount))
-        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint,  mViewModel.order.totalPoint))
+        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, mViewModel.order.totalPoint))
     }
 
     private fun initDueSavePoint() {

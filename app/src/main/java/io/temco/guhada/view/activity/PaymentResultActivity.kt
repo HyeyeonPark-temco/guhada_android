@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
@@ -12,6 +13,7 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
+import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.point.ExpectedPointResponse
 import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.viewmodel.payment.PaymentResultViewModel
@@ -91,21 +93,26 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
 
     private fun initExpectedPoint() {
         // 적립 예정 포인트
-        intent.getSerializableExtra("expectedPoint").let {
-            if (it != null) {
-                val expectedPoint = it as ExpectedPointResponse
-                var dusSaveTotalPoint = 0
-                for (item in expectedPoint.dueSavePointList) {
-                    dusSaveTotalPoint += item.freePoint
-                    when (item.pointType) {
-                        PointProcessParam.PointSave.BUY.type -> mBinding.textviewPaymentresultBuypoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                        PointProcessParam.PointSave.TEXT_REVIEW.type -> mBinding.textviewPaymentresultTextreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                        PointProcessParam.PointSave.IMG_REVIEW.type -> mBinding.textviewPaymentresultPhotoreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
-                    }
-                }
+//        intent.getSerializableExtra("expectedPoint").let {
+//            if (it != null) {
+//                val expectedPoint = it as ExpectedPointResponse
+//                var dusSaveTotalPoint = 0
+//                for (item in expectedPoint.dueSavePointList) {
+//                    dusSaveTotalPoint += item.freePoint
+//                    when (item.pointType) {
+//                        PointProcessParam.PointSave.BUY.type -> mBinding.textviewPaymentresultBuypoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+//                        PointProcessParam.PointSave.TEXT_REVIEW.type -> mBinding.textviewPaymentresultTextreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+//                        PointProcessParam.PointSave.IMG_REVIEW.type -> mBinding.textviewPaymentresultPhotoreviewpoint.text = String.format(getString(R.string.common_price_format), item.freePoint)
+//                    }
+//                }
+//
+//                mBinding.textviewPaymentresultExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
+//            }
+//        }
 
-                mBinding.textviewPaymentresultExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
-            }
+        // 적립 내역
+        intent.getSerializableExtra("calculatePaymentInfo").let {
+            if (it != null) setDiscountPriceAndDueSavePoint(it as CalculatePaymentInfo)
         }
     }
 
@@ -114,6 +121,33 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
         mBinding.textviewPaymentresultTotaldiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("totalDiscountPrice", 0))
         mBinding.textviewPaymentresultCoupondiscountprice.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("couponDiscountPrice", 0))
         mBinding.textviewPaymentresultUsedpoint.text = String.format(getString(R.string.common_priceunit_format), intent.getIntExtra("usedPoint", 0))
+
+
+    }
+
+    private fun setDiscountPriceAndDueSavePoint(info: CalculatePaymentInfo) {
+        var reviewPoint = 0
+        var buyPoint = 0
+
+        for (item in info.totalDueSavePointResponseList) {
+            when (item.dueSaveType) {
+                PointProcessParam.PointSave.REVIEW.type -> reviewPoint = item.totalPoint
+                PointProcessParam.PointSave.BUY.type -> buyPoint = item.totalPoint
+            }
+        }
+
+        mBinding.buyPoint = buyPoint
+        mBinding.reviewPoint = reviewPoint
+        mBinding.totalDuePoint = info.totalDueSavePoint
+
+        mBinding.textviewPaymentresultBuypoint1.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
+        mBinding.textviewPaymentresultBuypoint2.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
+        mBinding.textviewPaymentresultBuypoint3.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
+        mBinding.textviewPaymentresultReviewpoint1.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
+        mBinding.textviewPaymentresultReviewpoint2.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
+        mBinding.textviewPaymentresultReviewpoint3.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
+
+     //   mBinding.executePendingBindings()
     }
 
     interface OnPaymentResultListener {
