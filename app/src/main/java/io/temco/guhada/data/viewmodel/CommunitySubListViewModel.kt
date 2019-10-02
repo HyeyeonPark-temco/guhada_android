@@ -17,7 +17,7 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
     var mCommunityInfo: CommunityInfo = CommunityInfo()
     var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
     var mCategoryFilterList: MutableList<String> = mutableListOf()
-    var mSortFilterList: MutableList<String> = mutableListOf(CommunityOrderType.DATE_DESC.label, CommunityOrderType.VIEW_DESC.label, CommunityOrderType.LIKE_DESC.label, CommunityOrderType.COMMENT_DESC.label)
+    var mSortFilterList: MutableList<String> = mutableListOf(CommunityOrderType.DATE_DESC.label, CommunityOrderType.VIEW_DESC.label/*, CommunityOrderType.LIKE_DESC.label*/, CommunityOrderType.COMMENT_DESC.label)
     var mPage = 0
     var mFilterId = -1
     var mOrder = CommunityOrderType.DATE_DESC.type

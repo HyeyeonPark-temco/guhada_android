@@ -75,10 +75,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="13dp"
                 android:gravity="center"
-                android:visibility="@{TextUtils.isEmpty(userGrade) ? View.GONE : View.VISIBLE , default = gone}"
+                android:visibility="gone"
                 android:text="@{userGrade}"
                 android:textSize="@dimen/text_8"
                 android:background="@drawable/ceo" />
+
+            <!--android:visibility="@{TextUtils.isEmpty(userGrade) ? View.GONE : View.VISIBLE , default = gone}"-->
 
         </FrameLayout>
 
@@ -184,11 +186,13 @@
                     android:layout_height="2dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
+                    android:visibility="gone"
                     android:background="@drawable/drawble_circle_dot2"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="@{@string/community_detail_likecount(likeCount)}"
                     android:textColor="@{isLikeComment ? @color/blue_purple :@color/warm_grey_two, default = @color/warm_grey_two}"
                     android:textSize="@dimen/text_12" />
@@ -196,9 +200,11 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:visibility="gone"
                     android:layout_marginLeft="2dp"
-                    android:visibility="@{isLikeComment ? View.VISIBLE : View.GONE, default = gone}"
                     android:src="@drawable/detail_icon_thumbsup_on"/>
+
+               <!-- android:visibility="@{isLikeComment ? View.VISIBLE : View.GONE, default = gone}"-->
 
                 <View
                     android:layout_width="2dp"
