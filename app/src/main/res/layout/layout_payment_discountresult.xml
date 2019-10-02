@@ -461,7 +461,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="20dp"
             android:paddingBottom="30dp"
-            android:visibility="@{viewModel.savePointInfoVisible ? View.VISIBLE : View.GONE, default = gone}">
+            android:visibility="@{viewModel.savePointInfoVisible ? View.VISIBLE : View.GONE, default = visible}">
 
             <LinearLayout
                 android:id="@+id/linearlayout_discountresult_buypoint"

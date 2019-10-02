@@ -239,7 +239,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                         listener.closeActivity()
                     }
 
+                    // 상품상세-바로구매 시
+                    if (cartIdList.isEmpty())
+                        cartIdList.add(cart.cartItemId.toInt())
+                    getCalculatePaymentInfo()
                     Log.e("cartItemId", cart.cartItemId.toString())
+
                 } else {
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.closeActivity()

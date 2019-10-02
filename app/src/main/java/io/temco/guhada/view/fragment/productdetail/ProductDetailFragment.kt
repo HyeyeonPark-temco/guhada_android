@@ -419,13 +419,18 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
      * productId 전달
      */
     private fun initStore() {
-        mStoreFragment = ProductDetailStoreFragment().apply {
+        val storeFragment = ProductDetailStoreFragment().apply {
             this.mProductId = this@ProductDetailFragment.mViewModel.product.value?.productId ?: -1
             this.mSellerId = this@ProductDetailFragment.mViewModel.product.value?.sellerId
                     ?: mViewModel.mSeller.id
             this.mProductDetailViewModel = this@ProductDetailFragment.mViewModel
         }
+        mStoreFragment = storeFragment
         childFragmentManager.beginTransaction().let {
+            if (mStoreFragment.isAdded) {
+                it.remove(mStoreFragment)
+                mStoreFragment =storeFragment
+            }
             it.add(mBinding.framelayoutProductdetailStore.id, mStoreFragment)
             it.commitAllowingStateLoss()
         }

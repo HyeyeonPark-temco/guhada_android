@@ -30,7 +30,7 @@ class VerifyViewModel : BaseObservableViewModel() {
         set(value) {
             field = value
             mEmailVerification = ObservableBoolean(value.emailVerify)
-            mVerifyEmail = if (getEmailValidation()) ObservableField(value.email) else ObservableField("")
+            mVerifyEmail = if (CommonUtil.validateEmail(mUser.email)) ObservableField(value.email) else ObservableField("")
         }
 
     var mVerification = Verification()
@@ -137,11 +137,12 @@ class VerifyViewModel : BaseObservableViewModel() {
     private fun updateEmailVerify() {
         val jsonObject = JsonObject()
         jsonObject.addProperty("verificationNumber", mVerificationNumber)
+        jsonObject.addProperty("email", mVerifyEmail.get())
 
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             UserServer.updateEmailVerify(OnServerListener { success, o ->
                 val model = o as BaseModel<*>
-                if (success) {
+                if (success && model.resultCode == ResultCode.SUCCESS.flag) {
                     mEmailVerification = ObservableBoolean(true)
                     notifyPropertyChanged(BR.mEmailVerification)
                     ToastUtil.showMessage("이메일 인증 완료")
@@ -168,6 +169,6 @@ class VerifyViewModel : BaseObservableViewModel() {
         })
     }
 
-    fun getEmailValidation(): Boolean = CommonUtil.validateEmail(mVerifyEmail.get())//mUser.email)
+    fun getEmailValidation(): Boolean = CommonUtil.validateEmail(mVerifyEmail.get()) //mUser.email)
 
 }
