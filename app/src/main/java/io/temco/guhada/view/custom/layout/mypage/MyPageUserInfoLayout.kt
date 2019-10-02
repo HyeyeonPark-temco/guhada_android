@@ -88,6 +88,10 @@ class MyPageUserInfoLayout constructor(
         }
 
         setEventBus()
+
+
+        // 삭제 예정
+        successLogin()
     }
 
     // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
