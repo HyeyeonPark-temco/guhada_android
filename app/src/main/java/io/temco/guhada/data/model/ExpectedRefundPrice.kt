@@ -1,6 +1,7 @@
 package io.temco.guhada.data.model
 
 import io.temco.guhada.common.enum.PurchaseStatus
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.order.PurchaseOrder
 
 /**
@@ -24,5 +25,11 @@ class ExpectedRefundPrice {
 
         // purchaseStatus가 WAITING_PAYMENT인 경우(== 무통장 입금인 경우), "환불 정보" 비노출
         fun getIsRefundValid() :Boolean = purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status
+
+        override fun toString(): String {
+            if(CustomLog.flag)return "ExpectedRefundInfo(refundResponse=$refundResponse, totalAmount=$totalAmount, parentMethod=$parentMethod, purchaseStatus=$purchaseStatus)"
+            else return ""
+        }
+
     }
 }

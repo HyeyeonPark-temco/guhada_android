@@ -1,22 +1,18 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
-import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.ExpectedRefundPrice
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
-import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.server.OrderServer
-import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
@@ -32,6 +28,13 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
     var onClickClaimTask: (productId: Long) -> Unit = {}
     var onClickReceiptTask: (tId: String) -> Unit = {}
 
+    var refundIsValidVisible = ObservableBoolean(false)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.refundIsValidVisible)
+        }
     ///
     var mPurchaseOrder = ObservableField<PurchaseOrder>(PurchaseOrder())
         @Bindable
@@ -61,6 +64,9 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
                         successTask = {
                             val data = it.data as PurchaseOrderResponse
                             this.purchaseOrderResponse = data
+                            if(data.orderList != null){
+                                refundIsValidVisible.set(data.orderList[0].purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status)
+                            }
                             notifyPropertyChanged(BR.purchaseOrderResponse)
                         })
             }, accessToken = token, purchaseId = purchaseId.toDouble())

@@ -11,6 +11,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.mypage.MyPageDeliveryDetailViewModel
 import io.temco.guhada.databinding.ActivityDeliverydetailBinding
@@ -86,6 +87,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         }
 
         intent.getLongExtra("orderClaimGroupId", 0).let { orderClaimGroupId ->
+            if(CustomLog.flag)CustomLog.L("initExpectedRefundPrice","orderClaimGroupId",orderClaimGroupId)
             if (orderClaimGroupId > 0) {
                 mViewModel.mOrderClaimGroupId = orderClaimGroupId
                 mViewModel.getOrder()
@@ -105,6 +107,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailRefundinfo.expectedRefundPrice = it
             mBinding.includeDeliverydetailPaymentinfo1.expectedRefundPrice = it
             mBinding.includeDeliverydetailPaymentinfo2.expectedRefundPrice = it
+            if(CustomLog.flag)CustomLog.L("mExpectedRefundPrice",mViewModel.mExpectedRefundPrice.value)
             mBinding.executePendingBindings()
         })
 
@@ -113,6 +116,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailPaymentinfo1.expectedRefundInfo = it
             mBinding.includeDeliverydetailPaymentinfo2.expectedRefundInfo = it
             mBinding.includeDeliverydetailProductinfo.info = it
+            if(CustomLog.flag)CustomLog.L("mExpectedRefundInfo",mViewModel.mExpectedRefundInfo.value)
             mBinding.executePendingBindings()
         })
     }
