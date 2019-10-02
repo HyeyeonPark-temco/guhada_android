@@ -646,7 +646,6 @@
                             android:textColor="@color/common_blue_purple"
                             android:textSize="@dimen/text_14" />
 
-
                         <TextView
                             android:id="@+id/textView75"
                             style="@style/TextBold"
