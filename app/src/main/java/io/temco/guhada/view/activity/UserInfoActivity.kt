@@ -24,6 +24,7 @@ import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.user.UserUpdateInfo
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
 
@@ -50,7 +51,13 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = UserInfoViewModel(this@UserInfoActivity)
         mBinding.viewModel = mViewModel
+
         mBinding.setOnClickCloseButton { finish() }
+        mBinding.setOnClickOkButton {
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.user)
+            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.user,null) }
+            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+        }
     }
 
     override fun onResume() {

@@ -1,5 +1,7 @@
 package io.temco.guhada.data.model.user
 
+import io.temco.guhada.common.util.CustomLog
+
 class UserUpdateInfo {
 
     var accountHolder = ""
@@ -21,6 +23,8 @@ class UserUpdateInfo {
         agreeSmsReception = user.agreeSmsReception
         email = user.email
 
+        verifiedIdentity = false
+
         identityVerifyParam.birth = user.birth
         identityVerifyParam.diCode = user.userDetail.diCode ?: ""
         identityVerifyParam.gender = user.userGender
@@ -36,8 +40,13 @@ class UserUpdateInfo {
             userSizeParam.top = userSize.top
             userSizeParam.weight = userSize.weight
         }
-        verifiedIdentity = false
     }
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "UserUpdateInfo(accountHolder='$accountHolder', agreeEmailReception=$agreeEmailReception, agreeSmsReception=$agreeSmsReception, bankCode='$bankCode', bankName='$bankName', email='$email', identityVerifyParam=$identityVerifyParam, inputUserSize=$inputUserSize, nickname='$nickname', password='$password', userSizeParam=$userSizeParam, verifiedIdentity=$verifiedIdentity)"
+        else return ""
+    }
+
 
 }
 

@@ -105,11 +105,13 @@ class MyPageUserInfoLayout constructor(
             override fun redirectMainActivity(data: Token) {
                 if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectMainActivity")
                 val id = JWT(data.accessToken!!).getClaim("userId").asString()
-                if(id?.toLong() ?: 0L == CommonUtil.checkUserId()){
-                    setUserData()
-                }else{
-                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
-                }
+                if(id?.toLong() ?: 0L != 0L){
+                    if(id?.toLong() ?: 0L == CommonUtil.checkUserId()){
+                        setUserData()
+                    }else{
+                        CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                    }
+                }else CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
             }
 
             override fun showMessage(message: String) {
@@ -121,10 +123,6 @@ class MyPageUserInfoLayout constructor(
         SnsLoginModule.initKakaoLogin(mLoginListener)
 
         setEventBus()
-
-
-        // 삭제 예정
-        successLogin()
     }
 
     // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
