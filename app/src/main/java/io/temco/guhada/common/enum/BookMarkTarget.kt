@@ -6,10 +6,10 @@ package io.temco.guhada.common.enum
  */
 enum class BookMarkTarget(val target: String) {
     PRODUCT("PRODUCT"),
-    DEAL("SELLER"),
-    BBS("SELLER"),
-    COMMENT("SELLER"),
-    STORE("SELLER"),
+    DEAL("DEAL"),
+    BBS("BBS"),
+    COMMENT("COMMENT"),
+    STORE("STORE"),
     REVIEW("REVIEW"),
     SELLER("SELLER")
 }

@@ -30,6 +30,7 @@ import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.order.PaymentMethod
 import io.temco.guhada.data.model.order.RequestOrder
+import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.product.BaseProduct
@@ -72,11 +73,11 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         // 현금영수증
         initRecipient()
 
-        // 사용 가능 쿠폰, 포인트 조회
-        initAvailableBenefitCount()
-
         // 적립 예정 포인트
         initDueSavePoint()
+
+        // 하단 결제 금액
+        initCalculatePaymentInfo()
 
         // 상품 리스트
         mBinding.recyclerviewPaymentProduct.adapter = PaymentOrderItemAdapter()//PaymentProductAdapter()
@@ -214,6 +215,54 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
         }
     }
+
+    private fun initCalculatePaymentInfo() {
+        mBinding.includePaymentDiscountresult.couponDiscount = 0
+        mBinding.includePaymentDiscountresult.productDiscount = 0
+        mBinding.includePaymentDiscountresult.reviewPoint = 0
+        mBinding.includePaymentDiscountresult.buyPoint = 0
+
+        mViewModel.mCalculatePaymentInfo.observe(this, Observer {
+            mBinding.includePaymentDiscountresult.item = it
+            setDiscountPriceAndDueSavePoint(it)
+        })
+
+        mViewModel.getCalculatePaymentInfo()
+    }
+
+    private fun setDiscountPriceAndDueSavePoint(info: CalculatePaymentInfo) {
+        var couponDiscount = 0
+        var productDiscount = 0
+        var reviewPoint = 0
+        var buyPoint = 0
+
+        for (item in info.discountInfoResponseList) {
+            when (item.discountType) {
+                CalculatePaymentInfo.DiscountInfoResponse.DiscountType.PRODUCT_DISCOUNT.type -> productDiscount = item.discountPrice
+                CalculatePaymentInfo.DiscountInfoResponse.DiscountType.COUPON_DISCOUNT.type -> couponDiscount = item.discountPrice
+            }
+        }
+
+        for (item in info.totalDueSavePointResponseList) {
+            when (item.dueSaveType) {
+                PointProcessParam.PointSave.REVIEW.type -> reviewPoint = item.totalPoint
+                PointProcessParam.PointSave.BUY.type -> buyPoint = item.totalPoint
+            }
+        }
+
+        mBinding.includePaymentDiscountresult.couponDiscount = couponDiscount
+        mBinding.includePaymentDiscountresult.productDiscount = productDiscount
+        mBinding.includePaymentDiscountresult.reviewPoint = reviewPoint
+        mBinding.includePaymentDiscountresult.buyPoint = buyPoint
+
+        mBinding.includePaymentDiscountresult.constraintlayoutDiscountresultCoupondiscount.visibility = if (couponDiscount > 0) View.VISIBLE else View.GONE
+        mBinding.includePaymentDiscountresult.constraintlayoutDiscountresultProductdiscount.visibility = if (productDiscount > 0) View.VISIBLE else View.GONE
+        mBinding.includePaymentDiscountresult.linearlayoutDiscountresultBuypoint.visibility = if (buyPoint > 0) View.VISIBLE else View.GONE
+        mBinding.includePaymentDiscountresult.linearlayoutDiscountresultReviewpoint.visibility = if (reviewPoint > 0) View.VISIBLE else View.GONE
+
+        mBinding.executePendingBindings()
+    }
+
 
     private fun initHeader() {
         mBinding.includePaymentHeader.title = BaseApplication.getInstance().getString(R.string.payment_title_header)
@@ -362,11 +411,10 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
     }
 
+    // 사용 가능 쿠폰, 포인트 조회 (미사용)
     private fun initAvailableBenefitCount() {
-        mViewModel.mAvailableBenefitCount.observe(this, Observer {
-            mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, it.totalAvailCoupon))
-            mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint, it.totalFreePoint + it.totalPaidPoint))
-        })
+        mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format), mViewModel.order.availableCouponCount, mViewModel.order.totalCouponCount))
+        mBinding.includePaymentDiscount.textviewPaymentAvailablepoint.text = Html.fromHtml(String.format(getString(R.string.payment_availablepoint_format), mViewModel.order.availablePointResponse.availableTotalPoint,  mViewModel.order.totalPoint))
     }
 
     private fun initDueSavePoint() {
@@ -466,44 +514,44 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     data?.getSerializableExtra("selectedCouponMap").let { selectedCouponMap ->
                         if (selectedCouponMap != null) {
                             mViewModel.mSelectedCouponMap = selectedCouponMap as HashMap<Long, CouponWallet?>
-                            var couponCount = 0
-                            for (key in selectedCouponMap.keys)
-                                if (selectedCouponMap[key]?.couponId ?: -1 > -1)
-                                    couponCount++
-
-                            data?.getIntExtra("totalDiscountPrice", 0).let { couponDiscountPrice ->
-                                if (couponDiscountPrice != null) {
-                                    mViewModel.mCouponDiscountPrice = couponDiscountPrice
-
-                                    // 사용가능 n장/보유 m장
-                                    mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
-                                            mViewModel.order.availableCouponCount, mViewModel.mAvailableBenefitCount.value?.totalAvailCoupon
-                                            ?: 0))
-
-                                    // -n원(m장)
-                                    if (couponDiscountPrice > 0) {
-                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), couponDiscountPrice, couponCount))
-                                    } else {
-                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
-                                    }
-
-                                    // [2019.09.24] 할인 금액이 결제 금액보다 큰 경우
-                                    var totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
-                                    if (couponDiscountPrice > 0 && totalDiscountPrice > mViewModel.order.totalProdPrice) {
-                                        totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice
-                                        mViewModel.usedPointNumber = 0
-                                        mViewModel.notifyPropertyChanged(BR.usedPoint)
-                                    }
-
-                                    mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice)
-                                    mViewModel.mTotalPaymentPrice = ObservableInt((mViewModel.order.totalProdPrice - totalDiscountPrice))
-                                    mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
-                                    mViewModel.notifyPropertyChanged(BR.mTotalPaymentPrice)
-
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), couponDiscountPrice)
-                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), mViewModel.mTotalPaymentPrice.get())
-                                }
-                            }
+                            mViewModel.getCalculatePaymentInfo()
+//                            var couponCount = 0
+//                            for (key in selectedCouponMap.keys)
+//                                if (selectedCouponMap[key]?.couponId ?: -1 > -1)
+//                                    couponCount++
+//
+//                            data?.getIntExtra("totalDiscountPrice", 0).let { couponDiscountPrice ->
+//                                if (couponDiscountPrice != null) {
+//                                    mViewModel.mCouponDiscountPrice = couponDiscountPrice
+//
+//                                    // 사용가능 n장/보유 m장
+//                                    mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
+//                                            mViewModel.order.availableCouponCount, mViewModel.order.totalCouponCount))
+//
+//                                    // -n원(m장)
+//                                    if (couponDiscountPrice > 0) {
+//                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), couponDiscountPrice, couponCount))
+//                                    } else {
+//                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
+//                                    }
+//
+//                                    // [2019.09.24] 할인 금액이 결제 금액보다 큰 경우
+//                                    var totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
+//                                    if (couponDiscountPrice > 0 && totalDiscountPrice > mViewModel.order.totalProdPrice) {
+//                                        totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice
+//                                        mViewModel.usedPointNumber = 0
+//                                        mViewModel.notifyPropertyChanged(BR.usedPoint)
+//                                    }
+//
+//                                    mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice)
+//                                    mViewModel.mTotalPaymentPrice = ObservableInt((mViewModel.order.totalProdPrice - totalDiscountPrice))
+//                                    mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
+//                                    mViewModel.notifyPropertyChanged(BR.mTotalPaymentPrice)
+//
+//                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), couponDiscountPrice)
+//                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), mViewModel.mTotalPaymentPrice.get())
+//                                }
+//                            }
                         }
                     }
                 }

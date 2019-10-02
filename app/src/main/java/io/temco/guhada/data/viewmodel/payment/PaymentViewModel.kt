@@ -8,8 +8,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
-import com.google.gson.Gson
-import com.google.gson.JsonParser
+import com.google.gson.*
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -27,6 +26,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.*
+import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.model.point.ExpectedPointResponse
@@ -41,6 +41,7 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.CouponSelectDialogActivity
 import io.temco.guhada.view.activity.PaymentActivity
+import org.json.JSONObject
 import java.text.NumberFormat
 
 class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseObservableViewModel() {
@@ -110,6 +111,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             // 적립 예정 포인트 조회
             getDueSavePoint()
+
+            // 결제 금액 조회
+            getCalculatePaymentInfo()
         }
     var usedPoint: ObservableField<String> = ObservableField("")
         @Bindable
@@ -219,6 +223,9 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         @Bindable
         get() = field
 
+    // 하단 결제 금액 계산
+    var mCalculatePaymentInfo = MutableLiveData<CalculatePaymentInfo>(CalculatePaymentInfo())
+
     fun addCartItem(accessToken: String) {
         OrderServer.addCartItem(OnServerListener { success, o ->
             if (success) {
@@ -271,9 +278,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
                     //  적립 예정 포인트 조회
                     getDueSavePoint()
-
-                    // 사용 가능 쿠폰 갯수
-                    getAvailableBenefitCount()
                 } else {
                     listener.showMessage(o.message ?: "주문서 조회 오류")
                     listener.showMessage(o.message ?: "주문서 조회 오류")
@@ -408,6 +412,33 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             })
                 }, accessToken = accessToken, pointProcessParam = pointProcessParam)
             }
+        })
+    }
+
+    fun getCalculatePaymentInfo() {
+        val jsonArray = JsonArray()
+        for (item in cartIdList) {
+            RequestOrder.CartItemPayment().apply {
+                this.cartItemId = item.toLong()
+                this.couponNumber = getCouponNumberByCartItemId(item.toLong())
+            }.let {
+                val element = JsonParser().parse(Gson().toJson(it))
+                jsonArray.add(element)
+            }
+        }
+
+        val jsonObject = JsonObject()
+        jsonObject.add("cartItemPayments", jsonArray)
+        jsonObject.addProperty("consumptionPoint", usedPointNumber)
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            OrderServer.getCalculatePaymentInfo(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = { this.mCalculatePaymentInfo.postValue((o as BaseModel<*>).data as CalculatePaymentInfo) },
+                        dataIsNull = {
+                            if (it is BaseModel<*>) ToastUtil.showMessage(it.message)
+                            else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                        })
+            }, jsonObject = jsonObject, accessToken = accessToken)
         })
     }
 
@@ -597,20 +628,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         }
     }
 
-    // 사용 가능 쿠폰, 포인트 갯수 조회
-    fun getAvailableBenefitCount() {
-        ServerCallbackUtil.callWithToken(task = {
-            BenefitServer.getAvailableBenefitCount(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            this.mAvailableBenefitCount.postValue(it.data as AvailableBenefitCount)
-                        },
-                        dataIsNull = { model ->
-                            CustomLog.L((model as BaseModel<*>).message)
-                        })
-            }, accessToken = it)
-        })
-    }
 
     fun onClickChangeShippingAddress() {
         listener.redirectShippingAddressActivity()

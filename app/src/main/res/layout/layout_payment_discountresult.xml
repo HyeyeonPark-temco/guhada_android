@@ -10,6 +10,26 @@
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.payment.PaymentViewModel" />
+
+        <variable
+            name="item"
+            type="io.temco.guhada.data.model.payment.CalculatePaymentInfo" />
+
+        <variable
+            name="couponDiscount"
+            type="Integer" />
+
+        <variable
+            name="productDiscount"
+            type="Integer" />
+
+        <variable
+            name="buyPoint"
+            type="Integer" />
+
+        <variable
+            name="reviewPoint"
+            type="Integer" />
     </data>
 
     <LinearLayout
@@ -105,12 +125,12 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.order.totalShipPrice != 0.0 ? @string/payment_shipping_format(Math.round(viewModel.order.totalShipPrice)) : @string/payment_text_freeshipping}"
                     android:textColor="@color/cool_grey"
-                    android:visibility="gone"
+
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toTopOf="@+id/linearlayout_payment_discounttotalprice"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
-
+                <!--android:visibility="gone"-->
                 <LinearLayout
                     android:id="@+id/linearlayout_payment_discounttotalprice"
                     android:layout_width="wrap_content"
@@ -126,7 +146,7 @@
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/common_price_format(viewModel.order.totalProdPrice)}"
+                        android:text="@{@string/common_price_format(item.totalProductPrice)}"
                         android:textColor="@color/greyish_brown_two"
                         android:textSize="@dimen/text_16" />
 
@@ -177,7 +197,7 @@
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/common_price_format(viewModel.mTotalDiscountPrice)}"
+                        android:text="@{@string/common_price_format(item.totalDiscountPointPrice)}"
                         android:textColor="@color/greyish_brown_two"
                         android:textSize="@dimen/text_16"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -234,10 +254,10 @@
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/common_price_format(viewModel.mTotalPaymentPrice)}"
+                        android:text="@{@string/common_price_format(item.totalPaymentPrice)}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_18" />
-                    <!--android:text="@{@string/common_price_format(viewModel.order.totalPaymentPrice)}"-->
+
                     <TextView
                         android:id="@+id/textview_payment_discounttotalprice_unit"
                         style="@style/TextBold"
@@ -256,13 +276,14 @@
             android:background="@color/common_white"
             android:orientation="vertical"
             android:paddingStart="20dp"
-            android:paddingTop="26dp"
             android:paddingEnd="20dp"
             android:paddingBottom="30dp"
             android:visibility="@{viewModel.discountInfoVisible ? View.VISIBLE: View.GONE, default=gone}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_discountresult_coupondiscount"
                 android:layout_width="match_parent"
+                android:layout_marginTop="26dp"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -291,23 +312,15 @@
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/common_price_format(0)}"
+                    android:text="@{@string/common_priceunit_format(couponDiscount)}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView29"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView29"
-                    style="@style/PaymentContentGreyTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/common_unit_price"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_discountresult_productdiscount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp">
@@ -325,20 +338,11 @@
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/common_price_format(viewModel.order.totalDiscountDiffPrice)}"
+                    android:text="@{@string/common_priceunit_format(productDiscount)}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView30"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView30"
-                    style="@style/PaymentContentGreyTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/common_unit_price"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -359,20 +363,12 @@
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{viewModel.usedPoint.isEmpty() ? "0" : viewModel.usedPoint}'
+                    android:text="@{@string/common_priceunit_format(item.totalPointPrice)}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/textView31"
+                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <!--android:text='@{viewModel.usedPoint.isEmpty() ? "0" : viewModel.usedPoint}'-->
 
-                <TextView
-                    android:id="@+id/textView31"
-                    style="@style/PaymentContentGreyTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/common_unit_price"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -438,7 +434,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
-                    android:text="@{@string/common_price_format(0)}"
+                    android:text="@{@string/common_price_format(item.totalDueSavePoint)}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_14" />
 
@@ -468,6 +464,7 @@
             android:visibility="@{viewModel.savePointInfoVisible ? View.VISIBLE : View.GONE, default = gone}">
 
             <LinearLayout
+                android:id="@+id/linearlayout_discountresult_buypoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -484,7 +481,7 @@
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/common_price_format(0)}" />
+                    android:text="@{@string/common_price_format(buyPoint)}" />
 
                 <TextView
                     style="@style/PaymentContentGreyTextStyle"
@@ -494,6 +491,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearlayout_discountresult_reviewpoint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
@@ -504,14 +502,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/payment_text_textreview" />
-
+                    android:text="리뷰 작성" />
+                <!--android:text="@string/payment_text_textreview"-->
                 <TextView
                     android:id="@+id/textview_payment_textreviewpoint"
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/common_price_format(0)}" />
+                    android:text="@{@string/common_price_format(reviewPoint)}" />
 
                 <TextView
                     style="@style/PaymentContentGreyTextStyle"
@@ -524,7 +522,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/PaymentContentGreyTextStyle"

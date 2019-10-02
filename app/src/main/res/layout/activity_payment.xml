@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="@{()->viewModel.onClickVerify()}"
                     android:orientation="horizontal"
-                    android:visibility="@{viewModel.order.user.name != null &amp;&amp; viewModel.order.user.mobile != null &amp;&amp; viewModel.order.user.emailVerify ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{(viewModel.order.user.name != null &amp;&amp; !viewModel.order.user.name.isEmpty()) &amp;&amp; (viewModel.order.user.mobile  != null &amp;&amp; !viewModel.order.user.mobile.isEmpty()) &amp;&amp; viewModel.order.user.emailVerify ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -159,7 +159,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="@{viewModel.order.user.name}"
                     android:textSize="@dimen/text_14"
-                    android:visibility="@{viewModel.order.user.name == null ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{(viewModel.order.user.name == null || viewModel.order.user.name.isEmpty()) ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView21" />
@@ -173,7 +173,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="@{viewModel.order.user.mobile}"
                     android:textSize="@dimen/text_14"
-                    android:visibility="@{viewModel.order.user.mobile == null ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{(viewModel.order.user.mobile == null || viewModel.order.user.mobile.isEmpty())? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textview_payment_buyername" />
             </androidx.constraintlayout.widget.ConstraintLayout>
