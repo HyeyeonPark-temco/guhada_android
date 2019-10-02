@@ -94,7 +94,7 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
         mBinding.includeRequestcancelorderProductinfo.brandName = purchaseOrder.brandName
         mBinding.includeRequestcancelorderProductinfo.productName = if (purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName else "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeRequestcancelorderProductinfo.optionStr = purchaseOrder.getOptionStr()
-        mBinding.includeRequestcancelorderProductinfo.price = purchaseOrder.orderPrice
+        mBinding.includeRequestcancelorderProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeRequestcancelorderProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
     }
 
