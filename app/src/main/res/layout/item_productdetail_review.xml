@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
-        <import type="android.view.View" />
 
         <variable
             name="reviewContent"
@@ -152,6 +153,7 @@
                 android:id="@+id/textView88"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="@{reviewContent.getOption().isEmpty() ? View.GONE : View.VISIBLE}"
                 android:layout_marginStart="10dp"
                 android:text="@string/productdetail_review_option"
                 android:textColor="@color/warm_grey_two"

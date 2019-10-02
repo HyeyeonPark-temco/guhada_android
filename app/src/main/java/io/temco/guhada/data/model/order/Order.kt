@@ -27,6 +27,8 @@ class Order : Serializable {
     // COUPON
     var availableCouponWalletResponses = mutableListOf<AvailableCouponWallet>()
     var availableCouponCount = 0
+    var totalCouponCount = 0
+    var totalPoint = 0
 
     inner class AvailablePoint : Serializable {
         var preAvailablePoint = 0

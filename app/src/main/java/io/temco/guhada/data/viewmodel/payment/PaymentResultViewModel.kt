@@ -26,7 +26,7 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
                 }
                 PaymentWayType.VBANK.code -> {
                     paymentMethod = ObservableField(PaymentWayType.VBANK.label)
-                    methodName = ObservableField(value.payment.vbankBankName)
+                    methodName = ObservableField("${value.payment.vbankBankName} ${value.payment.vbankNo}")
                     setCreatedAtText(value.payment.requestAt)
                 }
                 PaymentWayType.DIRECT_BANK.code -> paymentMethod = ObservableField(PaymentWayType.DIRECT_BANK.label)
@@ -68,7 +68,7 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
     private fun setCreatedAtText(arr: IntArray) {
         if (arr.isNotEmpty()) {
             completeAtText = ObservableField("${arr[0]}.${arr[1]}.${arr[2]} ${arr[3] ?: ""}:${arr[4]
-                    ?: ""}")
+                    ?: ""} 까지")
             notifyPropertyChanged(BR.completeAtText)
         }
     }

@@ -38,10 +38,11 @@
                 android:text="@string/payment_title_coupon"
                 android:textSize="@dimen/text_14" />
 
-            <io.temco.guhada.view.custom.HtmlTextView
+            <TextView
                 android:id="@+id/textview_payment_discountcouponcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{@string/payment_couponcount_format(viewModel.order.availableCouponCount, viewModel.order.totalCouponCount)}"
                 android:layout_marginStart="6dp"
                 android:textColor="@color/warm_grey_two"
                 android:textSize="@dimen/text_12" />
@@ -150,9 +151,10 @@
                 android:text="@string/payment_title_point"
                 android:textSize="@dimen/text_14" />
 
-            <io.temco.guhada.view.custom.HtmlTextView
+            <TextView
                 android:id="@+id/textview_payment_availablepoint"
                 android:layout_width="wrap_content"
+                android:text="@{@string/payment_availablepoint_format(viewModel.order.availablePointResponse.availableTotalPoint, viewModel.order.totalPoint)}"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:textColor="@color/warm_grey_two"
@@ -233,7 +235,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@{@string/common_price_format(viewModel.holdingPoint)}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_12"
                     android:visibility="gone"

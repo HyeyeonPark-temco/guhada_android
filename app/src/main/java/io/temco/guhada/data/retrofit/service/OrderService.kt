@@ -1,5 +1,6 @@
 package io.temco.guhada.data.retrofit.service
 
+import com.google.gson.JsonObject
 import io.temco.guhada.data.model.BankAccount
 import io.temco.guhada.data.model.SellerInquireOrder
 import io.temco.guhada.data.model.UserShipping
@@ -8,6 +9,7 @@ import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.order.*
+import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.model.review.MyPageOrderReview
@@ -145,17 +147,24 @@ interface OrderService {
 
 
     /**
-     * 내가 주문한 상품에대한 문의
+     * 내가 주문한 상품에대한 문의 API
      */
     @GET("/order-review/seller-inquire-order")
     fun getSellerInquireOrder(@Header("Authorization") accessToken: String, @Query("sellerId") sellerId: Long): Call<BaseModel<SellerInquireOrder>>
 
     /**
-     * 계좌 확인
+     * 계좌 확인 API
      * @author Hyeyeon Park
      * @since 2019.09.20
      */
     @POST("/accountCheck")
     fun checkAccount(@Body bankAccount: BankAccount): Call<BaseModel<BankAccount>>
 
+    /**
+     * 주문서-결제금액 계산 API
+     * @author Hyeyeon Park
+     * @since 2019.10.01
+     */
+    @POST("/order/calculate-payment-info")
+    fun getCalculatePaymentInfo(@Header("Authorization") accessToken: String, @Body jsonObject: JsonObject): Call<BaseModel<CalculatePaymentInfo>>
 }

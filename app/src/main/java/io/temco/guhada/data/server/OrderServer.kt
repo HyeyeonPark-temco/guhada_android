@@ -1,6 +1,7 @@
 package io.temco.guhada.data.server
 
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
@@ -16,6 +17,7 @@ import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartResponse
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.model.order.*
+import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
 import io.temco.guhada.data.model.review.MyPageOrderReview
@@ -348,7 +350,15 @@ class OrderServer {
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).checkAccount(bankAccount = bankAccount).enqueue(
                         ServerCallbackUtil.ServerResponseCallback<BaseModel<BankAccount>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
-
+        /**
+         * 주문서-결제금액 계산 API
+         * @author Hyeyeon Park
+         * @since 2019.10.01
+         */
+        @JvmStatic
+        fun getCalculatePaymentInfo(listener: OnServerListener,accessToken : String, jsonObject: JsonObject) =
+                RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).getCalculatePaymentInfo(accessToken = accessToken, jsonObject = jsonObject).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<CalculatePaymentInfo>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
     }
 
 
