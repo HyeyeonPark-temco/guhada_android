@@ -13,6 +13,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RefundCause
 import io.temco.guhada.common.enum.ShippingPaymentType
 import io.temco.guhada.common.util.ToastUtil
@@ -120,6 +121,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         }
         mViewModel.mPurchaseOrder.observe(this, Observer {
             if (it.purchaseId > 0) {
+                mBinding.includeRequestrefundRefund.constraintlayoutRequestcancelorderRefund.visibility = if(it.orderStatus ==  PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
+
                 initOrderInfo(it)
                 initProductInfo(it)
                 initCause(it)
