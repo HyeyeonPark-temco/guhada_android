@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.community
 
+import io.temco.guhada.common.util.CustomLog
 import java.io.Serializable
 
 /**
@@ -19,6 +20,11 @@ class CommunityCategory : Serializable {
     var createdBy = ""
     var updatedAt = ""
     var updatedBy = ""
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "CommunityCategory(id=$id, priority=$priority, use=$use, name='$name', imageUr='$imageUr', desc='$desc', createdAt='$createdAt', createdBy='$createdBy', updatedAt='$updatedAt', updatedBy='$updatedBy')"
+        else return ""
+    }
 
 
 }

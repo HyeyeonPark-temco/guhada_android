@@ -264,7 +264,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 }else  if(title.equalsIgnoreCase(Type.SerchFilterCondition.NEW.name())){
                     mBinding.layoutHeader.setTitle("NEW IN");
                 }else  if(title.equalsIgnoreCase(Type.SerchFilterCondition.PLUS.name())){
-                    mBinding.layoutHeader.setTitle("Premium Item");
+                    mBinding.layoutHeader.setTitle("PREMIUM ITEM");
                 }
             }else{
                 mBinding.layoutHeader.setTitle(title);

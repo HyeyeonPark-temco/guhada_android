@@ -120,26 +120,26 @@
                     style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_15" />
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_14" />
 
                 <TextView
                     android:id="@+id/text_pricediscount"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@color/warm_grey_two"
-                    android:textSize="@dimen/text_11" />
+                    android:textSize="@dimen/text_10" />
 
                 <TextView
                     android:id="@+id/text_price_sale_per"
                     style="@style/TextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@color/common_blue_purple"
-                    android:textSize="@dimen/text_15" />
+                    android:textSize="@dimen/text_12" />
             </LinearLayout>
 
             <LinearLayout

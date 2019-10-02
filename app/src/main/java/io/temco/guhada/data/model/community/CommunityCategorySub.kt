@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.community
 
+import io.temco.guhada.common.util.CustomLog
 import java.io.Serializable
 
 /**
@@ -26,6 +27,11 @@ class CommunityCategorySub : Serializable {
 
     // 소분류 커뮤니티 카테고리별 필터 정보
     var categoryFilterList : ArrayList<CommunityCategoryfilter> = arrayListOf()
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "CommunityCategorySub(communityId=$communityId, priority=$priority, use=$use, name='$name', imageUrl=$imageUrl, desc=$desc, type='$type', requiredProductSearch=$requiredProductSearch, visibleProductSearch=$visibleProductSearch, createdAt='$createdAt', createdBy='$createdBy', updatedAt='$updatedAt', updatedBy='$updatedBy', filterList=$filterList, categoryFilterList=$categoryFilterList)"
+        else return ""
+    }
 
 
 }

@@ -237,7 +237,7 @@ class WomenListAdapter(private val model : WomenListViewModel, list : ArrayList<
                 when(item.title){
                     "BEST ITEM" -> searchCondition = Type.SerchFilterCondition.BEST.name
                     "NEW IN" -> searchCondition = Type.SerchFilterCondition.NEW.name
-                    "Premium Item" -> searchCondition = Type.SerchFilterCondition.PLUS.name
+                    "PREMIUM ITEM" -> searchCondition = Type.SerchFilterCondition.PLUS.name
                 }
                 binding.isViewMore = !TextUtils.isEmpty(searchCondition)
                 binding.setClickListener {

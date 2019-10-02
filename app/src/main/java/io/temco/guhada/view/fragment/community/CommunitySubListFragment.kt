@@ -117,7 +117,7 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
                 val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
                 mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
                 mViewModel.mPage = 0
-                mViewModel.mFilterId = selectedCategory.id.toLong()
+                mViewModel.mFilterId = selectedCategory.id
                 mViewModel.getCommunityList()
             }
         }

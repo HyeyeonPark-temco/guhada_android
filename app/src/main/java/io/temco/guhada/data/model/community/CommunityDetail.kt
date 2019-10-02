@@ -37,7 +37,7 @@ class CommunityDetail : Serializable {
 
     fun setBbsResponse() : CreateBbsResponse {
         var data = CreateBbsResponse()
-        data.categoryFilterId = categoryFilterId.toLong()
+        data.categoryFilterId = categoryFilterId
         data.dealName = dealName ?: ""
         data.contents = contents ?: ""
         data.brandName = brandName ?: ""

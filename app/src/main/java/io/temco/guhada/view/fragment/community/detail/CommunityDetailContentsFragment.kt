@@ -57,7 +57,7 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
 
         var header = ""
         if(viewModel.communityDetail.value!!.categoryFilterId > 0){
-            loop1@ for (filter in viewModel.info.communityCategorySub.categoryFilterList){
+            loop1@ for (filter in viewModel.info.communityCategorySub.categoryFilterList!!){
                 if(filter.id == viewModel.communityDetail.value!!.categoryFilterId){
                     header = "["+filter.name+"] "
                     break@loop1

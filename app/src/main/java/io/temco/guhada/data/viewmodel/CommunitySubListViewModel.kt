@@ -19,7 +19,7 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
     var mCategoryFilterList: MutableList<String> = mutableListOf()
     var mSortFilterList: MutableList<String> = mutableListOf(CommunityOrderType.DATE_DESC.label, CommunityOrderType.VIEW_DESC.label, CommunityOrderType.LIKE_DESC.label, CommunityOrderType.COMMENT_DESC.label)
     var mPage = 0
-    var mFilterId = -1L
+    var mFilterId = -1
     var mOrder = CommunityOrderType.DATE_DESC.type
     var mEmptyViewVisible = ObservableBoolean(false)
         @Bindable
@@ -32,8 +32,7 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
         // init filter id
         if (mFilterId <= 0) {
             val filterList = mCommunityInfo.communityCategorySub.categoryFilterList
-            mFilterId = if (filterList.isEmpty()) 0
-            else filterList[0].id.toLong()
+            mFilterId = if (filterList.isEmpty()) 0 else filterList[0].id
         }
 
         val categoryId = mCommunityInfo.communityCategoryId.toLong()

@@ -7,7 +7,7 @@ package io.temco.guhada.data.model.community
  */
 class CommunityCriteria {
     var categoryId = 0L     // 게시판 카테고리 아이디
-    var filterId = 0L       // 게시판 필터 아이디
+    var filterId = 0       // 게시판 필터 아이디
     var deleted = false     // 게시판 delete 필터
     var inUse = true        // 게시판 use 필터
     var query = ""          // 게시판 검색 쿼리

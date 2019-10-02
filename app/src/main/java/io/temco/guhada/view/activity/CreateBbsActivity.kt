@@ -21,7 +21,6 @@ import io.temco.guhada.data.model.community.CommunityTempInfo
 import io.temco.guhada.data.viewmodel.CreateBbsViewModel
 import io.temco.guhada.databinding.ActivityCreatebbsBinding
 import io.temco.guhada.view.activity.base.BindActivity
-import io.temco.guhada.view.adapter.CommonRoundImageAdapter
 import io.temco.guhada.view.adapter.CommonRoundImageResponseAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 
@@ -206,7 +205,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                         if(!value.communityCategorySub.categoryFilterList.isNullOrEmpty() &&
                                 (mViewModel.modifyBbsData.categoryFilterId != null && mViewModel.modifyBbsData.categoryFilterId!! > 0)){
                             for ((index2, filter) in value.communityCategorySub.categoryFilterList.iterator().withIndex()){
-                                if(filter.id.toLong() == mViewModel.modifyBbsData.categoryFilterId!!){
+                                if(filter.id == mViewModel.modifyBbsData.categoryFilterId!!){
                                     mViewModel.selectedFilterInit = true
                                     mViewModel.onFilterSelect(index2)
                                     break@loop
@@ -429,10 +428,10 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
 
 
     private fun getFinishMsg() : String =
-        when(mViewModel.communityDetailModifyData.get()){
-            true -> "글이 수정되었습니다."
-            false -> "글이 등록되었습니다."
-        }
+            when(mViewModel.communityDetailModifyData.get()){
+                true -> "글이 수정되었습니다."
+                false -> "글이 등록되었습니다."
+            }
 
 
     private fun getTmpList(){
@@ -461,7 +460,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         if(CustomLog.flag)CustomLog.L("CreateBbsActivity","mViewModel.selectedCategoryIndex",mViewModel.selectedCategoryIndex)
         if(CustomLog.flag)CustomLog.L("CreateBbsActivity","mViewModel.selectedFilterIndex",mViewModel.selectedFilterIndex)
         if(mViewModel.selectedFilterIndex != -1){
-            data.categoryFilterId = mViewModel.communityInfoList.value!![mViewModel.selectedCategoryIndex].communityCategorySub.categoryFilterList[mViewModel.selectedFilterIndex].id.toLong()
+            data.categoryFilterId = mViewModel.communityInfoList.value!![mViewModel.selectedCategoryIndex].communityCategorySub.categoryFilterList[mViewModel.selectedFilterIndex].id
         }else{
             data.categoryFilterId = null
         }

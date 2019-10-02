@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.community
 
+import io.temco.guhada.common.util.CustomLog
 import java.io.Serializable
 
 enum class CommunityType {
@@ -32,6 +33,10 @@ class CommunityInfo : Serializable {
 
     var communityCategorySub = CommunityCategorySub()
 
+    override fun toString(): String {
+        if(CustomLog.flag)return "CommunityInfo(type=$type, communityName='$communityName', communityCategoryName='$communityCategoryName', communityId=$communityId, communityCategoryId=$communityCategoryId, communityCategory=$communityCategory, communityCategorySub=$communityCategorySub)"
+        else return ""
+    }
 
 
 }
