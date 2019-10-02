@@ -30,6 +30,7 @@ class VerifyViewModel : BaseObservableViewModel() {
         set(value) {
             field = value
             mEmailVerification = ObservableBoolean(value.emailVerify)
+            mVerifyEmail = if (getEmailValidation()) ObservableField(value.email) else ObservableField("")
         }
 
     var mVerification = Verification()
@@ -55,6 +56,11 @@ class VerifyViewModel : BaseObservableViewModel() {
         get() = field
 
     var mVerifyPhoneTask: () -> Unit = {}
+
+    var mVerifyEmail = ObservableField("")
+        @Bindable
+        get() = field
+
 
     // 이메일로 인증번호 전송
     fun onClickSend() {
@@ -95,6 +101,7 @@ class VerifyViewModel : BaseObservableViewModel() {
 
     // 이메일로 인증번호 전송
     private fun sendNumber() {
+        mUser.email = mVerifyEmail.get()
         UserServer.verifyEmail(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
@@ -121,7 +128,7 @@ class VerifyViewModel : BaseObservableViewModel() {
                         ToastUtil.showMessage(it.message)
                     })
         }, verification = Verification().apply {
-            this.verificationTarget = mUser.email
+            this.verificationTarget = mVerifyEmail.get() ?: "" //mUser.email
             this.verificationTargetType = VerificationType.EMAIL.type
             this.verificationNumber = mVerificationNumber
         })
@@ -161,6 +168,6 @@ class VerifyViewModel : BaseObservableViewModel() {
         })
     }
 
-    fun getEmailValidation(): Boolean = CommonUtil.validateEmail(mUser.email)
+    fun getEmailValidation(): Boolean = CommonUtil.validateEmail(mVerifyEmail.get())//mUser.email)
 
 }
