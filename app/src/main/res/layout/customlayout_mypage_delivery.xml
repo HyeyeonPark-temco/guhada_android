@@ -138,11 +138,11 @@
                         android:paddingTop="16dp"
                         android:paddingEnd="40dp"
                         android:paddingBottom="16dp"
-                        android:visibility="@{viewModel.orderHistoryList.page == viewModel.orderHistoryList.totalPage || viewModel.orderHistoryList.orderItemList.size () > 0 ? View.GONE : View.VISIBLE, default=visible}"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">
-
+                        <!--android:visibility="@{viewModel.orderHistoryList.page == viewModel.orderHistoryList.totalPage || viewModel.orderHistoryList.orderItemList.size () > 0 ? View.GONE : View.VISIBLE, default=visible}"-->
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="wrap_content"

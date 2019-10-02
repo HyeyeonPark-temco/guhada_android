@@ -1,32 +1,30 @@
 package io.temco.guhada.view.activity
 
 import android.app.Activity
-import android.text.TextUtils
 import android.content.Intent
-import android.text.Editable
-import io.temco.guhada.R
-import io.temco.guhada.common.Type
-import io.temco.guhada.common.util.CommonViewUtil
-import io.temco.guhada.common.util.LoadingIndicatorUtil
-import io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel
-import io.temco.guhada.databinding.ActivityUserinfoBinding
-import io.temco.guhada.view.activity.base.BindActivity
+import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
 import io.temco.guhada.BR
+import io.temco.guhada.R
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnBorderEditTextFocusListener
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserUpdateInfo
+import io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel
+import io.temco.guhada.databinding.ActivityUserinfoBinding
+import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
 
@@ -61,17 +59,15 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
         mBinding.setOnClickCloseButton { finish() }
         mBinding.setOnClickOkButton {
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","mViewModel.isNickNameFocus",mViewModel.isNickNameFocus)
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","mViewModel.mIsNicknameValid",mViewModel.mIsNicknameValid.get())
-            if(mViewModel.isNickNameFocus && mViewModel.mIsNicknameValid.get()){
-                mViewModel.getUserByNickName(object : OnCallBackListener{
+            if (CustomLog.flag) CustomLog.L("UserInfoActivity", "mViewModel.isNickNameFocus", mViewModel.isNickNameFocus)
+            if (CustomLog.flag) CustomLog.L("UserInfoActivity", "mViewModel.mIsNicknameValid", mViewModel.mIsNicknameValid.get())
+            if (mViewModel.isNickNameFocus && mViewModel.mIsNicknameValid.get()) {
+                mViewModel.getUserByNickName(object : OnCallBackListener {
                     override fun callBackListener(resultFlag: Boolean, value: Any) {
                         sendData()
                     }
                 })
-            }else{
-                sendData()
-            }
+            } else sendData()
         }
     }
 
@@ -89,13 +85,23 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 if (resultCode == Activity.RESULT_OK) {
                     val email = data?.getStringExtra("email")
                     val mobile = data?.getStringExtra("mobile")
+                    val name = data?.getStringExtra("name")
 
-                    if (email != null) mBinding.edittextMypageuserinfoEmail.text = email
-                    if (mobile != null) mBinding.textviewMypageuserinfoMobile.text = mobile
+                    if (email != null) {
+                        mBinding.edittextMypageuserinfoEmail.text = email
+                        mViewModel.mUser.value!!.email = email
+                    }
 
-                    mViewModel.mUser.value!!.email = email
-                    mViewModel.mUser.value!!.mobile = mobile
-                    mViewModel.mUser.value!!.phoneNumber = mobile
+                    if (mobile != null) {
+                        mBinding.textviewMypageuserinfoMobile.text = mobile
+                        mViewModel.mUser.value!!.mobile = mobile
+                        mViewModel.mUser.value!!.phoneNumber = mobile
+                    }
+
+                    if (!name.isNullOrEmpty()) {
+                        mViewModel.mUser.value!!.name = name
+                        mBinding.textviewMypageuserinfoName.text = name
+                    }
 
                     mBinding.executePendingBindings()
                 }
@@ -110,7 +116,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 CommonUtil.validatePassword(mBinding.textviewJoinPasswordfocus.text.toString()) &&
                 mBinding.textviewJoinPasswordfocus.text.equals(mBinding.textviewJoinConfirmpasswordfocus.text)){
             mViewModel.mUser.value!!.password = mBinding.textviewJoinPasswordfocus.text.toString()
-
             if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
             var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null, false) }
             if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
@@ -145,7 +150,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mBinding.user = mViewModel.mUser.value!!
                 mBinding.includeMypageuserinfoBank.user = mViewModel.mUser.value!!
-                mViewModel.nickName = mViewModel.mUser.value!!.name
+                mViewModel.nickName = mViewModel.mUser.value!!.name?:""
                 mBinding.executePendingBindings()
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "mViewModel.user", mViewModel.mUser.value!!)
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "userEmail -----", mViewModel.userEmail)
@@ -201,7 +206,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             }
         })
     }
-
 
 
     private fun setUserSize() {

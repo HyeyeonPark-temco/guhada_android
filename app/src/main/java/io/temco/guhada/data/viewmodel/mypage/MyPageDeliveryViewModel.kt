@@ -1,9 +1,7 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.Bindable
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.R
@@ -12,7 +10,6 @@ import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping

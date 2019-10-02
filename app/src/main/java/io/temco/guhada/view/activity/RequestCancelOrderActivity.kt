@@ -54,7 +54,8 @@ class RequestCancelOrderActivity : BindActivity<ActivityRequestcancelorderBindin
                 initCauseInfo(it)
                 initButton()
 
-                mBinding.includeRequestcancelorderRefund.constraintlayoutRequestcancelorderRefund.visibility = if(it.orderStatus ==  PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
+                mViewModel.quantity = it.quantity
+                mBinding.includeRequestcancelorderRefund.constraintlayoutRequestcancelorderRefund.visibility = if (it.orderStatus == PurchaseStatus.WAITING_PAYMENT.status) View.GONE else View.VISIBLE
                 mViewModel.mOrderProdGroupId = it.orderProdGroupId
                 mViewModel.getExpectedRefundPriceForRequest(it.quantity)
                 mBinding.viewModel = mViewModel

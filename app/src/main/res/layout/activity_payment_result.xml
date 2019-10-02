@@ -715,7 +715,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="@{@string/common_priceunit_format(reviewPoint)}"
+                            android:text="@{@string/common_max + ` ` + @string/common_priceunit_format(reviewPoint)}"
 
                             android:textSize="@dimen/text_13"
                             app:layout_constraintEnd_toStartOf="@id/textview_paymentresult_reviewpoint3"

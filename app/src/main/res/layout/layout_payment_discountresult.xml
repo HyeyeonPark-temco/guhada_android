@@ -509,7 +509,7 @@
                     style="@style/PaymentContentGreyTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/common_price_format(reviewPoint)}" />
+                    android:text="@{@string/common_max + ` ` + @string/common_price_format(reviewPoint)}" />
 
                 <TextView
                     style="@style/PaymentContentGreyTextStyle"
