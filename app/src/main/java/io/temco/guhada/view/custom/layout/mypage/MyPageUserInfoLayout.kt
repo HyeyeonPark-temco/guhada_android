@@ -257,7 +257,13 @@ class MyPageUserInfoLayout constructor(
                         // SNS 로그인
                         val token = model.data as Token
                         val id = JWT(token.accessToken!!).getClaim("userId").asString()
-                        setUserData()
+                        if(id?.toLong() ?: 0L != 0L){
+                            if(id?.toLong() ?: 0L == CommonUtil.checkUserId()){
+                                setUserData()
+                            }else{
+                                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
+                            }
+                        }else CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
                     }
                     Flag.ResultCode.DATA_NOT_FOUND ->
                         // SNS 회원가입
