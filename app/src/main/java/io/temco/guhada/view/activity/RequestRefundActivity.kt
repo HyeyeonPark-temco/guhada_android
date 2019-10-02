@@ -163,7 +163,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundProductinfo.brandName = purchaseOrder.brandName
         mBinding.includeRequestrefundProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.dealName}"
         mBinding.includeRequestrefundProductinfo.optionStr = purchaseOrder.getOptionStr()
-        mBinding.includeRequestrefundProductinfo.price = purchaseOrder.orderPrice
+        mBinding.includeRequestrefundProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeRequestrefundProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
     }
 
