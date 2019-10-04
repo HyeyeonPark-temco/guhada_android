@@ -8,8 +8,8 @@ import io.temco.guhada.data.server.ShippingServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ShippingTrackingViewModel : BaseObservableViewModel() {
-    var mInvoiceNo = "354449654635"
-    var mCompanyNo = "04"
+    var mInvoiceNo = ""
+    var mCompanyNo = ""
     var mShippingTrackingInfo = MutableLiveData<ShippingTrackingInfo>()
 
     fun getShippingTracking() {

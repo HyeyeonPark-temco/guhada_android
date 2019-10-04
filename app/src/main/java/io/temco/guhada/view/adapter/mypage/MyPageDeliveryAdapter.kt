@@ -235,7 +235,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.COMPLETE_EXCHANGE.status,
                 PurchaseStatus.DELIVERING.status,
                 PurchaseStatus.DELIVERED.status -> {
-                    if (item.purchaseStatus == PurchaseStatus.RESEND_EXCHANGE.status || item.purchaseStatus == PurchaseStatus.COMPLETE_EXCHANGE.status)
+                    if (item.claimStatus == PurchaseStatus.RESEND_EXCHANGE.status || item.purchaseStatus == PurchaseStatus.COMPLETE_EXCHANGE.status ||  item.claimStatus == PurchaseStatus.COMPLETE_EXCHANGE.status)
                         buttons.add(DeliveryButton().apply {
                             text = mBinding.root.context.getString(R.string.mypage_delivery_button_reshippinginfo)
                             task = View.OnClickListener { redirectShippingTrackingActivity(invoiceNo = item.resendInvoiceNo, companyNo = item.resendShipCompany) }
