@@ -65,6 +65,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
     }
 
     private fun serObservers() {
+        // 판매자의 연관 상품
         mViewModel.mRelatedProductList.observe(this, Observer {
             if (it.deals.isEmpty()) {
                 mBinding.framelayoutProductdetailRelatedempty.visibility = View.VISIBLE
@@ -81,6 +82,8 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
                 }
             }
         })
+
+        // 추천 상품
         mViewModel.mRecommendProductList.observe(this, Observer {
             if (it.deals.isEmpty()) {
                 mBinding.framelayoutProductdetailRecommendempty.visibility = View.VISIBLE
@@ -97,6 +100,8 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
                 }
             }
         })
+
+        // 셀러 스토어 상품
         mViewModel.mSellerProductList.observe(this, Observer {
             if (it.isEmpty()) {
                 mBinding.framelayoutProductdetailStoreempty.visibility = View.VISIBLE
