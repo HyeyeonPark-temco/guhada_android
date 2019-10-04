@@ -63,8 +63,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         get() = field
 
     var selectedMethod: PaymentMethod = PaymentMethod()
-    var selectedShippingAddress: UserShipping? = UserShipping()
-    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 스피너 표시 메세지
+    var selectedShippingAddress: UserShipping? = UserShipping() // 선택된 배송메세지
+    var selectedShippingMessage = ObservableField<ShippingMessage>(ShippingMessage().apply { this.message = BaseApplication.getInstance().getString(R.string.payment_hint_shippingmemo) }) // 배송메세지 스피너 표시 메세지
         @Bindable
         get() = field
 

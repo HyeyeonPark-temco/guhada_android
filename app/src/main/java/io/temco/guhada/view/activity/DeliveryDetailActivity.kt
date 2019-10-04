@@ -90,13 +90,13 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             if(CustomLog.flag)CustomLog.L("initExpectedRefundPrice","orderClaimGroupId",orderClaimGroupId)
             if (orderClaimGroupId > 0) {
                 mViewModel.mOrderClaimGroupId = orderClaimGroupId
-                mViewModel.getOrder()
+//                mViewModel.getOrder()
                 mViewModel.getExpectedRefundPrice()
                 mBinding.recyclerviewDeliverydetailProductlist.visibility = View.GONE
                 mBinding.includeDeliverydetailProductinfo.constraintlayoutDeliverydetailProductinfo.visibility = View.VISIBLE
                 mBinding.includeDeliverydetailPaymentinfo1.constraintlayoutPaymentinfoContainer.visibility = View.GONE
             } else {
-                mViewModel.getOrder()
+//                mViewModel.getOrder()
                 mBinding.recyclerviewDeliverydetailProductlist.visibility = View.VISIBLE
                 mBinding.includeDeliverydetailProductinfo.constraintlayoutDeliverydetailProductinfo.visibility = View.GONE
                 mBinding.includeDeliverydetailPaymentinfo2.constraintlayoutPaymentinfoContainer.visibility = View.GONE

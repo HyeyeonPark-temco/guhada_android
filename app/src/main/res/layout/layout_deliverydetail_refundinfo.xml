@@ -30,10 +30,10 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingTop="40dp"
-        android:visibility="@{viewModel != null &amp;&amp; (!viewModel.refundInfoVisible &amp;&amp; viewModel.refundIsValidVisible) ? View.GONE: View.VISIBLE }"
         android:paddingRight="20dp"
         android:paddingBottom="40dp">
 
+        <!--android:visibility="@{viewModel != null &amp;&amp; (!viewModel.refundInfoVisible &amp;&amp; viewModel.refundIsValidVisible) ? View.GONE: View.VISIBLE, default = gone}"-->
         <TextView
             android:id="@+id/textview_deliverydetail_refundinfo_title"
             style="@style/MypageDeliveryBlackTitleTextStyle"

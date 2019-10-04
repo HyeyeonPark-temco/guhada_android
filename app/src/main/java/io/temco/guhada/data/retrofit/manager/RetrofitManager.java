@@ -139,7 +139,7 @@ public class RetrofitManager {
     private OkHttpClient getClient(Cache cache, Interceptor interceptor, boolean isLogging, boolean isParseJson) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.cache(cache);
-        builder.connectTimeout(20, TimeUnit.SECONDS);
+        builder.connectTimeout(40, TimeUnit.SECONDS);
         // builder.writeTimeout(15, TimeUnit.SECONDS)
         // builder.readTimeout(15, TimeUnit.SECONDS)
         builder.addInterceptor(interceptor);

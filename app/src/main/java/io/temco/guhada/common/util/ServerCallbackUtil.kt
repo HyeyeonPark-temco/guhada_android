@@ -90,7 +90,11 @@ class ServerCallbackUtil {
                                 userLikeNotFoundTask: () -> Unit = {},
                                 claimNotFoundTask: (BaseModel<*>) -> Unit = {},
                                 invalidVerificationNumberTask: (BaseModel<*>) -> Unit = {},
-                                wrongInfoTask: (BaseModel<*>) -> Unit = {}
+                                wrongInfoTask: (BaseModel<*>) -> Unit = {},
+                                cancelQuantityErrorTask: (BaseModel<*>) -> Unit = {
+                                    CommonUtil.debug("[${it.resultCode}] ${it.result}")
+                                    ToastUtil.showMessage(it.result)
+                                }
 
         ) {
             if (o != null) {
@@ -106,6 +110,7 @@ class ServerCallbackUtil {
                         ResultCode.CLAIM_NOT_FOUND_ERROR.flag -> claimNotFoundTask(model)
                         ResultCode.INVALID_VERIFICATION_NUMBER.flag -> invalidVerificationNumberTask(model)
                         ResultCode.WRONG_INFORMATION.flag -> wrongInfoTask(model)
+                        ResultCode.CANCEL_QUANTITY_ERROR.flag -> cancelQuantityErrorTask(model)
                         else -> dataIsNull(model)
                     }
                 } else {

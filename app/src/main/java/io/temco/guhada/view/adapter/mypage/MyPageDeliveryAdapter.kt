@@ -78,22 +78,24 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     EventBusHelper.sendEvent(data)
                 }
             }
-            mBinding.imageviewDeliveryOrdernumber.setOnClickListener {
-                redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId,
-                        if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId)
-            }
-            mBinding.textviewDeliveryOrdernumber.setOnClickListener {
-                redirectDeliveryDetailActivity(item.purchaseId, false, item.orderProdGroupId,
-                        if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId)
-            }
             mBinding.buttonDeliveryClaim.setOnClickListener {
                 CommonUtilKotlin.startActivityUserClaimSeller(itemView.context as AppCompatActivity, item.sellerId.toLong(), item.productId, item.orderProdGroupId)
             }
 
+            val redirectDeliveryDetailListener = View.OnClickListener {
+                val refundVisible = if (item.claimStatus.isNullOrEmpty()) false       // [주문배송] 항상 노출하지 않음
+                else item.purchaseStatus != PurchaseStatus.WAITING_PAYMENT.status               // [취소교환반품] purchaseStatus가 '입금대기중'인 경우, 노출하지 않음
+
+                redirectDeliveryDetailActivity(purchaseId = item.purchaseId, isDeliveryCer = false, orderProdGroupId = item.orderProdGroupId,
+                        status = if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, orderClaimGroupId = item.orderClaimGroupId, refundVisible = refundVisible)
+            }
+            mBinding.imageviewDeliveryOrdernumber.setOnClickListener(redirectDeliveryDetailListener)
+            mBinding.textviewDeliveryOrdernumber.setOnClickListener(redirectDeliveryDetailListener)
+
             mBinding.executePendingBindings()
         }
 
-        private fun redirectDeliveryDetailActivity(purchaseId: Long, isDeliveryCer: Boolean, orderProdGroupId: Long, status: String, orderClaimGroupId: Long, refundVisible : Boolean = false) {
+        private fun redirectDeliveryDetailActivity(purchaseId: Long, isDeliveryCer: Boolean, orderProdGroupId: Long, status: String, orderClaimGroupId: Long, refundVisible: Boolean = false) {
             val intent = Intent(binding.root.context, DeliveryDetailActivity::class.java)
             intent.putExtra("purchaseId", purchaseId)
             intent.putExtra("isDeliveryCer", isDeliveryCer)
@@ -235,7 +237,7 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.COMPLETE_EXCHANGE.status,
                 PurchaseStatus.DELIVERING.status,
                 PurchaseStatus.DELIVERED.status -> {
-                    if (item.claimStatus == PurchaseStatus.RESEND_EXCHANGE.status || item.purchaseStatus == PurchaseStatus.COMPLETE_EXCHANGE.status ||  item.claimStatus == PurchaseStatus.COMPLETE_EXCHANGE.status)
+                    if (item.claimStatus == PurchaseStatus.RESEND_EXCHANGE.status || item.purchaseStatus == PurchaseStatus.COMPLETE_EXCHANGE.status || item.claimStatus == PurchaseStatus.COMPLETE_EXCHANGE.status)
                         buttons.add(DeliveryButton().apply {
                             text = mBinding.root.context.getString(R.string.mypage_delivery_button_reshippinginfo)
                             task = View.OnClickListener { redirectShippingTrackingActivity(invoiceNo = item.resendInvoiceNo, companyNo = item.resendShipCompany) }
@@ -288,8 +290,8 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_cancelinfo)
                         task = View.OnClickListener {
-                            redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId,
-                                    if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId, true)
+                            redirectDeliveryDetailActivity(purchaseId = item.purchaseId, isDeliveryCer = true, orderProdGroupId = item.orderProdGroupId,
+                                    status = if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, orderClaimGroupId = item.orderClaimGroupId, refundVisible = true)
                         }
                     })
                     // buttons.add(DeliveryButton().apply { text = "취소철회" })
@@ -339,8 +341,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.PICKING_EXCHANGE.status -> {
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_exchangeinfo)
-                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId,
-                                if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId, false) }
+                        task = View.OnClickListener {
+                            redirectDeliveryDetailActivity(purchaseId = item.purchaseId, isDeliveryCer = true, orderProdGroupId = item.orderProdGroupId,
+                                    status = if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, orderClaimGroupId = item.orderClaimGroupId, refundVisible = false)
+                        }
                     })
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawexchange)
@@ -354,8 +358,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.PICKING_RETURN.status -> {
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_refundinfo)
-                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId,
-                                if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId, true) }
+                        task = View.OnClickListener {
+                            redirectDeliveryDetailActivity(purchaseId = item.purchaseId, isDeliveryCer = true, orderProdGroupId = item.orderProdGroupId,
+                                    status = if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, orderClaimGroupId = item.orderClaimGroupId, refundVisible = true)
+                        }
                     })
                     buttons.add(DeliveryButton().apply { text = mBinding.root.context.getString(R.string.mypage_delivery_button_withdrawrefund) })
                 }
@@ -364,16 +370,20 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.SALE_CANCEL.status -> {
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_cancelinfo)
-                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId,
-                                if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId, true) }
+                        task = View.OnClickListener {
+                            redirectDeliveryDetailActivity(purchaseId = item.purchaseId, isDeliveryCer = true, orderProdGroupId = item.orderProdGroupId,
+                                    status = if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, orderClaimGroupId = item.orderClaimGroupId, refundVisible = true)
+                        }
                     })
                 }
 
                 PurchaseStatus.COMPLETE_PICK_EXCHANGE.status -> {
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_exchangeinfo)
-                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId,
-                                if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId, false) }
+                        task = View.OnClickListener {
+                            redirectDeliveryDetailActivity(purchaseId = item.purchaseId, isDeliveryCer = true, orderProdGroupId = item.orderProdGroupId,
+                                    status = if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, orderClaimGroupId = item.orderClaimGroupId, refundVisible = false)
+                        }
                     })
                 }
 
@@ -381,8 +391,10 @@ class MyPageDeliveryAdapter : RecyclerView.Adapter<MyPageDeliveryAdapter.Holder>
                 PurchaseStatus.COMPLETE_PICK_RETURN.status -> {
                     buttons.add(DeliveryButton().apply {
                         text = mBinding.root.context.getString(R.string.mypage_delivery_button_refundinfo)
-                        task = View.OnClickListener { redirectDeliveryDetailActivity(item.purchaseId, true, item.orderProdGroupId,
-                                if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, item.orderClaimGroupId, true) }
+                        task = View.OnClickListener {
+                            redirectDeliveryDetailActivity(purchaseId = item.purchaseId, isDeliveryCer = true, orderProdGroupId = item.orderProdGroupId,
+                                    status = if (item.claimStatus.isNullOrEmpty()) item.purchaseStatusText else item.claimStatusText, orderClaimGroupId = item.orderClaimGroupId, refundVisible = true)
+                        }
                     })
                 }
 
