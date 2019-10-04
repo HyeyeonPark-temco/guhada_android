@@ -53,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:layout_marginStart="7dp"
                 android:src="@drawable/mypage_icon_new"
                 app:layout_constraintLeft_toRightOf="@+id/textview_mypagefollow_brandname"
