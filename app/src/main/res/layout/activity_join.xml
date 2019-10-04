@@ -10,9 +10,11 @@
         <variable
             name="personalClickListener"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="purchaseClickListener"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="saleClickListener"
             type="android.view.View.OnClickListener" />

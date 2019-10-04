@@ -54,9 +54,13 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
-                Intent intent = new Intent(JoinActivity.this, CustomDialogActivity.class);
-                intent.putExtra("email", mViewModel.getUser().getEmail());
-                JoinActivity.this.startActivityForResult(intent, Flag.RequestCode.WELCOME_DIALOG);
+                if (resultCode == RESULT_OK) {
+                    Intent intent = new Intent(JoinActivity.this, CustomDialogActivity.class);
+                    intent.putExtra("email", mViewModel.getUser().getEmail());
+                    JoinActivity.this.startActivityForResult(intent, Flag.RequestCode.WELCOME_DIALOG);
+                }
+                setResult(resultCode);
+                finish();
             }
 
             @Override

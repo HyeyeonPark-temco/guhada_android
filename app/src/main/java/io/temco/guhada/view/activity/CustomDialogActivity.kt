@@ -35,8 +35,9 @@ class CustomDialogActivity : BindActivity<io.temco.guhada.databinding.ActivityCu
 
     override fun onBackPressed() {
         //super.onBackPressed()
+        setResult(Activity.RESULT_CANCELED)
+        finish()
     }
-
 
     ////////////////////////////////////////////////////////////////////////////////
 }

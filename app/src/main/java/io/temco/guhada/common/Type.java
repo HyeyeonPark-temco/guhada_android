@@ -83,7 +83,8 @@ public class Type {
         MY_PAGE
     }
 
-    public static boolean isTempProd = false;
+    /** Prod 여부 (true: prod; false: dev) **/
+    public static boolean isTempProd = true;
     ////////////////////////////////////////////////
     // Server
     public enum Server {
