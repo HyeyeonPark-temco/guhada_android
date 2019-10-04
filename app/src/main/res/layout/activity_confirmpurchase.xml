@@ -95,7 +95,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:singleLine="true"
-                android:text="@{viewModel.purchaseOrder.season + ` ` + viewModel.purchaseOrder.productName }"
+                android:text="@{viewModel.purchaseOrder.season != null ? viewModel.purchaseOrder.season + ` ` + viewModel.purchaseOrder.productName : viewModel.purchaseOrder.productName }"
                 app:layout_constraintLeft_toRightOf="@+id/imageview_confirmpurchase_product"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_brandname" />
@@ -189,7 +189,7 @@
                 android:background="@color/white_five"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearlayout_confirmpurchase_reviewpoint" />
+                app:layout_constraintTop_toBottomOf="@+id/imageview_confirmpurchase_product" />
 
             <LinearLayout
                 android:id="@+id/linearlayout_confirmpurchase_pointtitle"

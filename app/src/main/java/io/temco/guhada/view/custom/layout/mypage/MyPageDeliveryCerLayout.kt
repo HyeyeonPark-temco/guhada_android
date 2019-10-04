@@ -66,6 +66,8 @@ class MyPageDeliveryCerLayout constructor(
     private fun setEventBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
+                RequestCode.DELIVERY.flag,
+                RequestCode.CONFIRM_PURCHASE.flag,
                 RequestCode.WITHDRAW.flag,
                 RequestCode.CONFIRM_PURCHASE.flag -> {
                     mViewModel.page = 1
@@ -75,6 +77,7 @@ class MyPageDeliveryCerLayout constructor(
             }
         }
     }
+
 
     override fun onRefresh() {
         mViewModel.page = 1

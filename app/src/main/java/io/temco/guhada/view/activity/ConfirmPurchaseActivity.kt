@@ -11,6 +11,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.enum.PointDialogFlag
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.viewmodel.mypage.delivery.ConfirmPurchaseViewModel
 import io.temco.guhada.databinding.ActivityConfirmpurchaseBinding
@@ -46,10 +47,13 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
         mViewModel = ConfirmPurchaseViewModel()
         mViewModel.closeActivityTask = { finish() }
         mViewModel.successConfirmPurchaseTask = {
-            val intent = Intent(this, ReviewPointDialogActivity::class.java)
-            intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
-            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
-            startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
+//            val intent = Intent(this, ReviewPointDialogActivity::class.java)
+//            intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
+//            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
+//            startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
+            ToastUtil.showMessage("구매확정이 완료되었습니다.")
+            setResult(Activity.RESULT_OK)
+            finish()
         }
         intent.getSerializableExtra("purchaseOrder").let {
             if (it != null) mViewModel.purchaseOrder = it as PurchaseOrder
