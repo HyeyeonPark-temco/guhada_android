@@ -695,7 +695,7 @@
     <!-- SEARCH ZIP -->
     <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>
     <string name="searchzip_loadurl_dev">http://dev.guhada.com/webview/daum-address-search</string>
-    <string name="searchzip_loadurl_prod">http://www.guhada.com/webview/daum-address-search</string>
+    <string name="searchzip_loadurl_prod">http://www.guhada.com/webview/daum-address-search</string>    <!-- (web) guhada.com/webview/ 는 m.으로 redirect 안되게 처리되어있음 [19.10.04] -->
 
     <!-- CART -->
     <string name="cart_title">장바구니</string>

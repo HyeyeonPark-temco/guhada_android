@@ -12,8 +12,8 @@ import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.listener.OnJoinListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
-import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.server.UserServer;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
@@ -64,7 +64,8 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
 
     @Bindable
     public ObservableBoolean getEssentialChecked() {
-        return essentialChecked;    }
+        return essentialChecked;
+    }
 
     public void setEssentialChecked(boolean flag) {
         this.essentialChecked.set(flag);
@@ -98,8 +99,9 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
                     BaseModel model = ((BaseModel) o);
                     switch (model.resultCode) {
                         case 200:
-                            listener.showMessage(user.getEmail() + " 가입 완료");
-                            // listener.showMessage((String) model.data);
+                            String email = model.data instanceof String ? (String) model.data : user.getEmail();
+                            user.setEmail(email);
+                            // listener.showMessage(email + " 가입 완료");
                             listener.closeActivity(RESULT_OK);
                             return;
                         case 6001: // ALREADY EXIST EMAIL
@@ -204,8 +206,10 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
                     boolean personalInfoTosChecked = user.getAgreeCollectPersonalInfoTos();
                     boolean purchaseTosChecked = user.getAgreePurchaseTos();
                     boolean isEssentialAllChecked = personalInfoTosChecked && purchaseTosChecked;
-                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("update","isEssentialAllChecked",isEssentialAllChecked);
-                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("update","essentialChecked.get() ",essentialChecked.get() );
+                    if (CustomLog.INSTANCE.getFlag())
+                        CustomLog.INSTANCE.L("update", "isEssentialAllChecked", isEssentialAllChecked);
+                    if (CustomLog.INSTANCE.getFlag())
+                        CustomLog.INSTANCE.L("update", "essentialChecked.get() ", essentialChecked.get());
                     if (essentialChecked.get() != isEssentialAllChecked) {
                         essentialChecked = new ObservableBoolean(isEssentialAllChecked);
                         notifyPropertyChanged(BR.essentialChecked);

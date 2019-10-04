@@ -25,7 +25,7 @@ class CustomDialogActivity : BindActivity<io.temco.guhada.databinding.ActivityCu
 
     override fun init() {
         mViewModel = CustomDialogActivityViewModel(this)
-        mBinding.email = CommonUtil.checkUserEmail()
+        mBinding.email = intent.getStringExtra("email") ?: CommonUtil.checkUserEmail()
         mBinding.setOnClickOk {
             setResult(Activity.RESULT_OK)
             finish()

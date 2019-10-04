@@ -54,7 +54,9 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
-                JoinActivity.this.startActivityForResult(new Intent(JoinActivity.this, CustomDialogActivity.class), Flag.RequestCode.WELCOME_DIALOG);
+                Intent intent = new Intent(JoinActivity.this, CustomDialogActivity.class);
+                intent.putExtra("email", mViewModel.getUser().getEmail());
+                JoinActivity.this.startActivityForResult(intent, Flag.RequestCode.WELCOME_DIALOG);
             }
 
             @Override
@@ -93,40 +95,43 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
     }
 
 
-    private void setEditTextFocusListener(){
-        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("JoinActivity","setEditTextFocusListener");
+    private void setEditTextFocusListener() {
+        if (CustomLog.INSTANCE.getFlag())
+            CustomLog.INSTANCE.L("JoinActivity", "setEditTextFocusListener");
         mBinding.edittextJoinEmail.setOnBorderEditTextFocusListener(new OnBorderEditTextFocusListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!isEmailFocus) isEmailFocus = hasFocus;
-                if(isEmailFocus && !hasFocus){
+                if (!isEmailFocus) isEmailFocus = hasFocus;
+                if (isEmailFocus && !hasFocus) {
                     isEmailFocus = false;
-                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("JoinActivity","edittextJoinEmail validationCheck",mBinding.edittextJoinEmail.getText());
-                    if(TextUtils.isEmpty(mBinding.edittextJoinEmail.getText())){
+                    if (CustomLog.INSTANCE.getFlag())
+                        CustomLog.INSTANCE.L("JoinActivity", "edittextJoinEmail validationCheck", mBinding.edittextJoinEmail.getText());
+                    if (TextUtils.isEmpty(mBinding.edittextJoinEmail.getText())) {
                         mBinding.textviewJoinEmailfocus.setText(R.string.findpwd_message_invalidemailformat_none);
                         mBinding.textviewJoinEmailfocus.setVisibility(View.VISIBLE);
-                    }else{
-                        if(!TextUtils.isEmpty(mBinding.edittextJoinEmail.getText()) && !CommonUtil.validateEmail(mBinding.edittextJoinEmail.getText())) {
+                    } else {
+                        if (!TextUtils.isEmpty(mBinding.edittextJoinEmail.getText()) && !CommonUtil.validateEmail(mBinding.edittextJoinEmail.getText())) {
                             mBinding.textviewJoinEmailfocus.setText(R.string.findpwd_message_invalidemailformat);
                             mBinding.textviewJoinEmailfocus.setVisibility(View.VISIBLE);
-                        }else mBinding.textviewJoinEmailfocus.setVisibility(View.GONE);
+                        } else mBinding.textviewJoinEmailfocus.setVisibility(View.GONE);
                     }
-                }else mBinding.textviewJoinEmailfocus.setVisibility(View.GONE);
+                } else mBinding.textviewJoinEmailfocus.setVisibility(View.GONE);
             }
         });
         mBinding.edittextJoinPassword.setOnBorderEditTextFocusListener(new OnBorderEditTextFocusListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!isPassFocus) isPassFocus = hasFocus;
-                if(isPassFocus && !hasFocus){
+                if (!isPassFocus) isPassFocus = hasFocus;
+                if (isPassFocus && !hasFocus) {
                     isPassFocus = false;
-                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("JoinActivity","edittextJoinPassword validationCheck",mBinding.edittextJoinPassword.getText());
-                    if(!TextUtils.isEmpty(mBinding.edittextJoinPassword.getText()) && !CommonUtil.validatePassword(mBinding.edittextJoinPassword.getText())){
+                    if (CustomLog.INSTANCE.getFlag())
+                        CustomLog.INSTANCE.L("JoinActivity", "edittextJoinPassword validationCheck", mBinding.edittextJoinPassword.getText());
+                    if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.getText()) && !CommonUtil.validatePassword(mBinding.edittextJoinPassword.getText())) {
                         mBinding.textviewJoinPasswordfocus.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
                     }
-                }else mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
+                } else mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
             }
         });
         BorderEditTextView.setInverseBindingListener(mBinding.edittextJoinPassword, new InverseBindingListener() {
@@ -134,13 +139,13 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
             public void onChange() {
                 String pas1 = mBinding.edittextJoinPassword.getText();
                 String pas2 = mBinding.edittextJoinConfirmpassword.getText();
-                if(!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && !(pas1.equals(pas2))){
+                if (!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && !(pas1.equals(pas2))) {
                     mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd);
                     mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.VISIBLE);
-                }else{
-                    if(!CommonUtil.validatePassword(mBinding.edittextJoinPassword.getText())){
+                } else {
+                    if (!CommonUtil.validatePassword(mBinding.edittextJoinPassword.getText())) {
                         mBinding.textviewJoinPasswordfocus.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         mBinding.textviewJoinPasswordfocus.setVisibility(View.GONE);
                         mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.GONE);
                     }
@@ -153,10 +158,10 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
             public void onChange() {
                 String pas1 = mBinding.edittextJoinPassword.getText();
                 String pas2 = mBinding.edittextJoinConfirmpassword.getText();
-                if(!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && !(pas1.equals(pas2))){
+                if (!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && !(pas1.equals(pas2))) {
                     mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd);
                     mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.VISIBLE);
-                }else mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.GONE);
+                } else mBinding.textviewJoinConfirmpasswordfocus.setVisibility(View.GONE);
                 mViewModel.setEssentialChecked(mViewModel.getEssentialChecked().get());
             }
         });
@@ -165,7 +170,7 @@ public class JoinActivity extends BindActivity<ActivityJoinBinding> {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == Flag.RequestCode.WELCOME_DIALOG && resultCode == RESULT_OK){
+        if (requestCode == Flag.RequestCode.WELCOME_DIALOG && resultCode == RESULT_OK) {
             finish();
         }
     }
