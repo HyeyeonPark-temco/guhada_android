@@ -10,12 +10,6 @@
       "client_info": {
         "mobilesdk_app_id": "1:657240037903:android:120ec4e6b04cf4f2",
         "android_client_info": {
-          "package_name": "io.temco.guhada"
-        }
-      },
-      "client_info": {
-        "mobilesdk_app_id": "1:657240037903:android:120ec4e6b04cf4f2",
-        "android_client_info": {
           "package_name": "io.temco.guhada.debug"
         }
       },

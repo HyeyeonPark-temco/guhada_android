@@ -1377,6 +1377,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 @Override
                 public void onClick(View v) {
                     CommonUtil.startSearchWordActivity((Activity) getContext(),null, mIsCategory != Type.ProductListViewType.SEARCH);
+                    ((Activity)getContext()).finish();
                 }
             });
         }else{

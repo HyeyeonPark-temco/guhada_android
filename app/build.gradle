@@ -45,6 +45,7 @@ android {
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.RELEASE"
         }
     }
+
     /**
      * @Author park jungho
      * dexOptions 추가
