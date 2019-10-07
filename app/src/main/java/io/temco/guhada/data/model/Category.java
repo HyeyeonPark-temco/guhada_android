@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.temco.guhada.common.Type;
+import io.temco.guhada.common.util.CustomLog;
 
 public class Category {
 
@@ -57,5 +58,26 @@ public class Category {
 
     public int parentId = -1;
 
-
+    @Override
+    public String toString() {
+        if(CustomLog.getFlag())return "Category{" +
+                "type=" + type +
+                ", isSelected=" + isSelected +
+                ", isExpand=" + isExpand +
+                ", depth=" + depth +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", label='" + label + '\'' +
+                ", key='" + key + '\'' +
+                ", hierarchy='" + hierarchy + '\'' +
+                ", fullDepthName='" + fullDepthName + '\'' +
+                ", immediateChildrenCount=" + immediateChildrenCount +
+                ", hierarchies=" + Arrays.toString(hierarchies) +
+                ", isUnisex=" + isUnisex +
+                ", children=" + children +
+                ", selectId=" + selectId +
+                ", parentId=" + parentId +
+                '}';
+        else return "";
+    }
 }

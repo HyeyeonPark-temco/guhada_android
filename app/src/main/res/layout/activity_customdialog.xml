@@ -5,6 +5,7 @@
     <data>
 
         <variable name="email" type="String" />
+        <import type="android.text.TextUtils" />
 
         <variable
             name="onClickOk"
@@ -78,6 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:visibility="@{TextUtils.isEmpty(email) ? View.GONE : View.VISIBLE}"
                     android:text="회원님의 아이디"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_13"/>

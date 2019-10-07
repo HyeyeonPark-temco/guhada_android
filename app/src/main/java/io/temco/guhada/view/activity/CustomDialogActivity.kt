@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.text.TextUtils
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonUtil
@@ -25,7 +26,10 @@ class CustomDialogActivity : BindActivity<io.temco.guhada.databinding.ActivityCu
 
     override fun init() {
         mViewModel = CustomDialogActivityViewModel(this)
-        mBinding.email = intent.getStringExtra("email") ?: CommonUtil.checkUserEmail()
+        var email = intent.getStringExtra("email") ?: CommonUtil.checkUserEmail()
+        if(TextUtils.isEmpty(email)){
+            mBinding.email = ""
+        }else mBinding.email = email
         mBinding.setOnClickOk {
             setResult(Activity.RESULT_OK)
             finish()

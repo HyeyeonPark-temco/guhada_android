@@ -84,7 +84,7 @@ public class Type {
     }
 
     /** Prod 여부 (true: prod; false: dev) **/
-    public static boolean isTempProd = true;
+    public static boolean isTempProd = false;
     ////////////////////////////////////////////////
     // Server
     public enum Server {
@@ -318,9 +318,9 @@ public class Type {
             case STAGE:
                 return "https://stg.guhada.com/";
             case RELEASE:
-                return "https://web.guhada.com/";
+                return "https://www.guhada.com/";
             default:
-                if(isTempProd) return "https://web.guhada.com/";
+                if(isTempProd) return "https://www.guhada.com/";
                 else return "http://dev.guhada.com/";
         }
     }

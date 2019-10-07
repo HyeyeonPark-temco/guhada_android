@@ -10,31 +10,36 @@ android {
         applicationId "io.temco.guhada"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 24
-        versionName "1.0.0"
+        versionCode 25
+        versionName "1.0.1"
 
         multiDexEnabled true
     }
     buildTypes {
         debug {
-//            applicationIdSuffix '.debug'
-            minifyEnabled false
+            debuggable true
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEBUG'
+            resValue "string", "app_name", "@string/app_name_debug"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.DEV"
         }
         qa {
 //            applicationIdSuffix '.qa'
+            resValue "string", "app_name", "@string/app_name_release"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.QA"
         }
         stage {
+            resValue "string", "app_name", "@string/app_name_release"
 //            applicationIdSuffix '.stage'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.STAGE"
         }
         release {
+            resValue "string", "app_name", "@string/app_name_release"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.RELEASE"

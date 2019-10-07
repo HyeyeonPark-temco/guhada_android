@@ -70,7 +70,6 @@ object CommonUtilKotlin  {
     fun startTermsCompany(activity: Activity)=startActivityWebview(activity,"사업자정보확인", "http://ftc.go.kr/bizCommPop.do?wrkr_no=8768601259")
 
 
-
     fun startActivityWebview(activity: Activity, title : String, url : String) {
         val intent = Intent(activity, CustomWebViewActivity::class.java)
         intent.putExtra("title",title)

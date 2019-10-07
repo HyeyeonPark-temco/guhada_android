@@ -9,6 +9,10 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.ActivityCustomwebviewBinding
 import io.temco.guhada.view.activity.base.BindActivity
 
+
+
+
+
 class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
 
     private var title = ""
@@ -22,6 +26,7 @@ class CustomWebViewActivity  : BindActivity<ActivityCustomwebviewBinding>() {
     override fun init() {
         title = intent?.extras?.getString("title") ?: ""
         url = intent?.extras?.getString("url") ?: ""
+        if(CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment",url)
         if(TextUtils.isEmpty(url)) finish()
         mBinding.title = title
         mBinding.setOnClickBackButton { finish() }

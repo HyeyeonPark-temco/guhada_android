@@ -1,6 +1,7 @@
 package io.temco.guhada.data.model.review
 
 import com.google.gson.Gson
+import io.temco.guhada.common.util.CustomLog
 
 /**
  * @author park jungho
@@ -20,6 +21,11 @@ class ReviewWrMdResponse {
     var reviewId  = 0L
     var textReview = ""
     var reviewPhotos : MutableList<ReviewPhoto> = mutableListOf()
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "ReviewWrMdResponse(colorSatisfaction='$colorSatisfaction', lengthSatisfaction='$lengthSatisfaction', orderProductGroupId=$orderProductGroupId, productRating='$productRating', sellerId=$sellerId, sizeSatisfaction='$sizeSatisfaction', productId=$productId, reviewId=$reviewId, textReview='$textReview', reviewPhotos=$reviewPhotos)"
+        else return ""
+    }
 
 
 }

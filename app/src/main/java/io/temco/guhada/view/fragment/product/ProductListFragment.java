@@ -172,6 +172,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             if(filterBody == null){
                 filterBody = new FilterBody();
                 filterBody.brandIds.add(mId);
+            }else{
+                filterBody.brandIds.clear();
             }
         } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
             if(filterBody == null){
@@ -188,6 +190,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void setLoadData(boolean isInit){
         // Data
+        if(CustomLog.getFlag())CustomLog.L("onTabSelected","setLoadData");
         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
             getProductListByCategory(isInit);
         } else if (mIsCategory == Type.ProductListViewType.BRAND)  {
@@ -223,6 +226,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mCategoryData = data;
                 mId = data.id;
                 setTabLayout();
+                initFilterBody();
+                if(CustomLog.getFlag())CustomLog.L("onTabSelected","onUpdate");
                 getProductListByCategory(false);
             }
         }
@@ -423,6 +428,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     TextView text = tab.getCustomView().findViewById(R.id.text_title);
                     text.setTypeface(null, Typeface.BOLD);
                     if (tab.getTag() != null && tab.getTag() instanceof Category) {
+                        if(CustomLog.getFlag())CustomLog.L("onTabSelected","tab.getTag", ((Category) tab.getTag()).toString());
                         loadCategory((Category) tab.getTag(), false);
                     }
                 }
@@ -495,6 +501,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else {
             if (!isReselected) {
                 mId = data.id;
+                filterBody.categoryIds.clear();
+                filterBody.categoryIds.add(mId);
                 getProductListByCategory(true);
             }
         }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.search.ProductSearchFilterValue;
 
 public class FilterBody {
@@ -52,4 +53,16 @@ public class FilterBody {
     @SerializedName("searchCondition")
     public String searchCondition;
 
+    @Override
+    public String toString() {
+        if(CustomLog.getFlag())return "FilterBody{" +
+                "brandIds=" + brandIds +
+                ", categoryIds=" + categoryIds +
+                ", filters=" + filters +
+                ", searchQueries=" + searchQueries +
+                ", searchResultOrder='" + searchResultOrder + '\'' +
+                ", searchCondition='" + searchCondition + '\'' +
+                '}';
+        else return "";
+    }
 }

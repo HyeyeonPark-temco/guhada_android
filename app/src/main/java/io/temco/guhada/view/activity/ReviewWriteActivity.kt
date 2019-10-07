@@ -18,7 +18,6 @@ import io.temco.guhada.common.listener.OnClickSelectItemListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.ImageResponse
 import io.temco.guhada.data.model.review.*
-import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.viewmodel.ReviewWriteViewModel
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.ReviewWriteImageAdapter
@@ -335,25 +334,32 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             reviewId = 0
             productId = item!!.productId
         }
-        loadingIndicatorUtil?.dismiss()
-        if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify",mViewModel.modifyReviewStatus.get()," data",data)
-        mViewModel.clickReviewWriteOrModify(data, productId, reviewId , object  : OnCallBackListener{
-            override fun callBackListener(resultFlag: Boolean, value: Any) {
-                loadingIndicatorUtil?.dismiss()
-                if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","resultFlag",resultFlag,"value",value)
-                if(resultFlag){
-                    if(mViewModel.modifyReviewStatus.get()){
-                        ToastUtil.showMessage("리뷰 수정이 완료되었습니다.")
-                        setResult(Activity.RESULT_OK)
-                        finish()
-                    }else{
-                        //CommonUtil.startPointDialogActivity(this@ReviewWriteActivity, 1)
-                        this@ReviewWriteActivity.setResult(Activity.RESULT_OK)
-                        this@ReviewWriteActivity.finish()
+        loadingIndicatorUtil?.show()
+        //if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify",mViewModel.modifyReviewStatus.get()," data",data)
+
+        if(data.sellerId > 0){
+            mViewModel.clickReviewWriteOrModify(data, productId, reviewId , object  : OnCallBackListener{
+                override fun callBackListener(resultFlag: Boolean, value: Any) {
+                    loadingIndicatorUtil?.dismiss()
+                    if(CustomLog.flag)CustomLog.L("clickReviewWriteOrModify","resultFlag",resultFlag,"value",value)
+                    if(resultFlag){
+                        if(mViewModel.modifyReviewStatus.get()){
+                            ToastUtil.showMessage("리뷰 수정이 완료되었습니다.")
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }else{
+                            //CommonUtil.startPointDialogActivity(this@ReviewWriteActivity, 1)
+                            this@ReviewWriteActivity.setResult(Activity.RESULT_OK)
+                            this@ReviewWriteActivity.finish()
+                        }
                     }
                 }
-            }
-        })
+            })
+        }else{
+            CustomMessageDialog(message = "데이터에 오류가 있습니다.\n구하다로 문의 부탁드립니다.[RWA_SI0]", cancelButtonVisible = false,
+                    confirmTask = {
+                    }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
+        }
     }
 
     private fun imageCheck(){
