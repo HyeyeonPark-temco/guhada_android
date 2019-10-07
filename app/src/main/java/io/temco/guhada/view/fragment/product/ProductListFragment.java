@@ -1265,7 +1265,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     if (mProductListData == null) mProductListData = (ProductList) o;
                     if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.toString());
                 }
-                emptyView("검색결과가 없습니다.");
+                emptyView("");
             }
             mIsLoading = false;
             mLoadingIndicator.hide();
@@ -1305,7 +1305,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null) mProductListData = (ProductList) o;
                 }
-                emptyView("검색결과가 없습니다.");
+                emptyView("");
             }
             mIsLoading = false;
             mLoadingIndicator.hide();
@@ -1333,7 +1333,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null) mProductListData = (ProductList) o;
                 }
-                emptyView("'"+mText+"'에 대한검색결과가 없습니다.");
+                emptyView("'"+mText.replace("\\n"," ")+"'");
             }
             mIsLoading = false;
             mLoadingIndicator.hide();
@@ -1361,7 +1361,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null) mProductListData = (ProductList) o;
                 }
-                emptyView("'"+mText+"'에 대한검색결과가 없습니다.");
+                emptyView("");
             }
             mIsLoading = false;
             mLoadingIndicator.hide();
@@ -1370,12 +1370,17 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     private void emptyView(String msg){
         if(mListAdapter.getItemCount() == 0){
-            mBinding.listContentsEmpty.setVisibility(View.VISIBLE);
+            mBinding.listContentsEmpty.layoutSearchResultEmpty.setVisibility(View.VISIBLE);
             mBinding.listContents.setVisibility(View.GONE);
-            String txt = msg;
-            mBinding.textviewProductlistEmpty.setText(txt);
+            mBinding.listContentsEmpty.setSearchMsg(msg);
+            mBinding.listContentsEmpty.setClickListenerClear(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CommonUtil.startSearchWordActivity((Activity) getContext(),null, mIsCategory != Type.ProductListViewType.SEARCH);
+                }
+            });
         }else{
-            mBinding.listContentsEmpty.setVisibility(View.GONE);
+            mBinding.listContentsEmpty.layoutSearchResultEmpty.setVisibility(View.GONE);
             mBinding.listContents.setVisibility(View.VISIBLE);
         }
     }

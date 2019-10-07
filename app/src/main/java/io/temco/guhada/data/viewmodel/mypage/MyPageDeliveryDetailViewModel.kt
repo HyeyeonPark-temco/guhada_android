@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.listener.OnServerListener
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.ExpectedRefundPrice
 import io.temco.guhada.data.model.order.PurchaseOrder
@@ -63,6 +64,7 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             val data = it.data as PurchaseOrderResponse
+                            if(CustomLog.flag)CustomLog.L("getOrder","data",data)
                             this.purchaseOrderResponse = data
                             if(data.orderList != null){
                                 refundIsValidVisible.set(data.orderList[0].purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status)

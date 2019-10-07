@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.order
 
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.shippingaddress.ShippingAddress
 import io.temco.guhada.data.model.payment.Payment
 import java.io.Serializable
@@ -37,5 +38,11 @@ class PurchaseOrderResponse : Serializable {
         else
             0
     }
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "PurchaseOrderResponse(defaultAddress=$defaultAddress, orderList=$orderList, orderNumber=$orderNumber, payment=$payment, pgTid='$pgTid', shippingAddress=$shippingAddress, totalPaymentPrice=$totalPaymentPrice, totalProdPrice=$totalProdPrice, totalShipPrice=$totalShipPrice, buyerName='$buyerName', buyerEmail='$buyerEmail', buyerPhone='$buyerPhone', couponPointProdDiscountPrice=$couponPointProdDiscountPrice, couponDiscountPrice=$couponDiscountPrice, totalDiscountDiffPrice=$totalDiscountDiffPrice, totalPointPayment=$totalPointPayment, totalAmount=$totalAmount)"
+        else return ""
+    }
+
 
 }

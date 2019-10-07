@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="searchMsg" type="String" />
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View" />
+        <variable
+            name="clickListenerClear"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_searchResult_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/icon_no_data"
+            android:visibility="@{TextUtils.isEmpty(searchMsg) ? View.VISIBLE : View.GONE}"/>
+
+        <TextView
+            style="@style/TextRegular"
+            android:id="@+id/textview_productlist_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="@{searchMsg}"
+            android:visibility="@{TextUtils.isEmpty(searchMsg) ? View.GONE : View.VISIBLE}"
+            android:textSize="@dimen/text_20"
+            android:textColor="@color/blue_purple" />
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="@dimen/text_20"
+            android:text="검색결과가 없습니다."
+            android:textColor="@color/text_1"/>
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="@dimen/text_13"
+            android:visibility="@{TextUtils.isEmpty(searchMsg) ? View.GONE : View.VISIBLE}"
+            android:text="검색 옵션을 변경하여 다시 검색해 보세요."
+            android:textColor="@color/text_2"/>
+
+        <Button
+            style="@style/TextRegular"
+            android:layout_width="156dp"
+            android:layout_height="45dp"
+            android:background="@color/greyish_brown_two"
+            android:textSize="@dimen/text_13"
+            android:textColor="@color/common_white"
+            android:visibility="@{TextUtils.isEmpty(searchMsg) ? View.GONE : View.VISIBLE}"
+            android:onClick="@{clickListenerClear}"
+            android:text="검색 초기화"/>
+    </LinearLayout>
+</layout>

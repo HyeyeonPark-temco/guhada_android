@@ -135,7 +135,7 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/mypage_deliverydetail_shippinginfo_shippingname"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippinginfo_title" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippinginfo_title" />
 
                 <TextView
                     android:id="@+id/textview_deliverydetail_shippingaddress_title"
@@ -145,7 +145,7 @@
                     android:layout_marginTop="18dp"
                     android:text="@string/mypage_deliverydetail_shippinginfo_address"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingname_title" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingname_title" />
 
                 <TextView
                     android:id="@+id/textview_deliverydetail_shippingrecipientname_title"
@@ -155,7 +155,7 @@
                     android:layout_marginTop="18dp"
                     android:text="@string/mypage_deliverydetail_shippinginfo_recipientname"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingaddress_title" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingaddress_content" />
 
                 <TextView
                     android:id="@+id/textview_deliverydetail_shippingrecipientphone_title"
@@ -165,7 +165,7 @@
                     android:layout_marginTop="18dp"
                     android:text="@string/mypage_deliverydetail_shippinginfo_recipientphone"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientname_title" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingrecipientname_title" />
 
                 <TextView
                     android:id="@+id/textview_deliverydetail_shippingmemo_title"
@@ -175,7 +175,7 @@
                     android:layout_marginTop="18dp"
                     android:text="@string/mypage_deliverydetail_shippinginfo_memo"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientphone_title" />
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingrecipientphone_title" />
 
                 <TextView
                     android:id="@+id/textview_deliverydetail_shippingname_content"
@@ -185,18 +185,19 @@
                     android:layout_marginStart="27dp"
                     android:layout_marginTop="24dp"
                     android:text="@{viewModel.purchaseOrderResponse.shippingAddress.addressName}"
-                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingname_title"
+                    app:layout_constraintLeft_toRightOf="@id/textview_deliverydetail_shippingname_title"
                     app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippinginfo_title" />
 
                 <TextView
                     android:id="@+id/textview_deliverydetail_shippingaddress_content"
                     style="@style/MypageDeliveryWarmGreyTextStyle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="27dp"
                     android:layout_marginTop="18dp"
+                    android:layout_marginStart="27dp"
                     android:text="@{viewModel.purchaseOrderResponse.shippingAddress.roadAddress + ` ` +  viewModel.purchaseOrderResponse.shippingAddress.addressDetail}"
-                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingaddress_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/textview_deliverydetail_shippingaddress_title"
                     app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingname_content" />
 
                 <TextView
@@ -207,8 +208,8 @@
                     android:layout_marginStart="27dp"
                     android:layout_marginTop="18dp"
                     android:text="@{viewModel.purchaseOrderResponse.shippingAddress.receiverName}"
-                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingrecipientname_title"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingaddress_content" />
+                    app:layout_constraintLeft_toRightOf="@id/textview_deliverydetail_shippingrecipientname_title"
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingaddress_content" />
 
 
                 <TextView
@@ -219,8 +220,8 @@
                     android:layout_marginStart="27dp"
                     android:layout_marginTop="18dp"
                     android:text="@{viewModel.purchaseOrderResponse.shippingAddress.phone}"
-                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingrecipientphone_title"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientname_content" />
+                    app:layout_constraintLeft_toRightOf="@id/textview_deliverydetail_shippingrecipientphone_title"
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingrecipientname_content" />
 
 
                 <TextView
@@ -231,8 +232,8 @@
                     android:layout_marginStart="27dp"
                     android:layout_marginTop="18dp"
                     android:text="@{viewModel.purchaseOrderResponse.shippingAddress.message}"
-                    app:layout_constraintLeft_toRightOf="@+id/textview_deliverydetail_shippingmemo_title"
-                    app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_shippingrecipientphone_content" />
+                    app:layout_constraintLeft_toRightOf="@id/textview_deliverydetail_shippingmemo_title"
+                    app:layout_constraintTop_toBottomOf="@id/textview_deliverydetail_shippingrecipientphone_content" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
