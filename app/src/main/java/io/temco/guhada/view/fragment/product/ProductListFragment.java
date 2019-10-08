@@ -269,7 +269,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 break;
 
             case R.id.layout_search_detail:
-                 showDetailSearchDialog();
+                showDetailSearchDialog();
                 break;
 
             // Tag
@@ -308,7 +308,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
                 ((ProductFilterListActivity)getContext()).finish();
                 ((ProductFilterListActivity)getContext()).overridePendingTransition(R.anim.fade, R.anim.fade);
-            break;
+                break;
         }
     }
 
@@ -427,6 +427,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 public void onTabSelected(TabLayout.Tab tab) {
                     TextView text = tab.getCustomView().findViewById(R.id.text_title);
                     text.setTypeface(null, Typeface.BOLD);
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mCategoryData.selectId onTabSelected");
                     if (tab.getTag() != null && tab.getTag() instanceof Category) {
                         if(CustomLog.getFlag())CustomLog.L("onTabSelected","tab.getTag", ((Category) tab.getTag()).toString());
                         loadCategory((Category) tab.getTag(), false);
@@ -441,11 +442,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
                 @Override
                 public void onTabReselected(TabLayout.Tab tab) {
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mCategoryData.selectId onTabReselected");
                     if (tab.getTag() != null && tab.getTag() instanceof Category) {
                         loadCategory((Category) tab.getTag(), true);
                     }
                 }
             });
+            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mCategoryData.selectId ",mCategoryData.selectId );
             if(mCategoryData.selectId != -1){
                 mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
                     @Override
@@ -1406,12 +1409,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (((AppCompatActivity)getContext()).getSupportFragmentManager() != null) {
             if (mBrandListDialog == null) {
                 mBrandListDialog = new BrandListDialog();
-                mBrandListDialog.setOnBrandListener(new OnBrandListener() {
-                        @Override
-                        public void onEvent(Brand brand) {
-                            CommonUtil.startBrandScreen(((AppCompatActivity)getContext()), brand, true);
+                mBrandListDialog.setOnBrandListener(
+                        new OnBrandListener() {
+                            @Override
+                            public void onEvent(Brand brand) {
+                                CommonUtil.startBrandScreen(((AppCompatActivity)getContext()), brand, true);
+                            }
                         }
-                    }
                 );
             }
             mBrandListDialog.show(((AppCompatActivity)getContext()).getSupportFragmentManager(), "ProductFilterListActivity");

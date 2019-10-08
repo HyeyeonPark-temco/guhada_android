@@ -14,6 +14,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.data.model.ReportUserModel
 import io.temco.guhada.common.enum.BookMarkTarget
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewResponseContent
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel
@@ -89,7 +90,6 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
             mBinding.framelayoutProductdetailReviewfiles.visibility = if (list?.isEmpty() != false) View.GONE else View.VISIBLE
             mBinding.linearlayoutProductdetailReviewfilescount.visibility = if (list?.size ?: 0 > 1) View.VISIBLE else View.GONE
 
-
             mBinding.imageviewProdudctdetailReviewlike.setOnClickListener {
                 if (it.tag == "false") {
                     mViewModel.saveLike(reviewContent.review.id, successTask = {
@@ -120,6 +120,8 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
             })
 
             mBinding.viewModel = mViewModel
+
+            if(CustomLog.flag) CustomLog.L("convertDateTimeFormat","reviewContent",reviewContent.review)
             mBinding.executePendingBindings()
         }
     }

@@ -23,6 +23,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.model.user.UserSize
+import io.temco.guhada.data.model.user.UserUpdateInfo
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -62,7 +63,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
 
 
     // 유저 닉네임 중복 체크
-    var nickName = ""
+
     var isNickNameFocus = false
     var mIsNicknameValid = ObservableBoolean(true)
         @Bindable
@@ -73,6 +74,14 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     var mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.white_four))
         @Bindable
         get() = field
+
+    var checkGenderValue = ObservableField<String>("")
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.checkGenderValue)
+        }
 
     // 환불 계좌 정보
     var mRefundBanks = MutableLiveData<MutableList<PurchaseOrder.Bank>>()
@@ -90,7 +99,13 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
         this.mRefundRequest.addObserver(this)
     }
 
-    fun getUserByNickName(listener: OnCallBackListener?) {
+    fun clickGenderButton(value : String){
+        if(CustomLog.flag)CustomLog.L("clickGenderButton","value",value)
+        checkGenderValue.set(value)
+        mUser.value!!.userGender = value
+    }
+
+    fun getUserByNickName(nickname : String, listener: OnCallBackListener?) {
         isNickNameFocus = false
         UserServer.getUserByNickName(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -107,13 +122,13 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
                         mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.common_blue_purple))
                         mNickNameCheckIconVisible = ObservableBoolean(true)
                         mIsNicknameValid = ObservableBoolean(true)
-                        mUser.value!!.nickname = nickName
+                        mUser.value!!.nickname = nickname
                         notifyPropertyChanged(BR.mIsNicknameValid)
                         notifyPropertyChanged(BR.mNickNameCheckIconVisible)
                         notifyPropertyChanged(BR.mNickNameBg)
                         listener?.callBackListener(true, "dataNotFoundTask")
                     })
-        }, nickName = nickName)
+        }, nickName = nickname)
     }
 
     fun getRefundBanks() {
@@ -182,6 +197,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
             "GOOGLE"-> mypageUserInfoLoginCheckType.set(4)
         }
     }
+
 }
 
 
@@ -252,6 +268,29 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
                         }, accessToken = it)
                     }
                 }, invalidTokenTask = { })
+    }
+
+
+    fun updateUserInfo(info : UserUpdateInfo, listener: OnCallBackListener){
+        ServerCallbackUtil.callWithToken(
+                task = {
+                    if (it != null){
+                        UserServer.updateUserInfo(OnServerListener { success, o ->
+                            ServerCallbackUtil.executeByResultCode(success, o,
+                                    successTask = {
+                                        var data = (o as BaseModel<*>).data
+                                        if(CustomLog.flag)CustomLog.L("updateUserInfo","data",data)
+                                        listener.callBackListener(true, data)
+                                    },
+                                    dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
+                                    failedTask = { listener.callBackListener(false, "failedTask")  },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "")  },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask")  },
+                                    dataIsNull = { listener.callBackListener(false, "dataIsNull")  }
+                            )
+                        }, accessToken = it,userId = mViewModel.userId, userInfo = info)
+                    }
+                }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
 
 }

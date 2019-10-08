@@ -24,7 +24,9 @@
     <!-- COMMON -->
     <!--<string name="app_name">Guhada</string>-->
     <string name="app_name_release">Guhada</string>
-    <string name="app_name_debug">Guhada Dev_Test</string>
+    <string name="app_name_debug">Guhada Dev</string>
+    <string name="app_name_qa">Guhada Qa</string>
+    <string name="app_name_stage">Guhada Stage</string>
     <string name="app_logo_sub_title">쇼핑의 즐거움을 구하다</string>
     <string name="app_copyright">Ⓒ 2019 GUHADA</string>
 
@@ -991,8 +993,7 @@
     <!-- MyPage FRAGMENT
         <item>메인</item>
         <item>회원등급</item>
-        <item>회원정보</item>
-        <item>회원정보수정</item>-->
+        <item>회원정보</item>-->
     <string-array name="mypage_titles">
         <item>주문배송</item>
         <item>취소・교환・반품</item>
@@ -1004,6 +1005,7 @@
         <item>상품 리뷰</item>
         <item>상품 문의</item>
         <item>배송지 관리</item>
+        <item>회원정보수정</item>
     </string-array>
 
     <string name="mypage_userinfo_passwaord_desc"><![CDATA[안전한 회원정보 변경을 위해<br><font color="#5d2ed1">비밀번호</font>를 다시 한번 입력해 주세요.]]></string>

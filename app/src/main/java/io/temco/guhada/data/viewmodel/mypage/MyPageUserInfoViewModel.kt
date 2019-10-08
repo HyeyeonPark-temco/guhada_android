@@ -58,6 +58,7 @@ class MyPageUserInfoViewModel(val context: Context) : BaseObservableViewModel(),
             notifyPropertyChanged(BR.checkPasswordConfirm)
         }
 
+
     // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
     var mypageUserInfoLoginCheckType = ObservableInt(0)
         @Bindable

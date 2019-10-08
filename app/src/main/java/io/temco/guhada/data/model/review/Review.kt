@@ -2,6 +2,9 @@ package io.temco.guhada.data.model.review
 
 import android.annotation.SuppressLint
 import android.os.Build
+import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.DateUtil
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 
@@ -30,8 +33,9 @@ class Review {
     var productRating = ""
     var profileImageUrl = ""
     var textReview = ""
+    var createdAtTimestamp = 0L
     var createdAt = ""
-        get() = convertDateTimeFormat(field)
+        get() = convertDateTimeFormat(createdAtTimestamp)
 
     fun getRating(): Float = when (productRating) {
         "HALF" -> 0.5f
@@ -71,12 +75,31 @@ class Review {
         }
     }
 
+
+    /**
+     * @author park jungho
+     * Long 형태 추가
+     */
+    private fun convertDateTimeFormat(str: Long?): String {
+        return if (str != null) {
+            DateUtil.getCalendarToString(Type.DateFormat.TYPE_4, str)
+        } else {
+            ""
+        }
+    }
+
     /// 추후 Util로 분리 예정
     private fun plusZero(number: Int): String = if (number < 10) {
         "0$number"
     } else {
         number.toString()
     }
+
+    override fun toString(): String {
+        if(CustomLog.flag)return "Review(id=$id, userId=$userId, orderProductGroupId=$orderProductGroupId, productId=$productId, sizeSatisfaction='$sizeSatisfaction', colorSatisfaction='$colorSatisfaction', lengthSatisfaction='$lengthSatisfaction', photoCount=$photoCount, likeCount=$likeCount, bookmarkCount=$bookmarkCount, userNickname='$userNickname', productRating='$productRating', profileImageUrl='$profileImageUrl', textReview='$textReview', createdAtTimestamp=$createdAtTimestamp)"
+        else return ""
+    }
+
 
 }
 

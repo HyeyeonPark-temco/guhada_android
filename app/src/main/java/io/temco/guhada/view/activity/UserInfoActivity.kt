@@ -1,10 +1,13 @@
 package io.temco.guhada.view.activity
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.text.Editable
 import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
+import android.widget.DatePicker
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
@@ -27,6 +30,7 @@ import io.temco.guhada.databinding.ActivityUserinfoBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
+import java.util.*
 
 /**
  * @author park jungho
@@ -39,8 +43,10 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
     private lateinit var mViewModel: UserInfoViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+    private lateinit var datePicker : DatePickerDialog
     private var isPassFocus = false
     private var loginType = -1
+
 
 
     override fun getBaseTag() = this::class.simpleName.toString()
@@ -62,7 +68,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             if (CustomLog.flag) CustomLog.L("UserInfoActivity", "mViewModel.isNickNameFocus", mViewModel.isNickNameFocus)
             if (CustomLog.flag) CustomLog.L("UserInfoActivity", "mViewModel.mIsNicknameValid", mViewModel.mIsNicknameValid.get())
             if (mViewModel.isNickNameFocus && mViewModel.mIsNicknameValid.get()) {
-                mViewModel.getUserByNickName(object : OnCallBackListener {
+                mViewModel.getUserByNickName(mBinding.edittextMypageuserinfoNickname.text.toString(), object : OnCallBackListener {
                     override fun callBackListener(resultFlag: Boolean, value: Any) {
                         sendData()
                     }
@@ -111,19 +117,40 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     }
 
     private fun sendData(){
-        if(!TextUtils.isEmpty(mBinding.textviewJoinPasswordfocus.text) &&
-                !TextUtils.isEmpty(mBinding.textviewJoinConfirmpasswordfocus.text) &&
-                CommonUtil.validatePassword(mBinding.textviewJoinPasswordfocus.text.toString()) &&
-                mBinding.textviewJoinPasswordfocus.text.equals(mBinding.textviewJoinConfirmpasswordfocus.text)){
-            mViewModel.mUser.value!!.password = mBinding.textviewJoinPasswordfocus.text.toString()
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
-            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null, false) }
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
-        }else{
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
-            var userUpInfo = UserUpdateInfo().apply { setData(mViewModel.mUser.value!!,null, false) }
-            if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
+        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init edittextJoinPassword",mBinding.edittextJoinPassword.text.toString())
+        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init edittextJoinConfirmpassword",mBinding.edittextJoinConfirmpassword.text.toString())
+        var userUpInfo : UserUpdateInfo = UserUpdateInfo().apply {
+            if(!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())){
+                if(!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&
+                        CommonUtil.validatePassword(mBinding.edittextJoinPassword.text.toString()) && mBinding.edittextJoinPassword.text.toString() == mBinding.edittextJoinConfirmpassword.text.toString()) {
+                    setData(mViewModel.mUser.value!!, mBinding.edittextJoinPassword.text.toString(), null, false, false)
+                }else if(mBinding.edittextJoinPassword.text.toString() != mBinding.edittextJoinConfirmpassword.text.toString()){
+                    CommonViewUtil.showDialog(this@UserInfoActivity, resources.getString(R.string.findpwd_message_notequalpwd), false,  false)
+                    return
+                }else if(!CommonUtil.validatePassword(mBinding.edittextJoinPassword.text.toString()) && mBinding.edittextJoinPassword.text.toString() == mBinding.edittextJoinConfirmpassword.text.toString()){
+                    CommonViewUtil.showDialog(this@UserInfoActivity, resources.getString(R.string.findpwd_message_invalidformat), false,  false)
+                    return
+                }else{
+                    CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 비밀번호를 확인해 주세요.", false,  false)
+                    return
+                }
+            }else{
+                setData(mViewModel.mUser.value!!,null, null,false,false)
+            }
         }
+        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+
+        mViewModel.repository.updateUserInfo(userUpInfo, object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag)CustomLog.L("updateUserInfo callBackListener","value",value)
+                if(resultFlag) {
+                    CommonViewUtil.showDialog(this@UserInfoActivity, "회원정보를 수정하였습니다.", false, true)
+                }else{
+                    CommonViewUtil.showDialog(this@UserInfoActivity, "회원정보 수정중 오류가 발생되었습니다.\n[$value.toString()]", false,  false)
+                }
+            }
+        })
     }
 
     private fun checkUserLogin(): Boolean {
@@ -150,7 +177,14 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mBinding.user = mViewModel.mUser.value!!
                 mBinding.includeMypageuserinfoBank.user = mViewModel.mUser.value!!
-                mViewModel.nickName = mViewModel.mUser.value!!.name?:""
+                mBinding.edittextMypageuserinfoNickname.text = Editable.Factory.getInstance().newEditable(mViewModel.mUser.value!!.nickname ?:"")
+
+                // 생년월일
+                setBirth()
+
+                // 성별
+                mViewModel.checkGenderValue.set(mViewModel.mUser.value!!.userGender)
+
                 mBinding.executePendingBindings()
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "mViewModel.user", mViewModel.mUser.value!!)
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "userEmail -----", mViewModel.userEmail)
@@ -183,6 +217,44 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             if (mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
             (this@UserInfoActivity).startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
         }
+
+        mBinding.setOnClickEmailButton {
+            mViewModel.mUser.value!!.agreeEmailReception = !mViewModel.mUser.value!!.agreeEmailReception
+            mBinding.checkboxMypageuserinfoEmail.setImageResource(if(mViewModel.mUser.value!!.agreeEmailReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
+        }
+        mBinding.setOnClickSmsButton {
+            mViewModel.mUser.value!!.agreeSmsReception = !mViewModel.mUser.value!!.agreeSmsReception
+            mBinding.checkboxMypageuserinfoSms.setImageResource(if(mViewModel.mUser.value!!.agreeSmsReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
+        }
+    }
+
+    private fun setBirth(){
+        var cal = Calendar.getInstance()
+        if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet","birth",mViewModel.mUser.value?.birth ?: "")
+        if(!TextUtils.isEmpty(mViewModel.mUser.value?.birth)){
+            var birth = mViewModel.mUser.value?.birth!!.split("-")
+            if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet","birth",birth)
+            mBinding.textviewMypageuserinfoBirthY.text = birth[0]+" 년"
+            mBinding.textviewMypageuserinfoBirthM.text = birth[1]+" 월"
+            mBinding.textviewMypageuserinfoBirthD.text = birth[2]+" 일"
+            cal.apply {
+                set(Calendar.YEAR, birth[0].toInt())
+                set(Calendar.MONTH, (birth[1].toInt()-1))
+                set(Calendar.DAY_OF_MONTH, birth[2].toInt())
+            }
+        }
+        if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet format",String.format("%04d-%02d-%02d",cal.get(Calendar.YEAR),(cal.get(Calendar.MONTH)+1),cal.get(Calendar.DAY_OF_MONTH)))
+        mBinding.setOnClickDateButton {
+            datePicker = DatePickerDialog(this@UserInfoActivity, object :DatePickerDialog.OnDateSetListener{
+                override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                    if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet OnDateSetListener",String.format("%04d-%02d-%02d",year,(month+1),dayOfMonth))
+                    mViewModel.mUser.value!!.birth = String.format("%04d-%02d-%02d",year,(month+1),dayOfMonth)
+                    setBirth()
+                }
+            },cal.get(Calendar.YEAR),(cal.get(Calendar.MONTH)),cal.get(Calendar.DAY_OF_MONTH))
+            datePicker.show()
+        }
+        //mBinding.executePendingBindings()
     }
 
     private fun redirectUserInfoVerifyActivity(isEmail: Boolean) {
@@ -291,7 +363,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         mBinding.edittextMypageuserinfoNickname.setOnFocusChangeListener { v, hasFocus ->
             if (!mViewModel.isNickNameFocus) mViewModel.isNickNameFocus = hasFocus
             if (mViewModel.isNickNameFocus && !hasFocus) {
-                mViewModel.getUserByNickName(null)
+                mViewModel.getUserByNickName(mBinding.edittextMypageuserinfoNickname.text.toString(), null)
             }
         }
     }

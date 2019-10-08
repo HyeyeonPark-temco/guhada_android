@@ -7,10 +7,7 @@ import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
-import io.temco.guhada.data.model.user.LikesModel
-import io.temco.guhada.data.model.user.SnsUser
-import io.temco.guhada.data.model.user.User
-import io.temco.guhada.data.model.user.UserSize
+import io.temco.guhada.data.model.user.*
 import kotlinx.coroutines.Deferred
 import org.json.JSONObject
 import retrofit2.Call
@@ -559,4 +556,12 @@ interface UserService {
      */
     @POST("/notification/mobile/id")
     fun sendEmailToPhone(@Body jsonObject: JsonObject) : Call<BaseModel<Any>>
+
+
+    /**
+     * 회원 정보 수정하기
+     * @param userId
+     */
+    @PUT("/users/{userId}")
+    fun updateUserInfo(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body userinfo: UserUpdateInfo): Call<BaseModel<JsonObject>>
 }

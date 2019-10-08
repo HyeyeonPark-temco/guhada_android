@@ -24,6 +24,14 @@
             type="android.view.View.OnClickListener" />
 
         <variable
+            name="onClickDateButton"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClickGenderButton"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="user"
             type="io.temco.guhada.data.model.user.User" />
 
@@ -589,16 +597,14 @@
                             android:gravity="center_vertical"
                             android:onClick="@{onClickSmsButton}">
 
-                            <CheckBox
+                            <ImageView
                                 android:id="@+id/checkbox_mypageuserinfo_sms"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/selector_checkbox_all"
-                                android:button="@null"
-                                android:checked="@{user.agreeSmsReception}" />
+                                android:background="@drawable/checkbox_inactive"
+                                android:src="@{user.agreeSmsReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
 
                             <TextView
-                                android:id="@+id/textview_mypageuserinfo_sms"
                                 style="@style/TextMedium"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -616,13 +622,12 @@
                             android:gravity="center_vertical"
                             android:onClick="@{onClickEmailButton}">
 
-                            <CheckBox
+                            <ImageView
                                 android:id="@+id/checkbox_mypageuserinfo_email"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/selector_checkbox_all"
-                                android:button="@null"
-                                android:checked="@{user.agreeEmailReception}" />
+                                android:background="@drawable/checkbox_inactive"
+                                android:src="@{user.agreeEmailReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
 
                             <TextView
                                 style="@style/TextMedium"
@@ -1050,6 +1055,7 @@
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:orientation="horizontal"
+                        android:onClick="@{onClickDateButton}"
                         android:weightSum="14">
 
                         <LinearLayout
@@ -1068,6 +1074,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
+                                android:gravity="center"
                                 android:layout_weight="1"
                                 android:text="@string/mypage_userinfo_passwaord_infotitle23"
                                 android:textSize="@dimen/text_13" />
@@ -1098,6 +1105,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
+                                android:gravity="center"
                                 android:layout_weight="1"
                                 android:text="@string/mypage_userinfo_passwaord_infotitle24"
                                 android:textSize="@dimen/text_13" />
@@ -1127,6 +1135,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
+                                android:gravity="center"
                                 android:layout_weight="1"
                                 android:text="@string/mypage_userinfo_passwaord_infotitle25"
                                 android:textSize="@dimen/text_13" />
@@ -1170,15 +1179,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:onClick='@{()->viewModel.clickGenderButton("MALE")}'
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <RadioButton
+                            <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/selector_ovalradiobutton_all"
-                                android:checked='@{!TextUtils.isEmpty(user.userGender) ?(user.userGender.equals("MALE") ? true : false) : false}'
-                                android:button="@null" />
+                                android:background='@{!TextUtils.isEmpty(viewModel.checkGenderValue) ?(viewModel.checkGenderValue.equals("MALE") ?  @drawable/radio_checked : @drawable/radio_select) : @drawable/radio_select}' />
 
                             <TextView
                                 style="@style/TextMedium"
@@ -1194,15 +1202,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:onClick='@{()->viewModel.clickGenderButton("FEMALE")}'
+                            android:tag="FEMALE"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
-                            <RadioButton
+                            <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/selector_ovalradiobutton_all"
-                                android:checked='@{!TextUtils.isEmpty(user.userGender) ?(user.userGender.equals("FEMALE") ? true : false) : false}'
-                                android:button="@null" />
+                                android:background='@{!TextUtils.isEmpty(viewModel.checkGenderValue) ?(viewModel.checkGenderValue.equals("FEMALE") ? @drawable/radio_checked : @drawable/radio_select) : @drawable/radio_select}' />
 
                             <TextView
                                 style="@style/TextMedium"

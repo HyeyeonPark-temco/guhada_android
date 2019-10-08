@@ -16,10 +16,7 @@ import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
-import io.temco.guhada.data.model.user.LikesModel
-import io.temco.guhada.data.model.user.SnsUser
-import io.temco.guhada.data.model.user.User
-import io.temco.guhada.data.model.user.UserSize
+import io.temco.guhada.data.model.user.*
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.UserService
 import kotlinx.coroutines.Deferred
@@ -1025,6 +1022,23 @@ class UserServer {
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                            if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
+                            listener.onResult(false, t.message)
+                        }
+                    })
+        }
+
+
+
+
+        @JvmStatic
+        fun updateUserInfo(listener: OnServerListener, accessToken : String, userId : Long, userInfo: UserUpdateInfo) {
+            RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
+                    .updateUserInfo(accessToken, userId, userInfo).enqueue(object : Callback<BaseModel<JsonObject>> {
+                        override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
+                            resultListener(listener, call, response)
+                        }
+                        override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }

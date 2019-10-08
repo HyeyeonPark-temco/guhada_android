@@ -22,6 +22,15 @@ object DateUtil {
         return getCalendarToString(type, c)
     }
 
+
+    // Calendar String 변환
+    @SuppressLint("SimpleDateFormat")
+    fun getCalendarToString(type: Type.DateFormat, mt: Long): String {
+        var c = Calendar.getInstance().apply { timeInMillis = mt }
+        val f = SimpleDateFormat(Type.DateFormat.get(type))
+        return f.format(c.time)
+    }
+
     // Calendar String 변환
     @SuppressLint("SimpleDateFormat")
     fun getCalendarToString(type: Type.DateFormat, c: Calendar): String {
