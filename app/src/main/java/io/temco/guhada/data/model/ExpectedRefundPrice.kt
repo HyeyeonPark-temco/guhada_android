@@ -22,6 +22,7 @@ class ExpectedRefundPrice {
 
         var totalAmount = 0
         var parentMethod = 0
+        var userFault = false   // 반품, 교환 배송비 노출 여부 (true: visible; false: gone)
 
         // purchaseStatus가 WAITING_PAYMENT인 경우(== 무통장 입금인 경우), "환불 정보" 비노출
         fun getIsRefundValid() :Boolean = purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status
