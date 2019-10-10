@@ -15,6 +15,7 @@ import io.temco.guhada.common.enum.ExchangeCause
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.enum.ShippingMessageCode
 import io.temco.guhada.common.enum.ShippingPaymentType
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.order.PurchaseOrder
@@ -177,7 +178,10 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.addTextChangedListener {
             mViewModel.mExchangeRequest.exchangeReasonDetail = it.toString()
         }
+
+        CommonUtil.hideKeyboard(this@RequestExchangeActivity, mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause)
     }
+
 
     private fun initSellerShipping() {
         mBinding.includeRequestexchangeSellershipping.title = resources.getString(R.string.requestorderstatus_exchange_selleraddress)

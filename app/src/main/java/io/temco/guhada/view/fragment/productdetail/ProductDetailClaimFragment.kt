@@ -5,9 +5,8 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.BindingAdapter
-import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
@@ -18,7 +17,6 @@ import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.claim.Claim
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailClaimViewModel
 import io.temco.guhada.databinding.LayoutProductdetailClaimBinding
@@ -44,7 +42,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     override fun getLayoutId(): Int = R.layout.layout_productdetail_claim
 
     override fun init() {
-        if(productId > 0){
+        if (productId > 0) {
             mViewModel = ProductDetailClaimViewModel(productId, object : OnProductDetailClaimListener {
                 override fun showMessage(message: String) {
                     ToastUtil.showMessage(message)
@@ -61,7 +59,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
                  * 판매자 문의하기
                  */
                 override fun redirectUserClaimSellerActivity() {
-                    CommonUtilKotlin.startActivityUserClaimSeller(context as AppCompatActivity, sellerId, productId,-1)
+                    CommonUtilKotlin.startActivityUserClaimSeller(context as AppCompatActivity, sellerId, productId, -1)
                 }
 
                 override fun clearClaims() {
@@ -73,6 +71,17 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
                     activity?.startActivityForResult(intent, LOGIN)
                 }
             })
+
+            mViewModel.claimResponse.observe(this, Observer {
+                if (mBinding.recyclerviewProductdetailClaim.adapter == null) mBinding.recyclerviewProductdetailClaim.adapter = ProductDetailClaimAdapter()
+
+                if (mViewModel.claimPageNo > 1) (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).addItems(it.content)
+                else (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).setItems(it.content)
+
+                mBinding.framelayoutProductdetailClaimmore.visibility = if (it.last) View.GONE else View.VISIBLE
+                mBinding.textviewProductdetailQnaCount.text = it.totalElements.toString()
+            })
+
             mBinding.viewModel = mViewModel
             mBinding.recyclerviewProductdetailClaim.adapter = ProductDetailClaimAdapter()
             mBinding.tablayoutProductdetailClaim.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -100,7 +109,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     }
 
     fun refreshIsMineVisible() {
-        if(::mViewModel.isInitialized){
+        if (::mViewModel.isInitialized) {
             mViewModel.mineVisibility = if (Preferences.getToken() != null) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
             mViewModel.notifyPropertyChanged(BR.mineVisibility)
         }
@@ -110,26 +119,8 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
         (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
         mViewModel.claimPageNo = 0
         mViewModel.claimPageSize = 5
-        mViewModel.claimResponse = ObservableField(ClaimResponse())
+        mViewModel.claimResponse.postValue(ClaimResponse())
         mViewModel.getClaims()
-    }
-
-    companion object {
-        @JvmStatic
-        @BindingAdapter("productClaims")
-        fun RecyclerView.bindClaims(list: MutableList<Claim>?) {
-            if (list != null && list.isNotEmpty()) {
-                if (this.adapter == null)
-                    this.adapter = ProductDetailClaimAdapter()
-
-                if ((this.adapter as ProductDetailClaimAdapter).itemCount > 0) {
-                    // MORE
-                    (this.adapter as ProductDetailClaimAdapter).addItems(list)
-                } else {
-                    (this.adapter as ProductDetailClaimAdapter).setItems(list)
-                }
-            }
-        }
     }
 
     inner class WrapContentLinearLayoutManager(context: Context?, @RecyclerView.Orientation orientation: Int, reverseLayout: Boolean) : LinearLayoutManager(context) {

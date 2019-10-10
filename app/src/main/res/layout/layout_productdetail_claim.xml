@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="@{String.valueOf(viewModel.totalClaimCount)}"
+                android:text="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textview_productdetail_qna_title"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -155,6 +155,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textview_productdetail_claimempty"
                 style="@style/TextMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -169,23 +170,25 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_productdetail_claim"
                 android:layout_width="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="vertical"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:overScrollMode="never"
                 android:visibility="@{viewModel.emptyVisible ? View.GONE : View.VISIBLE}"
-                app:productClaims="@{viewModel.claimResponse.content}" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            <!--app:productClaims="@{viewModel.claimResponse.content}"-->
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/framelayout_productdetail_claimmore"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/border_all_whitethree"
-            android:onClick="@{()->viewModel.onClickMoreClaim(5)}"
-            android:visibility="@{viewModel.emptyVisible || viewModel.claimResponse.last ? View.GONE : View.VISIBLE}">
+            android:onClick="@{()->viewModel.onClickMoreClaim()}"
+            android:visibility="@{viewModel.mMoreButtonVisible ? View.VISIBLE : View.GONE, default = gone}">
+            <!--android:visibility="@{viewModel.emptyVisible || viewModel.claimResponse.last ? View.GONE : View.VISIBLE}"-->
 
             <LinearLayout
                 android:layout_width="wrap_content"

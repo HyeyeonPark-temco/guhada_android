@@ -35,17 +35,11 @@ class ProductDetailClaimAdapter : RecyclerView.Adapter<ProductDetailClaimAdapter
     fun setItems(list: MutableList<Claim>) {
         this.list = list
         notifyDataSetChanged()
-//        if (list.isEmpty()) {
-//            notifyDataSetChanged()
-//        } else {
-//            notifyItemRangeChanged(0, list.size)
-//        }
     }
 
     fun addItems(list: MutableList<Claim>) {
-        val rangeStart = this.list.size
         this.list.addAll(list)
-        notifyItemRangeChanged(rangeStart - 1, this.list.size)
+        notifyDataSetChanged()
     }
 
     fun clearItems() {

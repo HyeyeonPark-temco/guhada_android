@@ -1,11 +1,10 @@
 package io.temco.guhada.data.viewmodel.productdetail
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -13,14 +12,17 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.server.ClaimServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.fragment.productdetail.ProductDetailClaimFragment
 
 class ProductDetailClaimViewModel(private val productId: Long, val listener: ProductDetailClaimFragment.OnProductDetailClaimListener) : BaseObservableViewModel() {
     var emptyVisible = ObservableBoolean(false)
+        @Bindable
+        get() = field
+    var mMoreButtonVisible = ObservableBoolean(false)
         @Bindable
         get() = field
     var totalClaimCount = 0
@@ -33,30 +35,25 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
     var claimPageNo = 0
     var claimPageSize = 5
     var claimStatus = ""
-    var claimResponse: ObservableField<ClaimResponse> = ObservableField(ClaimResponse())
-        @Bindable
-        get() = field
+    var claimResponse: MutableLiveData<ClaimResponse> = MutableLiveData()
 
     private val getClaimListener = OnServerListener { success, o ->
         if (success) {
             val model = o as BaseModel<*>
             if (model.resultCode == Flag.ResultCode.DATA_NOT_FOUND) {
-                if (this.claimResponse.get()?.content?.isNotEmpty()?:false && this.claimResponse.get()?.last?:false) {
-                    listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
-                }
+                mMoreButtonVisible =  ObservableBoolean(false)
+                notifyPropertyChanged(BR.mMoreButtonVisible)
 
-                notifyPropertyChanged(BR.claimResponse)
                 emptyVisible = ObservableBoolean(true)
                 notifyPropertyChanged(BR.emptyVisible)
             } else {
-                this.claimResponse = ObservableField(model.data as ClaimResponse)
+                this.claimResponse.postValue(model.data as ClaimResponse)
 
                 if (claimStatus == "" && !isMineChecked) {
-                    this.totalClaimCount = this.claimResponse.get()?.totalElements?:0
+                    this.totalClaimCount = this.claimResponse.value?.totalElements ?: 0
                     notifyPropertyChanged(BR.totalClaimCount)
                 }
 
-                notifyPropertyChanged(BR.claimResponse)
                 emptyVisible = ObservableBoolean(false)
                 notifyPropertyChanged(BR.emptyVisible)
             }
@@ -72,22 +69,18 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
     }
 
     fun getClaims() {
-        if (!(this.claimResponse.get()?.last?:false)) {
-            ServerCallbackUtil.callWithToken(
-                    task = { accessToken ->
-                        ClaimServer.getClaims(getClaimListener, accessToken = accessToken, productId = productId, isMyInquiry = isMineChecked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
-                    },
-                    invalidTokenTask = {
-                        ClaimServer.getClaimsForGuest(getClaimListener, productId = productId, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
-                    })
-        } else {
-            listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
-        }
+        ServerCallbackUtil.callWithToken(
+                task = { accessToken ->
+                    ClaimServer.getClaims(getClaimListener, accessToken = accessToken, productId = productId, isMyInquiry = isMineChecked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
+                },
+                invalidTokenTask = {
+                    ClaimServer.getClaimsForGuest(getClaimListener, productId = productId, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
+                })
     }
 
-    fun onClickMoreClaim(claimPageSize: Int) {
-        this.claimPageSize = claimPageSize
-        this.getClaims()
+    fun onClickMoreClaim() {
+        if (claimResponse.value?.last != true) this.getClaims()
+        else listener.showMessage(BaseApplication.getInstance().getString(R.string.claim_message_lastitem))
     }
 
     // 상품 문의하기
@@ -110,7 +103,6 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
 
     fun onCheckedMine(checked: Boolean) {
         this.isMineChecked = checked
-        claimPageSize = 5
         claimPageNo = 0
 
         listener.clearClaims()
