@@ -82,7 +82,11 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
             @Override
             public void onLoadResource(WebView view, String url) {
                 super.onLoadResource(view, url);
-                if (url.split("\\?")[0].equals(getResources().getString(R.string.verifyphone_result_url))) {
+                String resultUrl;
+                if(Type.isTempProd) resultUrl = getResources().getString(R.string.verifyphone_result_url_prod);
+                else resultUrl = getResources().getString(R.string.verifyphone_result_url_dev);
+
+                if (url.split("\\?")[0].equals(resultUrl)) {
                     mBinding.webviewVerifyphone.setVisibility(View.GONE);
                     getVerifyInfo(url);
                 }
