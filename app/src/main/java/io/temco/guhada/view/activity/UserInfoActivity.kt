@@ -179,7 +179,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 mBinding.includeMypageuserinfoBank.user = mViewModel.mUser.value!!
                 mBinding.edittextMypageuserinfoNickname.text = Editable.Factory.getInstance().newEditable(mViewModel.mUser.value!!.nickname ?:"")
 
-                // 생년월일
+               // 생년월일
                 setBirth()
 
                 // 성별
@@ -219,12 +219,12 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         }
 
         mBinding.setOnClickEmailButton {
-            mViewModel.mUser.value!!.agreeEmailReception = !mViewModel.mUser.value!!.agreeEmailReception
-            mBinding.checkboxMypageuserinfoEmail.setImageResource(if(mViewModel.mUser.value!!.agreeEmailReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
+            mViewModel.mUser.value!!.userDetail.agreeEmailReception = !mViewModel.mUser.value!!.userDetail.agreeEmailReception
+            mBinding.checkboxMypageuserinfoEmail.setImageResource(if(mViewModel.mUser.value!!.userDetail.agreeEmailReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
         }
         mBinding.setOnClickSmsButton {
-            mViewModel.mUser.value!!.agreeSmsReception = !mViewModel.mUser.value!!.agreeSmsReception
-            mBinding.checkboxMypageuserinfoSms.setImageResource(if(mViewModel.mUser.value!!.agreeSmsReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
+            mViewModel.mUser.value!!.userDetail.agreeSmsReception = !mViewModel.mUser.value!!.userDetail.agreeSmsReception
+            mBinding.checkboxMypageuserinfoSms.setImageResource(if(mViewModel.mUser.value!!.userDetail.agreeSmsReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
         }
     }
 

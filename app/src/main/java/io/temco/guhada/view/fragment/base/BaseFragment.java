@@ -11,9 +11,18 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import io.temco.guhada.common.BaseApplication;
+import io.temco.guhada.common.util.CustomLog;
+
 public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
     protected boolean isActivated = false;
     protected int scrollState = 0;
+
+    private Tracker mTracker;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     // -------- LOCAL VALUE --------
     protected B mBinding;
@@ -27,6 +36,16 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try{
+            // Obtain the shared Tracker instance.
+            BaseApplication application = (BaseApplication) getContext().getApplicationContext();
+            mTracker = application.getDefaultTracker();
+
+            // Obtain the FirebaseAnalytics instance.
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(getContext());
+        }catch (Exception e){
+            if(CustomLog.getFlag())CustomLog.E(e);
+        }
     }
 
     @Nullable
@@ -62,6 +81,14 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
 
     public B getmBinding() {
         return mBinding;
+    }
+
+    public FirebaseAnalytics getmFirebaseAnalytics() {
+        return mFirebaseAnalytics;
+    }
+
+    public Tracker getmTracker() {
+        return mTracker;
     }
     ////////////////////////////////////////////////
 }

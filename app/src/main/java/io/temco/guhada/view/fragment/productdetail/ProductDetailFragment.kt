@@ -14,12 +14,14 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.analytics.HitBuilders
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
+import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
@@ -41,6 +43,7 @@ import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailViewModel
 import io.temco.guhada.databinding.ActivityProductDetailBinding
 import io.temco.guhada.view.activity.*
+import io.temco.guhada.view.activity.base.BaseActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailInfoAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailTagAdapter
@@ -187,6 +190,20 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initClaims()
                 initReview()
                 initStore()
+
+                if((context as BaseActivity).getmTracker() != null){
+                    var pInfo = com.google.android.gms.analytics.ecommerce.Product().apply {
+                        setId(product.dealId.toString())
+                        setName(product.name)
+                        setBrand(product.brandName)
+                        setCustomDimension(0, BuildConfig.BuildType.name)
+                    }
+                    var builder = HitBuilders.ScreenViewBuilder().apply {
+                        addImpression(pInfo, "Product Detail")
+                    }
+                    (context as BaseActivity).getmTracker().setScreenName("searchResults")
+                    (context as BaseActivity).getmTracker().send(builder.build())
+                }
 
             }
             /**

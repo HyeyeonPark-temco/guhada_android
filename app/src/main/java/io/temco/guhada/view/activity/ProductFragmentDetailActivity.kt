@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.view.View
 import com.auth0.android.jwt.JWT
+import com.google.android.gms.analytics.HitBuilders
+import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.RequestCode
@@ -14,6 +16,10 @@ import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.Brand
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import android.os.Bundle
+
+
 
 /**
  * @see io.temco.guhada.view.fragment.productdetail.ProductDetailFragment

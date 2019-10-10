@@ -20,7 +20,7 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
     // -----------------------------
 
     ////////////////////////////////////////////////
-    // OVERRIDE
+    // OVERRIDE ListBottomSheetFragment
     ////////////////////////////////////////////////
 
     @Override

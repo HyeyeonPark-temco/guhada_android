@@ -602,7 +602,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/checkbox_inactive"
-                                android:src="@{user.agreeSmsReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
+                                android:src="@{user.userDetail.agreeSmsReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
 
                             <TextView
                                 style="@style/TextMedium"
@@ -627,7 +627,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/checkbox_inactive"
-                                android:src="@{user.agreeEmailReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
+                                android:src="@{user.userDetail.agreeEmailReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
 
                             <TextView
                                 style="@style/TextMedium"

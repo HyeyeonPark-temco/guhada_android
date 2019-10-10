@@ -10,6 +10,42 @@
       "client_info": {
         "mobilesdk_app_id": "1:657240037903:android:120ec4e6b04cf4f2",
         "android_client_info": {
+          "package_name": "io.temco.guhada"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657240037903-rjevbmos2pj44eb2e1ts22g4nu2p81t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz3TnCW40ofnbqlBI4-mW0mSwJRnuKe4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657240037903-rjevbmos2pj44eb2e1ts22g4nu2p81t6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "657240037903-1v9ob978cmhc3546e0gnqun96til5l9a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Temco.guhada-ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657240037903:android:7dfafda7217e73cb9ee17a",
+        "android_client_info": {
           "package_name": "io.temco.guhada.debug"
         }
       },

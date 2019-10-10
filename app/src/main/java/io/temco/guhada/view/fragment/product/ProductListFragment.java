@@ -495,17 +495,19 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
 
     private void setFilterCategory(Category t){
-        for(Category c : t.children){
-            if(c.children != null && c.children.size()>0){
-                if(c.id == mCategoryData.id){
-                    filterCategory = c;
-                    filterChildIdSet = new HashSet<>();
-                    for (Category e : c.children){
-                        filterChildIdSet.add(e.id);
+        if(t.children != null && t.children.size()>0){
+            for(Category c : t.children){
+                if(c.children != null && c.children.size()>0){
+                    if(c.id == mCategoryData.id){
+                        filterCategory = c;
+                        filterChildIdSet = new HashSet<>();
+                        for (Category e : c.children){
+                            filterChildIdSet.add(e.id);
+                        }
+                        break;
+                    }else{
+                        setFilterCategory(c);
                     }
-                    break;
-                }else{
-                    setFilterCategory(c);
                 }
             }
         }

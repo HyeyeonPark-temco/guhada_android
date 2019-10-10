@@ -40,8 +40,8 @@ class UserUpdateInfo {
     var verifiedIdentity = false
 
     fun setData(user : User, pass : String?, userSize: UserSize?, account : Boolean, verifiedIdentity : Boolean){
-        agreeEmailReception = user.agreeEmailReception
-        agreeSmsReception = user.agreeSmsReception
+        agreeEmailReception = user.userDetail.agreeEmailReception
+        agreeSmsReception = user.userDetail.agreeSmsReception
         email = if(TextUtils.isEmpty(user.email)) null else user.email
         nickname = if(TextUtils.isEmpty(user.nickname)) null else user.nickname
         password = if(TextUtils.isEmpty(pass)) null else pass
