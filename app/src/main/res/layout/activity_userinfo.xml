@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="android.text.TextUtils" />
 
         <variable
@@ -226,7 +227,7 @@
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/edittext_mypageuserinfo_email"
                         style="@style/TextMedium"
                         android:layout_width="match_parent"
@@ -235,12 +236,17 @@
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/drawable_disable_inputform"
+                        android:focusable="false"
                         android:gravity="center_vertical"
+                        android:hint="@string/mypage_userinfo_passwaord_infotitle4"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:text="@{TextUtils.isEmpty(user.email) ? @string/mypage_userinfo_passwaord_infotitle4 : user.email}"
-                        android:textColor="@color/warm_grey"
+                        android:text="@{user.email}"
+                        android:textColor="@color/black_four"
+                        android:textColorHint="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
+
+                    <!--android:text="@{TextUtils.isEmpty(viewModel.mUser.email) ? @string/mypage_userinfo_passwaord_infotitle4 : viewModel.mUser.email}"-->
                     <!-- ====================================================================== -->
 
 
@@ -257,7 +263,7 @@
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/textview_mypageuserinfo_mobile"
                         style="@style/TextMedium"
                         android:layout_width="match_parent"
@@ -266,14 +272,17 @@
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/drawable_disable_inputform"
+                        android:focusable="false"
                         android:gravity="center_vertical"
+                        android:hint="@string/mypage_userinfo_passwaord_infotitle5"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:text="@{TextUtils.isEmpty(user.mobile) ? @string/mypage_userinfo_passwaord_infotitle5 : user.mobile}"
-                        android:textColor="@color/warm_grey"
+                        android:text="@{viewModel.mUser.mobile}"
+                        android:textColor="@color/black_four"
+                        android:textColorHint="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
+                    <!--android:text="@{TextUtils.isEmpty(user.mobile) ? @string/mypage_userinfo_passwaord_infotitle5 : user.mobile, default= @string/mypage_userinfo_passwaord_infotitle5}"-->
                     <!-- ====================================================================== -->
-
 
                     <!-- 회원정보수정 - 비밀번호 -->
                     <TextView
@@ -602,7 +611,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/checkbox_inactive"
-                                android:src="@{user.agreeSmsReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
+                                android:src="@{user.agreeSmsReception ? @drawable/checkbox_selected : @drawable/checkbox_select}" />
 
                             <TextView
                                 style="@style/TextMedium"
@@ -627,7 +636,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/checkbox_inactive"
-                                android:src="@{user.agreeEmailReception ? @drawable/checkbox_selected : @drawable/checkbox_select}"  />
+                                android:src="@{user.agreeEmailReception ? @drawable/checkbox_selected : @drawable/checkbox_select}" />
 
                             <TextView
                                 style="@style/TextMedium"
@@ -1054,8 +1063,8 @@
                         android:layout_height="45dp"
                         android:layout_marginLeft="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
-                        android:orientation="horizontal"
                         android:onClick="@{onClickDateButton}"
+                        android:orientation="horizontal"
                         android:weightSum="14">
 
                         <LinearLayout
@@ -1074,8 +1083,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:gravity="center"
                                 android:layout_weight="1"
+                                android:gravity="center"
                                 android:text="@string/mypage_userinfo_passwaord_infotitle23"
                                 android:textSize="@dimen/text_13" />
 
@@ -1105,8 +1114,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:gravity="center"
                                 android:layout_weight="1"
+                                android:gravity="center"
                                 android:text="@string/mypage_userinfo_passwaord_infotitle24"
                                 android:textSize="@dimen/text_13" />
 
@@ -1135,8 +1144,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:gravity="center"
                                 android:layout_weight="1"
+                                android:gravity="center"
                                 android:text="@string/mypage_userinfo_passwaord_infotitle25"
                                 android:textSize="@dimen/text_13" />
 
@@ -1179,8 +1188,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick='@{()->viewModel.clickGenderButton("MALE")}'
                             android:gravity="center_vertical"
+                            android:onClick='@{()->viewModel.clickGenderButton("MALE")}'
                             android:orientation="horizontal">
 
                             <ImageView
@@ -1202,10 +1211,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:onClick='@{()->viewModel.clickGenderButton("FEMALE")}'
-                            android:tag="FEMALE"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:onClick='@{()->viewModel.clickGenderButton("FEMALE")}'
+                            android:orientation="horizontal"
+                            android:tag="FEMALE">
 
                             <ImageView
                                 android:layout_width="wrap_content"

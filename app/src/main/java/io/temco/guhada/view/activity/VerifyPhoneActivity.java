@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
@@ -26,6 +27,7 @@ import io.temco.guhada.view.activity.base.BindActivity;
 
 /**
  * 본인인증(PASS)
+ *
  * @author Hyeyeon Park
  */
 public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding> {
@@ -82,11 +84,15 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
             @Override
             public void onLoadResource(WebView view, String url) {
                 super.onLoadResource(view, url);
-                String resultUrl;
-                if(Type.isTempProd) resultUrl = getResources().getString(R.string.verifyphone_result_url_prod);
-                else resultUrl = getResources().getString(R.string.verifyphone_result_url_dev);
 
-                if (url.split("\\?")[0].equals(resultUrl)) {
+                String comparedUrl = url.split("\\?")[0];
+                String resultUrl1 = getResources().getString(R.string.verifyphone_result_url_prod1);    // BASE_URL: www.guhada.com
+                String resultUrl2 = getResources().getString(R.string.verifyphone_result_url_prod2);    // BASE_URL: web.guhada.com
+                String resultUrl3 = getResources().getString(R.string.verifyphone_result_url_dev);      // BASE_URL: dev.guhada.com
+                String resultUrl4 = getResources().getString(R.string.verifyphone_result_url_qa);       // BASE_URL: qa.guhada.com
+                String resultUrl5 = getResources().getString(R.string.verifyphone_result_url_stg);      // BASE_URL: stg.guhada.com
+
+                if (comparedUrl.equals(resultUrl1) || comparedUrl.equals(resultUrl2) || comparedUrl.equals(resultUrl3) || comparedUrl.equals(resultUrl4) || comparedUrl.equals(resultUrl5)) {
                     mBinding.webviewVerifyphone.setVisibility(View.GONE);
                     getVerifyInfo(url);
                 }
