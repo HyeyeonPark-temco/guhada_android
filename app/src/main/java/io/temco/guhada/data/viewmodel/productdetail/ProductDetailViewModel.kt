@@ -29,6 +29,9 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.order.OrderItemResponse
+import io.temco.guhada.data.model.point.ExpectedPoint
+import io.temco.guhada.data.model.point.ExpectedPointResponse
+import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.point.PointRequest
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewSummary
@@ -117,6 +120,9 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     var mReviewSummary = ObservableField<ReviewSummary>(ReviewSummary())
         @Bindable
         get() = field
+
+    // 혜택 정보
+    var mExpectedPoint : MutableLiveData<ExpectedPointResponse> = MutableLiveData()
 
     fun getDetail() {
         ProductServer.getProductDetail(OnServerListener { success, o ->
@@ -288,6 +294,53 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             }, sellerId = product.value?.sellerId!!, accessToken = null)
     }
 
+    fun getDueSavePoint() {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            val pointProcessParam = PointProcessParam()
+
+            val orderProd = OrderItemResponse().apply {
+                this.dcategoryId = product.value?.dCategoryId ?: 0
+                this.dealId = product.value?.dealId ?: 0L
+                this.discountPrice = product.value?.discountPrice ?: 0
+                this.lcategoryId = product.value?.lCategoryId ?: 0
+                this.mcategoryId = product.value?.mCategoryId ?: 0
+                this.scategoryId = product.value?.sCategoryId ?: 0
+                this.productPrice = product.value?.sellPrice ?: 0
+                this.orderProdList.add(OrderItemResponse.OrderOption().apply {
+                    this.price = product.value?.totalPrice ?: 0
+                })
+            }
+
+            val bundle = PointProcessParam.PointBundle().apply {
+                this.bundlePrice = product.value?.shipExpense ?: 0
+                this.orderProdList.add(orderProd)
+            }
+
+            pointProcessParam.bundleList.add(bundle)
+
+            if (pointProcessParam.bundleList.isNotEmpty()) {
+                pointProcessParam.consumptionPoint = 0
+                pointProcessParam.consumptionType = PointProcessParam.PointConsumption.BUY.type
+                pointProcessParam.pointType = PointProcessParam.PointSave.BUY.type
+                pointProcessParam.serviceType = PointRequest.ServiceType.AOS.type
+
+                BenefitServer.getDueSavePoint(listener = OnServerListener { success, o ->
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                val expectedPointResponse = it.data as ExpectedPointResponse
+                                this.mExpectedPoint.postValue(expectedPointResponse)
+                            },
+                            dataIsNull = {
+                                if (it is BaseModel<*>) ToastUtil.showMessage(it.message)
+                                else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                            })
+                }, accessToken = accessToken, pointProcessParam = pointProcessParam)
+            }
+        })
+    }
+
+//    LISTENER
+
     // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
     fun onClickTab(view: View) {
         val pos = view.tag.toString()
@@ -344,7 +397,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 listener?.setBrandProductList(brand)*/
             }
         } else {
-           // listener?.showMessage("일시적인 오류입니다. 다시 시도해주세요.")
+            // listener?.showMessage("일시적인 오류입니다. 다시 시도해주세요.")
         }
     }
 
@@ -486,7 +539,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             }
             productBookMark.set(!productBookMark.get())
         } else {
-         //   ToastUtil.showMessage("test")
+            //   ToastUtil.showMessage("test")
         }
     }
 

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
         <import type="android.view.View" />
+
         <import type="android.text.TextUtils" />
+
         <variable
             name="user"
             type="io.temco.guhada.data.model.user.User" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel" />
@@ -113,10 +115,10 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/border_all_whitethree"
                 android:hint="@string/mypage_userinfo_refundaccount_number_hint"
-                android:paddingStart="15dp"
                 android:inputType="number"
+                android:paddingStart="15dp"
                 android:paddingEnd="15dp"
-                android:text='@{TextUtils.isEmpty(user.userDetail.accountNumber) ? "" : user.userDetail.accountNumber}'
+                android:text="@={viewModel.mRefundRequest.refundBankAccountNumber}"
                 android:textColor="@color/black_four"
                 android:textColorHint="@color/warm_grey"
                 android:textSize="@dimen/text_13" />

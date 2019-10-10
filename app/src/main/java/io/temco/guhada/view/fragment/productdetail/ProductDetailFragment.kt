@@ -37,6 +37,7 @@ import io.temco.guhada.data.model.Brand
 import io.temco.guhada.data.model.coupon.Coupon
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.option.OptionInfo
+import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
@@ -326,6 +327,35 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mBinding.includeProductdetailContentsummary.viewModel = mViewModel
         mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener { redirectSellerInfoActivity() }
         mBinding.includeProductdetailContentsummary.framelayooutProductdetailSellerstore.setOnClickListener { redirectSellerInfoActivity() }
+
+        // 혜택 정보
+        mViewModel.getDueSavePoint()
+        mViewModel.mExpectedPoint.observe(this, Observer {
+            var advantageBuyPoint = 0
+            var advantageReviewPoint = 0
+
+            for (item in it.dueSavePointList) {
+                when (item.pointType) {
+                    PointProcessParam.PointSave.BUY.type -> advantageBuyPoint = item.freePoint
+                    PointProcessParam.PointSave.REVIEW.type -> advantageReviewPoint = item.freePoint
+                }
+            }
+
+            if (advantageBuyPoint == 0 && advantageReviewPoint == 0)
+                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.GONE
+            else {
+                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.VISIBLE
+                if (advantageBuyPoint > 0) {
+                    mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointBuy.visibility = View.VISIBLE
+                    mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointBuy.text = String.format(mBinding.root.context.resources.getString(R.string.productdetail_format_buypoint), advantageBuyPoint)
+                } else mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointBuy.visibility = View.GONE
+
+                if (advantageReviewPoint > 0) {
+                    mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.visibility = View.VISIBLE
+                    mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.text = String.format(mBinding.root.context.resources.getString(R.string.productdetail_format_reviewpoint), advantageReviewPoint)
+                } else mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.visibility = View.GONE
+            }
+        })
     }
 
     private fun redirectSellerInfoActivity() {
@@ -426,7 +456,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 //            mReviewFragment.setProductId(productId = mViewModel.product.value?.productId!!)
 
         childFragmentManager.beginTransaction().let {
-            if(!mReviewFragment.isAdded){
+            if (!mReviewFragment.isAdded) {
                 it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
                 it.commitAllowingStateLoss()
             }
@@ -448,7 +478,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         childFragmentManager.beginTransaction().let {
             if (mStoreFragment.isAdded) {
                 it.remove(mStoreFragment)
-                mStoreFragment =storeFragment
+                mStoreFragment = storeFragment
             }
             it.add(mBinding.framelayoutProductdetailStore.id, mStoreFragment)
             it.commitAllowingStateLoss()

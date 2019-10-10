@@ -10,6 +10,7 @@
         <variable
             name="averageReviewsRating"
             type="Float" />
+
         <variable
             name="totalReviewsCount"
             type="Integer" />
@@ -61,6 +62,7 @@
             android:background="@color/white_four" />
 
         <LinearLayout
+            android:id="@+id/linearlayout_productdetail_advantage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -97,15 +99,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/pale_grey"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =gone}">
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                android:text="@string/productdetail_dummy_advantage2" />
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_gravity="start"
+                android:text="포인트 적립"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_13" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_productdetail_advangatepoint_buy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/productdetail_format_buypoint(0)}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/textview_productdetail_advangatepoint_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@{@string/productdetail_format_reviewpoint(0)}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <View
