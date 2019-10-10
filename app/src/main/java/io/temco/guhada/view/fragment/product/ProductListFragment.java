@@ -23,7 +23,9 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +111,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private BrandListDialog mBrandListDialog = null;
 
     private View layout_tab_category;
+
+    private List<Category> tabCategoryList;
+    private Category filterCategory;
+    private HashSet<Integer> filterChildIdSet;
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -142,7 +148,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
         changeListType(mCurrentGridType);
         changeProductOrder(mCurrentOrderType);
-        setTabLayout();
 
         // List
         initProductList();
@@ -398,74 +403,115 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
     private void setCategoryTabLayout() {
-        if (mCategoryData != null && mCategoryData.children != null && mCategoryData.children.size() > 0) {
-            mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
-            // Remove
-            if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
-                mBinding.layoutHeader.layoutTab.removeAllTabs();
-            }
-            // Add All (전체보기)
-            String title = getContext() != null ? getContext().getString(R.string.category_all) : null;
-            Category all = CommonUtil.createAllCategoryData(title, mCategoryData.fullDepthName, mCategoryData.id, mCategoryData.hierarchies);
-            addCategoryTab(all, mCategoryData.selectId == -1);
-            // Add Category
-            int i=0;
-            tabWidth = 0;
-            for (Category c : mCategoryData.children) {
-                if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
-                    tabIndex = i+1;
-                    addCategoryTab(c, true);
-                    //loadCategory(c, false);
-                }else{
-                    addCategoryTab(c, false);
+        synchronized (this){
+            if (mCategoryData != null && mCategoryData.children != null && mCategoryData.children.size() > 0) {
+                mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
+                // Remove
+                if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
+                    mBinding.layoutHeader.layoutTab.removeAllTabs();
                 }
-                i++;
-            }
-            // Select Event
-            mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    TextView text = tab.getCustomView().findViewById(R.id.text_title);
-                    text.setTypeface(null, Typeface.BOLD);
-                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mCategoryData.selectId onTabSelected");
-                    if (tab.getTag() != null && tab.getTag() instanceof Category) {
-                        if(CustomLog.getFlag())CustomLog.L("onTabSelected","tab.getTag", ((Category) tab.getTag()).toString());
-                        loadCategory((Category) tab.getTag(), false);
+                // Add All (전체보기)
+                String title = getContext() != null ? getContext().getString(R.string.category_all) : null;
+                Category all = CommonUtil.createAllCategoryData(title, mCategoryData.fullDepthName, mCategoryData.id, mCategoryData.hierarchies);
+                addCategoryTab(all, mCategoryData.selectId == -1);
+                // Add Category
+                int i=0;
+                tabWidth = 0;
+
+                if(mProductListData != null && mProductListData.categories != null) {
+                    for (Category c : mProductListData.categories) {
+                        setFilterCategory(c);
                     }
                 }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-                    TextView text = tab.getCustomView().findViewById(R.id.text_title);
-                    text.setTypeface(null, Typeface.NORMAL);
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mCategoryData.selectId onTabReselected");
-                    if (tab.getTag() != null && tab.getTag() instanceof Category) {
-                        loadCategory((Category) tab.getTag(), true);
+                if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet",(filterChildIdSet!=null?filterChildIdSet:"null"));
+                tabCategoryList = new ArrayList<>();
+                for (Category c : mCategoryData.children) {
+                    if(filterChildIdSet != null && filterChildIdSet.contains(c.id)){
+                        tabCategoryList.add(c);
+                        if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
+                            tabIndex = i+1;
+                            addCategoryTab(c, true);
+                            //loadCategory(c, false);
+                        }else{
+                            addCategoryTab(c, false);
+                        }
+                        i++;
+                    }else{
+                        if(filterChildIdSet == null){
+                            tabCategoryList.add(c);
+                            if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
+                                tabIndex = i+1;
+                                addCategoryTab(c, true);
+                                //loadCategory(c, false);
+                            }else{
+                                addCategoryTab(c, false);
+                            }
+                            i++;
+                        }
                     }
                 }
-            });
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mCategoryData.selectId ",mCategoryData.selectId );
-            if(mCategoryData.selectId != -1){
-                mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
+                // Select Event
+                mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                     @Override
-                    public void run() {
-                        mBinding.layoutHeader.layoutTab.setScrollPosition(tabIndex,0f,true);
-                        loadCategory(mCategoryData.children.get(tabIndex-1), false);
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        TextView text = tab.getCustomView().findViewById(R.id.text_title);
+                        text.setTypeface(null, Typeface.BOLD);
+                        if (tab.getTag() != null && tab.getTag() instanceof Category) {
+                            if(CustomLog.getFlag())CustomLog.L("onTabSelected","tab.getTag", ((Category) tab.getTag()).toString());
+                            loadCategory((Category) tab.getTag(), false);
+                        }
                     }
-                },150);
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        TextView text = tab.getCustomView().findViewById(R.id.text_title);
+                        text.setTypeface(null, Typeface.NORMAL);
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+                        if (tab.getTag() != null && tab.getTag() instanceof Category) {
+                            loadCategory((Category) tab.getTag(), true);
+                        }
+                    }
+                });
+                if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","mCategoryData.selectId", mCategoryData.selectId);
+                if(mCategoryData.selectId != -1){
+                    mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
+                        @Override
+                        public void run() {
+                            mBinding.layoutHeader.layoutTab.setScrollPosition(tabIndex,0f,true);
+                            loadCategory(tabCategoryList.get(tabIndex-1), false);
+                        }
+                    },150);
+                }
+                // Scroll // Not Used
+                //setTabLayoutScrollEvent();
+            } else {
+                mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
             }
-            // Scroll // Not Used
-            //setTabLayoutScrollEvent();
-        } else {
-            mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
         }
     }
 
+
+    private void setFilterCategory(Category t){
+        for(Category c : t.children){
+            if(c.children != null && c.children.size()>0){
+                if(c.id == mCategoryData.id){
+                    filterCategory = c;
+                    filterChildIdSet = new HashSet<>();
+                    for (Category e : c.children){
+                        filterChildIdSet.add(e.id);
+                    }
+                    break;
+                }else{
+                    setFilterCategory(c);
+                }
+            }
+        }
+    }
     private void addCategoryTab(Category data, boolean isSelect) {
+        if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","addCategoryTab",data);
         if (getContext() != null) {
             layout_tab_category = getLayoutInflater().inflate(R.layout.layout_tab_category, null);
             TextView text_title = layout_tab_category.findViewById(R.id.text_title);
@@ -1265,7 +1311,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (success) {
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
-                    if (mProductListData == null) mProductListData = (ProductList) o;
+                    if (mProductListData == null){
+                        mProductListData = (ProductList) o;
+                        setTabLayout();
+                    }
                     if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.toString());
                 }
                 emptyView("");
@@ -1409,14 +1458,12 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (((AppCompatActivity)getContext()).getSupportFragmentManager() != null) {
             if (mBrandListDialog == null) {
                 mBrandListDialog = new BrandListDialog();
-                mBrandListDialog.setOnBrandListener(
-                        new OnBrandListener() {
-                            @Override
-                            public void onEvent(Brand brand) {
-                                CommonUtil.startBrandScreen(((AppCompatActivity)getContext()), brand, true);
-                            }
-                        }
-                );
+                mBrandListDialog.setOnBrandListener(new OnBrandListener() {
+                    @Override
+                    public void onEvent(Brand brand) {
+                        CommonUtil.startBrandScreen(((AppCompatActivity)getContext()), brand, true);
+                    }
+                });
             }
             mBrandListDialog.show(((AppCompatActivity)getContext()).getSupportFragmentManager(), "ProductFilterListActivity");
         }
