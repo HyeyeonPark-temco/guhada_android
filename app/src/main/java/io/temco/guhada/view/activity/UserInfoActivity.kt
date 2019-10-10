@@ -23,6 +23,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.data.model.BankAccount
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.UserUpdateInfo
 import io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel
@@ -53,9 +54,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     // 이메일 인증 여부
     private var emailVerifiedIdentity = false
 
-    // 환불계좌 입력 여부
-    private  var accountVerifiedIdentity = false
-
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.activity_userinfo
     override fun getViewType(): Type.View = Type.View.USER_INFO
@@ -65,13 +63,13 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
         loginType = intent?.extras?.getInt("loginType") ?: 0
         mBinding.loginType = loginType
-        verifiedIdentity = false
-        emailVerifiedIdentity = false
-        accountVerifiedIdentity = false
 
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = UserInfoViewModel(this@UserInfoActivity)
         mBinding.viewModel = mViewModel
+        verifiedIdentity = false
+        emailVerifiedIdentity = false
+        mViewModel.accountVerifiedIdentity = false
 
         mBinding.setOnClickCloseButton { finish() }
         mBinding.setOnClickOkButton {
@@ -139,7 +137,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())) {
                 if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&
                         CommonUtil.validatePassword(mBinding.edittextJoinPassword.text.toString()) && mBinding.edittextJoinPassword.text.toString() == mBinding.edittextJoinConfirmpassword.text.toString()) {
-                    setData(mViewModel.mUser.value!!, mBinding.edittextJoinPassword.text.toString(), null, accountVerifiedIdentity, verifiedIdentity)
+                    setData(mViewModel.mUser.value!!, mBinding.edittextJoinPassword.text.toString(), null, mViewModel.accountVerifiedIdentity, verifiedIdentity)
                 } else if (mBinding.edittextJoinPassword.text.toString() != mBinding.edittextJoinConfirmpassword.text.toString()) {
                     CommonViewUtil.showDialog(this@UserInfoActivity, resources.getString(R.string.findpwd_message_notequalpwd), false, false)
                     return
@@ -151,7 +149,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     return
                 }
             } else {
-                setData(mViewModel.mUser.value!!, null, null, accountVerifiedIdentity, verifiedIdentity)
+                setData(mViewModel.mUser.value!!, null, null, mViewModel.accountVerifiedIdentity, verifiedIdentity)
             }
         }
         if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init userUpInfo", userUpInfo)
@@ -198,7 +196,13 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 mBinding.includeMypageuserinfoBank.user = mViewModel.mUser.value!!
                 mBinding.edittextMypageuserinfoNickname.text = Editable.Factory.getInstance().newEditable(mViewModel.mUser.value!!.nickname ?: "")
 
-               // 생년월일
+                mViewModel.mBankAccount.value = BankAccount().apply {
+                    bankNumber = mViewModel.mUser.value!!.userDetail.accountNumber ?: ""
+                    bankCode = mViewModel.mUser.value!!.userDetail.bankCode ?: ""
+                    name = mViewModel.mUser.value!!.userDetail.verifiedName ?: ""
+                }
+
+                // 생년월일
                 setBirth()
 
                 // 성별
@@ -207,6 +211,9 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 mBinding.executePendingBindings()
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "mViewModel.user", mViewModel.mUser.value!!)
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "userEmail -----", mViewModel.userEmail)
+                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "verifiedName -----", mViewModel.mUser.value!!.userDetail.verifiedName.toString())
+                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "edittextRequestrefundBankowner -----", mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.text.toString())
+
             }
         })
 
@@ -438,12 +445,16 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 val accountNumber = mViewModel.mRefundRequest.refundBankAccountNumber
                 val accountBankCode = mViewModel.mRefundRequest.refundBankCode
 
-                mViewModel.mUser.value!!.userDetail.accountHolder = accountOwner
-                mViewModel.mUser.value!!.userDetail.accountNumber = accountNumber
-                mViewModel.mUser.value!!.userDetail.bankCode = accountBankCode
-                mViewModel.mUser.value!!.userDetail.bankName = mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString()
-
-                mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
+                // 계좌번호 인증시 유저 정보에 추가
+                if(mViewModel.accountVerifiedIdentity && !TextUtils.isEmpty(accountOwner) && !TextUtils.isEmpty(accountNumber) && !TextUtils.isEmpty(accountBankCode)){
+                    mViewModel.mUser.value!!.userDetail.accountHolder = accountOwner
+                    mViewModel.mUser.value!!.userDetail.accountNumber = accountNumber
+                    mViewModel.mUser.value!!.userDetail.bankCode = accountBankCode
+                    mViewModel.mUser.value!!.userDetail.bankName = mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString()
+                    if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "mBankAccount observe",
+                            accountOwner,accountNumber,accountBankCode,mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString())
+                }
+                //mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
             })
 
             mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)

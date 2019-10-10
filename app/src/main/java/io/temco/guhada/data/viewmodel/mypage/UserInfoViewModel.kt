@@ -50,6 +50,9 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     var userEmail = ""
     var mUser : MutableLiveData<User> = MutableLiveData()
 
+    // 환불계좌 입력 여부
+    var accountVerifiedIdentity = false
+
     var mUserSize = UserSize()
 
     // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
@@ -85,7 +88,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
 
     // 환불 계좌 정보
     var mRefundBanks = MutableLiveData<MutableList<PurchaseOrder.Bank>>()
-    var mBankAccount = MutableLiveData<BankAccount>(BankAccount())
+    var mBankAccount = MutableLiveData<BankAccount>()
     var mIsCheckAccountAvailable = ObservableBoolean(true)
     var mRefundRequest = RefundRequest()
     var mBankNumInputAvailableTask : () -> Unit = {}
@@ -146,12 +149,15 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
         else -> BankAccount().apply {
             this.bankNumber = mRefundRequest.refundBankAccountNumber
             this.bankCode = mRefundRequest.refundBankCode
+            // 이름 추가
+            this.name = mUser.value?.userDetail?.verifiedName ?: ""
         }.let {
             if (mIsCheckAccountAvailable.get()) {
                 OrderServer.checkAccount(OnServerListener { success, o ->
                     if (success) {
                         val bankAccount = (o as BaseModel<BankAccount>).data
                         if (bankAccount.result) {
+                            accountVerifiedIdentity = true
                             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_succesbankaccount))
                             mBankAccount.postValue(bankAccount)
 

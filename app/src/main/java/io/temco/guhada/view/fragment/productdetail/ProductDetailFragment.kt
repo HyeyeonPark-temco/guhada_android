@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.webkit.WebSettings
 import android.widget.Toast
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.analytics.HitBuilders
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -204,6 +206,14 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     }
                     (context as BaseActivity).getmTracker().setScreenName("searchResults")
                     (context as BaseActivity).getmTracker().send(builder.build())
+                }
+
+                if(getmFirebaseAnalytics() != null){
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, product.dealId.toString())
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.name)
+                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, BuildConfig.BuildType.name)
+                    getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle)
                 }
 
             }
