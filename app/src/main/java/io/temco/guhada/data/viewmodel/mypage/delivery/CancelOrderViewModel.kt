@@ -44,6 +44,16 @@ class CancelOrderViewModel : BaseObservableViewModel() {
         })
     }
 
+    fun getExpectedRefundPriceForRequest(quantity: Int) {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            ClaimServer.getExpectedRefundPriceForRequest(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o, successTask = {
+                    mExpectedRefundPrice.postValue(it.data as ExpectedRefundPrice)
+                })
+            }, accessToken = accessToken, orderProdGroupId = mOrderProdGroupId, quantity = quantity)
+        })
+    }
+
     fun cancelOrder() {
         val cancelRequest = CancelRequest().apply {
             when {
@@ -83,16 +93,6 @@ class CancelOrderViewModel : BaseObservableViewModel() {
                             }
                         })
             }, accessToken = token, cancelRequest = cancelRequest)
-        })
-    }
-
-    fun getExpectedRefundPriceForRequest(quantity: Int) {
-        ServerCallbackUtil.callWithToken(task = { accessToken ->
-            ClaimServer.getExpectedRefundPriceForRequest(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o, successTask = {
-                    mExpectedRefundPrice.postValue(it.data as ExpectedRefundPrice)
-                })
-            }, accessToken = accessToken, orderProdGroupId = mOrderProdGroupId, quantity = quantity)
         })
     }
 

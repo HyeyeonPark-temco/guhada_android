@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel.mypage
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -19,23 +20,20 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
     var purchaseId: Long = -1
     var mOrderProdGroupId: Long = 0L
-    var mOrderClaimGroupId :Long = 0L
+    var mOrderClaimGroupId: Long = 0L
     var mExpectedRefundPrice = MutableLiveData<ExpectedRefundPrice>()
-    var mExpectedRefundInfo =  MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
-    var refundInfoVisible = false
+    var mExpectedRefundInfo = MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
+    var mIsDeliveryCer = false
     var purchaseOrderResponse = PurchaseOrderResponse()
         @Bindable
         get() = field
     var onClickClaimTask: (productId: Long) -> Unit = {}
     var onClickReceiptTask: (tId: String) -> Unit = {}
 
-    var refundIsValidVisible = ObservableBoolean(false)
+    var mIsWaitingPaymentStatus = ObservableBoolean(false)
         @Bindable
         get() = field
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.refundIsValidVisible)
-        }
+
     ///
     var mPurchaseOrder = ObservableField<PurchaseOrder>(PurchaseOrder())
         @Bindable
@@ -65,9 +63,6 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
                         successTask = {
                             val data = it.data as PurchaseOrderResponse
                             this.purchaseOrderResponse = data
-                            if(data.orderList != null){
-                                refundIsValidVisible.set(data.orderList[0].purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status)
-                            }
                             notifyPropertyChanged(BR.purchaseOrderResponse)
                         })
             }, accessToken = token, purchaseId = purchaseId.toDouble())
@@ -78,8 +73,11 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             ClaimServer.getExpectedRefundPrice(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o, successTask = {
-                    mExpectedRefundInfo.postValue(it.data as ExpectedRefundPrice.ExpectedRefundInfo)
-                    mExpectedRefundPrice.postValue((it.data as ExpectedRefundPrice.ExpectedRefundInfo).refundResponse)
+                    val refundInfo = it.data as ExpectedRefundPrice.ExpectedRefundInfo
+                    mExpectedRefundInfo.postValue(refundInfo)
+                    mExpectedRefundPrice.postValue(refundInfo.refundResponse)
+                    mIsWaitingPaymentStatus = ObservableBoolean(refundInfo.purchaseStatus == PurchaseStatus.WAITING_PAYMENT.status)
+                    notifyPropertyChanged(BR.mIsWaitingPaymentStatus)
                 })
             }, accessToken = accessToken, orderClaimGroupId = mOrderClaimGroupId)
         })

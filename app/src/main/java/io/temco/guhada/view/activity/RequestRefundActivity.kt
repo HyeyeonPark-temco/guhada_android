@@ -52,6 +52,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundHeader.setOnClickBackButton { finish() }
     }
 
+    // 환불 예상 금액
     private fun initExpectedRefundPrice() {
         mBinding.includeRequestrefundRefund.constraintlayoutRequestcancelorderRefund.visibility = View.VISIBLE
         mViewModel.mExpectedRefundPrice.observe(this, Observer {

@@ -6,7 +6,9 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
@@ -23,7 +25,7 @@ import io.temco.guhada.view.activity.base.BindActivity
  */
 class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     private lateinit var mViewModel: MyPageDeliveryDetailViewModel
-    var refundVisible = false
+//    var refundVisible = false
 
     override fun getBaseTag(): String = DeliveryDetailActivity::class.java.simpleName
 
@@ -36,8 +38,6 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         initViewModel()
 
         if (::mViewModel.isInitialized) {
-            initExpectedRefundPrice()
-
             mViewModel.getOrder()
             mViewModel.onClickClaimTask = { productId ->
                 val intent = Intent(this, WriteClaimActivity::class.java)
@@ -54,16 +54,19 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailOrderinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailPaymentinfo1.viewModel = mViewModel
             mBinding.includeDeliverydetailPaymentinfo2.viewModel = mViewModel
-//            mBinding.includeDeliverydetailProductinfo.viewModel = mViewModel
             mBinding.includeDeliverydetailUserinfo.viewModel = mViewModel
+            mBinding.includeDeliverydetailRefundinfo.viewModel = mViewModel
 
-//            mBinding.includeDeliverydetailProductinfo.status = intent.getStringExtra("status")
-            initRefundInfo()
+            initExpectedRefundPrice()
+            initReceiptButton()
 
-            val receiptButtonVisible = intent.getBooleanExtra("receiptButtonVisible", true)
-            mBinding.includeDeliverydetailOrderinfo.buttonDeliverydetailReceipt.visibility = if (receiptButtonVisible) View.VISIBLE else View.GONE
             mBinding.executePendingBindings()
         }
+    }
+
+    private fun initReceiptButton(){
+        val receiptButtonVisible = intent.getBooleanExtra("receiptButtonVisible", true)
+        mBinding.includeDeliverydetailOrderinfo.buttonDeliverydetailReceipt.visibility = if (receiptButtonVisible) View.VISIBLE else View.GONE
     }
 
     private fun initViewModel() {
@@ -81,22 +84,21 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
     }
 
     private fun initExpectedRefundPrice() {
-        intent.getBooleanExtra("refundVisible", false).let {
-            refundVisible = it
-            mBinding.includeDeliverydetailRefundinfo.constraintlayoutRequestcancelorderRefund.visibility = if (refundVisible) View.VISIBLE else View.GONE
-        }
+//        intent.getBooleanExtra("refundVisible", false).let {
+//            mViewModel.mIsWaitingPaymentStatus = ObservableBoolean(it)
+//            mViewModel.notifyPropertyChanged(BR.mIsWaitingPaymentStatus)
+////            mBinding.includeDeliverydetailRefundinfo.constraintlayoutRequestcancelorderRefund.visibility = if (it) View.VISIBLE else View.GONE
+//        }
 
         intent.getLongExtra("orderClaimGroupId", 0).let { orderClaimGroupId ->
-            if(CustomLog.flag)CustomLog.L("initExpectedRefundPrice","orderClaimGroupId",orderClaimGroupId)
+            if (CustomLog.flag) CustomLog.L("initExpectedRefundPrice", "orderClaimGroupId", orderClaimGroupId)
             if (orderClaimGroupId > 0) {
                 mViewModel.mOrderClaimGroupId = orderClaimGroupId
-//                mViewModel.getOrder()
                 mViewModel.getExpectedRefundPrice()
                 mBinding.recyclerviewDeliverydetailProductlist.visibility = View.GONE
                 mBinding.includeDeliverydetailProductinfo.constraintlayoutDeliverydetailProductinfo.visibility = View.VISIBLE
                 mBinding.includeDeliverydetailPaymentinfo1.constraintlayoutPaymentinfoContainer.visibility = View.GONE
             } else {
-//                mViewModel.getOrder()
                 mBinding.recyclerviewDeliverydetailProductlist.visibility = View.VISIBLE
                 mBinding.includeDeliverydetailProductinfo.constraintlayoutDeliverydetailProductinfo.visibility = View.GONE
                 mBinding.includeDeliverydetailPaymentinfo2.constraintlayoutPaymentinfoContainer.visibility = View.GONE
@@ -107,7 +109,7 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailRefundinfo.expectedRefundPrice = it
             mBinding.includeDeliverydetailPaymentinfo1.expectedRefundPrice = it
             mBinding.includeDeliverydetailPaymentinfo2.expectedRefundPrice = it
-            if(CustomLog.flag)CustomLog.L("mExpectedRefundPrice",mViewModel.mExpectedRefundPrice.value)
+            if (CustomLog.flag) CustomLog.L("mExpectedRefundPrice", it.toString())
             mBinding.executePendingBindings()
         })
 
@@ -116,9 +118,10 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
             mBinding.includeDeliverydetailPaymentinfo1.expectedRefundInfo = it
             mBinding.includeDeliverydetailPaymentinfo2.expectedRefundInfo = it
             mBinding.includeDeliverydetailProductinfo.info = it
-            if(CustomLog.flag)CustomLog.L("mExpectedRefundInfo",mViewModel.mExpectedRefundInfo.value)
             mBinding.executePendingBindings()
         })
+
+        mViewModel.mIsDeliveryCer = intent.getBooleanExtra("isDeliveryCer", false)
     }
 
     private fun initHeader() {
@@ -131,12 +134,6 @@ class DeliveryDetailActivity : BindActivity<ActivityDeliverydetailBinding>() {
         if (requestCode == RequestCode.WRITE_CLAIM.flag && resultCode == Activity.RESULT_OK) {
             ToastUtil.showMessage(getString(R.string.claim_message_add))
         }
-    }
-
-    private fun initRefundInfo() {
-        val isDeliveryCer = intent.getBooleanExtra("isDeliveryCer", false)
-        mViewModel.refundInfoVisible = isDeliveryCer
-        mBinding.includeDeliverydetailRefundinfo.viewModel = mViewModel
     }
 
     companion object {

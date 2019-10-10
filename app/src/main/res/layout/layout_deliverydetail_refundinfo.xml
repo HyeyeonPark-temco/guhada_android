@@ -14,7 +14,6 @@
             name="expectedRefundPrice"
             type="io.temco.guhada.data.model.ExpectedRefundPrice" />
 
-
         <variable
             name="expectedRefundInfo"
             type="io.temco.guhada.data.model.ExpectedRefundPrice.ExpectedRefundInfo" />
@@ -31,9 +30,9 @@
         android:paddingLeft="20dp"
         android:paddingTop="40dp"
         android:paddingRight="20dp"
-        android:paddingBottom="40dp">
+        android:paddingBottom="40dp"
+        android:visibility="@{viewModel.mIsDeliveryCer &amp;&amp; !viewModel.mIsWaitingPaymentStatus ? View.VISIBLE: View.GONE, default = visible}">
 
-        <!--android:visibility="@{viewModel != null &amp;&amp; (!viewModel.refundInfoVisible &amp;&amp; viewModel.refundIsValidVisible) ? View.GONE: View.VISIBLE, default = gone}"-->
         <TextView
             android:id="@+id/textview_deliverydetail_refundinfo_title"
             style="@style/MypageDeliveryBlackTitleTextStyle"
@@ -306,12 +305,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/common_price_format(expectedRefundInfo.totalAmount)}"
+            android:text="@{@string/common_price_format(expectedRefundPrice.totalAmount)}"
             android:textSize="@dimen/text_20"
             app:layout_constraintRight_toLeftOf="@+id/textview_deliverydetail_final1_content2"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line3"
             app:layout_constraintVertical_bias="0" />
-        <!--android:text="@{@string/common_price_format(expectedRefundPrice.totalPaymentCancelPrice + expectedRefundPrice.totalPointCancelPrice)}"-->
+
         <TextView
             android:id="@+id/textview_deliverydetail_final1_content2"
             style="@style/MypageDeliveryRedTitleTextStyle"
