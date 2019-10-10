@@ -116,7 +116,7 @@
                 android:paddingStart="15dp"
                 android:inputType="number"
                 android:paddingEnd="15dp"
-                android:text="@{TextUtils.isEmpty(user.userDetail.accountNumber) ? @string/mypage_userinfo_refundaccount_name_hint : user.userDetail.accountNumber}"
+                android:text='@{TextUtils.isEmpty(user.userDetail.accountNumber) ? "" : user.userDetail.accountNumber}'
                 android:textColor="@color/black_four"
                 android:textColorHint="@color/warm_grey"
                 android:textSize="@dimen/text_13" />

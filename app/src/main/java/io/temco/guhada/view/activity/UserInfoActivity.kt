@@ -43,11 +43,18 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
     private lateinit var mViewModel: UserInfoViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
-    private lateinit var datePicker : DatePickerDialog
+    private lateinit var datePicker: DatePickerDialog
     private var isPassFocus = false
     private var loginType = -1
 
+    // 모바일 인증 여부
+    private var verifiedIdentity = false
 
+    // 이메일 인증 여부
+    private var emailVerifiedIdentity = false
+
+    // 환불계좌 입력 여부
+    private  var accountVerifiedIdentity = false
 
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.activity_userinfo
@@ -58,6 +65,9 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
         loginType = intent?.extras?.getInt("loginType") ?: 0
         mBinding.loginType = loginType
+        verifiedIdentity = false
+        emailVerifiedIdentity = false
+        accountVerifiedIdentity = false
 
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
         mViewModel = UserInfoViewModel(this@UserInfoActivity)
@@ -87,67 +97,75 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            RequestCode.VERIFY_USERINFO.flag -> { // 이메일, 휴대폰번호 인증
+            RequestCode.VERIFY_PHONE.flag -> { // 휴대폰 본인인증
                 if (resultCode == Activity.RESULT_OK) {
-                    val email = data?.getStringExtra("email")
-                    val mobile = data?.getStringExtra("mobile")
+                    val mobile = data?.getStringExtra("phoneNumber")
+                    val di = data?.getStringExtra("di")
                     val name = data?.getStringExtra("name")
 
-                    if (email != null) {
-                        mBinding.edittextMypageuserinfoEmail.text = email
-                        mViewModel.mUser.value!!.email = email
-                    }
+                    if (di != null)
+                        mViewModel.mUser.value!!.userDetail.diCode = di
 
                     if (mobile != null) {
-                        mBinding.textviewMypageuserinfoMobile.text = mobile
+                        mBinding.textviewMypageuserinfoMobile.setText(mobile)
                         mViewModel.mUser.value!!.mobile = mobile
                         mViewModel.mUser.value!!.phoneNumber = mobile
                     }
 
                     if (!name.isNullOrEmpty()) {
-                        mViewModel.mUser.value!!.name = name
                         mBinding.textviewMypageuserinfoName.text = name
+                        mViewModel.mUser.value!!.name = name
                     }
-
-                    mBinding.executePendingBindings()
+                }
+            }
+            RequestCode.VERIFY_USERINFO.flag -> { // 이메일 인증
+                if (resultCode == Activity.RESULT_OK) {
+                    val email = data?.getStringExtra("email")
+                    if (email != null) {
+                        mBinding.edittextMypageuserinfoEmail.setText(email)
+                        mViewModel.mUser.value!!.email = email
+                    }
                 }
             }
             Flag.RequestCode.USER_SIZE -> if (resultCode == Activity.RESULT_OK) getUserSize()
         }
     }
 
-    private fun sendData(){
-        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init",mViewModel.mUser.value!!)
-        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init edittextJoinPassword",mBinding.edittextJoinPassword.text.toString())
-        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init edittextJoinConfirmpassword",mBinding.edittextJoinConfirmpassword.text.toString())
-        var userUpInfo : UserUpdateInfo = UserUpdateInfo().apply {
-            if(!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())){
-                if(!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&
+    private fun sendData() {
+        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init", mViewModel.mUser.value!!)
+        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init edittextJoinPassword", mBinding.edittextJoinPassword.text.toString())
+        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init edittextJoinConfirmpassword", mBinding.edittextJoinConfirmpassword.text.toString())
+        var userUpInfo: UserUpdateInfo = UserUpdateInfo().apply {
+            if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())) {
+                if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&
                         CommonUtil.validatePassword(mBinding.edittextJoinPassword.text.toString()) && mBinding.edittextJoinPassword.text.toString() == mBinding.edittextJoinConfirmpassword.text.toString()) {
-                    setData(mViewModel.mUser.value!!, mBinding.edittextJoinPassword.text.toString(), null, false, false)
-                }else if(mBinding.edittextJoinPassword.text.toString() != mBinding.edittextJoinConfirmpassword.text.toString()){
-                    CommonViewUtil.showDialog(this@UserInfoActivity, resources.getString(R.string.findpwd_message_notequalpwd), false,  false)
+                    setData(mViewModel.mUser.value!!, mBinding.edittextJoinPassword.text.toString(), null, accountVerifiedIdentity, verifiedIdentity)
+                } else if (mBinding.edittextJoinPassword.text.toString() != mBinding.edittextJoinConfirmpassword.text.toString()) {
+                    CommonViewUtil.showDialog(this@UserInfoActivity, resources.getString(R.string.findpwd_message_notequalpwd), false, false)
                     return
-                }else if(!CommonUtil.validatePassword(mBinding.edittextJoinPassword.text.toString()) && mBinding.edittextJoinPassword.text.toString() == mBinding.edittextJoinConfirmpassword.text.toString()){
-                    CommonViewUtil.showDialog(this@UserInfoActivity, resources.getString(R.string.findpwd_message_invalidformat), false,  false)
+                } else if (!CommonUtil.validatePassword(mBinding.edittextJoinPassword.text.toString()) && mBinding.edittextJoinPassword.text.toString() == mBinding.edittextJoinConfirmpassword.text.toString()) {
+                    CommonViewUtil.showDialog(this@UserInfoActivity, resources.getString(R.string.findpwd_message_invalidformat), false, false)
                     return
-                }else{
-                    CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 비밀번호를 확인해 주세요.", false,  false)
+                } else {
+                    CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 비밀번호를 확인해 주세요.", false, false)
                     return
                 }
-            }else{
-                setData(mViewModel.mUser.value!!,null, null,false,false)
+            } else {
+                setData(mViewModel.mUser.value!!, null, null, accountVerifiedIdentity, verifiedIdentity)
             }
         }
-        if(CustomLog.flag)CustomLog.L("UserInfoActivity","init userUpInfo",userUpInfo)
+        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init userUpInfo", userUpInfo)
+        /*if(emailVerifiedIdentity){ // 이메일 인증 일단 빠짐
 
-        mViewModel.repository.updateUserInfo(userUpInfo, object : OnCallBackListener{
+        }*/
+
+        mViewModel.repository.updateUserInfo(userUpInfo, object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-                if(CustomLog.flag)CustomLog.L("updateUserInfo callBackListener","value",value)
-                if(resultFlag) {
+                if (CustomLog.flag) CustomLog.L("updateUserInfo callBackListener", "value", value)
+                if (resultFlag) {
                     CommonViewUtil.showDialog(this@UserInfoActivity, "회원정보를 수정하였습니다.", false, true)
-                }else{
-                    CommonViewUtil.showDialog(this@UserInfoActivity, "회원정보 수정중 오류가 발생되었습니다.\n[$value.toString()]", false,  false)
+                } else {
+                    CommonViewUtil.showDialog(this@UserInfoActivity, "회원정보 수정중 오류가 발생되었습니다.\n[$value.toString()]", false, false)
                 }
             }
         })
@@ -173,11 +191,12 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     private fun setUserData() {
         if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setUserData ", "--/banks---", mViewModel.userId)
         // 유저 정보 가져오기
+
         mViewModel.userCheck(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mBinding.user = mViewModel.mUser.value!!
                 mBinding.includeMypageuserinfoBank.user = mViewModel.mUser.value!!
-                mBinding.edittextMypageuserinfoNickname.text = Editable.Factory.getInstance().newEditable(mViewModel.mUser.value!!.nickname ?:"")
+                mBinding.edittextMypageuserinfoNickname.text = Editable.Factory.getInstance().newEditable(mViewModel.mUser.value!!.nickname ?: "")
 
                // 생년월일
                 setBirth()
@@ -198,10 +217,14 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         initRefundAccountView()
 
         // 이메일 인증
-        mBinding.edittextMypageuserinfoEmail.setOnClickListener { redirectUserInfoVerifyActivity(true) }
+        //mBinding.edittextMypageuserinfoEmail.setOnClickListener { redirectUserInfoVerifyActivity(true) }
 
         // 휴대폰 번호 인증
-        mBinding.textviewMypageuserinfoMobile.setOnClickListener { redirectUserInfoVerifyActivity(false) }
+        mBinding.textviewMypageuserinfoMobile.setOnClickListener {
+            // redirectUserInfoVerifyActivity(false)
+            val intent = Intent(this@UserInfoActivity, VerifyPhoneActivity::class.java)
+            startActivityForResult(intent, RequestCode.VERIFY_PHONE.flag)
+        }
 
         // 유저 사이즈
         getUserSize()
@@ -228,30 +251,31 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         }
     }
 
-    private fun setBirth(){
+    private fun setBirth() {
         var cal = Calendar.getInstance()
-        if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet","birth",mViewModel.mUser.value?.birth ?: "")
-        if(!TextUtils.isEmpty(mViewModel.mUser.value?.birth)){
+        if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet", "birth", mViewModel.mUser.value?.birth
+                ?: "")
+        if (!TextUtils.isEmpty(mViewModel.mUser.value?.birth)) {
             var birth = mViewModel.mUser.value?.birth!!.split("-")
-            if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet","birth",birth)
-            mBinding.textviewMypageuserinfoBirthY.text = birth[0]+" 년"
-            mBinding.textviewMypageuserinfoBirthM.text = birth[1]+" 월"
-            mBinding.textviewMypageuserinfoBirthD.text = birth[2]+" 일"
+            if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet", "birth", birth)
+            mBinding.textviewMypageuserinfoBirthY.text = birth[0] + " 년"
+            mBinding.textviewMypageuserinfoBirthM.text = birth[1] + " 월"
+            mBinding.textviewMypageuserinfoBirthD.text = birth[2] + " 일"
             cal.apply {
                 set(Calendar.YEAR, birth[0].toInt())
-                set(Calendar.MONTH, (birth[1].toInt()-1))
+                set(Calendar.MONTH, (birth[1].toInt() - 1))
                 set(Calendar.DAY_OF_MONTH, birth[2].toInt())
             }
         }
-        if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet format",String.format("%04d-%02d-%02d",cal.get(Calendar.YEAR),(cal.get(Calendar.MONTH)+1),cal.get(Calendar.DAY_OF_MONTH)))
+        if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet format", String.format("%04d-%02d-%02d", cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH) + 1), cal.get(Calendar.DAY_OF_MONTH)))
         mBinding.setOnClickDateButton {
-            datePicker = DatePickerDialog(this@UserInfoActivity, object :DatePickerDialog.OnDateSetListener{
+            datePicker = DatePickerDialog(this@UserInfoActivity, object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-                    if(CustomLog.flag)CustomLog.L("DatePickerDialog onDateSet OnDateSetListener",String.format("%04d-%02d-%02d",year,(month+1),dayOfMonth))
-                    mViewModel.mUser.value!!.birth = String.format("%04d-%02d-%02d",year,(month+1),dayOfMonth)
+                    if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth))
+                    mViewModel.mUser.value!!.birth = String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth)
                     setBirth()
                 }
-            },cal.get(Calendar.YEAR),(cal.get(Calendar.MONTH)),cal.get(Calendar.DAY_OF_MONTH))
+            }, cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)), cal.get(Calendar.DAY_OF_MONTH))
             datePicker.show()
         }
         //mBinding.executePendingBindings()
@@ -413,6 +437,11 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 val accountOwner = mViewModel.mRefundRequest.refundBankAccountOwner
                 val accountNumber = mViewModel.mRefundRequest.refundBankAccountNumber
                 val accountBankCode = mViewModel.mRefundRequest.refundBankCode
+
+                mViewModel.mUser.value!!.userDetail.accountHolder = accountOwner
+                mViewModel.mUser.value!!.userDetail.accountNumber = accountNumber
+                mViewModel.mUser.value!!.userDetail.bankCode = accountBankCode
+                mViewModel.mUser.value!!.userDetail.bankName = mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString()
 
                 mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
             })

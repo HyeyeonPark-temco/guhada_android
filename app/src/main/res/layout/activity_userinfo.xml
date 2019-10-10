@@ -5,6 +5,7 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="android.text.TextUtils" />
 
         <variable
@@ -226,7 +227,7 @@
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/edittext_mypageuserinfo_email"
                         style="@style/TextMedium"
                         android:layout_width="match_parent"
@@ -235,12 +236,17 @@
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/drawable_disable_inputform"
+                        android:focusable="false"
                         android:gravity="center_vertical"
+                        android:hint="@string/mypage_userinfo_passwaord_infotitle4"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:text="@{TextUtils.isEmpty(user.email) ? @string/mypage_userinfo_passwaord_infotitle4 : user.email}"
-                        android:textColor="@color/warm_grey"
+                        android:text="@{user.email}"
+                        android:textColor="@color/black_four"
+                        android:textColorHint="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
+
+                    <!--android:text="@{TextUtils.isEmpty(viewModel.mUser.email) ? @string/mypage_userinfo_passwaord_infotitle4 : viewModel.mUser.email}"-->
                     <!-- ====================================================================== -->
 
 
@@ -257,7 +263,7 @@
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_14" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/textview_mypageuserinfo_mobile"
                         style="@style/TextMedium"
                         android:layout_width="match_parent"
@@ -266,14 +272,17 @@
                         android:layout_marginRight="@dimen/mypageuserinfo_layout_padding_leftright"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/drawable_disable_inputform"
+                        android:focusable="false"
                         android:gravity="center_vertical"
+                        android:hint="@string/mypage_userinfo_passwaord_infotitle5"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:text="@{TextUtils.isEmpty(user.mobile) ? @string/mypage_userinfo_passwaord_infotitle5 : user.mobile}"
-                        android:textColor="@color/warm_grey"
+                        android:text="@{viewModel.mUser.mobile}"
+                        android:textColor="@color/black_four"
+                        android:textColorHint="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
+                    <!--android:text="@{TextUtils.isEmpty(user.mobile) ? @string/mypage_userinfo_passwaord_infotitle5 : user.mobile, default= @string/mypage_userinfo_passwaord_infotitle5}"-->
                     <!-- ====================================================================== -->
-
 
                     <!-- 회원정보수정 - 비밀번호 -->
                     <TextView
@@ -1241,6 +1250,7 @@
                         android:layout_marginBottom="60dp"
                         android:background="@drawable/drawable_border_esix"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:text="@string/mypage_userinfo_passwaord_infotitle29"
                         android:textColor="@color/color_dbdbdb"
                         android:textSize="@dimen/text_13" />

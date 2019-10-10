@@ -426,8 +426,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 //            mReviewFragment.setProductId(productId = mViewModel.product.value?.productId!!)
 
         childFragmentManager.beginTransaction().let {
-            it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
-            it.commitAllowingStateLoss()
+            if(!mReviewFragment.isAdded){
+                it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
+                it.commitAllowingStateLoss()
+            }
         }
     }
 

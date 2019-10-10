@@ -100,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@string/mypage_deliverydetail_reufndinfo_order3"
+            android:visibility="@{expectedRefundInfo.userFault ? View.VISIBLE: View.GONE}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice1_title" />
 
@@ -110,6 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelShipPrice)}"
+            android:visibility="@{expectedRefundInfo.userFault ? View.VISIBLE: View.GONE}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_deliverydetail_cancelprice1_content" />
 
@@ -304,12 +306,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@{@string/common_price_format(expectedRefundPrice.totalPaymentCancelPrice + expectedRefundPrice.totalPointCancelPrice)}"
+            android:text="@{@string/common_price_format(expectedRefundInfo.totalAmount)}"
             android:textSize="@dimen/text_20"
             app:layout_constraintRight_toLeftOf="@+id/textview_deliverydetail_final1_content2"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line3"
             app:layout_constraintVertical_bias="0" />
-
+        <!--android:text="@{@string/common_price_format(expectedRefundPrice.totalPaymentCancelPrice + expectedRefundPrice.totalPointCancelPrice)}"-->
         <TextView
             android:id="@+id/textview_deliverydetail_final1_content2"
             style="@style/MypageDeliveryRedTitleTextStyle"

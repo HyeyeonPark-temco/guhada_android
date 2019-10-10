@@ -115,4 +115,12 @@ interface BenefitService {
      */
     @POST("/process/due-save")
     fun getDueSavePoint(@Header("Authorization") accessToken: String, @Body pointProcessParam: PointProcessParam) : Call<BaseModel<ExpectedPointResponse>>
+
+//    /**
+//     * 상품상세-혜택 정보 > 적립 예정 포인트
+//     * @author Hyeyeon Park
+//     * @since 2019.10.04
+//     */
+//    @GET("/process/total-due-save")
+//    fun getBenefitDueSavePoint(@Header("Authorization") accessToken: String)
 }
