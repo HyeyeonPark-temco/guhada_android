@@ -229,7 +229,7 @@
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_silver }"
+                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_whitefour }"
                         android:onClick="@{()->viewModel.onClickSellerBookMark()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/framelayoout_productdetail_sellerstore"
