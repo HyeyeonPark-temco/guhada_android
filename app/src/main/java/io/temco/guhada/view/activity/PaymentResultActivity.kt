@@ -2,14 +2,19 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.analytics.HitBuilders
+import com.google.firebase.analytics.FirebaseAnalytics
+import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.ActivityMoveToMain
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
@@ -18,9 +23,11 @@ import io.temco.guhada.data.model.point.ExpectedPointResponse
 import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.viewmodel.payment.PaymentResultViewModel
 import io.temco.guhada.databinding.ActivityPaymentResultBinding
+import io.temco.guhada.view.activity.base.BaseActivity
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.payment.PaymentResultOrderAdapter
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
+import java.lang.Exception
 
 /**
  * 주문 완료 Activity
@@ -83,10 +90,26 @@ class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
             this.shippingMemo = shippingMemo
             if (purchaseOrderResponse != null) {
                 this.purchaseOrderResponse = purchaseOrderResponse as PurchaseOrderResponse
+                sendAnalyticEvent(this.purchaseOrderResponse)
             }
         }
     }
 
+    private fun sendAnalyticEvent(product : PurchaseOrderResponse){
+        try{
+            if (getmFirebaseAnalytics() != null) {
+                val bundle = Bundle()
+                var sizeStr = if((product.orderList.size -1) > 0) "외 $product.orderList.size 건" else ""
+                bundle.putString(FirebaseAnalytics.Param.PRICE, product.totalAmount.toString())
+                bundle.putString(FirebaseAnalytics.Param.TRANSACTION_ID, product.orderNumber.toString())
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.orderList[0].productName+sizeStr)
+                bundle.putString(FirebaseAnalytics.Param.ORIGIN, BuildConfig.BuildType.name)
+                getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.ECOMMERCE_PURCHASE, bundle)
+            }
+        }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
+    }
     private fun initHeader() {
         mBinding.includePaymentresultHeader.title = "주문 완료"
         mBinding.includePaymentresultHeader.setOnClickBackButton {

@@ -148,27 +148,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initReview()
                 initStore()
 
-                if ((context as BaseActivity).getmTracker() != null) {
-                    var pInfo = com.google.android.gms.analytics.ecommerce.Product().apply {
-                        setId(product.dealId.toString())
-                        setName(product.name)
-                        setBrand(product.brandName)
-                        setCustomDimension(0, BuildConfig.BuildType.name)
-                    }
-                    var builder = HitBuilders.ScreenViewBuilder().apply {
-                        addImpression(pInfo, "Product Detail")
-                    }
-                    (context as BaseActivity).getmTracker().setScreenName("searchResults")
-                    (context as BaseActivity).getmTracker().send(builder.build())
-                }
-
-                if (getmFirebaseAnalytics() != null) {
-                    val bundle = Bundle()
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, product.dealId.toString())
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.name)
-                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, BuildConfig.BuildType.name)
-                    getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle)
-                }
+                sendAnalyticEvent(product)
 
             }
             /**
@@ -868,6 +848,31 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         data.append("</body></HTML>")
         mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(), "text/html; video/mpeg", "utf-8", null)
 */
+    }
+
+
+    private fun sendAnalyticEvent(product : Product){
+        if ((context as BaseActivity).getmTracker() != null) {
+            var pInfo = com.google.android.gms.analytics.ecommerce.Product().apply {
+                setId(product.dealId.toString())
+                setName(product.name)
+                setBrand(product.brandName)
+                setCustomDimension(0, BuildConfig.BuildType.name)
+            }
+            var builder = HitBuilders.ScreenViewBuilder().apply {
+                addImpression(pInfo, "Product Detail")
+            }
+            (context as BaseActivity).getmTracker().setScreenName("searchResults")
+            (context as BaseActivity).getmTracker().send(builder.build())
+        }
+
+        if (getmFirebaseAnalytics() != null) {
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, product.dealId.toString())
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.name)
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, BuildConfig.BuildType.name)
+            getmFirebaseAnalytics().logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle)
+        }
     }
 
     companion object {

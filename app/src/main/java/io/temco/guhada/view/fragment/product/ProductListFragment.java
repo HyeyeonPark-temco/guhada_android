@@ -146,6 +146,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         mDepthTitle = null;
         mDepthOldTitle = null;
 
+        mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
+
         changeListType(mCurrentGridType);
         changeProductOrder(mCurrentOrderType);
 
@@ -395,6 +397,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void setTabLayout() {
         if (mBinding != null) {
             if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+                mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                 setCategoryTabLayout();
             } else {
                 mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);

@@ -47,7 +47,7 @@ class SettleServer {
          */
         @JvmStatic
         fun checkAppVersion(listener: OnServerListener) {
-            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java).appVersion().enqueue(object : Callback<BaseModel<AppVersionCheck>> {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).appVersion().enqueue(object : Callback<BaseModel<AppVersionCheck>> {
                 override fun onResponse(call: Call<BaseModel<AppVersionCheck>>, response: Response<BaseModel<AppVersionCheck>>) {
                     resultListener(listener,call, response)
                 }
