@@ -378,12 +378,14 @@
                         <ImageView
                             android:id="@+id/imageview_deliverytracking_status1"
                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_height="wrap_content"
                             android:src="@drawable/delivery_icon_01"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <LinearLayout
+                            android:layout_marginStart="30dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
@@ -412,6 +414,7 @@
                             android:id="@+id/textview_deliverytracking_status1"
                             style="@style/TextRegular"
                             android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:text="@string/shippingtracking_status1"
