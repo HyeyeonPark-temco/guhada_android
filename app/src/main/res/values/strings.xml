@@ -564,7 +564,7 @@
     <string name="paymentresult_receptionaddr">주소</string>
     <string name="paymentresult_receptionmemo">배송메모</string>
     <string name="paymentresult_history">주문내역보기</string>
-    <string name="paymentresult_paymentway">결제방법</string>
+    <string name="paymentresult_paymentway">결제수단</string>
 
     <string name="paymentresult_totalprice">상품금액</string>
     <string name="paymentresult_shippingprice">배송비</string>
