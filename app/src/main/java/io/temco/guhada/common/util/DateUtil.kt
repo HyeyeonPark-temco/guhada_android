@@ -110,7 +110,7 @@ object DateUtil {
     fun convertTimestamp(timestamp: Long, separator: String): String = DateTime(timestamp).toString("yyyy${separator}MM${separator}dd")
 
     @JvmStatic
-    fun convertDateTimestamp(timestamp: Long, separator: String): String = DateTime(timestamp).toString("yyyy${separator}MM${separator}dd HH:mm")
+    fun convertDateTimestamp(timestamp: Long, separator: String): String = DateTime(timestamp).toString("yyyy${separator}MM${separator}dd hh:mm")
 
     @JvmStatic
     fun getNowDateDiffMinute(date: Long): Int {
