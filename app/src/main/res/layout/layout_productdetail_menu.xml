@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->viewModel.onClickCloseMenu()}"
-                android:src="@drawable/close_btn"
+                android:src="@drawable/bag_icon_delete"
                 android:visibility="@{viewModel.closeButtonVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -63,16 +63,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <io.temco.guhada.view.CustomSpinner
                         android:id="@+id/spinner_productdetail_option"
                         style="@style/CustomDropdown"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
+                        android:minHeight="50dp"
                         android:orientation="horizontal"
                         android:overScrollMode="never"
                         android:overlapAnchor="false"
-                        android:minHeight="50dp"
                         android:popupElevation="0dp"
                         android:spinnerMode="dropdown"
                         android:visibility="@{viewModel.closeButtonVisibility == View.GONE ? View.VISIBLE : View.GONE}"
@@ -88,9 +88,10 @@
                 <FrameLayout
                     android:id="@+id/framelayout_productdetail_optionbutton"
                     android:layout_width="match_parent"
-                    android:padding="1dp"
-                    android:background="@drawable/border_all_whitethree"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_all_whitefour"
+                    android:padding="1dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -102,7 +103,7 @@
                             android:layout_height="50dp"
                             android:background="@color/common_white"
                             android:orientation="horizontal"
-                            android:paddingStart="20dp"
+                            android:paddingStart="16dp"
                             android:paddingEnd="12dp">
 
                             <ImageView
@@ -128,7 +129,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open" />
+                                android:src="@{viewModel.mIsBottomSpinnerOpen || viewModel.mIsSpinnerOpen ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -138,25 +139,27 @@
                         android:layout_height="50dp"
                         android:background="@color/common_white"
                         android:orientation="horizontal"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="15dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
                         android:popupBackground="@null">
 
                         <TextView
                             android:id="@+id/textview_productdetail_option"
-                            style="@style/MypageDeliveryWarmGreyTextStyle"
+                            style="@style/TextRegular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
+                            android:textColor="@color/warm_grey"
                             android:textSize="@dimen/text_13" />
 
                         <ImageView
                             android:id="@+id/imageview_productdetail_option"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:src="@{viewModel.mIsBottomSpinnerOpen || viewModel.mIsSpinnerOpen ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/payment_icon_selectbox_open" />
+                    />
                     </LinearLayout>
                 </FrameLayout>
             </FrameLayout>
@@ -164,9 +167,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintlayout_productdetail_optionspinnerlist"
                 android:layout_width="match_parent"
-                android:paddingBottom="1dp"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.mIsBottomSpinnerOpen ? View.VISIBLE: View.GONE, default = gone}"
                 android:background="@drawable/border_all_whitefour_bottom"
-                android:layout_height="wrap_content">
+                android:paddingBottom="1dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_productdetail_optionspinner"
@@ -198,21 +202,18 @@
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/border_all_whitethree"
+
             android:orientation="horizontal">
 
 
             <ImageButton
                 android:layout_width="34dp"
                 android:layout_height="match_parent"
+                android:background="@drawable/border_all_whitefour"
                 android:onClick="@{()->viewModel.onClickMinus()}"
                 android:scaleType="center"
                 android:src="@drawable/detail_btn_quantity_minus_off" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/white_three" />
 
             <TextView
                 style="@style/TextBold"
@@ -225,14 +226,11 @@
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_14" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/white_three" />
 
             <ImageButton
                 android:layout_width="34dp"
                 android:layout_height="match_parent"
+                android:background="@drawable/border_all_whitefour"
                 android:onClick="@{()->viewModel.onClickPlus()}"
                 android:scaleType="center"
                 android:src="@drawable/detail_btn_quantity_plus_on" />
@@ -263,7 +261,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:text="@{ viewModel.extraPriceOperator + @string/common_price_format(viewModel.extraPrice) + @string/common_unit_price}"
-                android:textColor="@color/warm_grey_two"
+                android:textColor="@color/warm_grey_six"
                 android:textSize="@dimen/text_14"
                 android:visibility="@{viewModel.extraPrice > 0 ? View.VISIBLE : View.GONE, default = gone}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -300,6 +298,7 @@
                 style="@style/TextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
                 android:text="@string/common_unit_price"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_16"

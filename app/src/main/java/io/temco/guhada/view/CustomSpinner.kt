@@ -7,6 +7,9 @@ import android.widget.Spinner
 
 class CustomSpinner : Spinner {
 
+    private var mIsOpen = false
+    lateinit var mListener: OnCustomSpinnerListener
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, mode: Int) : super(context, mode)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -29,5 +32,25 @@ class CustomSpinner : Spinner {
             // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
             onItemSelectedListener!!.onItemSelected(this, selectedView, position, selectedItemId)
         }
+    }
+
+    override fun performClick(): Boolean {
+        mIsOpen = true
+        if (::mListener.isInitialized)
+            mListener.onSpinnerOpened()
+
+        return super.performClick()
+    }
+
+    override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
+        super.onWindowFocusChanged(hasWindowFocus)
+        if (mIsOpen && hasWindowFocus)
+            if (::mListener.isInitialized)
+                mListener.onSpinnerClosed()
+    }
+
+    interface OnCustomSpinnerListener {
+        fun onSpinnerOpened()
+        fun onSpinnerClosed()
     }
 }

@@ -2,6 +2,7 @@ package io.temco.guhada.data.viewmodel.productdetail
 
 import android.view.View
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
@@ -55,12 +56,19 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
 
     /** DROP DOWN LIST */
     var mSelectedOptionInfo: OptionInfo? = null
+    var mIsSpinnerOpen = ObservableBoolean(false)
+        @Bindable
+        get() = field
+    var mIsBottomSpinnerOpen  = ObservableBoolean(false)
+        @Bindable
+        get() = field
 
     fun onClickCloseMenu() = listener.closeMenu()
 
     fun onClickPlus() = changeProductCount {
         val plusCount = (productCount.get() + 1)
-        val maxStock = if(product.options?.isEmpty()?:true) product.totalStock else mSelectedOptionInfo?.stock ?: 0
+        val maxStock = if (product.options?.isEmpty()
+                        ?: true) product.totalStock else mSelectedOptionInfo?.stock ?: 0
         if (maxStock < plusCount) ToastUtil.showMessage(String.format(BaseApplication.getInstance().getString(R.string.cart_message_maxquantity), maxStock))
         else changeTotalPrice(plusCount)
     }
@@ -71,7 +79,7 @@ class ProductDetailMenuViewModel(private val listener: OnProductDetailMenuListen
 
     private fun changeProductCount(task: () -> Unit) {
 //        if (optionMap.keys.size != product.options?.size) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
-        if (product.options?.isNotEmpty()?:false && mSelectedOptionInfo == null) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
+        if (product.options?.isNotEmpty() ?: false && mSelectedOptionInfo == null) listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption))
         else task()
     }
 
