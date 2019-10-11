@@ -31,7 +31,7 @@ class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAda
 
     inner class Holder(binding: ItemAddcartproductBinding) : BaseViewHolder<ItemAddcartproductBinding>(binding.root) {
         fun bind(deal: Deal) {
-            setSpacing()
+//            setSpacing()
             mBinding.linearlayoutAddcartproductContainer.setOnClickListener { mClickItemTask(deal.dealId.toLong()) }
             mBinding.deal = deal
             mBinding.executePendingBindings()
