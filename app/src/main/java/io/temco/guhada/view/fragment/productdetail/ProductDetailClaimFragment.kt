@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.util.CommonUtilKotlin
+import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.claim.ClaimResponse
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailClaimViewModel
@@ -37,12 +39,14 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     private val PENDING_CLAIMS = 1
     private val COMPLETED_CLAIMS = 2
     private lateinit var mViewModel: ProductDetailClaimViewModel
+    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     override fun getBaseTag(): String = ProductDetailClaimFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_claim
 
     override fun init() {
         if (productId > 0) {
+            mLoadingIndicatorUtil = LoadingIndicatorUtil(mBinding.root.context)
             mViewModel = ProductDetailClaimViewModel(productId, object : OnProductDetailClaimListener {
                 override fun showMessage(message: String) {
                     ToastUtil.showMessage(message)
@@ -71,8 +75,12 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
                     activity?.startActivityForResult(intent, LOGIN)
                 }
             })
+                    .apply {
+                        this.mShowIndicator = { mLoadingIndicatorUtil.show() }
+                    }
 
             mViewModel.claimResponse.observe(this, Observer {
+                mLoadingIndicatorUtil.hide()
                 if (mBinding.recyclerviewProductdetailClaim.adapter == null) mBinding.recyclerviewProductdetailClaim.adapter = ProductDetailClaimAdapter()
 
                 if (mViewModel.claimPageNo > 1) (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).addItems(it.content)

@@ -37,6 +37,8 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
     var claimStatus = ""
     var claimResponse: MutableLiveData<ClaimResponse> = MutableLiveData()
 
+    var mShowIndicator: () -> Unit = {}
+
     private val getClaimListener = OnServerListener { success, o ->
         if (success) {
             val model = o as BaseModel<*>
@@ -69,6 +71,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
     }
 
     fun getClaims() {
+        mShowIndicator()
         ServerCallbackUtil.callWithToken(
                 task = { accessToken ->
                     ClaimServer.getClaims(getClaimListener, accessToken = accessToken, productId = productId, isMyInquiry = isMineChecked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
