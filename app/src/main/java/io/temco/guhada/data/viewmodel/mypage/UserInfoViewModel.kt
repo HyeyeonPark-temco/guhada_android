@@ -150,7 +150,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
             this.bankNumber = mRefundRequest.refundBankAccountNumber
             this.bankCode = mRefundRequest.refundBankCode
             // 이름 추가
-            this.name = mUser.value?.userDetail?.verifiedName ?: ""
+            //this.name = mUser.value?.userDetail?.verifiedName ?: ""
         }.let {
             if (mIsCheckAccountAvailable.get()) {
                 OrderServer.checkAccount(OnServerListener { success, o ->

@@ -199,7 +199,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 mViewModel.mBankAccount.value = BankAccount().apply {
                     bankNumber = mViewModel.mUser.value!!.userDetail.accountNumber ?: ""
                     bankCode = mViewModel.mUser.value!!.userDetail.bankCode ?: ""
-                    name = mViewModel.mUser.value!!.userDetail.verifiedName ?: ""
+                    //name = mViewModel.mUser.value!!.userDetail.verifiedName ?: ""
                 }
 
                 // 생년월일
@@ -453,8 +453,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     mViewModel.mUser.value!!.userDetail.bankName = mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString()
                     if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "mBankAccount observe",
                             accountOwner,accountNumber,accountBankCode,mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString())
+                    mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
                 }
-                //mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
             })
 
             mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.setSelection(bankNameList.size - 1)

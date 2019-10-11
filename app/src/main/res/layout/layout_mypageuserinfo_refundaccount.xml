@@ -148,9 +148,10 @@
                     android:hint="@string/requestorderstatus_refund_bankhint3"
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
-                    android:text="@{TextUtils.isEmpty(user.userDetail.verifiedName) ? @string/requestorderstatus_refund_bankhint3 : user.userDetail.verifiedName}"
                     android:textColorHint="@color/warm_grey"
                     android:textSize="@dimen/text_13" />
+                <!--
+                    android:text="@{TextUtils.isEmpty(user.userDetail.verifiedName) ? @string/requestorderstatus_refund_bankhint3 : user.userDetail.verifiedName}" -->
 
                 <Button
                     android:id="@+id/button_requestrefund_checkaccount"
