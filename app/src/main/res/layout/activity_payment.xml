@@ -72,7 +72,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:text="@{String.valueOf(viewModel.totalCount)}"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/black_four"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textview_payment_producttitle"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -313,11 +313,11 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textview_payment_recipient">
 
-                            <Spinner
+                            <io.temco.guhada.view.CustomSpinner
                                 android:id="@+id/spinner_payment_shippingmemo"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="@drawable/border_all_whitethree"
+                                android:layout_height="45dp"
+                                android:background="@drawable/border_all_whitefour"
                                 android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingMemoSelected(pos)}"
                                 android:orientation="horizontal"
                                 android:overScrollMode="never"
@@ -336,7 +336,7 @@
                                 <LinearLayout
                                     android:id="@+id/linearlayout_payment_shippingmemo"
                                     android:layout_width="match_parent"
-                                    android:layout_height="50dp"
+                                    android:layout_height="45dp"
                                     android:background="@color/common_white"
                                     android:orientation="horizontal"
                                     android:paddingStart="15dp"

@@ -35,6 +35,7 @@ import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
+import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter

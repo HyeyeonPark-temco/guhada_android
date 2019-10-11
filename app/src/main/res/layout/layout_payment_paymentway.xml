@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="purchaseClickListener"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.payment.PaymentViewModel" />
@@ -119,8 +122,8 @@
                 android:id="@+id/constraintlayout_payment_recipientform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_payment_receipttitle">
@@ -171,6 +174,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textview_payment_receiptpersonal">
+
                     <TextView
                         android:id="@+id/framelayout_payment_personaltype"
                         style="@style/TextRegular"
@@ -186,58 +190,58 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                     <!--<FrameLayout-->
-                        <!--android:id="@+id/framelayout_payment_personaltype"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-                        <!--app:layout_constraintRight_toRightOf="parent"-->
-                        <!--app:layout_constraintTop_toTopOf="parent">-->
+                    <!--android:id="@+id/framelayout_payment_personaltype"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                    <!--app:layout_constraintRight_toRightOf="parent"-->
+                    <!--app:layout_constraintTop_toTopOf="parent">-->
 
-                        <!--<Spinner-->
-                            <!--android:id="@+id/spinner_payment_personaltype"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="45dp"-->
-                            <!--android:background="@drawable/border_all_whitethree"-->
-                            <!--android:orientation="horizontal"-->
-                            <!--android:overScrollMode="never"-->
-                            <!--android:overlapAnchor="false"-->
-                            <!--android:popupBackground="@null"-->
-                            <!--android:spinnerMode="dropdown" />-->
+                    <!--<Spinner-->
+                    <!--android:id="@+id/spinner_payment_personaltype"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="45dp"-->
+                    <!--android:background="@drawable/border_all_whitethree"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:overScrollMode="never"-->
+                    <!--android:overlapAnchor="false"-->
+                    <!--android:popupBackground="@null"-->
+                    <!--android:spinnerMode="dropdown" />-->
 
-                        <!--<FrameLayout-->
-                            <!--android:id="@+id/framelayout_payment_personaltypebutton"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:background="@color/white_three"-->
-                            <!--android:padding="1dp">-->
+                    <!--<FrameLayout-->
+                    <!--android:id="@+id/framelayout_payment_personaltypebutton"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@color/white_three"-->
+                    <!--android:padding="1dp">-->
 
-                            <!--<LinearLayout-->
-                                <!--android:id="@+id/linearlayout_payment_personaltype"-->
-                                <!--android:layout_width="373dp"-->
-                                <!--android:layout_height="47dp"-->
-                                <!--android:background="@color/common_white"-->
-                                <!--android:orientation="horizontal"-->
-                                <!--android:paddingStart="15dp"-->
-                                <!--android:paddingEnd="15dp"-->
-                                <!--android:popupBackground="@null">-->
+                    <!--<LinearLayout-->
+                    <!--android:id="@+id/linearlayout_payment_personaltype"-->
+                    <!--android:layout_width="373dp"-->
+                    <!--android:layout_height="47dp"-->
+                    <!--android:background="@color/common_white"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:paddingStart="15dp"-->
+                    <!--android:paddingEnd="15dp"-->
+                    <!--android:popupBackground="@null">-->
 
-                                <!--<TextView-->
-                                    <!--android:id="@+id/textview_payment_personaltype"-->
-                                    <!--style="@style/MypageDeliveryWarmGreyTextStyle"-->
-                                    <!--android:layout_width="match_parent"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_gravity="center_vertical"-->
-                                    <!--android:layout_weight="1"-->
-                                    <!--android:textSize="@dimen/text_13" />-->
+                    <!--<TextView-->
+                    <!--android:id="@+id/textview_payment_personaltype"-->
+                    <!--style="@style/MypageDeliveryWarmGreyTextStyle"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:textSize="@dimen/text_13" />-->
 
-                                <!--<ImageView-->
-                                    <!--android:id="@+id/imageview_payment_personaltype"-->
-                                    <!--android:layout_width="wrap_content"-->
-                                    <!--android:layout_height="wrap_content"-->
-                                    <!--android:layout_gravity="center_vertical"-->
-                                    <!--android:src="@drawable/payment_icon_selectbox_open" />-->
-                            <!--</LinearLayout>-->
-                        <!--</FrameLayout>-->
+                    <!--<ImageView-->
+                    <!--android:id="@+id/imageview_payment_personaltype"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_vertical"-->
+                    <!--android:src="@drawable/payment_icon_selectbox_open" />-->
+                    <!--</LinearLayout>-->
+                    <!--</FrameLayout>-->
                     <!--</FrameLayout>-->
 
                     <!-- 휴대폰 번호 -->
@@ -543,7 +547,7 @@
                 style="@style/TextMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:text="@string/payment_text_required"
                 android:textColor="@color/colorPrimary" />
 
@@ -555,15 +559,23 @@
                 android:text="@string/payment_text_terms"
                 android:textColor="@color/greyish_brown_two" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_payment_coolgrey_bottom"
-                android:text="@string/common_show"
-                android:textColor="@color/cool_grey"
-                android:layout_marginLeft="4dp"
-                android:onClick="@{purchaseClickListener}"
-                android:textSize="@dimen/text_12" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/border_payment_coolgrey_bottom"
+                    android:onClick="@{purchaseClickListener}"
+                    android:text="@string/common_show"
+                    android:textColor="@color/cool_grey"
+                    android:textSize="@dimen/text_12" />
+            </FrameLayout>
         </LinearLayout>
 
 
