@@ -15,7 +15,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/line_6" />
+            android:background="@color/white_four" />
 
         <LinearLayout
             android:id="@+id/linearlayout_productdetail_optionspinner"

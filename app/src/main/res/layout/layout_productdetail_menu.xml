@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->viewModel.onClickCloseMenu()}"
-                android:src="@drawable/close_btn"
+                android:src="@drawable/bag_icon_delete"
                 android:visibility="@{viewModel.closeButtonVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,7 @@
                     android:id="@+id/framelayout_productdetail_optionbutton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_all_whitethree"
+                    android:background="@drawable/border_all_whitefour"
                     android:padding="1dp">
 
                     <LinearLayout
@@ -145,11 +145,12 @@
 
                         <TextView
                             android:id="@+id/textview_productdetail_option"
-                            style="@style/MypageDeliveryWarmGreyTextStyle"
+                            style="@style/TextRegular"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
+                            android:textColor="@color/warm_grey"
                             android:textSize="@dimen/text_13" />
 
                         <ImageView
@@ -199,21 +200,18 @@
             android:layout_width="wrap_content"
             android:layout_height="34dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/border_all_whitethree"
+
             android:orientation="horizontal">
 
 
             <ImageButton
                 android:layout_width="34dp"
                 android:layout_height="match_parent"
+                android:background="@drawable/border_all_whitefour"
                 android:onClick="@{()->viewModel.onClickMinus()}"
                 android:scaleType="center"
                 android:src="@drawable/detail_btn_quantity_minus_off" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/white_three" />
 
             <TextView
                 style="@style/TextBold"
@@ -226,14 +224,11 @@
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_14" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/white_three" />
 
             <ImageButton
                 android:layout_width="34dp"
                 android:layout_height="match_parent"
+                android:background="@drawable/border_all_whitefour"
                 android:onClick="@{()->viewModel.onClickPlus()}"
                 android:scaleType="center"
                 android:src="@drawable/detail_btn_quantity_plus_on" />
@@ -264,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="6dp"
                 android:text="@{ viewModel.extraPriceOperator + @string/common_price_format(viewModel.extraPrice) + @string/common_unit_price}"
-                android:textColor="@color/warm_grey_two"
+                android:textColor="@color/warm_grey_six"
                 android:textSize="@dimen/text_14"
                 android:visibility="@{viewModel.extraPrice > 0 ? View.VISIBLE : View.GONE, default = gone}"
                 app:layout_constraintBottom_toBottomOf="parent"
