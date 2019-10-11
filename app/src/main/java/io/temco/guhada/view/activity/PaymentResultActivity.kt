@@ -22,6 +22,10 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.payment.PaymentResultOrderAdapter
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
+/**
+ * 주문 완료 Activity
+ * @author Hyeyeon Park
+ */
 class PaymentResultActivity : BindActivity<ActivityPaymentResultBinding>() {
     private lateinit var mViewModel: PaymentResultViewModel
 
