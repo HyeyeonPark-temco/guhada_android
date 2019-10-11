@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:minWidth="100dp"
         android:layout_marginEnd="10dp"
         android:paddingBottom="10dp">
-
 
         <io.temco.guhada.common.SquareImageView
             android:id="@+id/imageview_addcartproduct"
