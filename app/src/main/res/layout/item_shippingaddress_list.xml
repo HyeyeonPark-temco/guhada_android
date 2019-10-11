@@ -101,7 +101,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
             android:gravity="start"
-            android:text="@{`[` + shipping.zip + `] ` + shipping.roadAddress + shipping.detailAddress}"
+            android:text="@{`[` + shipping.zip + `] ` + shipping.roadAddress + ` ` +  shipping.detailAddress}"
             android:textColor="@color/warm_grey_two"
             app:layout_constraintLeft_toRightOf="@id/radiobutton_shippingaddresslist"
             app:layout_constraintRight_toRightOf="parent"
