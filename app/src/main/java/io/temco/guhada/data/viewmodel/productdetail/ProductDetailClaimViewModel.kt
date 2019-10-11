@@ -41,7 +41,7 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         if (success) {
             val model = o as BaseModel<*>
             if (model.resultCode == Flag.ResultCode.DATA_NOT_FOUND) {
-                mMoreButtonVisible =  ObservableBoolean(false)
+                mMoreButtonVisible = ObservableBoolean(false)
                 notifyPropertyChanged(BR.mMoreButtonVisible)
 
                 emptyVisible = ObservableBoolean(true)
@@ -108,6 +108,6 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         listener.clearClaims()
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             ClaimServer.getClaims(getClaimListener, accessToken = accessToken, productId = productId, isMyInquiry = checked, status = claimStatus, size = claimPageSize, pageNo = claimPageNo++)
-        })
+        }, invalidTokenTask = {})
     }
 }
