@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ListPopupWindow
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
@@ -18,6 +19,7 @@ import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
+import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionAttrAdapter
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionListAdapter
@@ -77,6 +79,18 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 context = mBinding.root.context,
                 layout = R.layout.item_productdetail_optionspinner,
                 list = list.toList())
+
+        mBinding.spinnerProductdetailOption.mListener = object : CustomSpinner.OnCustomSpinnerListener {
+            override fun onSpinnerOpened() {
+                mViewModel.mIsSpinnerOpen = ObservableBoolean(!mViewModel.mIsSpinnerOpen.get())
+                mViewModel.notifyPropertyChanged(BR.mIsSpinnerOpen)
+            }
+
+            override fun onSpinnerClosed() {
+                mViewModel.mIsSpinnerOpen = ObservableBoolean(!mViewModel.mIsSpinnerOpen.get())
+                mViewModel.notifyPropertyChanged(BR.mIsSpinnerOpen)
+            }
+        }
         mBinding.spinnerProductdetailOption.adapter = mMenuSpinnerAdapter
         mBinding.spinnerProductdetailOption.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -85,10 +99,11 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val optionList = mViewModel.product.optionInfos ?: listOf()
-                if (optionList.size > position && optionList[position].stock > 0) {
+
+                if (position > 0 && position < optionList.size && optionList[position].stock > 0) {
                     val option: OptionInfo? = optionList[position]
                     if (option != null) {
-                        if (option.rgb1?.isNotEmpty() ?: false) {
+                        if (option.rgb1?.isNotEmpty() == true) {
                             mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
                             mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
                         } else mBinding.imageviewProductdetailOptionselected.visibility = View.GONE
@@ -132,28 +147,28 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
         }
 
         mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
-            val visibility = mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility
-            if (visibility == View.VISIBLE) {
+            if(mViewModel.mIsBottomSpinnerOpen.get()){
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
-                mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
-            } else {
+                mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
+            }else {
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour_emptybottom)
-                mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.VISIBLE
+                mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(true)
             }
-            mBinding.executePendingBindings()
+
+            mViewModel.notifyPropertyChanged(BR.mIsBottomSpinnerOpen)
         }
 
-        mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
         mBinding.recyclerviewProductdetailOptionspinner.adapter = ProductDetailOptionListAdapter().apply {
             this.mList = mViewModel.product.optionInfos?.toMutableList() ?: mutableListOf()
             this.mItemClickTask = { option ->
 
                 // close list
-                mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
+                mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
+                mViewModel.notifyPropertyChanged(BR.mIsBottomSpinnerOpen)
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
 
                 if (option.stock > 0) {
-                    if (option.rgb1?.isNotEmpty() ?: false) {
+                    if (option.rgb1?.isNotEmpty() == true) {
                         mBinding.imageviewProductdetailOptionselected.visibility = View.VISIBLE
                         mBinding.imageviewProductdetailOptionselected.setBackgroundColor(Color.parseColor(option.rgb1))
                     } else

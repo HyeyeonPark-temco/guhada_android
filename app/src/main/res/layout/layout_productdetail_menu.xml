@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <io.temco.guhada.view.CustomSpinner
                         android:id="@+id/spinner_productdetail_option"
                         style="@style/CustomDropdown"
                         android:layout_width="match_parent"
@@ -129,7 +129,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open" />
+                                android:src="@{viewModel.mIsBottomSpinnerOpen || viewModel.mIsSpinnerOpen ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -157,8 +157,9 @@
                             android:id="@+id/imageview_productdetail_option"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:src="@{viewModel.mIsBottomSpinnerOpen || viewModel.mIsSpinnerOpen ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/payment_icon_selectbox_open" />
+                    />
                     </LinearLayout>
                 </FrameLayout>
             </FrameLayout>
@@ -167,6 +168,7 @@
                 android:id="@+id/constraintlayout_productdetail_optionspinnerlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="@{viewModel.mIsBottomSpinnerOpen ? View.VISIBLE: View.GONE, default = gone}"
                 android:background="@drawable/border_all_whitefour_bottom"
                 android:paddingBottom="1dp">
 
