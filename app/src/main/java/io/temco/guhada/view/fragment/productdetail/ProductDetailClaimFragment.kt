@@ -39,7 +39,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     private val PENDING_CLAIMS = 1
     private val COMPLETED_CLAIMS = 2
     private lateinit var mViewModel: ProductDetailClaimViewModel
-    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+    lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     override fun getBaseTag(): String = ProductDetailClaimFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_claim
@@ -75,12 +75,8 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
                     activity?.startActivityForResult(intent, LOGIN)
                 }
             })
-                    .apply {
-                        this.mShowIndicator = { mLoadingIndicatorUtil.show() }
-                    }
 
             mViewModel.claimResponse.observe(this, Observer {
-                mLoadingIndicatorUtil.hide()
                 if (mBinding.recyclerviewProductdetailClaim.adapter == null) mBinding.recyclerviewProductdetailClaim.adapter = ProductDetailClaimAdapter()
 
                 if (mViewModel.claimPageNo > 1) (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).addItems(it.content)
@@ -115,6 +111,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
             mBinding.executePendingBindings()
         }
     }
+
 
     fun refreshIsMineVisible() {
         if (::mViewModel.isInitialized) {

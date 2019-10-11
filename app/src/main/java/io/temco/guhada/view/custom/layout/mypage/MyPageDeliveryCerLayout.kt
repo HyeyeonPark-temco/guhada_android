@@ -43,7 +43,7 @@ class MyPageDeliveryCerLayout constructor(
         mViewModel.cancelOrderHistory.observe(this, Observer {
             mBinding.recyclerviewMypagedeliverycer.adapter = MyPageDeliveryAdapter().apply { this.list = it.orderItemList }
 
-            if (it.totalPage == 1 && it.orderItemList.isEmpty()) {
+            if (it.totalPage == 0 && it.orderItemList.isEmpty()) {
                 mBinding.imageviewMypagedeliverycerEmpty.visibility = View.VISIBLE
                 mBinding.textviewMypagedeliverycerEmpty.visibility = View.VISIBLE
             } else {
@@ -51,12 +51,13 @@ class MyPageDeliveryCerLayout constructor(
                 mBinding.textviewMypagedeliverycerEmpty.visibility = View.GONE
             }
 
+            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage == 0 || (it.page == it.totalPage)) View.GONE else View.VISIBLE
             mBinding.executePendingBindings()
         })
 
         initCalendarFilter()
         setEventBus()
-        mViewModel.setDate(7) // [default] before 1 week
+        mViewModel.setDate(mViewModel.mDefaultDay) // [default] before 3 month
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()

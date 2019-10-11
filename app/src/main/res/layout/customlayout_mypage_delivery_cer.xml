@@ -222,11 +222,10 @@
                         android:paddingTop="16dp"
                         android:paddingEnd="40dp"
                         android:paddingBottom="16dp"
-                        android:visibility="@{viewModel.cancelOrderHistory.page == viewModel.cancelOrderHistory.totalPage ? View.GONE : View.VISIBLE}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/recyclerview_mypagepoint">
-
+                        <!--android:visibility="@{viewModel.cancelOrderHistory.page == viewModel.cancelOrderHistory.totalPage ? View.GONE : View.VISIBLE}"-->
                         <TextView
                             style="@style/TextMedium"
                             android:layout_width="wrap_content"
