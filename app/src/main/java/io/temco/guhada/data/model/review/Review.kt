@@ -34,7 +34,7 @@ class Review {
     var profileImageUrl = ""
     var textReview = ""
     var createdAtTimestamp = 0L
-    var createdAt = ""
+    val createdAt
         get() = convertDateTimeFormat(createdAtTimestamp)
 
     fun getRating(): Float = when (productRating) {
@@ -49,30 +49,6 @@ class Review {
         "FOUR_HALF" -> 4.5f
         "FIVE" -> 5.0f
         else -> 0.0f
-    }
-
-    /// 추후 Util로 분리 예정
-    @SuppressLint("SimpleDateFormat")
-    private fun convertDateTimeFormat(str: String?): String {
-        return if (str != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                LocalDateTime.parse(str).let {
-                    "${it.year}.${plusZero(it.month.value)}.${plusZero(it.dayOfMonth)} ${plusZero(it.hour)}:${plusZero(it.minute)}"
-                }
-            } else {
-                val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(str)
-                val hour = plusZero(date.hours)
-                val month = plusZero(date.month)
-
-                val year = plusZero(SimpleDateFormat("yy").format(date).toInt())
-                val day = plusZero(SimpleDateFormat("dd").format(date).toInt())
-                val minute = plusZero(SimpleDateFormat("mm").format(date).toInt())
-
-                "$year.$month.$day $hour:$minute"
-            }
-        } else {
-            ""
-        }
     }
 
 

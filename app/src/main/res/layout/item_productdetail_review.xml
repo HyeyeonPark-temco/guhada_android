@@ -16,6 +16,8 @@
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel" />
+
+
     </data>
 
     <LinearLayout

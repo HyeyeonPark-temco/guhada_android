@@ -52,6 +52,9 @@ class ReviewData : Serializable {
     @SerializedName("createdAt")
     var createdAt : String = ""
 
+    @SerializedName("createdAtTimestamp")
+    var createdAtTimestamp = 0L
+
     @SerializedName("productId")
     var productId : Long = 0L
 

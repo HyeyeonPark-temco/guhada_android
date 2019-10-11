@@ -25,10 +25,13 @@ object DateUtil {
 
     // Calendar String 변환
     @SuppressLint("SimpleDateFormat")
-    fun getCalendarToString(type: Type.DateFormat, mt: Long): String {
-        var c = Calendar.getInstance().apply { timeInMillis = mt }
-        val f = SimpleDateFormat(Type.DateFormat.get(type))
-        return f.format(c.time)
+    fun getCalendarToString(type: Type.DateFormat, mt: Long?): String {
+        if (mt != null) {
+            var c = Calendar.getInstance().apply { timeInMillis = mt }
+            val f = SimpleDateFormat(Type.DateFormat.get(type))
+            return f.format(c.time)
+        }
+        return ""
     }
 
     // Calendar String 변환
@@ -106,6 +109,8 @@ object DateUtil {
     @JvmStatic
     fun convertTimestamp(timestamp: Long, separator: String): String = DateTime(timestamp).toString("yyyy${separator}MM${separator}dd")
 
+    @JvmStatic
+    fun convertDateTimestamp(timestamp: Long, separator: String): String = DateTime(timestamp).toString("yyyy${separator}MM${separator}dd HH:mm")
 
     @JvmStatic
     fun getNowDateDiffMinute(date: Long): Int {
