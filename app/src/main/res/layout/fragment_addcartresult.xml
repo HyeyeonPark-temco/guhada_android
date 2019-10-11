@@ -22,10 +22,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="9dp"
+            android:lineSpacingExtra="8sp"
             android:text="@string/cart_addresult_title"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_22"
-            android:lineSpacingExtra="8sp"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/imagebutton_addcartresult_close"
@@ -64,6 +64,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/button_addcartresult_cart"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -71,6 +72,7 @@
             app:spanCount="3" />
 
         <Button
+            android:id="@+id/button_addcartresult_cart"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="60dp"

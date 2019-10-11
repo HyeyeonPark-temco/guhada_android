@@ -444,7 +444,7 @@
     <string name="productdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
     <string name="productdetail_qna_button_contactforproduct">상품 문의하기</string>
     <string name="productdetail_qna_button_contactwithseller">판매자 문의하기</string>
-    <string name="productdetail_qna_button_moreclaim">상품 문의 5개 더보기</string>
+    <string name="productdetail_qna_button_moreclaim">상품문의 5개 더보기</string>
 
     <string name="productdetail_review_close">닫기</string>
     <string name="productdetail_review_all">전체리뷰</string>
