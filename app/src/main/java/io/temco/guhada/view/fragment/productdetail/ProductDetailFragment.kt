@@ -5,10 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebSettings
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
@@ -312,6 +316,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
     private fun initContentHeader() {
         mBinding.includeProductdetailContentheader.viewModel = mViewModel
+
+        val matrix = DisplayMetrics()
+        (context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+        mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.layoutParams = RelativeLayout.LayoutParams(matrix.widthPixels,matrix.widthPixels)
         mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
 
