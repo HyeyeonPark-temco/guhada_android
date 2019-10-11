@@ -444,7 +444,7 @@
     <string name="productdetail_qna_message_empty">작성된 상품 문의가 없습니다.</string>
     <string name="productdetail_qna_button_contactforproduct">상품 문의하기</string>
     <string name="productdetail_qna_button_contactwithseller">판매자 문의하기</string>
-    <string name="productdetail_qna_button_moreclaim">상품문의 더보기</string>
+    <string name="productdetail_qna_button_moreclaim">더보기</string>
 
     <string name="productdetail_review_close">닫기</string>
     <string name="productdetail_review_all">전체리뷰</string>
@@ -452,7 +452,7 @@
     <string name="productdetail_review_size">수치포함</string>
     <string name="productdetail_review_reply">댓글포함</string>
     <string name="productdetail_review_title">리뷰</string>
-    <string name="productdetail_review_button_morereview">상품 리뷰 5개 더보기</string>
+    <string name="productdetail_review_button_morereview">더보기</string>
 
     <string name="productdetail_review_like">도움되었어요</string>
     <string name="productdetail_review_height">키:</string>
