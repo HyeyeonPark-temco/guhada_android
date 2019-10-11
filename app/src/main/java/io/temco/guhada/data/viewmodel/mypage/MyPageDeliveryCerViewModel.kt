@@ -32,6 +32,7 @@ import java.util.*
  *
  */
 class MyPageDeliveryCerViewModel(val context: Context) : BaseObservableViewModel() {
+    val mDefaultDay = 90
     var page = 1
     var startDate: Long = 0
     var endDate: Long = 0

@@ -68,7 +68,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     lateinit var mainListener: OnMainListener
     private val INVALID_DEAL_ID = -1
     private var animFlag = true
-    private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+    lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
 
     private lateinit var mViewModel: ProductDetailViewModel
     private lateinit var mClaimFragment: ProductDetailClaimFragment
@@ -80,6 +80,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
+
+    override fun onStop() {
+        super.onStop()
+//        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.dismiss()
+    }
 
     // room database init
     private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
@@ -116,63 +121,12 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         })
         mViewModel.product.observe(this, Observer<Product> { product ->
             mBinding.product = product
-            mBinding.executePendingBindings()
 
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mViewModel.getExpectedCoupon()
             initSummary()
             initContentHeader()
-            val data = StringBuilder()
-            data.append("<style>img{display: inline;height: auto;max-width: 100%;}" +
-                    "body{word-break: break-all; word-break: break-word}" +
-                    "h1{font-size:large; word-break: break-all; word-break: break-word}" +
-                    "h2{font-size:medium; word-break: break-all; word-break: break-word}</style>")
-            data.append(product.desc.replace("\"//www", "\"https://www"))
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
-                javaScriptEnabled = true
-                javaScriptCanOpenWindowsAutomatically = true
-                setSupportMultipleWindows(true)
-                allowFileAccess = true
-                pluginState = WebSettings.PluginState.ON
-                pluginState = WebSettings.PluginState.ON_DEMAND
-                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-                loadsImagesAutomatically = true
-                defaultFontSize = context?.resources?.getDimension(R.dimen.text_4)?.toInt() ?: 20
-                setAppCacheEnabled(true)
-                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
-                if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
-            }
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
-
-            /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
-                javaScriptEnabled = true
-                javaScriptCanOpenWindowsAutomatically = true
-                setSupportMultipleWindows(true)
-                loadWithOverviewMode = true
-                useWideViewPort = true
-                allowFileAccess = true
-                pluginState = WebSettings.PluginState.ON
-                pluginState = WebSettings.PluginState.ON_DEMAND
-                cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-                setAppCacheEnabled(true)
-                layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
-                if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
-            }
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                    //return super.shouldOverrideUrlLoading(view, request)
-                    view?.webChromeClient = WebChromeClient()
-                    if (CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment", request?.url!!.toString())
-                    return true
-                }
-            }
-
-            val data = StringBuilder()
-            data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body><style>img{display: inline;height: auto;max-width: 100%;}</style>")
-            data.append(product.desc.replace("\"//www", "\"https://www"))
-            data.append("</body></HTML>")
-            mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(), "text/html; video/mpeg", "utf-8", null)
-*/
+            initContent(product)
             hideLoadingIndicator()
 
             // [상세정보|상품문의|셀러스토어] 탭 하단부 display
@@ -194,7 +148,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initReview()
                 initStore()
 
-                if((context as BaseActivity).getmTracker() != null){
+                if ((context as BaseActivity).getmTracker() != null) {
                     var pInfo = com.google.android.gms.analytics.ecommerce.Product().apply {
                         setId(product.dealId.toString())
                         setName(product.name)
@@ -208,7 +162,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     (context as BaseActivity).getmTracker().send(builder.build())
                 }
 
-                if(getmFirebaseAnalytics() != null){
+                if (getmFirebaseAnalytics() != null) {
                     val bundle = Bundle()
                     bundle.putString(FirebaseAnalytics.Param.ITEM_ID, product.dealId.toString())
                     bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, product.name)
@@ -246,6 +200,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 }
                 (context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
             }
+
+            mBinding.executePendingBindings()
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
@@ -803,7 +759,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     override fun hideLoadingIndicator() {
-        if (::mLoadingIndicatorUtil.isInitialized && mLoadingIndicatorUtil.isShowing) mLoadingIndicatorUtil.dismiss()
+        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.dismiss()
     }
 
     override fun closeActivity() {
@@ -858,6 +814,60 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         // 팔로우 버튼 리셋
         if (::mStoreFragment.isInitialized) mStoreFragment.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
         mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
+    }
+
+    private fun initContent(product: Product) {
+        val data = StringBuilder()
+        data.append("<style>img{display: inline;height: auto;max-width: 100%;}" +
+                "body{word-break: break-all; word-break: break-word}" +
+                "h1{font-size:large; word-break: break-all; word-break: break-word}" +
+                "h2{font-size:medium; word-break: break-all; word-break: break-word}</style>")
+        data.append(product.desc.replace("\"//www", "\"https://www"))
+        mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
+            javaScriptEnabled = true
+            javaScriptCanOpenWindowsAutomatically = true
+            setSupportMultipleWindows(true)
+            allowFileAccess = true
+            pluginState = WebSettings.PluginState.ON
+            pluginState = WebSettings.PluginState.ON_DEMAND
+            cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+            loadsImagesAutomatically = true
+            defaultFontSize = context?.resources?.getDimension(R.dimen.text_4)?.toInt() ?: 20
+            setAppCacheEnabled(true)
+            layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+            if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
+        }
+        mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
+
+        /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
+            javaScriptEnabled = true
+            javaScriptCanOpenWindowsAutomatically = true
+            setSupportMultipleWindows(true)
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            allowFileAccess = true
+            pluginState = WebSettings.PluginState.ON
+            pluginState = WebSettings.PluginState.ON_DEMAND
+            cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+            setAppCacheEnabled(true)
+            layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+            if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
+        }
+        mBinding.includeProductdetailContentbody.webviewProductdetailContent.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                //return super.shouldOverrideUrlLoading(view, request)
+                view?.webChromeClient = WebChromeClient()
+                if (CustomLog.flag) CustomLog.L("CommunityDetailContentsFragment", request?.url!!.toString())
+                return true
+            }
+        }
+
+        val data = StringBuilder()
+        data.append("<HTML><HEAD><LINK href=\"community.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body><style>img{display: inline;height: auto;max-width: 100%;}</style>")
+        data.append(product.desc.replace("\"//www", "\"https://www"))
+        data.append("</body></HTML>")
+        mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadDataWithBaseURL("file:///android_asset/", data.toString(), "text/html; video/mpeg", "utf-8", null)
+*/
     }
 
     companion object {

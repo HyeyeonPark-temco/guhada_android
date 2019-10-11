@@ -52,7 +52,7 @@ class MyPageDeliveryLayout constructor(
                 this.requestCancelOrderTask = { purchaseOrder -> redirectCancelOrderActivity(purchaseOrder) }
             }
 
-            if (it.totalPage == 1 && it.orderItemList.isEmpty()) {
+            if (it.totalPage == 0 && it.orderItemList.isEmpty()) {
                 mBinding.imageviewMypageDeliveryEmpty.visibility = View.VISIBLE
                 mBinding.textviewMypageDeliveryEmpty.visibility = View.VISIBLE
             } else {
@@ -60,7 +60,7 @@ class MyPageDeliveryLayout constructor(
                 mBinding.textviewMypageDeliveryEmpty.visibility = View.GONE
             }
 
-            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage != it.page) View.VISIBLE else View.GONE
+            mBinding.linearlayoutMypagedeliverycerMore.visibility = if (it.totalPage == 0 || (it.page == it.totalPage)) View.GONE else View.VISIBLE
             mBinding.executePendingBindings()
         })
 

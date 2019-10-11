@@ -122,7 +122,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         get() = field
 
     // 혜택 정보
-    var mExpectedPoint : MutableLiveData<ExpectedPointResponse> = MutableLiveData()
+    var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
 
     fun getDetail() {
         ProductServer.getProductDetail(OnServerListener { success, o ->
@@ -336,7 +336,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                             })
                 }, accessToken = accessToken, pointProcessParam = pointProcessParam)
             }
-        })
+        }, invalidTokenTask = {})
     }
 
 //    LISTENER

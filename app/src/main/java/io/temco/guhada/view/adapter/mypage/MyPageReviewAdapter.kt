@@ -13,11 +13,14 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.google.android.gms.common.util.DataUtils
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.DateUtil
 import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Deal
@@ -43,14 +46,14 @@ import kotlin.collections.ArrayList
  *
  * 마이페이지 최근본상품,
  */
-class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPageReviewBase>) :
+class MyPageReviewAdapter(private val model: ViewModel, list: ArrayList<MyPageReviewBase>) :
         CommonRecyclerAdapter<MyPageReviewBase, MyPageReviewAdapter.ListViewHolder>(list) {
 
     override fun getItemViewType(position: Int): Int {
         return items.let {
-            if(items[position].isMoreList) 0
+            if (items[position].isMoreList) 0
             else {
-                if(items[position].type == MyPageReviewType.AvailableReview)  1
+                if (items[position].type == MyPageReviewType.AvailableReview) 1
                 else 2
             }
         }
@@ -58,17 +61,17 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
 
     override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        if(viewType == 1){
+        if (viewType == 1) {
             var res = R.layout.item_mypage_review_list_avaiable
-            val binding : ItemMypageReviewListAvaiableBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+            val binding: ItemMypageReviewListAvaiableBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
             return MyPageMyPageReviewAvailableListViewHolder(binding.root, binding)
-        }else if(viewType == 2){
+        } else if (viewType == 2) {
             var res = R.layout.item_mypage_review_list_review
-            val binding : ItemMypageReviewListReviewBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+            val binding: ItemMypageReviewListReviewBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
             return MyPageMyPageReviewListViewHolder(binding.root, binding)
-        }else{
+        } else {
             var res = R.layout.item_more_list
-            val binding : ItemMoreListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
+            val binding: ItemMoreListBinding = DataBindingUtil.inflate(layoutInflater, res, parent, false)
             return MyPageMoreListViewHolder(binding.root, binding)
         }
     }
@@ -83,35 +86,35 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
     /**
      * 메인 리스트에 사용할 base view holder
      */
-    open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseProductViewHolder<ViewDataBinding>(containerView){
-        abstract fun bind(viewModel : ViewModel, position : Int, data : MyPageReviewBase)
+    open abstract class ListViewHolder(containerView: View, binding: ViewDataBinding) : BaseProductViewHolder<ViewDataBinding>(containerView) {
+        abstract fun bind(viewModel: ViewModel, position: Int, data: MyPageReviewBase)
     }
 
     /**
      * 메인 리스트에 사용할 base view holder
      */
-    inner class MyPageMyPageReviewAvailableListViewHolder(val containerView: View, val binding: ItemMypageReviewListAvaiableBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
-        override fun bind(model : ViewModel, position : Int, data : MyPageReviewBase) {
+    inner class MyPageMyPageReviewAvailableListViewHolder(val containerView: View, val binding: ItemMypageReviewListAvaiableBinding) : ListViewHolder(containerView, binding) {
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
+        override fun bind(model: ViewModel, position: Int, data: MyPageReviewBase) {
             if (data != null) {
                 var item = data as ReviewAvailableOrder
                 ImageUtil.loadImage((this@MyPageReviewAdapter.model as MyPageReviewViewModel).mRequestManager, binding.productItemLayout.imageItemmypagereviewlistreviewThumb, item.imageUrl)
 
                 binding.position = position
-                binding.productItemLayout.season = if(TextUtils.isEmpty(item.season)) "" else item.season
+                binding.productItemLayout.season = if (TextUtils.isEmpty(item.season)) "" else item.season
                 binding.productItemLayout.brand = item.brandName
                 binding.productItemLayout.title = item.prodName
                 binding.productItemLayout.setClickProductListener { CommonUtil.startProductActivity(itemView.context as Activity, item.dealId) }
-                var option = (if(!item.optionAttribute1.isNullOrEmpty())item.optionAttribute1 else "")  +
-                        (if(!item.optionAttribute2.isNullOrEmpty())", "+item.optionAttribute2 else "")  +
-                        (if(!item.optionAttribute3.isNullOrEmpty())", "+item.optionAttribute3 else "")
+                var option = (if (!item.optionAttribute1.isNullOrEmpty()) item.optionAttribute1 else "") +
+                        (if (!item.optionAttribute2.isNullOrEmpty()) ", " + item.optionAttribute2 else "") +
+                        (if (!item.optionAttribute3.isNullOrEmpty()) ", " + item.optionAttribute3 else "")
 
-                binding.productItemLayout.option = (if(!option.isNullOrEmpty()) option+", " else "") + item.quantity + "개"
+                binding.productItemLayout.option = (if (!option.isNullOrEmpty()) option + ", " else "") + item.quantity + "개"
                 binding.productItemLayout.price = item.orderPrice
 
-                if(item.shipCompleteTimestamp.isNullOrEmpty()){
+                if (item.shipCompleteTimestamp.isNullOrEmpty()) {
                     binding.productItemLayout.deliveryComplete = item.purchaseStatusText
-                }else{
+                } else {
                     var cal = Calendar.getInstance()
                     binding.productItemLayout.deliveryComplete = item.purchaseStatusText
                 }
@@ -124,39 +127,39 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
         }
     }
 
-    inner class MyPageMyPageReviewListViewHolder(val containerView: View, val binding: ItemMypageReviewListReviewBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
-        override fun bind(model : ViewModel, position : Int, data : MyPageReviewBase) {
+    inner class MyPageMyPageReviewListViewHolder(val containerView: View, val binding: ItemMypageReviewListReviewBinding) : ListViewHolder(containerView, binding) {
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
+        override fun bind(model: ViewModel, position: Int, data: MyPageReviewBase) {
             if (data != null) {
                 var item = data as MyPageReviewContent
 
                 ImageUtil.loadImage((this@MyPageReviewAdapter.model as MyPageReviewViewModel).mRequestManager, binding.productItemLayout.imageItemmypagereviewlistreviewThumb, item.order.imageUrl)
 
                 binding.position = position
-                binding.productItemLayout.season = if(TextUtils.isEmpty(item.order.season)) "" else item.order.season
+                binding.productItemLayout.season = if (TextUtils.isEmpty(item.order.season)) "" else item.order.season
                 binding.productItemLayout.brand = item.order.brandName
                 binding.productItemLayout.title = item.order.prodName
-                var option = (if(!item.order.optionAttribute1.isNullOrEmpty())item.order.optionAttribute1 else "")  +
-                        (if(!item.order.optionAttribute2.isNullOrEmpty())", "+item.order.optionAttribute2 else "")  +
-                        (if(!item.order.optionAttribute3.isNullOrEmpty())", "+item.order.optionAttribute3 else "")
+                var option = (if (!item.order.optionAttribute1.isNullOrEmpty()) item.order.optionAttribute1 else "") +
+                        (if (!item.order.optionAttribute2.isNullOrEmpty()) ", " + item.order.optionAttribute2 else "") +
+                        (if (!item.order.optionAttribute3.isNullOrEmpty()) ", " + item.order.optionAttribute3 else "")
 
                 binding.productItemLayout.setClickProductListener { CommonUtil.startProductActivity(itemView.context as Activity, item.order.dealId) }
 
-                binding.productItemLayout.option = (if(!option.isNullOrEmpty()) option+", " else "") + item.order.quantity + "개"
+                binding.productItemLayout.option = (if (!option.isNullOrEmpty()) option + ", " else "") + item.order.quantity + "개"
                 binding.productItemLayout.price = item.order.orderPrice
 
-                if(item.order.shipCompleteTimestamp.isNullOrEmpty()){
+                if (item.order.shipCompleteTimestamp.isNullOrEmpty()) {
                     binding.productItemLayout.deliveryComplete = item.order.purchaseStatusText
-                }else{
+                } else {
                     var cal = Calendar.getInstance()
                     binding.productItemLayout.deliveryComplete = item.order.purchaseStatusText
                 }
 
-                var option2 = (if(!item.order.optionAttribute1.isNullOrEmpty())item.order.optionAttribute1 else "") +
-                        (if(!item.order.optionAttribute2.isNullOrEmpty()) "/" +item.order.optionAttribute2 else "") +
-                        (if(!item.order.optionAttribute3.isNullOrEmpty()) "/" +item.order.optionAttribute3 else "")
+                var option2 = (if (!item.order.optionAttribute1.isNullOrEmpty()) item.order.optionAttribute1 else "") +
+                        (if (!item.order.optionAttribute2.isNullOrEmpty()) "/" + item.order.optionAttribute2 else "") +
+                        (if (!item.order.optionAttribute3.isNullOrEmpty()) "/" + item.order.optionAttribute3 else "")
 
-                binding.option2 = containerView.context.resources.getString(R.string.cart_option_title) +" : "+ (if(option2.isNullOrEmpty()) "없음" else option2)
+                binding.option2 = containerView.context.resources.getString(R.string.cart_option_title) + " : " + (if (option2.isNullOrEmpty()) "없음" else option2)
                 binding.reviewTextTitle1 = "사이즈"
                 binding.reviewTextDesc1 = item.reviewTexts.size/*"작아요"*/
 
@@ -168,31 +171,31 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
 
                 binding.reviewImageCount = item.review.photoCount
                 binding.reviewImageCountTxt = item.review.photoCount.toString()
-                if(item.review.photoCount > 0)
+                if (item.review.photoCount > 0)
                     ImageUtil.loadImage((this@MyPageReviewAdapter.model as MyPageReviewViewModel).mRequestManager, binding.imageItemmypagereviewlistreviewReview, item.reviewPhotos[0].reviewPhotoUrl)
                 binding.reviewDesc = item.review.textReview
-                binding.reviewDate = item.review.createdAt
+                binding.reviewDate = DateUtil.getCalendarToString(Type.DateFormat.TYPE_4, item.review.createdAtTimestamp)
                 binding.rating = item.review.getRating()
 
                 binding.setClickDelListener {
                     CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.review_activity_tab2_review_del_desc),
                             cancelButtonVisible = true,
                             confirmTask = {
-                                if(model is MyPageReviewViewModel){
+                                if (model is MyPageReviewViewModel) {
                                     model.mLoadingIndicatorUtil.show()
                                     var productId = item.order.productId
                                     var reviewId = item.review.id.toLong()
-                                    model.deleteMyReview(productId, reviewId, object : OnCallBackListener{
+                                    model.deleteMyReview(productId, reviewId, object : OnCallBackListener {
                                         override fun callBackListener(resultFlag: Boolean, value: Any) {
-                                            if(resultFlag){
+                                            if (resultFlag) {
                                                 items.removeAt(position)
-                                                if(model.getReviewAdapter().itemCount > 0){
+                                                if (model.getReviewAdapter().itemCount > 0) {
                                                     model.getReviewAdapter().notifyItemChanged(position)
-                                                }else{
+                                                } else {
                                                     model.tab2EmptyViewVisible.set(true)
                                                 }
-                                                model.mypageReviewtab2Title.set(model.mypageReviewtab2Title.get()-1)
-                                            }else{
+                                                model.mypageReviewtab2Title.set(model.mypageReviewtab2Title.get() - 1)
+                                            } else {
                                                 ToastUtil.showMessage(value.toString())
                                             }
                                             model.mLoadingIndicatorUtil.hide()
@@ -213,13 +216,13 @@ class MyPageReviewAdapter (private val model : ViewModel, list : ArrayList<MyPag
         }
     }
 
-    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView,binding){
-        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) {  }
-        override fun bind(model : ViewModel, position : Int, data : MyPageReviewBase){
+    inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder(containerView, binding) {
+        override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
+        override fun bind(model: ViewModel, position: Int, data: MyPageReviewBase) {
             binding.linearlayoutMoreView.setOnClickListener {
-                if(data is MyPageReviewContent){
+                if (data is MyPageReviewContent) {
                     (model as MyPageReviewViewModel).getMoreTab2List()
-                }else{
+                } else {
                     (model as MyPageReviewViewModel).getMoreTab1List()
                 }
             }

@@ -134,7 +134,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                                 successTask(model.data as BookMark)
                             })
                 }, userId = userId, accessToken = it)
-        })
+        }, invalidTokenTask = {})
     }
 
     // 좋아요 등록

@@ -34,6 +34,14 @@ public class BindAdapter {
         if(url != null && url != "")
             GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
         else
+            GlideApp.with(view.getContext()).load(R.drawable.background_color_pinkishgrey).apply(RequestOptions.circleCropTransform()).into(view);
+    }
+
+    @BindingAdapter("ovalProfileImageUrl")
+    public static void loadOvalProfileImage(ImageView view, String url) {
+        if(url != null && url != "")
+            GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
+        else
             GlideApp.with(view.getContext()).load(R.drawable.profile_non_square).apply(RequestOptions.circleCropTransform()).into(view);
     }
 

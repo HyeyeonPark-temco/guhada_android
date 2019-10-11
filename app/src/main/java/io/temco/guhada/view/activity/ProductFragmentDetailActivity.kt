@@ -20,7 +20,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import android.os.Bundle
 
 
-
 /**
  * @see io.temco.guhada.view.fragment.productdetail.ProductDetailFragment
  * @author park jungho
@@ -46,7 +45,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
 
     override fun onStart() {
         super.onStart()
-        if(!initView){
+        if (!initView) {
             initView = true
             setViewInit()
         }
@@ -75,7 +74,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
 
     override fun removeProductFragment() {
         // setResult(Activity.RESULT_OK)
-        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,true)
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true, true)
         setResult(ResultCode.GO_TO_MAIN.flag)
         finish()
         //  removeProductDetailFragment()
@@ -87,7 +86,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
         if (mProductDetailFragment != null && mProductDetailFragment!!.isAdded())
             supportFragmentManager.beginTransaction().remove(mProductDetailFragment!!).commitAllowingStateLoss()
         mLoadingIndicatorUtil.hide()*/
-        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,true)
+        BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true, true)
         setResult(ResultCode.GO_TO_MAIN.flag)
         finish()
     }
