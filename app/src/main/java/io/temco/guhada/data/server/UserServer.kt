@@ -223,7 +223,7 @@ class UserServer {
                 }
 
                 override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
-                    listener.onResult(true, response.body())
+                    resultListener(listener,call,response)
                 }
             })
         }
@@ -240,7 +240,7 @@ class UserServer {
                 }
 
                 override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
-                    listener.onResult(true, response.body())
+                    resultListener(listener,call,response)
                 }
             })
         }
@@ -253,7 +253,7 @@ class UserServer {
         fun checkEmail(listener: OnServerListener, email: String) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkEmail(email).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
+                    resultListener(listener,call,response)
                 }
 
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -269,7 +269,7 @@ class UserServer {
         fun checkPhone(listener: OnServerListener, phoneNumber: String) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkPhone(phoneNumber).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    listener.onResult(response.isSuccessful, response.body())
+                    resultListener(listener,call,response)
                 }
 
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -512,7 +512,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
         /**
@@ -541,7 +541,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 
@@ -553,24 +553,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .getMypageReviewList(accessToken, page, size).enqueue(object : Callback<BaseModel<MyPageReview>> {
                         override fun onResponse(call: Call<BaseModel<MyPageReview>>, response: Response<BaseModel<MyPageReview>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<MyPageReview>>, t: Throwable) {
@@ -578,7 +561,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-                    )
+            )
         }
 
 
@@ -590,24 +573,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .deleteReviewData(accessToken, productId, reviewId).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("deleteReviewData", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -627,27 +593,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .writeReview(accessToken, productId, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            if (CustomLog.flag) CustomLog.L("writeReview", "onResponse body", response.code())
-
-                            if (response.code() in 200..400 && response.body() != null) {
-                                if (CustomLog.flag) CustomLog.L("writeReview", "onResponse body", response.body().toString())
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("writeReview", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -667,24 +613,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .modifyReview(accessToken, productId, reviewId, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("modifyReview", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -704,32 +633,13 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .getUserSize(accessToken).enqueue(object : Callback<BaseModel<UserSize>> {
                         override fun onResponse(call: Call<BaseModel<UserSize>>, response: Response<BaseModel<UserSize>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("getUserSize", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
-
                         override fun onFailure(call: Call<BaseModel<UserSize>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getUserSize", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
-                    }
-                    )
+                    })
         }
 
 
@@ -741,32 +651,13 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .saveUserSize(accessToken, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("saveUserSize", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
-
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("saveUserSize", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
-                    }
-                    )
+                    })
         }
 
 
@@ -778,24 +669,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .modifyUserSize(accessToken, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("modifyUserSize", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -836,24 +710,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .checkExistSnsUser(snsType, snsId, email).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -924,24 +781,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .getUserReviewUrl(accessToken).enqueue(object : Callback<BaseModel<JsonObject>> {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
-                            if (response.code() in 200..400 && response.body() != null) {
-                                listener.onResult(true, response.body())
-                            } else {
-                                try {
-                                    var msg = Message()
-                                    var errorBody: String? = response.errorBody()?.string() ?: null
-                                    if (!errorBody.isNullOrEmpty()) {
-                                        var gson = Gson()
-                                        msg = gson.fromJson<Message>(errorBody, Message::class.java)
-                                    }
-                                    var error = BaseErrorModel(response.code(), response.raw().request().url().toString(), msg)
-                                    if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onResponse body", error.toString())
-                                    listener.onResult(false, error)
-                                } catch (e: Exception) {
-                                    if (CustomLog.flag) CustomLog.E(e)
-                                    listener.onResult(false, null)
-                                }
-                            }
+                            resultListener(listener,call,response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {

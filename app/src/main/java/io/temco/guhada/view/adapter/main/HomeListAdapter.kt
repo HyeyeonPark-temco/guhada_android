@@ -246,7 +246,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     var intent = Intent(itemView.context as MainActivity, ProductFilterListActivity::class.java)
                     intent.putExtra("type", Type.ProductListViewType.VIEW_MORE)
                     intent.putExtra("search_word", searchCondition)
-                    intent.putExtra("search_Category", "")
+                    intent.putExtra("search_Category", if(item.currentSubTitleIndex==0) "" else item.currentSubTitleIndex.toString())
                     (itemView.context as MainActivity).startActivityForResult(intent, Flag.RequestCode.BASE)
                 }
 

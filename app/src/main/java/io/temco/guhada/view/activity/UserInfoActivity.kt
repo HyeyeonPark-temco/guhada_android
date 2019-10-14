@@ -19,10 +19,7 @@ import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnBaseDialogListener
 import io.temco.guhada.common.listener.OnBorderEditTextFocusListener
 import io.temco.guhada.common.listener.OnCallBackListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CommonViewUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.BankAccount
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.UserUpdateInfo
@@ -279,8 +276,19 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             datePicker = DatePickerDialog(this@UserInfoActivity, object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
                     if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth))
-                    mViewModel.mUser.value!!.birth = String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth)
-                    setBirth()
+                    var selectCal = Calendar.getInstance().apply {
+                        set(Calendar.YEAR,year)
+                        set(Calendar.MONTH,month)
+                        set(Calendar.DAY_OF_MONTH,dayOfMonth)
+                    }
+
+                    if(DateUtil.getNowDateDiffDay(selectCal.timeInMillis) > 1){
+                        mViewModel.mUser.value!!.birth = String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth)
+                        setBirth()
+                    }else{
+                        if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", "getNowDateDiffDay ", DateUtil.getNowDateDiffDay(selectCal.timeInMillis))
+                        CommonViewUtil.showDialog(this@UserInfoActivity,"잘못된 날자를 선택하였습니다.",false,false)
+                    }
                 }
             }, cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)), cal.get(Calendar.DAY_OF_MONTH))
             datePicker.show()
