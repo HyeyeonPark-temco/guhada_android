@@ -32,13 +32,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
+                    <io.temco.guhada.view.custom.HtmlTextView
                         android:id="@+id/textview_mypagefollow_totalcount"
                         style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:text="총 40개"
+                        android:layout_marginTop="13dp"
+                        android:text="@{@string/mypagefollow_totalcount(0), default = @string/mypagefollow_totalcount_default}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
                         app:layout_constraintBottom_toTopOf="@+id/recyclerview_mypagefollow_list"
@@ -52,11 +53,12 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="13dp"
                         android:layout_marginEnd="20dp"
-                        android:onClick="@{()->viewModel.onClickDeleteAll()}"
                         android:background="@drawable/border_all_whitethree"
+                        android:onClick="@{()->viewModel.onClickDeleteAll()}"
                         android:text="@string/btn_delete_all"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
+                        android:visibility="gone"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,13 +67,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:visibility="@{viewModel.mEmptyViewVisible ? View.GONE : View.VISIBLE}"
                         android:orientation="vertical"
                         android:overScrollMode="never"
+                        android:visibility="@{viewModel.mEmptyViewVisible ? View.GONE : View.VISIBLE}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/button_mypagefollow_deleteall" />
+                        app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_totalcount" />
 
                     <LinearLayout
                         android:id="@+id/linearlayout_mypagefollow_empty"

@@ -6,16 +6,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.request.RequestOptions
 import io.temco.guhada.R
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ResultCode
-import io.temco.guhada.common.util.GlideApp
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.BookMarkCountResponse
 import io.temco.guhada.data.model.BookMarkResponse
-import io.temco.guhada.data.model.seller.Seller
+import io.temco.guhada.data.model.seller.SellerStore
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel
 import io.temco.guhada.databinding.ItemMypageFollowBinding
@@ -28,11 +25,11 @@ import kotlinx.coroutines.launch
 /**
  * 마이페이지 팔로우한 스토어 어댑터
  * @author Hyeyeon Park
- * @since 2019.08.26
+ * @since 2019.10.14
  */
-class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
+class MyPageStoreFollowAdapter : RecyclerView.Adapter<MyPageStoreFollowAdapter.Holder>() {
     lateinit var mViewModel: MyPageFollowViewModel
-    var mList = mutableListOf<Seller>()
+    var mList = mutableListOf<SellerStore>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
             Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_mypage_follow, parent, false))
@@ -43,60 +40,42 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
         holder.bind(mList[position])
     }
 
-    fun setItems(list: MutableList<Seller>) {
+    fun setItems(list: MutableList<SellerStore>) {
         this.mList = list
         notifyDataSetChanged()
     }
 
-    fun addAllItems(items: MutableList<Seller>, startPos: Int, endPos: Int) {
+    fun addAllItems(items: MutableList<SellerStore>, startPos: Int, endPos: Int) {
         mList.addAll(items)
         notifyItemRangeInserted(startPos, endPos)
     }
 
     inner class Holder(binding: ItemMypageFollowBinding) : BaseViewHolder<ItemMypageFollowBinding>(binding.root) {
-        fun bind(seller: Seller) {
+        fun bind(sellerStore: SellerStore) {
             val scope = CoroutineScope(Dispatchers.Main)
-            scope.launch {
-                val sellerId = seller.id
-                getSeller(sellerId)
-                getFollowerCount(sellerId)
-            }
-
             mBinding.buttonMypagefollowFollow.setOnClickListener {
                 scope.launch {
                     val token = Preferences.getToken().accessToken
                     if (token != null) {
-                        if (seller.isFollowing) deleteBookMark(accessToken = "Bearer $token", target = BookMarkTarget.SELLER.target, targetId = seller.id)
-                        else saveBookMark(accessToken = "Bearer $token", bookMarkResponse = BookMarkResponse(target = BookMarkTarget.SELLER.target, targetId = seller.id))
+                        if (sellerStore.isFollowing) deleteBookMark(accessToken = "Bearer $token", target = BookMarkTarget.SELLER.target, targetId = sellerStore.sellerId)
+                        else saveBookMark(accessToken = "Bearer $token", bookMarkResponse = BookMarkResponse(target = BookMarkTarget.SELLER.target, targetId = sellerStore.sellerId))
 
-                        seller.isFollowing = !seller.isFollowing
+                        sellerStore.isFollowing = !sellerStore.isFollowing
                     }
                 }
             }
 
             mBinding.imageviewMypagefollowProfile.setOnClickListener {
                 val intent = Intent(mBinding.root.context, SellerInfoActivity::class.java)
-                intent.putExtra("sellerId", seller.id)
+                intent.putExtra("sellerId", sellerStore.sellerId)
                 mBinding.root.context.startActivity(intent)
             }
 
-            if (::mViewModel.isInitialized) {
+            if (::mViewModel.isInitialized)
                 mBinding.viewModel = mViewModel
-                mBinding.executePendingBindings()
-            }
-        }
 
-        private suspend fun getSeller(sellerId: Long) = UserServer.getSellerByIdAsync(sellerId).await().let {
-            if (it.data != null) {
-                val item = it.data as Seller
-                mBinding.seller = item
-                mBinding.executePendingBindings()
-            }
-        }
-
-        private suspend fun getFollowerCount(sellerId: Long) = UserServer.getBookMarkCountAsync(target = BookMarkTarget.SELLER.target, targetId = sellerId).await().let {
-            val item = it.data as BookMarkCountResponse
-            mBinding.textviewMypagefollowFollowcount.text = String.format(mBinding.root.context.getString(R.string.mypagefollow_followcount), item.bookmarkCount)
+            mBinding.sellerStore = sellerStore
+            mBinding.executePendingBindings()
         }
 
         private suspend fun saveBookMark(accessToken: String, bookMarkResponse: BookMarkResponse) {
@@ -105,7 +84,7 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
                     val context = mBinding.root.context
                     mBinding.buttonMypagefollowFollow.background = mBinding.root.context.getDrawable(R.drawable.border_all_whitethree)
                     mBinding.buttonMypagefollowFollow.setTextColor(context.resources.getColor(R.color.black_four))
-                    mBinding.buttonMypagefollowFollow.text = "팔로잉"
+                    mBinding.buttonMypagefollowFollow.text = mBinding.root.context.getString(R.string.mypagefollow_button_following)
                 } else {
                     ToastUtil.showMessage(it.message)
                 }
@@ -118,7 +97,7 @@ class MyPageFollowAdapter : RecyclerView.Adapter<MyPageFollowAdapter.Holder>() {
                     val context = mBinding.root.context
                     mBinding.buttonMypagefollowFollow.background = context.getDrawable(R.drawable.background_color_purple)
                     mBinding.buttonMypagefollowFollow.setTextColor(Color.WHITE)
-                    mBinding.buttonMypagefollowFollow.text = "팔로우"
+                    mBinding.buttonMypagefollowFollow.text = mBinding.root.context.getString(R.string.mypagefollow_button_follow)
                 } else {
                     ToastUtil.showMessage(it.message)
                 }
