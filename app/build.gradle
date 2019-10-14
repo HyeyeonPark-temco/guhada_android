@@ -11,7 +11,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 25
-        versionName "1.0.1"
+        versionName "1.0.0.5"
         // x.x.x   - 정식 업데이트 버전
         // x.x.x.a - a : 테스트 업데이트 버전, 정식업데이트 되면 제거후 테스트 시작시 초기화 0 부터시작 ~
 
@@ -34,8 +34,8 @@ android {
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.QA"
         }
         stage {
-            resValue "string", "app_name", "@string/app_name_stage"
             applicationIdSuffix '.stage'
+            resValue "string", "app_name", "@string/app_name_stage"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "io.temco.guhada.common.Type.Build", "BuildType", "io.temco.guhada.common.Type.Build.STAGE"
