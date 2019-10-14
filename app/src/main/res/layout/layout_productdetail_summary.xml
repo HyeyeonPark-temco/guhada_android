@@ -45,20 +45,21 @@
                 android:text="@string/productdetail_shipinfo" />
 
             <TextView
-                style="@style/ProductDetailContentBlackTextStyle"
+                style="@style/ProductDetailContentDarkGreyTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.product.shippingSummary}"
-                android:textColor="@color/greyish_brown_two" />
-            <!--android:text='@{viewModel.product.shipExpense == 0 ? @string/productdetail_shipfree : @string/common_price_format(viewModel.product.shipExpense)}'-->
+                android:textSize="@dimen/text_13" />
 
         </LinearLayout>
 
         <View
+            android:id="@+id/view_productdetail_advantage"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:visibility="gone"
             android:background="@color/white_four" />
 
         <LinearLayout
@@ -66,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:paddingStart="20dp"
             android:paddingTop="17dp"
             android:paddingEnd="20dp"
@@ -79,12 +81,13 @@
                 android:text="@string/productdetail_advantageinfo" />
 
             <TextView
-                style="@style/ProductDetailContentBlackTextStyle"
+                style="@style/ProductDetailContentDarkGreyTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/productdetail_dummy_advantage1"
-                android:textColor="@color/greyish_brown_two" />
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_13" />
 
             <ImageButton
                 android:id="@+id/imagebutton_productdetail_moreadvantagae"
@@ -92,7 +95,7 @@
                 android:layout_height="match_parent"
                 android:onClick="@{()->viewModel.onClickAdvantageInfo()}"
                 android:scaleType="center"
-                android:src="@{viewModel.advantageInfoExpanded  ? @drawable/detail_btn_quantity_minus_on : @drawable/detail_btn_quantity_plus_on}" />
+                android:src="@{viewModel.advantageInfoExpanded  ? @drawable/detail_btn_close : @drawable/detail_btn_open, default= @drawable/detail_btn_open}" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,43 +103,45 @@
             android:layout_height="wrap_content"
             android:background="@color/pale_grey"
             android:orientation="horizontal"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
             android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =gone}">
 
-
             <TextView
+                style="@style/TextRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_gravity="start"
                 android:text="포인트 적립"
-                android:textColor="@color/black_four"
-                android:textSize="@dimen/text_13" />
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textview_productdetail_advangatepoint_buy"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{@string/productdetail_format_buypoint(0)}"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13" />
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_12" />
 
                 <TextView
                     android:id="@+id/textview_productdetail_advangatepoint_review"
+                    style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:text="@{@string/productdetail_format_reviewpoint(0)}"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_13" />
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_12" />
 
             </LinearLayout>
         </LinearLayout>
@@ -229,7 +234,7 @@
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_whitefour }"
+                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_purple_1dp,default= @drawable/background_color_purple }"
                         android:onClick="@{()->viewModel.onClickSellerBookMark()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/framelayoout_productdetail_sellerstore"
@@ -239,8 +244,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ?@string/productdetail_button_follow : @string/productdetail_button_following }"
-                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/black_four }"
+                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ?@string/productdetail_button_follow : @string/productdetail_button_following, default=@string/productdetail_button_follow }"
+                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/common_blue_purple, default=@color/common_white }"
                             android:textSize="@dimen/text_13" />
                     </FrameLayout>
 

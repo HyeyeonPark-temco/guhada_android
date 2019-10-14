@@ -65,7 +65,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                         },
                         dataNotFoundTask = {
 
-                        })
+                        },
+                        serverRuntimeErrorTask = {})
             }, productId)
     }
 
@@ -132,7 +133,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
                     ServerCallbackUtil.executeByResultCode(success, o,
                             successTask = { model ->
                                 successTask(model.data as BookMark)
-                            })
+                            },
+                            serverRuntimeErrorTask = {})
                 }, userId = userId, accessToken = it)
         }, invalidTokenTask = {})
     }

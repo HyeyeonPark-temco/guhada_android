@@ -41,8 +41,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 style="@style/TextBold"
@@ -109,16 +111,21 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@color/pale_grey"
             android:orientation="horizontal">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintlayout_payment_discountresult_productprice"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/framelayout_payment_discountresult_discoountprice"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -159,32 +166,39 @@
                         android:textColor="@color/greyish_brown_two"
                         android:textSize="@dimen/text_14" />
                 </LinearLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <FrameLayout
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/payment_icon_discount_minus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/constraintlayout_payment_discountresult_productprice"
+                app:layout_constraintRight_toRightOf="@+id/framelayout_payment_discountresult_discoountprice"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@color/white_six" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/payment_icon_discount_minus" />
-
-            </FrameLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@color/white_six"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/constraintlayout_payment_discountresult_productprice"
+                app:layout_constraintRight_toRightOf="@+id/framelayout_payment_discountresult_discoountprice"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
+                android:id="@+id/framelayout_payment_discountresult_discoountprice"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@+id/constraintlayout_payment_discountresult_productprice"
+                app:layout_constraintRight_toLeftOf="@+id/framelayout_payment_discountresult_totalprice"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -217,31 +231,38 @@
                         app:layout_constraintStart_toEndOf="@+id/textview_payment_discountprice"
                         app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
+
+
             </FrameLayout>
 
-            <FrameLayout
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/white_six"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/framelayout_payment_discountresult_discoountprice"
+                app:layout_constraintRight_toRightOf="@+id/framelayout_payment_discountresult_totalprice"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:background="@color/white_six" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/payment_icon_discount_sum" />
-
-            </FrameLayout>
+                android:layout_height="wrap_content"
+                android:src="@drawable/payment_icon_discount_sum"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@+id/framelayout_payment_discountresult_discoountprice"
+                app:layout_constraintRight_toRightOf="@+id/framelayout_payment_discountresult_totalprice"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
+                android:id="@+id/framelayout_payment_discountresult_totalprice"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@+id/framelayout_payment_discountresult_discoountprice"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -268,7 +289,7 @@
                         android:textSize="@dimen/text_14" />
                 </LinearLayout>
             </FrameLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -283,8 +304,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintlayout_discountresult_coupondiscount"
                 android:layout_width="match_parent"
-                android:layout_marginTop="26dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp">
 
                 <TextView
                     android:id="@+id/textView26"

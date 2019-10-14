@@ -79,8 +79,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         initCalculatePaymentInfo()
 
         // 상품 리스트
-        mBinding.recyclerviewPaymentProduct.adapter = PaymentOrderItemAdapter()//PaymentProductAdapter()
-
+        mBinding.recyclerviewPaymentProduct.adapter = PaymentOrderItemAdapter()
         mBinding.includePaymentDiscount.viewModel = mViewModel
         mBinding.includePaymentDiscountresult.viewModel = mViewModel
         mBinding.includePaymentPaymentway.viewModel = mViewModel

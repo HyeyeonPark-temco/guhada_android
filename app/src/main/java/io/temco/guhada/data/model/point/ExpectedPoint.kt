@@ -8,6 +8,7 @@ import java.io.Serializable
  * @since 2019.08.29
  */
 class ExpectedPoint : Serializable {
+    var dueSaveType = ""
     var pointType = ""
     var freePoint = 0
     var paidPoint = 0
