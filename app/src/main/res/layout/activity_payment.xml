@@ -105,9 +105,10 @@
                         android:layout_marginBottom="20dp"
                         android:orientation="vertical"
                         android:overScrollMode="never"
-                        android:visibility="@{viewModel.productVisible ? View.VISIBLE : View.GONE, default = visible}"
+                        app:paymentOrderItemCollapsed ="@{viewModel.productVisible}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:orderItem="@{viewModel.order.orderItemList}" />
+
 
                 </LinearLayout>
 

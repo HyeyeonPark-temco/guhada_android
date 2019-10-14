@@ -1,16 +1,21 @@
 package io.temco.guhada.view.adapter.payment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
 import io.temco.guhada.data.model.order.OrderItemResponse
 import io.temco.guhada.data.model.product.BaseProduct
+import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ItemPaymentOrderitemBinding
 import io.temco.guhada.databinding.ItemPaymentProductBinding
 
 class PaymentOrderItemAdapter : RecyclerView.Adapter<PaymentOrderItemAdapter.Holder>() {
+    private var originItems = mutableListOf<OrderItemResponse>()
     private var items = mutableListOf<OrderItemResponse>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -26,6 +31,7 @@ class PaymentOrderItemAdapter : RecyclerView.Adapter<PaymentOrderItemAdapter.Hol
 
     fun setItems(items: MutableList<OrderItemResponse>) {
         this.items = items
+        this.originItems = items
         notifyDataSetChanged()
     }
 
@@ -35,6 +41,7 @@ class PaymentOrderItemAdapter : RecyclerView.Adapter<PaymentOrderItemAdapter.Hol
             binding.orderItem = orderItem
             binding.executePendingBindings()
         }
+
         private fun setSpacing() {
             if (adapterPosition < items.size - 1) {
                 (binding.linearlayoutPaymentproductContainer.layoutParams as ViewGroup.MarginLayoutParams).apply {
@@ -42,6 +49,23 @@ class PaymentOrderItemAdapter : RecyclerView.Adapter<PaymentOrderItemAdapter.Hol
                 }.let {
                     binding.linearlayoutPaymentproductContainer.layoutParams = it
                 }
+            }
+        }
+    }
+
+    companion object {
+
+        /**
+         * 주문결제-주문 상품 list collapsed
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        @BindingAdapter("paymentOrderItemCollapsed")
+        fun RecyclerView.bindOrderItemCollapsed(visible: Boolean?) {
+            if (visible != null && this.adapter != null) {
+                val adapter = (this.adapter as PaymentOrderItemAdapter)
+                adapter.items = if (visible) adapter.originItems else mutableListOf(adapter.originItems[0])
+                adapter.notifyDataSetChanged()
             }
         }
     }

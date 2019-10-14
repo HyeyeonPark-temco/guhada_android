@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app = "http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="orderItem"
@@ -19,9 +21,9 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:background="@color/common_white"
             android:scaleType="centerCrop"
-            app:imageUrl="@{orderItem.imageUrl}"
-            android:background="@color/common_white" />
+            app:imageUrl="@{orderItem.imageUrl}" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,11 +41,11 @@
             <TextView
                 android:id="@+id/textview_paymentproduct_name"
                 style="@style/PaymentContentBlackTextStyle"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{orderItem.season != null ? orderItem.season + ` ` + orderItem.dealName : orderItem.dealName}" />
 
             <LinearLayout
