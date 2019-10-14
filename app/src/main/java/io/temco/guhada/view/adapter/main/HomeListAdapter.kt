@@ -464,7 +464,19 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
                         (itemView.context as Activity).startActivity(intent)
                     }
+                    R.id.textview_term_email ->{
+                        var email = Intent(Intent.ACTION_SEND).apply {
+                            type = "plain/Text"
+                            var email : Array<String> = arrayOf("help@guhada.com")
+                            putExtra(Intent.EXTRA_EMAIL, email)
+                            putExtra(Intent.EXTRA_SUBJECT, "")
+                            putExtra(Intent.EXTRA_TEXT, "")
+                        }
+                        (itemView.context as Activity).startActivity(email)
+
+                    }
                 }
+
             }
         }
     }
