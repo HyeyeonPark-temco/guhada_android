@@ -1029,21 +1029,29 @@ class UserServer {
         }
 
 
-
-
         @JvmStatic
-        fun updateUserInfo(listener: OnServerListener, accessToken : String, userId : Long, userInfo: UserUpdateInfo) {
+        fun updateUserInfo(listener: OnServerListener, accessToken: String, userId: Long, userInfo: UserUpdateInfo) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .updateUserInfo(accessToken, userId, userInfo).enqueue(object : Callback<BaseModel<JsonObject>> {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
                             resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getMypageReviewList", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }
                     })
         }
+
+        /**
+         * 팔로우한 스토어 조회
+         * @since 2019.10.14
+         * @author Hyeyeon Park
+         */
+        @JvmStatic
+        fun getFollowingStores(listener: OnServerListener, userId: Long) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getFollowingStores(userId = userId)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<SellerStore>>>(successTask = { listener.onResult(true, it.body()) }))
 
 
     }

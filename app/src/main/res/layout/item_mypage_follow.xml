@@ -9,8 +9,8 @@
         <import type="android.text.TextUtils" />
 
         <variable
-            name="seller"
-            type="io.temco.guhada.data.model.seller.Seller" />
+            name="sellerStore"
+            type="io.temco.guhada.data.model.seller.SellerStore" />
 
         <variable
             name="viewModel"
@@ -33,17 +33,17 @@
                 android:id="@+id/imageview_mypagefollow_profile"
                 android:layout_width="95dp"
                 android:layout_height="95dp"
-                app:ovalImageUrl="@{seller.user.profileImageUrl}" />
+                app:ovalImageUrl="@{sellerStore.profileImageUrl}" />
 
             <TextView
                 style="@style/TextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@{seller.user.nickname}"
+                android:text="@{sellerStore.nickname}"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_13"
-                android:visibility="@{TextUtils.isEmpty(seller.user.profileImageUrl) ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{TextUtils.isEmpty(sellerStore.profileImageUrl) ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
 
         <LinearLayout
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="@{seller.user.nickname}"
+                android:text="@{sellerStore.nickname}"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_13"
                 app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
@@ -88,7 +88,7 @@
             android:layout_marginTop="7dp"
             android:maxLines="2"
             android:minHeight="32dp"
-            android:text="@{seller.storeIntroduction}"
+            android:text="@{sellerStore.storeIntroduction}"
             android:textColor="@color/warm_grey"
             android:textSize="@dimen/text_12"
             app:layout_constraintLeft_toRightOf="@+id/framelayout_mypagefollow_profile"
@@ -109,8 +109,12 @@
 
             <TextView
                 android:id="@+id/textview_mypagefollow_followcount"
+                style="@style/TextRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{@string/mypagefollow_followcount(sellerStore.followerCount)}"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12"
                 app:layout_constraintLeft_toRightOf="@+id/imageview_mypagefollow_profile"
                 app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
 
@@ -128,10 +132,13 @@
 
             <TextView
                 android:id="@+id/textview_mypagefollow_productcount"
+                style="@style/TextRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:visibility="invisible"
+                android:text="@{@string/mypagefollow_productcount(sellerStore.productCount)}"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12"
                 app:layout_constraintLeft_toRightOf="@+id/view_mypagefollow_line"
                 app:layout_constraintTop_toBottomOf="@+id/textview_mypagefollow_description" />
         </LinearLayout>

@@ -3,15 +3,12 @@ package io.temco.guhada.view.custom.layout.mypage
 import android.content.Context
 import android.text.Html
 import android.util.AttributeSet
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import io.reactivex.Observable
 import io.temco.guhada.R
-import io.temco.guhada.data.model.seller.Seller
 import io.temco.guhada.data.viewmodel.mypage.MyPageFollowViewModel
 import io.temco.guhada.databinding.CustomlayoutMypageFollowBinding
-import io.temco.guhada.view.adapter.mypage.MyPageFollowAdapter
+import io.temco.guhada.view.adapter.mypage.MyPageStoreFollowAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 
 /**
@@ -38,41 +35,34 @@ class MyPageFollowLayout constructor(
     }
 
     private fun initViewModel() {
-        mViewModel = MyPageFollowViewModel(context)
-        mViewModel.mFollowList.observe(this, Observer {
-            Observable.fromIterable(it)
-                    .map {
-                        Seller().apply { id = it.targetId }
-                    }.subscribe { seller ->
-                        mViewModel.mSellerList.add(seller)
-                    }
-
+        mViewModel = MyPageFollowViewModel()
+        mViewModel.mFollowStore.observe(this, Observer {
             mBinding.textviewMypagefollowTotalcount.text = Html.fromHtml(resources.getString(R.string.mypagefollow_totalcount, it.size))
-            mBinding.recyclerviewMypagefollowList.adapter = MyPageFollowAdapter().apply {
-                this.mList = this@MyPageFollowLayout.mViewModel.mSellerList
+            mBinding.recyclerviewMypagefollowList.adapter = MyPageStoreFollowAdapter().apply {
+                this.mList = it
                 this.mViewModel = this@MyPageFollowLayout.mViewModel
             }
         })
 
         mViewModel.mNotifyDataChangedTask = {
-            val adapter = (mBinding.recyclerviewMypagefollowList.adapter as MyPageFollowAdapter)
-            adapter.setItems(mViewModel.mSellerList)
+            val adapter = (mBinding.recyclerviewMypagefollowList.adapter as MyPageStoreFollowAdapter)
+            adapter.setItems(mViewModel.mFollowStore.value?: mutableListOf())
         }
 
         mViewModel.mNotifyItemInsertedTask = { startPos, endPos ->
             mBinding.recyclerviewMypagefollowList.recycledViewPool.clear()
-            val adapter = (mBinding.recyclerviewMypagefollowList.adapter as MyPageFollowAdapter)
-            adapter.addAllItems(mViewModel.mTempSellerList, startPos, endPos)
+            val adapter = (mBinding.recyclerviewMypagefollowList.adapter as MyPageStoreFollowAdapter)
+            adapter.addAllItems(mViewModel.mFollowStore.value?: mutableListOf(), startPos, endPos)
             mViewModel.mTempSellerList = mutableListOf()
         }
 
-        mViewModel.getFollowingSellerIds()
+        mViewModel.getFollowingStores()
     }
 
     override fun onRefresh() {
         mBinding.swipeRefreshLayout.isRefreshing = false
-        mViewModel.mSellerList.clear()
-        mViewModel.getFollowingSellerIds()
+        mViewModel.getFollowingStores()
+        mViewModel.mFollowStore.value?.clear()
     }
 
 

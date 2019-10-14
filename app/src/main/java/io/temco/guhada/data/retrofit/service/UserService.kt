@@ -564,4 +564,12 @@ interface UserService {
      */
     @PUT("/users/{userId}")
     fun updateUserInfo(@Header("Authorization") accessToken: String, @Path("userId") userId: Long, @Body userinfo: UserUpdateInfo): Call<BaseModel<JsonObject>>
+
+    /**
+     * 팔로우한 스토어 조회
+     * @since 2019.10.14
+     * @author Hyeyeon Park
+     */
+    @GET("/users/{userId}/followings")
+    fun getFollowingStores(@Path("userId") userId : Long) : Call<BaseModel<MutableList<SellerStore>>>
 }
