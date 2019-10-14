@@ -521,8 +521,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         when (pos) {
             0 -> h = (mBinding.productdetailScrollflagContent.parent as View).top + mBinding.productdetailScrollflagContent.top
             1 -> h = (mBinding.productdetailScrollflagQna.parent as View).top + mBinding.productdetailScrollflagQna.top
-            2 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top
-//            2 -> h = (mStoreFragment.getmBinding().productdetailScrollflagRecommend.parent as View).top + mStoreFragment.getmBinding().productdetailScrollflagRecommend.top
+            2 -> h = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top + mStoreFragment.getStoreFlagHeight()
         }
 
         mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
@@ -823,7 +822,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
             if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
         }
-       mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
+        mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
 
         /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
             javaScriptEnabled = true
