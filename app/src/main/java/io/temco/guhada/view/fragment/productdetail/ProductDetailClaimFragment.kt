@@ -121,11 +121,13 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
     }
 
     fun refreshClaims() {
-        (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
-        mViewModel.claimPageNo = 0
-        mViewModel.claimPageSize = 5
-        mViewModel.claimResponse.postValue(ClaimResponse())
-        mViewModel.getClaims()
+        if(mBinding.recyclerviewProductdetailClaim.adapter != null){
+            (mBinding.recyclerviewProductdetailClaim.adapter as ProductDetailClaimAdapter).clearItems()
+            mViewModel.claimPageNo = 0
+            mViewModel.claimPageSize = 5
+            mViewModel.claimResponse.postValue(ClaimResponse())
+            mViewModel.getClaims()
+        }
     }
 
     inner class WrapContentLinearLayoutManager(context: Context?, @RecyclerView.Orientation orientation: Int, reverseLayout: Boolean) : LinearLayoutManager(context) {

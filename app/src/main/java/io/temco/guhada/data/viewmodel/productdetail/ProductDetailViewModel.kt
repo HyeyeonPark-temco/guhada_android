@@ -52,7 +52,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
         @Bindable
         get() = field
     var dealId: Long = 0
-    var product: MutableLiveData<Product> = MutableLiveData(Product())
+    var product: MutableLiveData<Product> = MutableLiveData()
     var tags: List<String> = ArrayList()
     var menuVisibility = ObservableInt(View.GONE)
         @Bindable
@@ -145,13 +145,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     }
 
     fun getSellerInfo() {
-        if (product.value?.sellerId != null) {
+        if (product.value?.sellerId != null && product.value?.sellerId ?: 0 > 0) {
             UserServer.getSellerById(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             this.seller = it.data as Seller
                             notifyPropertyChanged(BR.seller)
-                        })
+                        },
+                        serverRuntimeErrorTask = {})
             }, product.value?.sellerId!!)
         }
     }
@@ -160,7 +161,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
      * 셀러 팔로잉 여부
      */
     fun getSellerBookMark(target: String) {
-        if (product.value?.sellerId != null) {
+        if (product.value?.sellerId != null && product.value?.sellerId ?: 0 > 0) {
             ServerCallbackUtil.callWithToken(
                     task = {
                         val userId = JWT(it.split("Bearer ")[1]).getClaim("userId").asLong()
@@ -170,7 +171,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                         successTask = { result ->
                                             this.mSellerBookMark = result.data as BookMark
                                             notifyPropertyChanged(BR.mSellerBookMark)
-                                        }
+                                        },
+                                        serverRuntimeErrorTask = {}
                                 )
                             }, accessToken = it, target = target, targetId = product.value?.sellerId!!, userId = userId)
                         }
@@ -246,7 +248,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                                 tempList.add(item)
 
                                         this@ProductDetailViewModel.mExpectedCouponList.postValue(tempList)
-                                    })
+                                    },
+                                    serverRuntimeErrorTask = {})
                         }, accessToken = accessToken, item = orderItemResponse, saveActionType = SaveActionType.BUY.type, serviceType = PointRequest.ServiceType.AOS.type)
                     }
                 },
@@ -273,7 +276,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                             },
                             dataNotFoundTask = {
 
-                            })
+                            },
+                            serverRuntimeErrorTask = {})
                 }, productId = product.value?.productId!!)
             }
         }
@@ -294,6 +298,10 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             }, sellerId = product.value?.sellerId!!, accessToken = null)
     }
 
+    /**
+     * 혜택 정보-포인트 적립
+     * @author Hyeyeon Park
+     */
     fun getDueSavePoint() {
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             val pointProcessParam = PointProcessParam()
@@ -331,8 +339,14 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                                 this.mExpectedPoint.postValue(expectedPointResponse)
                             },
                             dataIsNull = {
-                                if (it is BaseModel<*>) ToastUtil.showMessage(it.message)
-                                else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_error))
+                                if (it is BaseModel<*>) {
+                                    ToastUtil.showMessage(it.message)
+                                    if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
+                                }
+                            },
+                            serverRuntimeErrorTask = {
+                                ToastUtil.showMessage(it.message)
+                                if (CustomLog.flag) CustomLog.E("[process/total-due-save] ${it.message}")
                             })
                 }, accessToken = accessToken, pointProcessParam = pointProcessParam)
             }
@@ -416,7 +430,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     fun getSellerSatisfaction() {
         val sellerId = product.value?.sellerId
-        if (sellerId != null) {
+        if (sellerId != null && sellerId > 0) {
             UserServer.getSellerSatisfaction(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
@@ -429,23 +443,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
     // 장바구니 담기
     fun addCartItem() {
-//        ServerCallbackUtil.callWithToken(task = { accessToken ->
-//            OrderServer.addCartItem(OnServerListener { success, o ->
-//                ServerCallbackUtil.executeByResultCode(success, o,
-//                        successTask = {
-//                            val cart = it.data as Cart
-//                            if (cart.cartValidStatus.status)
-//                                listener?.showAddCartResult()
-//                            else {
-//                                ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
-//                            }
-//                        })
-//            }, accessToken = accessToken, quantity = listener?.getSelectedProductQuantity()!!, dealId = dealId, dealOptionId = listener.getSelectedOptionDealId())
-//        }, invalidTokenTask = {
-//            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.login_message_requiredlogin))
-//            listener?.redirectLoginActivity()
-//        })
-
         ServerCallbackUtil.callWithToken(task = { accessToken ->
             OrderServer.addCartItem(OnServerListener { success, o ->
                 if (success) {
@@ -538,8 +535,6 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                 saveBookMark(Type.BookMarkTarget.PRODUCT.name, product.value!!.productId)
             }
             productBookMark.set(!productBookMark.get())
-        } else {
-            //   ToastUtil.showMessage("test")
         }
     }
 

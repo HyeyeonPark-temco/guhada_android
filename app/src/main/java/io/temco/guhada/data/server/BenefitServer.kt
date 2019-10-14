@@ -186,6 +186,6 @@ class BenefitServer {
          * @since 2019.09.18
          */
         fun getDueSavePoint(listener: OnServerListener, accessToken: String, pointProcessParam: PointProcessParam) =
-                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getDueSavePoint(accessToken = accessToken, pointProcessParam = pointProcessParam).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getBenefitDueSavePoint(accessToken = accessToken, pointProcessParam = pointProcessParam).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
     }
 }

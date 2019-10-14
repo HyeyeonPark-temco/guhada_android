@@ -7,12 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableInt
@@ -86,11 +84,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
 
-    override fun onStop() {
-        super.onStop()
-//        if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.dismiss()
-    }
-
     // room database init
     private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
     // rx Init
@@ -128,6 +121,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             mBinding.product = product
 
             // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
+            mViewModel.getDueSavePoint()
             mViewModel.getExpectedCoupon()
             initSummary()
             initContentHeader()
@@ -273,29 +267,31 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initSummary() {
-        mViewModel.getProductReviewSummary()
+        // mViewModel.getProductReviewSummary()
         mViewModel.getSellerSatisfaction()
         mBinding.includeProductdetailContentsummary.viewModel = mViewModel
         mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener { redirectSellerInfoActivity() }
         mBinding.includeProductdetailContentsummary.framelayooutProductdetailSellerstore.setOnClickListener { redirectSellerInfoActivity() }
 
         // 혜택 정보
-        mViewModel.getDueSavePoint()
         mViewModel.mExpectedPoint.observe(this, Observer {
             var advantageBuyPoint = 0
             var advantageReviewPoint = 0
 
             for (item in it.dueSavePointList) {
-                when (item.pointType) {
-                    PointProcessParam.PointSave.BUY.type -> advantageBuyPoint = item.freePoint
-                    PointProcessParam.PointSave.REVIEW.type -> advantageReviewPoint = item.freePoint
+                when (item.dueSaveType) {
+                    PointProcessParam.PointSave.BUY.type -> advantageBuyPoint = item.totalPoint
+                    PointProcessParam.PointSave.REVIEW.type -> advantageReviewPoint = item.totalPoint
                 }
             }
 
-            if (advantageBuyPoint == 0 && advantageReviewPoint == 0)
+            if (advantageBuyPoint == 0 && advantageReviewPoint == 0) {
                 mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.GONE
-            else {
+                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.GONE
+            } else {
                 mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.VISIBLE
+                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.VISIBLE
+
                 if (advantageBuyPoint > 0) {
                     mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointBuy.visibility = View.VISIBLE
                     mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointBuy.text = String.format(mBinding.root.context.resources.getString(R.string.productdetail_format_buypoint), advantageBuyPoint)
@@ -320,7 +316,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
         val matrix = DisplayMetrics()
         (context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
-        mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.layoutParams = RelativeLayout.LayoutParams(matrix.widthPixels,matrix.widthPixels)
+        mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.layoutParams = RelativeLayout.LayoutParams(matrix.widthPixels, matrix.widthPixels)
         mBinding.includeProductdetailContentheader.viewpagerProductdetailImages.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
 
@@ -827,7 +823,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
             if (Build.VERSION.SDK_INT >= 26) safeBrowsingEnabled = false
         }
-        mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
+       mBinding.includeProductdetailContentbody.webviewProductdetailContent.loadData(data.toString(), "text/html", null)
 
         /*mBinding.includeProductdetailContentbody.webviewProductdetailContent.settings.apply {
             javaScriptEnabled = true
@@ -861,7 +857,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
 
-    private fun sendAnalyticEvent(product : Product){
+    private fun sendAnalyticEvent(product: Product) {
         if ((context as BaseActivity).getmTracker() != null) {
             var pInfo = com.google.android.gms.analytics.ecommerce.Product().apply {
                 setId(product.dealId.toString())
