@@ -108,17 +108,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_gravity="start"
                 android:text="포인트 적립"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_13" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -229,7 +229,7 @@
                         android:layout_width="75dp"
                         android:layout_height="30dp"
                         android:layout_marginEnd="6dp"
-                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_whitefour }"
+                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_purple_1dp,default= @drawable/background_color_purple }"
                         android:onClick="@{()->viewModel.onClickSellerBookMark()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/framelayoout_productdetail_sellerstore"
@@ -239,8 +239,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ?@string/productdetail_button_follow : @string/productdetail_button_following }"
-                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/black_four }"
+                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ?@string/productdetail_button_follow : @string/productdetail_button_following, default=@string/productdetail_button_follow }"
+                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/common_blue_purple, default=@color/common_white }"
                             android:textSize="@dimen/text_13" />
                     </FrameLayout>
 

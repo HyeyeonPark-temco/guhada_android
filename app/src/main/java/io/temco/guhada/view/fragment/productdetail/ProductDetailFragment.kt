@@ -66,6 +66,7 @@ import kotlin.collections.ArrayList
  * 상품 상세 Fragment
  * @see io.temco.guhada.view.activity.ProductFragmentDetailActivity
  * @author Hyeyeon Park
+ * @since 2019.06.26
  */
 class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnProductDetailListener {
     var dealId: Long = 0 // * required initially

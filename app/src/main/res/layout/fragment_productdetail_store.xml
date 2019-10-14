@@ -250,7 +250,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_whitefour }"
+                        android:background="@{viewModel.mSellerBookMark.content.isEmpty() ? @drawable/background_color_purple : @drawable/border_all_purple_1dp, default= @drawable/background_color_purple }"
                         android:onClick="@{()->viewModel.onClickSellerBookMark()}"
                         android:paddingLeft="32dp"
                         android:paddingTop="10dp"
@@ -264,8 +264,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ?@string/productdetail_button_follow : @string/productdetail_button_following }"
-                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/black_four }"
+                            android:text="@{viewModel.mSellerBookMark.content.isEmpty() ? @string/productdetail_button_follow : @string/productdetail_button_following , default = @string/productdetail_button_follow}"
+                            android:textColor="@{viewModel.mSellerBookMark.content.isEmpty() ? @color/common_white : @color/common_blue_purple, default= @color/common_white }"
                             android:textSize="@dimen/text_14" />
                     </FrameLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
