@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.text.TextUtils" />
+        <import type="android.view.View" />
         <variable
             name="title"
             type="String" />
@@ -11,15 +13,14 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_header"
-            android:background="@color/common_white"
+            android:background="@color/transparent"
             android:paddingStart="20dp">
 
             <ImageButton
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{title}"
+                android:visibility="@{TextUtils.isEmpty(title) ? View.GONE : View.VISIBLE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/button_header_back"
@@ -47,6 +49,6 @@
             android:id="@+id/imageview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>

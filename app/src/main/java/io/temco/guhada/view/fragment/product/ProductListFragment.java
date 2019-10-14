@@ -95,6 +95,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private boolean mIsLoading = false; // Load More
     private int mPosition;
     private int mId;
+    private int mCt;
     private String mText;
     private int mPageNumber = 1;
     private int tabIndex = 0;
@@ -190,6 +191,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         } else if (mIsCategory == Type.ProductListViewType.VIEW_MORE)  {
             if(filterBody == null){
                 filterBody = new FilterBody();
+                if(mCt != -1) filterBody.categoryIds.add(mCt);
                 filterBody.searchCondition = mText;
             }
         }
@@ -347,6 +349,13 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     public void setSearchData(String data) {
         mId = 0;
+        mText = data;
+    }
+
+    public void setConditonData(String data, String category) {
+        mId = 0;
+        if(!TextUtils.isEmpty(category)) mCt = Integer.parseInt(category);
+        else mCt = -1;
         mText = data;
     }
 
@@ -662,6 +671,8 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                         getProductListByBrand(false);
                     } else if (mIsCategory==Type.ProductListViewType.SEARCH) {
                         getProductListBySearch(false);
+                    } else if (mIsCategory==Type.ProductListViewType.VIEW_MORE) {
+                        getProductListByViewMore(false);
                     }
                 }
             }

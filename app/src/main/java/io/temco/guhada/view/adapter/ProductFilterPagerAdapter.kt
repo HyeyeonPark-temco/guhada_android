@@ -83,8 +83,8 @@ class ProductFilterPagerAdapter(private val mFragmentManager: FragmentManager) :
         addProductFragment(word)
     }
 
-    fun setProductConditionData(word: String) {
-        addProductFragmentCondition(word)
+    fun setProductConditionData(word: String, viewMoreCategory: String?) {
+        addProductFragmentCondition(word, viewMoreCategory)
     }
 
 
@@ -134,11 +134,11 @@ class ProductFilterPagerAdapter(private val mFragmentManager: FragmentManager) :
         mProductFragment!!.setSearch(s)
     }
 
-    private fun addProductFragmentCondition(s: String) {
+    private fun addProductFragmentCondition(s: String, viewMoreCategory : String?) {
         if (CustomLog.flag) CustomLog.L("initFilterBody addProductFragmentCondition", "type VIEW_MORE", "searchWord", s)
         checkProductFragment()
         mProductFragment!!.changeProduct(Type.ProductListViewType.VIEW_MORE)
-        mProductFragment!!.setCondition(s)
+        mProductFragment!!.setCondition(s,viewMoreCategory)
     }
 
 

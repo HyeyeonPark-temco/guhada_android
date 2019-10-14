@@ -129,12 +129,12 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
-    public void addConditionFragment(String data) {
+    public void addConditionFragment(String data, String category) {
         // Fragment
         if(CustomLog.getFlag())CustomLog.L("initFilterBody addConditionFragment------------","mText",data);
         ProductListFragment f = new ProductListFragment();
         f.setProductListViewType(Type.ProductListViewType.VIEW_MORE);
-        f.setSearchData(data);
+        f.setConditonData(data, category);
         // Add
         mFragmentList.add(f);
         // Position

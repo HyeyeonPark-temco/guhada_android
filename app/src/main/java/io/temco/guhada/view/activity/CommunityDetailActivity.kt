@@ -70,10 +70,20 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
             override fun afterTextChanged(s: Editable?) { }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                mViewModel.commentRegText.set(s.toString())
-                checkRegBtn()
+                if(!mViewModel.userLoginCheck.get()){
+                    showLoginDialog()
+                }else{
+                    mViewModel.commentRegText.set(s.toString())
+                    checkRegBtn()
+                }
             }
         })
+        mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus && !mViewModel.userLoginCheck.get()){
+                v.clearFocus()
+                showLoginDialog()
+            }
+        }
 
         setDetailView()
         setOnClick()
@@ -240,11 +250,28 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                 }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
     }
 
+    private fun showLoginDialog(){
+        CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
+                cancelButtonVisible = true,
+                confirmTask = {
+                    CommonUtil.startLoginPage(this@CommunityDetailActivity)
+                }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
+    }
 
     private fun setOnClick(){
         // 댓글 이미지 찾기
+        mBinding.linearlayoutCommunitydetailCommentwrite.setClickCommentListener {
+            if(!mViewModel.userLoginCheck.get()){
+                showLoginDialog()
+            }
+        }
+        // 댓글 이미지 찾기
         mBinding.linearlayoutCommunitydetailCommentwrite.setClickCommentImageListener {
-            CommonUtil.startImageGallery(this@CommunityDetailActivity)
+            if(!mViewModel.userLoginCheck.get()){
+                showLoginDialog()
+            }else{
+                CommonUtil.startImageGallery(this@CommunityDetailActivity)
+            }
         }
 
         // 댓글 이미지 삭제
@@ -285,11 +312,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                             }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
                 }
             }else{
-                CustomMessageDialog(message = "로그인 후 이용이 가능합니다.",
-                        cancelButtonVisible = true,
-                        confirmTask = {
-                            CommonUtil.startLoginPage(this@CommunityDetailActivity)
-                        }).show(manager = this.supportFragmentManager, tag = "CommunityDetailActivity")
+                showLoginDialog()
             }
         }
     }

@@ -36,6 +36,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     private Category mCategoryData;
     private Brand mBrandData;
     private String mSearchData;
+    private String mViewMoreCategory;
 
 
     // -----------------------------
@@ -143,8 +144,9 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         addSearchList();
     }
 
-    public void setCondition(String data) {
+    public void setCondition(String data, String category) {
         mSearchData = data;
+        mViewMoreCategory = category;
         addConditionList();
     }
 
@@ -215,7 +217,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
     private void addConditionList() {
         if (mBinding != null && mSearchData != null) {
             setTitle(mSearchData);
-            addConditionFragment(mSearchData);
+            addConditionFragment(mSearchData, mViewMoreCategory);
         }
     }
 
@@ -232,9 +234,9 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
     }
 
-    private void addConditionFragment(String data) {
+    private void addConditionFragment(String data, String category) {
         if(CustomLog.getFlag())CustomLog.L("initFilterBody addConditionFragment","mText",data);
-        mListPagerAdapter.addConditionFragment(data);
+        mListPagerAdapter.addConditionFragment(data, category);
         mBinding.layoutPager.setOffscreenPageLimit(mListPagerAdapter.getCount());
         mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
     }

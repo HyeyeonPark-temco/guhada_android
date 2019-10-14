@@ -221,6 +221,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/item_layout_content0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -566,6 +567,7 @@
 
             <!-- 2,3 layout start -->
             <LinearLayout
+                android:id="@+id/item_layout_content1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -911,6 +913,7 @@
 
             <!-- 4,5 layout start -->
             <LinearLayout
+                android:id="@+id/item_layout_content2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

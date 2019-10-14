@@ -32,6 +32,7 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
     private var hierarchies: IntArray = intArrayOf()
     private var brand: Brand? = null
     private var searchWord: String? = null
+    private var viewMoreCategory: String? = null
 
     // room database init
     private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this)!! }
@@ -65,6 +66,7 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
                 }
                 Type.ProductListViewType.VIEW_MORE -> {
                     searchWord = intent.extras.getString("search_word")
+                    viewMoreCategory = intent.extras.getString("search_Category",null)
                 }
             }
         }
@@ -96,7 +98,7 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
             mPagerAdapter?.setProductSearchData(searchWord!!)
         } else if (type == Type.ProductListViewType.VIEW_MORE) {
             if (CustomLog.flag) CustomLog.L("initFilterBody addFragmentList", "type", type.name, "searchWord", searchWord!!)
-            mPagerAdapter?.setProductConditionData(searchWord!!)
+            mPagerAdapter?.setProductConditionData(searchWord!!, viewMoreCategory)
         }
     }
 

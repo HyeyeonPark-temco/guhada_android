@@ -6,6 +6,9 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.databinding.ActivityImagedetailBinding
 import io.temco.guhada.view.activity.base.BindActivity
 
+/**
+ * 이미지 상세 화면
+ */
 class ImageDetailViewActivity : BindActivity<ActivityImagedetailBinding>() {
 
     override fun getBaseTag(): String = ImageGetActivity::class.java.simpleName

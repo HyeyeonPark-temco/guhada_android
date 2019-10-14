@@ -148,7 +148,6 @@
                     android:id="@+id/linearlayout_communitydetail_commentwrite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{viewModel.userLoginCheck ? View.VISIBLE : View.GONE , default = gone}"
                     layout="@layout/bottom_comment_layout"
                     app:layout_behavior="io.temco.guhada.view.custom.FixScrollingFooterBehavior"
                     app:layout_constraintBottom_toBottomOf="parent"

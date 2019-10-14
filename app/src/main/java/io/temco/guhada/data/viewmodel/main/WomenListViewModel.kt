@@ -42,6 +42,7 @@ class WomenListViewModel(val context : Context) : BaseObservableViewModel() {
  * 메인 홈 리스트 server data 연동 Repository
  */
 class WomenListRepository(val context : Context){
+    private val unitPerPage = 10
     // 메인 홈 list data
     private var list = SingleLiveEvent<ArrayList<MainBaseModel>>()
 
@@ -81,7 +82,7 @@ class WomenListRepository(val context : Context){
      * PREMIUM ITEM
      */
     private fun getPlusItem() {//getProductByPlusItem
-        ProductServer.getProductByPlusItem(6,OnServerListener { success, o ->
+        ProductServer.getProductByPlusItem(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
@@ -105,7 +106,7 @@ class WomenListRepository(val context : Context){
      * Best ITEM
      */
     private fun getBestItem() {//getProductByPlusItem
-        SearchServer.getProductByBestItem(6,OnServerListener { success, o ->
+        SearchServer.getProductByBestItem(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
@@ -130,7 +131,7 @@ class WomenListRepository(val context : Context){
      * NEW IN
      */
     private fun getNewIn() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        ProductServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal
@@ -184,7 +185,7 @@ class WomenListRepository(val context : Context){
      * BEST STORE
      */
     private fun getBestStore() {
-        ProductServer.getProductByNewArrivals(6,OnServerListener { success, o ->
+        ProductServer.getProductByNewArrivals(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal

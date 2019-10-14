@@ -84,7 +84,7 @@ public class Type {
     }
 
     /** Prod 여부 (true: prod; false: dev) **/
-    public static boolean isTempProd = true;
+    public static boolean isTempProd = false;
     ////////////////////////////////////////////////
     // Server
     public enum Server {

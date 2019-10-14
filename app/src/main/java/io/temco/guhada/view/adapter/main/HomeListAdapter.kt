@@ -246,11 +246,21 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     var intent = Intent(itemView.context as MainActivity, ProductFilterListActivity::class.java)
                     intent.putExtra("type", Type.ProductListViewType.VIEW_MORE)
                     intent.putExtra("search_word", searchCondition)
+                    intent.putExtra("search_Category", "")
                     (itemView.context as MainActivity).startActivityForResult(intent, Flag.RequestCode.BASE)
                 }
 
                 // Thumbnail
-                var size = item.listSize[item.currentSubTitleIndex] - 1
+
+                var size = if(item.listSize[item.currentSubTitleIndex] - 1 > 6) 5 else item.listSize[item.currentSubTitleIndex] - 1
+                binding.itemLayoutContent0.visibility = View.GONE
+                binding.itemLayoutContent1.visibility = View.GONE
+                binding.itemLayoutContent2.visibility = View.GONE
+
+                if(size >= 0) binding.itemLayoutContent0.visibility = View.VISIBLE
+                if(size >= 2) binding.itemLayoutContent1.visibility = View.VISIBLE
+                if(size >= 4) binding.itemLayoutContent2.visibility = View.VISIBLE
+
                 binding.title.text = item.title
                 setTabLayout(position)
                 val model : HomeListViewModel = this@HomeListAdapter.model as HomeListViewModel
@@ -278,7 +288,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         model.getListAdapter().notifyItemChanged(position)
                     }
                 }
-                for (i in 0..size){
+                for (i in 0..5){
                     var data : Deal?  = when(item.currentSubTitleIndex){
                         0->{
                             if(homeDeal.allList!!.size <= i) null
@@ -302,25 +312,26 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         }
                     }
 
-                    if(data != null){
-                        itemlayout[i].contentDescription = data.dealId.toString()
-                        itemrelaytivelayout[i].layoutParams = LinearLayout.LayoutParams(width,height)
-                        itemlayout[i].layoutParams = LinearLayout.LayoutParams(width,layoutHeight).apply {
-                            rightMargin = margin
+                    itemrelaytivelayout[i].layoutParams = LinearLayout.LayoutParams(width,height)
+                    itemlayout[i].layoutParams = LinearLayout.LayoutParams(width,layoutHeight).apply {
+                        rightMargin = margin
+                        leftMargin = margin
+                        /*if(i % 2 == 0) {
                             leftMargin = margin
-                            /*if(i % 2 == 0) {
-                                leftMargin = margin
-                                rightMargin = 0
-                            }  else{
-                                leftMargin = 0
-                                rightMargin = margin
-                            }*/
-                        }
+                            rightMargin = 0
+                        }  else{
+                            leftMargin = 0
+                            rightMargin = margin
+                        }*/
+                    }
+
+                    if(data != null){
+                        itemlayout[i].visibility = View.VISIBLE
+                        itemlayout[i].contentDescription = data.dealId.toString()
                         itemlayout[i].setOnClickListener{
                             var id = it.contentDescription.toString().toLong()
                             CommonUtil.startProductActivity(viewModel.context as Activity, id)
                         }
-                        itemlayout[i].visibility = View.VISIBLE
                         ImageUtil.loadImage(Glide.with(containerView.context as Activity), imageThumb[i], data.productImage.url)
 
                         // Brand
@@ -374,8 +385,22 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         itemlayout[i].visibility = View.INVISIBLE
                         itemlayout[i].setOnClickListener(null)
                     }
-
+                    if(CustomLog.flag)CustomLog.L("SubTitleViewHolder",i,"itemlayout visibility",itemlayout[i].visibility)
                 }
+
+                binding.executePendingBindings()
+                /*for(i in 0..5){
+                    if(size < i){
+                        itemlayout[i].visibility = View.INVISIBLE
+                        itemrelaytivelayout[i].layoutParams = LinearLayout.LayoutParams(width,height)
+                        itemlayout[i].layoutParams = LinearLayout.LayoutParams(width,layoutHeight).apply {
+                            rightMargin = margin
+                            leftMargin = margin
+                        }
+                        if(CustomLog.flag)CustomLog.L("SubTitleViewHolder--",i,"itemlayout visibility",itemlayout[i].visibility)
+                    }
+                }*/
+
             }
         }
         private fun setTabLayout(position : Int) {

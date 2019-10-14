@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
+            name="clickCommentListener"
+            type="android.view.View.OnClickListener" />
+        <variable
             name="clickCommentImageListener"
             type="android.view.View.OnClickListener" />
         <variable
@@ -26,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="50dp"
+        android:onClick="@{clickCommentListener}"
         android:orientation="vertical">
 
         <LinearLayout
@@ -149,6 +153,7 @@
                 android:id="@+id/edittext_comment_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{clickCommentListener}"
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/community_edit_hint"
