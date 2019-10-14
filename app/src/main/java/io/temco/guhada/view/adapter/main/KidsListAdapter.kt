@@ -455,7 +455,6 @@ class KidsListAdapter(private val model : KidsListViewModel, list : ArrayList<Ma
                             putExtra(Intent.EXTRA_TEXT, "")
                         }
                         (itemView.context as Activity).startActivity(email)
-
                     }
                 }
             }

@@ -455,7 +455,6 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
                             putExtra(Intent.EXTRA_TEXT, "")
                         }
                         (itemView.context as Activity).startActivity(email)
-
                     }
                 }
             }
