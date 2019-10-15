@@ -13,7 +13,7 @@
         android:id="@+id/constraintlayout_borderedittext_contaiiner"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/pinkish_grey"
+        android:background="@color/white_four"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +38,7 @@
                 android:gravity="start|center_vertical"
                 android:inputType="textPersonName"
                 android:textColor="@color/black_four"
-                android:textColorHint="@color/pinkish_grey"
+                android:textColorHint="@color/warm_grey_two"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/text_13"
                 app:layout_constraintBottom_toBottomOf="parent"
