@@ -128,9 +128,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     }
 
     private fun sendData() {
-        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init", mViewModel.mUser.value!!)
-        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init edittextJoinPassword", mBinding.edittextJoinPassword.text.toString())
-        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init edittextJoinConfirmpassword", mBinding.edittextJoinConfirmpassword.text.toString())
         var userUpInfo: UserUpdateInfo = UserUpdateInfo().apply {
             if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())) {
                 if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&
@@ -199,8 +196,10 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     bankCode = mViewModel.mUser.value!!.userDetail.bankCode ?: ""
                     //name = mViewModel.mUser.value!!.userDetail.verifiedName ?: ""
                 }
-                var mobile = CommonUtilKotlin.setMobileNumber(mViewModel.mUser.value!!.mobile.replace("-","").replace(" ",""))
-                mBinding.textviewMypageuserinfoMobile.setText(mobile)
+                if(!TextUtils.isEmpty(mViewModel.mUser.value!!.mobile)){
+                    var mobile = CommonUtilKotlin.setMobileNumber(mViewModel.mUser.value!!.mobile.replace("-","").replace(" ",""))
+                    mBinding.textviewMypageuserinfoMobile.setText(mobile)
+                }
 
                 // 생년월일
                 setBirth()
@@ -235,6 +234,9 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
         // 유저 사이즈
         getUserSize()
+
+        // 패스워드
+        setEditTextFocusListener()
 
         mBinding.buttonMypageuserinfoSizeinsert.setOnClickListener {
             var intent = Intent(this@UserInfoActivity, UserSizeUpdateActivity::class.java)
@@ -338,7 +340,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             mBinding.buttonMypageuserinfoSizeinsert.visibility = View.VISIBLE
             mBinding.buttonMypageuserinfoSizemodify.visibility = View.GONE
         }
-        setEditTextFocusListener()
         mBinding.executePendingBindings()
     }
 
