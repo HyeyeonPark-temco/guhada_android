@@ -22,7 +22,10 @@ class CancelOrderViewModel : BaseObservableViewModel() {
     var cause = ""
     var successCancelOrderTask: (result: PurchaseOrder) -> Unit = {}
     var mExpectedRefundPrice = MutableLiveData<ExpectedRefundPrice>()
-    var mExpectedRefundInfo =  MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
+    var mExpectedRefundInfo = MutableLiveData<ExpectedRefundPrice.ExpectedRefundInfo>()
+
+    // 취소 신청 call 여부
+    var mIsCancelCallFinished = false
 
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
@@ -55,45 +58,50 @@ class CancelOrderViewModel : BaseObservableViewModel() {
     }
 
     fun cancelOrder() {
-        val cancelRequest = CancelRequest().apply {
-            when {
-                selectedCausePos < 0 -> {
-                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
-                    return
-                }
-                cause.isEmpty() -> {
-                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
-                    return
-                }
-                else -> {
-                    this.cancelReason = this@CancelOrderViewModel.purchaseOrder.value?.cancelReasonList?.get(selectedCausePos)?.code.toString()
-                    this.cancelReasonDetail = this@CancelOrderViewModel.cause
-                    this.quantity = this@CancelOrderViewModel.quantity
-                    this.orderProdGroupId = this@CancelOrderViewModel.mOrderProdGroupId
+        if (!mIsCancelCallFinished) {
+            mIsCancelCallFinished = true
+
+            val cancelRequest = CancelRequest().apply {
+                when {
+                    selectedCausePos < 0 -> {
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_cause))
+                        return
+                    }
+                    cause.isEmpty() -> {
+                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_cancel_hint_cause))
+                        return
+                    }
+                    else -> {
+                        this.cancelReason = this@CancelOrderViewModel.purchaseOrder.value?.cancelReasonList?.get(selectedCausePos)?.code.toString()
+                        this.cancelReasonDetail = this@CancelOrderViewModel.cause
+                        this.quantity = this@CancelOrderViewModel.quantity
+                        this.orderProdGroupId = this@CancelOrderViewModel.mOrderProdGroupId
+                    }
                 }
             }
-        }
 
-        ServerCallbackUtil.callWithToken(task = { token ->
-            ClaimServer.cancelOrder(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            val result = it.data as PurchaseOrder
-                            successCancelOrderTask(result)
-                        },
-                        failedTask = {
-                            ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
-                        },
-                        dataIsNull = {
-                            if (it is BaseModel<*>) {
-                                CommonUtil.debug(it.message)
-                                ToastUtil.showMessage(it.message)
-                            } else {
-                                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-                            }
-                        })
-            }, accessToken = token, cancelRequest = cancelRequest)
-        })
+            ServerCallbackUtil.callWithToken(task = { token ->
+                ClaimServer.cancelOrder(OnServerListener { success, o ->
+                    mIsCancelCallFinished = false
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                val result = it.data as PurchaseOrder
+                                successCancelOrderTask(result)
+                            },
+                            failedTask = {
+                                ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                            },
+                            dataIsNull = {
+                                if (it is BaseModel<*>) {
+                                    CommonUtil.debug(it.message)
+                                    ToastUtil.showMessage(it.message)
+                                } else {
+                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                                }
+                            })
+                }, accessToken = token, cancelRequest = cancelRequest)
+            })
+        }
     }
 
 }
