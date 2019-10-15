@@ -71,7 +71,8 @@ public class Type {
         CUSTOM_WEBVIEW,
         VERIFY,
         SHIPPING_TRACKING,
-        VERIFY_EMAIL
+        VERIFY_EMAIL,
+        PHOTO_PAGER
     }
 
     // Main
@@ -201,14 +202,14 @@ public class Type {
     private static String getProductUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://qa.product.guhada.com:8080/";
+                return "http://qa.product.guhada.com/";
             case STAGE:
-                return "https://stg.product.guhada.com:8080/";
+                return "https://stg.product.guhada.com/";
             case RELEASE:
                 return "https://product.guhada.com/";
             default:
                 if(isTempProd) return "https://product.guhada.com/";
-                else return "http://dev.product.guhada.com:8080/";
+                else return "http://dev.product.guhada.com/";
         }
     }
 
@@ -257,14 +258,14 @@ public class Type {
     private static String getOrderUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://qa.order.guhada.com:8080/";
+                return "http://qa.order.guhada.com/";
             case STAGE:
                 return "https://stg.order.guhada.com/";
             case RELEASE:
                 return "https://order.guhada.com/";
             default:
                 if(isTempProd) return "https://order.guhada.com/";
-                else return "http://dev.order.guhada.com:8080/";
+                else return "http://dev.order.guhada.com/";
         }
     }
 
@@ -285,14 +286,15 @@ public class Type {
     private static String getBenefitUrl() {
         switch (BuildConfig.BuildType) {
             case QA:
-                return "http://qa.benefit.guhada.com:8080/";
+                return "http://qa.benefit.guhada.com/";
             case STAGE:
-                return "https://stg.benefit.guhada.com:8080/";
+                return "https://stg.benefit.guhada.com/";
             case RELEASE:
                 return "https://benefit.guhada.com/";
             default:
                 if(isTempProd) return "https://benefit.guhada.com/";
-                else return "http://dev.benefit.guhada.com:8080/";
+                else return "http://dev.benefit.guhada.com" +
+                        "/";
         }
     }
 

@@ -14,13 +14,15 @@ import io.temco.guhada.databinding.ItemImagepagerBinding
  * @author Hyeyeon Park
  */
 class ImagePagerAdapter : PagerAdapter() {
-    var list: MutableList<Product.Image> = ArrayList()
+    var list: MutableList<String> = ArrayList()
+    var mImageClickTask : () -> Unit = {}
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
     override fun getCount(): Int = list.size
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val binding = DataBindingUtil.inflate<ItemImagepagerBinding>(LayoutInflater.from(container.context), R.layout.item_imagepager, container, false)
-        binding.url = list[position].url
+        binding.url = list[position]
+        binding.imageviewImagepager.setOnClickListener { mImageClickTask() }
         binding.executePendingBindings()
         container.addView(binding.root)
         return binding.root
@@ -30,7 +32,7 @@ class ImagePagerAdapter : PagerAdapter() {
         container.removeView(`object` as View)
     }
 
-    fun setItems(list: MutableList<Product.Image>) {
+    fun setItems(list: MutableList<String>) {
         this.list = list
         notifyDataSetChanged()
     }

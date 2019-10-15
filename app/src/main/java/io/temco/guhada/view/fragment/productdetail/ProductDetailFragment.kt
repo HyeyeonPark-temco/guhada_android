@@ -914,16 +914,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         @BindingAdapter("productImage")
         fun ViewPager.bindImage(list: MutableList<String>?) {
             if (list != null && list.isNotEmpty()) {
-                if (this.adapter == null) {
-                    this.adapter = ImagePagerAdapter()
-                }
-
-                // 변경 예정
-                val images: MutableList<Product.Image> = ArrayList()
-                for (str in list) {
-                    Product.Image().apply { url = str }.let { img -> images.add(img) }
-                }
-                (this.adapter as ImagePagerAdapter).setItems(images)
+                if (this.adapter == null) this.adapter = ImagePagerAdapter()
+                (this.adapter as ImagePagerAdapter).setItems(list)
             }
         }
 

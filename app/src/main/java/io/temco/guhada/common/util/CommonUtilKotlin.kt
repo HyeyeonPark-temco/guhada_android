@@ -12,7 +12,6 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.view.activity.CustomWebViewActivity
-import io.temco.guhada.view.activity.ImageDetailViewActivity
 import io.temco.guhada.view.activity.UserClaimGuhadaActivity
 import io.temco.guhada.view.activity.UserClaimSellerActivity
 
@@ -78,12 +77,12 @@ object CommonUtilKotlin  {
     }
 
 
-    fun startActivityImageDetail(activity: Activity, title : String?, path : String) {
-        val intent = Intent(activity, ImageDetailViewActivity::class.java)
-        if(title!=null)intent.putExtra("title",title)
-        intent.putExtra("path",path)
-        activity.startActivityForResult(intent, Flag.RequestCode.BASE)
-    }
+//    fun startActivityImageDetail(activity: Activity, title : String?, path : String) {
+//        val intent = Intent(activity, ImageDetailViewActivity::class.java)
+//        if(title!=null)intent.putExtra("title",title)
+//        intent.putExtra("path",path)
+//        activity.startActivityForResult(intent, Flag.RequestCode.BASE)
+//    }
 
 
     fun recentProductCount(disposable: CompositeDisposable, db : GuhadaDB, listener: OnCallBackListener) {

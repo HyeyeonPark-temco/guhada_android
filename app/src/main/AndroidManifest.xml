@@ -326,7 +326,7 @@
 
         <!-- image detail -->
         <activity
-            android:name=".view.activity.ImageDetailViewActivity"
+            android:name=".view.activity.PhotoPagerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 

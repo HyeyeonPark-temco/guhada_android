@@ -748,6 +748,7 @@ class UserServer {
 
         /**
          * 본인인증 데이터 여부 조회
+         * resultCode 200: 본인인증 완료; 5004: 본인인증 미완료
          * @author Hyeyeon Park
          * @since 2019.09.23
          */

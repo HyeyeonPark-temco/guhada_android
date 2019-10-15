@@ -139,11 +139,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             this.mTotalPaymentPrice = ObservableInt(value.totalPaymentPrice)
             notifyPropertyChanged(BR.mTotalPaymentPrice)
 
-            // 본인인증
-            this.mMobileVerification = ObservableBoolean(value.user.name != null && value.user.mobile != null)
-            this.mEmailVerification = ObservableBoolean(value.user.emailVerify)
-            notifyPropertyChanged(BR.mMobileVerification)
-            notifyPropertyChanged(BR.mEmailVerification)
+            // 본인인증 여부 판별
+            checkValidation()
 
             field = value
         }
@@ -604,6 +601,36 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
         } else {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_confirmtemrs))
         }
+    }
+
+    private fun checkValidation() {
+        Preferences.getToken().accessToken.let { token ->
+            if (!token.isNullOrEmpty()) {
+                val userId = JWT(token).getClaim("userId").asInt()
+                if (userId != null && userId > 0)
+                    UserServer.getUserById(OnServerListener { success, o ->
+                        if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) {
+                            val user = o.data as User
+                            val diCode = user.userDetail.diCode
+                            if (!diCode.isNullOrEmpty()) {
+                                val jsonObject = JsonObject()
+                                jsonObject.addProperty("diCode", diCode)
+
+                                UserServer.getIdentityVerify(OnServerListener { success, o ->
+                                    if (success) {
+                                        this.mMobileVerification = if ((o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) ObservableBoolean(true)
+                                        else ObservableBoolean(false)
+                                        notifyPropertyChanged(BR.mMobileVerification)
+                                    }
+                                }, jsonObject = jsonObject)
+                            }
+                        }
+                    }, userId = userId)
+            }
+        }
+
+        this.mEmailVerification = ObservableBoolean(order.user.emailVerify)
+        notifyPropertyChanged(BR.mEmailVerification)
     }
 
     private fun getCouponNumberByCartItemId(cartItemId: Long): String {
