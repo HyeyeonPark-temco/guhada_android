@@ -9,16 +9,14 @@
             type="io.temco.guhada.data.viewmodel.shippingaddress.AddShippingAddressViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/common_white"
-            android:paddingTop="30dp">
+            android:layout_height="60dp">
 
             <TextView
                 android:id="@+id/textview_addshippingaddress_title"
@@ -29,6 +27,7 @@
                 android:text="@string/addshippingaddress_title"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_17"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -40,66 +39,77 @@
                 android:layout_marginEnd="20dp"
                 android:onClick="@{()->viewModel.onClickCancel()}"
                 android:src="@drawable/btn_pop_close"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/textview_addshippingaddress_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="38dp"
-                android:textColor="@color/black_four"
-                android:textSize="@dimen/text_13"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_addshippingaddress_title" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-
-            <FrameLayout
-                android:id="@+id/framelayout_addshippingaddress_form"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginTop="20dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textview_addshippingaddress_description" />
+                android:background="@color/common_white">
 
-            <Button
-                android:id="@+id/button_addshippingaddress_cancel"
-                style="@style/TextMedium"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/greyish_brown_two"
-                android:onClick="@{()->viewModel.onClickCancel()}"
-                android:text="@string/addshippingaddress_button_close"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_13"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/button_addshippingaddress_submit"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_addshippingaddress_form" />
+                <TextView
+                    android:id="@+id/textview_addshippingaddress_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="38dp"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/button_addshippingaddress_submit"
-                style="@style/TextMedium"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:background="@color/common_blue_purple"
-                android:onClick="@{()->viewModel.onClickSubmit()}"
-                android:text="@string/addshippingaddress_button_save"
-                android:textColor="@color/common_white"
-                android:textSize="@dimen/text_18"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@+id/button_addshippingaddress_cancel"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_addshippingaddress_form"
-                app:layout_constraintVertical_bias="1.0" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                <FrameLayout
+                    android:id="@+id/framelayout_addshippingaddress_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textview_addshippingaddress_description" />
 
+                <Button
+                    android:id="@+id/button_addshippingaddress_cancel"
+                    style="@style/TextMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/greyish_brown_two"
+                    android:onClick="@{()->viewModel.onClickCancel()}"
+                    android:text="@string/addshippingaddress_button_close"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_13"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/button_addshippingaddress_submit"
+                    app:layout_constraintTop_toBottomOf="@+id/framelayout_addshippingaddress_form" />
+
+                <Button
+                    android:id="@+id/button_addshippingaddress_submit"
+                    style="@style/TextMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@color/common_blue_purple"
+                    android:onClick="@{()->viewModel.onClickSubmit()}"
+                    android:text="@string/addshippingaddress_button_save"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_18"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintLeft_toRightOf="@+id/button_addshippingaddress_cancel"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/framelayout_addshippingaddress_form"
+                    app:layout_constraintVertical_bias="1.0" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </layout>
