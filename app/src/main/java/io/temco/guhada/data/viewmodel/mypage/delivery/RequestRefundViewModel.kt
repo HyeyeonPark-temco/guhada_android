@@ -46,6 +46,9 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
         @Bindable
         get() = field
 
+    // 반품 신청 call 여부
+    var mIsRefundCallFinished = false
+
     init {
         this.mRefundRequest.addObserver(this)
     }
@@ -128,29 +131,36 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
     }
 
     private fun callRequestRefund() {
-        ServerCallbackUtil.callWithToken(task = { accessToken ->
-            ClaimServer.requestRefund(OnServerListener { success, o ->
-                ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = {
-                            val result = it.data as PurchaseOrder
-                            mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
-                            mPurchaseOrder.value?.orderStatusText = result.orderStatusText
-                            mPurchaseOrder.value?.claimStatusText = result.claimStatusText
-                            mSuccessRequestRefundTask(mPurchaseOrder.value!!)
-                        },
-                        failedTask = {
-                            ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
-                        },
-                        dataIsNull = {
-                            if (it is BaseModel<*>) {
-                                CommonUtil.debug(it.message)
-                                ToastUtil.showMessage(it.message)
-                            } else {
-                                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-                            }
-                        })
-            }, accessToken = accessToken, refundRequest = mRefundRequest)
-        })
+        if(!mIsRefundCallFinished){
+            mIsRefundCallFinished = true
+
+            ServerCallbackUtil.callWithToken(task = { accessToken ->
+                ClaimServer.requestRefund(OnServerListener { success, o ->
+                    mIsRefundCallFinished = false
+
+                    ServerCallbackUtil.executeByResultCode(success, o,
+                            successTask = {
+                                val result = it.data as PurchaseOrder
+                                mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
+                                mPurchaseOrder.value?.orderStatusText = result.orderStatusText
+                                mPurchaseOrder.value?.claimStatusText = result.claimStatusText
+                                mSuccessRequestRefundTask(mPurchaseOrder.value!!)
+                            },
+                            failedTask = {
+                                ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                            },
+                            dataIsNull = {
+                                if (it is BaseModel<*>) {
+                                    CommonUtil.debug(it.message)
+                                    ToastUtil.showMessage(it.message)
+                                } else {
+                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                                }
+                            })
+                }, accessToken = accessToken, refundRequest = mRefundRequest)
+            })
+        }
+
     }
 
     fun updateRefund() {

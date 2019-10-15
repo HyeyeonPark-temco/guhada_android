@@ -37,6 +37,9 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     var mOrderProdGroupId = 0L
     var mOrderClaimId = 0L
 
+    // 교환 신청 call 여부
+    var mIsExchangeCallFinished = false
+
     fun getClaimForm(orderProdGroupId: Long) {
         ServerCallbackUtil.callWithToken(task = { token ->
             ClaimServer.getClaimForm(OnServerListener { success, o ->
@@ -171,27 +174,33 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
                 mExchangeRequest.exchangeShippingAddress.shippingMessage.equals(BaseApplication.getInstance().getString(R.string.shippingmemo_default))) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingmemo_default))
         } else {
-            ServerCallbackUtil.callWithToken(task = { accessToken ->
-                ClaimServer.requestExchange(OnServerListener { success, o ->
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                val result = it.data as PurchaseOrder
-                                mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
-                                mPurchaseOrder.value?.orderStatusText = result.orderStatusText
-                                mPurchaseOrder.value?.claimStatusText = result.claimStatusText
-                                mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
-                            }, failedTask = {
-                        ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
-                    }, dataIsNull = {
-                        if (it is BaseModel<*>) {
-                            CommonUtil.debug(it.message)
-                            ToastUtil.showMessage(it.message)
-                        } else {
-                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-                        }
-                    })
-                }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
-            })
+            if (!mIsExchangeCallFinished) {
+                mIsExchangeCallFinished = true
+                ServerCallbackUtil.callWithToken(task = { accessToken ->
+                    ClaimServer.requestExchange(OnServerListener { success, o ->
+                        mIsExchangeCallFinished = false
+
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = {
+                                    val result = it.data as PurchaseOrder
+                                    mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
+                                    mPurchaseOrder.value?.orderStatusText = result.orderStatusText
+                                    mPurchaseOrder.value?.claimStatusText = result.claimStatusText
+                                    mSuccessRequestExchangeTask(mPurchaseOrder.value!!)
+                                }, failedTask = {
+                            ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                        }, dataIsNull = {
+                            if (it is BaseModel<*>) {
+                                CommonUtil.debug(it.message)
+                                ToastUtil.showMessage(it.message)
+                            } else {
+                                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                            }
+                        })
+                    }, accessToken = accessToken, exchangeRequest = mExchangeRequest)
+                })
+            }
+
         }
     }
 

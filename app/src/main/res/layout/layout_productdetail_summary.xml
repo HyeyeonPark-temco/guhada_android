@@ -105,7 +105,7 @@
             android:orientation="horizontal"
             android:paddingTop="18dp"
             android:paddingBottom="18dp"
-            android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =gone}">
+            android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =visible}">
 
             <TextView
                 style="@style/TextRegular"
@@ -129,7 +129,7 @@
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/productdetail_format_buypoint(0)}"
+                    android:text="@{@string/productdetail_format_buypoint(0), default= @string/productdetail_format_buypoint}"
                     android:textColor="@color/greyish_brown_two"
                     android:textSize="@dimen/text_12" />
 
@@ -138,8 +138,7 @@
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="@{@string/productdetail_format_reviewpoint(0)}"
+                    android:text="@{@string/productdetail_format_reviewpoint(0), default= @string/productdetail_format_reviewpoint}"
                     android:textColor="@color/greyish_brown_two"
                     android:textSize="@dimen/text_12" />
 

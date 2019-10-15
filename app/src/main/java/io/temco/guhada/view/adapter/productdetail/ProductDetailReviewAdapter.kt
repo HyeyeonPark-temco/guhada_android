@@ -1,6 +1,7 @@
 package io.temco.guhada.view.adapter.productdetail
 
 import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +20,13 @@ import io.temco.guhada.data.model.product.Product
 import io.temco.guhada.data.model.review.ReviewResponseContent
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel
 import io.temco.guhada.databinding.ItemProductdetailReviewBinding
+import io.temco.guhada.view.activity.PhotoPagerActivity
 import io.temco.guhada.view.adapter.ImagePagerAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapter.Holder>() {
-     var list: MutableList<ReviewResponseContent> = mutableListOf()
+    var list: MutableList<ReviewResponseContent> = mutableListOf()
     lateinit var mViewModel: ProductDetailReviewViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -59,10 +61,16 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
             if (list != null) {
                 mBinding.viewpagerProductdetailReviewfiles.adapter = ImagePagerAdapter().apply {
                     Observable.fromIterable(list).map {
-                        Product.Image().apply { this.url = it.reviewPhotoUrl }
+                        it.reviewPhotoUrl
                     }.subscribe {
                         this.list.add(it)
                     }
+
+//                    this.mImageClickTask = {
+//                        val intent = Intent(binding.root.context, PhotoPagerActivity::class.java)
+//                        intent.putExtra("urlList", this@ProductDetailReviewAdapter.list.toTypedArray())
+//                        binding.root.context.startActivity(intent)
+//                    }
                 }
 
                 mBinding.viewpagerProductdetailReviewfiles.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -121,7 +129,7 @@ class ProductDetailReviewAdapter : RecyclerView.Adapter<ProductDetailReviewAdapt
 
             mBinding.viewModel = mViewModel
 
-            if(CustomLog.flag) CustomLog.L("convertDateTimeFormat","reviewContent",reviewContent.review)
+            if (CustomLog.flag) CustomLog.L("convertDateTimeFormat", "reviewContent", reviewContent.review)
             mBinding.executePendingBindings()
         }
     }

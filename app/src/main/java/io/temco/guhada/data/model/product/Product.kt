@@ -95,8 +95,6 @@ class Product : BaseProduct() {
         var url: String = ""
     }
 
-
-
 }
 
 

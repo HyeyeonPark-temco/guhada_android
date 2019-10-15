@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.text.TextUtils" />
+
         <import type="android.view.View" />
+
         <variable
             name="title"
             type="String" />
+
         <variable
             name="onClickBackButton"
             type="android.view.View.OnClickListener" />
