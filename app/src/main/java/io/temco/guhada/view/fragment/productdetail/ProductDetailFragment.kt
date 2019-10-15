@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -291,6 +292,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             } else {
                 mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.VISIBLE
                 mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.VISIBLE
+
+                if (advantageBuyPoint > 0 && advantageReviewPoint > 0)
+                    (mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                        this.topMargin = CommonViewUtil.convertDpToPixel(dp = 6, context = mBinding.root.context)
+                    }
 
                 if (advantageBuyPoint > 0) {
                     mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointBuy.visibility = View.VISIBLE
