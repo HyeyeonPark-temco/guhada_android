@@ -25,12 +25,17 @@ public class TagTypeNormalViewHolder extends BaseTagViewHolder<ItemTagTypeNormal
     ////////////////////////////////////////////////
 
     @Override
-    public void init(Context context, int position, Tag data, View.OnClickListener listener) {
+    public void init(Context context, int position, int lastIndex, Tag data, View.OnClickListener listener) {
         if (data != null) {
             // Title
             if (!TextUtils.isEmpty(data.title)) {
                 mBinding.setTitle(data.title);
             }
+            if(position == 0) mBinding.viewLeftpadding.setVisibility(View.VISIBLE);
+            else mBinding.viewLeftpadding.setVisibility(View.GONE);
+
+            if(position == lastIndex) mBinding.viewRightpadding.setVisibility(View.VISIBLE);
+            else mBinding.viewRightpadding.setVisibility(View.GONE);
             // Close
             mBinding.imageClose.setTag(position);
             mBinding.setClickListener(listener);

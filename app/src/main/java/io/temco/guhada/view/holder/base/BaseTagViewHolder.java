@@ -22,7 +22,7 @@ public abstract class BaseTagViewHolder<B extends ViewDataBinding> extends BaseV
     // ABSTRACT
     ////////////////////////////////////////////////
 
-    public abstract void init(Context context, int position, Tag data, View.OnClickListener listener);
+    public abstract void init(Context context, int position, int lastIndex, Tag data, View.OnClickListener listener);
 
     ////////////////////////////////////////////////
 }

@@ -149,6 +149,7 @@
                     android:paddingStart="15dp"
                     android:paddingEnd="15dp"
                     android:textColorHint="@color/warm_grey"
+                    android:text="@{TextUtils.isEmpty(user.userDetail.accountHolder) ? @string/requestorderstatus_refund_bankhint3 : user.userDetail.accountHolder}"
                     android:textSize="@dimen/text_13" />
                 <!--
                     android:text="@{TextUtils.isEmpty(user.userDetail.verifiedName) ? @string/requestorderstatus_refund_bankhint3 : user.userDetail.verifiedName}" -->

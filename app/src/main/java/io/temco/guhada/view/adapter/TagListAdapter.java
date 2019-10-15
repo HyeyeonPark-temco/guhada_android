@@ -63,7 +63,7 @@ public class TagListAdapter extends RecyclerView.Adapter<BaseTagViewHolder> impl
 
     @Override
     public void onBindViewHolder(@NonNull BaseTagViewHolder holder, int position) {
-        holder.init(mContext, position, getItem(position), this);
+        holder.init(mContext, position, mItems.size()-1, getItem(position), this);
     }
 
     @Override

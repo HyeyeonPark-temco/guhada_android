@@ -12,11 +12,18 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:paddingLeft="3dp"
         android:paddingRight="3dp">
+
+        <View
+            android:id="@+id/view_leftpadding"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,5 +51,11 @@
                 android:background="@drawable/filter_search_delete_w"
                 android:onClick="@{clickListener}" />
         </LinearLayout>
-    </RelativeLayout>
+
+        <View
+            android:id="@+id/view_rightpadding"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </LinearLayout>
 </layout>

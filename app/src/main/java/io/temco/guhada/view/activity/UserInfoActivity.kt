@@ -29,6 +29,7 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author park jungho
@@ -204,23 +205,23 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 // 생년월일
                 setBirth()
 
+                // 환불 계좌정보
+                initRefundAccountView()
+                if(!TextUtils.isEmpty(mViewModel.mUser.value!!.userDetail.accountNumber)){
+                    mViewModel.accountVerifiedIdentity = true
+                    mViewModel.mRefundRequest.refundBankAccountNumber = mViewModel.mUser.value!!.userDetail.accountNumber!!
+                }
+
                 // 성별
                 mViewModel.checkGenderValue.set(mViewModel.mUser.value!!.userGender)
 
                 mBinding.executePendingBindings()
-                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "resultFlag", resultFlag, "mViewModel.user", mViewModel.mUser.value!!)
-                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "userEmail -----", mViewModel.userEmail)
-                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "verifiedName -----", mViewModel.mUser.value!!.userDetail.verifiedName.toString())
-                if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "edittextRequestrefundBankowner -----", mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.text.toString())
-
             }
         })
 
         // 닉네임 변경
         setNickNameListener()
 
-        // 환불 계좌정보
-        initRefundAccountView()
 
         // 이메일 인증
         //mBinding.edittextMypageuserinfoEmail.setOnClickListener { redirectUserInfoVerifyActivity(true) }

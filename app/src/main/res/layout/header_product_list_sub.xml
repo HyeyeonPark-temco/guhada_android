@@ -117,7 +117,6 @@
             android:id="@+id/layout_filter_parent"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:paddingLeft="20dp"
             android:visibility="gone">
 
             <!-- TAG -->
@@ -131,7 +130,7 @@
             <LinearLayout
                 android:id="@+id/layout_reset"
                 android:layout_width="wrap_content"
-                android:layout_height="28dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:orientation="horizontal">
 
@@ -146,6 +145,7 @@
                     android:background="@color/background_default"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:paddingBottom="4dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="14dp">
 

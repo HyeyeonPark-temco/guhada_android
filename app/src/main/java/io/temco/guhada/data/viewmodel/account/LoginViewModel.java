@@ -141,7 +141,7 @@ public class LoginViewModel extends BaseObservableViewModel {
                             return;
                         case Flag.ResultCode.USER_NOT_FOUND:
                         case Flag.ResultCode.SIGNIN_INVALID_PASSWORD:
-                            loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_invalidinfo));
+                            loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.login_message_notequalpwd));
                     }
                 } else {
                     loginListener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.common_message_servererror));

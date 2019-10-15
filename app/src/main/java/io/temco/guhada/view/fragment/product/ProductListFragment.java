@@ -542,19 +542,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     }
 
 
-    private void setFilterTopCategory(Category t){
-        if(t.children != null && t.children.size()>0){
-            filterCategory = t;
-            filterChildIdSet = new HashSet<>();
-            for(Category c : t.children){
-                if(c.hierarchies[c.hierarchies.length-2] == mCategoryData.id){
-                    filterChildIdSet.add(c.id);
-                }
-            }
-        }
-    }
-
-
     private void addCategoryTab(Category data, boolean isSelect) {
         if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","addCategoryTab",data);
         if (getContext() != null) {
