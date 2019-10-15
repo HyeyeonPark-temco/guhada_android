@@ -96,5 +96,29 @@ object CommonUtilKotlin  {
         )
     }
 
+    fun setMobileNumber(mobile : String) : String {
+        var mo = ""
+        if(mobile.substring(0,2) == "01" && mobile.length in 10..11){
+            when(mobile.length){
+                10-> mo = mobile.substring(0,3)+"-"+mobile.substring(3,6)+"-"+mobile.substring(6,mobile.length)
+                11-> mo = mobile.substring(0,3)+"-"+mobile.substring(3,7)+"-"+mobile.substring(7,mobile.length)
+            }
+        }else if(mobile.substring(0,2) == "02" && mobile.length in 9..10){
+            when(mobile.length){
+                9-> mo = mobile.substring(0,2)+"-"+mobile.substring(2,5)+"-"+mobile.substring(5,mobile.length)
+                10-> mo = mobile.substring(0,2)+"-"+mobile.substring(2,6)+"-"+mobile.substring(6,mobile.length)
+            }
+        }else if(mobile.length in 10..11){
+            when(mobile.length){
+                10-> mo = mobile.substring(0,3)+"-"+mobile.substring(3,6)+"-"+mobile.substring(6,mobile.length)
+                11-> mo = mobile.substring(0,3)+"-"+mobile.substring(3,7)+"-"+mobile.substring(7,mobile.length)
+            }
+        }else if(mobile.length == 8){
+            mo = mobile.substring(0,4)+"-"+mobile.substring(4,mobile.length)
+        }else{
+            mo = mobile
+        }
+        return mo
+    }
 
 }

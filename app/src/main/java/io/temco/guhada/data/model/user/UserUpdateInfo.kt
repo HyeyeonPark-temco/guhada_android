@@ -52,7 +52,7 @@ class UserUpdateInfo {
         identityVerifyParam.diCode = if(TextUtils.isEmpty(user.userDetail.diCode ?: null))null else user.userDetail.diCode ?: null
         identityVerifyParam.gender = if(TextUtils.isEmpty(user.userGender))null else user.userGender
         identityVerifyParam.identityVerifyMethod = if(TextUtils.isEmpty(user.userDetail.identityVerifyMethod ?: null))null else user.userDetail.identityVerifyMethod ?: null
-        identityVerifyParam.mobile = if(TextUtils.isEmpty(user.mobile))null else user.mobile
+        identityVerifyParam.mobile = if(TextUtils.isEmpty(user.mobile))null else user.mobile.replace("-","").replace(" ","")
         identityVerifyParam.name = if(TextUtils.isEmpty(user.name))null else user.name
 
         // 유저 사이즈 업데이트 여부

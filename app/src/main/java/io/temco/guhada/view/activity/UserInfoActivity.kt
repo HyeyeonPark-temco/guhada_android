@@ -102,7 +102,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                         mViewModel.mUser.value!!.userDetail.diCode = di
 
                     if (mobile != null) {
-                        mBinding.textviewMypageuserinfoMobile.setText(mobile)
+                        var mob = CommonUtilKotlin.setMobileNumber(mobile.replace("-","").replace(" ",""))
+                        mBinding.textviewMypageuserinfoMobile.setText(mob)
                         mViewModel.mUser.value!!.mobile = mobile
                         mViewModel.mUser.value!!.phoneNumber = mobile
                     }
@@ -198,6 +199,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     bankCode = mViewModel.mUser.value!!.userDetail.bankCode ?: ""
                     //name = mViewModel.mUser.value!!.userDetail.verifiedName ?: ""
                 }
+                var mobile = CommonUtilKotlin.setMobileNumber(mViewModel.mUser.value!!.mobile.replace("-","").replace(" ",""))
+                mBinding.textviewMypageuserinfoMobile.setText(mobile)
 
                 // 생년월일
                 setBirth()

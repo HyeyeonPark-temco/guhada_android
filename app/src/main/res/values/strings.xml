@@ -267,6 +267,7 @@
     <string name="verifyphone_content">본인 명의 휴대폰으로 비밀번호를 재설정합니다.</string>
     <string name="verifyphone_content2">본인 명의 휴대폰으로 아이디를 찾습니다.</string>
     <string name="verifyphone_button">본인 명의 휴대폰으로 인증</string>
+    <string name="verifyphone_desc">본인 인증을 해주세요.</string>
 
     <!--<string name="verifyphone_description1">본인명의의 휴대폰으로 본인여부를 확인합니다.</string>
     <string name="verifyphone_description2">본인인증 서비스는 NICE신용평가정보에서 제공합니다.</string>

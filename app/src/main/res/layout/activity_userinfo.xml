@@ -139,7 +139,7 @@
                         android:background="@drawable/drawable_disable_inputform"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
-                        android:text="@{user.name}"
+                        android:text="@{TextUtils.isEmpty(user.name) ? @string/verifyphone_desc : user.name, default = @string/verifyphone_desc}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
                     <!-- ====================================================================== -->
@@ -277,7 +277,6 @@
                         android:hint="@string/mypage_userinfo_passwaord_infotitle5"
                         android:paddingStart="15dp"
                         android:paddingEnd="15dp"
-                        android:text="@{viewModel.mUser.mobile}"
                         android:textColor="@color/black_four"
                         android:textColorHint="@color/warm_grey"
                         android:textSize="@dimen/text_13" />
@@ -295,8 +294,8 @@
                         android:gravity="center_vertical"
                         android:text="@string/mypage_userinfo_passwaord_infotitle6"
                         android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14"
-                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}" />
+                        android:textSize="@dimen/text_14" />
+                    <!--android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"-->
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_join_password"
@@ -309,9 +308,9 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
-                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"
                         app:hint="@string/findpwd_hint_newpwd"
                         app:type="password" />
+                    <!--android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"-->
 
                     <TextView
                         android:id="@+id/textview_join_passwordfocus"
@@ -337,9 +336,9 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13"
-                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"
                         app:hint="@string/findpwd_hint_newpwdconfirm"
                         app:type="password" />
+                    <!--android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"-->
 
                     <TextView
                         android:id="@+id/textview_join_confirmpasswordfocus"
@@ -366,8 +365,9 @@
                         android:gravity="center_vertical"
                         android:text="@string/mypage_userinfo_passwaord_infodesc1"
                         android:textColor="@color/warm_grey"
-                        android:textSize="@dimen/text_12"
-                        android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}" />
+                        android:textSize="@dimen/text_12" />
+
+                    <!--android:visibility="@{loginType != 0 ? View.GONE: View.VISIBLE, default= visible}"-->
                     <!-- ====================================================================== -->
 
 
