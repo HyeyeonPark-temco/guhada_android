@@ -431,8 +431,15 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 tabWidth = 0;
 
                 if(mProductListData != null && mProductListData.categories != null) {
+                    if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet ---");
                     for (Category c : mProductListData.categories) {
+                        if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet c",c);
                         setFilterCategory(c);
+                        /*if(c.hierarchies.length == 1){
+                            setFilterTopCategory(c);
+                        }else{
+                            setFilterCategory(c);
+                        }*/
                     }
                 }
                 if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet",(filterChildIdSet!=null?filterChildIdSet:"null"));
@@ -507,23 +514,47 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
 
     private void setFilterCategory(Category t){
-        if(t.children != null && t.children.size()>0){
+        if(t.id == mCategoryData.id){
+            filterCategory = t;
+            filterChildIdSet = new HashSet<>();
             for(Category c : t.children){
-                if(c.children != null && c.children.size()>0){
-                    if(c.id == mCategoryData.id){
-                        filterCategory = c;
-                        filterChildIdSet = new HashSet<>();
-                        for (Category e : c.children){
-                            filterChildIdSet.add(e.id);
+                filterChildIdSet.add(c.id);
+            }
+        }else{
+            if(t.children != null && t.children.size()>0){
+                for(Category c : t.children){
+                    if(c.children != null && c.children.size()>0){
+                        if(c.id == mCategoryData.id){
+                            filterCategory = c;
+                            filterChildIdSet = new HashSet<>();
+                            for (Category e : c.children){
+                                if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet e",e.title);
+                                filterChildIdSet.add(e.id);
+                            }
+                            break;
+                        }else{
+                            setFilterCategory(c);
                         }
-                        break;
-                    }else{
-                        setFilterCategory(c);
                     }
                 }
             }
         }
     }
+
+
+    private void setFilterTopCategory(Category t){
+        if(t.children != null && t.children.size()>0){
+            filterCategory = t;
+            filterChildIdSet = new HashSet<>();
+            for(Category c : t.children){
+                if(c.hierarchies[c.hierarchies.length-2] == mCategoryData.id){
+                    filterChildIdSet.add(c.id);
+                }
+            }
+        }
+    }
+
+
     private void addCategoryTab(Category data, boolean isSelect) {
         if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","addCategoryTab",data);
         if (getContext() != null) {
@@ -1321,6 +1352,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
         if (reset) {
             resetList(false);
         }
+        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory reset",reset);
         mLoadingIndicator.show();
         SearchServer.getProductListByCategoryFilter(mCurrentOrderType, filterBody, mPageNumber, (success, o) -> {
             if (mListAdapter != null) {
@@ -1329,9 +1361,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                     mListAdapter.setItems(((ProductList) o).deals);
                     if (mProductListData == null){
                         mProductListData = (ProductList) o;
+                        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.deals.size());
                         setTabLayout();
                     }
-                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.toString());
                 }
                 emptyView("");
             }

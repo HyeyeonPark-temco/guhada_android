@@ -144,8 +144,13 @@ class UserSizeUpdateViewModel (val context : Context) : BaseObservableViewModel(
                                                     var data = (o as BaseModel<*>).data as Any
                                                     if (CustomLog.flag) CustomLog.L("UserSizeUpdateViewModel", "saveUserSize successTask ",data.toString())
                                                     //CommonUtil.startPointDialogActivity(context as Activity, 2)
-                                                    (context as Activity).setResult(Activity.RESULT_OK)
-                                                    (context as Activity).finish()
+                                                    CustomMessageDialog(message = context.resources.getString(R.string.user_size_update_save_dialog_desc),
+                                                            cancelButtonVisible = false,
+                                                            confirmTask = {
+                                                                (context as Activity).setResult(Activity.RESULT_OK)
+                                                                (context as Activity).finish()
+                                                            }
+                                                    ).show(manager = (context as AppCompatActivity).supportFragmentManager, tag = "UserSizeUpdateViewModel")
                                                 },
                                                 dataNotFoundTask = {failDialogShow() },
                                                 failedTask = {failDialogShow()  },
@@ -194,7 +199,7 @@ class UserSizeUpdateViewModel (val context : Context) : BaseObservableViewModel(
 
 
     private fun failDialogShow(){
-        CustomMessageDialog(message = context.resources.getString(R.string.user_size_update_modify_dialog_desc),
+        CustomMessageDialog(message = "등록중 오류가 발생되었습니다.",
                 cancelButtonVisible = false,
                 confirmTask = {
                     (context as Activity).setResult(Activity.RESULT_CANCELED)

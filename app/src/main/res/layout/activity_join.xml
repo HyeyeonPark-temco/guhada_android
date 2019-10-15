@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.text.InputType" />
+        <import type="android.view.View" />
 
         <variable
             name="personalClickListener"
@@ -135,13 +136,13 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="50dp">
 
                         <CheckBox
                             android:id="@+id/checkbox_join_all"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/selector_checkbox_all_big"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/selector_checkbox_all_big2"
                             android:button="@null"
                             android:checked="@{viewModel.essentialChecked &amp;&amp; viewModel.optionalChecked}"
                             android:onCheckedChanged="@{(view,checked)->viewModel.onCheckAll(checked)}"
@@ -171,13 +172,13 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="50dp">
 
                         <CheckBox
                             android:id="@+id/checkbox_join_essential"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/selector_checkbox_all"
+                            android:background="@drawable/selector_checkbox_all2"
                             android:button="@null"
                             android:checked="@{viewModel.essentialChecked}"
                             android:onCheckedChanged="@{(view, checked) -> viewModel.onCheckEssential(checked)}"
@@ -193,8 +194,8 @@
                             android:layout_marginTop="12dp"
                             android:layout_marginBottom="12dp"
                             android:text="@string/join_agreeessential"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_16"
+                            android:textColor="@color/text_1"
+                            android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/checkbox_join_essential"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -203,13 +204,13 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="50dp">
 
                         <CheckBox
                             android:id="@+id/checkbox_join_buy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/selector_checkbox_all"
+                            android:background="@drawable/selector_checkbox_all2"
                             android:button="@null"
                             android:checked="@{viewModel.essentialChecked || viewModel.user.agreePurchaseTos}"
                             android:onCheckedChanged="@{(view, checked) -> viewModel.onCheckPurchaseTos(checked)}"
@@ -247,13 +248,13 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="50dp">
 
                         <CheckBox
                             android:id="@+id/checkbox_join_privacy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/selector_checkbox_all"
+                            android:background="@drawable/selector_checkbox_all2"
                             android:button="@null"
                             android:checked="@{viewModel.essentialChecked || viewModel.user.agreeCollectPersonalInfoTos}"
                             android:onCheckedChanged="@{(view, checked) -> viewModel.onCheckPrivacyTos(checked)}"
@@ -307,13 +308,13 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="50dp">
 
                         <CheckBox
                             android:id="@+id/checkbox_join_option"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/selector_checkbox_all"
+                            android:background="@drawable/selector_checkbox_all2"
                             android:button="@null"
                             android:checked="@{viewModel.optionalChecked}"
                             android:onCheckedChanged="@{(view, checked)->viewModel.onCheckOption(checked)}"
@@ -329,23 +330,38 @@
                             android:layout_marginTop="12dp"
                             android:layout_marginBottom="12dp"
                             android:text="@string/join_agreeoption"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/text_16"
+                            android:textColor="@color/text_1"
+                            android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/checkbox_join_option"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <ImageButton
+                            android:id="@+id/view_join_plus"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/detail_btn_open"
+                            android:background="@color/transparent"
+                            android:scaleType="center"
+                            android:onClick="@{()->viewModel.onClickSelectTermPlusView()}"
+                            android:visibility="@{viewModel.selectTermPlusView ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="50dp"
+                        android:visibility="@{viewModel.selectTermPlusView ? View.VISIBLE : View.GONE}">
 
                         <CheckBox
                             android:id="@+id/checkbox_join_sale"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/selector_checkbox_all"
+                            android:background="@drawable/selector_checkbox_all2"
                             android:button="@null"
                             android:checked="@{viewModel.optionalChecked || viewModel.user.agreeSaleTos}"
                             android:onCheckedChanged="@{(view, checked) -> viewModel.onCheckSaleTos(checked)}"
@@ -383,7 +399,8 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
+                        android:visibility="@{viewModel.selectTermPlusView ? View.VISIBLE : View.GONE}"
                         android:orientation="horizontal">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -394,7 +411,7 @@
                                 android:id="@+id/checkbox_join_email"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/selector_checkbox_all"
+                                android:background="@drawable/selector_checkbox_all2"
                                 android:button="@null"
                                 android:checked="@{viewModel.optionalChecked || viewModel.user.agreeEmailReception}"
                                 android:onCheckedChanged="@{(view, checked) -> viewModel.onCheckEmailReception(checked)}"
@@ -428,7 +445,7 @@
                                 android:id="@+id/checkbox_join_sms"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/selector_checkbox_all"
+                                android:background="@drawable/selector_checkbox_all2"
                                 android:button="@null"
                                 android:checked="@{viewModel.optionalChecked || viewModel.user.agreeSmsReception}"
                                 android:onCheckedChanged="@{(view, checked) -> viewModel.onCheckSmsReception(checked)}"

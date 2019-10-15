@@ -74,7 +74,7 @@ public class Category {
                 ", immediateChildrenCount=" + immediateChildrenCount +
                 ", hierarchies=" + Arrays.toString(hierarchies) +
                 ", isUnisex=" + isUnisex +
-                ", children=" + children +
+                ", children=" + (children!=null?children.size():0) +
                 ", selectId=" + selectId +
                 ", parentId=" + parentId +
                 '}';

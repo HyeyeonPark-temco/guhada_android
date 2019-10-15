@@ -29,6 +29,7 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
     private ObservableBoolean allChecked = new ObservableBoolean(false);
     private ObservableBoolean essentialChecked = new ObservableBoolean(false);
     private ObservableBoolean optionalChecked = new ObservableBoolean(false);
+    private ObservableBoolean selectTermPlusView = new ObservableBoolean(false);
 
     public JoinViewModel(OnJoinListener listener) {
         this.listener = listener;
@@ -76,6 +77,12 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
     @Bindable
     public ObservableBoolean getOptionalChecked() {
         return optionalChecked;
+    }
+
+
+    @Bindable
+    public ObservableBoolean getSelectTermPlusView() {
+        return selectTermPlusView;
     }
 
 
@@ -175,6 +182,11 @@ public class JoinViewModel extends BaseObservableViewModel implements Observer {
             }
 
         }
+    }
+
+    public void onClickSelectTermPlusView(){
+        this.selectTermPlusView.set(true);
+        notifyPropertyChanged(BR.selectTermPlusView);
     }
 
     public void onCheckPurchaseTos(boolean checked) {

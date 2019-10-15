@@ -240,7 +240,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
         mBinding.buttonMypageuserinfoSizeinsert.setOnClickListener {
             var intent = Intent(this@UserInfoActivity, UserSizeUpdateActivity::class.java)
-            if (mViewModel.mUserSize != null) intent.putExtra("userSize", mViewModel.mUserSize)
             (this@UserInfoActivity).startActivityForResult(intent, Flag.RequestCode.USER_SIZE)
         }
 
