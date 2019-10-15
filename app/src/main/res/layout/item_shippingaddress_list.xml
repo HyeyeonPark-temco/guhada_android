@@ -78,11 +78,12 @@
                 android:text="@string/shippingaddress_button_edit"
                 android:textColor="@color/warm_grey_three" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:background="@color/warm_grey_three" />
+           <ImageView
+               android:layout_width="wrap_content"
+               android:scaleType="fitCenter"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               android:src="@drawable/brand_tab_line"/>
 
             <TextView
                 android:id="@+id/textview_shippingaddress_delete"
@@ -100,6 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
+            android:lineSpacingExtra="5sp"
             android:gravity="start"
             android:text="@{`[` + shipping.zip + `] ` + shipping.roadAddress + ` ` +  shipping.detailAddress}"
             android:textColor="@color/warm_grey_two"

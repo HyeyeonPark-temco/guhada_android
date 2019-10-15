@@ -187,8 +187,14 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             binding.setOnClickShowOption {
                 // 옵션 변경 버튼 클릭
                 val expansionLayout = binding.constraintllayoutCartOption
-                if (expansionLayout.isExpanded) expansionLayout.collapse(true)
-                else expansionLayout.expand(true)
+                if (expansionLayout.isExpanded) {
+                    expansionLayout.collapse(true)
+                    mBinding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_open)
+                }
+                else {
+                    expansionLayout.expand(true)
+                    mBinding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_close)
+                }
             }
             binding.setOnClickDelete {
                 CustomMessageDialog(message = BaseApplication.getInstance().getString(R.string.cart_message_delete),
