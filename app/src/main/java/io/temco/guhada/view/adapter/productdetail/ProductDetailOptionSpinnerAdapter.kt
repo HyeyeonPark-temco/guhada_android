@@ -25,7 +25,6 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getCount(): Int = list.size - 1
 
-
     fun setItems(list: List<OptionInfo>) {
         this.list = list
         notifyDataSetChanged()
@@ -40,7 +39,7 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         setOptionText(option = option)
 
         mBinding.viewProductdetailOptionspinnerLine1.visibility = if (position == 0) View.VISIBLE else View.GONE
-        mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.count() - 1) View.VISIBLE else View.GONE
+        mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.size - 2) View.VISIBLE else View.GONE
 
         if (option.rgb1?.isNotEmpty() ?: false) {
             mBinding.imageviewProductdetailOptionspinner.visibility = View.VISIBLE
@@ -92,4 +91,6 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         else
             mBinding.linearlayoutProductdetailOptionspinner.setPadding(padding, 0, padding, padding)
     }
+
+
 }

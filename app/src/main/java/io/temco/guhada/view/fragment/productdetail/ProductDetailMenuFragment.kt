@@ -126,7 +126,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                 }
             }
         }
-        mBinding.spinnerProductdetailOption.setSelection(list.size - 1)
+//        mBinding.spinnerProductdetailOption.setSelection(list.size - 1)
 
         mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
     }
