@@ -124,6 +124,7 @@ public class CommonUtil {
         Resources resources = BaseApplication.getInstance().getResources();
         View view = snackbar.getView();
         view.setBackgroundColor(resources.getColor(R.color.colorPrimary));
+        view.setElevation(0);
 
         TextView snackBarTextView = view.findViewById(com.google.android.material.R.id.snackbar_text);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

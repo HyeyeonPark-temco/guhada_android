@@ -21,8 +21,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/common_white"
-            android:paddingStart="20dp">
+            android:paddingStart="10dp"
+            android:background="@color/common_white">
 
             <ImageButton
                 android:id="@+id/button_header_back"
