@@ -59,30 +59,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <io.temco.guhada.view.CustomSpinner
+                    android:id="@+id/spinner_productdetail_option"
                     android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_marginTop="2dp"
-                    android:layout_height="wrap_content">
-
-                    <io.temco.guhada.view.CustomSpinner
-                        style="@style/CustomDropdown"
-                        android:id="@+id/spinner_productdetail_option"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@color/common_white"
-                        android:overScrollMode="never"
-                        android:overlapAnchor="false"
-                        android:popupElevation="0dp"
-                        android:spinnerMode="dropdown"
-                        android:visibility="@{viewModel.closeButtonVisibility == View.GONE ? View.VISIBLE : View.GONE}"
-                        app:layout_constrainedHeight="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHeight_max="230dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:background="@color/common_white"
+                    android:overScrollMode="never"
+                    android:overlapAnchor="false"
+                    android:popupElevation="0dp"
+                    android:spinnerMode="dropdown"
+                    android:visibility="@{viewModel.closeButtonVisibility == View.GONE ? View.VISIBLE : View.GONE}" />
 
                 <FrameLayout
                     android:id="@+id/framelayout_productdetail_optionbutton"

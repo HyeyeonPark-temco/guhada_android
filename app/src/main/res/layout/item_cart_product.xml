@@ -90,8 +90,8 @@
                 app:layout_constraintVertical_bias="0.2" />
 
             <TextView
-                style="@style/TextMedium"
                 android:id="@+id/textview_cart_status"
+                style="@style/TextMedium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
@@ -393,30 +393,19 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+
+                    <io.temco.guhada.view.CustomSpinner
+                        android:id="@+id/spinner_productdetail_option"
+                        style="@style/CustomDropdown"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.appcompat.widget.AppCompatSpinner
-                            android:id="@+id/spinner_productdetail_option"
-                            style="@style/CustomDropdown"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:background="@null"
-                            android:minHeight="50dp"
-                            android:orientation="horizontal"
-                            android:overScrollMode="never"
-                            android:overlapAnchor="false"
-                            android:popupElevation="0dp"
-                            android:spinnerMode="dropdown"
-                            app:layout_constrainedHeight="true"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHeight_max="280dp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_height="50dp"
+                        android:background="@null"
+                        android:minHeight="50dp"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:overlapAnchor="false"
+                        android:popupElevation="0dp"
+                        android:spinnerMode="dropdown" />
 
                     <FrameLayout
                         android:id="@+id/framelayout_productdetail_optionbutton"
@@ -459,10 +448,11 @@
                                     android:textSize="@dimen/text_14" />
 
                                 <ImageView
+                                    android:id="@+id/imageview_cart_optionarrow"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/payment_icon_selectbox_open" />
+                                    android:src="@drawable/payment_icon_selectbox_open"
+                                    android:layout_gravity="center_vertical" />
                             </LinearLayout>
                         </LinearLayout>
 
