@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app = "http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -17,10 +17,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="90dp"
-            android:layout_height="115dp"
-            app:imageUrl="@{product.profileUrl}"
-            android:background="@color/common_white" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/common_white"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{product.profileUrl}" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,11 +39,11 @@
             <TextView
                 android:id="@+id/textview_paymentproduct_name"
                 style="@style/PaymentContentBlackTextStyle"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{product.season + ` ` + product.name}" />
 
             <LinearLayout
