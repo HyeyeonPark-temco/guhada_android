@@ -531,6 +531,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             } else if (selectedShippingMessage.get()?.message ?: defaultShippingMessage == defaultShippingMessage) {
                                 selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = "" })
                             }
+                            mRequestOrder.shippingAddress.shippingMessage = selectedShippingMessage.get()?.message?:""
 
                             // 현금영수증
                             if ((selectedMethod.methodCode != PaymentWayType.VBANK.code && selectedMethod.methodCode != PaymentWayType.DIRECT_BANK.code) ||
