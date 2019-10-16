@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.text.Editable
 import android.text.TextUtils
@@ -40,6 +41,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
     private lateinit var mHandler: Handler
 
     private var detailReload = false
+    private var isLoadData = false
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -78,11 +80,11 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                 }
             }
         })
-        /*mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus && !mViewModel.userLoginCheck.get()){
+        mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus && !mViewModel.userLoginCheck.get() && isLoadData){
                 showLoginDialog()
             }
-        }*/
+        }
 
         setDetailView()
         setOnClick()
@@ -188,6 +190,7 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                         mViewModel.getCommentList()
                         mBinding.layoutAppbar.setExpanded(true,true)
                     }
+                    isLoadData = true
 
                     for(info in mViewModel.communityInfoList){
                         if(info.communityCategoryId == mViewModel.communityDetail.value!!.categoryId){

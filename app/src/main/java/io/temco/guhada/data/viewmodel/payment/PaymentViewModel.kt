@@ -611,6 +611,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     UserServer.getUserById(OnServerListener { success, o ->
                         if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) {
                             val user = o.data as User
+                            this.mEmailVerification.set(user.emailVerify)
+                            if(CustomLog.flag)CustomLog.L("checkValidation",user)
                             val diCode = user.userDetail.diCode
                             if (!diCode.isNullOrEmpty()) {
                                 val jsonObject = JsonObject()
@@ -628,8 +630,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     }, userId = userId)
             }
         }
-
-        this.mEmailVerification = ObservableBoolean(order.user.emailVerify)
+        //this.mEmailVerification = ObservableBoolean(order.user.emailVerify)
         notifyPropertyChanged(BR.mEmailVerification)
     }
 
