@@ -141,6 +141,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             // 본인인증 여부 판별
             checkValidation()
+//            this.mEmailVerification = ObservableBoolean(value.user.emailVerify)
 
             field = value
         }
@@ -216,7 +217,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
     var mMobileVerification = ObservableBoolean(false)
         @Bindable
         get() = field
-    var mEmailVerification = ObservableBoolean(false)
+    var mEmailVerification = ObservableBoolean(order.user.emailVerify)
         @Bindable
         get() = field
 
@@ -611,11 +612,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     UserServer.getUserById(OnServerListener { success, o ->
                         if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) {
                             val user = o.data as User
+                            this.mEmailVerification.set(user.emailVerify)
+
                             val diCode = user.userDetail.diCode
                             if (!diCode.isNullOrEmpty()) {
                                 val jsonObject = JsonObject()
                                 jsonObject.addProperty("diCode", diCode)
-
                                 UserServer.getIdentityVerify(OnServerListener { success, o ->
                                     if (success) {
                                         this.mMobileVerification = if ((o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) ObservableBoolean(true)
@@ -629,7 +631,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             }
         }
 
-        this.mEmailVerification = ObservableBoolean(order.user.emailVerify)
         notifyPropertyChanged(BR.mEmailVerification)
     }
 
