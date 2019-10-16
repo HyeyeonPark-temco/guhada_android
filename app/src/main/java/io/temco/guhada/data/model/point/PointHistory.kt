@@ -48,11 +48,16 @@ class PointHistory : BasePageModel() {
         }
 
         fun getPointStr(): String {
-            val point = DecimalFormat("#,###,###").format(point)
-            return if (status == PointStatus.SAVED.status || status == PointStatus.DUE_SAVE.status || status == PointStatus.RESTORE.status || status == PointStatus.CONSUMPTION_CANCEL.status) {
-                "+$point"
-            } else {
-                "-$point"
+            if(sign.isNullOrEmpty()){
+                val point = DecimalFormat("#,###,###").format(point)
+                return if (status == PointStatus.SAVED.status || status == PointStatus.DUE_SAVE.status || status == PointStatus.RESTORE.status || status == PointStatus.CONSUMPTION_CANCEL.status) {
+                    "+$point"
+                } else {
+                    "-$point"
+                }
+            }else{
+                val point = String.format(BaseApplication.getInstance().getString(R.string.common_price_format), point)
+                return "$sign$point"
             }
         }
     }
