@@ -23,7 +23,7 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = getCustomView(position, convertView, parent)
-    override fun getCount(): Int = list.size - 1
+    override fun getCount(): Int = list.size
 
     fun setItems(list: List<OptionInfo>) {
         this.list = list
@@ -38,8 +38,8 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         setPadding(position = position)
         setOptionText(option = option)
 
-        mBinding.viewProductdetailOptionspinnerLine1.visibility = if (position == 0) View.VISIBLE else View.GONE
-        mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.size - 2) View.VISIBLE else View.GONE
+//        mBinding.viewProductdetailOptionspinnerLine1.visibility = if (position == 0) View.VISIBLE else View.GONE
+        mBinding.viewProductdetailOptionspinnerLine2.visibility = if (position == list.size - 1) View.VISIBLE else View.GONE
 
         if (option.rgb1?.isNotEmpty() ?: false) {
             mBinding.imageviewProductdetailOptionspinner.visibility = View.VISIBLE
@@ -91,6 +91,5 @@ class ProductDetailOptionSpinnerAdapter(context: Context, val layout: Int, var l
         else
             mBinding.linearlayoutProductdetailOptionspinner.setPadding(padding, 0, padding, padding)
     }
-
 
 }

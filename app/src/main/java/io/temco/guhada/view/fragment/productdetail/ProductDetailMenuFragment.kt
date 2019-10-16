@@ -34,6 +34,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
     var mViewModel: ProductDetailMenuViewModel = ProductDetailMenuViewModel(this)
     private lateinit var mMenuSpinnerAdapter: ProductDetailOptionSpinnerAdapter
     var mIsBottomPopup = false
+    private var mSpinnerFirstInit = false
 
     override fun getBaseTag(): String = ProductDetailMenuFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.layout_productdetail_menu
@@ -71,7 +72,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             if (!list[0].label3.isNullOrEmpty())
                 placeHolder += ", ${list[0].label3}"
 
-            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
+//            list.add(OptionInfo().apply { this.attribute1 = if (placeHolder.isEmpty()) BaseApplication.getInstance().getString(R.string.productdetail_message_selectoption) else placeHolder })
             mBinding.textviewProductdetailOption.text = placeHolder
         }
 
@@ -100,7 +101,7 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val optionList = mViewModel.product.optionInfos ?: listOf()
 
-                if (position > 0 && position < optionList.size && optionList[position].stock > 0) {
+                if (mSpinnerFirstInit && position < optionList.size && optionList[position].stock > 0) {
                     val option: OptionInfo? = optionList[position]
                     if (option != null) {
                         if (option.rgb1?.isNotEmpty() == true) {
@@ -124,10 +125,11 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
                         mViewModel.notifyPropertyChanged(BR.totalPrice)
                     }
                 }
+
+                mSpinnerFirstInit = true
             }
         }
 //        mBinding.spinnerProductdetailOption.setSelection(list.size - 1)
-
         mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
     }
 
