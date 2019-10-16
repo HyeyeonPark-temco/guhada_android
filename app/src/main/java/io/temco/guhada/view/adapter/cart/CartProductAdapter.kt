@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
@@ -18,6 +19,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.cart.Cart
 import io.temco.guhada.data.model.cart.CartValidStatus
@@ -25,6 +27,7 @@ import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.cart.CartViewModel
 import io.temco.guhada.databinding.ItemCartProductBinding
+import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.adapter.productdetail.ProductDetailOptionSpinnerAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
@@ -190,8 +193,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 if (expansionLayout.isExpanded) {
                     expansionLayout.collapse(true)
                     mBinding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_open)
-                }
-                else {
+                } else {
                     expansionLayout.expand(true)
                     mBinding.imagebuttonCartOptionchange.setImageResource(R.drawable.bag_btn_option_close)
                 }
@@ -358,6 +360,23 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 val option = optionInfoList[i]
                 if (selectedOption.attribute1 == option.attribute1 && selectedOption.attribute2 == option.attribute2 && selectedOption.attribute3 == option.attribute3) {
                     mBinding.spinnerProductdetailOption.setSelection(i)
+                }
+            }
+
+            // 스피너 드롭다운 Max Height 5개 높이로 설정
+            val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+            popup.isAccessible = true
+            val popupWindow = popup.get(mBinding.spinnerProductdetailOption) as androidx.appcompat.widget.ListPopupWindow
+            if (cart.cartOptionInfoList.size > 4) popupWindow.height = CommonViewUtil.convertDpToPixel(230, mBinding.root.context)
+
+            // spinner arrow 리스너
+            mBinding.spinnerProductdetailOption.mListener = object : CustomSpinner.OnCustomSpinnerListener {
+                override fun onSpinnerOpened() {
+                    mBinding.imageviewCartOptionarrow.setImageResource(R.drawable.payment_icon_selectbox_close)
+                }
+
+                override fun onSpinnerClosed() {
+                    mBinding.imageviewCartOptionarrow.setImageResource(R.drawable.payment_icon_selectbox_open)
                 }
             }
 

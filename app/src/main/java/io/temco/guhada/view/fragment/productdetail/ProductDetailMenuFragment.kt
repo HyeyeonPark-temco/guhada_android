@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ListPopupWindow
 import android.widget.Spinner
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
@@ -13,6 +14,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
+import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.option.Option
@@ -131,6 +133,12 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
         }
 //        mBinding.spinnerProductdetailOption.setSelection(list.size - 1)
         mBinding.constraintlayoutProductdetailOptionspinnerlist.visibility = View.GONE
+
+        // 스피너 드롭다운 Max Height 5개 높이로 설정
+        val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+        popup.isAccessible = true
+        val popupWindow = popup.get(mBinding.spinnerProductdetailOption) as androidx.appcompat.widget.ListPopupWindow
+        if (list.size > 4) popupWindow.height = CommonViewUtil.convertDpToPixel(230, mBinding.root.context)
     }
 
     private fun initMenuList() {
@@ -149,10 +157,10 @@ class ProductDetailMenuFragment : BaseFragment<io.temco.guhada.databinding.Layou
         }
 
         mBinding.framelayoutProductdetailOptionbutton.setOnClickListener {
-            if(mViewModel.mIsBottomSpinnerOpen.get()){
+            if (mViewModel.mIsBottomSpinnerOpen.get()) {
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitethree)
                 mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(false)
-            }else {
+            } else {
                 mBinding.framelayoutProductdetailOptionbutton.setBackgroundResource(R.drawable.border_all_whitefour_emptybottom)
                 mViewModel.mIsBottomSpinnerOpen = ObservableBoolean(true)
             }
