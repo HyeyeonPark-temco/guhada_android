@@ -129,7 +129,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     }
 
     private fun sendData() {
-        if(mViewModel.mIsNicknameValid.get()){
+        if(!mViewModel.mIsNicknameValid.get()){
             CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 닉네임을 확인해 주세요.", false, false)
             return
         }

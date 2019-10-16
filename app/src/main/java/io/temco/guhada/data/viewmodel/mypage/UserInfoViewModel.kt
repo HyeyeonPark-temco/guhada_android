@@ -45,6 +45,7 @@ import java.util.*
 class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Observer {
     val repository: UserInfoRepository = UserInfoRepository(this)
 
+    var oldNickname = ""
     var userId: Long = 0L
     var defaultSnsType = ""
     var userEmail = ""
@@ -113,13 +114,25 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
         UserServer.getUserByNickName(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.brick))
-                        mNickNameCheckIconVisible = ObservableBoolean(true)
-                        mIsNicknameValid = ObservableBoolean(false)
-                        notifyPropertyChanged(BR.mIsNicknameValid)
-                        notifyPropertyChanged(BR.mNickNameCheckIconVisible)
-                        notifyPropertyChanged(BR.mNickNameBg)
-                        listener?.callBackListener(false, "successTask")
+                        if(nickname == oldNickname){
+                            mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.common_blue_purple))
+                            mNickNameCheckIconVisible = ObservableBoolean(true)
+                            mIsNicknameValid = ObservableBoolean(true)
+                            mUser.value!!.nickname = nickname
+                            notifyPropertyChanged(BR.mIsNicknameValid)
+                            notifyPropertyChanged(BR.mNickNameCheckIconVisible)
+                            notifyPropertyChanged(BR.mNickNameBg)
+                            listener?.callBackListener(true, "dataNotFoundTask")
+                        }else{
+                            mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.brick))
+                            mNickNameCheckIconVisible = ObservableBoolean(true)
+                            mIsNicknameValid = ObservableBoolean(false)
+                            mUser.value!!.nickname = oldNickname
+                            notifyPropertyChanged(BR.mIsNicknameValid)
+                            notifyPropertyChanged(BR.mNickNameCheckIconVisible)
+                            notifyPropertyChanged(BR.mNickNameBg)
+                            listener?.callBackListener(false, "successTask")
+                        }
                     },
                     dataNotFoundTask = {
                         mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.common_blue_purple))
@@ -241,6 +254,7 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
                         if(!value.isNullOrEmpty() && value.size > 0){
                             mViewModel.mUser.value = value[0]
                             mViewModel.userEmail = value[0].email
+                            mViewModel.oldNickname = value[0].nickname
                             listener.callBackListener(true, value[0])
                         }
                     },
