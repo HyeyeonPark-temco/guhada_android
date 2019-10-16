@@ -319,7 +319,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
          * @author Hyeyeon Park
          */
         private fun initMenuSpinner(cart: Cart) {
-            cart.cartOptionInfoList.add(OptionInfo()) // dummy
+//            cart.cartOptionInfoList.add(OptionInfo()) // dummy
 
             val mMenuSpinnerAdapter = ProductDetailOptionSpinnerAdapter(
                     context = mBinding.root.context,

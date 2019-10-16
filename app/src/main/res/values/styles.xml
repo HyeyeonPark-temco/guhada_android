@@ -496,7 +496,7 @@
     </style>
 
     <style name="CustomDropdown" parent="Widget.AppCompat.Spinner.DropDown">
-        <item name="android:maxHeight">230dp</item>
+        <item name="android:maxHeight">280dp</item>
     </style>
 
     <style name="PaymentWayEditTextStyle" parent="TextRegular">

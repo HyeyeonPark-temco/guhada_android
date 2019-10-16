@@ -61,24 +61,23 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
+                    android:layout_marginTop="2dp"
                     android:layout_height="wrap_content">
 
                     <io.temco.guhada.view.CustomSpinner
-                        android:id="@+id/spinner_productdetail_option"
                         style="@style/CustomDropdown"
+                        android:id="@+id/spinner_productdetail_option"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:background="@null"
-                        android:minHeight="50dp"
-                        android:orientation="horizontal"
+                        android:background="@color/common_white"
                         android:overScrollMode="never"
                         android:overlapAnchor="false"
-                        android:popupElevation="@null"
+                        android:popupElevation="0dp"
                         android:spinnerMode="dropdown"
                         android:visibility="@{viewModel.closeButtonVisibility == View.GONE ? View.VISIBLE : View.GONE}"
                         app:layout_constrainedHeight="true"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintHeight_max="280dp"
+                        app:layout_constraintHeight_max="230dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -157,9 +156,8 @@
                             android:id="@+id/imageview_productdetail_option"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@{viewModel.mIsBottomSpinnerOpen || viewModel.mIsSpinnerOpen ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}"
                             android:layout_gravity="center_vertical"
-                    />
+                            android:src="@{viewModel.mIsBottomSpinnerOpen || viewModel.mIsSpinnerOpen ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                     </LinearLayout>
                 </FrameLayout>
             </FrameLayout>
@@ -168,9 +166,9 @@
                 android:id="@+id/constraintlayout_productdetail_optionspinnerlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.mIsBottomSpinnerOpen ? View.VISIBLE: View.GONE, default = gone}"
                 android:background="@drawable/border_all_whitefour_bottom"
-                android:paddingBottom="1dp">
+                android:paddingBottom="1dp"
+                android:visibility="@{viewModel.mIsBottomSpinnerOpen ? View.VISIBLE: View.GONE, default = gone}">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_productdetail_optionspinner"
