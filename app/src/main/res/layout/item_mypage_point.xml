@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="7dp"
-                android:text="@{item.sign + @string/common_price_format(item.point)}"
+                android:text="@{item.getPointStr()}"
                 android:textColor="@{colorRes}"
                 android:textSize="@dimen/text_18"
                 app:layout_constraintLeft_toLeftOf="parent"

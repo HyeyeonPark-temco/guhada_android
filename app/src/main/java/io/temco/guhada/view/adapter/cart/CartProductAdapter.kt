@@ -211,7 +211,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                 mViewModel.onClickItemPayment(cart = cart)
             }
 
-            // 상품 사진, 상품 보기 버튼 클릭 시, 상품 상세 화면으로 이동
+            // 상품 사진, 상품 보기 버튼, 상품 명 클릭 시, 상품 상세 화면으로 이동
             val redirectProductDetailListener = View.OnClickListener {
                 val intent = Intent(mBinding.root.context, ProductFragmentDetailActivity::class.java)
                 intent.putExtra("dealId", cart.dealId)
@@ -220,6 +220,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
             if (cart.cartValidStatus.status)
                 mBinding.imageviewCartProduct.setOnClickListener(redirectProductDetailListener)
             mBinding.buttonCartShow.setOnClickListener(redirectProductDetailListener)
+            mBinding.textviewCartProductname.setOnClickListener(redirectProductDetailListener)
         }
 
         private fun setTotalPrices(cart: Cart, isAdd: Boolean) {
