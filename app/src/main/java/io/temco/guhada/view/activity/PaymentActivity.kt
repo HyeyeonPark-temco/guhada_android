@@ -226,7 +226,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         mViewModel.mCalculatePaymentInfo.observe(this, Observer {
             mBinding.includePaymentDiscountresult.item = it
-            if(it.totalDueSavePoint > 0)
+            if (it.totalDueSavePoint > 0)
                 setDiscountPriceAndDueSavePoint(it)
         })
     }
@@ -498,12 +498,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                 ?: false)
                         mViewModel.notifyPropertyChanged(BR.mMobileVerification)
                     }
-
-                    if (!mViewModel.mEmailVerification.get()) {
-                        mViewModel.mEmailVerification = ObservableBoolean(emailVerification
-                                ?: false)
-                        mViewModel.notifyPropertyChanged(BR.mEmailVerification)
-                    }
+                    
+                    mViewModel.mEmailVerification = ObservableBoolean(emailVerification ?: false)
+                    mViewModel.notifyPropertyChanged(BR.mEmailVerification)
 
                     mBinding.linearlayoutPaymentVerify.visibility = if (mobileVerification ?: false && emailVerification ?: false) View.GONE else View.VISIBLE
                     mBinding.executePendingBindings()

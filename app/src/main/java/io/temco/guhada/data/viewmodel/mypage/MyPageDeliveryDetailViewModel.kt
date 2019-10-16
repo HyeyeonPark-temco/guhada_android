@@ -63,6 +63,8 @@ class MyPageDeliveryDetailViewModel : BaseObservableViewModel() {
                         successTask = {
                             val data = it.data as PurchaseOrderResponse
                             this.purchaseOrderResponse = data
+                            if(CustomLog.flag)CustomLog.L("getOrder","purchaseOrderResponse",purchaseOrderResponse)
+                            if(CustomLog.flag)CustomLog.L("getOrder","purchaseOrderResponse",purchaseOrderResponse.shippingAddress)
                             notifyPropertyChanged(BR.purchaseOrderResponse)
                         })
             }, accessToken = token, purchaseId = purchaseId.toDouble())

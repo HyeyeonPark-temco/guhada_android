@@ -141,6 +141,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             // 본인인증 여부 판별
             checkValidation()
+//            this.mEmailVerification = ObservableBoolean(value.user.emailVerify)
 
             field = value
         }
@@ -617,7 +618,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             if (!diCode.isNullOrEmpty()) {
                                 val jsonObject = JsonObject()
                                 jsonObject.addProperty("diCode", diCode)
-
                                 UserServer.getIdentityVerify(OnServerListener { success, o ->
                                     if (success) {
                                         this.mMobileVerification = if ((o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) ObservableBoolean(true)
@@ -630,7 +630,7 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     }, userId = userId)
             }
         }
-        //this.mEmailVerification = ObservableBoolean(order.user.emailVerify)
+
         notifyPropertyChanged(BR.mEmailVerification)
     }
 
