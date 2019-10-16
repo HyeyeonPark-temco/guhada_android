@@ -129,6 +129,10 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     }
 
     private fun sendData() {
+        if(mViewModel.mIsNicknameValid.get()){
+            CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 닉네임을 확인해 주세요.", false, false)
+            return
+        }
         var userUpInfo: UserUpdateInfo = UserUpdateInfo().apply {
             if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())) {
                 if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&
@@ -197,6 +201,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     bankCode = mViewModel.mUser.value!!.userDetail.bankCode ?: ""
                     //name = mViewModel.mUser.value!!.userDetail.verifiedName ?: ""
                 }
+
                 if(!TextUtils.isEmpty(mViewModel.mUser.value!!.mobile)){
                     var mobile = CommonUtilKotlin.setMobileNumber(mViewModel.mUser.value!!.mobile.replace("-","").replace(" ",""))
                     mBinding.textviewMypageuserinfoMobile.setText(mobile)
