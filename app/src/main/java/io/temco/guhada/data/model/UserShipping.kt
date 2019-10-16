@@ -16,11 +16,11 @@ class UserShipping : Serializable {
     var defaultAddress = false
     var safetyMobile = true
     var shippingName = ""
+    var shippingMessage = ""
     var address = ""
     var zip = ""
     var roadAddress = ""
     var detailAddress = ""
-    var shippingMessage = ""
     var addShippingAddress = false
 
     @SerializedName(value = "recipientName", alternate = ["recepientName"])
