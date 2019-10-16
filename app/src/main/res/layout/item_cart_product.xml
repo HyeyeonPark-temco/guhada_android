@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.text.TextUtils" />
 
         <import type="android.view.View" />
 
@@ -129,16 +130,14 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/checkbox_cart">
 
-                <io.temco.guhada.common.SquareImageView
+                <ImageView
                     android:id="@+id/imageview_cart_product"
-                    style="@style/ProductImageType"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-
-                    android:minWidth="107dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/white_six"
+                    android:minHeight="100dp"
+                    android:minWidth="100dp"
                     app:imageUrl="@{cart.imageUrl}"
+                    app:imageRes = "@{@drawable/background_color_pinkishgrey}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/checkbox_cart" />
 
@@ -162,7 +161,7 @@
 
                     <TextView
                         android:id="@+id/textview_cart_productname"
-                        style="@style/TextMedium"
+                        style="@style/TextRegularSingleLine"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
@@ -179,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="25dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="4dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -451,8 +450,8 @@
                                     android:id="@+id/imageview_cart_optionarrow"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/payment_icon_selectbox_open"
-                                    android:layout_gravity="center_vertical" />
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@drawable/payment_icon_selectbox_open" />
                             </LinearLayout>
                         </LinearLayout>
 

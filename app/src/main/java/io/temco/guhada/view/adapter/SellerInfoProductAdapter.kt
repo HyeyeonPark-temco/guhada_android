@@ -81,7 +81,6 @@ class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.H
                 width = (matrix.widthPixels - CommonViewUtil.dipToPixel(itemView.context, 20)) / 2
                 height = width
                 margin = CommonViewUtil.dipToPixel(itemView.context, 4)
-                layoutHeight = height + CommonViewUtil.dipToPixel(itemView.context, 160)
             }
 
             val param = ConstraintLayout.LayoutParams(width, height)

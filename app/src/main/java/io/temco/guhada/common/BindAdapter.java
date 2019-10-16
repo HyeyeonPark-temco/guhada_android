@@ -1,11 +1,11 @@
 package io.temco.guhada.common;
 
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -21,25 +21,26 @@ public class BindAdapter {
     @BindingAdapter({"imageUrl"})
     public static void loadImage(ImageView view, String url) {
 //        ImageUtil.loadImage(Glide.with(view.getContext()), view, url);
-        ImageUtil.loadImage(GlideApp.with(view.getContext()), view, url);
+        if (url != null && url != "")
+            ImageUtil.loadImage(GlideApp.with(view.getContext()), view, url);
     }
 
     @BindingAdapter({"imageRes"})
-    public static void setImage(ImageView view, @DrawableRes int value) {
-        view.setImageResource(value);
+    public static void setImage(ImageView view,  Drawable value) {
+        view.setImageDrawable(value);
     }
 
     @BindingAdapter("ovalImageUrl")
     public static void loadOvalImage(ImageView view, String url) {
-        if(url != null && url != "")
+        if (url != null && url != "")
             GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
         else
-            GlideApp.with(view.getContext()).load(R.drawable.background_color_pinkishgrey).apply(RequestOptions.circleCropTransform()).into(view);
+            GlideApp.with(view.getContext()).load(R.drawable.background_color_dot_pinkishgrey).apply(RequestOptions.circleCropTransform()).into(view);
     }
 
     @BindingAdapter("ovalProfileImageUrl")
     public static void loadOvalProfileImage(ImageView view, String url) {
-        if(url != null && url != "")
+        if (url != null && url != "")
             GlideApp.with(view.getContext()).load(url).apply(RequestOptions.circleCropTransform()).into(view);
         else
             GlideApp.with(view.getContext()).load(R.drawable.profile_non_square).apply(RequestOptions.circleCropTransform()).into(view);
@@ -47,7 +48,7 @@ public class BindAdapter {
 
     @BindingAdapter(value = {"roundCornerImageUrl", "roundCornerRadius"})
     public static void loadRoundCornerImage(ImageView view, String url, int radius) {
-        if(url != null && !url.equals(""))
+        if (url != null && !url.equals(""))
             GlideApp.with(view.getContext()).load(url).apply(new RequestOptions().transform(new FitCenter(), new RoundedCorners(radius))).into(view);
     }
 
