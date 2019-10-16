@@ -17,14 +17,12 @@
         android:layout_marginBottom="40dp"
         android:layout_height="wrap_content">
 
-        <io.temco.guhada.common.SquareImageView
+        <ImageView
             android:id="@+id/imageview_sellerinfo_store_product"
-            android:layout_width="@dimen/grid_span_2_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/common_white"
-            android:scaleType="centerCrop"
             app:imageUrl="@{deal.productImage.url}"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="20dp"
-            android:paddingLeft="12dp"
+            android:paddingStart="5dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -69,7 +67,7 @@
             android:layout_height="wrap_content"
             android:minHeight="32dp"
             android:layout_marginTop="3dp"
-            android:paddingLeft="12dp"
+            android:paddingStart="5dp"
             android:text="@{deal.productName}"
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_12"
@@ -83,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:minHeight="20dp"
-            android:paddingLeft="12dp"
+            android:paddingStart="5dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -1,12 +1,17 @@
 package io.temco.guhada.view.adapter
 
+import android.app.Activity
 import android.content.Intent
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import io.temco.guhada.R
 import io.temco.guhada.common.util.CommonViewUtil
+import io.temco.guhada.common.util.ImageUtil
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.viewmodel.SellerInfoViewModel
 import io.temco.guhada.databinding.ItemSellerinfoProductBinding
@@ -39,8 +44,16 @@ class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.H
     }
 
     inner class Holder(binding: ItemSellerinfoProductBinding) : BaseViewHolder<ItemSellerinfoProductBinding>(binding.root) {
+        lateinit var mViewModel: SellerInfoViewModel
+        internal var width = 0
+        internal var height = 0
+        internal var layoutHeight = 0
+        internal var margin = 0
+
         fun bind(deal: Deal) {
             setSpacing()
+            setSquare(deal)
+
             mBinding.deal = deal
             mBinding.constraintlayoutSellerinfoStore.setOnClickListener {
                 val dealId = deal.dealId.toLong()
@@ -60,14 +73,24 @@ class SellerInfoProductAdapter : RecyclerView.Adapter<SellerInfoProductAdapter.H
                 mBinding.constraintlayoutSellerinfoStore.layoutParams = it
             }
         }
-       /* private fun setSpacing() {
-            (mBinding.constraintlayoutSellerinfoStore.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                rightMargin = if ((adapterPosition + 1) % mSpanCount == 0) 0
-                else RIGHT_MARGIN
-            }.let {
-                mBinding.constraintlayoutSellerinfoStore.layoutParams = it
+
+        private fun setSquare(deal: Deal) {
+            if (width == 0) {
+                val matrix = DisplayMetrics()
+                (binding.root.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(itemView.context, 20)) / 2
+                height = width
+                margin = CommonViewUtil.dipToPixel(itemView.context, 4)
+                layoutHeight = height + CommonViewUtil.dipToPixel(itemView.context, 160)
             }
-        }*/
+
+            val param = ConstraintLayout.LayoutParams(width, height)
+            param.leftMargin = margin
+            binding.imageviewSellerinfoStoreProduct.layoutParams = param
+
+            val url = deal.productImage.url
+            ImageUtil.loadImage(Glide.with(binding.root.context), binding.imageviewSellerinfoStoreProduct, url)
+        }
 
         private fun redirectProductDetailActivity(dealId: Long) {
             val intent = Intent(binding.root.context, ProductFragmentDetailActivity::class.java)
