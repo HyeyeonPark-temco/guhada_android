@@ -78,12 +78,11 @@ class CommunityDetailActivity : BindActivity<io.temco.guhada.databinding.Activit
                 }
             }
         })
-        mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.setOnFocusChangeListener { v, hasFocus ->
+        /*mBinding.linearlayoutCommunitydetailCommentwrite.edittextCommentDetail.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus && !mViewModel.userLoginCheck.get()){
-                v.clearFocus()
                 showLoginDialog()
             }
-        }
+        }*/
 
         setDetailView()
         setOnClick()

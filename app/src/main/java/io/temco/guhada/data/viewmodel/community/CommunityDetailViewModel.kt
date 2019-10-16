@@ -372,13 +372,21 @@ class CommunityDetailRepository(val viewModel: CommunityDetailViewModel){
                         }
                         listener?.callBackListener(true,"")
                     },
-                    dataNotFoundTask = { listener?.callBackListener(false, "dataNotFoundTask") },
-                    failedTask = { listener?.callBackListener(false, "failedTask") },
-                    userLikeNotFoundTask = { listener?.callBackListener(false, "userLikeNotFoundTask") },
-                    serverRuntimeErrorTask = { listener?.callBackListener(false, "serverRuntimeErrorTask") },
-                    dataIsNull = { listener?.callBackListener(false, "dataIsNull") }
+                    dataNotFoundTask = { nullCommentData(false, "dataNotFoundTask",listener) },
+                    failedTask = { nullCommentData(false, "failedTask",listener) },
+                    userLikeNotFoundTask = { nullCommentData(false, "userLikeNotFoundTask",listener) },
+                    serverRuntimeErrorTask = {nullCommentData(false, "serverRuntimeErrorTask",listener) },
+                    dataIsNull = { nullCommentData(false, "dataIsNull",listener) }
             )
         }, viewModel.bbsId, page = page,orderType = orderType, unitPerPage = 10)
+    }
+
+    private fun nullCommentData(flag : Boolean, msg : String, listener: OnCallBackListener?){
+        if(viewModel.commentList.value.isNullOrEmpty()){
+            var listTmp : ArrayList<Comments> = arrayListOf()
+            viewModel.commentList.value = listTmp
+        }
+        listener?.callBackListener(flag, msg)
     }
 
 
