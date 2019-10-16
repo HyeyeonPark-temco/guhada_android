@@ -23,6 +23,7 @@ class PointHistory : BasePageModel() {
         var status = ""
         var createdDate = ""
         var point: Int = 0
+        var sign = ""           // +, - 기호
 
         fun getStatusText(): String {
             return when (status) {
