@@ -40,28 +40,35 @@
 
             </RelativeLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="wrap_content"
+                android:minWidth="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/background_color_blackoverlay"
                 android:orientation="horizontal"
-                android:paddingStart="9dp"
                 android:paddingTop="5dp"
-                android:paddingEnd="9dp"
                 android:paddingBottom="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
                 <TextView
+                    style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(viewModel.imagePos)}"
+                    android:text="@{String.valueOf(viewModel.imagePos), default=1}"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_12" />
 
                 <TextView
+                    style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -71,13 +78,14 @@
                     android:textSize="@dimen/text_12" />
 
                 <TextView
+                    style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.product.imageUrls != null ? String.valueOf(viewModel.product.imageUrls.size) : String.valueOf(1)}"
+                    android:text="@{viewModel.product.imageUrls != null ? String.valueOf(viewModel.product.imageUrls.size) : String.valueOf(1), default=1}"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_12" />
-
-            </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -270,10 +278,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textview_productdetail_coupon"
