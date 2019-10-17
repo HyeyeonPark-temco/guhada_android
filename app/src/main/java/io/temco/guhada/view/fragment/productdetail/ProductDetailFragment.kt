@@ -257,7 +257,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initTabListener() {
-        val detailTabText = ((mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(0) as LinearLayout).getChildAt(1) as TextView
+        val DETAIL_TAB_POS = 0
+        val STORE_TAB_POS = 2
+        val detailTabText = ((mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(DETAIL_TAB_POS) as LinearLayout).getChildAt(1) as TextView
         detailTabText.setTypeface(detailTabText.typeface, Typeface.BOLD)
         detailTabText.setTextColor(mBinding.root.context.resources.getColor(R.color.common_blue_purple))
 
@@ -269,7 +271,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 if (tab != null) {
                     val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
                     val textView =
-                            if (tab.position == 2) tabLayout.findViewById(R.id.textview_tab)
+                            if (tab.position == STORE_TAB_POS) tabLayout.findViewById(R.id.textview_tab)
                             else tabLayout.getChildAt(1) as TextView
                     textView.setTypeface(null, Typeface.NORMAL)
                     textView.setTextColor(mBinding.root.context.resources.getColor(R.color.black_four))
@@ -280,7 +282,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 if (tab != null) {
                     val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
                     val textView =
-                            if (tab.position == 2) tabLayout.findViewById(R.id.textview_tab)
+                            if (tab.position == STORE_TAB_POS) tabLayout.findViewById(R.id.textview_tab)
                             else tabLayout.getChildAt(1) as TextView
                     textView.setTypeface(textView.typeface, Typeface.BOLD)
                     textView.setTextColor(mBinding.root.context.resources.getColor(R.color.common_blue_purple))
@@ -835,6 +837,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
     }
 
+    // 제품 설명 css
     private fun initContent(product: Product) {
         val data = StringBuilder()
         data.append("<style>img{display: inline;height: auto;max-width: 100%;}" +
