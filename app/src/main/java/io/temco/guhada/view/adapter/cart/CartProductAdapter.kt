@@ -45,17 +45,23 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
     private var expansionCollection: ExpansionLayoutCollection = ExpansionLayoutCollection()
     private var mSelectedOption: OptionInfo? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_cart_product, parent, false)).apply {
+        binding.linearlayoutCartProduct.viewTreeObserver.addOnGlobalLayoutListener {
+            val height = binding.linearlayoutCartProduct.measuredHeight
+            val params = binding.imageviewCartProduct.layoutParams.apply {
+                this.width = height
+                this.height = height
+            }
+            binding.imageviewCartProduct.layoutParams = params
+            binding.linearlayoutCartProduct.viewTreeObserver.removeOnGlobalLayoutListener { }
+        }
+    }
+
     override fun getItemCount(): Int = items.size
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(items[position])
         expansionCollection.add(holder.binding.constraintllayoutCartOption)
     }
-
-//    fun setItems(items: MutableList<Cart>) {
-//        this.items = items
-//        notifyDataSetChanged()
-//    }
 
     fun setCartItemOptionList(cartOptionList: MutableList<OptionInfo>) {
         if (mViewModel.shownMenuPos > -1) {
@@ -75,6 +81,7 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
 
             initCollapsingView()
             setSpacing()
+
             setSoldOutOverlay(cart.cartValidStatus)
             addCancelLine(cart)
             setOptionAdapter(cart)
