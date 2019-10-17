@@ -12,7 +12,7 @@ class NaverUser {
     var name: String = ""
     var email: String = ""
     var gender: String = ""
-    var age: String = ""
+    var age: String = ""        // 연령대
     var birthday: String = ""
 
     @SerializedName("nickname")
