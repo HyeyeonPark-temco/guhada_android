@@ -1,6 +1,5 @@
 package io.temco.guhada.view.adapter.productdetail
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +15,6 @@ import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.model.option.OptionInfo
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
 import io.temco.guhada.databinding.ItemProductdetailOptionBinding
-import io.temco.guhada.view.fragment.productdetail.ProductDetailMenuFragment.Companion.bindOptionAttr
 import io.temco.guhada.view.holder.base.BaseViewHolder
 
 /**

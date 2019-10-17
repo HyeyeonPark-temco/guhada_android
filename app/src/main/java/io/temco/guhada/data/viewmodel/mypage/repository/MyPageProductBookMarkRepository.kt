@@ -61,13 +61,22 @@ class MyPageProductBookMarkRepository (val model : MyPageBookMarkViewModel) {
                                         listener?.onResultCallback()
 
                                     },
-                                    dataNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData dataNotFoundTask ") },
+                                    dataNotFoundTask = {
+                                        if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData dataNotFoundTask ")
+                                        listener?.onResultCallback()
+                                    },
                                     failedTask = {
                                         if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData failedTask ",o.toString())
                                         listener?.onResultCallback()
                                     },
-                                    userLikeNotFoundTask = { if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData userLikeNotFoundTask ") },
-                                    serverRuntimeErrorTask = {  if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData serverRuntimeErrorTask ") },
+                                    userLikeNotFoundTask = {
+                                        if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData userLikeNotFoundTask ")
+                                        listener?.onResultCallback()
+                                    },
+                                    serverRuntimeErrorTask = {
+                                        if (CustomLog.flag) CustomLog.L("MyPageProductBookMarkRepository", "setInitData serverRuntimeErrorTask ")
+                                        listener?.onResultCallback()
+                                    },
                                     dataIsNull = {listener?.onResultCallback()}
                             )
                         }, accessToken = it, page = page)

@@ -1,7 +1,6 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +13,6 @@ import io.temco.guhada.data.model.point.PointHistory
 import io.temco.guhada.data.model.point.PointSummary
 import io.temco.guhada.data.server.BenefitServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import java.util.*
 
 /**
  * 19.07.22

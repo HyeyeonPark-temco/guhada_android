@@ -38,7 +38,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.temco.guhada.BuildConfig;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
@@ -75,7 +74,7 @@ public class CommonUtil {
     }
 
     public static void debug(String tag, String message) {
-        if (BuildConfig.DEBUG &&
+        if (CustomLog.getFlag() &&
                 !TextUtils.isEmpty(tag) && !TextUtils.isEmpty(message)) {
             Log.d(tag, message);
         }

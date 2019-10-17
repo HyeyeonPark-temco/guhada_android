@@ -7,7 +7,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
@@ -118,7 +117,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
             }
 
             override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                if (CustomLog.flag) Log.e("결제 webview", consoleMessage?.message())
                 return super.onConsoleMessage(consoleMessage)
             }
         }
@@ -142,7 +140,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-            if (CustomLog.flag) Log.e("결제 webview URL", url)
             if (url == mViewModel.pgResponse.returnUrl) {
                 mBinding.webviewPayment.visibility = View.GONE
                 view?.evaluateJavascript("(function(){return window.document.body.outerHTML})();") { html ->

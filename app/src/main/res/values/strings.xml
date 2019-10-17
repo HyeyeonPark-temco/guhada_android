@@ -1215,7 +1215,7 @@
     <string name="report_community_text_type0_1">상품명</string>
     <string name="report_community_text_type0_2">셀러</string>
     <string name="report_community_text_type1_0">닉네임</string>
-    <string name="report_community_text_type2_0">게시물번호</string>
+    <string name="report_community_text_type2_0">게시글번호</string>
     <string name="report_community_text_type2_1">게시글제목</string>
     <string name="report_community_text_type2_2">내용</string>
     <string name="report_community_text_type2_3">작성자</string>

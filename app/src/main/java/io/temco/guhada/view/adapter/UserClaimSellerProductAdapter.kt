@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,7 @@ class UserClaimSellerProductAdapter: RecyclerView.Adapter<UserClaimSellerProduct
     inner class Holder(binding: ItemUserclaimsellerSpinnerBinding) : BaseViewHolder<ItemUserclaimsellerSpinnerBinding>(binding.root) {
         fun bind(item: SellerInquireOrder, position: Int) {
             mBinding.brand = item.brandName
-            mBinding.season = item.season
+            mBinding.season = if(TextUtils.isEmpty(item.season)) "" else item.season
             mBinding.title = item.productName
             mBinding.image = item.imageUrl
             mBinding.option = ""

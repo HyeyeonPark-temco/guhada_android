@@ -220,7 +220,7 @@ class UserClaimSellerActivity : BindActivity<ActivityUserclaimsellerBinding>(), 
 
 
     private fun setProductTitle(data : SellerInquireOrder, index : Int){
-        var text = data.brandName + " " + data.season +" " + data.productName
+        var text = data.brandName + " " + (if(TextUtils.isEmpty(data.season)) "" else data.season +" ") + data.productName
         val ssb = SpannableStringBuilder(text)
         ssb.setSpan(StyleSpan(Typeface.BOLD), 0, data.brandName.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE) // Style
         mViewModel.userClaimSellerProductData.set(ssb)

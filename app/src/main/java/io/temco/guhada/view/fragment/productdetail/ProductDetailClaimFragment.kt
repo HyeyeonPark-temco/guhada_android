@@ -2,7 +2,6 @@ package io.temco.guhada.view.fragment.productdetail
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ObservableInt
@@ -12,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag.RequestCode.LOGIN
 import io.temco.guhada.common.Flag.RequestCode.WRITE_CLAIM
 import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.util.CommonUtilKotlin
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.claim.ClaimResponse
@@ -140,7 +139,7 @@ class ProductDetailClaimFragment : BaseFragment<LayoutProductdetailClaimBinding>
             try {
                 super.onLayoutChildren(recycler, state)
             } catch (e: IndexOutOfBoundsException) {
-                Log.e("linearLayoutManager", "meet IOOBE in RecyclerView")
+                if(CustomLog.flag)CustomLog.L("linearLayoutManager", "meet IOOBE in RecyclerView")
             }
         }
     }

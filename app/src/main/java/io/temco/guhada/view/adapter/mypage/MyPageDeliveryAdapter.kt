@@ -3,7 +3,6 @@ package io.temco.guhada.view.adapter.mypage
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtilKotlin
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.DeliveryButton

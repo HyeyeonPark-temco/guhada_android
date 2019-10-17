@@ -3,7 +3,6 @@ package io.temco.guhada.view.adapter.cart
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -259,7 +258,6 @@ class CartProductAdapter(val mViewModel: CartViewModel) : RecyclerView.Adapter<C
                             val optionKey = dealOption.optionMap.keys.toMutableList()[i]
                             if (dealOption.optionMap[optionKey] == mViewModel.selectedOptionMap[optionKey]) {
                                 if (i == dealOption.optionMap.size - 1) {
-                                    Log.e("장바구니 옵션 아이디", dealOption.dealOptionId.toString())
                                     return dealOption.dealOptionId
                                 }
                             } else {

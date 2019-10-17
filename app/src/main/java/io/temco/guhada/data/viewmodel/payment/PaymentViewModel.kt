@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel.payment
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
@@ -75,7 +74,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 //            field.optionMap["SIZE"].let { if (it != null) optionStr += "${it.name}, " }
 //            optionStr += "${field.totalCount} ${BaseApplication.getInstance().getString(R.string.common_unit_product)}"
             callWithToken { accessToken ->
-                Log.e("AccessToken", accessToken)
                 addCartItem(accessToken)
             }
         }
@@ -241,7 +239,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                     if (cartIdList.isEmpty())
                         cartIdList.add(cart.cartItemId.toInt())
                     getCalculatePaymentInfo()
-                    Log.e("cartItemId", cart.cartItemId.toString())
 
                 } else {
                     listener.showMessage(o.message ?: "주문서 조회 오류")
