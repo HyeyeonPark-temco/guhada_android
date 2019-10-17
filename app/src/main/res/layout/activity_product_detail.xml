@@ -76,6 +76,12 @@
                         android:id="@+id/include_productdetail_contentinfo"
                         layout="@layout/layout_productdetail_info" />   <!-- 상품 정보 영역 (상품상태, 상품번호, 원산지) -->
 
+                    <View
+                        android:id="@+id/productdetail_scrollflag_review"
+                        android:layout_width="match_parent"
+                        android:background="@color/common_white"
+                        android:layout_height="1dp" />
+
                     <FrameLayout
                         android:id="@+id/framelayout_productdetail_review"
                         android:layout_width="match_parent"

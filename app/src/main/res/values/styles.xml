@@ -184,9 +184,17 @@
 
     <style name="TabLayoutPurpleIndicatorStyle" parent="android:Widget">
         <item name="tabBackground">@drawable/selector_tab_purpleindicator</item>
+        <item name="tabSelectedTextColor">@color/common_blue_purple</item>
         <item name="tabIndicatorColor">@android:color/transparent</item>
+        <item name="tabTextAppearance">@style/TabTextStyle</item>
         <item name="tabIndicatorHeight">0dp</item>
     </style>
+
+    <style name="TabTextStyle" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/black_four</item>
+        <item name="android:textSize">@dimen/text_15</item>
+    </style>
+
 
     <style name="TabLayoutGreyStyle" parent="android:Widget">
         <item name="tabBackground">@drawable/selector_tab_productdetail_claim</item>
@@ -217,7 +225,7 @@
         <item name="android:textColor">@color/black_four</item>
     </style>
 
-    <style name="ProductDetailTitleBlackTextStyle" parent="@style/TextBold">
+    <style name="ProductDetailTitleBlackTextStyle" parent="@style/TextMedium">
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/black_four</item>
     </style>

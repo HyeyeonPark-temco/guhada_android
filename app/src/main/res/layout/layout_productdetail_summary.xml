@@ -271,13 +271,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal"
+                    android:weightSum="5">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1.5">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -312,9 +313,9 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1.5">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -349,9 +350,9 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="2">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -393,8 +394,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white_four"
-            android:visibility="@{viewModel.mReviewSummary.totalReviewsCount == 0 ? View.GONE : View.VISIBLE}" />
+            android:background="@color/white_four" />
 
         <LinearLayout
             android:id="@+id/linearlayout_productdetail_summaryreview"
@@ -475,12 +475,22 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
+                    android:id="@+id/imagebutton_productdetail_review"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:src="@drawable/detail_icon_review_arrow"
                     android:tint="@color/warm_grey_two" />
             </LinearLayout>
+
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/white_four"
+            android:visibility="@{viewModel.mReviewSummary.totalReviewsCount == 0 ? View.GONE : View.VISIBLE}" />
     </LinearLayout>
 </layout>

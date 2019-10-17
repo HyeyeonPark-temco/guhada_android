@@ -1,3 +1,4 @@
+import org.joda.time.DateTime
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -8,9 +9,7 @@ class Test {
 
     @Test
     fun test() {
-        val t = android.util.Patterns.PHONE.matcher("01076652371").matches()
-        val t2 =android.util.Patterns.PHONE.matcher("0107665237").matches()
-        Assert.assertNotNull(t)
-        Assert.assertNotNull(t2)
+        System.out.println(DateTime(1571025200000).toString("yyyy.MM.dd hh:mm"))
+        System.out.println(DateTime(1571025200000).toString("yyyy.MM.dd HH:mm"))
     }
 }
