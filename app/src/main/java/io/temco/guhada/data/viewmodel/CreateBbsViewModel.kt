@@ -34,8 +34,6 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
     val repository = CreateBbsRepository(this)
     var modifyBbsData = CreateBbsResponse()
 
-    var selectInfoIndex = 0
-
     var selectedImageIndex = -1
 
     var bbsPhotos: MutableLiveData<MutableList<ImageResponse>> = MutableLiveData()
@@ -77,8 +75,6 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
             field = value
             notifyPropertyChanged(BR.filterList)
         }
-
-
 
     var selectedCategoryIndex = -1
     var categoryList = ObservableField<MutableList<String>>(mutableListOf()) // 스피너 표시 메세지

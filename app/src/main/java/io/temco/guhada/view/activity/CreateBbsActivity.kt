@@ -36,6 +36,8 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
 
     private lateinit var mTitleFragment: ListBottomSheetFragment
     private lateinit var mSubTitleFragment: ListBottomSheetFragment
+
+    private var initTabIndex = 0
     // ----------------------------------------------------------
 
     ////////////////////////////////////////////////
@@ -52,7 +54,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         mLoadingIndicatorUtil = LoadingIndicatorUtil(this)
 
         if(intent.extras != null && intent.extras.containsKey("currentIndex")){
-            mViewModel.selectInfoIndex = intent.extras.getInt("currentIndex")
+            initTabIndex = intent.extras.getInt("currentIndex")
         }
         if(intent.extras != null && intent.extras.containsKey("modifyData")){
             mViewModel.modifyBbsData = intent.extras.getSerializable("modifyData") as CreateBbsResponse
@@ -219,6 +221,12 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                     }
                 }
             }
+
+            mViewModel.selectedCategoryIndex = initTabIndex
+            val message = mViewModel.categoryList.get()!![initTabIndex]
+            mViewModel.categoryTitle.set(message)
+            if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "onBbsCategorySelected ", "position -----",initTabIndex, "categoryTitle",mViewModel.categoryTitle.get()!!)
+            mViewModel.setFilterList()
         }
     }
 
@@ -240,6 +248,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                 mTitleFragment = ListBottomSheetFragment(this).apply {
                     mTitle = "커뮤니티 선택"
                     mList = mViewModel.categoryList.get()!!
+                    selectedIndex = mViewModel.selectedCategoryIndex
                     mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
                         override fun onItemClick(position: Int) {
                             mViewModel.selectedCategoryIndex = position
@@ -254,6 +263,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                     }
                 }
             }
+            mTitleFragment.selectedIndex = mViewModel.selectedCategoryIndex
             mTitleFragment.show(supportFragmentManager, baseTag)
         }
 
@@ -275,6 +285,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                 }
             }
             mSubTitleFragment.mList = mViewModel.filterList.get()!!
+            mSubTitleFragment.selectedIndex = mViewModel.selectedFilterIndex
             mSubTitleFragment.show(supportFragmentManager, baseTag)
         }
 

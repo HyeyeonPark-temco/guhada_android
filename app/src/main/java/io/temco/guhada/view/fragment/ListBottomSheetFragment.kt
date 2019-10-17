@@ -2,6 +2,7 @@ package io.temco.guhada.view.fragment
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ class ListBottomSheetFragment(val mContext: Context) : BottomSheetDialogFragment
     private lateinit var mBinding: FragmentListbottomsheetBinding
     var mTitle: String = ""
     var mList = mutableListOf<String>()
+    var selectedIndex = -1
     lateinit var mListener: ListBottomSheetListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +45,7 @@ class ListBottomSheetFragment(val mContext: Context) : BottomSheetDialogFragment
         mBinding.recyclerView.adapter = ListBottomSheetAdapter().apply {
             this.mList = this@ListBottomSheetFragment.mList
             this.mListener = this@ListBottomSheetFragment.mListener
+            this.selectedIndex = this@ListBottomSheetFragment.selectedIndex
         }
 
         val metrics = DisplayMetrics()
@@ -66,6 +69,7 @@ class ListBottomSheetFragment(val mContext: Context) : BottomSheetDialogFragment
     }
 
     class ListBottomSheetAdapter : RecyclerView.Adapter<ListBottomSheetAdapter.Holder>() {
+        var selectedIndex = -1
         var mList = mutableListOf<String>()
         lateinit var mListener: ListBottomSheetListener
 
@@ -74,16 +78,18 @@ class ListBottomSheetFragment(val mContext: Context) : BottomSheetDialogFragment
 
         override fun getItemCount(): Int = mList.size
         override fun onBindViewHolder(holder: Holder, position: Int) {
-            holder.bind(mList[position])
+            holder.bind(mList[position], position)
         }
 
         inner class Holder(mBinding: ItemListbottomsheetBinding) : BaseViewHolder<ItemListbottomsheetBinding>(mBinding.root) {
-            fun bind(text: String) {
+            fun bind(text: String, position : Int) {
                 mBinding.linearlayoutListbottomsheetContainer.setOnClickListener {
                     mListener.onItemClick(adapterPosition)
                     mListener.onClickClose()
                 }
                 mBinding.text = text
+                if(selectedIndex != -1 && position == selectedIndex) mBinding.textviewListbottomsheetText.setTextColor(Color.parseColor("#5d2ed1"))
+                else mBinding.textviewListbottomsheetText.setTextColor(Color.parseColor("#111111"))
                 mBinding.executePendingBindings()
             }
         }

@@ -111,7 +111,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
         mBinding.setOnClickCreateBbs {
             if(CommonUtil.checkToken()){
                 var intent = Intent((context as AppCompatActivity), CreateBbsActivity::class.java)
-                intent.putExtra("currentIndex",(if(currentPagerIndex<3) 0 else currentPagerIndex-3))
+                intent.putExtra("currentIndex",(if(currentPagerIndex==0) 0 else currentPagerIndex-1))
                 (context as AppCompatActivity).startActivityForResult(intent, 0)
             }else{
                 CommonUtil.startLoginPage(context as AppCompatActivity)

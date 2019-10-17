@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <variable
             name="text"
             type="String" />
@@ -16,9 +15,11 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textview_listbottomsheet_text"
             style="@style/SellerStoreMenuTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black_four"
             android:text="@{text}" />
     </LinearLayout>
 </layout>
