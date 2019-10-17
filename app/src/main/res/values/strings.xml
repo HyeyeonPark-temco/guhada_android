@@ -453,7 +453,7 @@
     <string name="productdetail_review_photo">포토리뷰</string>
     <string name="productdetail_review_size">수치포함</string>
     <string name="productdetail_review_reply">댓글포함</string>
-    <string name="productdetail_review_title">리뷰</string>
+    <string name="productdetail_review_title">리뷰 %,2d건</string>
     <string name="productdetail_review_button_morereview">더보기</string>
 
     <string name="productdetail_review_like">도움되었어요</string>
