@@ -268,9 +268,13 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initSummary() {
-        // mViewModel.getProductReviewSummary()
+        mViewModel.getProductReviewSummary()
         mViewModel.getSellerSatisfaction()
         mBinding.includeProductdetailContentsummary.viewModel = mViewModel
+        mBinding.includeProductdetailContentsummary.imagebuttonProductdetailReview.setOnClickListener {
+            val h = (mBinding.productdetailScrollflagReview.parent as View).top + mBinding.productdetailScrollflagReview.top
+            mBinding.scrollviewProductdetail.smoothScrollTo(0, h)
+        }
         mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener { redirectSellerInfoActivity() }
         mBinding.includeProductdetailContentsummary.framelayooutProductdetailSellerstore.setOnClickListener { redirectSellerInfoActivity() }
 

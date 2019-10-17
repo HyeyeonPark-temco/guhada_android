@@ -117,7 +117,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
             }
         }
 
-    var mReviewSummary = ObservableField<ReviewSummary>(ReviewSummary())
+    var mReviewSummary = ObservableField<ReviewSummary>()
         @Bindable
         get() = field
 
