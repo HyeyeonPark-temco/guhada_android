@@ -2,7 +2,6 @@ package io.temco.guhada.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.Spinner
 import androidx.appcompat.widget.AppCompatSpinner
 
 
@@ -37,8 +36,7 @@ class CustomSpinner : AppCompatSpinner {
 
     override fun performClick(): Boolean {
         mIsOpen = true
-        if (::mListener.isInitialized)
-            mListener.onSpinnerOpened()
+        if (::mListener.isInitialized)  mListener.onSpinnerOpened()
 
         return super.performClick()
     }
@@ -46,8 +44,7 @@ class CustomSpinner : AppCompatSpinner {
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
         if (mIsOpen && hasWindowFocus)
-            if (::mListener.isInitialized)
-                mListener.onSpinnerClosed()
+            if (::mListener.isInitialized)  mListener.onSpinnerClosed()
     }
 
     interface OnCustomSpinnerListener {

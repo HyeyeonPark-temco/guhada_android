@@ -28,14 +28,18 @@ class UserSizeUpdateViewModel (val context : Context) : BaseObservableViewModel(
     var userWeightTxtList : ArrayList<String> = arrayListOf()
     var userFootTxtList : ArrayList<String> = arrayListOf()
 
+    var sub1InitFlag = false
+    var sub2InitFlag = false
+    var sub3InitFlag = false
+
     init {
         var txtcm = context.getString(R.string.user_size_update_sub1_value)
         var txtkg = context.getString(R.string.user_size_update_sub2_value)
         var txtmm = context.getString(R.string.user_size_update_sub3_value)
-        var desc = /*context.getString(R.string.common_select_spinner)*/""
+        /*var desc = *//*context.getString(R.string.common_select_spinner)*//*""
         userHeightTxtList.add(desc)
         userWeightTxtList.add(desc)
-        userFootTxtList.add(desc)
+        userFootTxtList.add(desc)*/
         for (i in 120..220) userHeightTxtList.add(String.format(txtcm,i))
         for (i in 30..130) userWeightTxtList.add(String.format(txtkg,i))
         for (i in 200..320 step 10) userFootTxtList.add(String.format(txtmm,i))
@@ -112,6 +116,16 @@ class UserSizeUpdateViewModel (val context : Context) : BaseObservableViewModel(
             field = value
             notifyPropertyChanged(BR.userSizeUpdateisNew)
         }
+
+
+    var userSizeSubMenuImgArrow = ObservableInt(-1)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.userSizeSubMenuImgArrow)
+        }
+
 
     fun clickUserSizeBottom(select : Int){
         userSizeUpdateBottom.set(select)
@@ -211,27 +225,39 @@ class UserSizeUpdateViewModel (val context : Context) : BaseObservableViewModel(
 
 
     fun onShippingSub1Selected(position: Int) {
-        if(position == 0){
+        if(!sub1InitFlag && position == 0) sub1InitFlag = true
+        else{
+            userSizeUpdateHeight.set(userHeightTxtList[position].substring(0,userHeightTxtList[position].length-2).toInt())
+        }
+        /*if(position == 0){
             userSizeUpdateHeight.set(0)
         }else{
             userSizeUpdateHeight.set(userHeightTxtList[position].substring(0,userHeightTxtList[position].length-2).toInt())
-        }
+        }*/
     }
 
     fun onShippingSub2Selected(position: Int) {
-        if(position == 0){
+        if(!sub2InitFlag && position == 0) sub2InitFlag = true
+        else{
+            userSizeUpdateWeight.set(userWeightTxtList[position].substring(0,userWeightTxtList[position].length-2).toInt())
+        }
+        /*if(position == 0){
             userSizeUpdateWeight.set(0)
         }else{
             userSizeUpdateWeight.set(userWeightTxtList[position].substring(0,userWeightTxtList[position].length-2).toInt())
-        }
+        }*/
     }
 
     fun onShippingSub3Selected(position: Int) {
-        if(position == 0){
+        if(!sub3InitFlag && position == 0) sub3InitFlag = true
+        else{
+            userSizeUpdateFoot.set(userFootTxtList[position].substring(0,userFootTxtList[position].length-2).toInt())
+        }
+        /*if(position == 0){
             userSizeUpdateFoot.set(0)
         }else{
             userSizeUpdateFoot.set(userFootTxtList[position].substring(0,userFootTxtList[position].length-2).toInt())
-        }
+        }*/
     }
 
 }

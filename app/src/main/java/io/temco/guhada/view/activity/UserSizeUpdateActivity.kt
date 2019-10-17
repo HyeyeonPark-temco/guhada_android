@@ -4,15 +4,18 @@ import android.app.Activity
 import android.content.Intent
 import android.util.DisplayMetrics
 import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatSpinner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonViewUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.viewmodel.UserSizeUpdateViewModel
+import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.base.BindActivity
 
 
@@ -51,6 +54,47 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
         }
 
         mBinding.setOnClickCloseButton { finish() }
+
+
+        // 스피너 드롭다운 Max Height 5개 높이로 설정
+        val popup1 = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+        popup1.isAccessible = true
+        val popupWindow1= popup1.get(mBinding.spinnerUsersizeupdateSub1) as androidx.appcompat.widget.ListPopupWindow
+        popupWindow1.height = CommonViewUtil.convertDpToPixel(230, mBinding.root.context)
+        mBinding.spinnerUsersizeupdateSub1.mListener = object : CustomSpinner.OnCustomSpinnerListener{
+            override fun onSpinnerOpened() {
+                mViewModel.userSizeSubMenuImgArrow.set(1)
+            }
+            override fun onSpinnerClosed() {
+                mViewModel.userSizeSubMenuImgArrow.set(-1)
+            }
+        }
+
+        val popup2 = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+        popup2.isAccessible = true
+        val popupWindow2= popup2.get(mBinding.spinnerUsersizeupdateSub2) as androidx.appcompat.widget.ListPopupWindow
+        popupWindow2.height = CommonViewUtil.convertDpToPixel(230, mBinding.root.context)
+        mBinding.spinnerUsersizeupdateSub2.mListener = object : CustomSpinner.OnCustomSpinnerListener{
+            override fun onSpinnerOpened() {
+                mViewModel.userSizeSubMenuImgArrow.set(2)
+            }
+            override fun onSpinnerClosed() {
+                mViewModel.userSizeSubMenuImgArrow.set(-1)
+            }
+        }
+
+        val popup3 = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+        popup3.isAccessible = true
+        val popupWindow3= popup3.get(mBinding.spinnerUsersizeupdateSub3) as androidx.appcompat.widget.ListPopupWindow
+        popupWindow3.height = CommonViewUtil.convertDpToPixel(230, mBinding.root.context)
+        mBinding.spinnerUsersizeupdateSub3.mListener = object : CustomSpinner.OnCustomSpinnerListener{
+            override fun onSpinnerOpened() {
+                mViewModel.userSizeSubMenuImgArrow.set(3)
+            }
+            override fun onSpinnerClosed() {
+                mViewModel.userSizeSubMenuImgArrow.set(-1)
+            }
+        }
     }
 
 

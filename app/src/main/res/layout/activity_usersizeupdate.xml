@@ -95,19 +95,22 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="10dp" >
 
-                    <Spinner
+                    <io.temco.guhada.view.CustomSpinner
                         android:id="@+id/spinner_usersizeupdate_sub1"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:dropDownWidth="match_parent"
-                        android:background="@drawable/border_all_whitethree"
+                        android:background="@color/transparent"
                         android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub1Selected(pos)}"
                         android:orientation="horizontal"
                         android:overScrollMode="never"
                         android:overlapAnchor="false"
                         android:popupBackground="@null"
+                        android:popupElevation="0dp"
                         android:spinnerMode="dropdown"
                         app:bindCommonSpinner="@{viewModel.userHeightTxtList}" />
+
+                    <!--android:background="@drawable/border_all_whitethree"-->
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -139,7 +142,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open" />
+                                android:src="@{viewModel.userSizeSubMenuImgArrow == 1 ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                         </LinearLayout>
                     </FrameLayout>
                 </FrameLayout>
@@ -166,13 +169,12 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="10dp" >
 
-                <Spinner
+                <io.temco.guhada.view.CustomSpinner
                     android:id="@+id/spinner_usersizeupdate_sub2"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:background="@drawable/border_all_whitethree"
                     android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub2Selected(pos)}"
-                    android:orientation="horizontal"
                     android:overScrollMode="never"
                     android:overlapAnchor="false"
                     android:popupBackground="@null"
@@ -209,7 +211,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open" />
+                                android:src="@{viewModel.userSizeSubMenuImgArrow == 2 ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                         </LinearLayout>
                     </FrameLayout>
 
@@ -238,7 +240,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginBottom="10dp">
 
-                <Spinner
+                <io.temco.guhada.view.CustomSpinner
                     android:id="@+id/spinner_usersizeupdate_sub3"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -281,7 +283,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open" />
+                                android:src="@{viewModel.userSizeSubMenuImgArrow == 3 ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                         </LinearLayout>
                     </FrameLayout>
 
