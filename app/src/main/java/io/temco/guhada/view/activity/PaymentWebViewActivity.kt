@@ -173,7 +173,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                             val vbankReceivedNo = document.getElementById("vbankReceivedNo")?.`val`()
                                     ?: ""
 
-                            if (CustomLog.flag) CommonUtil.debug("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid authToken: $authToken")
+                            if (CustomLog.flag) CustomLog.L("결제 요청", "[$resultCode] pgTid: $pgTid pgOid: $pgOid authToken: $authToken")
 
 
                             PGAuth().apply {
@@ -224,7 +224,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            if(CustomLog.flag)  CommonUtil.debug("<LPAY>", url.toString())
+            if(CustomLog.flag)  CustomLog.L("<LPAY>", url.toString())
 
             if (!url?.startsWith("http://")!! && !url.startsWith("https://") && !url.startsWith("javascript")) {
                 val intent: Intent
@@ -280,6 +280,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 .setPositiveButton("확인") { dialog, which ->
                     finish()
                 }.create().show()
-        CommonUtil.debug(tas, message)
+        if(CustomLog.flag) CustomLog.L(tas, message)
     }
 }
