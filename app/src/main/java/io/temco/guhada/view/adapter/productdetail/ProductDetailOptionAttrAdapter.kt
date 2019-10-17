@@ -1,7 +1,6 @@
 package io.temco.guhada.view.adapter.productdetail
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.option.Option
 import io.temco.guhada.data.model.option.OptionAttr
 import io.temco.guhada.data.viewmodel.productdetail.ProductDetailMenuViewModel
@@ -94,7 +92,7 @@ class ProductDetailOptionAttrAdapter(val viewModel: ProductDetailMenuViewModel, 
             }
 
             // CHECK SOLD OUT
-            Log.e("ATTR 어댑터", "ATTR NAME: ${optionAttr.name}     ENABLED : ${optionAttr.enabled}    isOptionEnabled: ${isOptionEnabled(optionAttr)} ")
+            //Log.e("ATTR 어댑터", "ATTR NAME: ${optionAttr.name}     ENABLED : ${optionAttr.enabled}    isOptionEnabled: ${isOptionEnabled(optionAttr)} ")
 
             if (!isOptionEnabled(optionAttr)) {
 //                if(selectedPos == adapterPosition){

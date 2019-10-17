@@ -3,7 +3,6 @@ package io.temco.guhada.view.activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -269,7 +268,6 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     String name = data.getStringExtra("name");
                     String phoneNumber = data.getStringExtra("phoneNumber");
                     String di = data.getStringExtra("di");
-                    Log.e("DI", di);
 
                     mViewModel.user.setPhoneNumber(phoneNumber);
                     mViewModel.user.setMobile(phoneNumber);

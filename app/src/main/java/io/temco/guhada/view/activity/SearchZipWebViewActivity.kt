@@ -2,7 +2,6 @@ package io.temco.guhada.view.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient

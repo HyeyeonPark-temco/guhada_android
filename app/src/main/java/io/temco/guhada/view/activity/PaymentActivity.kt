@@ -5,7 +5,6 @@ import android.content.Intent
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -22,7 +21,9 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.RequestCode
-import io.temco.guhada.common.util.*
+import io.temco.guhada.common.util.CommonUtilKotlin
+import io.temco.guhada.common.util.LoadingIndicatorUtil
+import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.OrderItemResponse
@@ -35,7 +36,6 @@ import io.temco.guhada.data.model.product.BaseProduct
 import io.temco.guhada.data.model.shippingaddress.ShippingMessage
 import io.temco.guhada.data.viewmodel.payment.PaymentViewModel
 import io.temco.guhada.databinding.ActivityPaymentBinding
-import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.adapter.payment.PaymentOrderItemAdapter

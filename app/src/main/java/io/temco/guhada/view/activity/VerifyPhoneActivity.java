@@ -3,15 +3,12 @@ package io.temco.guhada.view.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import com.kakao.usermgmt.response.model.Gender;
 
 import java.util.HashMap;
 import java.util.Map;

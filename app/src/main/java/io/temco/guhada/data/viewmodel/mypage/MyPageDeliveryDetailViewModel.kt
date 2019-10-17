@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel.mypage
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -8,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.common.enum.PurchaseStatus
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.ExpectedRefundPrice
 import io.temco.guhada.data.model.order.PurchaseOrder

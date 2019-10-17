@@ -93,6 +93,7 @@ class MyPageBookMarkViewModel (val context : Context, var mDisposable : Composit
                 var v = totalElement.get()!!.toInt() -1
                 totalElement.set(v.toString())
                 getListAdapter().notifyDataSetChanged()
+                if(getListAdapter().items.isEmpty()) emptyViewVisible.set(true)
             }
         })
     }
