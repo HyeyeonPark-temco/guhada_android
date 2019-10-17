@@ -23,6 +23,7 @@ import io.temco.guhada.databinding.ActivityCreatebbsBinding
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonRoundImageResponseAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
+import io.temco.guhada.view.fragment.ListBottomSheetFragment
 
 /**
  * @author park jungho
@@ -32,6 +33,9 @@ import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelectItemListener {
     private lateinit var mViewModel: CreateBbsViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
+
+    private lateinit var mTitleFragment: ListBottomSheetFragment
+    private lateinit var mSubTitleFragment: ListBottomSheetFragment
     // ----------------------------------------------------------
 
     ////////////////////////////////////////////////
@@ -230,6 +234,49 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
 
     private fun setClickEvent(){
         mBinding.setOnClickCloseButton { finish() }
+
+        mBinding.setOnClickMenuTitle {
+            if (!::mTitleFragment.isInitialized) {
+                mTitleFragment = ListBottomSheetFragment(this).apply {
+                    mTitle = "커뮤니티 선택"
+                    mList = mViewModel.categoryList.get()!!
+                    mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                        override fun onItemClick(position: Int) {
+                            mViewModel.selectedCategoryIndex = position
+                            val message = mViewModel.categoryList.get()!![position]
+                            mViewModel.categoryTitle.set(message)
+                            if (CustomLog.flag) CustomLog.L("CreateBbsViewModel", "onBbsCategorySelected ", "position -----",position, "categoryTitle",mViewModel.categoryTitle.get()!!)
+                            mViewModel.setFilterList()
+                        }
+                        override fun onClickClose() {
+                            this@apply.dismiss()
+                        }
+                    }
+                }
+            }
+            mTitleFragment.show(supportFragmentManager, baseTag)
+        }
+
+        mBinding.setOnClickMenuSubTitle {
+            if (!::mSubTitleFragment.isInitialized) {
+                mSubTitleFragment = ListBottomSheetFragment(this).apply {
+                    mTitle = "말머리 선택"
+                    mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                        override fun onItemClick(position: Int) {
+                            mViewModel.selectedFilterIndex = position
+                            val message = mViewModel.filterList.get()!![position]
+                            mViewModel.filterTitle.set(message)
+                        }
+                        override fun onClickClose() {
+                            this@apply.dismiss()
+                        }
+                    }
+
+                }
+            }
+            mSubTitleFragment.mList = mViewModel.filterList.get()!!
+            mSubTitleFragment.show(supportFragmentManager, baseTag)
+        }
 
         mBinding.setOnClickGetImage {
             if(CustomLog.flag)CustomLog.L("CreateBbsActivity","setOnClickGetImage",mViewModel.bbsPhotos.value!!.size)

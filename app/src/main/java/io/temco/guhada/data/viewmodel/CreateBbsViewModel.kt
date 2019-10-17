@@ -65,10 +65,20 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
     var categoryTitle = ObservableField<String>("") //
         @Bindable
         get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.categoryTitle)
+        }
 
     var filterTitle = ObservableField<String>("") // 스피너 표시 메세지
         @Bindable
         get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.filterList)
+        }
+
+
 
     var selectedCategoryIndex = -1
     var categoryList = ObservableField<MutableList<String>>(mutableListOf()) // 스피너 표시 메세지
@@ -125,7 +135,7 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
         selectedFilterInit = false
     }
 
-    private fun setFilterList(){
+    fun setFilterList(){
         if(communityInfoList.value!![selectedCategoryIndex].communityCategorySub.categoryFilterList.isNullOrEmpty()){
             filterListVisible.set(false)
             selectedFilterIndex = -1

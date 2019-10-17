@@ -1,17 +1,24 @@
 package io.temco.guhada.view.fragment
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.temco.guhada.R
 import io.temco.guhada.databinding.FragmentListbottomsheetBinding
 import io.temco.guhada.databinding.ItemListbottomsheetBinding
 import io.temco.guhada.view.holder.base.BaseViewHolder
+
 
 /**
  * Text List BottomSheetFragment
@@ -26,7 +33,7 @@ class ListBottomSheetFragment(val mContext: Context) : BottomSheetDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
+        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,8 +44,25 @@ class ListBottomSheetFragment(val mContext: Context) : BottomSheetDialogFragment
             this.mList = this@ListBottomSheetFragment.mList
             this.mListener = this@ListBottomSheetFragment.mListener
         }
+
+        val metrics = DisplayMetrics()
+        activity!!.windowManager.defaultDisplay.getMetrics(metrics)
+        mBinding.recyclerView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, metrics.heightPixels)
+
         mBinding.executePendingBindings()
         return mBinding.root
+    }
+
+
+    // 초기 상태 STATE_EXPANDED 변경
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        var myDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        myDialog.setOnShowListener {
+            val bottomSheet = myDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? FrameLayout
+            var behavior  = BottomSheetBehavior.from(bottomSheet)
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        return myDialog
     }
 
     class ListBottomSheetAdapter : RecyclerView.Adapter<ListBottomSheetAdapter.Holder>() {

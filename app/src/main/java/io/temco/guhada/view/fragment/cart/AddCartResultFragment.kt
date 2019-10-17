@@ -1,13 +1,17 @@
 package io.temco.guhada.view.fragment.cart
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnAddCartResultListener
@@ -33,6 +37,17 @@ class AddCartResultFragment(val mListener: OnProductDetailListener) : BottomShee
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
         return mBinding.root
+    }
+
+    // 초기 상태 STATE_EXPANDED 변경
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        var myDialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        myDialog.setOnShowListener {
+            val bottomSheet = myDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as? FrameLayout
+            var behavior  = BottomSheetBehavior.from(bottomSheet)
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        return myDialog
     }
 
     private fun initViewModel() {
