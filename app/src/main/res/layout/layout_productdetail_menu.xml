@@ -26,10 +26,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                style="@style/ProductDetailTitleBlackTextStyle"
+                style="@style/TextMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/productdetail_option"
+                android:textSize="@dimen/text_16"
+                android:textColor="@color/black_four"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +52,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:visibility="@{viewModel.product.options.isEmpty() ? View.GONE : View.VISIBLE}">
 
@@ -241,6 +243,7 @@
 
             <!-- 할인 금액 -->
             <TextView
+                style="@style/TextRegular"
                 android:id="@+id/textview_productdetail_extra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
