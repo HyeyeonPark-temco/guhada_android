@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:onClick="@{()->viewModel.onClickProductNotifies()}"
-                android:src="@{viewModel.productNotifiesExpanded ? @drawable/detail_btn_quantity_minus_on : @drawable/detail_btn_quantity_plus_on}"
+                android:src="@{viewModel.productNotifiesExpanded ? @drawable/detail_btn_close : @drawable/detail_btn_open}"
                 android:text="@string/productdetail_report"
                 android:textColor="@color/greyish_brown_two"
                 android:textSize="@dimen/text_12" />
