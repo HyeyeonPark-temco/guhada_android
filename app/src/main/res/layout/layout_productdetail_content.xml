@@ -51,21 +51,20 @@
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="0dp"
-                    android:layout="@layout/item_productdetail_storetab"
                     android:layout_height="match_parent"
                     android:text="@string/productdetail_button_detail" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="0dp"
-                    android:layout="@layout/item_productdetail_storetab"
                     android:layout_height="match_parent"
                     android:text="@string/productdetail_button_qna" />
 
                 <com.google.android.material.tabs.TabItem
-                    android:layout_width="0dp"
+                    android:id="@+id/tabitem_productdetail_store"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:icon="@drawable/background_color_dot_brick"
-                    android:layout="@layout/item_productdetail_storetab"
+                    android:layout="@layout/item_productdetail_tab"
                     android:text="@string/productdetail_button_store" />
 
             </com.google.android.material.tabs.TabLayout>

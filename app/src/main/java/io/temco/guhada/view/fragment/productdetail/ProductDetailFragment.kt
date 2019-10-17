@@ -3,13 +3,16 @@ package io.temco.guhada.view.fragment.productdetail
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
@@ -254,14 +257,35 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initTabListener() {
+        val detailTabText = ((mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(0) as LinearLayout).getChildAt(1) as TextView
+        detailTabText.setTypeface(detailTabText.typeface, Typeface.BOLD)
+        detailTabText.setTextColor(mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+
         mBinding.includeProductdetailContentbody.tablayoutProductdetail.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+                    val textView =
+                            if (tab.position == 2) tabLayout.findViewById(R.id.textview_tab)
+                            else tabLayout.getChildAt(1) as TextView
+                    textView.setTypeface(null, Typeface.NORMAL)
+                    textView.setTextColor(mBinding.root.context.resources.getColor(R.color.black_four))
+                }
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+                    val textView =
+                            if (tab.position == 2) tabLayout.findViewById(R.id.textview_tab)
+                            else tabLayout.getChildAt(1) as TextView
+                    textView.setTypeface(textView.typeface, Typeface.BOLD)
+                    textView.setTextColor(mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+                }
+
                 this@ProductDetailFragment.scrollToElement(tab?.position ?: 0)
             }
         })
