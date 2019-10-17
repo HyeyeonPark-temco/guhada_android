@@ -394,8 +394,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white_four"
-            android:visibility="@{viewModel.mReviewSummary.totalReviewsCount == 0 ? View.GONE : View.VISIBLE}" />
+            android:background="@color/white_four" />
 
         <LinearLayout
             android:id="@+id/linearlayout_productdetail_summaryreview"
@@ -483,6 +482,15 @@
                     android:src="@drawable/detail_icon_review_arrow"
                     android:tint="@color/warm_grey_two" />
             </LinearLayout>
+
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/white_four"
+            android:visibility="@{viewModel.mReviewSummary.totalReviewsCount == 0 ? View.GONE : View.VISIBLE}" />
     </LinearLayout>
 </layout>

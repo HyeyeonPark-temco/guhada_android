@@ -217,7 +217,7 @@
         <item name="android:textColor">@color/black_four</item>
     </style>
 
-    <style name="ProductDetailTitleBlackTextStyle" parent="@style/TextBold">
+    <style name="ProductDetailTitleBlackTextStyle" parent="@style/TextMedium">
         <item name="android:textSize">@dimen/text_16</item>
         <item name="android:textColor">@color/black_four</item>
     </style>
