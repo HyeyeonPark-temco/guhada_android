@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:background="@color/common_white"
         android:orientation="vertical"
         android:paddingTop="30dp">
@@ -117,13 +117,16 @@
         </LinearLayout>
 
         <TextView
-            style="@style/ProductDetailContentDarkGreyTextStyle"
+            style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="20dp"
-            android:text="@string/productdetail_qna_description" />
+            android:lineSpacingExtra="4sp"
+            android:text="@string/productdetail_qna_description"
+            android:textColor="@color/greyish_brown_two"
+            android:textSize="@dimen/text_12" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tablayout_productdetail_claim"
@@ -218,7 +221,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/bag_btn_quantity_plus_on" />
+                    android:src="@drawable/detail_btn_more_open" />
             </LinearLayout>
 
         </FrameLayout>
