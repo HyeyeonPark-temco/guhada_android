@@ -45,7 +45,7 @@ import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 
 /**
  * 주문 결제 화면
- * @author Hyeyeon Park
+ * @author Hyeyeon Park order/calculate-payment-info
  */
 class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil

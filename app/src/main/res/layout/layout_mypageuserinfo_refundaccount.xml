@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp">
 
-                <Spinner
+                <io.temco.guhada.view.CustomSpinner
                     android:id="@+id/spinner_requestorderstatus_bank"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -58,6 +58,7 @@
                     android:overScrollMode="never"
                     android:overlapAnchor="false"
                     android:popupBackground="@null"
+                    android:popupElevation="0dp"
                     android:spinnerMode="dropdown" />
 
                 <FrameLayout
@@ -92,7 +93,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/payment_icon_selectbox_open" />
+                            android:src="@{viewModel.userBankSpinnerArrow ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
                     </LinearLayout>
                 </FrameLayout>
 

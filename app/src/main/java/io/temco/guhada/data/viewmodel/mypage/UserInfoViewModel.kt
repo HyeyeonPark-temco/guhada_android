@@ -87,6 +87,14 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
             notifyPropertyChanged(BR.checkGenderValue)
         }
 
+    var userBankSpinnerArrow = ObservableBoolean(false)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.userBankSpinnerArrow)
+        }
+
     // 환불 계좌 정보
     var mRefundBanks = MutableLiveData<MutableList<PurchaseOrder.Bank>>()
     var mBankAccount = MutableLiveData<BankAccount>()

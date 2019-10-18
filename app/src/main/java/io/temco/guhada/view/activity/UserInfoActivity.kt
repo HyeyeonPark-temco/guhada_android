@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import android.widget.DatePicker
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import io.reactivex.Observable
@@ -25,6 +26,7 @@ import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.UserUpdateInfo
 import io.temco.guhada.data.viewmodel.mypage.UserInfoViewModel
 import io.temco.guhada.databinding.ActivityUserinfoBinding
+import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
@@ -243,6 +245,20 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
         // 패스워드
         setEditTextFocusListener()
+
+        // 스피너 드롭다운 Max Height 5개 높이로 설정
+        val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
+        popup.isAccessible = true
+        val popupWindow= popup.get(mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank) as androidx.appcompat.widget.ListPopupWindow
+        popupWindow.height = CommonViewUtil.convertDpToPixel(200, mBinding.root.context)
+        mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.mListener = object : CustomSpinner.OnCustomSpinnerListener{
+            override fun onSpinnerOpened() {
+                mViewModel.userBankSpinnerArrow.set(true)
+            }
+            override fun onSpinnerClosed() {
+                mViewModel.userBankSpinnerArrow.set(false)
+            }
+        }
 
         mBinding.buttonMypageuserinfoSizeinsert.setOnClickListener {
             var intent = Intent(this@UserInfoActivity, UserSizeUpdateActivity::class.java)

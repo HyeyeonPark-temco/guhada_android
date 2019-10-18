@@ -569,7 +569,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_gravity="end"
-                    android:layout_marginEnd="20dp"
                     android:background="@drawable/border_payment_coolgrey_bottom"
                     android:onClick="@{purchaseClickListener}"
                     android:text="@string/common_show"
