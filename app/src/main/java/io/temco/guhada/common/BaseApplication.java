@@ -58,6 +58,9 @@ public class BaseApplication extends MultiDexApplication {
         // FACEBOOK
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        //
+        com.kochava.base.Tracker.configure(new com.kochava.base.Tracker.Configuration(getApplicationContext()).setAppGuid("koguhada-android-uzvie5kg"));
     }
 
     @Override
@@ -101,7 +104,7 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     /**
-     * Gets the default {@link Tracker} for this {@link Application}.
+     * google analytics
      * @return tracker
      */
     synchronized public Tracker getDefaultTracker() {
