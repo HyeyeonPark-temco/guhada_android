@@ -20,7 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:background="@color/common_white"
             android:orientation="vertical"
             android:paddingStart="20dp"
@@ -132,7 +132,7 @@
                     style="@style/PaymentTitleBlackTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/productdetail_review_title"
+                    android:text="@{@string/productdetail_review_title(viewModel.reviewSummary.totalReviewsCount)}"
                     android:textSize="@dimen/text_16"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <Spinner
                     android:id="@+id/spinner_review_rating"
                     android:layout_width="wrap_content"
@@ -157,7 +156,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageButton2"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
                 <!--<TextView-->
                 <!--android:id="@+id/textView41"-->
@@ -178,7 +176,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/spinner_review_rating"
                     app:layout_constraintTop_toTopOf="parent" />
-
 
                 <Spinner
                     android:id="@+id/spinner_review_sorting"
@@ -368,7 +365,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/bag_btn_quantity_plus_on" />
+                        android:src="@drawable/detail_btn_more_open" />
                 </LinearLayout>
 
             </FrameLayout>

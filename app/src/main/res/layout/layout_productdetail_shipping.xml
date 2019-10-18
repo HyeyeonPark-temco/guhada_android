@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="11dp"
                 android:onClick="@{()->viewModel.onClickRefundInfo()}"
-                android:src="@{viewModel.refundInfoExpanded ? @drawable/detail_btn_quantity_minus_on : @drawable/detail_btn_quantity_plus_on}"
+                android:src="@{viewModel.refundInfoExpanded ? @drawable/detail_btn_close : @drawable/detail_btn_open}"
                 android:text="@string/productdetail_report"
                 android:textColor="@color/greyish_brown_two"
                 android:textSize="@dimen/text_12"
@@ -98,29 +98,30 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="0dp"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_info_content1"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="@string/productdetail_dummy_shippingtype"
                             android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
@@ -128,76 +129,76 @@
                     </LinearLayout>
 
                     <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="@color/white_four" />-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:background="@color/white_four" />-->
 
                     <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="horizontal"-->
-                        <!--android:weightSum="3">-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3">-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_weight="1"-->
-                            <!--android:background="@color/pale_grey"-->
-                            <!--android:gravity="center_vertical"-->
-                            <!--android:paddingStart="10dp"-->
-                            <!--android:paddingTop="12dp"-->
-                            <!--android:paddingBottom="12dp"-->
-                            <!--android:text="@string/productdetail_shipping_info_content2"-->
-                            <!--android:textSize="@dimen/text_12" />-->
+                    <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@color/pale_grey"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:paddingStart="10dp"-->
+                    <!--android:paddingTop="12dp"-->
+                    <!--android:paddingBottom="12dp"-->
+                    <!--android:text="@string/productdetail_shipping_info_content2"-->
+                    <!--android:textSize="@dimen/text_12" />-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="match_parent"-->
-                            <!--android:layout_weight="2"-->
-                            <!--android:gravity="center_vertical"-->
-                            <!--android:paddingStart="10dp"-->
-                            <!--android:paddingTop="12dp"-->
-                            <!--android:paddingBottom="12dp"-->
-                            <!--android:text="@{viewModel.product.shipping.isBundleAvailable ? @string/productdetail_available : @string/productdetail_disavailable}"-->
-                            <!--android:textColor="@color/greyish_brown_two"-->
-                            <!--android:textSize="12dp" />-->
+                    <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:paddingStart="10dp"-->
+                    <!--android:paddingTop="12dp"-->
+                    <!--android:paddingBottom="12dp"-->
+                    <!--android:text="@{viewModel.product.shipping.isBundleAvailable ? @string/productdetail_available : @string/productdetail_disavailable}"-->
+                    <!--android:textColor="@color/greyish_brown_two"-->
+                    <!--android:textSize="12dp" />-->
                     <!--</LinearLayout>-->
 
                     <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="@color/white_four" />-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:background="@color/white_four" />-->
 
                     <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="horizontal"-->
-                        <!--android:weightSum="3">-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:weightSum="3">-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_weight="1"-->
-                            <!--android:background="@color/pale_grey"-->
-                            <!--android:gravity="center_vertical"-->
-                            <!--android:paddingStart="10dp"-->
-                            <!--android:paddingTop="12dp"-->
-                            <!--android:paddingEnd="10dp"-->
-                            <!--android:paddingBottom="12dp"-->
-                            <!--android:text="@string/productdetail_shipping_info_content3"-->
-                            <!--android:textSize="@dimen/text_12" />-->
+                    <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@color/pale_grey"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:paddingStart="10dp"-->
+                    <!--android:paddingTop="12dp"-->
+                    <!--android:paddingEnd="10dp"-->
+                    <!--android:paddingBottom="12dp"-->
+                    <!--android:text="@string/productdetail_shipping_info_content3"-->
+                    <!--android:textSize="@dimen/text_12" />-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="match_parent"-->
-                            <!--android:layout_weight="2"-->
-                            <!--android:gravity="center_vertical"-->
-                            <!--android:paddingStart="10dp"-->
-                            <!--android:paddingTop="12dp"-->
-                            <!--android:paddingBottom="12dp"-->
-                            <!--android:text="@{viewModel.product.shipping.isIsolatedAreaAvailable ? @string/productdetail_available : @string/productdetail_disavailable}"-->
-                            <!--android:textColor="@color/greyish_brown_two"-->
-                            <!--android:textSize="12dp" />-->
+                    <!--<TextView-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="2"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:paddingStart="10dp"-->
+                    <!--android:paddingTop="12dp"-->
+                    <!--android:paddingBottom="12dp"-->
+                    <!--android:text="@{viewModel.product.shipping.isIsolatedAreaAvailable ? @string/productdetail_available : @string/productdetail_disavailable}"-->
+                    <!--android:textColor="@color/greyish_brown_two"-->
+                    <!--android:textSize="12dp" />-->
                     <!--</LinearLayout>-->
 
                     <View
@@ -238,32 +239,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="@{viewModel.product.asInfo.isEmpty() ? View.GONE : View.VISIBLE}"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.product.asInfo.isEmpty() ? View.GONE : View.VISIBLE}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_as_content1"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
-                            android:layout_width="1dp"
+                            style="@style/TextRegular"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
+                            android:lineSpacingExtra="4sp"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="@{viewModel.product.asInfo}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <View
@@ -275,34 +279,36 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/border_all_whitefour_topbottom"
+
                         android:orientation="horizontal"
-                        android:visibility="@{viewModel.product.asTelephone.isEmpty() ? View.GONE : View.VISIBLE}"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.product.asTelephone.isEmpty() ? View.GONE : View.VISIBLE}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_as_content2"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="@{viewModel.product.asTelephone}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <View
@@ -313,34 +319,39 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:minHeight="40dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="@{viewModel.product.asDesc.isEmpty() ? View.GONE : View.VISIBLE}"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.product.asDesc.isEmpty() ? View.GONE : View.VISIBLE}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_as_content3"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingEnd="10dp"
+                            android:singleLine="false"
                             android:text="@{viewModel.product.asDesc}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
+
+
                     </LinearLayout>
 
                     <View
@@ -371,7 +382,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:lineHeight="16dp"
+                            android:lineSpacingExtra="3.6sp"
                             android:text="@string/productdetail_shipping_refund_description"
                             android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_12" />
@@ -416,38 +427,40 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                style="@style/TextRegular"
+                                android:layout_width="110dp"
+                                android:layout_height="match_parent"
                                 android:background="@color/pale_grey"
                                 android:gravity="center_vertical"
+                                android:minHeight="40dp"
                                 android:paddingStart="10dp"
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
                                 android:text="@string/productdetail_shipping_refund_content2"
+                                android:textColor="@color/greyish_brown_two"
                                 android:textSize="@dimen/text_12" />
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:paddingStart="10dp"
-                                android:paddingTop="12dp"
-                                android:paddingBottom="12dp">
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp">
 
                                 <TextView
+                                    style="@style/TextRegular"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
                                     android:text="@{viewModel.product.shipping.returnShipExpense == 0 ? @string/common_free : @string/common_priceunit_format(viewModel.product.shipping.returnShipExpense)}"
                                     android:textColor="@color/greyish_brown_two"
-                                    android:textSize="12dp" />
+                                    android:textSize="@dimen/text_12" />
 
                             </LinearLayout>
 
@@ -461,39 +474,41 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                style="@style/TextRegular"
+                                android:layout_width="110dp"
+                                android:layout_height="match_parent"
                                 android:background="@color/pale_grey"
                                 android:gravity="center_vertical"
+                                android:minHeight="40dp"
                                 android:paddingStart="10dp"
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
                                 android:text="@string/productdetail_shipping_refund_content3"
+                                android:textColor="@color/greyish_brown_two"
                                 android:textSize="@dimen/text_12" />
 
 
                             <LinearLayout
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:orientation="horizontal"
                                 android:paddingStart="10dp"
-                                android:paddingTop="12dp"
-                                android:paddingBottom="12dp">
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp">
 
                                 <TextView
+                                    style="@style/TextRegular"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
                                     android:text="@{viewModel.product.shipping.exchangeShipExpense == 0 ? @string/common_free : @string/common_priceunit_format(viewModel.product.shipping.exchangeShipExpense)}"
                                     android:textColor="@color/greyish_brown_two"
-                                    android:textSize="12dp" />
+                                    android:textSize="@dimen/text_12" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -501,36 +516,38 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:visibility="@{viewModel.seller.user.roadAddress == null || viewModel.seller.user.roadAddress.isEmpty() ? View.GONE : View.VISIBLE,default=visible}"
-                            android:background="@color/white_four" />
+                            android:background="@color/white_four"
+                            android:visibility="@{viewModel.seller.user.roadAddress == null || viewModel.seller.user.roadAddress.isEmpty() ? View.GONE : View.VISIBLE,default=visible}" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:visibility="@{viewModel.seller.user.roadAddress == null || viewModel.seller.user.roadAddress.isEmpty() ? View.GONE : View.VISIBLE,default=visible}"
-                            android:weightSum="3">
+                            android:visibility="@{viewModel.seller.user.roadAddress == null || viewModel.seller.user.roadAddress.isEmpty() ? View.GONE : View.VISIBLE,default=visible}">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                style="@style/TextRegular"
+                                android:layout_width="110dp"
+                                android:layout_height="match_parent"
                                 android:background="@color/pale_grey"
                                 android:gravity="center_vertical"
+                                android:minHeight="40dp"
                                 android:paddingStart="10dp"
                                 android:paddingTop="12dp"
                                 android:paddingBottom="12dp"
                                 android:text="@string/productdetail_shipping_refund_content4"
+                                android:textColor="@color/greyish_brown_two"
                                 android:textSize="@dimen/text_12" />
 
                             <TextView
+                                style="@style/TextRegular"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:gravity="center_vertical"
                                 android:paddingStart="10dp"
-                                android:paddingTop="12dp"
-                                android:paddingBottom="12dp"
+                                android:paddingTop="5dp"
+                                android:paddingBottom="5dp"
                                 android:text="@{ @string/sellerstore_format_zip(viewModel.seller.user.zip) + viewModel.seller.user.roadAddress + ` ` +viewModel.seller.user.detailAddress }"
                                 android:textColor="@color/greyish_brown_two"
                                 android:textSize="@dimen/text_12" />
@@ -544,6 +561,7 @@
                         android:background="@color/white_four" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="23dp"
@@ -553,21 +571,25 @@
                         android:textSize="@dimen/text_13" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/productdetail_shipping_common_description1_content1"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3.6sp"
                         android:text="@string/productdetail_shipping_common_description1_content2"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -577,51 +599,62 @@
                         android:textSize="@dimen/text_13" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/productdetail_shipping_common_description2_content1"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3.6sp"
                         android:text="@string/productdetail_shipping_common_description2_content2"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3.6sp"
                         android:text="@string/productdetail_shipping_common_description2_content3"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3.6sp"
                         android:text="@string/productdetail_shipping_common_description2_content4"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3.6sp"
                         android:text="@string/productdetail_shipping_common_description2_content5"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
 
                     <TextView
+                        style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="3.6sp"
                         android:text="@string/productdetail_shipping_common_description2_content6"
                         android:textColor="@color/greyish_brown_two"
-                        android:textSize="@dimen/text_13" />
+                        android:textSize="@dimen/text_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -649,32 +682,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="@{viewModel.mSellerStore.nickname == null || viewModel.mSellerStore.nickname.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.mSellerStore.nickname == null || viewModel.mSellerStore.nickname.isEmpty() ? View.GONE : View.VISIBLE, default = visible}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
                             android:gravity="center_vertical"
+                            android:minWidth="110dp"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_seller_content1"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="@{viewModel.mSellerStore.nickname}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
 
                         <!--android:text="@{viewModel.product.shipping.isQuickAvailable ? @string/productdetail_quick : @string/productdetail_notquick}"-->
                     </LinearLayout>
@@ -682,194 +718,208 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:visibility="@{viewModel.mSellerStore.representativeName == null || viewModel.mSellerStore.representativeName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:background="@color/white_four" />
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.mSellerStore.representativeName == null || viewModel.mSellerStore.representativeName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="@{viewModel.mSellerStore.representativeName == null || viewModel.mSellerStore.representativeName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.mSellerStore.representativeName == null || viewModel.mSellerStore.representativeName.isEmpty() ? View.GONE : View.VISIBLE, default = visible}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
+
                             android:gravity="center_vertical"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_seller_content2"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@{viewModel.mSellerStore.representativeName}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:visibility="@{viewModel.mSellerStore.companyRegistrationNumber == null || viewModel.mSellerStore.companyRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:background="@color/white_four" />
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.mSellerStore.companyRegistrationNumber == null || viewModel.mSellerStore.companyRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="@{viewModel.mSellerStore.companyRegistrationNumber == null || viewModel.mSellerStore.companyRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.mSellerStore.companyRegistrationNumber == null || viewModel.mSellerStore.companyRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
+
                             android:gravity="center_vertical"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingEnd="10dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_seller_content3"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@{viewModel.mSellerStore.companyRegistrationNumber}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:visibility="@{viewModel.mSellerStore.mailorderRegistrationNumber == null || viewModel.mSellerStore.mailorderRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:background="@color/white_four" />
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.mSellerStore.mailorderRegistrationNumber == null || viewModel.mSellerStore.mailorderRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{viewModel.mSellerStore.mailorderRegistrationNumber == null || viewModel.mSellerStore.mailorderRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.mSellerStore.mailorderRegistrationNumber == null || viewModel.mSellerStore.mailorderRegistrationNumber.isEmpty() ? View.GONE : View.VISIBLE, default = visible}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
+
                             android:gravity="center_vertical"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_seller_content4"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="@{viewModel.mSellerStore.mailorderRegistrationNumber}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:visibility="@{viewModel.mSellerStore.offlineStoreAddress == null || viewModel.mSellerStore.offlineStoreAddress.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:background="@color/white_four" />
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.mSellerStore.offlineStoreAddress == null || viewModel.mSellerStore.offlineStoreAddress.isEmpty() ? View.GONE : View.VISIBLE, default = visible}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:visibility="@{viewModel.mSellerStore.offlineStoreAddress == null || viewModel.mSellerStore.offlineStoreAddress.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        >
+                        android:visibility="@{viewModel.mSellerStore.offlineStoreAddress == null || viewModel.mSellerStore.offlineStoreAddress.isEmpty() ? View.GONE : View.VISIBLE, default = visible}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
+
                             android:gravity="center_vertical"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_seller_content5"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="@{viewModel.mSellerStore.offlineStoreAddress}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:visibility="@{viewModel.mSellerStore.claimTelephone == null || viewModel.mSellerStore.claimTelephone.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
-                        android:background="@color/white_four" />
+                        android:background="@color/white_four"
+                        android:visibility="@{viewModel.mSellerStore.claimTelephone == null || viewModel.mSellerStore.claimTelephone.isEmpty() ? View.GONE : View.VISIBLE, default = visible}" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{viewModel.mSellerStore.claimTelephone == null || viewModel.mSellerStore.claimTelephone.isEmpty() ? View.GONE : View.VISIBLE, default = visible}"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:visibility="@{viewModel.mSellerStore.claimTelephone == null || viewModel.mSellerStore.claimTelephone.isEmpty() ? View.GONE : View.VISIBLE, default = visible}">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/TextRegular"
+                            android:layout_width="110dp"
+                            android:layout_height="match_parent"
                             android:background="@color/pale_grey"
+
                             android:gravity="center_vertical"
+                            android:minHeight="40dp"
                             android:paddingStart="10dp"
                             android:paddingTop="12dp"
                             android:paddingEnd="10dp"
                             android:paddingBottom="12dp"
                             android:text="@string/productdetail_shipping_seller_content6"
+                            android:textColor="@color/greyish_brown_two"
                             android:textSize="@dimen/text_12" />
 
                         <TextView
+                            style="@style/TextRegular"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingStart="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
                             android:text="@{viewModel.mSellerStore.claimTelephone}"
                             android:textColor="@color/greyish_brown_two"
-                            android:textSize="12dp" />
+                            android:textSize="@dimen/text_12" />
                     </LinearLayout>
 
                     <View
