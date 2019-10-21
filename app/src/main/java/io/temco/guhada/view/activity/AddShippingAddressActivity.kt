@@ -36,9 +36,7 @@ class AddShippingAddressActivity : AppCompatActivity(), OnShippingAddressListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        this@AddShippingAddressActivity.requestWindowFeature(Window.FEATURE_NO_TITLE)
         mBinding = DataBindingUtil.setContentView(this, R.layout.dialog_addshippingaddress)
-//        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         addButtonVisible = intent.getBooleanExtra("addButtonVisible", false)
         mViewModel = AddShippingAddressViewModel(this)

@@ -105,7 +105,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun initUtils() {
-        //[2019.06.26]임시 브릿지
         if (context != null) mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
         if (::mLoadingIndicatorUtil.isInitialized) mLoadingIndicatorUtil.show()
     }
@@ -124,7 +123,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel.product.observe(this, Observer<Product> { product ->
             mBinding.product = product
 
-            // [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
+            /**
+             * [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
+             */
             mViewModel.getDueSavePoint()
             mViewModel.getExpectedCoupon()
             initSummary()
@@ -132,7 +133,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             initContent(product)
             hideLoadingIndicator()
 
-            // [상세정보|상품문의|셀러스토어] 탭 하단부 display
+            /**
+             * [상세정보|상품문의|셀러스토어] 탭 하단부 display
+             */
             GlobalScope.launch {
                 mBinding.includeProductdetailContentbody.viewModel = mViewModel
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
@@ -438,10 +441,6 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             mBinding.includeProductdetailContentsummary.totalReviewsCount = totalReviewsCount
             mBinding.executePendingBindings()
         }
-
-//        if (mViewModel.product.value?.productId != null && mViewModel.product.value?.productId?:0 > 0)
-//            mReviewFragment.setProductId(productId = mViewModel.product.value?.productId!!)
-
         childFragmentManager.beginTransaction().let {
             if (!mReviewFragment.isAdded) {
                 it.add(mBinding.framelayoutProductdetailReview.id, mReviewFragment)
@@ -551,7 +550,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
     override fun showSideMenu() = this.mainListener.showSideMenu(true)
 
-    // 메뉴 이동 탭 [상세정보|상품문의|셀러스토어]
+    /**
+     * [상세정보|상품문의|셀러스토어] 탭 이동 scroll
+     */
     override fun scrollToElement(pos: Int) {
         var h = 0
         when (pos) {

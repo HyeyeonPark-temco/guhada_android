@@ -197,7 +197,6 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                 mViewModel.mRatingSpinnerBlock = false
             }
         }
-//        mBinding.spinnerReviewRating.setSelection(0)
     }
 
     private fun initSortingSpinner() {
@@ -228,7 +227,6 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                 }
             }
         }
-//        mBinding.spinnerReviewSorting.setSelection(0)
     }
 
     override fun onDestroyOptionsMenu() {
