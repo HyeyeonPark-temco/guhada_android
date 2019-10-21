@@ -455,7 +455,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                         mViewModel.setOrderApproval()
                     }
                 } else {
-                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_cancel))
+                    val resultMessage = data?.getStringExtra("resultMessage")
+                    val message = if (!resultMessage.isNullOrEmpty()) resultMessage else BaseApplication.getInstance().getString(R.string.payment_message_cancel)
+                    ToastUtil.showMessage(message)
                 }
             }
             Flag.RequestCode.SHIPPING_ADDRESS -> {
@@ -498,7 +500,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                                 ?: false)
                         mViewModel.notifyPropertyChanged(BR.mMobileVerification)
                     }
-                    
+
                     mViewModel.mEmailVerification = ObservableBoolean(emailVerification ?: false)
                     mViewModel.notifyPropertyChanged(BR.mEmailVerification)
 
@@ -513,43 +515,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                         if (selectedCouponMap != null) {
                             mViewModel.mSelectedCouponMap = selectedCouponMap as HashMap<Long, CouponWallet?>
                             mViewModel.getCalculatePaymentInfo()
-//                            var couponCount = 0
-//                            for (key in selectedCouponMap.keys)
-//                                if (selectedCouponMap[key]?.couponId ?: -1 > -1)
-//                                    couponCount++
-//
-//                            data?.getIntExtra("totalDiscountPrice", 0).let { couponDiscountPrice ->
-//                                if (couponDiscountPrice != null) {
-//                                    mViewModel.mCouponDiscountPrice = couponDiscountPrice
-//
-//                                    // 사용가능 n장/보유 m장
-//                                    mBinding.includePaymentDiscount.textviewPaymentDiscountcouponcount.text = Html.fromHtml(String.format(getString(R.string.payment_couponcount_format),
-//                                            mViewModel.order.availableCouponCount, mViewModel.order.totalCouponCount))
-//
-//                                    // -n원(m장)
-//                                    if (couponDiscountPrice > 0) {
-//                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText(String.format(getString(R.string.payment_coupon_format), couponDiscountPrice, couponCount))
-//                                    } else {
-//                                        mBinding.includePaymentDiscount.textviewPaymentDiscountcoupon.setText("")
-//                                    }
-//
-//                                    // [2019.09.24] 할인 금액이 결제 금액보다 큰 경우
-//                                    var totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice + mViewModel.usedPointNumber.toInt()
-//                                    if (couponDiscountPrice > 0 && totalDiscountPrice > mViewModel.order.totalProdPrice) {
-//                                        totalDiscountPrice = couponDiscountPrice + mViewModel.order.totalDiscountDiffPrice
-//                                        mViewModel.usedPointNumber = 0
-//                                        mViewModel.notifyPropertyChanged(BR.usedPoint)
-//                                    }
-//
-//                                    mViewModel.mTotalDiscountPrice = ObservableInt(totalDiscountPrice)
-//                                    mViewModel.mTotalPaymentPrice = ObservableInt((mViewModel.order.totalProdPrice - totalDiscountPrice))
-//                                    mViewModel.notifyPropertyChanged(BR.mTotalDiscountPrice)
-//                                    mViewModel.notifyPropertyChanged(BR.mTotalPaymentPrice)
-//
-//                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscountcoupon.text = String.format(getString(R.string.common_price_format), couponDiscountPrice)
-//                                    mBinding.includePaymentDiscountresult.textviewPaymentDiscounttotalprice.text = String.format(getString(R.string.common_price_format), mViewModel.mTotalPaymentPrice.get())
-//                                }
-//                            }
                         }
                     }
                 }
