@@ -26,6 +26,4 @@ class HomeDeal {
     var kidsList: List<Deal>? = null
 
 
-
-
 }

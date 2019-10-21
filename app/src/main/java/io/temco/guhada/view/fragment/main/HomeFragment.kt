@@ -19,10 +19,7 @@ import io.temco.guhada.databinding.FragmentMainHomeBinding
 import io.temco.guhada.view.activity.CustomDialogActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
-import io.temco.guhada.view.custom.layout.main.HomeListLayout
-import io.temco.guhada.view.custom.layout.main.KidsListLayout
-import io.temco.guhada.view.custom.layout.main.MenListLayout
-import io.temco.guhada.view.custom.layout.main.WomenListLayout
+import io.temco.guhada.view.custom.layout.main.*
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.lang.Exception
@@ -112,7 +109,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                             1->{vw = WomenListLayout(it).apply { mHomeFragment = this@HomeFragment }}
                             2->{vw = MenListLayout(it).apply { mHomeFragment = this@HomeFragment }}
                             3->{vw = KidsListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            4->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
+                            4->{vw = TimeDealListLayout(it).apply { mHomeFragment = this@HomeFragment }}
                             5->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
                             6->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
                             else->{vw = HomeListLayout(it)}
