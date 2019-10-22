@@ -27,7 +27,7 @@ object TrackingEvent {
     }
 
     enum class Cart(val eventName: String){
-        Add_To_Cart("Add To Cart")
+        Add_To_Cart("Add_To_Cart")
     }
 
     enum class Payment(val eventName: String){

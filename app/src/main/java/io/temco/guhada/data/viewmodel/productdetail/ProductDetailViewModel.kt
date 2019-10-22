@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.auth0.android.jwt.JWT
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import com.kochava.base.Tracker
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -16,12 +17,10 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.BookMarkTarget
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.enum.SaveActionType
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.BookMark
 import io.temco.guhada.data.model.BookMarkResponse
 import io.temco.guhada.data.model.Brand
@@ -449,6 +448,19 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     val resultCode = (o as BaseModel<*>).resultCode
                     if (resultCode == ResultCode.SUCCESS.flag) {
                         val cart = o.data as Cart
+
+                        Tracker.Event(TrackingEvent.Cart.Add_To_Cart.eventName).let {
+                            it.addCustom("dealId", product.value?.dealId.toString())
+                            it.addCustom("productId", product.value?.productId.toString())
+                            it.addCustom("brandId", product.value?.brandId.toString())
+                            it.addCustom("sellerId", product.value?.sellerId.toString())
+                            it.addCustom("season", product.value?.season ?: cart.season)
+                            it.addCustom("name", product.value?.name ?: cart.dealName)
+                            it.addCustom("sellPrice", product.value?.sellPrice.toString())
+                            it.addCustom("discountPrice", product.value?.discountPrice.toString())
+                            TrackingUtil.sendKochavaEvent(it)
+                        }
+
                         if (cart.cartValidStatus.status)
                             listener?.showAddCartResult()
                         else {
