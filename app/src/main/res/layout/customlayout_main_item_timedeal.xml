@@ -15,29 +15,31 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_height="480dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/common_white"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:id="@+id/item_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background_default"
-            android:orientation="horizontal">
+            android:layout_marginTop="96dp"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/item_realativelayout"
-                android:layout_marginLeft="12dp"
-                android:layout_width="130dp"
-                android:layout_height="130dp">
+                android:layout_gravity="center_horizontal"
+                android:layout_width="240dp"
+                android:layout_height="240dp">
 
                 <!-- THUMBNAIL -->
                 <ImageView
                     style="@style/ProductImageType"
                     android:id="@+id/image_thumb"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp" />
+                    android:layout_width="240dp"
+                    android:layout_height="240dp" />
 
                 <!-- SHIP -->
                 <TextView
@@ -190,12 +192,12 @@
         <TextView
             android:id="@+id/text_timer"
             style="@style/TextBold"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="12dp"
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
             android:textColor="@color/text_3"
             android:textSize="@dimen/text_16" />
     </RelativeLayout>

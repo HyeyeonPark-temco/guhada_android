@@ -36,6 +36,9 @@ import io.temco.guhada.view.activity.ProductFilterListActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 /**
@@ -47,13 +50,18 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
         CommonRecyclerAdapter<MainBaseModel, TimeDealListAdapter.ListViewHolder>(list){
 
     lateinit var handler : Handler
-    lateinit var customRunnableMap : HashMap<Int, CustomRunnable>
+    lateinit var customRunnableMap : WeakHashMap<Int, CustomRunnable>
 
     fun clearRunnable(){
         if(CustomLog.flag)CustomLog.L("TimeDealListAdapter","clearRunnable")
-        for(r in customRunnableMap.values){
-            if(CustomLog.flag)CustomLog.L("TimeDealListAdapter","clearRunnable---")
-            if(::handler.isInitialized) handler.removeCallbacks(r)
+        if(::customRunnableMap.isInitialized){
+            for(r in customRunnableMap.values){
+                if(::handler.isInitialized) {
+                    if(CustomLog.flag)CustomLog.L("TimeDealListAdapter","clearRunnable---")
+                    handler.removeCallbacks(r)
+                }
+            }
+            customRunnableMap.clear()
         }
     }
     /**
@@ -77,7 +85,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
 
     override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         if(!::handler.isInitialized) handler = Handler()
-        if(!::customRunnableMap.isInitialized) customRunnableMap = hashMapOf()
+        if(!::customRunnableMap.isInitialized) customRunnableMap = WeakHashMap()
         val layoutInflater = LayoutInflater.from(parent.context)
         when(items[viewType].type){
             HomeType.MainEvent->{
@@ -450,14 +458,16 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
     /**
      * 메인 리스트에 더미 화면 view holder
      */
-    class TimeDealViewHolder(private val containerView: View, val binding: CustomlayoutMainItemTimedealBinding, var handler : Handler, var customRunnableMap : HashMap<Int, CustomRunnable>) : ListViewHolder(containerView, binding){
+    class TimeDealViewHolder(private val containerView: View, val binding: CustomlayoutMainItemTimedealBinding, var handler : Handler, var customRunnableMap : WeakHashMap<Int, CustomRunnable>) : ListViewHolder(containerView, binding){
 
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if(item is TimeDeal){
-                if(customRunnableMap.contains(position)) handler.removeCallbacks(customRunnableMap[position])
+                if(customRunnableMap.contains(position)){
+                    handler.removeCallbacks(customRunnableMap[position])
+                    customRunnableMap.remove(position,customRunnableMap[position])
+                }
 
-                binding.imageThumb.contentDescription = item.deal.productImage.url
                 binding.itemLayout.contentDescription = item.deal.dealId.toString()
                 binding.itemLayout.setOnClickListener{
                     var id = it.contentDescription.toString().toLong()
@@ -506,7 +516,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 }
                 // Ship
                 //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
-                binding.textShipFree.visibility = (if (item.deal.isFreeShipping) View.VISIBLE else View.GONE)
+                //binding.textShipFree.visibility = (if (item.deal.isFreeShipping) View.VISIBLE else View.GONE)
 
                 var seconds = item.endTime
                 var minutes = seconds / 60
@@ -517,10 +527,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 binding.textTimer.text = time
                 var customRunnable = CustomRunnable( item.endTime, binding.textTimer, handler)
                 customRunnableMap.put(position, customRunnable)
-                handler.postDelayed(customRunnable, 1000)
-                /*if(binding.imageThumb.contentDescription == null || (binding.imageThumb.contentDescription.toString().isNotEmpty() && item.deal.productImage.url != binding.imageThumb.contentDescription.toString())){
-
-                }*/
+                handler.postDelayed(customRunnable, 998)
             }
         }
 

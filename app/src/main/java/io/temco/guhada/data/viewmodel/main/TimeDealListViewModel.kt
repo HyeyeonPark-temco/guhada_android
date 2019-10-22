@@ -39,22 +39,23 @@ class TimeDealListViewModel(val context : Context) : BaseObservableViewModel() {
                         var timeDeal : ArrayList<TimeDeal> = arrayListOf()
                         var index = 1
                         for(t in deals.allList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 314000L + (index+1))))
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 119000L + (index+1))))
                             index++
                         }
                         for(t in deals.womenList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 31000L + (index+1))))
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 218000L + (index+1))))
                             index++
                         }
                         for(t in deals.menList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 441000L + (index+1))))
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 347000L + (index+1))))
                             index++
                         }
                         for(t in deals.kidsList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 2341000L + (index+1))))
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 536000L + (index+1))))
                             index++
                         }
                         listData.addAll(timeDeal)
+                        listData.add(MainBaseModel(timeDeal.size,HomeType.Footer,2))
                         listener.callBackListener(true,"")
                     },
                     dataNotFoundTask = {

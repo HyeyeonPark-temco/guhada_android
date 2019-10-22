@@ -266,21 +266,38 @@ class MyPageUserInfoLayout constructor(
                     }
                     Flag.ResultCode.DATA_NOT_FOUND ->
                         // SNS 회원가입
-                        mUserInfoViewModel.joinSnsUser { success1, o1 ->
-                            if (success1) {
-                                val m = o1 as BaseModel<Token>
-                                if (m.resultCode == Flag.ResultCode.SUCCESS) {
-                                    val t = Token()
-                                    t.accessToken = m.data.accessToken
-                                    t.refreshToken = m.data.refreshToken
-                                    t.expiresIn = m.data.expiresIn
-                                    //setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
-                                    CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
-                                } else {
-                                    ToastUtil.showMessage(m.message)
+                        mUserInfoViewModel.joinSnsUser(object : OnServerListener{
+                            override fun onResult(success: Boolean, o: Any?) {
+                                if (success) {
+                                    val m = o as BaseModel<Token>
+                                    if (m.resultCode == Flag.ResultCode.SUCCESS) {
+                                        val t = Token()
+                                        t.accessToken = m.data.accessToken
+                                        t.refreshToken = m.data.refreshToken
+                                        t.expiresIn = m.data.expiresIn
+                                        //setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                                        CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
+                                    } else {
+                                        ToastUtil.showMessage(m.message)
+                                    }
                                 }
                             }
+                        })
+                    /*mUserInfoViewModel.joinSnsUser { success1, o1 ->
+                        if (success1) {
+                            val m = o1 as BaseModel<Token>
+                            if (m.resultCode == Flag.ResultCode.SUCCESS) {
+                                val t = Token()
+                                t.accessToken = m.data.accessToken
+                                t.refreshToken = m.data.refreshToken
+                                t.expiresIn = m.data.expiresIn
+                                //setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
+                            } else {
+                                ToastUtil.showMessage(m.message)
+                            }
                         }
+                    }*/
                 }
             } else {
                 val message = o as String
