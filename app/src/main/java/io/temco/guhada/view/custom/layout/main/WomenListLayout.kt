@@ -292,6 +292,7 @@ class WomenListLayout constructor(
     }
 
     override fun onFocusView() {  }
+    override fun onReleaseView() { }
     override fun onStart() { }
     override fun onResume() { setRecentProductCount() }
     override fun onPause() { }

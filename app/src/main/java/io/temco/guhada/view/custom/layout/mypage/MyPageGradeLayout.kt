@@ -28,32 +28,11 @@ class MyPageGradeLayout constructor(
     }
 
 
-    override fun onFocusView() {
-
-    }
-
-    override fun onStart() {
-        if (CustomLog.flag) CustomLog.L("MyPageGradeLayout", "onStart ", "init -----")
-
-    }
-
-    override fun onResume() {
-        if (CustomLog.flag) CustomLog.L("MyPageGradeLayout", "onResume ", "init -----")
-
-    }
-
-    override fun onPause() {
-        if (CustomLog.flag) CustomLog.L("MyPageGradeLayout", "onPause ", "init -----")
-
-    }
-
-    override fun onStop() {
-        if (CustomLog.flag) CustomLog.L("MyPageGradeLayout", "onStop ", "init -----")
-
-    }
-
-    override fun onDestroy() {
-        if (CustomLog.flag) CustomLog.L("MyPageGradeLayout", "onDestroy ", "init -----")
-
-    }
+    override fun onFocusView() { }
+    override fun onReleaseView() { }
+    override fun onStart() { }
+    override fun onResume() { }
+    override fun onPause() { }
+    override fun onStop() { }
+    override fun onDestroy() { }
 }

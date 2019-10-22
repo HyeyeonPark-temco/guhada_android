@@ -3,6 +3,7 @@ package io.temco.guhada.view.adapter.main
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -43,6 +45,17 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
  */
 class TimeDealListAdapter(private val model : TimeDealListViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, TimeDealListAdapter.ListViewHolder>(list){
+
+    lateinit var handler : Handler
+    lateinit var customRunnableMap : HashMap<Int, CustomRunnable>
+
+    fun clearRunnable(){
+        if(CustomLog.flag)CustomLog.L("TimeDealListAdapter","clearRunnable")
+        for(r in customRunnableMap.values){
+            if(CustomLog.flag)CustomLog.L("TimeDealListAdapter","clearRunnable---")
+            if(::handler.isInitialized) handler.removeCallbacks(r)
+        }
+    }
     /**
      * HomeType 에 따른 item view  TextUtils
      */
@@ -63,6 +76,8 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
     }
 
     override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+        if(!::handler.isInitialized) handler = Handler()
+        if(!::customRunnableMap.isInitialized) customRunnableMap = hashMapOf()
         val layoutInflater = LayoutInflater.from(parent.context)
         when(items[viewType].type){
             HomeType.MainEvent->{
@@ -86,8 +101,8 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 return TermViewHolder(binding.root, binding)
             }
             HomeType.TimeDeal->{
-                val binding : io.temco.guhada.databinding.CustomlayoutMainItemTimedealBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
-                return TimeDealViewHolder(binding.root, binding)
+                val binding : CustomlayoutMainItemTimedealBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                return TimeDealViewHolder(binding.root, binding, handler, customRunnableMap)
             }
             else ->{
                 val binding : CustomlayoutMainItemPaddingBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
@@ -98,19 +113,6 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
 
     override fun setOnBindViewHolder(viewHolder: ListViewHolder, item: MainBaseModel, position: Int) {
         viewHolder.bind(model as TimeDealListViewModel, position, item)
-        if(viewHolder is TimeDealViewHolder){
-            if(CustomLog.flag)CustomLog.L("setOnBindViewHolder","TimeDealViewHolder ----")
-            if(viewHolder.timer != null) viewHolder.timer?.cancel()
-            viewHolder.timer = object : CountDownTimer(9000000000,1000){
-                override fun onFinish() {
-                }
-                override fun onTick(millisUntilFinished: Long) {
-                    viewHolder.onTick()
-                }
-            }.start()
-        }
-
-
     }
 
     override fun isFooter(position: Int) = false
@@ -448,76 +450,80 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
     /**
      * 메인 리스트에 더미 화면 view holder
      */
-    class TimeDealViewHolder(private val containerView: View, val binding: CustomlayoutMainItemTimedealBinding) : ListViewHolder(containerView, binding){
-        var timer : CountDownTimer? = null
+    class TimeDealViewHolder(private val containerView: View, val binding: CustomlayoutMainItemTimedealBinding, var handler : Handler, var customRunnableMap : HashMap<Int, CustomRunnable>) : ListViewHolder(containerView, binding){
+
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if(item is TimeDeal){
-                if(binding.imageThumb.tag != null && binding.imageThumb.tag.toString().isNotEmpty() && item.deal.productImage.url != binding.imageThumb.tag.toString()){
-                    binding.imageThumb.tag = item.deal.productImage.url
-                    binding.itemLayout.contentDescription = item.deal.dealId.toString()
-                    binding.itemLayout.setOnClickListener{
-                        var id = it.contentDescription.toString().toLong()
-                        CommonUtil.startProductActivity(viewModel.context as Activity, id)
-                    }
-                    ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url)
+                if(customRunnableMap.contains(position)) handler.removeCallbacks(customRunnableMap[position])
 
-                    // Brand
-                    binding.textBrand.setText(item.deal.brandName)
+                binding.imageThumb.contentDescription = item.deal.productImage.url
+                binding.itemLayout.contentDescription = item.deal.dealId.toString()
+                binding.itemLayout.setOnClickListener{
+                    var id = it.contentDescription.toString().toLong()
+                    CommonUtil.startProductActivity(viewModel.context as Activity, id)
+                }
+                ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url)
 
-                    // Season
-                    binding.textSeason.setText(item.deal.productSeason)
+                // Brand
+                binding.textBrand.setText(item.deal.brandName)
 
-                    // Title
-                    binding.textTitle.setText(item.deal.dealName)
+                // Season
+                binding.textSeason.setText(item.deal.productSeason)
 
-                    // Seller Name
-                    binding.textSellerName.setText(item.deal.sellerName)
+                // Title
+                binding.textTitle.setText(item.deal.dealName)
 
-                    // Option
-                    if (binding.layoutColor.getChildCount() > 0) binding.layoutColor.removeAllViews()
+                // Seller Name
+                binding.textSellerName.setText(item.deal.sellerName)
 
-                    if (item.deal.options != null && item.deal.options.size > 0) {
-                        for (o in item.deal.options) {
-                            when (Type.ProductOption.getType(o.type)) {
-                                Type.ProductOption.COLOR -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes) // 5 Units
-                                Type.ProductOption.RGB -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes) // 5 Units
-                                Type.ProductOption.TEXT -> addText((containerView.context as Activity), o.attributes)
-                            }
+                // Option
+                if (binding.layoutColor.getChildCount() > 0) binding.layoutColor.removeAllViews()
+
+                if (item.deal.options != null && item.deal.options.size > 0) {
+                    for (o in item.deal.options) {
+                        when (Type.ProductOption.getType(o.type)) {
+                            Type.ProductOption.COLOR -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes) // 5 Units
+                            Type.ProductOption.RGB -> addColor((containerView.context as Activity), binding.layoutColor, 5, o.attributes) // 5 Units
+                            Type.ProductOption.TEXT -> addText((containerView.context as Activity), o.attributes)
                         }
                     }
-                    R.layout.layout_tab_innercategory
-                    // Price
-                    if (item.deal.discountRate > 0) {
-                        binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.discountPrice.toInt())
-                        //textPrice.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.toInt()))
-                        binding.textPriceSalePer.text = String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), item.deal.discountRate)
-                        binding.textPricediscount.visibility = View.VISIBLE
-                        binding.textPricediscount.paintFlags = (binding.textPricediscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
-                        binding.textPricediscount.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
-                        //text_pricediscount.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
-                    } else {
-                        binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
-                        //textPrice.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
-                        binding.textPricediscount.visibility = View.GONE
-                    }
-                    // Ship
-                    //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
-                    binding.textShipFree.visibility = (if (item.deal.isFreeShipping) View.VISIBLE else View.GONE)
                 }
-                item.endTime = (position+1) * 1000L + (position+1)
-                binding.textTimer.tag = item.endTime
-                binding.textTimer.text = item.endTime.toString()
+                R.layout.layout_tab_innercategory
+                // Price
+                if (item.deal.discountRate > 0) {
+                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.discountPrice.toInt())
+                    //textPrice.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.toInt()))
+                    binding.textPriceSalePer.text = String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), item.deal.discountRate)
+                    binding.textPricediscount.visibility = View.VISIBLE
+                    binding.textPricediscount.paintFlags = (binding.textPricediscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
+                    binding.textPricediscount.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
+                    //text_pricediscount.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
+                } else {
+                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
+                    //textPrice.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
+                    binding.textPricediscount.visibility = View.GONE
+                }
+                // Ship
+                //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
+                binding.textShipFree.visibility = (if (item.deal.isFreeShipping) View.VISIBLE else View.GONE)
+
+                var seconds = item.endTime
+                var minutes = seconds / 60
+                var hours = minutes / 60
+                var days = hours / 24
+                var time = days.toString() +" "+"days" +" :" +hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
+
+                binding.textTimer.text = time
+                var customRunnable = CustomRunnable( item.endTime, binding.textTimer, handler)
+                customRunnableMap.put(position, customRunnable)
+                handler.postDelayed(customRunnable, 1000)
+                /*if(binding.imageThumb.contentDescription == null || (binding.imageThumb.contentDescription.toString().isNotEmpty() && item.deal.productImage.url != binding.imageThumb.contentDescription.toString())){
+
+                }*/
             }
         }
 
-        fun onTick(){
-            var count = binding.textTimer.tag.toString().toLong()
-            count -= 1
-            binding.textTimer.text = count.toString()
-            binding.textTimer.tag = count
-            if(CustomLog.flag)CustomLog.L("setOnBindViewHolder","TimeDealViewHolder --onTick--",count.toString())
-        }
     }
 
     /**
@@ -586,11 +592,29 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
                 binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
-                binding.imageDummy.setBackgroundResource(item.imageRes)
+                binding.imageDummy.setBackgroundColor(Color.TRANSPARENT)
+                //binding.imageDummy.setBackgroundResource(item.imageRes)
             }
         }
     }
 
+
+    class CustomRunnable(var millisUntilFinished : Long, var text : TextView, var handler : Handler) : Runnable {
+
+        override fun run() {
+            var seconds = millisUntilFinished
+            var minutes = seconds / 60
+            var hours = minutes / 60
+            var days = hours / 24
+            var time = days.toString() +" "+"days" +" :" +hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
+            text.text = time
+            if(CustomLog.flag)CustomLog.L("CustomRunnable","time",time)
+            millisUntilFinished -= 1
+            if(millisUntilFinished > 0){
+                handler.postDelayed(this, 1000)
+            }
+        }
+    }
 
 }
 

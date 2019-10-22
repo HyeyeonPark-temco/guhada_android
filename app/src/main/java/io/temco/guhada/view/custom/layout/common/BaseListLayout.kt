@@ -58,6 +58,9 @@ abstract class BaseListLayout<B : ViewDataBinding,T : BaseObservableViewModel> :
     // viewpager에 의해 현재 페이지로 선택이 되었을때 호출
     abstract fun onFocusView()
 
+    // viewpager에 의해 현재 페이지로 선택이 되었을때 호출
+    abstract fun onReleaseView()
+
     // fragment 의 onStart
     abstract fun onStart()
 

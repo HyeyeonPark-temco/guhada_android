@@ -78,31 +78,13 @@ class MyPageBookMarkLayout constructor(
         })
     }
 
-    override fun onFocusView() {
-        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onFocusView ", "init -----")
 
-    }
-
-    override fun onStart() {
-        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onStart ", "init -----")
-
-    }
-
-    override fun onResume() {
-        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onResume ", "init -----")
-
-    }
-
-    override fun onPause() {
-        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onPause ", "init -----")
-
-    }
-
-    override fun onStop() {
-        if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onStop ", "init -----")
-
-    }
-
+    override fun onFocusView() { }
+    override fun onReleaseView() { }
+    override fun onStart() { }
+    override fun onResume() { }
+    override fun onPause() { }
+    override fun onStop() { }
     override fun onDestroy() {
         if (CustomLog.flag) CustomLog.L("MyPageBookMarkLayout", "onDestroy ", "init -----")
         mBinding.viewModel?.destroyModel()

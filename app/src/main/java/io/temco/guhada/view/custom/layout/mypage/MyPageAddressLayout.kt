@@ -110,27 +110,12 @@ class MyPageAddressLayout constructor(
         }
     }
 
-    override fun onFocusView() {
+    override fun onFocusView() { }
+    override fun onReleaseView() { }
+    override fun onStart() { }
+    override fun onResume() { }
+    override fun onPause() { }
+    override fun onStop() { }
+    override fun onDestroy() { }
 
-    }
-
-    override fun onStart() {
-
-    }
-
-    override fun onResume() {
-
-    }
-
-    override fun onPause() {
-
-    }
-
-    override fun onStop() {
-
-    }
-
-    override fun onDestroy() {
-
-    }
 }

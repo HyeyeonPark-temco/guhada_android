@@ -31,7 +31,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     // -------- LOCAL VALUE --------
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
     private var currentPagerIndex : Int = 0
-    var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>> = WeakHashMap()
+    lateinit var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>>
 
     var recentProductCount = 0
     // -----------------------------
@@ -43,6 +43,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     override fun getBaseTag() = HomeFragment::class.java.simpleName
     override fun getLayoutId() = R.layout.fragment_main_home
     override fun init() {
+        customLayoutMap = WeakHashMap()
         initHeader()
         setEvenBus()
     }
@@ -129,7 +130,15 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
                 currentPagerIndex = position
-                if (customLayoutMap.containsKey(currentPagerIndex)) customLayoutMap.get(currentPagerIndex)!!.onFocusView()
+                if (customLayoutMap.containsKey(currentPagerIndex)) {
+                    customLayoutMap.get(currentPagerIndex)!!.onFocusView()
+                    if (customLayoutMap.isNotEmpty()) {
+                        for (k in customLayoutMap.keys) {
+                            if(k != currentPagerIndex)
+                                customLayoutMap[k]!!.onReleaseView()
+                        }
+                    }
+                }
             }
         })
         mBinding.viewpager.offscreenPageLimit = 3
@@ -230,6 +239,17 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         if (customLayoutMap.isNotEmpty()) {
             for (v in customLayoutMap) {
                 v.value.onStop()
+            }
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding.layoutAppbar.setExpanded(true,false)
+        if (customLayoutMap.isNotEmpty()) {
+            for (v in customLayoutMap) {
+                v.value.onDestroy()
             }
         }
     }

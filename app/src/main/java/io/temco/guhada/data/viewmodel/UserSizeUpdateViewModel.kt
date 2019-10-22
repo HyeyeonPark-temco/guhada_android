@@ -11,7 +11,6 @@ import androidx.databinding.ObservableInt
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnServerListener
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.base.BaseModel

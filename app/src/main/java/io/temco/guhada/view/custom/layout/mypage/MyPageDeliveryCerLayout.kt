@@ -93,30 +93,13 @@ class MyPageDeliveryCerLayout constructor(
         mBinding.calendarfilterMypageDeliver.setDate(CustomCalendarFilter.CalendarPeriod.THREE_MONTH.date)
     }
 
-    override fun onFocusView() {
-
-    }
-
-
-    override fun onStart() {
-
-    }
-
-    override fun onResume() {
-
-    }
-
-    override fun onPause() {
-
-    }
-
-    override fun onStop() {
-
-    }
-
-    override fun onDestroy() {
-
-    }
+    override fun onFocusView() { }
+    override fun onReleaseView() { }
+    override fun onStart() { }
+    override fun onResume() { }
+    override fun onPause() { }
+    override fun onStop() { }
+    override fun onDestroy() { }
 
     // CustomCalendarListener
     override fun onClickWeek() = changeDate()

@@ -4,18 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.util.DisplayMetrics
 import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatSpinner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CommonViewUtil
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.data.model.user.UserSize
 import io.temco.guhada.data.viewmodel.UserSizeUpdateViewModel
-import io.temco.guhada.view.CustomSpinner
 import io.temco.guhada.view.activity.base.BindActivity
 
 

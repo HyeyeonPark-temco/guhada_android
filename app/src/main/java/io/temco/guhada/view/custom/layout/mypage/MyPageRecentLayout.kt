@@ -83,8 +83,9 @@ class MyPageRecentLayout constructor(
 
     override fun onFocusView() {
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onFocusView ", "init -----")
-
     }
+
+    override fun onReleaseView() { }
 
     override fun onStart() {
         if (CustomLog.flag) CustomLog.L("MyPageRecentLayout", "onStart ", "init -----")

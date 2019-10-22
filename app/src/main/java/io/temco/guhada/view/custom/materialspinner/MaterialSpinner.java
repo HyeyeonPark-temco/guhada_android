@@ -94,7 +94,8 @@ public class MaterialSpinner extends AppCompatTextView {
     int defaultPopupPaddingLeft, defaultPopupPaddingTop, defaultPopupPaddingRight, defaultPopupPaddingBottom;
 
     Resources resources = getResources();
-    defaultPaddingLeft = defaultPaddingRight = defaultPaddingBottom = defaultPaddingTop = resources.getDimensionPixelSize(R.dimen.ms__padding_top);
+    defaultPaddingLeft = defaultPaddingRight = resources.getDimensionPixelSize(R.dimen.ms__padding_left);
+    defaultPaddingBottom = defaultPaddingTop = resources.getDimensionPixelSize(R.dimen.ms__padding_top);
     if (rtl) {
       defaultPaddingRight = resources.getDimensionPixelSize(R.dimen.ms__padding_left);
     } else {

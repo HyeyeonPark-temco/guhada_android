@@ -10,30 +10,19 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusData
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
-import io.temco.guhada.common.listener.OnClickSelectItemListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.data.db.GuhadaDB
-import io.temco.guhada.data.db.entity.CategoryEntity
-import io.temco.guhada.data.db.entity.CategoryLabelType
-import io.temco.guhada.data.model.main.MainBaseModel
-import io.temco.guhada.data.viewmodel.main.KidsListViewModel
 import io.temco.guhada.data.viewmodel.main.TimeDealListViewModel
-import io.temco.guhada.databinding.CustomlayoutMainKidslistBinding
 import io.temco.guhada.databinding.CustomlayoutMainTimelistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.activity.MainActivity
-import io.temco.guhada.view.adapter.main.SubTitleListAdapter
+import io.temco.guhada.view.adapter.main.TimeDealListAdapter
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.fragment.main.HomeFragment
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
@@ -61,7 +50,7 @@ class TimeDealListLayout constructor(
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
             override fun getSpanSize(position: Int): Int {
-                return mViewModel.listData.value!![position].gridSpanCount
+                return mViewModel.listData[position].gridSpanCount
             }
         }
 
@@ -82,13 +71,9 @@ class TimeDealListLayout constructor(
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) { }
         })
 
-        mViewModel.listData.observe(this,
-                androidx.lifecycle.Observer<ArrayList<MainBaseModel>> {
-                    //if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 1----------------",it.size)
-                    mViewModel.getListAdapter().notifyDataSetChanged()
-                    //if (CustomLog.flag) CustomLog.L("HomeListLayout LIFECYCLE", "onViewCreated listData.size 2----------------",mViewModel.getListAdapter().items.size)
-                }
-        )
+        mViewModel.adapter = TimeDealListAdapter(mViewModel, mViewModel.listData)
+        mBinding.recyclerView.adapter = mViewModel.adapter
+
 
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
@@ -259,11 +244,38 @@ class TimeDealListLayout constructor(
                 .start()
     }
 
+    private fun startView(){
+        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","startView onResume")
+        mViewModel.adapter.items.clear()
+        mViewModel.adapter.notifyDataSetChanged()
+        mViewModel.getTimeDealItem(object  : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
+                if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onResume callBackListener")
+                (mBinding.recyclerView.adapter as TimeDealListAdapter).notifyDataSetChanged()
+            }
+        })
+    }
 
-    override fun onFocusView() {  }
+    override fun onFocusView() {
+        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onFocusView")
+        startView()
+    }
+
+    override fun onReleaseView() {
+        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onReleaseView")
+        mViewModel.adapter.clearRunnable()
+    }
+
     override fun onStart() { }
-    override fun onResume() { setRecentProductCount() }
-    override fun onPause() { }
+    override fun onResume() {
+        setRecentProductCount()
+        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onResume")
+        startView()
+    }
+    override fun onPause() {
+        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onPause")
+        mViewModel.adapter.clearRunnable()
+    }
     override fun onStop() { }
-    override fun onDestroy() { }
+    override fun onDestroy() {  }
 }

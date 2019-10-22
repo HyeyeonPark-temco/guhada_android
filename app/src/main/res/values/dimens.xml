@@ -68,9 +68,9 @@
 
     <!-- MaterialSpinner -->
     <dimen name="ms__padding_left">15dp</dimen>
-    <dimen name="ms__padding_top">15dp</dimen>
+    <dimen name="ms__padding_top">6dp</dimen>
     <dimen name="ms__item_height">45dp</dimen>
     <dimen name="ms__popup_padding_left">15dp</dimen>
-    <dimen name="ms__popup_padding_top">12dp</dimen>
+    <dimen name="ms__popup_padding_top">10dp</dimen>
 
 </resources>
