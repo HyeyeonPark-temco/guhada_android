@@ -34,7 +34,7 @@ class TimeDealListViewModel(val context : Context) : BaseObservableViewModel() {
         SearchServer.getProductByBestItem(10, OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        listData.add(DummyImage(listData.size, HomeType.Dummy, R.color.transparent, 320))
+                        listData.add(DummyImage(listData.size, HomeType.Dummy, R.color.transparent, 280))
                         var deals =  (o as BaseModel<*>).data as HomeDeal
                         var timeDeal : ArrayList<TimeDeal> = arrayListOf()
                         var index = 1
