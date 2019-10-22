@@ -12,10 +12,12 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.Token
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverUser
@@ -68,9 +70,14 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
 
     fun onClickBack() {
         loginListener.closeActivity(RESULT_CANCELED)
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_CancelButton.eventName)
     }
 
     fun onClickSignIn() {
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_InputId.eventName)
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_Inputpw.eventName)
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_LoginButton.eventName)
+
         if (CommonUtil.validateEmail(id)) {
             UserServer.signIn(OnServerListener { success, o ->
                 if (CustomLog.flag) CustomLog.L("LoginViewModel onClickSignIn", "success", success)
@@ -108,34 +115,43 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
 
     fun onClickSignUp() {
         loginListener.redirectJoinActivity()
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SignUpButton.eventName)
     }
 
     fun onClickFindId() {
-
+        loginListener.redirectFindAccountActivity()
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_FindIdButton.eventName)
     }
 
     fun onClickFindPwd() {
-
+        loginListener.redirectFindAccountActivity()
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_FindPwButton.eventName)
     }
 
     fun onClickNaver() {
         loginListener.onNaverLogin()
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_NaverLoginButton.eventName)
     }
 
     fun onClickKakao() {
         if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "requestCode onClickKakao")
         loginListener.onKakaoLogin()
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_KakaoLoginButton.eventName)
     }
 
     fun onClickFacebook() {
         loginListener.onFacebookLogin()
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_FacebookLoginButton.eventName)
     }
 
     fun onClickGoogle() {
         loginListener.onGoogleLogin()
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_GoogleLoginButton.eventName)
     }
 
     fun onCheckedSaveId(checked: Boolean) {
+        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SaveIdClick.eventName)
+
         isIdSaved = checked
         Preferences.setIsIdSaved(checked)
         if (!checked) {
