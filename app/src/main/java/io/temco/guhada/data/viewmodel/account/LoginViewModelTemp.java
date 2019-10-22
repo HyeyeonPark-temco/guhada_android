@@ -31,7 +31,12 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class LoginViewModel extends BaseObservableViewModel {
+/**
+ * Login View Model (Java)
+ * 미사용
+ * @author Hyeyeon Park
+ */
+public class LoginViewModelTemp extends BaseObservableViewModel {
     public String toolBarTitle = "";
     private String id = Preferences.getSavedId(), pwd = "";
     private boolean buttonAvailable = false;
@@ -40,8 +45,9 @@ public class LoginViewModel extends BaseObservableViewModel {
     private Object snsUser;
     private SnsUser tempSnsUser = new SnsUser();
 
-    public LoginViewModel(OnLoginListener listener) {
+    public LoginViewModelTemp(OnLoginListener listener) {
         this.loginListener = listener;
+
     }
 
     // GETTER & SETTER
