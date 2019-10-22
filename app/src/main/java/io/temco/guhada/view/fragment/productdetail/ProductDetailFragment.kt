@@ -25,6 +25,7 @@ import com.google.android.gms.analytics.HitBuilders
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
+import com.kochava.base.Tracker
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -35,6 +36,7 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnMainListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.listener.OnProductDetailMenuListener
@@ -121,6 +123,18 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         })
         mViewModel.product.observe(this, Observer<Product> { product ->
+            Tracker.Event(TrackingEvent.Product.View_Product.eventName).let {
+                it.addCustom("dealId", product.dealId.toString())
+                it.addCustom("productId", product.productId.toString())
+                it.addCustom("brandId", product.brandId.toString())
+                it.addCustom("sellerId", product.sellerId.toString())
+                it.addCustom("season", product.season)
+                it.addCustom("name", product.name)
+                it.addCustom("sellPrice", product.sellPrice.toString())
+                it.addCustom("discountPrice", product.discountPrice.toString())
+                TrackingUtil.sendKochavaEvent(it)
+            }
+
             mBinding.product = product
 
             /**

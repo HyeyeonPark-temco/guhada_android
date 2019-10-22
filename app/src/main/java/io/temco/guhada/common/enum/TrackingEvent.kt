@@ -21,6 +21,18 @@ object TrackingEvent {
 //        Login_MainP_AutomaticLoginClick("Login_MainP_AutomaticLoginClick")    // [자동 로그인] 없음
 //        Login_MainP_CheckOrderButton("Login_MainP_CheckOrderButton")          // [비회원 주문조회] 없음
     }
+
+    enum class Product(val eventName: String){
+        View_Product("View_Product")
+    }
+
+    enum class Cart(val eventName: String){
+        Add_To_Cart("Add To Cart")
+    }
+
+    enum class Payment(val eventName: String){
+
+    }
 }
 
 

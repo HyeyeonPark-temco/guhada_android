@@ -13,7 +13,10 @@ object TrackingUtil {
     @JvmStatic
     fun sendKochavaEvent(key: String, value: String = "") {
         if (mFlag) Tracker.sendEvent(key, value)
-
     }
 
+    @JvmStatic
+    fun sendKochavaEvent(event:Tracker.Event) {
+        if (mFlag) Tracker.sendEvent(event)
+    }
 }
