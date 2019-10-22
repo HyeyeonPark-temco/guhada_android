@@ -86,66 +86,21 @@
                     android:textSize="@dimen/text_14"
                     android:text="@string/user_size_update_subtitle1" />
 
-                <FrameLayout
-                    android:id="@+id/framelayout_usersizeupdate_sub1"
+                <io.temco.guhada.view.custom.materialspinner.MaterialSpinner
+                    android:id="@+id/spinner_usersizeupdate_sub1"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:background="@color/common_white"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp" >
+                    app:ms_start_index_half="true"
+                    app:ms_text_size="13"
+                    app:ms_hint="@string/common_select_spinner"
+                    app:ms_text_color="@color/black_four"
+                    app:ms_hint_color="@color/warm_grey_two"
+                    app:ms_dropdown_max_height="250dp"
+                    app:ms_dropdown_height="50dp"
+                    app:ms_background_color="@drawable/border_all_whitethree"/>
 
-                    <io.temco.guhada.view.CustomSpinner
-                        android:id="@+id/spinner_usersizeupdate_sub1"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:dropDownWidth="match_parent"
-                        android:background="@color/transparent"
-                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub1Selected(pos)}"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:overlapAnchor="false"
-                        android:popupBackground="@null"
-                        android:popupElevation="0dp"
-                        android:spinnerMode="dropdown"
-                        app:bindCommonSpinner="@{viewModel.userHeightTxtList}" />
-
-                    <!--android:background="@drawable/border_all_whitethree"-->
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@color/white_three"
-                        android:padding="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="43dp"
-                            android:background="@color/common_white"
-                            android:orientation="horizontal"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="15dp"
-                            android:popupBackground="@null">
-
-                            <TextView
-                                style="@style/PaymentContentGreyTextStyle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
-                                android:textColor="@color/black_four"
-                                android:textSize="@dimen/text_13"
-                                android:text="@{viewModel.userSizeUpdateHeight > 0 ? @string/user_size_update_sub1_value(viewModel.userSizeUpdateHeight) : @string/common_select_spinner , default = @string/common_select_spinner}" />
-
-                            <ImageView
-                                android:id="@+id/imageview_usersizeupdate_sub1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:src="@{viewModel.userSizeSubMenuImgArrow == 1 ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
-                        </LinearLayout>
-                    </FrameLayout>
-                </FrameLayout>
 
                 <TextView
                     style="@style/TextRegular"
@@ -160,62 +115,21 @@
                     android:textSize="@dimen/text_14"
                     android:text="@string/user_size_update_subtitle2" />
 
-                <FrameLayout
-                    android:id="@+id/framelayout_usersizeupdate_sub2"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@color/common_white"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp" >
 
-                <io.temco.guhada.view.CustomSpinner
+                <io.temco.guhada.view.custom.materialspinner.MaterialSpinner
                     android:id="@+id/spinner_usersizeupdate_sub2"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:background="@drawable/border_all_whitethree"
-                    android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub2Selected(pos)}"
-                    android:overScrollMode="never"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@null"
-                    android:spinnerMode="dropdown"
-                    app:bindCommonSpinner="@{viewModel.userWeightTxtList}" />
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@color/white_three"
-                        android:padding="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="43dp"
-                            android:background="@color/common_white"
-                            android:orientation="horizontal"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="15dp"
-                            android:popupBackground="@null">
-
-                            <TextView
-                                style="@style/PaymentContentGreyTextStyle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
-                                android:textColor="@color/black_four"
-                                android:textSize="@dimen/text_13"
-                                android:text="@{viewModel.userSizeUpdateWeight > 0 ? @string/user_size_update_sub2_value(viewModel.userSizeUpdateWeight) : @string/common_select_spinner , default = @string/common_select_spinner}"/>
-
-                            <ImageView
-                                android:id="@+id/imageview_usersizeupdate_sub2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:src="@{viewModel.userSizeSubMenuImgArrow == 2 ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
-                        </LinearLayout>
-                    </FrameLayout>
-
-                </FrameLayout>
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    app:ms_start_index_half="true"
+                    app:ms_text_size="13"
+                    app:ms_hint="@string/common_select_spinner"
+                    app:ms_text_color="@color/black_four"
+                    app:ms_hint_color="@color/warm_grey_two"
+                    app:ms_dropdown_max_height="250dp"
+                    app:ms_dropdown_height="50dp"
+                    app:ms_background_color="@drawable/border_all_whitethree"/>
 
                 <TextView
                     style="@style/TextRegular"
@@ -230,64 +144,21 @@
                     android:textSize="@dimen/text_14"
                     android:text="@string/user_size_update_subtitle3" />
 
-
-                <FrameLayout
-                    android:id="@+id/framelayout_usersizeupdate_sub3"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@color/common_white"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="10dp">
-
-                <io.temco.guhada.view.CustomSpinner
+                <io.temco.guhada.view.custom.materialspinner.MaterialSpinner
                     android:id="@+id/spinner_usersizeupdate_sub3"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:background="@drawable/border_all_whitethree"
-                    android:onItemSelected="@{(p, v, pos, id) -> viewModel.onShippingSub3Selected(pos)}"
-                    android:orientation="horizontal"
-                    android:overScrollMode="never"
-                    android:overlapAnchor="false"
-                    android:popupBackground="@null"
-                    android:spinnerMode="dropdown"
-                    app:bindCommonSpinner="@{viewModel.userFootTxtList}" />
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    app:ms_start_index_half="true"
+                    app:ms_text_size="13"
+                    app:ms_hint="@string/common_select_spinner"
+                    app:ms_text_color="@color/black_four"
+                    app:ms_hint_color="@color/warm_grey_two"
+                    app:ms_dropdown_max_height="250dp"
+                    app:ms_dropdown_height="50dp"
+                    app:ms_background_color="@drawable/border_all_whitethree"/>
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@color/white_three"
-                        android:padding="1dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="43dp"
-                            android:background="@color/common_white"
-                            android:orientation="horizontal"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="15dp"
-                            android:popupBackground="@null">
-
-                            <TextView
-                                style="@style/PaymentContentGreyTextStyle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="1"
-                                android:textColor="@color/black_four"
-                                android:textSize="@dimen/text_13"
-                                android:text="@{viewModel.userSizeUpdateFoot > 0 ? @string/user_size_update_sub3_value(viewModel.userSizeUpdateFoot) : @string/common_select_spinner , default = @string/common_select_spinner}" />
-
-                            <ImageView
-                                android:id="@+id/imageview_usersizeupdate_sub3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:src="@{viewModel.userSizeSubMenuImgArrow == 3 ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}" />
-                        </LinearLayout>
-                    </FrameLayout>
-
-                </FrameLayout>
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="match_parent"

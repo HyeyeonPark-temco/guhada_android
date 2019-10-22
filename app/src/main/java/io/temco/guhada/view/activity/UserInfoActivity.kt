@@ -299,8 +299,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         }
         if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet format", String.format("%04d-%02d-%02d", cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH) + 1), cal.get(Calendar.DAY_OF_MONTH)))
         mBinding.setOnClickDateButton {
-            datePicker = DatePickerDialog(this@UserInfoActivity, object : DatePickerDialog.OnDateSetListener {
-                override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+            datePicker = DatePickerDialog(this@UserInfoActivity, R.style.CalendarDialogTheme, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth))
                     var selectCal = Calendar.getInstance().apply {
                         set(Calendar.YEAR,year)
@@ -315,7 +314,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                         if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", "getNowDateDiffDay ", DateUtil.getNowDateDiffDay(selectCal.timeInMillis))
                         CommonViewUtil.showDialog(this@UserInfoActivity,"잘못된 날자를 선택하였습니다.",false,false)
                     }
-                }
             }, cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)), cal.get(Calendar.DAY_OF_MONTH))
             datePicker.show()
         }
