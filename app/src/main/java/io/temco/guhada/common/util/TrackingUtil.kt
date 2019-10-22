@@ -11,11 +11,9 @@ object TrackingUtil {
     private var mFlag = true
 
     @JvmStatic
-    fun sendKochavaEvent(eventName: String) {
-        if (mFlag)
-            Tracker.Event(eventName).let { event ->
-                Tracker.sendEvent(event)
-            }
+    fun sendKochavaEvent(key: String, value: String = "") {
+        if (mFlag) Tracker.sendEvent(key, value)
+
     }
 
 }

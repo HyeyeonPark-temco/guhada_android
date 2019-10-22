@@ -49,23 +49,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_marginBottom="11dp"
-                        android:onClick="@{()->viewModel.onClickFindAccount()}">
+                        android:layout_marginBottom="11dp">
 
                         <TextView
-                            style="@style/TextMedium"
                             android:id="@+id/textview_login_findid"
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="12dp"
-                            android:textSize="@dimen/text_14"
+                            android:onClick="@{()->viewModel.onClickFindId()}"
                             android:text="@string/login_findid"
                             android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/view"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="0.612" />
-                        <!--android:onClick="@{()->viewModel.onClickFindId()}"-->
+
                         <ImageView
                             android:id="@+id/view"
                             android:layout_width="wrap_content"
@@ -77,17 +77,18 @@
                             app:srcCompat="@drawable/line" />
 
                         <TextView
-                            style="@style/TextMedium"
                             android:id="@+id/textview_login_findpwd"
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_14"
+                            android:onClick="@{()->viewModel.onClickFindPwd()}"
                             android:text="@string/login_findpwd"
                             android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-                        <!--android:onClick="@{()->viewModel.onClickFindPwd()}"-->
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <io.temco.guhada.view.custom.BorderEditTextView
@@ -127,14 +128,14 @@
                             app:layout_constraintVertical_bias="0.888" />
 
                         <TextView
-                            style="@style/TextMedium"
                             android:id="@+id/textview_login_saveid"
+                            style="@style/TextMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:textSize="@dimen/text_14"
                             android:text="@string/login_button_saveid"
                             android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/checkbox_login_saveid"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -154,14 +155,14 @@
 
                     <Button
                         android:id="@+id/button_login_signin"
-                        android:layout_width="match_parent"
                         style="@style/borderlessStyle"
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="20dp"
-                        android:stateListAnimator="@null"
-                        android:background="@{viewModel.buttonAvailable ? @color/colorPrimary : @color/silver }"
+                        android:background="@{viewModel.buttonAvailable ? @color/colorPrimary : @color/silver, default = @color/colorPrimary }"
                         android:clickable="@{viewModel.buttonAvailable}"
                         android:onClick="@{()->viewModel.onClickSignIn()}"
+                        android:stateListAnimator="@null"
                         android:text="@string/login_button_signin"
                         android:textColor="@color/common_white" />
 
@@ -170,9 +171,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="10dp"
-                        android:stateListAnimator="@null"
                         android:background="@drawable/border_all_pinkishgrey"
                         android:onClick="@{()->viewModel.onClickSignUp()}"
+                        android:stateListAnimator="@null"
                         android:text="@string/login_button_signup"
                         android:textColor="@android:color/black" />
                 </LinearLayout>
@@ -208,9 +209,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="25dp"
-                            android:visibility="gone"
                             android:onClick="@{()-> viewModel.onClickNaver()}"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <FrameLayout
                                 android:layout_width="wrap_content"
