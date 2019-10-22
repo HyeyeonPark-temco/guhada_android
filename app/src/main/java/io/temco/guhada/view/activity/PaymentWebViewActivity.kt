@@ -13,7 +13,6 @@ import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 import androidx.core.net.toUri
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
-import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.payment.PGAuth
@@ -28,27 +27,27 @@ import java.net.URLEncoder
 
 
 class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
-    private val RESULT_URL = "https://order.guhada.com/lotte/mobile/privyCertifyResult" //"http://13.209.10.68/lotte/mobile/privyCertifyResult"
+    private val RESULT_URL = "https://order.guhada.com/lotte/mobile/privyCertifyResult"
     private var mViewModel: PaymentWebViewViewModel = PaymentWebViewViewModel()
-    val RESULT_CODE_SUCCESS = "00"
-    val SCHEME = "ispmobile://"
-    val INSTALL_URL = "http://mobile.vpay.co.kr/jsp/MISP/andown.jsp"
-    var URL = ""
-    val SELLER_ID = "P_MID"
-    val ORDER_ID = "P_OID"
-    val ORDER_PRICE = "P_AMT"
-    val USER_NAME = "P_UNAME"
-    val PRODUCT_NAME = "P_GOODS"
-    val AUTH_NEXT_URL = "P_NEXT_URL"
-    val FINISH_URL = "P_RETURN_URL"
-    val TIMESTAMP = "P_TIMESTAMP"
-    val SIGNATURE = "P_SIGNATURE"
-    val HASH_SIGNKEY = "P_MKEY"
-    val OFFER_PERIOD = "P_OFFER_PERIOD"
-    val PURCHASE_EMAIL = "P_EMAIL"
-    val PURCHASE_MOBILE = "P_MOBILE"
-    val STORE_NAME = "P_MNAME"
-    val CHARSET = "EUC-KR"
+    private val RESULT_CODE_SUCCESS = "00"
+    private val SCHEME = "ispmobile://"
+    private val INSTALL_URL = "http://mobile.vpay.co.kr/jsp/MISP/andown.jsp"
+    private var URL = ""
+    private val SELLER_ID = "P_MID"
+    private  val ORDER_ID = "P_OID"
+    private val ORDER_PRICE = "P_AMT"
+    private  val USER_NAME = "P_UNAME"
+    private  val PRODUCT_NAME = "P_GOODS"
+    private val AUTH_NEXT_URL = "P_NEXT_URL"
+    private   val FINISH_URL = "P_RETURN_URL"
+    private  val TIMESTAMP = "P_TIMESTAMP"
+    private  val SIGNATURE = "P_SIGNATURE"
+    private  val HASH_SIGNKEY = "P_MKEY"
+    private  val OFFER_PERIOD = "P_OFFER_PERIOD"
+    private   val PURCHASE_EMAIL = "P_EMAIL"
+    private  val PURCHASE_MOBILE = "P_MOBILE"
+    private  val STORE_NAME = "P_MNAME"
+    private val CHARSET = "EUC-KR"
 
     // 신용카드 전용 필드
     val COMPLEX_FIELD = "P_RESERVED"
@@ -89,7 +88,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
             }
         }
 
-        mBinding.webviewPayment.settings.defaultTextEncodingName = "EUC-KR"
+        mBinding.webviewPayment.settings.defaultTextEncodingName = "utf-8"
         mBinding.webviewPayment.settings.javaScriptEnabled = true
         mBinding.webviewPayment.settings.javaScriptCanOpenWindowsAutomatically = true
         mBinding.webviewPayment.settings.setSupportMultipleWindows(true)
@@ -116,9 +115,9 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 return true
             }
 
-            override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
-                return super.onConsoleMessage(consoleMessage)
-            }
+//            override fun onConsoleMessage(consoleMessage: ConsoleMessage?): Boolean {
+//                return super.onConsoleMessage(consoleMessage)
+//            }
         }
 
         // Insecurity 페이지 허용
@@ -146,10 +145,11 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                     StringEscapeUtils.unescapeJava(html).let {
                         val document = Jsoup.parse(it)
                         val resultCode = document.getElementById("resultCode")?.`val`() ?: ""
+                        val resultMsg = document.select("input[name=resultMsg]").`val`() ?: ""
+                        if(CustomLog.flag) CustomLog.L("결제 결과 메세지", resultMsg)
 
                         if (resultCode == RESULT_CODE_SUCCESS) {
                             val pgTid = document.getElementById("pgTid")?.`val`() ?: ""
-                            val resultMsg = document.select("input[name=resultMsg]").`val`() ?: ""
                             val pgKind = mViewModel.pgResponse.pgKind
                             val pgMid = mViewModel.pgResponse.pgMid
                             val pgOid = mViewModel.pgResponse.pgOid
@@ -211,10 +211,10 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                                 finish()
                             }
                         } else {
+                            intent.putExtra("resultMessage",resultMsg)
                             setResult(Activity.RESULT_CANCELED, intent)
                             finish()
                         }
-
                     }
                 }
             }
@@ -251,11 +251,11 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                         return false
                     } else if (url.startsWith("intent://")) {
                         try {
-                            var excepIntent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-                            val pNm = excepIntent.`package`
-                            excepIntent = Intent(Intent.ACTION_VIEW)
-                            excepIntent.data = "market://search?q=$pNm".toUri()
-                            startActivity(excepIntent)
+                            var exceptIntent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
+                            val pNm = exceptIntent.`package`
+                            exceptIntent = Intent(Intent.ACTION_VIEW)
+                            exceptIntent.data = "market://search?q=$pNm".toUri()
+                            startActivity(exceptIntent)
                         } catch (e: URISyntaxException) {
                             catchException("<LPAY>", "INTENT:// 진입될 시 예외 처리 오류: $e")
                         } catch (e: ActivityNotFoundException) {

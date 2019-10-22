@@ -30,13 +30,15 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         get() = field
     var mineVisibility = ObservableInt(View.GONE)
         @Bindable
-        get() = field
+        get() {
+            return if (Preferences.getToken() == null) ObservableInt(View.GONE)
+            else field
+        }
     var isMineChecked = false
     var claimPageNo = 0
     var claimPageSize = 5
     var claimStatus = ""
     var claimResponse: MutableLiveData<ClaimResponse> = MutableLiveData()
-
 
     private val getClaimListener = OnServerListener { success, o ->
         if (success) {
@@ -61,11 +63,6 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
         } else {
             emptyVisible = ObservableBoolean(true)
             notifyPropertyChanged(BR.emptyVisible)
-        }
-
-        if (Preferences.getToken() == null) {
-            mineVisibility = ObservableInt(View.GONE)
-            notifyPropertyChanged(BR.mineVisibility)
         }
     }
 
@@ -100,7 +97,6 @@ class ProductDetailClaimViewModel(private val productId: Long, val listener: Pro
             listener.redirectLoginActivity()
         }
     }
-
 
     fun onCheckedMine(checked: Boolean) {
         this.isMineChecked = checked

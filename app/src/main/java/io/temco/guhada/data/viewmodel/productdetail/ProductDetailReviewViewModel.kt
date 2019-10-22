@@ -24,7 +24,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
     lateinit var listener: ProductDetailReviewFragment.OnProductDetailReviewListener
     var productId: Long = 0
     var reviewPage = 0
-    val reviewSize = 2
+    val reviewSize = 5
     var reviewSummary: ReviewSummary = ReviewSummary()
         @Bindable
         get() = field
@@ -36,20 +36,18 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         get() = field
 
     var mSelectedTabPos = ProductDetailReviewFragment.ReviewTab.ALL.pos
-    var mSelectedRating: String? = null
-    var mSelectedSorting: String? = null
+    var mSelectedRating: String? = ProductDetailReviewFragment.ReviewRating.ALL.value
+    var mSelectedSorting: String = ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value
     var mTabSelectBlock = true
-    var mRatingSpinnerBlock = true
-    var mSortingSpinnerBlock = true
 
     fun getProductReviewSummary() {
-        if(productId > 0)
+        if (productId > 0)
             UserServer.getProductReviewSummary(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
                             try {
                                 this.reviewSummary = it.data as ReviewSummary
-                                if(CustomLog.flag)CustomLog.L("getProductReviewSummary","reviewSummary",reviewSummary)
+                                if (CustomLog.flag) CustomLog.L("getProductReviewSummary", "reviewSummary", reviewSummary)
                                 notifyPropertyChanged(BR.reviewSummary)
 
                                 if (::listener.isInitialized)
@@ -70,55 +68,46 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
             }, productId)
     }
 
-    fun getProductReview(page: Int, size: Int, tabPos: Int, rating: String? = null, sorting: String? = ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value) {
+    fun getProductReview(page: Int, size: Int, tabPos: Int, rating: String? = mSelectedRating, sorting: String? = mSelectedSorting) {
         mSelectedTabPos = tabPos
 
         if (reviewResponse.last) {
             listener.showMessage(BaseApplication.getInstance().getString(R.string.productdetail_review_message_lastitem))
         } else {
             val resultTask: (success: Boolean, o: Any) -> Unit = { success: Boolean, o: Any? ->
-                if (success) {
-                    if (o != null) {
-                        val model = o as BaseModel<*>
-                        this.reviewResponse = model.data as ReviewResponse
-                        emptyVisibility = if (reviewResponse.content.isNullOrEmpty()) ObservableInt(View.VISIBLE)
-                        else ObservableInt(View.GONE)
-
-                        notifyPropertyChanged(BR.reviewResponse)
-                        notifyPropertyChanged(BR.emptyVisibility)
-                    }
+                if (success && o != null) {
+                    val model = o as BaseModel<*>
+                    this.reviewResponse = model.data as ReviewResponse
+                    emptyVisibility =
+                            if (reviewResponse.content.isNullOrEmpty()) ObservableInt(View.VISIBLE)
+                            else ObservableInt(View.GONE)
                 } else {
                     this.reviewResponse = ReviewResponse()
                     emptyVisibility = ObservableInt(View.VISIBLE)
-
-                    notifyPropertyChanged(BR.reviewResponse)
-                    notifyPropertyChanged(BR.emptyVisibility)
                 }
 
+                notifyPropertyChanged(BR.reviewResponse)
+                notifyPropertyChanged(BR.emptyVisibility)
                 if (::listener.isInitialized) listener.hideLoadingIndicator()
             }
 
-            if (rating == null && sorting == null) { // 최신순 & 전체 평점
-                when (tabPos) {
-                    ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReview(page, size, resultTask)
-                    ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReview(page, size, resultTask)
-                    ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReview(page, size, resultTask)
+            if (rating == null) {
+                if (sorting == null) {
+                    when (tabPos) {
+                        ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReviewWithoutFilter(page, size, resultTask)
+                        ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReviewWithoutFilter(page, size, resultTask)
+                        ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReviewWithoutFilter(page, size, resultTask)
+                    }
+                } else {
+                    when (tabPos) {
+                        ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReviewWithSorting(page, size, sorting, resultTask)
+                        ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReviewWithSorting(page, size, sorting, resultTask)
+                        ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReviewWithSorting(page, size, sorting, resultTask)
+                    }
                 }
-            } else if (rating != null && sorting == null) {
-                mSelectedRating = rating
-                getAllReviewWithRating(page, size, mSelectedRating
-                        ?: ProductDetailReviewFragment.ReviewRating.ALL.value, resultTask)
-            } else if (rating == null && sorting != null) {
-                mSelectedSorting = sorting
-
-                when (tabPos) {
-                    ProductDetailReviewFragment.ReviewTab.ALL.pos -> getAllReviewWithSorting(page, size, mSelectedSorting
-                            ?: ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value, resultTask)
-                    ProductDetailReviewFragment.ReviewTab.PHOTO.pos -> getPhotoReviewWithSorting(page, size, mSelectedSorting
-                            ?: ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value, resultTask)
-                    ProductDetailReviewFragment.ReviewTab.SIZE.pos -> getSizeReviewWithSorting(page, size, mSelectedSorting
-                            ?: ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value, resultTask)
-                }
+            } else {
+                if (sorting == null) getAllReviewWithRating(page, size, rating, resultTask)
+                else getAllReviewWithSortingAndRating(page = page, size = size, rating = rating, sorting = sorting, resultTask = resultTask)
             }
         }
     }
@@ -160,7 +149,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         })
     }
 
-    private fun getAllReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+    private fun getAllReviewWithoutFilter(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
         if (productId > 0)
             UserServer.getProductReview(OnServerListener { success, o ->
                 resultTask(success, o)
@@ -181,7 +170,14 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
             }, productId, page, size, sorting = sorting)
     }
 
-    private fun getPhotoReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+    private fun getAllReviewWithSortingAndRating(page: Int, size: Int, sorting: String, rating: String, resultTask: (success: Boolean, o: Any) -> Unit) {
+        if (productId > 0)
+            UserServer.getProductReviewWithSortingAndRating(OnServerListener { success, o ->
+                resultTask(success, o)
+            }, productId, page, size, rating = rating, sorting = sorting)
+    }
+
+    private fun getPhotoReviewWithoutFilter(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
         if (productId > 0)
             UserServer.getProductPhotoReview(OnServerListener { success, o ->
                 resultTask(success, o)
@@ -195,7 +191,7 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
             }, productId, page, size, sorting = sorting)
     }
 
-    private fun getSizeReview(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
+    private fun getSizeReviewWithoutFilter(page: Int, size: Int, resultTask: (success: Boolean, o: Any) -> Unit) {
         if (productId > 0)
             UserServer.getProductSizeReview(OnServerListener { success, o ->
                 resultTask(success, o)
@@ -214,9 +210,8 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
         listener.showLoadingIndicator { getProductReview(++reviewPage, reviewSize, mSelectedTabPos, rating = mSelectedRating, sorting = mSelectedSorting) }
     }
 
-    // TODO 첫 리뷰 작성하기 버튼
+    // 첫 리뷰 작성하기
     fun onClickWriteReview() {
         listener.onClickWriteReview()
     }
-
 }

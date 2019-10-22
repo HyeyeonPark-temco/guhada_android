@@ -161,20 +161,35 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:minHeight="250dp">
 
-            <TextView
-                android:id="@+id/textview_productdetail_claimempty"
-                style="@style/TextMedium"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="90dp"
-                android:layout_marginBottom="90dp"
-                android:background="@color/common_white"
-                android:text="@string/claim_write_empty"
-                android:textColor="@color/greyish_brown_two"
-                android:visibility="@{viewModel.emptyVisible ? View.VISIBLE : View.GONE}" />
+                android:orientation="vertical"
+                android:visibility="@{viewModel.emptyVisible ? View.VISIBLE : View.GONE}">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/icon_no_data" />
+
+                <TextView
+                    android:id="@+id/textview_productdetail_claimempty"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="14dp"
+                    android:background="@color/common_white"
+                    android:text="@string/claim_write_empty"
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_productdetail_claim"
@@ -182,9 +197,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:overScrollMode="never"
-                android:visibility="@{viewModel.emptyVisible ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.emptyVisible ? View.GONE : View.VISIBLE, default = gone}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            <!--app:productClaims="@{viewModel.claimResponse.content}"-->
         </FrameLayout>
 
         <FrameLayout
@@ -197,7 +211,6 @@
             android:background="@drawable/border_all_whitethree"
             android:onClick="@{()->viewModel.onClickMoreClaim()}"
             android:visibility="@{viewModel.mMoreButtonVisible ? View.VISIBLE : View.GONE, default = gone}">
-            <!--android:visibility="@{viewModel.emptyVisible || viewModel.claimResponse.last ? View.GONE : View.VISIBLE}"-->
 
             <LinearLayout
                 android:layout_width="wrap_content"

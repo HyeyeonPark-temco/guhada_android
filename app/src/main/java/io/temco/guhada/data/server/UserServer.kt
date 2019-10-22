@@ -223,7 +223,7 @@ class UserServer {
                 }
 
                 override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
-                    resultListener(listener,call,response)
+                    resultListener(listener, call, response)
                 }
             })
         }
@@ -240,7 +240,7 @@ class UserServer {
                 }
 
                 override fun onResponse(call: Call<BaseModel<User>>, response: Response<BaseModel<User>>) {
-                    resultListener(listener,call,response)
+                    resultListener(listener, call, response)
                 }
             })
         }
@@ -253,7 +253,7 @@ class UserServer {
         fun checkEmail(listener: OnServerListener, email: String) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkEmail(email).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    resultListener(listener,call,response)
+                    resultListener(listener, call, response)
                 }
 
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -269,7 +269,7 @@ class UserServer {
         fun checkPhone(listener: OnServerListener, phoneNumber: String) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java).checkPhone(phoneNumber).enqueue(object : Callback<BaseModel<Any>> {
                 override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                    resultListener(listener,call,response)
+                    resultListener(listener, call, response)
                 }
 
                 override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -409,6 +409,9 @@ class UserServer {
         fun getProductReviewWithSorting(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting: String) =
                 RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewWithSorting(productId, page, size, sorting).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
+        @JvmStatic
+        fun getProductReviewWithSortingAndRating(listener: OnServerListener, productId: Long, page: Int, size: Int, sorting: String, rating: String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).getProductReviewWithSortingAndRating(productId = productId, page = page, size = size, sorting = sorting, rating = rating).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<ReviewResponse>> { listener.onResult(true, it.body()) })
 
         /**
          * 상품 리뷰 리스트(포토 리뷰) 조회
@@ -512,7 +515,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
         /**
@@ -541,7 +544,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -553,7 +556,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .getMypageReviewList(accessToken, page, size).enqueue(object : Callback<BaseModel<MyPageReview>> {
                         override fun onResponse(call: Call<BaseModel<MyPageReview>>, response: Response<BaseModel<MyPageReview>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<MyPageReview>>, t: Throwable) {
@@ -561,7 +564,7 @@ class UserServer {
                             listener.onResult(false, t.message)
                         }
                     }
-            )
+                    )
         }
 
 
@@ -573,7 +576,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .deleteReviewData(accessToken, productId, reviewId).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -593,7 +596,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .writeReview(accessToken, productId, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -613,7 +616,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .modifyReview(accessToken, productId, reviewId, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -633,8 +636,9 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .getUserSize(accessToken).enqueue(object : Callback<BaseModel<UserSize>> {
                         override fun onResponse(call: Call<BaseModel<UserSize>>, response: Response<BaseModel<UserSize>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<UserSize>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("getUserSize", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
@@ -651,8 +655,9 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .saveUserSize(accessToken, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
+
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("saveUserSize", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
@@ -669,7 +674,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .modifyUserSize(accessToken, data).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -710,7 +715,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .checkExistSnsUser(snsType, snsId, email).enqueue(object : Callback<BaseModel<Any>> {
                         override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
@@ -782,7 +787,7 @@ class UserServer {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
                     .getUserReviewUrl(accessToken).enqueue(object : Callback<BaseModel<JsonObject>> {
                         override fun onResponse(call: Call<BaseModel<JsonObject>>, response: Response<BaseModel<JsonObject>>) {
-                            resultListener(listener,call,response)
+                            resultListener(listener, call, response)
                         }
 
                         override fun onFailure(call: Call<BaseModel<JsonObject>>, t: Throwable) {

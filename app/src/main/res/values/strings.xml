@@ -70,6 +70,7 @@
 
     <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
     <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
+    <string name="common_message_timeout">서버 응답이 없습니다. 다시 시도해주세요.</string>
     <string name="common_message_ing">준비중입니다.</string>
     <string name="common_message_expiretoken">다시 로그인해주세요.</string><!-- fix (토큰이 만료되었습니다. 다시 로그인해주세요.) -->
 
@@ -706,8 +707,8 @@
     <string name="mypagefollow_button_following">팔로잉</string>
 
     <!-- PRODUCT INFO REVIEW -->
-    <string name="productdetaininfo_review_sort1">최신순</string>
-    <string name="productdetaininfo_review_sort2">전체평점</string>
+    <string name="productdetaininfo_review_sorting">최신 순</string>
+    <string name="productdetaininfo_review_rating">전체평점</string>
 
     <!-- SEARCH ZIP -->
     <string name="searchzip_execute_func">javascript:(function(){  execDaumPostcode(); })();</string>

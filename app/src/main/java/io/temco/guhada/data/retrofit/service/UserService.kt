@@ -246,6 +246,9 @@ interface UserService {
     @GET("/products/{productId}/reviews")
     fun getProductReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
 
+    @GET("/products/{productId}/reviews")
+    fun getProductReviewWithSortingAndRating(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String,  @Query("rating") rating: String): Call<BaseModel<ReviewResponse>>
+
     /**
      * 상품 리뷰 리스트(포토 리뷰) 조회 API
      * @author Hyeyeon Park
