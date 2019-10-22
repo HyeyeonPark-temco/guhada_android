@@ -14,6 +14,7 @@ import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class CommunitySubListViewModel : BaseObservableViewModel() {
+    val UNIT_PER_PAGE = 10
     var mCommunityInfo: CommunityInfo = CommunityInfo()
     var mCommunityResponse: MutableLiveData<CommunityBoard.CommunityResponse> = MutableLiveData()
     var mCategoryFilterList: MutableList<String> = mutableListOf()
@@ -24,9 +25,8 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
     var mEmptyViewVisible = ObservableBoolean(false)
         @Bindable
         get() = field
-    var UNIT_PER_PAGE = 10
 
-    var redirectDetailTask: (item: CommunityBoard) -> Unit = {}
+    var mRedirectDetailTask: (item: CommunityBoard) -> Unit = {}
 
     fun getCommunityList() {
         // init filter id
@@ -83,7 +83,5 @@ class CommunitySubListViewModel : BaseObservableViewModel() {
 
     fun onClickMore() = getCommunityList()
 
-    fun onClickItem(item: CommunityBoard) {
-        redirectDetailTask(item)
-    }
+    fun onClickItem(item: CommunityBoard) = mRedirectDetailTask(item)
 }

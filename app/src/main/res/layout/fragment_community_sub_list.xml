@@ -24,110 +24,68 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp">
 
-                <FrameLayout
-                    android:id="@+id/framelayout_communitylist_filter1"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/linearlayout_communitylist_filter1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
+                    android:background="@color/common_white"
                     android:orientation="horizontal"
+                    android:popupBackground="@null"
                     android:visibility="@{viewModel.mCategoryFilterList.empty ? View.GONE : View.VISIBLE}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <Spinner
-                        android:id="@+id/spinner_communitylist_filter1"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/textview_communitylist_filter1"
+                        style="@style/MypageDeliveryWarmGreyTextStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:background="@color/common_white"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:overlapAnchor="false"
-                        android:popupBackground="@null"
-                        android:spinnerMode="dropdown"
-                        app:communitySpinner="@{viewModel.mCategoryFilterList}"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        android:text="@string/community_filter_category"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/common_white"
-                        android:orientation="horizontal"
-                        android:paddingTop="20dp"
-                        android:popupBackground="@null">
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:src="@drawable/list_btn_lineup" />
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/textview_communitylist_filter1"
-                            style="@style/MypageDeliveryWarmGreyTextStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:text="@string/community_filter_category"
-                            android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_13" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="6dp"
-                            android:src="@drawable/list_btn_lineup" />
-                    </LinearLayout>
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/framelayout_communitylist_filter2"
+                <LinearLayout
+                    android:id="@+id/linearlayout_communitylist_filter2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/common_white"
                     android:orientation="horizontal"
+                    android:popupBackground="@null"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <Spinner
-                        android:id="@+id/spinner_communitylist_filter2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/common_white"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:overlapAnchor="false"
-                        android:popupBackground="@null"
-                        android:spinnerMode="dropdown"
-                        app:communitySpinner="@{viewModel.mSortFilterList}"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/textview_communitylist_filter2"
+                        style="@style/MypageDeliveryWarmGreyTextStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/common_white"
-                        android:orientation="horizontal"
-                        android:paddingTop="20dp"
-                        android:popupBackground="@null">
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="@string/community_filter_sort"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
 
-                        <TextView
-                            android:id="@+id/textview_communitylist_filter2"
-                            style="@style/MypageDeliveryWarmGreyTextStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:text="@string/community_filter_sort1"
-                            android:textColor="@color/black_four"
-                            android:textSize="@dimen/text_13" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="6dp"
-                            android:src="@drawable/list_btn_lineup" />
-                    </LinearLayout>
-                </FrameLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:src="@drawable/list_btn_lineup" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_communityist"
@@ -136,7 +94,7 @@
                     android:overScrollMode="never"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/framelayout_communitylist_filter2" />
+                    app:layout_constraintTop_toBottomOf="@id/linearlayout_communitylist_filter2" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -146,7 +104,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/framelayout_communitylist_filter2">
+                    app:layout_constraintTop_toBottomOf="@id/linearlayout_communitylist_filter1">
 
                     <ImageView
                         android:layout_width="wrap_content"
