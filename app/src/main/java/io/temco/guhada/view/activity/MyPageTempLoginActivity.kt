@@ -15,7 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.kakao.usermgmt.response.model.UserProfile
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnLoginListener
 import io.temco.guhada.common.listener.OnServerListener
@@ -60,30 +59,30 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
         // INIT SNS LOGIN
         mLoginListener = object : OnSnsLoginListener {
             override fun kakaoLogin(result: UserProfile) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener kakaoLogin")
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener kakaoLogin")
                 SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
             }
 
             override fun redirectTermsActivity(type: Int, data: Any) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectTermsActivity")
-                setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectTermsActivity")
+                setResultFinish(Activity.RESULT_CANCELED, "회원정보를 찾을 수 없습니다.")
                 /*mViewModel.setSnsUser(data)
                 val intent = Intent(this@MyPageTempLoginActivity, TermsActivity::class.java)
                 startActivityForResult(intent, type)*/
             }
 
             override fun redirectMainActivity(data: Token) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectMainActivity")
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectMainActivity")
                 val id = JWT(data.accessToken!!).getClaim("userId").asString()
-                setResultFinish(Activity.RESULT_OK,id+"")
+                setResultFinish(Activity.RESULT_OK, id + "")
                 /*Preferences.setToken(data)
                 val token = Preferences.getToken()
                 Toast.makeText(this@MyPageTempLoginActivity, "[LOGIN SUCCESS] " + token!!.accessToken!!, Toast.LENGTH_SHORT).show()*/
             }
 
             override fun showMessage(message: String) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener showMessage")
-                setResultFinish(Activity.RESULT_CANCELED,message)
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener showMessage")
+                setResultFinish(Activity.RESULT_CANCELED, message)
             }
         }
 
@@ -95,9 +94,11 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
                 graphRequest.parameters = bundle
                 graphRequest.executeAsync()
             }
+
             override fun onCancel() {
                 CommonUtil.debug("[FACEBOOK] CANCEL")
             }
+
             override fun onError(error: FacebookException) {
                 CommonUtil.debug("[FACEBOOK] ERROR: $error")
             }
@@ -127,33 +128,33 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
             }
 
             override fun redirectJoinActivity() {
-                setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                setResultFinish(Activity.RESULT_CANCELED, "회원정보를 찾을 수 없습니다.")
             }
 
             override fun redirectFindAccountActivity() {
-                setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                setResultFinish(Activity.RESULT_CANCELED, "회원정보를 찾을 수 없습니다.")
             }
 
             override fun showMessage(message: String) {
-                setResultFinish(Activity.RESULT_CANCELED,message)
+                setResultFinish(Activity.RESULT_CANCELED, message)
             }
 
             override fun showSnackBar(message: String) {
-                setResultFinish(Activity.RESULT_CANCELED,message)
+                setResultFinish(Activity.RESULT_CANCELED, message)
             }
 
             override fun closeActivity(resultCode: Int) {
-                setResultFinish(resultCode,"")
+                setResultFinish(resultCode, "")
             }
         })
         mBinding.viewModel = mViewModel
         mBinding.includeLoginHeader.viewModel = mViewModel
         mBinding.executePendingBindings()
 
-        if(intent.extras.containsKey("request")){
+        if (intent.extras.containsKey("request")) {
             var requestCode = intent.extras?.getInt("request")
-            if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","requestCode",requestCode!!)
-            when(requestCode){
+            if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "requestCode", requestCode!!)
+            when (requestCode) {
                 Flag.RequestCode.GOOGLE_LOGIN_MY -> mViewModel.onClickGoogle()
                 Flag.RequestCode.NAVER_LOGIN_MY -> mViewModel.onClickNaver()
                 Flag.RequestCode.FACEBOOK_LOGIN_MY -> mViewModel.onClickFacebook()
@@ -182,7 +183,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
         }
 
         if (data != null && data.getBooleanExtra("agreeCollectPersonalInfoTos", false)) {
-            val tempUser = mViewModel.getTempSnsUser()
+            val tempUser = mViewModel.tempSnsUser
             tempUser.agreeCollectPersonalInfoTos = data.getBooleanExtra("agreeCollectPersonalInfoTos", false)
             tempUser.agreeEmailReception = data.getBooleanExtra("agreeEmailReception", false)
             tempUser.agreePurchaseTos = data.getBooleanExtra("agreePurchaseTos", false)
@@ -216,7 +217,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
 
 
     private fun getSnsLoginServerListener(): OnServerListener {
-        return OnServerListener{ success, o ->
+        return OnServerListener { success, o ->
             if (success) {
                 val model = o as BaseModel<*>
                 when (model.resultCode) {
@@ -224,11 +225,11 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
                         // SNS 로그인
                         val token = model.data as Token
                         val id = JWT(token.accessToken!!).getClaim("userId").asString()
-                        setResultFinish(Activity.RESULT_OK,""+id)
+                        setResultFinish(Activity.RESULT_OK, "" + id)
                     }
                     Flag.ResultCode.DATA_NOT_FOUND ->
                         // SNS 회원가입
-                        mViewModel.joinSnsUser { success1, o1 ->
+                        mViewModel.joinSnsUser(OnServerListener { success1, o1 ->
                             if (success1) {
                                 val m = o1 as BaseModel<Token>
                                 if (m.resultCode == Flag.ResultCode.SUCCESS) {
@@ -236,12 +237,12 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
                                     t.accessToken = m.data.accessToken
                                     t.refreshToken = m.data.refreshToken
                                     t.expiresIn = m.data.expiresIn
-                                    setResultFinish(Activity.RESULT_CANCELED,"회원정보를 찾을 수 없습니다.")
+                                    setResultFinish(Activity.RESULT_CANCELED, "회원정보를 찾을 수 없습니다.")
                                 } else {
                                     ToastUtil.showMessage(m.message)
                                 }
                             }
-                        }
+                        })
                 }
             } else {
                 val message = o as String
@@ -256,10 +257,10 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
     }
 
 
-    private fun setResultFinish(resultCode : Int, msg : String){
+    private fun setResultFinish(resultCode: Int, msg: String) {
         var intent = Intent()
-        intent.putExtra("resultMsg",msg)
-        setResult(resultCode,intent)
+        intent.putExtra("resultMsg", msg)
+        setResult(resultCode, intent)
         this@MyPageTempLoginActivity.overridePendingTransition(0, 0)
         finish()
     }

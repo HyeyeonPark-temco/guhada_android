@@ -3,9 +3,6 @@ package io.temco.guhada.view.fragment.community
 import android.app.Activity
 import android.content.Intent
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Spinner
-import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,19 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.BR
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.enum.CommunityOrderType
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.community.CommunityBoard
 import io.temco.guhada.data.model.community.CommunityInfo
 import io.temco.guhada.data.viewmodel.CommunitySubListViewModel
 import io.temco.guhada.databinding.FragmentCommunitySubListBinding
-import io.temco.guhada.view.CommunitySpinnerAdapter
 import io.temco.guhada.view.activity.CommunityDetailActivity
 import io.temco.guhada.view.adapter.CommunityBoardAdapter
+import io.temco.guhada.view.fragment.ListBottomSheetFragment
 import io.temco.guhada.view.fragment.base.BaseFragment
-
 
 
 /**
@@ -37,22 +31,20 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  * @since 2019.08.21
  */
 class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>(), SwipeRefreshLayout.OnRefreshListener {
-    lateinit var info: CommunityInfo
+    enum class CommunityListType(val type: String) {
+        TEXT("TEXT"), IMAGE("IMAGE")
+    }
 
+    lateinit var info: CommunityInfo
     private lateinit var mViewModel: CommunitySubListViewModel
 
-    override fun getBaseTag(): String {
-        return CommunitySubListFragment::class.java!!.getSimpleName()
-    }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_community_sub_list
-    }
+    override fun getBaseTag(): String = CommunitySubListFragment::class.java.simpleName
+    override fun getLayoutId(): Int = R.layout.fragment_community_sub_list
 
     override fun init() {
         mBinding.swipeRefreshLayout.setOnRefreshListener(this)
         initViewModel()
-        initSpinner()
+        initFilters()
 
         mViewModel.getCommunityList()
         mBinding.executePendingBindings()
@@ -68,7 +60,7 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         mViewModel = CommunitySubListViewModel()
         mViewModel.mCommunityInfo = info
         mViewModel.mCommunityResponse.observe(this, Observer {
-            if(it.bbs.isNotEmpty()){
+            if (it.bbs.isNotEmpty()) {
                 initList(it.bbs)
                 mBinding.linearlayoutCommunitylistMore.visibility = if (it.bbs.size < it.totalCount) {
                     View.VISIBLE
@@ -81,22 +73,23 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
             mViewModel.mEmptyViewVisible = ObservableBoolean(it.bbs.isEmpty())
             mViewModel.notifyPropertyChanged(BR.mEmptyViewVisible)
         })
-        mViewModel.redirectDetailTask = {
+
+        mViewModel.mRedirectDetailTask = {
             val intent = Intent(context, CommunityDetailActivity::class.java)
             intent.putExtra("bbsId", it.bbsId)
-            if("".equals(mViewModel.mCommunityInfo.communityName) && mViewModel.mCommunityInfo.communityCategoryId == 0){
+            if ("".equals(mViewModel.mCommunityInfo.communityName) && mViewModel.mCommunityInfo.communityCategoryId == 0) {
                 val frag = this.parentFragment as CommunityMainFragment
-                if(frag.mViewModel.communityInfoList?.value ?:null != null){
-                    loop@for (data in frag.mViewModel.communityInfoList.value!!){
-                        if(it.categoryId.toInt() == data.communityCategoryId){
+                if (frag.mViewModel.communityInfoList?.value ?: null != null) {
+                    loop@ for (data in frag.mViewModel.communityInfoList.value!!) {
+                        if (it.categoryId.toInt() == data.communityCategoryId) {
                             intent.putExtra("info", data)
                             break@loop
                         }
                     }
-                }else{
+                } else {
                     intent.putExtra("info", mViewModel.mCommunityInfo)
                 }
-            }else{
+            } else {
                 intent.putExtra("info", mViewModel.mCommunityInfo)
             }
             (context as Activity).startActivityForResult(intent, Flag.RequestCode.COMMUNITY_DETAIL)
@@ -104,42 +97,60 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
         mBinding.viewModel = mViewModel
     }
 
-    private fun initSpinner() {
-        for (item in info.communityCategorySub.categoryFilterList) {
+    private fun initFilters() {
+        for (item in info.communityCategorySub.categoryFilterList)
             mViewModel.mCategoryFilterList.add(item.name)
-        }
-        mBinding.spinnerCommunitylistFilter1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
 
-            }
+        // 말머리 필터
+        mBinding.linearlayoutCommunitylistFilter1.setOnClickListener {
+            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
+                this.mList = mViewModel.mCategoryFilterList
+                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title1)
+                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                    override fun onItemClick(position: Int) {
+                        val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
+                        mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
+                        mViewModel.mPage = 0
+                        mViewModel.mFilterId = selectedCategory.id
+                        mViewModel.getCommunityList()
+                    }
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCategory = mViewModel.mCommunityInfo.communityCategorySub.categoryFilterList[position]
-                mBinding.textviewCommunitylistFilter1.text = selectedCategory.name
-                mViewModel.mPage = 0
-                mViewModel.mFilterId = selectedCategory.id
-                mViewModel.getCommunityList()
-            }
-        }
-
-        mBinding.spinnerCommunitylistFilter2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedSort = mViewModel.mSortFilterList[position]
-                mBinding.textviewCommunitylistFilter2.text = selectedSort
-                mViewModel.mOrder = when (selectedSort) {
-                    CommunityOrderType.DATE_DESC.label -> CommunityOrderType.DATE_DESC.type
-                    CommunityOrderType.VIEW_DESC.label -> CommunityOrderType.VIEW_DESC.type
-                    CommunityOrderType.LIKE_DESC.label -> CommunityOrderType.LIKE_DESC.type
-                    CommunityOrderType.COMMENT_DESC.label -> CommunityOrderType.COMMENT_DESC.type
-                    else -> CommunityOrderType.DATE_DESC.type
+                    override fun onClickClose() {
+                        this@apply.dismiss()
+                    }
                 }
-                mViewModel.mPage = 0
-                mViewModel.getCommunityList()
             }
+
+            if (fragmentManager != null) bottomSheet.show(fragmentManager!!, baseTag)
+        }
+
+        // 정렬  필터
+        mBinding.linearlayoutCommunitylistFilter2.setOnClickListener {
+            val bottomSheet = ListBottomSheetFragment(mBinding.root.context).apply {
+                this.mList = mViewModel.mSortFilterList
+                this.mTitle = mBinding.root.context.getString(R.string.community_filter_title2)
+                this.mListener = object : ListBottomSheetFragment.ListBottomSheetListener {
+                    override fun onItemClick(position: Int) {
+                        val selectedSort = mViewModel.mSortFilterList[position]
+                        mBinding.textviewCommunitylistFilter2.text = selectedSort
+                        mViewModel.mOrder = when (selectedSort) {
+                            CommunityOrderType.DATE_DESC.label -> CommunityOrderType.DATE_DESC.type
+                            CommunityOrderType.VIEW_DESC.label -> CommunityOrderType.VIEW_DESC.type
+                            CommunityOrderType.LIKE_DESC.label -> CommunityOrderType.LIKE_DESC.type
+                            CommunityOrderType.COMMENT_DESC.label -> CommunityOrderType.COMMENT_DESC.type
+                            else -> CommunityOrderType.DATE_DESC.type
+                        }
+                        mViewModel.mPage = 0
+                        mViewModel.getCommunityList()
+                    }
+
+                    override fun onClickClose() {
+                        this@apply.dismiss()
+                    }
+                }
+            }
+
+            if (fragmentManager != null) bottomSheet.show(fragmentManager!!, baseTag)
         }
     }
 
@@ -161,25 +172,6 @@ class CommunitySubListFragment : BaseFragment<FragmentCommunitySubListBinding>()
             (mBinding.recyclerviewCommunityist.adapter as CommunityBoardAdapter).notifyDataSetChanged()
         }
         mBinding.executePendingBindings()
-    }
-
-    enum class CommunityListType(val type: String) {
-        TEXT("TEXT"), IMAGE("IMAGE")
-    }
-
-    companion object {
-        @JvmStatic
-        @BindingAdapter("communitySpinner")
-        fun Spinner.bindCommunitySpinner(list: MutableList<String>) {
-            if (list.isNotEmpty()) {
-                if (this.adapter == null) {
-                    this.adapter = CommunitySpinnerAdapter(BaseApplication.getInstance().applicationContext, R.layout.item_community_spinner, list)
-                } else {
-                    (this.adapter as CommunitySpinnerAdapter).setItems(list)
-                }
-                this.setSelection(0)
-            }
-        }
     }
 
 }

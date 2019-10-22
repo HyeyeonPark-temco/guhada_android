@@ -172,7 +172,7 @@
             android:clickable="@{product.purchasable}"
             android:fontFamily="sans-serif-medium"
             android:onClick="@{()->viewModel.onClickPayment()}"
-            android:text="@{product.purchasable ? @string/productdetail_button_buy : product.reasonOfUnpurchasable}"
+            android:text="@{product.purchasable ? @string/productdetail_button_buy : product.reasonOfUnpurchasable, default= @string/productdetail_button_buy}"
             android:textSize="@dimen/text_18"
             android:visibility="@{viewModel.bottomBtnVisibility}"
             app:layout_constraintBottom_toBottomOf="parent"

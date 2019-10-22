@@ -31,7 +31,6 @@ import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.base.BaseModel;
-import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.model.naver.NaverUser;
 import io.temco.guhada.data.model.user.SnsUser;
 import io.temco.guhada.data.viewmodel.account.LoginViewModel;
@@ -163,12 +162,12 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
-            public void closeActivity(int resultCode ) {
+            public void closeActivity(int resultCode) {
                 setResult(resultCode);
                 finish();
             }
         });
-        mViewModel.toolBarTitle = getResources().getString(R.string.login_title);
+        mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);
         mBinding.executePendingBindings();
@@ -192,7 +191,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         SnsLoginModule.handleActivityResultForKakao(requestCode, resultCode, data);
 
         if (mViewModel.getSnsUser() == null) {
-            if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L("onActivityResult", "getSnsUser ", "null -----");
+            if (CustomLog.INSTANCE.getFlag())
+                CustomLog.INSTANCE.L("onActivityResult", "getSnsUser ", "null -----");
             SnsLoginModule.handleActivityResultForGoogle(requestCode, data, mLoginListener, getSnsLoginServerListener());
         }
 
@@ -217,7 +217,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN:
                     if (mViewModel.getSnsUser() == null)
-                        if (CustomLog.INSTANCE.getFlag()) CustomLog.INSTANCE.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----");
+                        if (CustomLog.INSTANCE.getFlag())
+                            CustomLog.INSTANCE.L("onActivityResult RC_GOOGLE_LOGIN", "getSnsUser ", "null -----");
                     mViewModel.getTempSnsUser().setSnsType("GOOGLE");
                     SnsLoginModule.googleLogin((GoogleSignInAccount) mViewModel.getSnsUser(), getSnsLoginServerListener());
                     break;
