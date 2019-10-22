@@ -56,34 +56,34 @@ class MyPageUserInfoLayout constructor(
 
         // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
         mBinding.includeMypageuserinfoUserpassword.setOnClickFacebook {
-            if(mViewModel.mypageUserInfoLoginCheckType.get() == 3){
+            if (mViewModel.mypageUserInfoLoginCheckType.get() == 3) {
                 var intent = Intent(context, MyPageTempLoginActivity::class.java)
                 intent.putExtra("request", Flag.RequestCode.FACEBOOK_LOGIN_MY)
                 (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.FACEBOOK_LOGIN_MY)
-            }else showLoginTypeUser()
+            } else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickGoogle {
-            if(mViewModel.mypageUserInfoLoginCheckType.get() == 4){
+            if (mViewModel.mypageUserInfoLoginCheckType.get() == 4) {
                 var intent = Intent(context, MyPageTempLoginActivity::class.java)
                 intent.putExtra("request", Flag.RequestCode.GOOGLE_LOGIN_MY)
                 (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.RC_GOOGLE_LOGIN_MY)
-            }else showLoginTypeUser()
+            } else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickKakao {
-            if(CustomLog.flag)CustomLog.L("setOnClickKakao","setOnClickKakao")
-            if(mViewModel.mypageUserInfoLoginCheckType.get() == 2){
+            if (CustomLog.flag) CustomLog.L("setOnClickKakao", "setOnClickKakao")
+            if (mViewModel.mypageUserInfoLoginCheckType.get() == 2) {
                 /*var intent = Intent(context, MyPageTempLoginActivity::class.java)
                 intent.putExtra("request", Flag.RequestCode.KAKAO_LOGIN_MY)
                 (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.KAKAO_LOGIN_MY)*/
                 mBinding.includeMypageuserinfoUserpassword.buttonLoginKakao.performClick()
-            }else showLoginTypeUser()
+            } else showLoginTypeUser()
         }
         mBinding.includeMypageuserinfoUserpassword.setOnClickNaver {
-            if(mViewModel.mypageUserInfoLoginCheckType.get() == 1){
+            if (mViewModel.mypageUserInfoLoginCheckType.get() == 1) {
                 var intent = Intent(context, MyPageTempLoginActivity::class.java)
                 intent.putExtra("request", Flag.RequestCode.NAVER_LOGIN_MY)
                 (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.NAVER_LOGIN_MY)
-            }else showLoginTypeUser()
+            } else showLoginTypeUser()
         }
 
         if (checkUserLogin()) {
@@ -94,28 +94,29 @@ class MyPageUserInfoLayout constructor(
         // INIT SNS LOGIN
         mLoginListener = object : OnSnsLoginListener {
             override fun kakaoLogin(result: UserProfile) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener kakaoLogin")
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener kakaoLogin")
                 SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
             }
+
             override fun redirectTermsActivity(type: Int, data: Any) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectTermsActivity")
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectTermsActivity")
                 CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
             }
 
             override fun redirectMainActivity(data: Token) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener redirectMainActivity")
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectMainActivity")
                 val id = JWT(data.accessToken!!).getClaim("userId").asString()
-                if(id?.toLong() ?: 0L != 0L){
-                    if(id?.toLong() ?: 0L == CommonUtil.checkUserId()){
+                if (id?.toLong() ?: 0L != 0L) {
+                    if (id?.toLong() ?: 0L == CommonUtil.checkUserId()) {
                         setUserData()
-                    }else{
+                    } else {
                         CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
                     }
-                }else CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
+                } else CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
             }
 
             override fun showMessage(message: String) {
-                if(CustomLog.flag)CustomLog.L("MyPageTempLoginActivity","OnSnsLoginListener showMessage")
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener showMessage")
                 //setResultFinish(Activity.RESULT_CANCELED,message)
             }
         }
@@ -126,23 +127,23 @@ class MyPageUserInfoLayout constructor(
     }
 
     // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
-    private fun showLoginTypeUser(){
+    private fun showLoginTypeUser() {
         var message = ""
-        when(mViewModel.mypageUserInfoLoginCheckType.get()){
-            0->message = "이메일로 "
-            1->message = "네이버로 "
-            2->message = "카카오로 "
-            3->message = "페이스북으로 "
-            4->message = "구글로 "
+        when (mViewModel.mypageUserInfoLoginCheckType.get()) {
+            0 -> message = "이메일로 "
+            1 -> message = "네이버로 "
+            2 -> message = "카카오로 "
+            3 -> message = "페이스북으로 "
+            4 -> message = "구글로 "
         }
         message += "가입한 사용자 입니다."
         CommonViewUtil.showDialog(context as MainActivity, message, false, false)
     }
 
-    override fun onGoogleLogin() { }
-    override fun onKakaoLogin() { }
-    override fun onFacebookLogin() { }
-    override fun onNaverLogin() { }
+    override fun onGoogleLogin() {}
+    override fun onKakaoLogin() {}
+    override fun onFacebookLogin() {}
+    override fun onNaverLogin() {}
     override fun redirectJoinActivity() {}
     override fun redirectFindAccountActivity() {}
 
@@ -166,11 +167,11 @@ class MyPageUserInfoLayout constructor(
         if (checkUserLogin()) setInitView()
     }
 
-    override fun onStart() { }
-    override fun onPause() { }
-    override fun onStop() { }
-    override fun onDestroy() { }
-    override fun onFocusView() { }
+    override fun onStart() {}
+    override fun onPause() {}
+    override fun onStop() {}
+    override fun onDestroy() {}
+    override fun onFocusView() {}
 
 
     private fun checkUserLogin(): Boolean {
@@ -194,9 +195,9 @@ class MyPageUserInfoLayout constructor(
         if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "setInitView ", "false userId -----", mViewModel.userId)
         mViewModel.checkPasswordConfirm.set(false)
         mLoadingIndicatorUtil.show()
-        mViewModel.userLoginType(object : OnCallBackListener{
+        mViewModel.userLoginType(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-                if(mViewModel.mypageUserInfoLoginCheckType.get() == 0){
+                if (mViewModel.mypageUserInfoLoginCheckType.get() == 0) {
                     mBinding.includeMypageuserinfoUserpassword.edittextviewLoginPwd.setEnable(true)
                     mUserInfoViewModel.id = CommonUtil.checkUserEmail()
                 }
@@ -205,10 +206,10 @@ class MyPageUserInfoLayout constructor(
         })
     }
 
-    private fun setUserData(){
+    private fun setUserData() {
         mBinding.includeMypageuserinfoUserpassword.edittextviewLoginPwd.text = ""
         var intent = Intent(context as MainActivity, UserInfoActivity::class.java)
-        intent.putExtra("loginType",mViewModel.mypageUserInfoLoginCheckType.get())
+        intent.putExtra("loginType", mViewModel.mypageUserInfoLoginCheckType.get())
         (context as MainActivity).startActivityForResult(intent, Flag.RequestCode.USER_INFO)
     }
 
@@ -216,10 +217,10 @@ class MyPageUserInfoLayout constructor(
     @SuppressLint("CheckResult")
     private fun setEventBus() {
         EventBusHelper.mSubject.subscribe {
-            if(it.requestCode == Flag.RequestCode.MYPAGE_USERINFO_LOGIN){
+            if (it.requestCode == Flag.RequestCode.MYPAGE_USERINFO_LOGIN) {
                 if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "it.data -----", it.data.toString())
                 var result = it.data.toString().split(",")
-                if(!TextUtils.isEmpty(it.data.toString()) && result.size > 1){
+                if (!TextUtils.isEmpty(it.data.toString()) && result.size > 1) {
                     var resultCode = result[0].toInt()
                     var message: String? = result[1]
                     if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout", "EventBusHelper ", "resultCode -----", resultCode, "resultCode", resultCode)
@@ -248,7 +249,7 @@ class MyPageUserInfoLayout constructor(
 
 
     private fun getSnsLoginServerListener(): OnServerListener {
-        return OnServerListener{ success, o ->
+        return OnServerListener { success, o ->
             if (success) {
                 val model = o as BaseModel<*>
                 when (model.resultCode) {
@@ -256,17 +257,17 @@ class MyPageUserInfoLayout constructor(
                         // SNS 로그인
                         val token = model.data as Token
                         val id = JWT(token.accessToken!!).getClaim("userId").asString()
-                        if(id?.toLong() ?: 0L != 0L){
-                            if(id?.toLong() ?: 0L == CommonUtil.checkUserId()){
+                        if (id?.toLong() ?: 0L != 0L) {
+                            if (id?.toLong() ?: 0L == CommonUtil.checkUserId()) {
                                 setUserData()
-                            }else{
+                            } else {
                                 CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "현제 로그인된 회원과 다른 사용자입니다.")
                             }
-                        }else CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
+                        } else CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
                     }
                     Flag.ResultCode.DATA_NOT_FOUND ->
                         // SNS 회원가입
-                        mUserInfoViewModel.joinSnsUser { success1, o1 ->
+                        mUserInfoViewModel.joinSnsUser(OnServerListener { success1, o1 ->
                             if (success1) {
                                 val m = o1 as BaseModel<Token>
                                 if (m.resultCode == Flag.ResultCode.SUCCESS) {
@@ -280,7 +281,7 @@ class MyPageUserInfoLayout constructor(
                                     ToastUtil.showMessage(m.message)
                                 }
                             }
-                        }
+                        })
                 }
             } else {
                 val message = o as String
