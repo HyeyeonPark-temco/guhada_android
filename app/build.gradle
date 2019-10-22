@@ -208,6 +208,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven { url 'https://jitpack.io' }
+    maven {url "http://kochava.bintray.com/maven"}
 }
 
 // @Author park jungho
