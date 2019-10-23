@@ -199,6 +199,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="30dp"
             android:textColor="@color/text_3"
-            android:textSize="@dimen/text_16" />
+            android:textSize="@dimen/text_18" />
     </RelativeLayout>
 </layout>

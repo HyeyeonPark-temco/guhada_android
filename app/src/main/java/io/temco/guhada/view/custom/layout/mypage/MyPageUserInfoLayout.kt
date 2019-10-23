@@ -172,7 +172,7 @@ class MyPageUserInfoLayout constructor(
     override fun onStop() {}
     override fun onDestroy() {}
     override fun onFocusView() {}
-
+    override fun onReleaseView() {}
 
     private fun checkUserLogin(): Boolean {
         if (!CommonUtil.checkToken()) {

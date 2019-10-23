@@ -270,7 +270,8 @@ class TimeDealListLayout constructor(
     override fun onResume() {
         setRecentProductCount()
         if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onResume")
-        startView()
+        mViewModel.adapter.notifyDataSetChanged()
+        //startView()
     }
     override fun onPause() {
         if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onPause")

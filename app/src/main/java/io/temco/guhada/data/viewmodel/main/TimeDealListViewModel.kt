@@ -15,6 +15,8 @@ import io.temco.guhada.data.server.ProductServer
 import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.adapter.main.TimeDealListAdapter
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * @author park jungho
@@ -31,30 +33,40 @@ class TimeDealListViewModel(val context : Context) : BaseObservableViewModel() {
 
     fun getTimeDealItem(listener: OnCallBackListener) {
         if(listData.isNotEmpty()) listData.clear()
-        SearchServer.getProductByBestItem(10, OnServerListener { success, o ->
+        SearchServer.getProductByBestItem(4, OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         listData.add(DummyImage(listData.size, HomeType.Dummy, R.color.transparent, 280))
+
                         var deals =  (o as BaseModel<*>).data as HomeDeal
                         var timeDeal : ArrayList<TimeDeal> = arrayListOf()
                         var index = 1
+                        var current = Calendar.getInstance()
+                        /**
+                         * 데이터를 서버에서 받아와 넣는 시점에 expiredTimeLong 값을 계산해서 생성함
+                         */
                         for(t in deals.allList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 119000L + (index+1))))
+                            var time = ((index+1) * 11100L + (index+1)) * 1000L // 더미 종료 시간
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
                             index++
                         }
                         for(t in deals.womenList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 218000L + (index+1))))
+                            var time = ((index+1) * 12800L + (index+1))* 1000L // 더미 종료 시간
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
                             index++
                         }
                         for(t in deals.menList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 347000L + (index+1))))
+                            var time = ((index+1) * 13700L + (index+1))* 1000L // 더미 종료 시간
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
                             index++
                         }
                         for(t in deals.kidsList!!) {
-                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, ((index+1) * 536000L + (index+1))))
+                            var time = ((index+1) * 14600L + (index+1))* 1000L // 더미 종료 시간
+                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
                             index++
                         }
                         listData.addAll(timeDeal)
+
                         listData.add(MainBaseModel(timeDeal.size,HomeType.Footer,2))
                         listener.callBackListener(true,"")
                     },

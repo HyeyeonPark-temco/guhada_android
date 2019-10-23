@@ -463,9 +463,11 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if(item is TimeDeal){
+                // 타임 쓰레드 종료
                 if(customRunnableMap.contains(position)){
                     handler.removeCallbacks(customRunnableMap[position])
                     customRunnableMap.remove(position,customRunnableMap[position])
+                    item.displayTime = 0L
                 }
 
                 binding.itemLayout.contentDescription = item.deal.dealId.toString()
@@ -518,16 +520,24 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
                 //binding.textShipFree.visibility = (if (item.deal.isFreeShipping) View.VISIBLE else View.GONE)
 
-                var seconds = item.endTime
+
+                // 현재시간
+                var cal = Calendar.getInstance()
+
+                item.displayTime = item.expiredTimeLong - cal.timeInMillis - 1000// 화면에 표시되는 시간 값
+
+                var seconds = item.displayTime /1000
                 var minutes = seconds / 60
                 var hours = minutes / 60
                 var days = hours / 24
                 var time = days.toString() +" "+"days" +" :" +hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
 
                 binding.textTimer.text = time
-                var customRunnable = CustomRunnable( item.endTime, binding.textTimer, handler)
+                // 타임 쓰레드 시작
+                var customRunnable = CustomRunnable(item.displayTime/1000, binding.textTimer, handler)
                 customRunnableMap.put(position, customRunnable)
-                handler.postDelayed(customRunnable, 998)
+                var milSec : Long = 1000L - cal.get(Calendar.MILLISECOND)-2 // 시작 delay millisecond Time , 0초에 시작하기 위해
+                handler.postDelayed(customRunnable, milSec)
             }
         }
 
@@ -618,7 +628,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
             if(CustomLog.flag)CustomLog.L("CustomRunnable","time",time)
             millisUntilFinished -= 1
             if(millisUntilFinished > 0){
-                handler.postDelayed(this, 1000)
+                handler.postDelayed(this, 997)
             }
         }
     }
