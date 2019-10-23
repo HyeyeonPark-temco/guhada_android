@@ -187,7 +187,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             // 주문 완료 페이지 이동
 
             for (item in mViewModel.productList)
-                Tracker.Event(TrackingEvent.Product.View_Product.eventName).let { event ->
+                // [Tracking] 결제 성공
+                Tracker.Event(TrackingEvent.Product.Buy_Product.eventName).let { event ->
                     event.addCustom("dealId", item.dealId.toString())
                     event.addCustom("season", item.season)
                     event.addCustom("name", item.name)

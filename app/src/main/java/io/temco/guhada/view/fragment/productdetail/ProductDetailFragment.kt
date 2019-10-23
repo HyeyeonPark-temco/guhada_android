@@ -123,6 +123,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         })
         mViewModel.product.observe(this, Observer<Product> { product ->
+            // [Tracking] 상품 조회
             Tracker.Event(TrackingEvent.Product.View_Product.eventName).let {
                 it.addCustom("dealId", product.dealId.toString())
                 it.addCustom("productId", product.productId.toString())
