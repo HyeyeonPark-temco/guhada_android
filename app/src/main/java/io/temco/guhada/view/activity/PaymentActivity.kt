@@ -69,6 +69,12 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         initDiscountCouponView()
         initDiscountPointView()
 
+        // [장바구니]에서 진입 시, 상품 정보
+        setProductFromCart()
+
+        // [바로구매]에서 진입 시, 상품 정보
+        setProductFromNowBuy()
+
         // 결제수단
         initPaymentWay()
 
@@ -86,9 +92,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentDiscount.viewModel = mViewModel
         mBinding.includePaymentDiscountresult.viewModel = mViewModel
         mBinding.includePaymentPaymentway.viewModel = mViewModel
-        mBinding.viewModel = mViewModel
         mBinding.includePaymentPaymentway.setPurchaseClickListener { CommonUtilKotlin.startTermsPurchase(this@PaymentActivity) }
-
+        mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
 
@@ -162,16 +167,11 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                 finish()
             }
         }).apply {
-            this.mVerifyTask = {
-                val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
-                intent.putExtra("user", mViewModel.order.user)
-                intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
-                intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
-                startActivityForResult(intent, RequestCode.VERIFY.flag)
-            }
+            this.mVerifyTask = { this@PaymentActivity.redirectVerifyActivity() }
         }
+    }
 
-        // [장바구니]에서 진입
+    private fun setProductFromCart(){
         if (intent.getSerializableExtra("productList") != null) {
             mViewModel.productList = intent.getSerializableExtra("productList") as ArrayList<BaseProduct>
         }
@@ -179,15 +179,15 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             mViewModel.cartIdList = (intent.getSerializableExtra("cartIdList") as Array<Int>).toMutableList()
             mViewModel.totalCount = ObservableInt(mViewModel.cartIdList.size)
         }
+    }
 
-        // [바로구매]에서 진입
+    private fun setProductFromNowBuy(){
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
-
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
 
             for (item in mViewModel.productList)
-                // [Tracking] 결제 성공
+            // [Tracking] 결제 성공
                 Tracker.Event(TrackingEvent.Product.Buy_Product.eventName).let { event ->
                     event.addCustom("dealId", item.dealId.toString())
                     event.addCustom("season", item.season)
@@ -195,13 +195,13 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     event.addCustom("sellPrice", item.sellPrice.toString())
                     event.addCustom("discountPrice", item.discountPrice.toString())
 
-//                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
-
                     val brandId = intent.getIntExtra("brandId", -1)
                     if (brandId > 0) event.addCustom("brandId", brandId.toString())
 
                     val sellerId = intent.getLongExtra("sellerId", -1)
                     if (sellerId > 0) event.addCustom("sellerId", sellerId.toString())
+
+//                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
 
                     TrackingUtil.sendKochavaEvent(event)
                 }
@@ -331,7 +331,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     }
 
     private fun initDiscountCouponView() {
-        // COUPON
         mBinding.includePaymentDiscount.buttonPaymentDiscountcoupon.setOnClickListener { redirectCouponSelectDialogActivity() }
         mBinding.includePaymentDiscountresult.imageviewPaymentChangecoupon.setOnClickListener { redirectCouponSelectDialogActivity() }
     }
@@ -343,7 +342,6 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         startActivityForResult(intent, RequestCode.COUPON_SELECT.flag)
     }
 
-    // 결제 수단
     private fun initPaymentWay() {
         mPaymentWayAdapter = PaymentWayAdapter()
         mPaymentWayAdapter.mViewModel = mViewModel
@@ -351,9 +349,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter = mPaymentWayAdapter
     }
 
-    // 현금영수증
     private fun initRecipient() {
-        // 신청, 미신청 체크박스
+        // 신청 체크박스
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptissue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 mViewModel.mIsRecipientIssued = true
@@ -368,6 +365,8 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             mBinding.includePaymentPaymentway.checkboxPaymentReceiptunissue.isChecked = !isChecked
             mBinding.includePaymentPaymentway.constraintlayoutPaymentRecipientform.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
+
+        // 신청 체크박스
         mBinding.includePaymentPaymentway.checkboxPaymentReceiptunissue.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 mViewModel.mIsRecipientIssued = false
@@ -456,6 +455,14 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
             }
             mBinding.includePaymentDiscountresult.textviewPaymentExpectedtotalpoint.text = String.format(getString(R.string.common_price_format), dusSaveTotalPoint)
         })
+    }
+
+    private fun redirectVerifyActivity() {
+        val intent = Intent(this@PaymentActivity, VerifyActivity::class.java)
+        intent.putExtra("user", mViewModel.order.user)
+        intent.putExtra("mobileVerification", mViewModel.mMobileVerification.get())
+        intent.putExtra("emailVerification", mViewModel.mEmailVerification.get())
+        startActivityForResult(intent, RequestCode.VERIFY.flag)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

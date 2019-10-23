@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:ellipsize="end"
-            android:lineSpacingExtra="4sp"
+            android:lineSpacingExtra="2sp"
             android:maxLines="2"
             android:minHeight="32dp"
             android:text="@{deal.productName}"

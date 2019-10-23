@@ -139,7 +139,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
             // 본인인증 여부 판별
             checkValidation()
-//            this.mEmailVerification = ObservableBoolean(value.user.emailVerify)
 
             field = value
         }
@@ -357,7 +356,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
             UserServer.saveUserShippingAddress(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
-                            // ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingaddress_message_add_success))
                             if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 success")
                             requestOrder("Bearer $accessToken", mRequestOrder)
                         }, failedTask = { if (CustomLog.flag) CustomLog.L("주문결제-배송지등록 ${if (it is BaseModel<*>) it.message else "에러"}") })
@@ -496,7 +494,6 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     // 결제하기 버튼 클릭
     fun onClickPay() {
-
         if (termsChecked.get()) {
             for (i in 0 until paymentWays.size)
                 if (paymentWays[i])
@@ -529,15 +526,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                                     RequestOrder.CashReceiptUsage.PERSONAL.code ->
                                         if (mRequestOrder.cashReceiptType == RequestOrder.CashReceiptType.MOBILE.code)
                                             if (mRecipientPhone1.isEmpty() || mRecipientPhone2.isEmpty() || mRecipientPhone3.isEmpty()) {
-                                                listener.showMessage("현금영수증을 신청할 핸드폰 번호를 입력하세요")
+                                                listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient1))
                                                 return
                                             } else if (mRecipientPhone2.length < 4 || mRecipientPhone3.length < 4) {
-                                                listener.showMessage("현금영수증을 신청할 휴대폰 번호를 올바르게 입력하세요")
+                                                listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient2))
                                                 return
                                             }
                                     RequestOrder.CashReceiptUsage.BUSINESS.code ->
                                         if (mRecipientCorporation1.isEmpty() || mRecipientCorporation2.isEmpty() || mRecipientCorporation3.isEmpty()) {
-                                            listener.showMessage("현금영수증을 신청할 사업자 등록번호를 입력하세요")
+                                            listener.showMessage(BaseApplication.getInstance().getString(R.string.payment_message_recipient3))
                                             return
                                         }
                                 }
@@ -572,7 +569,8 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                             } else if (selectedShippingMessage.get()?.message ?: defaultShippingMessage == defaultShippingMessage) {
                                 selectedShippingMessage = ObservableField(ShippingMessage().apply { this.message = "" })
                             }
-                            mRequestOrder.shippingAddress.shippingMessage = selectedShippingMessage.get()?.message?:""
+                            mRequestOrder.shippingAddress.shippingMessage = selectedShippingMessage.get()?.message
+                                    ?: ""
 
                             // 사용 포인트
                             mRequestOrder.consumptionPoint = usedPointNumber.toInt()
@@ -609,10 +607,12 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 if (userId != null && userId > 0)
                     UserServer.getUserById(OnServerListener { success, o ->
                         if (success && (o as BaseModel<*>).resultCode == ResultCode.SUCCESS.flag) {
+                            if (CustomLog.flag) CustomLog.L("checkValidation", o.data as User)
+
                             val user = o.data as User
-                            this.mEmailVerification.set(user.emailVerify)
-                            if(CustomLog.flag)CustomLog.L("checkValidation",user)
                             val diCode = user.userDetail.diCode
+                            this.mEmailVerification.set(user.emailVerify)
+
                             if (!diCode.isNullOrEmpty()) {
                                 val jsonObject = JsonObject()
                                 jsonObject.addProperty("diCode", diCode)
@@ -671,13 +671,15 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
 
     fun onShippingMemoSelected(position: Int) {
         if (shippingMessages.size > position) {
+            val DEFAULT_MESSAGE_POS = 5
             val message = shippingMessages[position].message
+
             selectedShippingMessage = ObservableField(ShippingMessage().apply {
                 this.message = message
                 this.type = shippingMessages[position].type
             })
 
-            if (position == 5 || message == BaseApplication.getInstance().getString(R.string.shippingmemo_self)) {
+            if (position == DEFAULT_MESSAGE_POS || message == BaseApplication.getInstance().getString(R.string.shippingmemo_self)) {
                 shippingMessage = ""
                 this.shippingMemoVisible = ObservableBoolean(true)
             } else {
