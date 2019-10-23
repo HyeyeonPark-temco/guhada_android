@@ -195,7 +195,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
                     event.addCustom("sellPrice", item.sellPrice.toString())
                     event.addCustom("discountPrice", item.discountPrice.toString())
 
-                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
+//                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
 
                     val brandId = intent.getIntExtra("brandId", -1)
                     if (brandId > 0) event.addCustom("brandId", brandId.toString())
