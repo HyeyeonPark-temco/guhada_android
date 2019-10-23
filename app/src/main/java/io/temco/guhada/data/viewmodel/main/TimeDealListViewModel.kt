@@ -31,6 +31,7 @@ class TimeDealListViewModel(val context : Context) : BaseObservableViewModel() {
     lateinit var adapter : TimeDealListAdapter
     fun getListAdapter() = adapter
 
+    // 더미 타일딜 데이터
     fun getTimeDealItem(listener: OnCallBackListener) {
         if(listData.isNotEmpty()) listData.clear()
         SearchServer.getProductByBestItem(4, OnServerListener { success, o ->

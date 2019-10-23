@@ -52,6 +52,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
     lateinit var handler : Handler
     lateinit var customRunnableMap : WeakHashMap<Int, CustomRunnable>
 
+    // 타일딜 타임 쓰레드 전체 종료
     fun clearRunnable(){
         if(CustomLog.flag)CustomLog.L("TimeDealListAdapter","clearRunnable")
         if(::customRunnableMap.isInitialized){
@@ -524,7 +525,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 // 현재시간
                 var cal = Calendar.getInstance()
 
-                item.displayTime = item.expiredTimeLong - cal.timeInMillis - 1000// 화면에 표시되는 시간 값
+                item.displayTime = item.expiredTimeLong - cal.timeInMillis - 1000 // 화면에 표시되는 시간 값
 
                 var seconds = item.displayTime /1000
                 var minutes = seconds / 60
@@ -536,7 +537,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 // 타임 쓰레드 시작
                 var customRunnable = CustomRunnable(item.displayTime/1000, binding.textTimer, handler)
                 customRunnableMap.put(position, customRunnable)
-                var milSec : Long = 1000L - cal.get(Calendar.MILLISECOND)-2 // 시작 delay millisecond Time , 0초에 시작하기 위해
+                var milSec : Long = 1000L - cal.get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
                 handler.postDelayed(customRunnable, milSec)
             }
         }
@@ -573,7 +574,6 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                     R.id.textview_term_terms ->{ CommonUtilKotlin.startTermsPurchase(containerView.context as Activity) }
                     R.id.textview_term_advise ->{}
                     R.id.textview_term_privacy_terms ->{CommonUtilKotlin.startTermsPersonal(containerView.context as Activity) }
-                    R.id.textview_term_partner ->{}
                     R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
                     R.id.textview_term_company ->{CommonUtilKotlin.startTermsCompany(containerView.context as Activity) }
                     R.id.textview_term_call ->{
@@ -581,7 +581,7 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                         val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
                         (itemView.context as Activity).startActivity(intent)
                     }
-                    R.id.textview_term_email ->{
+                    R.id.textview_term_partner, R.id.textview_term_email ->{
                         var email = Intent(Intent.ACTION_SEND).apply {
                             type = "plain/Text"
                             var email : Array<String> = arrayOf("help@guhada.com")
@@ -625,10 +625,13 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
             var days = hours / 24
             var time = days.toString() +" "+"days" +" :" +hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
             text.text = time
-            if(CustomLog.flag)CustomLog.L("CustomRunnable","time",time)
+            var cal = Calendar.getInstance()
+            var milSec : Long = 1000L - cal.get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
+            if(milSec <= 10L) milSec = 1000L
+            if(CustomLog.flag)CustomLog.L("CustomRunnable","time",time,"milSec",milSec)
             millisUntilFinished -= 1
             if(millisUntilFinished > 0){
-                handler.postDelayed(this, 997)
+                handler.postDelayed(this, milSec)
             }
         }
     }

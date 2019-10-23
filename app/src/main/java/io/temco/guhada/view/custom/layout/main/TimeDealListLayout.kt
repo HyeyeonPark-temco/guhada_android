@@ -27,6 +27,14 @@ import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.fragment.main.HomeFragment
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
+/**
+ * @author park jungho
+ *
+ * 메인화면 타임딜
+ *
+ *
+ * - 추가 작업 할 내용 : SwipeRefreshLayout 추가, 타임딜 이미지 bg 리스트 스크롤시 안보이게게
+ */
 class TimeDealListLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
@@ -244,8 +252,8 @@ class TimeDealListLayout constructor(
                 .start()
     }
 
-    private fun startView(){
-        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","startView onResume")
+    private fun loadTimeDealData(){
+        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","loadTimeDealData onResume")
         mViewModel.adapter.items.clear()
         mViewModel.adapter.notifyDataSetChanged()
         mViewModel.getTimeDealItem(object  : OnCallBackListener{
@@ -256,11 +264,13 @@ class TimeDealListLayout constructor(
         })
     }
 
+    // viewpager의 화면 진입시
     override fun onFocusView() {
         if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onFocusView")
-        startView()
+        loadTimeDealData()
     }
 
+    // viewpager의 화면 해재시
     override fun onReleaseView() {
         if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onReleaseView")
         mViewModel.adapter.clearRunnable()
@@ -271,7 +281,7 @@ class TimeDealListLayout constructor(
         setRecentProductCount()
         if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onResume")
         mViewModel.adapter.notifyDataSetChanged()
-        //startView()
+        //loadTimeDealData()
     }
     override fun onPause() {
         if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onPause")

@@ -438,7 +438,6 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
                     R.id.textview_term_terms ->{ CommonUtilKotlin.startTermsPurchase(containerView.context as Activity) }
                     R.id.textview_term_advise ->{}
                     R.id.textview_term_privacy_terms ->{CommonUtilKotlin.startTermsPersonal(containerView.context as Activity) }
-                    R.id.textview_term_partner ->{}
                     R.id.textview_term_guarantee ->{CommonUtilKotlin.startTermsGuarantee(containerView.context as Activity) }
                     R.id.textview_term_company ->{CommonUtilKotlin.startTermsCompany(containerView.context as Activity) }
                     R.id.textview_term_call ->{
@@ -446,7 +445,7 @@ class MenListAdapter(private val model : MenListViewModel, list : ArrayList<Main
                         val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
                         (itemView.context as Activity).startActivity(intent)
                     }
-                    R.id.textview_term_email ->{
+                    R.id.textview_term_partner, R.id.textview_term_email ->{
                         var email = Intent(Intent.ACTION_SEND).apply {
                             type = "plain/Text"
                             var email : Array<String> = arrayOf("help@guhada.com")
