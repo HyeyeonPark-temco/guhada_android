@@ -592,6 +592,9 @@
     <string name="payment_message_confirmtemrs">이용 약관에 동의해주세요</string>
     <string name="payment_message_verifyemail">이메일 인증을 진행해주세요</string>
     <string name="payment_message_verifymobile">휴대폰 본인인증을 진행해주세요</string>
+    <string name="payment_message_recipient1">현금영수증을 신청할 핸드폰 번호를 입력하세요</string>
+    <string name="payment_message_recipient2">현금영수증을 신청할 휴대폰 번호를 올바르게 입력하세요</string>
+    <string name="payment_message_recipient3">현금영수증을 신청할 사업자 등록번호를 입력하세요</string>
 
     <!-- SHIPPING ADDRESS -->
     <string name="shippingaddress_title">배송지 변경</string>
