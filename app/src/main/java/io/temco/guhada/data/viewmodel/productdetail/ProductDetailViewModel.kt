@@ -449,6 +449,7 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                     if (resultCode == ResultCode.SUCCESS.flag) {
                         val cart = o.data as Cart
 
+                        // [Tracking] 장바구니 담기
                         Tracker.Event(TrackingEvent.Cart.Add_To_Cart.eventName).let {
                             it.addCustom("dealId", product.value?.dealId.toString())
                             it.addCustom("productId", product.value?.productId.toString())

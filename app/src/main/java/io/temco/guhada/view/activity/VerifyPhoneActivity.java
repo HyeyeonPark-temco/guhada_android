@@ -110,6 +110,7 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
         Map<String, String> map = new HashMap<>();
         for (String key : params) {
             String value = uri.getQueryParameter(key);
+
             if (value != null) {
                 map.put(key, value);
             }

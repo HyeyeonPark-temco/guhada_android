@@ -14,6 +14,7 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.kochava.base.Tracker
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
@@ -21,9 +22,11 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.PaymentWayType
 import io.temco.guhada.common.enum.RequestCode
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.LoadingIndicatorUtil
 import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.TrackingUtil
 import io.temco.guhada.data.model.UserShipping
 import io.temco.guhada.data.model.coupon.CouponWallet
 import io.temco.guhada.data.model.order.OrderItemResponse
@@ -45,7 +48,7 @@ import io.temco.guhada.view.adapter.payment.PaymentWayAdapter
 
 /**
  * 주문 결제 화면
- * @author Hyeyeon Park order/calculate-payment-info
+ * @author Hyeyeon Park
  */
 class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
@@ -182,6 +185,28 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
 
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
+
+            for (item in mViewModel.productList)
+                // [Tracking] 결제 성공
+                Tracker.Event(TrackingEvent.Product.Buy_Product.eventName).let { event ->
+                    event.addCustom("dealId", item.dealId.toString())
+                    event.addCustom("season", item.season)
+                    event.addCustom("name", item.name)
+                    event.addCustom("sellPrice", item.sellPrice.toString())
+                    event.addCustom("discountPrice", item.discountPrice.toString())
+
+//                    if (item.productId > 0) event.addCustom("productId", item.productId.toString())
+
+                    val brandId = intent.getIntExtra("brandId", -1)
+                    if (brandId > 0) event.addCustom("brandId", brandId.toString())
+
+                    val sellerId = intent.getLongExtra("sellerId", -1)
+                    if (sellerId > 0) event.addCustom("sellerId", sellerId.toString())
+
+                    TrackingUtil.sendKochavaEvent(event)
+                }
+
+
             mLoadingIndicatorUtil.hide()
             Intent(this@PaymentActivity, PaymentResultActivity::class.java).let { intent ->
                 intent.putExtra("purchaseOrderResponse", mViewModel.purchaseOrderResponse.value)

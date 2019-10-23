@@ -123,6 +123,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         })
         mViewModel.product.observe(this, Observer<Product> { product ->
+            // [Tracking] 상품 조회
             Tracker.Event(TrackingEvent.Product.View_Product.eventName).let {
                 it.addCustom("dealId", product.dealId.toString())
                 it.addCustom("productId", product.productId.toString())
@@ -681,6 +682,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
             BaseProduct().apply {
                 this.dealId = mViewModel.dealId
+                this.productId = mViewModel.product.value?.productId ?: -1
                 this.profileUrl = product?.imageUrls?.get(0) ?: "" // 대표이미지 임시
                 this.name = name
                 this.brandName = brandName
@@ -699,6 +701,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 Intent(context, PaymentActivity::class.java).let { intent ->
                     intent.putExtra("quantity", count)
                     intent.putExtra("product", baseProduct)
+                    intent.putExtra("brandId", mViewModel.product.value?.brandId)
+                    intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
                 }
             }
@@ -752,6 +756,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
             BaseProduct().apply {
                 this.dealId = mViewModel.dealId
+                this.productId = mViewModel.product.value?.productId ?: -1
                 this.profileUrl = product?.imageUrls?.get(0) ?: "" // 대표이미지 임시
                 this.name = name
                 this.brandName = brandName
@@ -770,6 +775,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 Intent(context, PaymentActivity::class.java).let { intent ->
                     intent.putExtra("quantity", getSelectedProductQuantity())
                     intent.putExtra("product", baseProduct)
+                    intent.putExtra("brandId", mViewModel.product.value?.brandId)
+                    intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
                     startActivityForResult(intent, Flag.RequestCode.PAYMENT)
                 }
             }

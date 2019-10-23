@@ -36,7 +36,6 @@ class MyPageUserInfoLayout constructor(
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : BaseListLayout<CustomlayoutMypageUserinfoBinding, MyPageUserInfoViewModel>(context, attrs, defStyleAttr), OnLoginListener {
-
     private lateinit var mUserInfoViewModel: LoginViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil
     private lateinit var mLoginListener: OnSnsLoginListener

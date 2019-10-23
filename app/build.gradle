@@ -83,6 +83,10 @@ android {
         density.enableSplit = false
         language.enableSplit = true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -168,10 +172,13 @@ dependencies {
     implementation libraryDependencies.appCenterAnalytics
     implementation libraryDependencies.appCenterCrashes
 
+    // TEST
+    testImplementation libraryDependencies.junit
+
     // JODA
 //    implementation libraryDependencies.joda
 
-    // ----------------------------------------------------------
+    // ----------------------------------------------------------returnDefaultValues
     /**
      * @Author park jungho
      * 19.07.18
