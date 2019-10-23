@@ -36,6 +36,9 @@ class MyPageUserInfoLayout constructor(
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : BaseListLayout<CustomlayoutMypageUserinfoBinding, MyPageUserInfoViewModel>(context, attrs, defStyleAttr), OnLoginListener {
+    override fun onReleaseView() {
+
+    }
 
     private lateinit var mUserInfoViewModel: LoginViewModel
     private lateinit var mLoadingIndicatorUtil: LoadingIndicatorUtil

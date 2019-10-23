@@ -6,6 +6,7 @@ ext {
     supportCustomTabsVersion = '25.3.1'
 
     // LIBRARY
+    junitVersion = '4.12'
     glideVersion = '4.9.0'
     retrofitVersion = '2.5.0'
     retrofitCoroutineAdapter = '0.9.2'
@@ -36,6 +37,7 @@ ext {
     ]
 
     libraryDependencies = [
+            junit                   : "junit:junit:${junitVersion}",
             glide                   : "com.github.bumptech.glide:glide:${glideVersion}",
             glideCompiler           : "com.github.bumptech.glide:compiler:${glideVersion}",
             retrofit                : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
