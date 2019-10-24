@@ -11,9 +11,7 @@ import java.util.*
  */
 object DateUtil {
     // 오늘 일자
-    fun getToday(): Calendar {
-        return Calendar.getInstance(TimeZone.getDefault())
-    }
+    fun getToday(): Calendar = Calendar.getInstance(TimeZone.getDefault())
 
 
     @JvmStatic
@@ -116,8 +114,8 @@ object DateUtil {
     fun getNowDateDiffMinute(date: Long): Int {
         if (date == 0L) return 0
         val MINUTE_MS = 60 * 1000
-        var today = Calendar.getInstance()
-        var minute = (today.timeInMillis - date) / MINUTE_MS
+        val today = Calendar.getInstance()
+        val minute = (today.timeInMillis - date) / MINUTE_MS
         return minute.toInt()
     }
 
@@ -127,11 +125,10 @@ object DateUtil {
         if (date == 0L) return 0
         val MINUTE_MS = 60 * 1000
         val HOUR_MS = MINUTE_MS * 60
-        var today = Calendar.getInstance()
-        var minute = (today.timeInMillis - date) / HOUR_MS
+        val today = Calendar.getInstance()
+        val minute = (today.timeInMillis - date) / HOUR_MS
         return minute.toInt()
     }
-
 
     @JvmStatic
     fun getNowDateDiffDay(date: Long): Int {
@@ -139,8 +136,10 @@ object DateUtil {
         val MINUTE_MS = 60 * 1000
         val HOUR_MS = MINUTE_MS * 60
         val DAY_MS = HOUR_MS * 24
-        var today = Calendar.getInstance()
-        var minute = (today.timeInMillis - date) / DAY_MS
+        val today = Calendar.getInstance()
+        val minute = (today.timeInMillis - date) / DAY_MS
         return minute.toInt()
     }
+
+
 }

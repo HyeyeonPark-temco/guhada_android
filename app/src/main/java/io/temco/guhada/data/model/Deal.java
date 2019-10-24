@@ -122,6 +122,7 @@ public class Deal {
         public Long now = 0L;
         public Long remainedTimeForStart = 0L;
         public Long remainedTimeForEnd = 0L;
+        public Long discountStartAt = 0L;
         public String statusCode = "";
         public String statusText = "";
     }

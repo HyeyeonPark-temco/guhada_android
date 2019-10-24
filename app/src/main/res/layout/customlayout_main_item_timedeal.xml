@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="io.temco.guhada.data.model.main.TimeDeal.Status" />
 
         <import type="android.view.View" />
@@ -37,16 +38,65 @@
         android:paddingRight="20dp"
         android:paddingBottom="20dp">
 
-        <TextView
-            android:id="@+id/text_timer"
-            style="@style/TextBold"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:gravity="center_horizontal"
-            android:singleLine="true"
-            android:textColor="@color/text_3"
-            android:textSize="@dimen/text_18" />
+            android:layout_marginStart="55dp"
+            android:layout_marginEnd="55dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/border_all_whitefour_r50"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@{deal.timeDealInfo.statusCode.equals(Status.READY.code)? @drawable/background_color_timedeal_greyishbrowntwo : @drawable/background_color_timedeal_watermelon, default = @drawable/background_color_timedeal_watermelon}">
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:text="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? deal.timeDealInfo.statusText : @string/timedeal_today, default= @string/timedeal_today}"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_16" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp">
+
+                <TextView
+                    android:id="@+id/text_start"
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_16"
+                    android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? View.VISIBLE : View. GONE}" />
+                <!--app:isReady="@{deal.timeDealInfo.statusCode.equals(Status.READY.code)}"-->
+                <!--app:startAt="@{deal.timeDealInfo.discountStartAt}"-->
+                <TextView
+                    android:id="@+id/text_timer"
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_16"
+                    android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? View.GONE : View. VISIBLE}" />
+
+            </FrameLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/item_layout"
@@ -146,7 +196,7 @@
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="@{deal.productName}"
+                    android:text="@{deal.dealName}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_15" />
 
@@ -228,12 +278,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:layout_marginBottom="3dp"
                         android:layout_marginStart="5dp"
+                        android:layout_marginBottom="3dp"
                         android:text="@{deal.timeDealInfo.statusText}"
-                        android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.OUT_OF_STOCK_IMMINENT.code) ? View.VISIBLE: View. GONE}"
                         android:textColor="@color/watermelon"
-                        android:textSize="@dimen/text_15" />
+                        android:textSize="@dimen/text_15"
+                        android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.OUT_OF_STOCK_IMMINENT.code) ? View.VISIBLE: View. GONE}" />
 
                 </LinearLayout>
 

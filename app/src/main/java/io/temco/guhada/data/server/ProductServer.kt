@@ -264,7 +264,7 @@ class ProductServer {
          */
         @JvmStatic
         fun getTimeDeal(listener: OnServerListener, pageIndex: Int, unitPerPage: Int) =
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getTimeDeal(pageIndex = pageIndex, unitPerPage = unitPerPage).enqueue(
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getTimeDeal().enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
     }
 

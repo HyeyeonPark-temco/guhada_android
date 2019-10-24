@@ -85,6 +85,6 @@ interface ProductService {
      * @since 2019.10.23
      */
     @GET("time-deals")
-    fun getTimeDeal(@Query("pageIndex") pageIndex : Int, @Query("unitPerPage") unitPerPage : Int) : Call<BaseModel<MutableList<Deal>>>
+    fun getTimeDeal() : Call<BaseModel<MutableList<Deal>>>
 
 }

@@ -1317,4 +1317,7 @@
     <string name="verifyuserinfo_emailmessage_success">이메일 인증이 완료되었습니다.</string>
     <string name="verifyuserinfo_mobilemessage_success">휴대폰 인증이 완료되었습니다.</string>
     <string name="verifyuserinfo_invaliemobile_message">휴대폰 번호가 올바르지 않습니다.</string>
+
+    <!-- TIME DEAL -->
+    <string name="timedeal_today">오늘마감</string>
 </resources>
