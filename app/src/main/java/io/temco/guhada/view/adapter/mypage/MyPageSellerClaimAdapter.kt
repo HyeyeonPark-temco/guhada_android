@@ -256,7 +256,7 @@ class MyPageSellerClaimAdapter(private val model: ViewModel, list: ArrayList<MyP
     inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder<MyPageClaimSellerContent>(containerView,binding){
         override fun bind(model : ViewModel, position : Int, data: MyPageClaimSellerContent){
             binding.linearlayoutMoreView.setOnClickListener {
-                (model as MyPageClaimViewModel).getMoreSellerCalimList(data.pageNumber+1)
+                (model as MyPageClaimViewModel).getMoreSellerCalimList((model as MyPageClaimViewModel).pageNum2+1)
             }
         }
     }

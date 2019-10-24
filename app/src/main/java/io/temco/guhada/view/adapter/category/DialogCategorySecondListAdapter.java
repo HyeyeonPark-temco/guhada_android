@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.florent37.expansionpanel.ExpansionLayout;
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import java.util.List;
@@ -63,6 +64,20 @@ public class DialogCategorySecondListAdapter extends RecyclerView.Adapter<Dialog
             holder.getBinding().layoutHeader.setTag(position);
             holder.getBinding().layoutHeader.setOnClickListener(this);
         } else {
+            holder.getBinding().layoutExpandContents.setTag(position);
+            holder.getBinding().layoutExpandContents.addListener(new ExpansionLayout.Listener() {
+                @Override
+                public void onExpansionChanged(ExpansionLayout expansionLayout, boolean expanded) {
+                    // Data
+                    int position = (int) expansionLayout.getTag();
+                    Category c = getItem(position);
+                    if(holder.isInit){
+                        holder.isInit = false;
+                        holder.addChild(mContext, Type.CategoryData.getType(c.hierarchies[0]), c, mCategoryListener, mCategoryHeaderListListener);
+                    }
+                    mCategoryHeaderListListener.onEvent(position,c);
+                }
+            });
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         }
         holder.init(mContext, mChildType, getItem(position), mCategoryListener, mCategoryHeaderListListener);

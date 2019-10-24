@@ -14,9 +14,14 @@ import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.sns.kakao.KakaoSDKAdapter;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.data.model.Category;
 
 /*
     MultiDexApplication 변경
@@ -28,6 +33,8 @@ public class BaseApplication extends MultiDexApplication {
 
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
+
+    private static WeakReference<List<Category>> categoryList;
 
     /**
      * @author park jungho
@@ -41,6 +48,7 @@ public class BaseApplication extends MultiDexApplication {
         mApplication = this;
         initUserMaypage = false;
         moveToMain = new ActivityMoveToMain(0,false);
+        categoryList = null;
         getFCMToken();
 
         // add GoogleAnalytics
@@ -69,6 +77,7 @@ public class BaseApplication extends MultiDexApplication {
         moveToMain = null;
         mApplication = null;
         initUserMaypage = false;
+        categoryList = null;
     }
 
     public static BaseApplication getInstance() {
@@ -115,4 +124,16 @@ public class BaseApplication extends MultiDexApplication {
 
         return sTracker;
     }
+
+    synchronized public List<Category> getCategoryList(){
+        if(categoryList == null || categoryList.get() == null || categoryList.get().isEmpty()){
+            categoryList = new WeakReference<>(Preferences.getCategories());
+        }
+        return categoryList.get();
+    }
+
+    public void setCategoryList(List<Category> list){
+        categoryList = new WeakReference<>(list);
+    }
+
 }

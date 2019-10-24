@@ -500,7 +500,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                         @Override
                         public void run() {
                             mBinding.layoutHeader.layoutTab.setScrollPosition(tabIndex,0f,true);
-                            loadCategory(tabCategoryList.get(tabIndex-1), false);
+                            int index = tabIndex-1;
+                            if(tabIndex==0) index = 0;
+                            if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","mCategoryData index", index , "tabIndex", tabIndex);
+                            loadCategory(tabCategoryList.get(index), false);
                         }
                     },150);
                 }

@@ -6,19 +6,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_default"
-        android:orientation="vertical"
-        android:paddingBottom="25dp">
+        android:paddingBottom="25dp"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/layout_image"
             android:layout_width="match_parent"
-            android:layout_height="110dp">
+            android:layout_height="wrap_content">
 
             <!-- THUMBNAIL -->
             <ImageView
                 style="@style/ProductImageType"
                 android:id="@+id/image_thumb"
-                android:scaleType="centerCrop"
+                android:scaleType="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

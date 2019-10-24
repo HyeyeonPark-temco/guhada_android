@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.florent37.expansionpanel.ExpansionLayout;
 import com.github.florent37.expansionpanel.viewgroup.ExpansionLayoutCollection;
 
 import java.util.List;
@@ -62,6 +63,20 @@ public class DialogCategoryFirstListAdapter extends RecyclerView.Adapter<DialogC
             holder.getBinding().layoutHeader.setTag(position);
             holder.getBinding().layoutHeader.setOnClickListener(this);
         } else {
+            holder.getBinding().layoutExpandContents.setTag(position);
+            holder.getBinding().layoutExpandContents.addListener(new ExpansionLayout.Listener() {
+                @Override
+                public void onExpansionChanged(ExpansionLayout expansionLayout, boolean expanded) {
+                    // Data
+                    int position = (int) expansionLayout.getTag();
+                    Category c = getItem(position);
+                    if(holder.isInit){
+                        holder.isInit = false;
+                        holder.addChild(mContext, Type.CategoryData.getType(c.hierarchies[0]), c, mCategoryListener, mCategoryHeaderListListener);
+                    }
+                    mCategoryHeaderListListener.onEvent(position,c);
+                }
+            });
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
         }
         holder.init(mContext, Type.CategoryData.getType(data.hierarchies[0]), data, mCategoryListener, mCategoryHeaderListListener);
@@ -69,8 +84,7 @@ public class DialogCategoryFirstListAdapter extends RecyclerView.Adapter<DialogC
 
     @Override
     public void onClick(View v) {
-        if (mCategoryListener != null
-                && v.getTag() != null && v.getTag() instanceof Integer) {
+        if (mCategoryListener != null && v.getTag() != null && v.getTag() instanceof Integer) {
             int position = (int) v.getTag();
             mCategoryListener.onEvent(position,getItem((int) v.getTag()));
         }

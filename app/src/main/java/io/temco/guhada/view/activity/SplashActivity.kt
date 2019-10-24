@@ -65,7 +65,8 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
     private fun getCategories() {
         ProductServer.getCategories(OnServerListener{ success, o ->
             if (success) {
-                Preferences.setCategories(o as List<Category>)
+                (this@SplashActivity.applicationContext as BaseApplication).categoryList = o as List<Category>
+                Preferences.setCategories(o)
                 mDisposable.add(Observable.fromCallable<Int> {
                     db.categoryDao().deleteAll()
                     for (category in o){
