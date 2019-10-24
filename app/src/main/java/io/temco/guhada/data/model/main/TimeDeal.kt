@@ -9,5 +9,10 @@ class TimeDeal(index :Int,
                var expiredTimeLong: Long // 단말의 현재시간 + endTime*1000  [MILLISECOND]
 ) : MainBaseModel(0, type, 2) {
 
+    enum class Status(val code :String, val label: String){
+        OUT_OF_STOCK_IMMINENT("OUT_OF_STOCK_IMMINENT", "품절임박"),
+        NORMAL("NORMAL", "정상"),
+    }
+
     var displayTime: Long = 0L // 화면에 표시 될 시간 , expiredTimeLong - 현재시간   [MILLISECOND]
 }

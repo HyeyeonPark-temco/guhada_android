@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="io.temco.guhada.data.model.main.TimeDeal.Status" />
 
         <import type="android.view.View" />
 
@@ -25,12 +26,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:background="@color/common_white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="30dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:id="@+id/text_timer"
@@ -38,7 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="30dp"
             android:gravity="center_horizontal"
             android:singleLine="true"
             android:textColor="@color/text_3"
@@ -111,14 +115,14 @@
                     <!-- BRAND -->
                     <TextView
                         android:id="@+id/text_brand"
-                        style="@style/TextBold"
+                        style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="@{deal.brandName}"
-                        android:textColor="@color/text_3"
-                        android:textSize="@dimen/text_14" />
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_16" />
 
                     <!-- SEASON -->
                     <TextView
@@ -130,7 +134,7 @@
                         android:layout_weight="0"
                         android:text="@{deal.productSeason}"
                         android:textColor="@color/warm_grey_two"
-                        android:textSize="@dimen/text_11" />
+                        android:textSize="@dimen/text_15" />
                 </LinearLayout>
 
                 <!-- TITLE -->
@@ -139,13 +143,12 @@
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:minHeight="@dimen/view_main_home_deal_list_text_producttitle_height"
                     android:text="@{deal.productName}"
-                    android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_12" />
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
 
                 <!-- SIZE -->
                 <TextView
@@ -162,41 +165,76 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="18dp"
                     android:gravity="bottom"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/text_price"
-                        style="@style/TextBold"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{deal.discountRate > 0 ? @string/common_price_format(deal.discountPrice.toBigInteger()) :  @string/common_price_format(deal.sellPrice.toBigInteger)}"
-                        android:textColor="@color/text_3"
-                        android:textSize="@dimen/text_14" />
+                        android:layout_marginEnd="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:id="@+id/text_price_sale_per"
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(deal.discountRate), default = 0}"
+                            android:textColor="@color/common_blue_purple"
+                            android:textSize="36sp" />
+
+                        <TextView
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/common_unit_percent"
+                            android:textColor="@color/common_blue_purple"
+                            android:textSize="@dimen/text_28" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_pricediscount"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(deal.sellPrice) , default = 0}"
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_12"
+                            android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}"
+                            app:cancelLine="@{true}" />
+
+                        <TextView
+                            android:id="@+id/text_price"
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@{deal.discountRate > 0 ? @string/common_priceunit_format(deal.discountPrice.toBigInteger()) :  @string/common_priceunit_format(deal.sellPrice.toBigInteger), default = 0}"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_18" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/text_pricediscount"
                         style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="@{String.valueOf(deal.sellPrice)}"
-                        android:textColor="@color/warm_grey_two"
-                        android:textSize="@dimen/text_10"
-                        android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}"
-                        app:cancelLine="@{true}" />
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginStart="5dp"
+                        android:text="@{deal.timeDealInfo.statusText}"
+                        android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.OUT_OF_STOCK_IMMINENT.code) ? View.VISIBLE: View. GONE}"
+                        android:textColor="@color/watermelon"
+                        android:textSize="@dimen/text_15" />
 
-                    <TextView
-                        android:id="@+id/text_price_sale_per"
-                        style="@style/TextBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:text="@{String.valueOf(deal.discountRate)}"
-                        android:textColor="@color/common_blue_purple"
-                        android:textSize="@dimen/text_12"
-                        android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -204,13 +242,13 @@
                     android:layout_height="27dp"
                     android:layout_marginTop="4dp"
                     android:gravity="bottom"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/text_seller_rate"
                         style="@style/MainHomeListProductItemSellerRateTextStyle"
-                        android:text="1"
-                        android:visibility="gone" />
+                        android:text="1" />
 
                     <TextView
                         android:id="@+id/text_seller_name"

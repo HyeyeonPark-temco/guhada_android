@@ -495,18 +495,6 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 }
                 R.layout.layout_tab_innercategory
 
-                // Price
-//                if (item.deal.discountRate > 0) {
-//                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.discountPrice.toInt())
-//                    binding.textPriceSalePer.text = String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), item.deal.discountRate)
-//                    binding.textPricediscount.visibility = View.VISIBLE
-//                    binding.textPricediscount.paintFlags = (binding.textPricediscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
-//                    binding.textPricediscount.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
-//                } else {
-//                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
-//                    binding.textPricediscount.visibility = View.GONE
-//                }
-
                 // 현재시간
                 var cal = Calendar.getInstance()
 
