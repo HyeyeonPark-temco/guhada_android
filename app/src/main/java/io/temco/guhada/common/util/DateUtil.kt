@@ -142,4 +142,18 @@ object DateUtil {
     }
 
 
+    /**
+     * TimeZone offset
+     * 서버에서 내려오는 모든 timestamp는 utc
+     * @author Hyeyeon Park
+     */
+    @JvmStatic
+     fun getTimezoneOffsetMs(): Int {
+        val cal = Calendar.getInstance()
+        val timeZone = cal.timeZone
+        val offset = timeZone.rawOffset + timeZone.dstSavings
+        return offset
+    }
+
+
 }

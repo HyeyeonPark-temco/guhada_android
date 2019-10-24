@@ -1,5 +1,6 @@
 package io.temco.guhada.view.adapter.main
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -7,10 +8,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Uri
-import android.os.CountDownTimer
 import android.os.Handler
 import android.text.TextUtils
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,13 +36,10 @@ import io.temco.guhada.databinding.*
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.activity.ProductFilterListActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
-import io.temco.guhada.view.adapter.main.TimeDealListAdapter.Companion.bindStartAt
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
 import org.joda.time.DateTime
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 /**
@@ -472,6 +470,8 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, list: ArrayL
     class TimeDealViewHolder(private val containerView: View, val binding: CustomlayoutMainItemTimedealBinding, var handler: Handler, var customRunnableMap: WeakHashMap<Int, CustomRunnable>) : ListViewHolder(containerView, binding) {
 
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
+
+        @SuppressLint("SetTextI18n")
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if (item is TimeDeal) {
                 binding.deal = item.deal
@@ -501,39 +501,72 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, list: ArrayL
                 }
                 R.layout.layout_tab_innercategory
 
-                // 판매 예정
+                /**
+                 * 시간
+                 * @author Hyeyeon Park
+                 * @since 2019.10.24
+                 */
                 if (item.deal.timeDealInfo.statusCode == TimeDeal.Status.READY.code) {
-                    val startAt = item.deal.timeDealInfo.discountStartAt
-                    val dateTime = DateTime(startAt)
-                    val hour = dateTime.hourOfDay
+                    val startAt = item.deal.timeDealInfo.discountStartAt + DateUtil.getTimezoneOffsetMs()
+                    val hour = DateTime(startAt).hourOfDay
                     binding.textStart.text =
                             when {
                                 hour < 12 -> "${DateTime(startAt).toString("MM.dd HH")}AM"
                                 hour == 12 -> "${DateTime(startAt).toString("MM.dd HH")}PM"
                                 else -> "${DateTime(startAt).toString("MM.dd")} ${hour - 12}PM"
                             }
+                    binding.textStatus.text = item.deal.timeDealInfo.statusText
+                    binding.framelayoutTimer.visibility = View.VISIBLE
+                } else {
+                    val remainEndAt = (item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000
+                    val MINUTE_MS = 60 * 1000
+                    val HOUR_MS = MINUTE_MS * 60
+                    val DAY_MS = HOUR_MS * 24
+
+                    item.displayTime = remainEndAt
+                    val day = (remainEndAt / DAY_MS)
+                    if (day > 0) {
+                        binding.framelayoutTimer.visibility = View.GONE
+                        binding.textStatus.text = "${day}일 남음"
+                    } else {
+                        binding.framelayoutTimer.visibility = View.VISIBLE
+                        binding.textStatus.text = binding.root.context.getString(R.string.timedeal_today)
+                        val hour = remainEndAt / HOUR_MS
+                        val minute = (remainEndAt % HOUR_MS) / MINUTE_MS
+                        val second = ((remainEndAt % HOUR_MS) % MINUTE_MS)
+                        binding.textTimer.text = "$hour:$minute:${second / 1000}}"
+
+                        // 스레드 시작
+//                        customRunnableMap[position] = CustomRunnable(item.displayTime / 1000, binding.textTimer, handler)
+//                        val startDelayMS: Long = 1000L - Calendar.getInstance().get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
+//                        handler.postDelayed(customRunnableMap[position], startDelayMS)
+                    }
+
                 }
 
 
                 // 현재시간
-                var cal = Calendar.getInstance()
-                item.displayTime = item.expiredTimeLong - cal.timeInMillis - 1000 // 화면에 표시되는 시간 값
+//                var cal = Calendar.getInstance()
+//                item.displayTime = item.expiredTimeLong - cal.timeInMillis - 1000 // 화면에 표시되는 시간 값
+//
+//                val seconds = item.displayTime / 1000
+//                var minutes = seconds / 60
+//                var hours = minutes / 60
+//                var days = hours / 24
+//                var time = days.toString() + " " + "days" + " :" + hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
+//
+//                binding.textTimer.text = time
 
-                val seconds = item.displayTime / 1000
-                var minutes = seconds / 60
-                var hours = minutes / 60
-                var days = hours / 24
-                var time = days.toString() + " " + "days" + " :" + hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
 
-                binding.textTimer.text = time
                 // 타임 쓰레드 시작
-                var customRunnable = CustomRunnable(item.displayTime / 1000, binding.textTimer, handler)
-                customRunnableMap.put(position, customRunnable)
-                var milSec: Long = 1000L - cal.get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
-                handler.postDelayed(customRunnable, milSec)
+//                var customRunnable = CustomRunnable(item.displayTime / 1000, binding.textTimer, handler)
+//                customRunnableMap.put(position, customRunnable)
+//                var milSec: Long = 1000L - cal.get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
+//                handler.postDelayed(customRunnable, milSec)
+//            }
             }
-        }
 
+        }
     }
 
     /**
@@ -619,23 +652,39 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, list: ArrayL
     }
 
 
-    class CustomRunnable(var millisUntilFinished: Long, var text: TextView, var handler: Handler) : Runnable {
+    class CustomRunnable(var remainEndAt: Long, var textView: TextView, var handler: Handler) : Runnable {
 
+        @SuppressLint("SetTextI18n")
         override fun run() {
-            var seconds = millisUntilFinished
-            var minutes = seconds / 60
-            var hours = minutes / 60
-            var days = hours / 24
-            var time = days.toString() + " " + "days" + " :" + hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
-            text.text = time
-            var cal = Calendar.getInstance()
-            var milSec: Long = 1000L - cal.get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
-            if (milSec <= 10L) milSec = 1000L
-            if (CustomLog.flag) CustomLog.L("CustomRunnable", "time", time, "milSec", milSec)
-            millisUntilFinished -= 1
-            if (millisUntilFinished > 0) {
-                handler.postDelayed(this, milSec)
-            }
+            val MINUTE_MS = 60 * 1000
+            val HOUR_MS = MINUTE_MS * 60
+
+            val hour = remainEndAt / HOUR_MS
+            val minute = (remainEndAt % HOUR_MS) / MINUTE_MS
+            val second = (remainEndAt % HOUR_MS) % MINUTE_MS
+            textView.text = "$hour:$minute:${second / 1000}"
+
+            var startDelayMS: Long = 1000L - Calendar.getInstance().get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
+            if (startDelayMS <= 10L) startDelayMS = 1000L
+            remainEndAt -= 1
+
+            if (remainEndAt > 0) handler.postDelayed(this, startDelayMS)
+
+
+//            var seconds = remainEndAt
+//            var minutes = seconds / 60
+//            var hours = minutes / 60
+//            var days = hours / 24
+//            var time = days.toString() + " " + "days" + " :" + hours % 24 + ":" + minutes % 60 + ":" + seconds % 60
+//            textView.text = time
+//            var cal = Calendar.getInstance()
+//            var milSec: Long = 1000L - cal.get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
+//            if (milSec <= 10L) milSec = 1000L
+//            if (CustomLog.flag) CustomLog.L("CustomRunnable", "time", time, "milSec", milSec)
+//            remainEndAt -= 1
+//            if (remainEndAt > 0) {
+//                handler.postDelayed(this, milSec)
+
         }
     }
 
@@ -663,4 +712,5 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, list: ArrayL
     }
 
 }
+
 

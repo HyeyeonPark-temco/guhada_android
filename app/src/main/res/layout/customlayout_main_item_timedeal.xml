@@ -39,9 +39,8 @@
         android:paddingBottom="20dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginStart="55dp"
-            android:layout_marginEnd="55dp"
+            android:layout_width="wrap_content"
+
             android:layout_height="36dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/border_all_whitefour_r50"
@@ -54,19 +53,22 @@
 
                 <TextView
                     style="@style/TextMedium"
+                    android:id="@+id/text_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
-                    android:text="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? deal.timeDealInfo.statusText : @string/timedeal_today, default= @string/timedeal_today}"
                     android:textColor="@color/common_white"
                     android:textSize="@dimen/text_16" />
+                <!--android:text="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? deal.timeDealInfo.statusText : @string/timedeal_today, default= @string/timedeal_today}"-->
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/framelayout_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:layout_gravity="center"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp">
@@ -116,8 +118,7 @@
                     android:id="@+id/image_thumb"
                     style="@style/ProductImageType"
                     android:layout_width="240dp"
-                    android:layout_height="240dp"
-                    android:scaleType="centerCrop" />
+                    android:layout_height="240dp" />
 
                 <!-- SHIP -->
                 <TextView
