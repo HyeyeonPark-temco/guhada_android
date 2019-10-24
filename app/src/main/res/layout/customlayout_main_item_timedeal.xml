@@ -3,43 +3,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
+
         <import type="android.view.View" />
-        <variable name="isViewMore" type="java.lang.Boolean" />
+
+        <variable
+            name="isViewMore"
+            type="java.lang.Boolean" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.main.TimeDealListViewModel" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="deal"
+            type="io.temco.guhada.data.model.Deal" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="480dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/common_white"
-        android:layout_marginBottom="10dp">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_timer"
+            style="@style/TextBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:singleLine="true"
+            android:textColor="@color/text_3"
+            android:textSize="@dimen/text_18" />
 
         <LinearLayout
             android:id="@+id/item_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/item_realativelayout"
-                android:layout_gravity="center_horizontal"
                 android:layout_width="240dp"
-                android:layout_height="240dp">
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal">
 
                 <!-- THUMBNAIL -->
                 <ImageView
-                    style="@style/ProductImageType"
                     android:id="@+id/image_thumb"
+                    style="@style/ProductImageType"
                     android:layout_width="240dp"
-                    android:layout_height="240dp" />
+                    android:layout_height="240dp"
+                    android:scaleType="centerCrop" />
 
                 <!-- SHIP -->
                 <TextView
@@ -53,7 +77,8 @@
                     android:gravity="center"
                     android:text="@string/product_ship_free_split"
                     android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_9" />
+                    android:textSize="@dimen/text_9"
+                    android:visibility="gone" />
 
                 <!-- COLOR -->
                 <LinearLayout
@@ -73,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="@dimen/padding_main_home_deal_item_bottom"
                 android:orientation="vertical">
@@ -91,6 +116,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
+                        android:text="@{deal.brandName}"
                         android:textColor="@color/text_3"
                         android:textSize="@dimen/text_14" />
 
@@ -102,6 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
                         android:layout_weight="0"
+                        android:text="@{deal.productSeason}"
                         android:textColor="@color/warm_grey_two"
                         android:textSize="@dimen/text_11" />
                 </LinearLayout>
@@ -112,10 +139,11 @@
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="@dimen/view_main_home_deal_list_text_producttitle_height"
                     android:layout_marginTop="3dp"
-                    android:maxLines="2"
                     android:ellipsize="end"
+                    android:maxLines="2"
+                    android:minHeight="@dimen/view_main_home_deal_list_text_producttitle_height"
+                    android:text="@{deal.productName}"
                     android:textColor="@color/text_3"
                     android:textSize="@dimen/text_12" />
 
@@ -127,8 +155,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:textColor="@color/text_3"
-                    android:visibility="gone"
-                    android:textSize="@dimen/text_9" />
+                    android:textSize="@dimen/text_9"
+                    android:visibility="gone" />
 
                 <!-- PRICE -->
                 <LinearLayout
@@ -143,6 +171,7 @@
                         style="@style/TextBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{deal.discountRate > 0 ? @string/common_price_format(deal.discountPrice.toBigInteger()) :  @string/common_price_format(deal.sellPrice.toBigInteger)}"
                         android:textColor="@color/text_3"
                         android:textSize="@dimen/text_14" />
 
@@ -152,9 +181,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:text="@{String.valueOf(deal.sellPrice)}"
                         android:textColor="@color/warm_grey_two"
-                        android:textSize="@dimen/text_10" />
-
+                        android:textSize="@dimen/text_10"
+                        android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}"
+                        app:cancelLine="@{true}" />
 
                     <TextView
                         android:id="@+id/text_price_sale_per"
@@ -162,8 +193,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:text="@{String.valueOf(deal.discountRate)}"
                         android:textColor="@color/common_blue_purple"
-                        android:textSize="@dimen/text_12" />
+                        android:textSize="@dimen/text_12"
+                        android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -176,29 +209,19 @@
                     <TextView
                         android:id="@+id/text_seller_rate"
                         style="@style/MainHomeListProductItemSellerRateTextStyle"
-                        android:visibility="gone"
-                        android:text="1" />
+                        android:text="1"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/text_seller_name"
                         style="@style/MainHomeListProductItemSellerNameTextStyle"
-                        android:textColor="@color/greyish_brown_two"
-                        android:layout_marginLeft="0dp" />
+                        android:layout_marginLeft="0dp"
+                        android:textColor="@color/greyish_brown_two" />
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/text_timer"
-            style="@style/TextBold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/text_3"
-            android:textSize="@dimen/text_18" />
-    </RelativeLayout>
+
+    </LinearLayout>
 </layout>

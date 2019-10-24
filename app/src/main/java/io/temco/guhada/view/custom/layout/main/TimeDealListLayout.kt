@@ -29,11 +29,15 @@ import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 /**
  * @author park jungho
+ * @since 2019.10.21
+ *
+ * @author Hyeyeon Park
+ * @since 2019.10.23
  *
  * 메인화면 타임딜
  *
  *
- * - 추가 작업 할 내용 : SwipeRefreshLayout 추가, 타임딜 이미지 bg 리스트 스크롤시 안보이게게
+ * - 추가 작업 할 내용 : SwipeRefreshLayout 추가, 타임딜 이미지 bg 리스트 스크롤시 안보이게
  */
 class TimeDealListLayout constructor(
         context: Context,

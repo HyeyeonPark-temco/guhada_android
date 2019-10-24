@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.ViewPager
@@ -457,13 +458,18 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
 
 
     /**
-     * 메인 리스트에 더미 화면 view holder
+     * 타임딜 view holder
+     * @see R.layout.customlayout_main_item_timedeal
+     * @author Hyeyeon Park
+     * @since 2019.10.23
      */
     class TimeDealViewHolder(private val containerView: View, val binding: CustomlayoutMainItemTimedealBinding, var handler : Handler, var customRunnableMap : WeakHashMap<Int, CustomRunnable>) : ListViewHolder(containerView, binding){
 
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position : Int) { }
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if(item is TimeDeal){
+                binding.deal = item.deal
+
                 // 타임 쓰레드 종료
                 if(customRunnableMap.contains(position)){
                     handler.removeCallbacks(customRunnableMap[position])
@@ -478,21 +484,6 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                 }
                 ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url)
 
-                // Brand
-                binding.textBrand.setText(item.deal.brandName)
-
-                // Season
-                binding.textSeason.setText(item.deal.productSeason)
-
-                // Title
-                binding.textTitle.setText(item.deal.dealName)
-
-                // Seller Name
-                binding.textSellerName.setText(item.deal.sellerName)
-
-                // Option
-                if (binding.layoutColor.getChildCount() > 0) binding.layoutColor.removeAllViews()
-
                 if (item.deal.options != null && item.deal.options.size > 0) {
                     for (o in item.deal.options) {
                         when (Type.ProductOption.getType(o.type)) {
@@ -503,24 +494,18 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
                     }
                 }
                 R.layout.layout_tab_innercategory
-                // Price
-                if (item.deal.discountRate > 0) {
-                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.discountPrice.toInt())
-                    //textPrice.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.discountPrice.toInt()))
-                    binding.textPriceSalePer.text = String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), item.deal.discountRate)
-                    binding.textPricediscount.visibility = View.VISIBLE
-                    binding.textPricediscount.paintFlags = (binding.textPricediscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
-                    binding.textPricediscount.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
-                    //text_pricediscount.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
-                } else {
-                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
-                    //textPrice.text = String.format((containerView.context as Activity).getString(R.string.product_price), TextUtil.getDecimalFormat(data.sellPrice.toInt()))
-                    binding.textPricediscount.visibility = View.GONE
-                }
-                // Ship
-                //if(CustomLog.flag)CustomLog.L("HomeListAdapter",item.title,"SubTitleViewHolder textShipFree","data.freeShipping",data.freeShipping)
-                //binding.textShipFree.visibility = (if (item.deal.isFreeShipping) View.VISIBLE else View.GONE)
 
+                // Price
+//                if (item.deal.discountRate > 0) {
+//                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.discountPrice.toInt())
+//                    binding.textPriceSalePer.text = String.format((containerView.context as Activity).getString(R.string.product_price_sale_per), item.deal.discountRate)
+//                    binding.textPricediscount.visibility = View.VISIBLE
+//                    binding.textPricediscount.paintFlags = (binding.textPricediscount.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
+//                    binding.textPricediscount.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
+//                } else {
+//                    binding.textPrice.text = TextUtil.getDecimalFormat(item.deal.sellPrice.toInt())
+//                    binding.textPricediscount.visibility = View.GONE
+//                }
 
                 // 현재시간
                 var cal = Calendar.getInstance()
@@ -633,6 +618,15 @@ class TimeDealListAdapter(private val model : TimeDealListViewModel, list : Arra
             if(millisUntilFinished > 0){
                 handler.postDelayed(this, milSec)
             }
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        @BindingAdapter("cancelLine")
+        fun TextView.bindCancleLine(addCancelLine: Boolean){
+            if(addCancelLine)
+                this.paintFlags = (this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
         }
     }
 

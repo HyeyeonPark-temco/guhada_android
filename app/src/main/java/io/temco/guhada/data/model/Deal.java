@@ -3,10 +3,10 @@ package io.temco.guhada.data.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 import io.temco.guhada.common.util.CustomLog;
+import io.temco.guhada.data.model.main.MainBaseModel;
 
 public class Deal {
 
@@ -67,12 +67,15 @@ public class Deal {
     @SerializedName("shipExpenseType")
     public String shipExpenseType;
 
-
     @SerializedName("isBoldName")
     public boolean isBoldName;
 
+    @SerializedName("timeDealInfo")
+    public TimeDealInfo timeDealInfo;
+
     public boolean isFreeShipping() {
-        if(shipExpenseType!=null && !"".equals(shipExpenseType)) return "FREE".equals(shipExpenseType);
+        if (shipExpenseType != null && !"".equals(shipExpenseType))
+            return "FREE".equals(shipExpenseType);
         return freeShipping;
     }
 
@@ -86,9 +89,10 @@ public class Deal {
 
     }
 
+
     @Override
     public String toString() {
-        if(CustomLog.getFlag())return "Deal{" +
+        if (CustomLog.getFlag()) return "Deal{" +
                 "brandId=" + brandId +
                 ", brandName='" + brandName + '\'' +
                 ", sellerId=" + sellerId +
@@ -111,5 +115,14 @@ public class Deal {
                 ", isBoldName=" + isBoldName +
                 '}';
         else return "";
+    }
+
+
+    public class TimeDealInfo {
+        public Long now = 0L;
+        public Long remainedTimeForStart = 0L;
+        public Long remainedTimeForEnd = 0L;
+        public String statusCode = "";
+        public String statusText = "";
     }
 }

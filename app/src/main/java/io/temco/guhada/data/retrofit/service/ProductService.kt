@@ -4,6 +4,7 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
+import io.temco.guhada.data.model.main.TimeDeal
 import io.temco.guhada.data.model.product.Product
 import retrofit2.Call
 import retrofit2.http.GET
@@ -70,8 +71,6 @@ interface ProductService {
     @GET("/common/ship-companies")
     fun getShippingCompanies(@Query("type") type: String): Call<BaseModel<MutableList<ShippingCompany>>>
 
-
-
     /**
      * @author park jungho
      * 19.09.19
@@ -79,5 +78,13 @@ interface ProductService {
      */
     @GET("main-home/hot-keyword")
     fun getProductByKeyword(): Call<BaseModel<Keyword>>
+
+    /**
+     * 타임딜 리스트 조회
+     * @author Hyeyeon Park
+     * @since 2019.10.23
+     */
+    @GET("time-deals")
+    fun getTimeDeal(@Query("pageIndex") pageIndex : Int, @Query("unitPerPage") unitPerPage : Int) : Call<BaseModel<MutableList<Deal>>>
 
 }

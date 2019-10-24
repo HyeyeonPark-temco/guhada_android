@@ -28,7 +28,7 @@ class ProductServer {
     companion object {
 
         @JvmStatic
-        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+        fun <C, R> resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>) {
             if (response.code() in 200..400 && response.body() != null) {
                 listener.onResult(true, response.body())
             } else {
@@ -53,7 +53,7 @@ class ProductServer {
         @JvmStatic
         fun getCategories(listener: OnServerListener?) {
             if (listener != null) {
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java,true)
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true)
                         .categories
                         .enqueue(object : Callback<BaseModel<Category>> {
                             override fun onResponse(call: Call<BaseModel<Category>>, response: Response<BaseModel<Category>>) {
@@ -83,7 +83,7 @@ class ProductServer {
         @JvmStatic
         fun getAllBrands(listener: OnServerListener?) {
             if (listener != null) {
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java,true)
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true)
                         .allBrands
                         .enqueue(object : Callback<BaseModel<Brand>> {
                             override fun onResponse(call: Call<BaseModel<Brand>>, response: Response<BaseModel<Brand>>) {
@@ -235,8 +235,6 @@ class ProductServer {
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
 
-
-
         /**
          * @author park jungho
          * 19.09.19
@@ -250,6 +248,7 @@ class ProductServer {
                     override fun onResponse(call: Call<BaseModel<Keyword>>, response: Response<BaseModel<Keyword>>) {
                         listener.onResult(response.isSuccessful, response.body())
                     }
+
                     override fun onFailure(call: Call<BaseModel<Keyword>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
@@ -258,6 +257,15 @@ class ProductServer {
         }
 
 
+        /**
+         * 타임딜 리스트 조회
+         * @author Hyeyeon Park
+         * @since 2019.10.23
+         */
+        @JvmStatic
+        fun getTimeDeal(listener: OnServerListener, pageIndex: Int, unitPerPage: Int) =
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getTimeDeal(pageIndex = pageIndex, unitPerPage = unitPerPage).enqueue(
+                        ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
     }
 
 }
