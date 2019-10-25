@@ -23,6 +23,7 @@ import io.temco.guhada.databinding.CustomlayoutMainTimelistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.adapter.main.TimeDealListAdapter
+import io.temco.guhada.view.adapter.main.TimeDealListAdapter.Companion.timeDealTimerSetDiff
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.fragment.main.HomeFragment
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
@@ -52,6 +53,7 @@ class TimeDealListLayout constructor(
     override fun getBaseTag() = KidsListLayout::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_main_timelist
     override fun init() {
+        timeDealTimerSetDiff = 0
         mViewModel = TimeDealListViewModel(context)
         mBinding.viewModel = mViewModel
 

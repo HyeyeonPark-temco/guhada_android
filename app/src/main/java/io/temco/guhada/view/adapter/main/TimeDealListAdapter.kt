@@ -87,7 +87,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                CoroutineScope(Dispatchers.Default).launch {
                     mDataSetDiffTimer.schedule(object : TimerTask() {
                         override fun run() {
-                            timerSetDiff += startDelayMS
+                            timeDealTimerSetDiff += startDelayMS
                         }
                     }, startDelayMS)
                 }
@@ -537,10 +537,10 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                     binding.framelayoutTimer.visibility = View.VISIBLE
                 } else {
 //                    if (CustomLog.flag)
-                        Log.e("$timerSetDiff", DateUtil.getTimerText(((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000)) + "\n" +
-                                DateUtil.getTimerText(((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000) - timerSetDiff))
+                        Log.e("$timeDealTimerSetDiff", DateUtil.getTimerText(((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000)) + "\n" +
+                                DateUtil.getTimerText(((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000) - timeDealTimerSetDiff))
 
-                    val remainEndAt = ((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000) - timerSetDiff
+                    val remainEndAt = ((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000) - timeDealTimerSetDiff
                     val MINUTE_MS = 60 * 1000
                     val HOUR_MS = MINUTE_MS * 60
                     val DAY_MS = HOUR_MS * 24
@@ -671,7 +671,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
          * 서버에서 타임딜 정보의 시간과 recyclerView의 그려지는 시간의 텀
          * @author Hyeyeon Park
          */
-        var timerSetDiff = 0L
+        var timeDealTimerSetDiff = 0L
 
         @JvmStatic
         @BindingAdapter("cancelLine")
@@ -680,19 +680,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                 this.paintFlags = (this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
         }
 
-        @JvmStatic
-        @BindingAdapter(value = ["startAt", "isReady"])
-        fun TextView.bindStartAt(startAt: Long, isReady: Boolean) {
-            if (isReady) {
-                val dateTime = DateTime(startAt)
-                val hour = dateTime.hourOfDay
-                this.text = when {
-                    hour < 12 -> "${DateTime(startAt).toString("MM.dd HH")}AM"
-                    hour == 12 -> "${DateTime(startAt).toString("MM.dd HH")}PM"
-                    else -> "${DateTime(startAt).toString("MM.dd")} ${hour - 12}PM"
-                }
-            }
-        }
     }
 
 }
