@@ -503,7 +503,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                 if (item.deal.timeDealInfo.statusCode == TimeDeal.Status.READY.code) {
                     val startAt = item.deal.timeDealInfo.discountStartAt + DateUtil.getTimezoneOffsetMs()
                     val hour = DateTime(startAt).hourOfDay
-                    Log.e("타임딜", item.deal.timeDealInfo.discountStartAt.toString() + " " + startAt.toString() + " " + DateUtil.getTimezoneOffsetMs().toString())
                     binding.textStart.text =
                             when {
                                 hour < 12 -> "${DateTime(startAt).toString("MM.dd HH")}AM"
