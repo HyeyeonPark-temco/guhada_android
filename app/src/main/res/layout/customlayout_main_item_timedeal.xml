@@ -3,41 +3,118 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
+
+        <import type="io.temco.guhada.data.model.main.TimeDeal.Status" />
+
         <import type="android.view.View" />
-        <variable name="isViewMore" type="java.lang.Boolean" />
+
+        <variable
+            name="isViewMore"
+            type="java.lang.Boolean" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.main.TimeDealListViewModel" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="deal"
+            type="io.temco.guhada.data.model.Deal" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/common_white"
-        android:layout_marginBottom="10dp">
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="30dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/border_all_whitefour_r50"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@{deal.timeDealInfo.statusCode.equals(Status.READY.code)? @drawable/background_color_timedeal_greyishbrowntwo : @drawable/background_color_timedeal_watermelon, default = @drawable/background_color_timedeal_watermelon}">
+
+                <TextView
+                    style="@style/TextMedium"
+                    android:id="@+id/text_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:textColor="@color/common_white"
+                    android:textSize="@dimen/text_16" />
+                <!--android:text="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? deal.timeDealInfo.statusText : @string/timedeal_today, default= @string/timedeal_today}"-->
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/framelayout_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp">
+
+                <TextView
+                    android:id="@+id/text_start"
+                    style="@style/TextMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_16"
+                    android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? View.VISIBLE : View. GONE}" />
+                <!--app:isReady="@{deal.timeDealInfo.statusCode.equals(Status.READY.code)}"-->
+                <!--app:startAt="@{deal.timeDealInfo.discountStartAt}"-->
+                <TextView
+                    android:id="@+id/text_timer"
+                    style="@style/TextMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:singleLine="true"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_16"
+                    android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? View.GONE : View. VISIBLE}" />
+
+            </FrameLayout>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/item_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/item_realativelayout"
-                android:layout_gravity="center_horizontal"
                 android:layout_width="240dp"
-                android:layout_height="240dp">
+                android:layout_height="240dp"
+                android:layout_gravity="center_horizontal">
 
                 <!-- THUMBNAIL -->
                 <ImageView
-                    style="@style/ProductImageType"
                     android:id="@+id/image_thumb"
+                    style="@style/ProductImageType"
                     android:layout_width="240dp"
                     android:layout_height="240dp" />
 
@@ -53,7 +130,8 @@
                     android:gravity="center"
                     android:text="@string/product_ship_free_split"
                     android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_9" />
+                    android:textSize="@dimen/text_9"
+                    android:visibility="gone" />
 
                 <!-- COLOR -->
                 <LinearLayout
@@ -73,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="@dimen/padding_main_home_deal_item_bottom"
                 android:orientation="vertical">
@@ -86,13 +164,14 @@
                     <!-- BRAND -->
                     <TextView
                         android:id="@+id/text_brand"
-                        style="@style/TextBold"
+                        style="@style/TextMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@color/text_3"
-                        android:textSize="@dimen/text_14" />
+                        android:text="@{deal.brandName}"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_16" />
 
                     <!-- SEASON -->
                     <TextView
@@ -102,8 +181,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
                         android:layout_weight="0"
+                        android:text="@{deal.productSeason}"
                         android:textColor="@color/warm_grey_two"
-                        android:textSize="@dimen/text_11" />
+                        android:textSize="@dimen/text_15" />
                 </LinearLayout>
 
                 <!-- TITLE -->
@@ -112,12 +192,12 @@
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="@dimen/view_main_home_deal_list_text_producttitle_height"
-                    android:layout_marginTop="3dp"
-                    android:maxLines="2"
+                    android:layout_marginTop="5dp"
                     android:ellipsize="end"
-                    android:textColor="@color/text_3"
-                    android:textSize="@dimen/text_12" />
+                    android:maxLines="2"
+                    android:text="@{deal.dealName}"
+                    android:textColor="@color/black_four"
+                    android:textSize="@dimen/text_15" />
 
                 <!-- SIZE -->
                 <TextView
@@ -127,43 +207,83 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:textColor="@color/text_3"
-                    android:visibility="gone"
-                    android:textSize="@dimen/text_9" />
+                    android:textSize="@dimen/text_9"
+                    android:visibility="gone" />
 
                 <!-- PRICE -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="18dp"
                     android:gravity="bottom"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/text_price"
-                        style="@style/TextBold"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/text_3"
-                        android:textSize="@dimen/text_14" />
+                        android:layout_marginEnd="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}">
+
+                        <TextView
+                            android:id="@+id/text_price_sale_per"
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(deal.discountRate), default = 0}"
+                            android:textColor="@color/common_blue_purple"
+                            android:textSize="36sp" />
+
+                        <TextView
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/common_unit_percent"
+                            android:textColor="@color/common_blue_purple"
+                            android:textSize="@dimen/text_28" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/text_pricediscount"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{String.valueOf(deal.sellPrice) , default = 0}"
+                            android:textColor="@color/warm_grey_two"
+                            android:textSize="@dimen/text_12"
+                            android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}"
+                            app:cancelLine="@{true}" />
+
+                        <TextView
+                            android:id="@+id/text_price"
+                            style="@style/TextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@{deal.discountRate > 0 ? @string/common_priceunit_format(deal.discountPrice.toBigInteger()) :  @string/common_priceunit_format(deal.sellPrice.toBigInteger), default = 0}"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_18" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/text_pricediscount"
                         style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@color/warm_grey_two"
-                        android:textSize="@dimen/text_10" />
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="@{deal.timeDealInfo.statusText}"
+                        android:textColor="@color/watermelon"
+                        android:textSize="@dimen/text_15"
+                        android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.OUT_OF_STOCK_IMMINENT.code) ? View.VISIBLE: View. GONE}" />
 
-
-                    <TextView
-                        android:id="@+id/text_price_sale_per"
-                        style="@style/TextBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@color/common_blue_purple"
-                        android:textSize="@dimen/text_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -171,34 +291,24 @@
                     android:layout_height="27dp"
                     android:layout_marginTop="4dp"
                     android:gravity="bottom"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/text_seller_rate"
                         style="@style/MainHomeListProductItemSellerRateTextStyle"
-                        android:visibility="gone"
                         android:text="1" />
 
                     <TextView
                         android:id="@+id/text_seller_name"
                         style="@style/MainHomeListProductItemSellerNameTextStyle"
-                        android:textColor="@color/greyish_brown_two"
-                        android:layout_marginLeft="0dp" />
+                        android:layout_marginLeft="0dp"
+                        android:textColor="@color/greyish_brown_two" />
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/text_timer"
-            style="@style/TextBold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="30dp"
-            android:textColor="@color/text_3"
-            android:textSize="@dimen/text_18" />
-    </RelativeLayout>
+
+    </LinearLayout>
 </layout>
