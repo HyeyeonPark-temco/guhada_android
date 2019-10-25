@@ -40,7 +40,6 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-
             android:layout_height="36dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/border_all_whitefour_r50"
@@ -68,7 +67,6 @@
                 android:id="@+id/framelayout_timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="center"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp">
@@ -76,7 +74,7 @@
                 <TextView
                     android:id="@+id/text_start"
                     style="@style/TextMedium"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:singleLine="true"

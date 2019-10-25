@@ -148,11 +148,34 @@ object DateUtil {
      * @author Hyeyeon Park
      */
     @JvmStatic
-     fun getTimezoneOffsetMs(): Int {
+    fun getTimezoneOffsetMs(): Int {
         val cal = Calendar.getInstance()
         val timeZone = cal.timeZone
         val offset = timeZone.rawOffset + timeZone.dstSavings
         return offset
+    }
+
+    /**
+     * Timer text
+     * format: HH:mm:ss
+     * @param remainEndAt: ms
+     * @author Hyeyeon Park
+     * @since 2019.10.25
+     */
+    @JvmStatic
+    fun getTimerText(remainEndAt : Long): String {
+        val MINUTE_MS = 60 * 1000
+        val HOUR_MS = MINUTE_MS * 60
+
+        val hour = remainEndAt / HOUR_MS
+        val minute = (remainEndAt % HOUR_MS) / MINUTE_MS
+        val second = (remainEndAt % HOUR_MS) % MINUTE_MS
+
+        var timerText: String
+        timerText = if (hour < 10) "0$hour" else "$hour"
+        timerText = if (minute < 10) "$timerText:0$minute" else "$timerText:$minute"
+        timerText = if (second < 10) "$timerText:0${second / 1000}" else "$timerText:${second / 1000}"
+        return timerText
     }
 
 
