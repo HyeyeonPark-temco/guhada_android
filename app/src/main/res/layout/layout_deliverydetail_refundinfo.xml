@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelOrderPrice)}"
+            android:text="@{@string/common_priceunit_format(expectedRefundPrice.totalCancelProductPrice)}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_deliverydetail_paymentinfo_line1" />
 
