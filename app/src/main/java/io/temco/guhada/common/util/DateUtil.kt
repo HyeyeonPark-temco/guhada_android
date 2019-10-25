@@ -148,11 +148,10 @@ object DateUtil {
      * @author Hyeyeon Park
      */
     @JvmStatic
-    fun getTimezoneOffsetMs(): Int {
+    fun getTimezoneOffsetMs(): Long {
         val cal = Calendar.getInstance()
         val timeZone = cal.timeZone
-        val offset = timeZone.rawOffset + timeZone.dstSavings
-        return offset
+        return (timeZone.rawOffset + timeZone.dstSavings).toLong()
     }
 
     /**

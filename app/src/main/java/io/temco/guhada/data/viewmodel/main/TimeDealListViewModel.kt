@@ -32,7 +32,6 @@ class TimeDealListViewModel(val context: Context) : BaseObservableViewModel() {
     lateinit var adapter: TimeDealListAdapter
     fun getListAdapter() = adapter
 
-    // 더미 타일딜 데이터
     fun getTimeDealItem(listener: OnCallBackListener) {
         if (listData.isNotEmpty()) listData.clear()
         ProductServer.getTimeDeal(OnServerListener { success, o ->
@@ -42,41 +41,13 @@ class TimeDealListViewModel(val context: Context) : BaseObservableViewModel() {
                         val list = it.data as MutableList<Deal>
                         var index = 1
                         Observable.fromIterable(list).map { deal ->
-                            val current = Calendar.getInstance()
-                            val time = ((index + 1) * 11100L + (index + 1)) * 1000L
-                            TimeDeal(index = index++, deal = deal, endTime = deal.timeDealInfo.remainedTimeForEnd, expiredTimeLong = current.timeInMillis + time)
+                            val current = Calendar.getInstance().timeInMillis
+                            val time = (deal.timeDealInfo.remainedTimeForEnd) * 1000L
+                            TimeDeal(index = index++, deal = deal, endTime = deal.timeDealInfo.remainedTimeForEnd, expiredTimeLong = current + time)
                         }.subscribe { timeDeal ->
                             listData.add(timeDeal)
                         }
-//                        var deals =  (o as BaseModel<*>).data as HomeDeal
-//                        var timeDeal : ArrayList<TimeDeal> = arrayListOf()
-//                        var index = 1
-//                        var current = Calendar.getInstance()
-//                        /**
-//                         * 데이터를 서버에서 받아와 넣는 시점에 expiredTimeLong 값을 계산해서 생성함
-//                         */
-//                        for(t in deals.allList!!) {
-//                            var time = ((index+1) * 11100L + (index+1)) * 1000L // 더미 종료 시간
-//                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
-//                            index++
-//                        }
-//                        for(t in deals.womenList!!) {
-//                            var time = ((index+1) * 12800L + (index+1))* 1000L // 더미 종료 시간
-//                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
-//                            index++
-//                        }
-//                        for(t in deals.menList!!) {
-//                            var time = ((index+1) * 13700L + (index+1))* 1000L // 더미 종료 시간
-//                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
-//                            index++
-//                        }
-//                        for(t in deals.kidsList!!) {
-//                            var time = ((index+1) * 14600L + (index+1))* 1000L // 더미 종료 시간
-//                            timeDeal.add(TimeDeal(index,HomeType.TimeDeal, t, time,current.timeInMillis+time))
-//                            index++
-//                        }
-//                        listData.addAll(timeDeal)
-//
+
                         listData.add(MainBaseModel(list.size, HomeType.Footer, 2))
                         listener.callBackListener(true, "")
                     },

@@ -38,10 +38,7 @@ import io.temco.guhada.view.activity.ProductFilterListActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Runnable
 import org.joda.time.DateTime
 import java.util.*
 
@@ -56,7 +53,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
 
     lateinit var handler: Handler
     lateinit var customRunnableMap: WeakHashMap<Int, CustomRunnable>
-    lateinit var mDataSetDiffTimer: Timer
+    lateinit var mTimerIntent: Intent
 
     // 타일딜 타임 쓰레드 전체 종료
     fun clearRunnable() {
@@ -81,19 +78,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
             HomeType.SubTitleList -> return R.layout.customlayout_main_item_subtitlelist
             HomeType.Dummy -> return R.layout.customlayout_main_item_dummy
             HomeType.Keyword -> return R.layout.customlayout_main_item_keyword
-            HomeType.TimeDeal -> {
-                mDataSetDiffTimer = Timer()
-                val startDelayMS: Long = 1000L - Calendar.getInstance().get(Calendar.MILLISECOND)
-               CoroutineScope(Dispatchers.Default).launch {
-                    mDataSetDiffTimer.schedule(object : TimerTask() {
-                        override fun run() {
-                            timeDealTimerSetDiff += startDelayMS
-                        }
-                    }, startDelayMS)
-                }
-
-                return R.layout.customlayout_main_item_timedeal
-            }
+            HomeType.TimeDeal -> return R.layout.customlayout_main_item_timedeal
             HomeType.Footer -> return R.layout.item_terminfo_footer
             else -> return R.layout.customlayout_main_item_padding
         }
@@ -493,14 +478,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if (item is TimeDeal) {
                 binding.deal = item.deal
-
-                // 타임 쓰레드 종료
-//                if (customRunnableMap.contains(position)) {
-//                    handler.removeCallbacks(customRunnableMap[position])
-//                    customRunnableMap.remove(position, customRunnableMap[position])
-//                    item.displayTime = 0L
-//                }
-
                 binding.itemLayout.contentDescription = item.deal.dealId.toString()
                 binding.itemLayout.setOnClickListener {
                     var id = it.contentDescription.toString().toLong()
@@ -517,7 +494,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                         }
                     }
                 }
-//                R.layout.layout_tab_innercategory
 
                 /**
                  * 시간
@@ -527,6 +503,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                 if (item.deal.timeDealInfo.statusCode == TimeDeal.Status.READY.code) {
                     val startAt = item.deal.timeDealInfo.discountStartAt + DateUtil.getTimezoneOffsetMs()
                     val hour = DateTime(startAt).hourOfDay
+                    Log.e("타임딜", item.deal.timeDealInfo.discountStartAt.toString() + " " + startAt.toString() + " " + DateUtil.getTimezoneOffsetMs().toString())
                     binding.textStart.text =
                             when {
                                 hour < 12 -> "${DateTime(startAt).toString("MM.dd HH")}AM"
@@ -536,14 +513,11 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                     binding.textStatus.text = item.deal.timeDealInfo.statusText
                     binding.framelayoutTimer.visibility = View.VISIBLE
                 } else {
-//                    if (CustomLog.flag)
-                        Log.e("$timeDealTimerSetDiff", DateUtil.getTimerText(((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000)) + "\n" +
-                                DateUtil.getTimerText(((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000) - timeDealTimerSetDiff))
-
-                    val remainEndAt = ((item.deal.timeDealInfo.remainedTimeForEnd / 5) * 1000) - timeDealTimerSetDiff
+                    val current = Calendar.getInstance().timeInMillis
                     val MINUTE_MS = 60 * 1000
                     val HOUR_MS = MINUTE_MS * 60
                     val DAY_MS = HOUR_MS * 24
+                    val remainEndAt = item.expiredTimeLong - current
 
                     item.displayTime = remainEndAt
                     val day = (remainEndAt / DAY_MS)
@@ -563,7 +537,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                     }
                 }
             }
-
         }
     }
 
@@ -667,10 +640,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
 
 
     companion object {
-        /**
-         * 서버에서 타임딜 정보의 시간과 recyclerView의 그려지는 시간의 텀
-         * @author Hyeyeon Park
-         */
         var timeDealTimerSetDiff = 0L
 
         @JvmStatic
