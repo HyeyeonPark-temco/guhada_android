@@ -3,7 +3,6 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.DisplayMetrics
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
@@ -36,7 +35,6 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        this.overridePendingTransition(R.anim.ease_in, R.anim.ease_out)
         super.onCreate(savedInstanceState)
     }
 
@@ -58,9 +56,7 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
         }
 
         mBinding.setOnClickCloseButton {
-            this.overridePendingTransition(R.anim.ease_out, R.anim.ease_in)
             finish()
-            this.overridePendingTransition(R.anim.ease_out, R.anim.ease_in)
         }
 
 
@@ -85,10 +81,8 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == Flag.RequestCode.POINT_RESULT_DIALOG && resultCode == Activity.RESULT_OK){
-            this.overridePendingTransition(R.anim.ease_out, R.anim.ease_in)
             setResult(Activity.RESULT_OK)
             finish()
-            this.overridePendingTransition(R.anim.ease_out, R.anim.ease_in)
         }
     }
 
