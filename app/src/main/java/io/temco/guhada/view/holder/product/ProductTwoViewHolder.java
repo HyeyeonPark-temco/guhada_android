@@ -30,8 +30,6 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
     ////////////////////////////////////////////////
 
     int width = 0;
-    int height = 0;
-    int layoutHeight = 0;
     int margin = 0;
 
     public ProductTwoViewHolder(@NonNull View itemView) {
@@ -49,17 +47,21 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
             if(width == 0){
                 DisplayMetrics matrix = new DisplayMetrics();
                 ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(matrix);
-                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(context, 13)) / 2;
-                height = width;
-                margin = CommonViewUtil.dipToPixel(context, 4);
-                layoutHeight = height + CommonViewUtil.dipToPixel(context, 120);
+                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(context, 24)) / 2;
+                margin = CommonViewUtil.dipToPixel(context, 10);
             }
 
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,height);
-            param.leftMargin = margin;
-            param.leftMargin = margin;
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
+            if(position%2==0){
+                param.leftMargin = 0;
+                param.rightMargin = margin;
+            }else{
+                param.leftMargin = 0;
+                param.rightMargin = 0;
+            }
             mBinding.relativeImageLayout.setLayoutParams(param);
-            RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(width,layoutHeight);
+
+            RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(width,width);
             mBinding.imageThumb.setLayoutParams(imageParams);
 
             // Thumbnail

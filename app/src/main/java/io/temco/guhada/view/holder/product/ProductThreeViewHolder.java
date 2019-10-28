@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
@@ -24,8 +25,6 @@ import io.temco.guhada.view.holder.base.BaseProductViewHolder;
 public class ProductThreeViewHolder extends BaseProductViewHolder<ItemProductListThreeBinding> {
 
     public int width = 0;
-    public int height = 0;
-    public int layoutHeight = 0;
     public int margin = 0;
     ////////////////////////////////////////////////
     // CONSTRUCTOR
@@ -47,24 +46,28 @@ public class ProductThreeViewHolder extends BaseProductViewHolder<ItemProductLis
                 DisplayMetrics matrix = new DisplayMetrics();
                 ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(matrix);
                 width = (matrix.widthPixels - CommonViewUtil.dipToPixel(context, 30)) / 3;
-                height = width;
-                margin = CommonViewUtil.dipToPixel(context, 5);
-                layoutHeight = height + CommonViewUtil.dipToPixel(context, 110);
-                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("ProductListAdapter "+position,"matrix.widthPixels",matrix.widthPixels,"pwidth",width);
+                margin = CommonViewUtil.dipToPixel(context, 6);
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,layoutHeight);
-            if(position % 3 == 0){
-                params.leftMargin = margin;
-                params.rightMargin = margin;
-            }else if(position % 3 == 1){
-                params.leftMargin = margin;
-                params.rightMargin = margin;
-            }else if(position % 3 == 2){
-                params.leftMargin = margin;
-                params.rightMargin = margin;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width,width);
+            if(position == 0){
+                params.leftMargin=0;
+                params.rightMargin=margin;
+            }else{
+                if(position % 3 == 0){
+                    params.leftMargin=0;
+                    params.rightMargin=margin;
+                }else if(position % 3 == 1){
+                    params.leftMargin=0;
+                    params.rightMargin=0;
+                }else if(position % 3 == 2){
+                    params.leftMargin=margin;
+                    params.rightMargin=margin;
+                }
             }
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("ProductListAdapter "+position,"params.leftMargin",params.leftMargin,"params.rightMargin",params.rightMargin);
-            mBinding.layoutTop.setLayoutParams(params);
+            mBinding.layoutImage.setLayoutParams(params);
+
+            LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(width,width);
+            mBinding.layoutImage.setLayoutParams(imageParams);
             // Thumbnail
             ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
 

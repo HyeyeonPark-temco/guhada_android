@@ -244,7 +244,7 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
                             viewModel.pageNum1 = data.pageable.pageNumber
                             data.content.add(page)
                         }
-                        if(data.content.size == 0 && data.pageable.pageNumber == 1){
+                        if(data.content.size == 0 && data.pageable.pageNumber == 0){
                             viewModel.emptyClaimVisible1.set(true)
                         } else viewModel.emptyClaimVisible1.set(false)
                         viewModel.mypageClaimTotalCountTxt.set(data.totalElements.toString())
@@ -319,7 +319,7 @@ class MyPageCliamRepository (val viewModel : MyPageClaimViewModel) {
                                                 viewModel.pageNum1 = data.pageable.pageNumber
                                                 data.content.add(page)
                                             }
-                                            if(data.content.size == 0 && data.pageable.pageNumber == 1){
+                                            if(data.content.size == 0 && data.pageable.pageNumber == 0){
                                                 viewModel.emptyClaimVisible1.set(true)
                                             } else viewModel.emptyClaimVisible1.set(false)
                                             viewModel.mypageSellerClaimTotalCountTxt.set(data.totalElements.toString())

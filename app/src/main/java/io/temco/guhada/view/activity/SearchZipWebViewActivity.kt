@@ -50,7 +50,7 @@ class SearchZipWebViewActivity : BindActivity<ActivitySearchzipwebviewBinding>()
             }
         }
 
-        if (Type.isTempProd) webview_searchzipwebview.loadUrl(resources.getString(R.string.searchzip_loadurl_prod))
+        if (Type.isTempServer) webview_searchzipwebview.loadUrl(resources.getString(R.string.searchzip_loadurl_prod))
         else webview_searchzipwebview.loadUrl(resources.getString(R.string.searchzip_loadurl_dev))
     }
 

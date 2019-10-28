@@ -68,7 +68,9 @@
         <activity
             android:name=".view.activity.MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:largeHeap="true"
+            android:launchMode="singleTop" />
 
         <!-- Category -->
         <activity
@@ -318,7 +320,23 @@
             android:theme="@style/Theme.Transparent2"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
 
+        <activity
+            android:name=".view.activity.SchemeActivity"
+            android:screenOrientation="unspecified"
+            android:launchMode="standard"
+            android:noHistory="true"
+            android:theme="@style/Theme.Transparent2">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
 
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data
+                    android:host="client"
+                    android:scheme="guhada"/>
+            </intent-filter>
+        </activity>
         <!-- custom web view activity -->
         <activity
             android:name=".view.activity.CustomWebViewActivity"
@@ -427,6 +445,36 @@
             android:value="@string/fcm_channel_id" />
 
         <!-- //////////////////////////////// -->
+
+
+        <!-- Used for Google Play Store Campaign Measurement-->
+        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService"
+            android:enabled="true"
+            android:exported="false" />
+        <!--<receiver android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.measurement.UPLOAD" />
+                <action android:name="com.android.vending.INSTALL_REFERRER"/>
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.measurement.AppMeasurementService"
+            android:enabled="true"
+            android:exported="false"/>-->
+        <!--<receiver
+            tools:node="remove"
+            android:name="com.kochava.base.ReferralReceiver">
+        </receiver>-->
+        <!-- //////////////////////////////// -->
+
+
     </application>
 
     <!--dddd -->

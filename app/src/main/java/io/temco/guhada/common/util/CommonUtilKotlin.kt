@@ -22,6 +22,7 @@ object CommonUtilKotlin  {
      * @param activity current Activity notNull
      *
      */
+    @JvmStatic
     fun startActivityUserClaimGuhada(activity: AppCompatActivity) {
         if(CommonUtil.checkToken()){
             val intent = Intent(activity, UserClaimGuhadaActivity::class.java)
@@ -37,6 +38,7 @@ object CommonUtilKotlin  {
      * @param activity current Activity notNull
      *
      */
+    @JvmStatic
     fun startActivityUserClaimSeller(activity: AppCompatActivity, sellerId : Long, productId : Long, orderProdGroupId : Long) {
         if(CommonUtil.checkToken()){
             val intent = Intent(activity, UserClaimSellerActivity::class.java)
@@ -85,6 +87,7 @@ object CommonUtilKotlin  {
 //    }
 
 
+    @JvmStatic
     fun recentProductCount(disposable: CompositeDisposable, db : GuhadaDB, listener: OnCallBackListener) {
         disposable.add(io.reactivex.Observable.fromCallable<Int> {
             db.recentDealDao().getAll(20).size
@@ -94,6 +97,7 @@ object CommonUtilKotlin  {
                 }
         )
     }
+
 
     fun setMobileNumber(mobile : String) : String {
         var mo = ""
