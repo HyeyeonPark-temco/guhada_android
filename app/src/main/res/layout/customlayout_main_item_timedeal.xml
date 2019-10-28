@@ -51,8 +51,8 @@
                 android:background="@{deal.timeDealInfo.statusCode.equals(Status.READY.code)? @drawable/background_color_timedeal_greyishbrowntwo : @drawable/background_color_timedeal_watermelon, default = @drawable/background_color_timedeal_watermelon}">
 
                 <TextView
-                    style="@style/TextMedium"
                     android:id="@+id/text_status"
+                    style="@style/TextMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -81,6 +81,7 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_16"
                     android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? View.VISIBLE : View. GONE}" />
+
                 <TextView
                     android:id="@+id/text_timer"
                     style="@style/TextMedium"
@@ -110,11 +111,33 @@
                 android:layout_gravity="center_horizontal">
 
                 <!-- THUMBNAIL -->
-                <ImageView
-                    android:id="@+id/image_thumb"
-                    style="@style/ProductImageType"
-                    android:layout_width="240dp"
-                    android:layout_height="240dp" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/image_thumb"
+                        style="@style/ProductImageType"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp" />
+
+                    <ImageView
+                        android:id="@+id/image_overlay"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:src="@color/white_overlay2"
+                        android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.OUT_OF_STOCK.code)? View.VISIBLE: View.GONE, default= gone}" />
+
+                    <ImageView
+                        android:id="@+id/image_soldout"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/deal_sold_out"
+                        android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.OUT_OF_STOCK.code)? View.VISIBLE: View.GONE, default= gone}" />
+
+                </FrameLayout>
 
                 <!-- SHIP -->
                 <TextView

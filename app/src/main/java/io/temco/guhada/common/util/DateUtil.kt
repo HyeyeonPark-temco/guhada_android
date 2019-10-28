@@ -163,19 +163,22 @@ object DateUtil {
      */
     @JvmStatic
     fun getTimerText(remainEndAt: Long): String {
-        val MINUTE_MS = 60 * 1000
-        val HOUR_MS = MINUTE_MS * 60
+        var timerText = "00:00:00"
 
-        val hour = remainEndAt / HOUR_MS
-        val minute = (remainEndAt % HOUR_MS) / MINUTE_MS
-        val second = ((remainEndAt % HOUR_MS) % MINUTE_MS) / 1000
+        if(remainEndAt > 0){
+            val MINUTE_MS = 60 * 1000
+            val HOUR_MS = MINUTE_MS * 60
 
-        var timerText: String
-        timerText = if (hour < 10) "0$hour" else "$hour"
-        timerText = if (minute < 10) "$timerText:0$minute" else "$timerText:$minute"
-        timerText = if (second < 10) "$timerText:0$second" else "$timerText:$second"
+            val hour = remainEndAt / HOUR_MS
+            val minute = (remainEndAt % HOUR_MS) / MINUTE_MS
+            val second = ((remainEndAt % HOUR_MS) % MINUTE_MS) / 1000
+
+            timerText = if (hour < 10) "0$hour" else "$hour"
+            timerText = if (minute < 10) "$timerText:0$minute" else "$timerText:$minute"
+            timerText = if (second < 10) "$timerText:0$second" else "$timerText:$second"
+        }
+
         return timerText
     }
-
 
 }
