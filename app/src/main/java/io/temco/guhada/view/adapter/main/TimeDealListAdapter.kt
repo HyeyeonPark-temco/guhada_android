@@ -53,7 +53,6 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
 
     lateinit var handler: Handler
     lateinit var customRunnableMap: WeakHashMap<Int, CustomRunnable>
-    lateinit var mTimerIntent: Intent
 
     // 타일딜 타임 쓰레드 전체 종료
     fun clearRunnable() {
@@ -522,7 +521,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                     val day = (remainEndAt / DAY_MS)
                     if (day > 0) {
                         binding.framelayoutTimer.visibility = View.GONE
-                        binding.textStatus.text = "${day}일 남음"
+                        binding.textStatus.text = String.format(binding.root.context.getString(R.string.timedeal_remain), day)
                     } else {
                         binding.framelayoutTimer.visibility = View.VISIBLE
                         binding.textStatus.text = binding.root.context.getString(R.string.timedeal_today)
@@ -637,10 +636,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
         }
     }
 
-
     companion object {
-        var timeDealTimerSetDiff = 0L
-
         @JvmStatic
         @BindingAdapter("cancelLine")
         fun TextView.bindCancelLine(addCancelLine: Boolean) {

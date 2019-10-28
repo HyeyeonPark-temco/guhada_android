@@ -57,6 +57,6 @@ class TimeDealListViewModel(val context: Context) : BaseObservableViewModel() {
                         listener.callBackListener(false, "")
                     }
             )
-        }, pageIndex = 0, unitPerPage = 5)
+        })
     }
 }

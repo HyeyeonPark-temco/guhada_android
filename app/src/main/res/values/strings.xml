@@ -1320,4 +1320,5 @@
 
     <!-- TIME DEAL -->
     <string name="timedeal_today">오늘마감</string>
+    <string name="timedeal_remain">%d일 남음</string>
 </resources>
