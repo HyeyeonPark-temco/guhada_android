@@ -4,7 +4,6 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.main.HomeDeal
 import io.temco.guhada.data.model.main.Keyword
-import io.temco.guhada.data.model.main.TimeDeal
 import io.temco.guhada.data.model.product.Product
 import retrofit2.Call
 import retrofit2.http.GET
