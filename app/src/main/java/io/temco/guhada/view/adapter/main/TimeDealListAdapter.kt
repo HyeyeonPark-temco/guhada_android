@@ -528,10 +528,12 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                         binding.textTimer.text = DateUtil.getTimerText(remainEndAt)
 
                         // 스레드 시작
-                        val runnable = customRunnableMap[position]
-                        if (runnable == null) customRunnableMap[position] = CustomRunnable(item.displayTime, binding.textTimer, handler)
-                        val startDelayMS: Long = 1000L - Calendar.getInstance().get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
-                        handler.postDelayed(customRunnableMap[position], startDelayMS)
+                        if (remainEndAt > 0) {
+                            val runnable = customRunnableMap[position]
+                            if (runnable == null) customRunnableMap[position] = CustomRunnable(item.displayTime, binding.textTimer, handler)
+                            val startDelayMS: Long = 1000L - Calendar.getInstance().get(Calendar.MILLISECOND) // 시작 delay millisecond Time , 0초에 시작하기 위해
+                            handler.postDelayed(customRunnableMap[position], startDelayMS)
+                        }
                     }
                 }
             }
