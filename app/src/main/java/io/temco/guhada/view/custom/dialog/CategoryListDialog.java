@@ -31,10 +31,12 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
         return R.layout.dialog_category_list;
     }
 
+
     @Override
     protected void init() {
         mBinding.setClickListener(this);
         mBinding.layoutSubMenu.setClickListener(this);
+
 
         // List
         CommonUtil.delayRunnable(this::initList);

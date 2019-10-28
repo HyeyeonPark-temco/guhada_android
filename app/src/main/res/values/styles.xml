@@ -127,13 +127,15 @@
         <item name="android:colorBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.8</item>
+       <!-- <item name="android:windowEnterAnimation">@anim/ease_in</item>
+        <item name="android:windowExitAnimation">@anim/ease_out</item>-->
         <item name="android:windowEnterAnimation">@anim/dialog_slide_up</item>
         <item name="android:windowExitAnimation">@anim/dialog_slide_down</item>
     </style>
 
     <style name="DialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/dialog_slide_up</item>
-        <item name="android:windowExitAnimation">@anim/dialog_slide_down</item>
+        <item name="android:windowEnterAnimation">@anim/ease_in</item>
+        <item name="android:windowExitAnimation">@anim/ease_out</item>
     </style>
 
     <!-- -->
@@ -550,6 +552,14 @@
     <style name="MypageRefundAccountHingTextStyle" parent="TextRegular">
         <item name="android:textSize">@dimen/text_13</item>
         <item name="android:textColor">@color/warm_grey</item>
+    </style>
+
+    <style
+        name="dialog_animation_fade" >
+        <item name="android:windowEnterAnimation">@anim/dialog_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/dialog_slide_down</item>
+        <!--<item name="android:windowEnterAnimation">@anim/ease_in</item>-->
+        <!--<item name="android:windowExitAnimation">@anim/ease_out</item>-->
     </style>
 </resources>
 
