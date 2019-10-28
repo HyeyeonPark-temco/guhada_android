@@ -81,8 +81,6 @@
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_16"
                     android:visibility="@{deal.timeDealInfo.statusCode.equals(Status.READY.code) ? View.VISIBLE : View. GONE}" />
-                <!--app:isReady="@{deal.timeDealInfo.statusCode.equals(Status.READY.code)}"-->
-                <!--app:startAt="@{deal.timeDealInfo.discountStartAt}"-->
                 <TextView
                     android:id="@+id/text_timer"
                     style="@style/TextMedium"

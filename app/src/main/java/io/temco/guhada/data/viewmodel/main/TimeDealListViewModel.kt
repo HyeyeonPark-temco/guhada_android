@@ -37,7 +37,6 @@ class TimeDealListViewModel(val context: Context) : BaseObservableViewModel() {
         ProductServer.getTimeDeal(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        listData.add(DummyImage(listData.size, HomeType.Dummy, R.color.transparent, 280))
                         val list = it.data as MutableList<Deal>
                         var index = 1
                         Observable.fromIterable(list).map { deal ->
