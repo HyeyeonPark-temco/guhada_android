@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
+import androidx.core.widget.NestedScrollView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,26 +71,13 @@ class TimeDealListLayout constructor(
             }
         }
 
-        mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                // super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(-1)) {
-                    // Top
-                    changeFloatingButtonLayout(false)
-                } else if (!recyclerView.canScrollVertically(1)) {
-                    // Bottom
-                } else {
-                    // Idle
-                    changeFloatingButtonLayout(true)
-                }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {}
-        })
+        mBinding.floating.bringToFront()
+        mBinding.scrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            changeFloatingButtonLayout(scrollY > oldScrollY)
+        }
 
         mViewModel.adapter = TimeDealListAdapter(mViewModel, mViewModel.listData)
         mBinding.recyclerView.adapter = mViewModel.adapter
-
 
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
@@ -100,12 +88,11 @@ class TimeDealListLayout constructor(
         getRecentProductCount()
     }
 
-
     private fun scrollToTop(isSmooth: Boolean) {
         if (isSmooth) {
-            mBinding.recyclerView.smoothScrollToPosition(0)
+            mBinding.scrollView.smoothScrollTo(0,0)
         } else {
-            mBinding.recyclerView.scrollToPosition(0)
+            mBinding.scrollView.scrollTo(0,0)
         }
     }
 
