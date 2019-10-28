@@ -53,6 +53,10 @@ class TimeDealListLayout constructor(
     override fun getLayoutId() = R.layout.customlayout_main_timelist
     override fun init() {
         mViewModel = TimeDealListViewModel(context)
+        mBinding.swipeRefreshLayout.setOnRefreshListener {
+            mBinding.swipeRefreshLayout.isRefreshing = false
+            loadTimeDealData()
+        }
         mBinding.viewModel = mViewModel
 
         mBinding.recyclerView.setHasFixedSize(true)

@@ -73,6 +73,9 @@ public class Deal {
     @SerializedName("timeDealInfo")
     public TimeDealInfo timeDealInfo;
 
+    @SerializedName("totalStock")
+    public int totalStock;
+
     public boolean isFreeShipping() {
         if (shipExpenseType != null && !"".equals(shipExpenseType))
             return "FREE".equals(shipExpenseType);

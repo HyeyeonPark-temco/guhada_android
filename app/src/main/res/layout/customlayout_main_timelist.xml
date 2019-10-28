@@ -9,24 +9,19 @@
             type="io.temco.guhada.data.viewmodel.main.TimeDealListViewModel" />
     </data>
 
-    <!--<androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-        <!--android:id="@+id/swipeRefreshLayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7339c9">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#7339c9">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.AppBarLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -35,43 +30,56 @@
                         android:background="@drawable/time_deal_bg"
                         app:layout_collapseMode="parallax" />
 
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-            </com.google.android.material.appbar.AppBarLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="1dp"
-                android:background="@color/transparent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="15dp"
-                android:gravity="bottom"
                 android:orientation="vertical">
 
-                <include
-                    android:id="@+id/button_floating_item"
-                    layout="@layout/layout_floating_button_badge"
-                    android:layout_width="@dimen/view_button_floating"
-                    android:layout_height="@dimen/view_button_floating"
-                    android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="bottom"
+                    android:orientation="vertical">
 
-                <include
-                    android:id="@+id/button_floating_top"
-                    layout="@layout/layout_floating_button_top"
-                    android:layout_width="@dimen/view_button_floating"
-                    android:layout_height="@dimen/view_button_floating"
-                    android:layout_marginTop="7dp"
-                    android:visibility="gone" />
-            </LinearLayout>
+                    <include
+                        android:id="@+id/button_floating_item"
+                        layout="@layout/layout_floating_button_badge"
+                        android:layout_width="@dimen/view_button_floating"
+                        android:layout_height="@dimen/view_button_floating"
+                        android:visibility="gone" />
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    <!--</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+                    <include
+                        android:id="@+id/button_floating_top"
+                        layout="@layout/layout_floating_button_top"
+                        android:layout_width="@dimen/view_button_floating"
+                        android:layout_height="@dimen/view_button_floating"
+                        android:layout_marginTop="7dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/transparent" />
+
+            </FrameLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>
