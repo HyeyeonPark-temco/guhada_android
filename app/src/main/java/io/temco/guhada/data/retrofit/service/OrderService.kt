@@ -12,6 +12,7 @@ import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.MyPageOrderReview
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -143,7 +144,7 @@ interface OrderService {
      * 구매 확정 API
      */
     @POST("/order/order-prod-confirm")
-    fun confirmPurchase(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<Any?>>
+    fun confirmPurchase(@Header("Authorization") accessToken: String, @Query("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<PointPopupInfo>>
 
 
     /**

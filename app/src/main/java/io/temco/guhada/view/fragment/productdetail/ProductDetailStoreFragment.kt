@@ -129,7 +129,7 @@ class ProductDetailStoreFragment : BaseFragment<FragmentProductdetailStoreBindin
     }
 
     fun getSellerBookMark(target: String) {
-        mViewModel.getSellerLike(target)
+        if(::mViewModel.isInitialized) mViewModel.getSellerLike(target)
     }
 
     fun getStoreFlagHeight() : Int = (mBinding.productdetailScrollflagRecommend.parent as View).top + mBinding.productdetailScrollflagRecommend.top

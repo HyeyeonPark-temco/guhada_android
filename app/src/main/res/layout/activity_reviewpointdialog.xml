@@ -13,8 +13,16 @@
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="maxPoint"
+            name="point"
             type="Integer" />
+
+        <variable
+            name="totalPoint"
+            type="Integer" />
+
+        <variable
+            name="message"
+            type="String" />
 
         <variable
             name="myPoint"
@@ -62,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/review_result_dialog_point_desc"
+                        android:text="@{@string/review_result_dialog_point_desc(point)}"
                         android:textColor="@color/blue_purple"
                         android:textSize="@dimen/text_27" />
 
@@ -84,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:gravity="center"
-                    android:text="@{viewModel.MTypeNotPresentException == 0 ? @string/review_result_dialog_subtitle1 : (viewModel.MTypeNotPresentException == 1 ? @string/review_result_dialog_subtitle2 : @string/review_result_dialog_subtitle3), default = @string/successcancelorder_title3}"
+                    android:text="@{message}"
                     android:textColor="@color/black_four"
                     android:textSize="@dimen/text_16"
                     android:textStyle="bold" />
@@ -103,7 +111,6 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:visibility="@{viewModel.MTypeNotPresentException == 0 ? View.GONE : View .VISIBLE, default = visible}"
                     android:layout_height="45dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="8dp"
@@ -112,6 +119,7 @@
                     android:orientation="horizontal"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
+                    android:visibility="@{viewModel.MTypeNotPresentException == 0 ? View.GONE : View .VISIBLE, default = visible}"
                     android:weightSum="1">
 
                     <TextView
@@ -128,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@{@string/common_price_format(viewModel.pointSummary.totalFreePoint) + @string/common_unit_point}"
+                        android:text="@{@string/common_pointunit_format(totalPoint)}"
                         android:textColor="@color/blue_purple"
                         android:textSize="@dimen/text_14"
                         android:textStyle="bold" />

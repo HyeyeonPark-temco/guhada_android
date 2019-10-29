@@ -23,7 +23,7 @@ class BenefitServer {
     companion object {
 
         @JvmStatic
-        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+        fun <C, R> resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>) {
             if (response.code() in 200..400 && response.body() != null) {
                 listener.onResult(true, response.body())
             } else {
@@ -187,5 +187,14 @@ class BenefitServer {
          */
         fun getDueSavePoint(listener: OnServerListener, accessToken: String, pointProcessParam: PointProcessParam) =
                 RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getBenefitDueSavePoint(accessToken = accessToken, pointProcessParam = pointProcessParam).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
+        /**
+         * 구매확정 적립 예정 포인트
+         * @author Hyeyeon Park
+         * @since 2019.10.29
+         */
+        fun getConfirmProductDueSavePoint(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
+                RetrofitManager.createService(Type.Server.BENEFIT, BenefitService::class.java, true).getConfirmProductDueSavePoint(accessToken = accessToken, orderProdGroupId = orderProdGroupId).enqueue(ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
+
     }
 }

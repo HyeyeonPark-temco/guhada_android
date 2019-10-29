@@ -27,8 +27,7 @@ class MyPageCouponLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMypageCouponBinding, MyPageCouponViewModel>(context, attrs, defStyleAttr), SwipeRefreshLayout.OnRefreshListener {
-    private val ENABLED_COUPON_POS = 0
+) : BaseListLayout<CustomlayoutMypageCouponBinding, MyPageCouponViewModel>(context, attrs, defStyleAttr) {
     private lateinit var mFragmentAdapter: BaseFragmentPagerAdapter
     private lateinit var mCouponFragment: MyPageCouponFragment
     private lateinit var mDisabledCouponFragment: MyPageCouponFragment
@@ -36,17 +35,16 @@ class MyPageCouponLayout constructor(
     override fun getBaseTag() = this::class.simpleName.toString()
     override fun getLayoutId() = R.layout.customlayout_mypage_coupon
     override fun init() {
-        mBinding.swipeRefreshLayout.setOnRefreshListener(this)
-
         initViewModel()
-        initViewPager()
         initTabs()
+        initViewPager()
+
 
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         mViewModel = MyPageCouponViewModel(context)
         mViewModel.enabledCouponResponse.observe(this, Observer {
             setEnabledCouponTabText(totalElements = mViewModel.enabledCouponResponse.value?.totalElements
@@ -71,7 +69,9 @@ class MyPageCouponLayout constructor(
     }
 
     private fun initViewPager() {
-        mFragmentAdapter = BaseFragmentPagerAdapter((context as FragmentActivity).supportFragmentManager)
+        mFragmentAdapter = BaseFragmentPagerAdapter((context as FragmentActivity).supportFragmentManager).apply {
+            this.mTabTitles = mutableListOf(resources.getString(R.string.mypagecoupon_tab_enabled_temp), resources.getString(R.string.mypagecoupon_tab_disabled))
+        }
         mCouponFragment = MyPageCouponFragment().apply {
             mIsAvailable = true
             mViewModel = this@MyPageCouponLayout.mViewModel
@@ -86,33 +86,15 @@ class MyPageCouponLayout constructor(
     }
 
     private fun initTabs() {
-        mBinding.tablayoutMypagecoupon.addTab(mBinding.tablayoutMypagecoupon.newTab().setText(resources.getString(R.string.mypagecoupon_tab_enabled_temp)))
-        mBinding.tablayoutMypagecoupon.addTab(mBinding.tablayoutMypagecoupon.newTab().setText(R.string.mypagecoupon_tab_disabled))
-        mBinding.tablayoutMypagecoupon.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                mBinding.viewpagerMypagecoupon.currentItem = tab?.position ?: 0
-            }
-        })
+        mBinding.tablayoutMypagecoupon.setupWithViewPager(mBinding.viewpagerMypagecoupon)
     }
 
-    override fun onRefresh() {
-        mViewModel.page = 1
-        mViewModel.getCoupons(mBinding.tablayoutMypagecoupon.selectedTabPosition == ENABLED_COUPON_POS)
-        mBinding.swipeRefreshLayout.isRefreshing = false
-    }
+    override fun onFocusView() {}
 
-    //
-    override fun onFocusView() { }
-    override fun onReleaseView() { }
-    override fun onStart() { }
-    override fun onResume() { }
-    override fun onPause() { }
-    override fun onStop() { }
-    override fun onDestroy() { }
+    override fun onReleaseView() {}
+    override fun onStart() {}
+    override fun onResume() {}
+    override fun onPause() {}
+    override fun onStop() {}
+    override fun onDestroy() {}
 }

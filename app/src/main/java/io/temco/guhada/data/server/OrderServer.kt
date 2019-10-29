@@ -20,6 +20,7 @@ import io.temco.guhada.data.model.order.*
 import io.temco.guhada.data.model.payment.CalculatePaymentInfo
 import io.temco.guhada.data.model.payment.PGAuth
 import io.temco.guhada.data.model.payment.PGResponse
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.MyPageOrderReview
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.OrderService
@@ -301,7 +302,7 @@ class OrderServer {
         @JvmStatic
         fun confirmPurchase(listener: OnServerListener, accessToken: String, orderProdGroupId: Long) =
                 RetrofitManager.createService(Type.Server.ORDER, OrderService::class.java, true).confirmPurchase(accessToken, orderProdGroupId).enqueue(
-                        ServerCallbackUtil.ServerResponseCallback<BaseModel<Any?>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
+                        ServerCallbackUtil.ServerResponseCallback<BaseModel<PointPopupInfo>> { successResponse -> listener.onResult(successResponse.isSuccessful, successResponse.body()) })
 
 
         /**
