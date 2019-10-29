@@ -47,13 +47,14 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
         mViewModel = ConfirmPurchaseViewModel()
         mViewModel.closeActivityTask = { finish() }
         mViewModel.successConfirmPurchaseTask = {
-//            val intent = Intent(this, ReviewPointDialogActivity::class.java)
-//            intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
+            val intent = Intent(this, ReviewPointDialogActivity::class.java)
+            intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
+            intent.putExtra("pointInfo", it)
 //            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
-//            startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
-            ToastUtil.showMessage("구매확정이 완료되었습니다.")
-            setResult(Activity.RESULT_OK)
-            finish()
+            startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
+//            ToastUtil.showMessage("구매확정이 완료되었습니다.")
+//            setResult(Activity.RESULT_OK)
+//            finish()
         }
         intent.getSerializableExtra("purchaseOrder").let {
             if (it != null) mViewModel.purchaseOrder = it as PurchaseOrder

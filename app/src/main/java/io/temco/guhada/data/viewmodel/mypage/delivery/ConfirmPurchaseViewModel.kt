@@ -3,13 +3,14 @@ package io.temco.guhada.data.viewmodel.mypage.delivery
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.server.OrderServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class ConfirmPurchaseViewModel : BaseObservableViewModel() {
     var purchaseOrder = PurchaseOrder()
     var closeActivityTask: () -> Unit = {}
-    var successConfirmPurchaseTask: () -> Unit = {}
+    var successConfirmPurchaseTask: (pointInfo : PointPopupInfo) -> Unit = {}
 
     fun onClickCancel() = closeActivityTask()
 
@@ -17,7 +18,9 @@ class ConfirmPurchaseViewModel : BaseObservableViewModel() {
         ServerCallbackUtil.callWithToken(task = {
             OrderServer.confirmPurchase(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
-                        successTask = { successConfirmPurchaseTask() })
+                        successTask = {model ->
+                            if(model.data is PointPopupInfo)
+                                successConfirmPurchaseTask(model.data as PointPopupInfo) })
             }, accessToken = it, orderProdGroupId = purchaseOrder.orderProdGroupId)
         })
     }
