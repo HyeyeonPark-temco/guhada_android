@@ -33,7 +33,6 @@ class AddCartResultFragment(val mListener: OnProductDetailListener) : BottomShee
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_addcartresult, container, false)
         initViewModel()
-        mViewModel.getDeals()
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
         return mBinding.root
@@ -61,7 +60,7 @@ class AddCartResultFragment(val mListener: OnProductDetailListener) : BottomShee
                 }
             }
         })
-
+        mViewModel.getDeals()
     }
 
     override fun onDestroyOptionsMenu() {

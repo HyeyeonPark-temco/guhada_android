@@ -40,14 +40,16 @@ class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAda
     }
 
     inner class Holder(binding: ItemAddcartproductBinding) : BaseViewHolder<ItemAddcartproductBinding>(binding.root) {
-        fun bind(deal: Deal, position : Int) {
+        fun bind(deal: Deal, position: Int) {
             if (width == 0) {
                 val matrix = DisplayMetrics()
-                ((itemView.context as ContextWrapper).baseContext as Activity).windowManager.defaultDisplay.getMetrics(matrix)
-                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(binding.root.context, 30)) / 3
-                height = width
-                margin = CommonViewUtil.dipToPixel(binding.root.context, 5)
-                layoutHeight = height + CommonViewUtil.dipToPixel(binding.root.context, 80)
+                if ((itemView.context as ContextWrapper).baseContext is Activity) {
+                    ((itemView.context as ContextWrapper).baseContext as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                    width = (matrix.widthPixels - CommonViewUtil.dipToPixel(binding.root.context, 30)) / 3
+                    height = width
+                    margin = CommonViewUtil.dipToPixel(binding.root.context, 5)
+                    layoutHeight = height + CommonViewUtil.dipToPixel(binding.root.context, 80)
+                }
                 if (CustomLog.flag) CustomLog.L("ProductListAdapter $position", "matrix.widthPixels", matrix.widthPixels, "pwidth", width)
             }
             val params = LinearLayout.LayoutParams(width, layoutHeight)
