@@ -32,11 +32,6 @@ class EmptyCartViewModel() : BaseObservableViewModel() {
                     failedTask = {  }
             )
         })
-        /*ProductServer.getProductListByOnlyPage(OnServerListener  { success, o ->
-            if (success) {
-                if(o is BaseModel<*>)
-            }
-        }, unitPerPage = UNIT_PER_PAGE)*/
     }
 
     fun onClickContinue(){

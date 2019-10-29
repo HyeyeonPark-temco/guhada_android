@@ -188,7 +188,7 @@ class ProductServer {
          */
         @JvmStatic
         fun getProductListByOnlyPage(listener: OnServerListener, unitPerPage: Int) =
-                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, false, false).getProductListByOnlyPage(unitPerPage = unitPerPage).enqueue(
+                RetrofitManager.createService(Type.Server.PRODUCT, ProductService::class.java, true, false).getProductListByOnlyPage(unitPerPage = unitPerPage).enqueue(
                         ServerCallbackUtil.ServerResponseCallback(successTask = { response -> listener.onResult(true, response.body()) }))
 
 

@@ -79,8 +79,8 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             public void redirectMainActivity(Token data) {
                 Preferences.setToken(data);
 
-                Token token = Preferences.getToken();
-                Toast.makeText(LoginActivity.this, "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
+//                Token token = Preferences.getToken();
+//                Toast.makeText(LoginActivity.this, "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

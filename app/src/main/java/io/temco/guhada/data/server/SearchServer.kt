@@ -291,10 +291,6 @@ class SearchServer {
         }
 
 
-
-
-
-
         @JvmStatic
         fun getProductListByCategoryFilter(type: Type.ProductOrder, body: FilterBody, page: Int, listener: OnServerListener?) {
             if (listener != null) {

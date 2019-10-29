@@ -2,7 +2,9 @@ package io.temco.guhada.data.viewmodel.account
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
+import android.util.Log
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -58,7 +60,9 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     var buttonAvailable = false
         @Bindable
         get() = field
-    var isIdSaved = Preferences.isIdSaved()
+    var mIsIdSaved = ObservableBoolean(Preferences.isIdSaved())
+        @Bindable
+        get() = field
     var snsUser: Any? = null
     var tempSnsUser = SnsUser()
 
@@ -90,7 +94,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                             if (Preferences.getToken() != null) Preferences.clearToken(false)
                             Preferences.setToken(token)
                             // save id
-                            if (isIdSaved) {
+                            if (mIsIdSaved.get()) {
                                 val savedId = Preferences.getSavedId()
                                 if (savedId != id) {
                                     Preferences.setSavedId(id)
@@ -150,12 +154,15 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     }
 
     fun onCheckedSaveId(checked: Boolean) {
-        TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SaveIdClick.eventName)
+        if(mIsIdSaved.get() != checked){
+            TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SaveIdClick.eventName)
 
-        isIdSaved = checked
-        Preferences.setIsIdSaved(checked)
-        if (!checked) {
-            Preferences.setSavedId("")
+            mIsIdSaved.set(checked)
+            Preferences.setIsIdSaved(checked)
+            if (!checked) {
+                Preferences.setSavedId("")
+            }
+            notifyPropertyChanged(BR.mIsIdSaved)
         }
     }
 
