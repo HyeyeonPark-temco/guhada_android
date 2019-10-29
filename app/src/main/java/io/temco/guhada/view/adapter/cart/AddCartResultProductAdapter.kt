@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.item_addcartproduct.view.*
 
 /**
  * 장바구니 담기 완료 화면의 '이 상품과 함께 많이 구매한 상품' 리스트 adapter
+ * 장바구니 empty view의 실시간 인기상품 adapter
  * @author Hyeyeon Park
  * @since 2019.09.18
  */
