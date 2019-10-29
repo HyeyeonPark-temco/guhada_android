@@ -21,9 +21,8 @@
         android:id="@+id/constraintlayout_communityphoto_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:onClick="@{()->viewModel.onClickItem(item)}"
-        android:paddingBottom="20dp">
+        android:paddingBottom="35dp">
 
         <io.temco.guhada.common.SquareImageView
             android:id="@+id/imageview_communityphoto_thumbnail"
