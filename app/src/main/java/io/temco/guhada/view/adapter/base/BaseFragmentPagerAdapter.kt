@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 
 class BaseFragmentPagerAdapter(fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
     private val fragments: MutableList<Fragment> = mutableListOf()
+    var mTabTitles = mutableListOf<String>()
 
     override fun getItem(position: Int): Fragment {
         return fragments[position]
@@ -17,5 +18,9 @@ class BaseFragmentPagerAdapter(fragmentManager: FragmentManager) : FragmentState
 
     fun addFragment(fragment: Fragment) {
         this.fragments.add(fragment)
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return if(mTabTitles.isEmpty()) super.getPageTitle(position) else mTabTitles[position]
     }
 }
