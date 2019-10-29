@@ -1,6 +1,7 @@
 package io.temco.guhada.view.fragment.mypage
 
 import android.view.View
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.coupon.Coupon
@@ -13,7 +14,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
  * @author Hyeyeon Park
  * @since 2019.08.08
  */
-class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCouponEnabledBinding>() {
+class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCouponEnabledBinding>(), SwipeRefreshLayout.OnRefreshListener {
     lateinit var mViewModel: MyPageCouponViewModel
     var mIsAvailable = false
 
@@ -23,6 +24,8 @@ class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCo
 
     override fun init() {
         if (::mViewModel.isInitialized) {
+            mBinding.swipeRefreshLayout.setOnRefreshListener(this)
+
             // TODO 쿠폰 등록
             mBinding.buttonMypagecouponAdd.setOnClickListener { ToastUtil.showMessage("유효하지 않은 쿠폰입니다.") }
 
@@ -74,5 +77,11 @@ class MyPageCouponFragment : BaseFragment<io.temco.guhada.databinding.FragmentCo
             mBinding.textviewMypagecouponMore.visibility = View.VISIBLE
             mBinding.imageviewMypagecouponMore.visibility = View.VISIBLE
         }
+    }
+
+    override fun onRefresh() {
+        mViewModel.page = 1
+        mViewModel.getCoupons(mIsAvailable)
+        mBinding.swipeRefreshLayout.isRefreshing = false
     }
 }
