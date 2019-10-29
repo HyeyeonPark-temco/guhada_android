@@ -17,6 +17,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnAddCartResultListener
 import io.temco.guhada.common.listener.OnProductDetailListener
 import io.temco.guhada.common.util.CommonUtil
+import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.viewmodel.cart.AddCartResultViewModel
 import io.temco.guhada.databinding.FragmentAddcartresultBinding
 import io.temco.guhada.view.activity.CartActivity
@@ -32,9 +33,12 @@ class AddCartResultFragment(val mListener: OnProductDetailListener) : BottomShee
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_addcartresult, container, false)
+        mViewModel = AddCartResultViewModel(this)
         initViewModel()
+
         mViewModel.getDeals()
         mBinding.viewModel = mViewModel
+
         mBinding.executePendingBindings()
         return mBinding.root
     }
@@ -51,17 +55,16 @@ class AddCartResultFragment(val mListener: OnProductDetailListener) : BottomShee
     }
 
     private fun initViewModel() {
-        mViewModel = AddCartResultViewModel(this)
         mViewModel.mDealList.observe(this, Observer {
             mBinding.recyclerviewAddcartresultRecommend.adapter = AddCartResultProductAdapter().apply {
                 this.mList = it
+                if(CustomLog.flag)CustomLog.L("initViewModel","mList",mList)
                 this.mClickItemTask = {dealId ->
                     CommonUtil.startProductActivity(this@AddCartResultFragment.context as Activity, dealId)
                     this@AddCartResultFragment.dismiss()
                 }
             }
         })
-
     }
 
     override fun onDestroyOptionsMenu() {

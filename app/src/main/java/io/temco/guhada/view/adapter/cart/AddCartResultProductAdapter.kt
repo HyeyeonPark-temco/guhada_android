@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.temco.guhada.R
@@ -25,9 +26,8 @@ class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAda
     var mList = mutableListOf<Deal>()
     var mClickItemTask: (dealId: Long) -> Unit = {}
 
+    var widthParent = 0
     var width = 0
-    var height = 0
-    var layoutHeight = 0
     var margin = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -43,28 +43,47 @@ class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAda
         fun bind(deal: Deal, position : Int) {
             if (width == 0) {
                 val matrix = DisplayMetrics()
-                ((itemView.context as ContextWrapper).baseContext as Activity).windowManager.defaultDisplay.getMetrics(matrix)
-                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(binding.root.context, 30)) / 3
-                height = width
-                margin = CommonViewUtil.dipToPixel(binding.root.context, 5)
-                layoutHeight = height + CommonViewUtil.dipToPixel(binding.root.context, 80)
-                if (CustomLog.flag) CustomLog.L("ProductListAdapter $position", "matrix.widthPixels", matrix.widthPixels, "pwidth", width)
+                (itemView.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                widthParent = matrix.widthPixels / 3
+                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(itemView.context, 30)) / 3
+                margin = CommonViewUtil.dipToPixel(itemView.context, 6)
             }
-            val params = LinearLayout.LayoutParams(width, layoutHeight)
+            //val params = LinearLayout.LayoutParams(widthParent, LinearLayout.LayoutParams.WRAP_CONTENT)
             val params2 = LinearLayout.LayoutParams(width, width)
-            if (position % 3 == 0) {
-                params.leftMargin = margin
-                params.rightMargin = margin
-            } else if (position % 3 == 1) {
-                params.leftMargin = margin
-                params.rightMargin = margin
-            } else if (position % 3 == 2) {
-                params.leftMargin = margin
-                params.rightMargin = margin
-            }
-            if (CustomLog.flag) CustomLog.L("ProductListAdapter $position", "params.leftMargin", params.leftMargin, "params.rightMargin", params.rightMargin)
-            mBinding.linearlayoutAddcartproductContainer.linearlayout_addcartproduct_container.layoutParams = params
-            mBinding.linearlayoutAddcartproductContainer.imageview_addcartproduct.layoutParams = params2
+            params2.leftMargin = 0
+            params2.rightMargin = margin
+            /*if (position == 0) {
+            } else {
+                if (position % 3 == 0) {
+                    params2.leftMargin = 0
+                    params2.rightMargin = margin
+                } else if (position % 3 == 1) {
+                    params2.leftMargin = 0
+                    params2.rightMargin = margin
+                } else if (position % 3 == 2) {
+                    params2.leftMargin = 0
+                    params2.rightMargin = margin
+                }
+            }*/
+            mBinding.relativeImageview.layoutParams = params2
+            /*if (CustomLog.flag) CustomLog.L("ProductListAdapter $position", "params.leftMargin", params.leftMargin, "params.rightMargin", params.rightMargin)
+            mBinding.linearlayoutAddcartproductContainer.layoutParams = params*/
+           /* mBinding.linearlayoutAddcartproductContainer.layoutParams = params
+            if (position == 0) {
+                if (CustomLog.flag) CustomLog.L("1 ProductListAdapter $position", "params",margin)
+                mBinding.linearlayoutAddcartproductContainer.setPadding(margin,0,margin,margin*2)
+            } else {
+                if (position % 3 == 0) {
+                    if (CustomLog.flag) CustomLog.L("2 ProductListAdapter $position", "params",margin)
+                    mBinding.linearlayoutAddcartproductContainer.setPadding(margin,0,margin,margin*2)
+                } else if (position % 3 == 1) {
+                    if (CustomLog.flag) CustomLog.L("3 ProductListAdapter $position", "params",margin)
+                    mBinding.linearlayoutAddcartproductContainer.setPadding(0,0,0,margin*2)
+                } else if (position % 3 == 2) {
+                    if (CustomLog.flag) CustomLog.L("4 ProductListAdapter $position", "params",margin)
+                    mBinding.linearlayoutAddcartproductContainer.setPadding(margin,0,margin,margin*2)
+                }
+            }*/
 
 //            setSpacing()
             mBinding.linearlayoutAddcartproductContainer.setOnClickListener { mClickItemTask(deal.dealId.toLong()) }
