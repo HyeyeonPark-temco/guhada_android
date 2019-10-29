@@ -323,7 +323,7 @@ public class Type {
             case RELEASE:
                 return "https://www.guhada.com/";
             default:
-                if(isTempServer)return serverType+"www.guhada.com/";
+                if(isTempServer)return serverType+"guhada.com/";
                 else return "http://dev.guhada.com/";
         }
     }
