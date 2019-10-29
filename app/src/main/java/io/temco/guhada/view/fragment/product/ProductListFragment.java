@@ -41,6 +41,7 @@ import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.listener.OnCallBackListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.listener.OnClickSelectItemListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -61,6 +62,7 @@ import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.adapter.TagListAdapter;
 import io.temco.guhada.view.adapter.product.ProductListAdapter;
+import io.temco.guhada.view.adapter.product.ProductListCategoryTabAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
 import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
@@ -419,94 +421,63 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             if (mCategoryData != null && mCategoryData.children != null && mCategoryData.children.size() > 0) {
                 mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                 // Remove
-                if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
-                    mBinding.layoutHeader.layoutTab.removeAllTabs();
+                if (mBinding.layoutHeader.recyclerTab.getAdapter() != null && mBinding.layoutHeader.recyclerTab.getAdapter().getItemCount() > 0) {
+                    ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setItems(new ArrayList<>());
                 }
-                // Add All (전체보기)
+                tabCategoryList = new ArrayList<>();
                 String title = getContext() != null ? getContext().getString(R.string.category_all) : null;
                 Category all = CommonUtil.createAllCategoryData(title, mCategoryData.fullDepthName, mCategoryData.id, mCategoryData.hierarchies);
-                addCategoryTab(all, mCategoryData.selectId == -1);
+                tabCategoryList.add(all);
+                tabIndex = mCategoryData.selectId == -1 ? 0 : -1;
                 // Add Category
                 int i=0;
                 tabWidth = 0;
 
                 if(mProductListData != null && mProductListData.categories != null) {
-                    if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet ---");
                     for (Category c : mProductListData.categories) {
-                        if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet c",c);
                         setFilterCategory(c);
-                        /*if(c.hierarchies.length == 1){
-                            setFilterTopCategory(c);
-                        }else{
-                            setFilterCategory(c);
-                        }*/
                     }
                 }
-                if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet",(filterChildIdSet!=null?filterChildIdSet:"null"));
-                tabCategoryList = new ArrayList<>();
+
                 for (Category c : mCategoryData.children) {
                     if(filterChildIdSet != null && filterChildIdSet.contains(c.id)){
                         tabCategoryList.add(c);
-                        if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
-                            tabIndex = i+1;
-                            addCategoryTab(c, true);
-                            //loadCategory(c, false);
-                        }else{
-                            addCategoryTab(c, false);
-                        }
+                        if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) tabIndex = i+1;
                         i++;
                     }else{
                         if(filterChildIdSet == null){
                             tabCategoryList.add(c);
-                            if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
-                                tabIndex = i+1;
-                                addCategoryTab(c, true);
-                                //loadCategory(c, false);
-                            }else{
-                                addCategoryTab(c, false);
-                            }
+                            if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) tabIndex = i+1;
                             i++;
                         }
                     }
                 }
-                // Select Event
-                mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        TextView text = tab.getCustomView().findViewById(R.id.text_title);
-                        text.setTypeface(null, Typeface.BOLD);
-                        if (tab.getTag() != null && tab.getTag() instanceof Category) {
-                            if(CustomLog.getFlag())CustomLog.L("onTabSelected","tab.getTag", ((Category) tab.getTag()).toString());
-                            loadCategory((Category) tab.getTag(), false);
-                        }
-                    }
 
+                if(mBinding.layoutHeader.recyclerTab.getAdapter() == null){
+                    ProductListCategoryTabAdapter adapter = new ProductListCategoryTabAdapter();
+                    mBinding.layoutHeader.recyclerTab.setAdapter(adapter);
+                    adapter.setSelectIndex(tabIndex);
+                    adapter.setMList(tabCategoryList);
+                }else{
+                    ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setSelectIndex(tabIndex);
+                    ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setMList(tabCategoryList);
+                }
+                ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setMClickSelectItemListener(new OnClickSelectItemListener() {
                     @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-                        TextView text = tab.getCustomView().findViewById(R.id.text_title);
-                        text.setTypeface(null, Typeface.NORMAL);
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-                        if (tab.getTag() != null && tab.getTag() instanceof Category) {
-                            loadCategory((Category) tab.getTag(), true);
+                    public void clickSelectItemListener(int type, int index, @NotNull Object value) {
+                        Category data = (Category)value;
+                        if(CustomLog.getFlag())CustomLog.L("clickSelectItemListener","index",index);
+                        if(data.children != null){
+                            loadCategory(data, false);
+                        }else{
+                            ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setSelectIndex(index);
+                            mBinding.layoutHeader.recyclerTab.getAdapter().notifyDataSetChanged();
+                            loadCategory(data, false);
                         }
                     }
                 });
-                if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","mCategoryData.selectId", mCategoryData.selectId);
-                if(mCategoryData.selectId != -1){
-                    mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
-                        @Override
-                        public void run() {
-                            mBinding.layoutHeader.layoutTab.setScrollPosition(tabIndex,0f,true);
-                            int index = tabIndex-1;
-                            if(tabIndex==0) index = 0;
-                            if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","mCategoryData index", index , "tabIndex", tabIndex);
-                            loadCategory(tabCategoryList.get(index), false);
-                        }
-                    },150);
-                }
+
+
                 // Scroll // Not Used
                 //setTabLayoutScrollEvent();
             } else {
