@@ -101,7 +101,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/textview_confirmpurchase_brandname" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/linearlayout_confirmpurchase_confirmpoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,13 +126,13 @@
 
                 <TextView
                     style="@style/ConfirmPurchasePointTextStyle"
+                    android:id="@+id/textview_confirmpurchase_buypoint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/confirmpurchase_point_confirm2 + @string/common_priceunit_format(12345)}" />
+                    android:text="@{@string/confirmpurchase_point_confirm2 + @string/common_priceunit_format(0)}" />
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/linearlayout_confirmpurchase_reviewpoint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -158,10 +157,11 @@
                     android:background="@color/white_three" />
 
                 <TextView
+                    android:id="@+id/textview_confirmpurchase_reviewpoint"
                     style="@style/ConfirmPurchasePointTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/confirmpurchase_point_review2 + @string/common_priceunit_format(12345)}" />
+                    android:text="@{@string/confirmpurchase_point_review2 + @string/common_priceunit_format(0)}" />
 
                 <FrameLayout
                     android:layout_width="14dp"
