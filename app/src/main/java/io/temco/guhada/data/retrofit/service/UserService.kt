@@ -412,7 +412,7 @@ interface UserService {
     @FormUrlEncoded
      */
     @POST("/products/{productId}/reviews")
-    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Body param: ReviewWrMdResponse): Call<BaseModel<Any>>
+    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Body param: ReviewWrMdResponse): Call<BaseModel<ReviewData>>
 
 
     /**

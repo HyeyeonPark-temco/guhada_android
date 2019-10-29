@@ -144,7 +144,7 @@ class UserSizeUpdateViewModel(val context: Context) : BaseObservableViewModel() 
                                     UserServer.saveUserSize(OnServerListener { success, o ->
                                         ServerCallbackUtil.executeByResultCode(success, o,
                                                 successTask = {
-                                                    val data = (o as BaseModel<*>).data as Any
+                                                    val data = (o as BaseModel<*>).data
                                                     if (CustomLog.flag) CustomLog.L("UserSizeUpdateViewModel", "saveUserSize successTask ", data.toString())
 
                                                     /**

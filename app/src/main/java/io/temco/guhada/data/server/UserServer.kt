@@ -595,12 +595,12 @@ class UserServer {
         @JvmStatic
         fun writeReview(listener: OnServerListener, accessToken: String, productId: Long, data: ReviewWrMdResponse) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .writeReview(accessToken, productId, data).enqueue(object : Callback<BaseModel<Any>> {
-                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    .writeReview(accessToken, productId, data).enqueue(object : Callback<BaseModel<ReviewData>> {
+                        override fun onResponse(call: Call<BaseModel<ReviewData>>, response: Response<BaseModel<ReviewData>>) {
                             resultListener(listener, call, response)
                         }
 
-                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                        override fun onFailure(call: Call<BaseModel<ReviewData>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("writeReview", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }

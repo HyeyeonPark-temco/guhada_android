@@ -1,8 +1,8 @@
 package io.temco.guhada.data.model.review
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import io.temco.guhada.data.model.base.BasePageModel
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.user.UserSize
 import java.io.Serializable
 
@@ -88,6 +88,8 @@ class ReviewData : Serializable {
     @SerializedName("id")
     var id : Int = 0
 
+    @SerializedName("savedPointResponse")
+    var savedPointResponse : PointPopupInfo = PointPopupInfo()
 
     fun getRating(): Float = when (productRating) {
         "HALF" -> 0.5f
