@@ -46,7 +46,7 @@
     <string name="common_max">최대</string>
     <string name="common_price_format">%,2d</string>
     <string name="common_priceunit_format">%,2d원</string>
-    <string name="common_pointunit_format">%,2d원</string>
+    <string name="common_pointunit_format">%,2dP</string>
 
     <string name="common_more">더보기</string>
     <string name="common_reset">초기화</string>

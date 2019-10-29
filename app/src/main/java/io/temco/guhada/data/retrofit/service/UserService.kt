@@ -5,6 +5,8 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.point.ExpectedPointResponse
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.*
@@ -454,7 +456,7 @@ interface UserService {
      * 19.08.16
      */
     @POST("/users/user-size")
-    fun saveUserSize(@Header("Authorization") accessToken: String, @Body response: UserSize): Call<BaseModel<Any>>
+    fun saveUserSize(@Header("Authorization") accessToken: String, @Body response: UserSize): Call<BaseModel<PointPopupInfo>>
 
 
     /**

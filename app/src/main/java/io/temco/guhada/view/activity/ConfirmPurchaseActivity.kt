@@ -55,9 +55,6 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
             intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
             intent.putExtra("pointInfo", it)
             startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
-//            ToastUtil.showMessage("구매확정이 완료되었습니다.")
-//            setResult(Activity.RESULT_OK)
-//            finish()
         }
         intent.getSerializableExtra("purchaseOrder").let {
             if (it != null) {
@@ -66,7 +63,6 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
             }
         }
 
-        //
         mViewModel.mExpectedPointResponse.observe(this, Observer {
             for (item in it.dueSavePointList) {
                 when (item.dueSaveType) {

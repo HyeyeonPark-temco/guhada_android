@@ -34,11 +34,25 @@ class ReviewPointDialogActivity : BindActivity<io.temco.guhada.databinding.Activ
             if (intent.extras.containsKey("type")) {
                 mViewModel.mTypeNotPresentException.set(intent.extras.getInt("type"))
 
+                /**
+                 * 적립 포인트 dada
+                 * @author Hyeyeon Park
+                 * @since 2019.10.29
+                 */
                 val pointInfo = intent.getSerializableExtra("pointInfo")
                 if(pointInfo != null && pointInfo is PointPopupInfo){
                     mBinding.point = pointInfo.savedPoint
                     mBinding.totalPoint = pointInfo.totalFreePoint
-                    mBinding.message = pointInfo.message
+
+                    mBinding.message = if (pointInfo.message.isNullOrEmpty()) {
+                        when (mViewModel.mTypeNotPresentException.get()) {
+                            0 -> getString(R.string.review_result_dialog_subtitle1)
+                            1 -> getString(R.string.review_result_dialog_subtitle2)
+                            2 -> getString(R.string.review_result_dialog_subtitle3)
+                            else -> ""
+                        }
+                    } else pointInfo.message
+
                     mBinding.textviewReviewpointdialogComplete.text = Html.fromHtml(resources.getString(R.string.review_result_dialog_complete_payment_desc, pointInfo.dueSavedPoint))
                 }
             }

@@ -14,6 +14,7 @@ import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.*
@@ -653,12 +654,12 @@ class UserServer {
         @JvmStatic
         fun saveUserSize(listener: OnServerListener, accessToken: String, data: UserSize) {
             RetrofitManager.createService(Type.Server.USER, UserService::class.java, true)
-                    .saveUserSize(accessToken, data).enqueue(object : Callback<BaseModel<Any>> {
-                        override fun onResponse(call: Call<BaseModel<Any>>, response: Response<BaseModel<Any>>) {
+                    .saveUserSize(accessToken, data).enqueue(object : Callback<BaseModel<PointPopupInfo>> {
+                        override fun onResponse(call: Call<BaseModel<PointPopupInfo>>, response: Response<BaseModel<PointPopupInfo>>) {
                             resultListener(listener, call, response)
                         }
 
-                        override fun onFailure(call: Call<BaseModel<Any>>, t: Throwable) {
+                        override fun onFailure(call: Call<BaseModel<PointPopupInfo>>, t: Throwable) {
                             if (CustomLog.flag) CustomLog.L("saveUserSize", "onFailure", t.message.toString())
                             listener.onResult(false, t.message)
                         }

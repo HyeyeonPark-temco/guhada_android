@@ -47,6 +47,7 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.model.point.PointPopupInfo;
 import io.temco.guhada.view.activity.CartActivity;
 import io.temco.guhada.view.activity.ImageGetActivity;
 import io.temco.guhada.view.activity.LoginActivity;
@@ -422,10 +423,12 @@ public class CommonUtil {
      *
      * @param act activity
      * @param type - 0 : 구매확정, 1 : 리뷰작성, 2 : 사이즈 등록
+     * @see io.temco.guhada.common.enum.PointPopupType
      */
-    public static void startPointDialogActivity(Activity act, int type){
+    public static void startPointDialogActivity(Activity act, int type, PointPopupInfo pointInfo){
         Intent intent = new Intent(act, ReviewPointDialogActivity.class);
         intent.putExtra("type", type);
+        intent.putExtra("pointInfo", pointInfo);
         act.startActivityForResult(intent,Flag.RequestCode.POINT_RESULT_DIALOG);
     }
 
