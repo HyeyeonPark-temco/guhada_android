@@ -276,7 +276,7 @@
                             style="@style/TextRegular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{String.valueOf(deal.sellPrice) , default = 0}"
+                            android:text="@{ @string/common_price_format(deal.sellPrice.toBigInteger()) , default = 0}"
                             android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_12"
                             android:visibility="@{deal.discountRate > 0 ? View.VISIBLE : View.GONE}"
