@@ -48,7 +48,7 @@ class TimeDealListViewModel(val context: Context) : BaseObservableViewModel() {
                             listData.add(timeDeal)
                         }
 
-                        listData.add(MainBaseModel(list.size, HomeType.Footer, 2))
+                        //listData.add(MainBaseModel(list.size, HomeType.Footer, 2))
                         listener.callBackListener(true, "")
                     },
                     dataNotFoundTask = {
