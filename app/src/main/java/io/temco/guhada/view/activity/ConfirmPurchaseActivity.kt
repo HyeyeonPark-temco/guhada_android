@@ -53,8 +53,9 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
         mViewModel.successConfirmPurchaseTask = {
             val intent = Intent(this, ReviewPointDialogActivity::class.java)
             intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
+            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
             intent.putExtra("pointInfo", it)
-            startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
+            startActivityForResult(intent, RequestCode.POINT_RESULT_DIALOG.flag)
         }
         intent.getSerializableExtra("purchaseOrder").let {
             if (it != null) {

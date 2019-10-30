@@ -366,6 +366,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             CustomMessageDialog(message = "데이터에 오류가 있습니다.\n구하다로 문의 부탁드립니다.[RWA_SI0]", cancelButtonVisible = false,
                     confirmTask = {
                     }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
+            loadingIndicatorUtil?.hide()
         }
     }
 
