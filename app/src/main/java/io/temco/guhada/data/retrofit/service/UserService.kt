@@ -197,7 +197,7 @@ interface UserService {
     /**
      * 네이버 유저 프로필 가져오기 API
      */
-    @GET("v1/nid//me")
+    @GET("/v1/nid/me")
     fun getNaverProfile(@Header("Authorization") auth: String): Call<NaverResponse>
 
     /**

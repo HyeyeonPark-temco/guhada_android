@@ -75,8 +75,8 @@ class UserServer {
                 override fun onResponse(call: Call<NaverResponse>, response: Response<NaverResponse>) {
                     if (response.isSuccessful) {
                         val naverResponse = response.body()
-                        if (naverResponse != null && naverResponse.resultCode != null) {
-                            if (naverResponse.resultCode == NAVER_API_SUCCESS || naverResponse.message == "success") {
+                        if (naverResponse != null && !naverResponse.resultCode.isNullOrEmpty()) {
+                            if (naverResponse.resultCode == NAVER_API_SUCCESS && naverResponse.message == "success") {
                                 listener.onResult(true, naverResponse.user)
                             }
                         } else {
