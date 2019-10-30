@@ -34,6 +34,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.UnLinkResponseCallback;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
+import com.nhn.android.naverlogin.data.OAuthLoginState;
 import com.nhn.android.naverlogin.ui.view.OAuthLoginButton;
 
 import org.json.JSONException;
@@ -79,7 +80,7 @@ public class SnsLoginModule {
                     String refreshToken = mNaverLoginModule.getRefreshToken(context);
                     long expireAt = mNaverLoginModule.getExpiresAt(context);
                     String tokenType = mNaverLoginModule.getTokenType(context);
-
+                    OAuthLoginState state = mNaverLoginModule.getState(context);
                     CommonUtil.debug("[NAVER] LOGIN-SUCCESS: AccessToken " + accessToken);
 
                     // CALL NAVER USER PROFILE
@@ -99,7 +100,8 @@ public class SnsLoginModule {
                                 }
                             }, "NAVER", ((NaverUser) o).getId(), naverUser.getEmail());
                         } else {
-                            CommonUtil.debug("[NAVER] PROFILE-FAILED: " + o.toString());
+                            String message = o.equals("") ? "네이버 로그인 오류" : o.toString();
+                            CommonUtil.debug("[NAVER] PROFILE-FAILED: " + message);
                         }
                     };
 
@@ -208,7 +210,8 @@ public class SnsLoginModule {
 
     public static void googleLogin(GoogleSignInAccount account, OnServerListener snsLoginListener) {
         if (account != null) {
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("googleLogin","account.getEmail()",account.getEmail(),"account.getId()",account.getId());
+            if (CustomLog.INSTANCE.getFlag())
+                CustomLog.INSTANCE.L("googleLogin", "account.getEmail()", account.getEmail(), "account.getId()", account.getId());
             SnsUser user = createSnsUser(account.getEmail(), account.getId(), "GOOGLE", account.getDisplayName(), account.getPhotoUrl() != null ? account.getPhotoUrl().getPath() : "");
             UserServer.googleLogin(snsLoginListener, user);
         }
@@ -298,4 +301,19 @@ public class SnsLoginModule {
         listener.onResult(true, "SUCCESS FACEBOOK LOGOUT");
     }
 
+    public static void logoutNaver() {
+        Context context = BaseApplication.getInstance();
+        if (context != null && mNaverLoginModule != null)
+            mNaverLoginModule.logout(context);
+    }
+
+    public static void logoutSNS() {
+        logoutForFacebook((success, o) -> {
+        });
+        logoutForGoogle((success, o) -> {
+        });
+        logoutForKakao((success, o) -> {
+        });
+//        logoutNaver();
+    }
 }

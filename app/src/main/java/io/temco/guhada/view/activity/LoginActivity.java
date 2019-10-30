@@ -233,7 +233,6 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
     private OnServerListener getSnsLoginServerListener() {
         return (success, o) -> {
             if (success) {
@@ -261,6 +260,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                                     setResult(RESULT_OK);
                                     finish();
                                 } else {
+                                    SnsLoginModule.logoutSNS();
                                     ToastUtil.showMessage(m.message);
                                 }
                             }
@@ -268,6 +268,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                         break;
                 }
             } else {
+                SnsLoginModule.logoutSNS();
                 String message = (String) o;
                 ToastUtil.showMessage(message);
             }

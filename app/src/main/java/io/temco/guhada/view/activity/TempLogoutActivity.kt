@@ -47,10 +47,7 @@ class TempLogoutActivity : BindActivity<ActivityTemplogoutBinding>() {
             loadingDialog.execute { SnsLoginModule.unlinkForKakao(listener) }
         }
         mBinding.onClickNaverLogout = View.OnClickListener {
-            loadingDialog.execute {
-                showMessage("네이버 정책상 미지원")
-                loadingDialog.dismiss()
-            }
+            loadingDialog.execute {  /* SnsLoginModule.logoutNaver() */ }
         }
         mBinding.executePendingBindings()
     }
