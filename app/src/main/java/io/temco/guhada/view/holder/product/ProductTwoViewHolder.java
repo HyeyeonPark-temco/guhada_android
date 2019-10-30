@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -51,7 +50,7 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
                 margin = CommonViewUtil.dipToPixel(context, 10);
             }
 
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width, width);
             if(position%2==0){
                 param.leftMargin = 0;
                 param.rightMargin = margin;
@@ -64,9 +63,6 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
             RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(width,width);
             mBinding.imageThumb.setLayoutParams(imageParams);
 
-            // Thumbnail
-            ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
-
             // Brand
             mBinding.textBrand.setText(data.brandName);
 
@@ -74,17 +70,16 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
             mBinding.textSeason.setText(data.productSeason);
 
             // Title
-            mBinding.textTitle.setText(data.dealName);
+            mBinding.textTitle.setText(data.productName);
 
-            if(data.isBoldName){
+            // Thumbnail
+            ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
+
+            /*if(data.isBoldName){
                 mBinding.textTitle.setTypeface(null, Typeface.BOLD);
             }else{
                 mBinding.textTitle.setTypeface(null, Typeface.NORMAL);
-            }
-
-
-            // Size
-            // Empty...
+            }*/
 
             // Option
             if (mBinding.layoutColor.getChildCount() > 0) {

@@ -496,11 +496,12 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
 
                 /**
                  * 시간
+                 * [line 504] joda에서 timeZone 자동 계산
                  * @author Hyeyeon Park
                  * @since 2019.10.24
                  */
                 if (item.deal.timeDealInfo.statusCode == TimeDeal.Status.READY.code) {
-                    val startAt = item.deal.timeDealInfo.discountStartAt + DateUtil.getTimezoneOffsetMs()
+                    val startAt = item.deal.timeDealInfo.discountStartAt // + DateUtil.getTimezoneOffsetMs()
                     val hour = DateTime(startAt).hourOfDay
                     binding.textStart.text =
                             when {

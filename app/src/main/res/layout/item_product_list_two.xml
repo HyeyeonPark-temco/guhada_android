@@ -32,6 +32,7 @@
                 android:background="@color/common_blue_purple"
                 android:gravity="center"
                 android:text="@string/product_ship_free_split"
+                android:visibility="gone"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_9" />
 
