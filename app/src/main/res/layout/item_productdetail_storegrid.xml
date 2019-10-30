@@ -70,7 +70,7 @@
             android:textColor="@color/black_four"
             android:textSize="@dimen/text_12"
             android:maxLines="2"
-            android:lineSpacingExtra="4sp"
+            android:lineSpacingExtra="2sp"
             android:ellipsize="end"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
