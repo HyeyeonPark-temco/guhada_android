@@ -80,7 +80,7 @@ class HomeListRepository(val context : Context){
      *  PREMIUM ITEM
      */
     private fun getPlusItem() {//getProductByPlusItem
-        ProductServer.getProductByPlusItem(unitPerPage,OnServerListener { success, o ->
+        SearchServer.getProductByPlusItem(unitPerPage,OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var newArrival =  (o as BaseModel<*>).data as HomeDeal

@@ -22,7 +22,7 @@ class ProductFilterPagerAdapter(private val mFragmentManager: FragmentManager) :
     // -------- LOCAL VALUE --------
     private val TAG = MainPagerAdapter::class.java.simpleName
     private val TAG_PRODUCT = "product"
-    private var mProductFragment: ProductFragment? = null
+    var mProductFragment: ProductFragment? = null
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -31,6 +31,8 @@ class ProductFilterPagerAdapter(private val mFragmentManager: FragmentManager) :
     override fun getCount(): Int {
         return 1
     }
+
+
 
     override fun getItem(position: Int): Fragment {
         when (position) {

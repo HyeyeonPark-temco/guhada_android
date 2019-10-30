@@ -10,11 +10,12 @@ android {
         applicationId "io.temco.guhada"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 26
-        versionName "1.0.2"
+        versionCode 29
+        versionName "1.0.3"
         // x.x.x   - 정식 업데이트 버전
         // x.x.x.a - a : 테스트 업데이트 버전, 정식업데이트 되면 제거후 테스트 시작시 초기화 0 부터시작 ~
 
+        resConfigs "ko"
         multiDexEnabled true
     }
     buildTypes {

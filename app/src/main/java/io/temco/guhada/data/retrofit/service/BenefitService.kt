@@ -114,7 +114,7 @@ interface BenefitService {
      * @since 2019.09.18
      */
     @POST("/process/due-save")
-    fun getDueSavePoint(@Header("Authorization") accessToken: String, @Body pointProcessParam: PointProcessParam) : Call<BaseModel<ExpectedPointResponse>>
+    fun getDueSavePoint(@Header("Authorization") accessToken: String, @Body pointProcessParam: PointProcessParam): Call<BaseModel<ExpectedPointResponse>>
 
     /**
      * 상품상세-혜택 정보 > 적립 예정 포인트 (로그인)
@@ -122,7 +122,7 @@ interface BenefitService {
      * @since 2019.10.04
      */
     @POST("/process/total-due-save")
-    fun getBenefitDueSavePoint(@Header("Authorization") accessToken: String, @Body pointProcessParam: PointProcessParam) : Call<BaseModel<ExpectedPointResponse>>
+    fun getBenefitDueSavePoint(@Header("Authorization") accessToken: String, @Body pointProcessParam: PointProcessParam): Call<BaseModel<ExpectedPointResponse>>
 
     /**
      * 상품상세-혜택 정보 > 적립 예정 포인트 (미로그인)
@@ -130,5 +130,13 @@ interface BenefitService {
      * @since 2019.10.04
      */
     @POST("/process/total-due-save")
-    fun getBenefitDueSavePoint( @Body pointProcessParam: PointProcessParam) : Call<BaseModel<ExpectedPointResponse>>
+    fun getBenefitDueSavePoint(@Body pointProcessParam: PointProcessParam): Call<BaseModel<ExpectedPointResponse>>
+
+    /**
+     * 구매확정 적립 예정 포인트
+     * @author Hyeyeon Park
+     * @since 2019.10.29
+     */
+    @GET("/process/product-confirm/due-save/{orderProdGroupId}")
+    fun getConfirmProductDueSavePoint(@Header("Authorization") accessToken: String, @Path("orderProdGroupId") orderProdGroupId: Long): Call<BaseModel<ExpectedPointResponse>>
 }

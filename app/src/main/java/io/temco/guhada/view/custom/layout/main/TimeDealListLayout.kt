@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
+import androidx.core.widget.NestedScrollView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,17 +30,21 @@ import io.temco.guhada.view.fragment.mypage.MyPageTabType
 
 /**
  * @author park jungho
+ * @since 2019.10.21
+ *
+ * @author Hyeyeon Park
+ * @since 2019.10.23
  *
  * 메인화면 타임딜
  *
  *
- * - 추가 작업 할 내용 : SwipeRefreshLayout 추가, 타임딜 이미지 bg 리스트 스크롤시 안보이게게
+ * - 추가 작업 할 내용 : SwipeRefreshLayout 추가, 타임딜 이미지 bg 리스트 스크롤시 안보이게
  */
 class TimeDealListLayout constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : BaseListLayout<CustomlayoutMainTimelistBinding,TimeDealListViewModel>(context, attrs, defStyleAttr) {
+) : BaseListLayout<CustomlayoutMainTimelistBinding, TimeDealListViewModel>(context, attrs, defStyleAttr) {
     var mHomeFragment: HomeFragment? = null
 
     private val INTERPOLATOR = FastOutSlowInInterpolator() // Button Animation
@@ -49,6 +54,10 @@ class TimeDealListLayout constructor(
     override fun getLayoutId() = R.layout.customlayout_main_timelist
     override fun init() {
         mViewModel = TimeDealListViewModel(context)
+        mBinding.swipeRefreshLayout.setOnRefreshListener {
+            mBinding.swipeRefreshLayout.isRefreshing = false
+            loadTimeDealData()
+        }
         mBinding.viewModel = mViewModel
 
         mBinding.recyclerView.setHasFixedSize(true)
@@ -56,49 +65,34 @@ class TimeDealListLayout constructor(
 
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).orientation = RecyclerView.VERTICAL
         (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).recycleChildrenOnDetach = true
-        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+        (mBinding.recyclerView.layoutManager as WrapGridLayoutManager).spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return mViewModel.listData[position].gridSpanCount
             }
         }
 
-        mBinding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                // super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(-1)) {
-                    // Top
-                    changeFloatingButtonLayout(false)
-                } else if (!recyclerView.canScrollVertically(1)) {
-                    // Bottom
-                } else {
-                    // Idle
-                    changeFloatingButtonLayout(true)
-                }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) { }
-        })
+        mBinding.floating.bringToFront()
+        mBinding.scrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            changeFloatingButtonLayout(scrollY > oldScrollY)
+        }
 
         mViewModel.adapter = TimeDealListAdapter(mViewModel, mViewModel.listData)
         mBinding.recyclerView.adapter = mViewModel.adapter
 
-
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
             (context as MainActivity).selectTab(4, false)
-            EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE,MyPageTabType.LAST_VIEW.ordinal))
+            EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE, MyPageTabType.LAST_VIEW.ordinal))
         }
 
         getRecentProductCount()
     }
 
-
-
     private fun scrollToTop(isSmooth: Boolean) {
         if (isSmooth) {
-            mBinding.recyclerView.smoothScrollToPosition(0)
+            mBinding.scrollView.smoothScrollTo(0,0)
         } else {
-            mBinding.recyclerView.scrollToPosition(0)
+            mBinding.scrollView.scrollTo(0,0)
         }
     }
 
@@ -118,10 +112,10 @@ class TimeDealListLayout constructor(
 
     private fun changeItemFloatingButton(isShow: Boolean, animate: Boolean) {
         if (CommonUtil.checkToken()) {
-            if(recentViewCount > 0){
+            if (recentViewCount > 0) {
                 changeLastView(mBinding.buttonFloatingItem.root, isShow, animate)
             }
-        }else{
+        } else {
             changeLastView(mBinding.buttonFloatingItem.root, false, false)
         }
     }
@@ -138,9 +132,11 @@ class TimeDealListLayout constructor(
     private fun changeScaleView(v: View, isShow: Boolean, animate: Boolean) {
         if (isShow) {
             if (v.visibility != View.VISIBLE) {
-                v.setOnClickListener{
-                    try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
-                        if(CustomLog.flag)CustomLog.E(e)
+                v.setOnClickListener {
+                    try {
+                        mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true)
+                    } catch (e: Exception) {
+                        if (CustomLog.flag) CustomLog.E(e)
                     }
                     scrollToTop(false)
                 }
@@ -194,9 +190,9 @@ class TimeDealListLayout constructor(
                     try {
                         val count = value.toString()
                         mBinding.buttonFloatingItem.textviewFloatingCount.text = count
-                        if(mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() == 0){
+                        if (mBinding.buttonFloatingItem.textviewFloatingCount.text.toString().toInt() == 0) {
                             changeLastView(mBinding.buttonFloatingItem.root, false, false)
-                        }else{
+                        } else {
                             changeLastView(mBinding.buttonFloatingItem.root, true, false)
                         }
                     } catch (e: Exception) {
@@ -252,13 +248,13 @@ class TimeDealListLayout constructor(
                 .start()
     }
 
-    private fun loadTimeDealData(){
-        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","loadTimeDealData onResume")
+    private fun loadTimeDealData() {
+        if (CustomLog.flag) CustomLog.L("TimeDealListLayout", "loadTimeDealData onResume")
         mViewModel.adapter.items.clear()
         mViewModel.adapter.notifyDataSetChanged()
-        mViewModel.getTimeDealItem(object  : OnCallBackListener{
+        mViewModel.getTimeDealItem(object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
-                if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onResume callBackListener")
+                if (CustomLog.flag) CustomLog.L("TimeDealListLayout", "onResume callBackListener")
                 (mBinding.recyclerView.adapter as TimeDealListAdapter).notifyDataSetChanged()
             }
         })
@@ -266,27 +262,29 @@ class TimeDealListLayout constructor(
 
     // viewpager의 화면 진입시
     override fun onFocusView() {
-        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onFocusView")
+        if (CustomLog.flag) CustomLog.L("TimeDealListLayout", "onFocusView")
         loadTimeDealData()
     }
 
     // viewpager의 화면 해재시
     override fun onReleaseView() {
-        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onReleaseView")
+        if (CustomLog.flag) CustomLog.L("TimeDealListLayout", "onReleaseView")
         mViewModel.adapter.clearRunnable()
     }
 
-    override fun onStart() { }
+    override fun onStart() {}
     override fun onResume() {
         setRecentProductCount()
-        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onResume")
+        if (CustomLog.flag) CustomLog.L("TimeDealListLayout", "onResume")
         mViewModel.adapter.notifyDataSetChanged()
         //loadTimeDealData()
     }
+
     override fun onPause() {
-        if(CustomLog.flag)CustomLog.L("TimeDealListLayout","onPause")
+        if (CustomLog.flag) CustomLog.L("TimeDealListLayout", "onPause")
         mViewModel.adapter.clearRunnable()
     }
-    override fun onStop() { }
-    override fun onDestroy() {  }
+
+    override fun onStop() {}
+    override fun onDestroy() {}
 }

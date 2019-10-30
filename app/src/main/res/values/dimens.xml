@@ -72,5 +72,7 @@
     <dimen name="ms__item_height">45dp</dimen>
     <dimen name="ms__popup_padding_left">15dp</dimen>
     <dimen name="ms__popup_padding_top">10dp</dimen>
+    <dimen name="time_deal_height">320dp</dimen>
+
 
 </resources>

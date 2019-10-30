@@ -46,6 +46,7 @@
     <string name="common_max">최대</string>
     <string name="common_price_format">%,2d</string>
     <string name="common_priceunit_format">%,2d원</string>
+    <string name="common_pointunit_format">%,2dP</string>
 
     <string name="common_more">더보기</string>
     <string name="common_reset">초기화</string>
@@ -678,6 +679,7 @@
         <item>여성</item>
         <item>남성</item>
         <item>키즈</item>
+        <item>타임딜</item>
     </string-array>
 
     <!-- MYPAGE ORDER SHIP -->
@@ -1134,7 +1136,7 @@
     <string name="review_activity_desc3_length2">적당해요</string>
     <string name="review_activity_desc3_length3">길어요</string>
     <string name="review_activity_pic">사진</string>
-    <string name="review_activity_edittext_hint">어떤 점이 좋으셨나요?\n사진과 함께 리뷰 작성 시 3,000P 적립!\n상품에 대한 솔직한 리뷰를 작성해주세요.</string>
+    <string name="review_activity_edittext_hint">어떤 점이 좋으셨나요?\n사진과 함께 리뷰 작성 시 2,000P 적립!\n상품에 대한 솔직한 리뷰를 작성해주세요.</string>
     <string name="review_activity_desc_end">상품과 관련 없는 내용이 포함될 경우,\n통보 없이 삭제 및 적립 혜택이 회수될 수 있습니다.</string>
 
     <string name="review_activity_tab2_review_del_desc">작성한 리뷰를 삭제할 경우\n리뷰는 영구적으로 삭제되어 복구할 수 없습니다.\n삭제하시겠습니까?</string>
@@ -1155,7 +1157,7 @@
     <string name="confirmpurchase_point_description3">해당 상품과 무관한 내용이나 동일 문자의 반복 등 부적합한 내용의 리뷰 작성은 통보 없이 삭제 및 적립 혜택이 회수될 수 있습니다.</string>
     <string name="confirmpurchase_button_confirm">구매확정</string>
     <string name="review_activity_maximage_desc">사진은 최대 10장 까지 등록 가능합니다.</string>
-    <string name="review_result_dialog_point_desc">포인트 1,000</string>
+    <string name="review_result_dialog_point_desc">포인트 %,2d</string>
     <string name="review_result_dialog_subtitle1">구매확정 완료!</string>
     <string name="review_result_dialog_subtitle2">리뷰작성 완료!</string>
     <string name="review_result_dialog_subtitle3">사이즈 등록 완료!</string>
@@ -1316,4 +1318,8 @@
     <string name="verifyuserinfo_emailmessage_success">이메일 인증이 완료되었습니다.</string>
     <string name="verifyuserinfo_mobilemessage_success">휴대폰 인증이 완료되었습니다.</string>
     <string name="verifyuserinfo_invaliemobile_message">휴대폰 번호가 올바르지 않습니다.</string>
+
+    <!-- TIME DEAL -->
+    <string name="timedeal_today">오늘마감</string>
+    <string name="timedeal_remain">%d일 남음</string>
 </resources>

@@ -70,8 +70,6 @@ interface ProductService {
     @GET("/common/ship-companies")
     fun getShippingCompanies(@Query("type") type: String): Call<BaseModel<MutableList<ShippingCompany>>>
 
-
-
     /**
      * @author park jungho
      * 19.09.19
@@ -79,5 +77,13 @@ interface ProductService {
      */
     @GET("main-home/hot-keyword")
     fun getProductByKeyword(): Call<BaseModel<Keyword>>
+
+    /**
+     * 타임딜 리스트 조회
+     * @author Hyeyeon Park
+     * @since 2019.10.23
+     */
+    @GET("time-deals")
+    fun getTimeDeal() : Call<BaseModel<MutableList<Deal>>>
 
 }

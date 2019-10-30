@@ -18,10 +18,10 @@ class AddCartResultViewModel(val mListener: OnAddCartResultListener) : BaseObser
 
     fun getDeals() {
         ProductServer.getProductListByOnlyPage(OnServerListener { success, o ->
-            if (success) {
+            if (success)
                 if(o is BaseModel<*>)
                     mDealList.postValue((o as BaseModel<MutableList<Deal>>).data)
-            }
+
         }, unitPerPage = UNIT_PER_PAGE)
     }
 

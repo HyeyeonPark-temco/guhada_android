@@ -111,83 +111,77 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
             }
 
             // Product
-            if(!TextUtils.isEmpty(data.item.imageUrl)){
-                ImageUtil.loadImage((this@MyPageClaimAdapter.model as MyPageClaimViewModel).mRequestManager, binding.imageviewMypageclaimlistProduct, data.item.imageUrl)
-            }
-            binding.imageviewMypageclaimlistProduct.contentDescription = data.item.dealId.toString()
-            binding.imageviewMypageclaimlistProduct.setOnClickListener {
-                var id = it.contentDescription.toString().toLong()
-                CommonUtil.startProductActivity((model as MyPageClaimViewModel).context as Activity, id)
-            }
-            binding.textviewMypageclaimlistBrand.text = data.item.brandName
-            binding.textviewMypageclaimlistTitle.text = data.item.productName
-            binding.textviewMypageclaimlistSeller.text = if(TextUtils.isEmpty(data.item.sellerName)) "" else data.item.sellerName
-            if(TextUtils.isEmpty(data.item.productSeason)){
-                binding.textviewMypageclaimlistSeason.visibility = View.GONE
-            }else{
-                binding.textviewMypageclaimlistSeason.visibility = View.VISIBLE
-                binding.textviewMypageclaimlistSeason.text = data.item.productSeason
-            }
-            var createdAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.createdAt }
-            binding.textviewMypageclaimlistDate.text = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, createdAtCal ) + " 작성")
+            try{
+                if(CustomLog.flag)CustomLog.L("MyPageClaimAdapter","item",data.item.toString())
+                if(!TextUtils.isEmpty(data.item.imageUrl)){
+                    ImageUtil.loadImage((this@MyPageClaimAdapter.model as MyPageClaimViewModel).mRequestManager, binding.imageviewMypageclaimlistProduct, data.item.imageUrl)
+                }
+                binding.imageviewMypageclaimlistProduct.contentDescription = data.item.dealId.toString()
+                binding.imageviewMypageclaimlistProduct.setOnClickListener {
+                    var id = it.contentDescription.toString().toLong()
+                    CommonUtil.startProductActivity((model as MyPageClaimViewModel).context as Activity, id)
+                }
+                binding.textviewMypageclaimlistBrand.text = data.item.brandName
+                binding.textviewMypageclaimlistTitle.text = data.item.productName
+                binding.textviewMypageclaimlistSeller.text = if(TextUtils.isEmpty(data.item.sellerName)) "" else data.item.sellerName
+                if(TextUtils.isEmpty(data.item.productSeason)){
+                    binding.textviewMypageclaimlistSeason.visibility = View.GONE
+                }else{
+                    binding.textviewMypageclaimlistSeason.visibility = View.VISIBLE
+                    binding.textviewMypageclaimlistSeason.text = data.item.productSeason
+                }
+                var createdAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.createdAt }
+                binding.textviewMypageclaimlistDate.text = (DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, createdAtCal ) + " 작성")
 
-            // Inquiry
-            binding.textviewMypageclaimlistAsk1.text = data.inquiry.inquiry
-            binding.linearlayoutMypageclaimlistAnswer1.tag = false
-            if ("COMPLETED".equals(data.inquiry.status)) {
-                binding.buttonMypageclaimlistDelete.visibility = View.GONE
-                binding.buttonMypageclaimlistDelete.setOnClickListener(null)
-                binding.textviewMypageclaimlistStatus.setBackgroundResource(R.color.common_blue_purple)
-                binding.textviewMypageclaimlistStatus.setText(R.string.productdetail_qna_reply_completed)
-                binding.textviewMypageclaimlistStatus.setTextColor(containerView.context.resources.getColor(R.color.common_white))
-
+                // Inquiry
                 binding.textviewMypageclaimlistAsk1.text = data.inquiry.inquiry
-                binding.textviewMypageclaimlistAsk2.text = data.inquiry.inquiry
-                binding.textviewMypageclaimlistAsk3.text = data.inquiry.reply
-                if(data.inquiry.replyAt != null && data.inquiry.replyAt is Long){
-                    var replyAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.replyAt!! }
-                    binding.textviewMypageclaimlistDate1.text = ("판매자 " +  DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, replyAtCal ))
-                }/*else{
-                    try{
-                        var replyAt = data.inquiry.replyAt as Array<Int>
-                        binding.textviewMypageclaimlistDate1.text = ("판매자 " + (replyAt[0] - 2000) +
-                                "." + String.format("%02d", replyAt[1]) +
-                                "." + String.format("%02d", replyAt[2]) +
-                                " " + String.format("%02d", replyAt[3]) +
-                                ":" + String.format("%02d", replyAt[4]))
-                    }catch (e : Exception){
-                        if(CustomLog.flag)CustomLog.E(e)
-                    }
-                }*/
-                binding.linearlayoutMypageclaimlistAnswer1.contentDescription = position.toString()
-                binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener(layoutClickListener)
-                binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener(layoutClickListener)
-            }else{
-                binding.buttonMypageclaimlistModify.visibility = View.VISIBLE
-                binding.textviewMypageclaimlistStatus.setBackgroundResource(R.drawable.drawable_border_dsix)
-                binding.textviewMypageclaimlistStatus.setText(R.string.productdetail_qna_reply_pending)
-                binding.textviewMypageclaimlistStatus.setTextColor(containerView.context.resources.getColor(R.color.greyish_brown_two))
-                binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener {
-                    var flag = it.tag as Boolean
-                    if(!flag){
-                        binding.textviewMypageclaimlistAsk1.maxLines = 100
-                        binding.imageviewMypageclaimlistArrow1.setImageResource(R.drawable.detail_icon_arrow_close)
-                    }else{
-                        binding.textviewMypageclaimlistAsk1.maxLines = 1
-                        binding.imageviewMypageclaimlistArrow1.setImageResource(R.drawable.detail_icon_arrow_open)
-                    }
-                    binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
-                }
-                binding.buttonMypageclaimlistDelete.setOnClickListener {
+                binding.linearlayoutMypageclaimlistAnswer1.tag = false
+                if ("COMPLETED".equals(data.inquiry.status)) {
+                    binding.buttonMypageclaimlistDelete.visibility = View.GONE
+                    binding.buttonMypageclaimlistDelete.setOnClickListener(null)
+                    binding.textviewMypageclaimlistStatus.setBackgroundResource(R.color.common_blue_purple)
+                    binding.textviewMypageclaimlistStatus.setText(R.string.productdetail_qna_reply_completed)
+                    binding.textviewMypageclaimlistStatus.setTextColor(containerView.context.resources.getColor(R.color.common_white))
 
-                    CommonViewUtil.showDialog((itemView.context as AppCompatActivity),"삭제하시겠습니까?",true, object : OnBaseDialogListener {
-                        override fun onClickOk() {
-                            var loading = LoadingIndicatorUtil((model as MyPageClaimViewModel).context as AppCompatActivity)
-                            (model as MyPageClaimViewModel).deleteClaimItem(position,data.inquiry.productId, data.inquiry.id, loading)
+                    binding.textviewMypageclaimlistAsk1.text = data.inquiry.inquiry
+                    binding.textviewMypageclaimlistAsk2.text = data.inquiry.inquiry
+                    binding.textviewMypageclaimlistAsk3.text = data.inquiry.reply
+                    if(data.inquiry.replyAt != null && data.inquiry.replyAt is Long){
+                        var replyAtCal = Calendar.getInstance().apply { timeInMillis = data.inquiry.replyAt!! }
+                        binding.textviewMypageclaimlistDate1.text = ("판매자 " +  DateUtil.getCalendarToString(Type.DateFormat.TYPE_5, replyAtCal ))
+                    }
+                    binding.linearlayoutMypageclaimlistAnswer1.contentDescription = position.toString()
+                    binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener(layoutClickListener)
+                    binding.linearlayoutMypageclaimlistAnswer2.setOnClickListener(layoutClickListener)
+                }else{
+                    binding.buttonMypageclaimlistModify.visibility = View.VISIBLE
+                    binding.textviewMypageclaimlistStatus.setBackgroundResource(R.drawable.drawable_border_dsix)
+                    binding.textviewMypageclaimlistStatus.setText(R.string.productdetail_qna_reply_pending)
+                    binding.textviewMypageclaimlistStatus.setTextColor(containerView.context.resources.getColor(R.color.greyish_brown_two))
+                    binding.linearlayoutMypageclaimlistAnswer1.setOnClickListener {
+                        var flag = it.tag as Boolean
+                        if(!flag){
+                            binding.textviewMypageclaimlistAsk1.maxLines = 100
+                            binding.imageviewMypageclaimlistArrow1.setImageResource(R.drawable.detail_icon_arrow_close)
+                        }else{
+                            binding.textviewMypageclaimlistAsk1.maxLines = 1
+                            binding.imageviewMypageclaimlistArrow1.setImageResource(R.drawable.detail_icon_arrow_open)
                         }
-                    })
-                }
+                        binding.linearlayoutMypageclaimlistAnswer1.tag = !flag
+                    }
+                    binding.buttonMypageclaimlistDelete.setOnClickListener {
 
+                        CommonViewUtil.showDialog((itemView.context as AppCompatActivity),"삭제하시겠습니까?",true, object : OnBaseDialogListener {
+                            override fun onClickOk() {
+                                var loading = LoadingIndicatorUtil((model as MyPageClaimViewModel).context as AppCompatActivity)
+                                (model as MyPageClaimViewModel).deleteClaimItem(position,data.inquiry.productId, data.inquiry.id, loading)
+                            }
+                        })
+                    }
+
+                }
+            }catch (e : Exception){
+                if(CustomLog.flag)CustomLog.E(e)
             }
         }
 
@@ -242,7 +236,7 @@ class MyPageClaimAdapter(private val model: ViewModel, list: ArrayList<MyPageCla
     inner class MyPageMoreListViewHolder(val containerView: View, val binding: ItemMoreListBinding) : ListViewHolder<MyPageClaim.Content>(containerView,binding){
         override fun bind(model : ViewModel, position : Int, data: MyPageClaim.Content){
             binding.linearlayoutMoreView.setOnClickListener {
-                (model as MyPageClaimViewModel).getMoreCalimList(data.pageNumber+1)
+                (model as MyPageClaimViewModel).getMoreCalimList((model as MyPageClaimViewModel).pageNum1+1)
             }
         }
     }

@@ -241,7 +241,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         mBinding.layoutPager.setCurrentItem(mListPagerAdapter.getCount(), true);
     }
 
-    private void checkBackEvent() {
+    public void checkBackEvent() {
         if (mBackListener != null) {
             if (mListPagerAdapter != null && mListPagerAdapter.getCount() > 1) {
                 mListPagerAdapter.removeFragment();

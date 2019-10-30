@@ -1,5 +1,6 @@
 package io.temco.guhada.view.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +8,14 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.enum.PointDialogFlag
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.point.PointProcessParam
 import io.temco.guhada.data.viewmodel.mypage.delivery.ConfirmPurchaseViewModel
 import io.temco.guhada.databinding.ActivityConfirmpurchaseBinding
 
@@ -43,21 +46,32 @@ class ConfirmPurchaseActivity : AppCompatActivity() {
         window.attributes = attr
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initViewModel() {
         mViewModel = ConfirmPurchaseViewModel()
         mViewModel.closeActivityTask = { finish() }
         mViewModel.successConfirmPurchaseTask = {
-//            val intent = Intent(this, ReviewPointDialogActivity::class.java)
-//            intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
-//            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
-//            startActivityForResult(intent, Flag.RequestCode.POINT_RESULT_DIALOG)
-            ToastUtil.showMessage("구매확정이 완료되었습니다.")
-            setResult(Activity.RESULT_OK)
-            finish()
+            val intent = Intent(this, ReviewPointDialogActivity::class.java)
+            intent.putExtra("type", PointDialogFlag.CONFIRM_PURCHASE.flag)
+            intent.putExtra("purchaseOrder", mViewModel.purchaseOrder)
+            intent.putExtra("pointInfo", it)
+            startActivityForResult(intent, RequestCode.POINT_RESULT_DIALOG.flag)
         }
         intent.getSerializableExtra("purchaseOrder").let {
-            if (it != null) mViewModel.purchaseOrder = it as PurchaseOrder
+            if (it != null) {
+                mViewModel.purchaseOrder = it as PurchaseOrder
+                mViewModel.getConfirmProductDueSavePoint()
+            }
         }
+
+        mViewModel.mExpectedPointResponse.observe(this, Observer {
+            for (item in it.dueSavePointList) {
+                when (item.dueSaveType) {
+                    PointProcessParam.PointSave.BUY.type -> mBinding.textviewConfirmpurchaseBuypoint.text = "${getString(R.string.confirmpurchase_point_confirm2)} ${String.format(getString(R.string.common_priceunit_format), item.totalPoint)}"
+                    PointProcessParam.PointSave.REVIEW.type -> mBinding.textviewConfirmpurchaseReviewpoint.text = "${getString(R.string.confirmpurchase_point_review2)} ${String.format(getString(R.string.common_priceunit_format), item.totalPoint)}"
+                }
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

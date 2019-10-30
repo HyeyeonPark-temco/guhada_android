@@ -154,9 +154,13 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
     }
 
     override fun onBackPressed() {
-        overridePendingTransition(R.anim.fade, R.anim.fade)
-        super.onBackPressed()
-        overridePendingTransition(R.anim.fade, R.anim.fade)
+        if(mPagerAdapter?.mProductFragment != null){
+            mPagerAdapter?.mProductFragment?.checkBackEvent()
+        }else{
+            overridePendingTransition(R.anim.fade, R.anim.fade)
+            super.onBackPressed()
+            overridePendingTransition(R.anim.fade, R.anim.fade)
+        }
     }
 
 

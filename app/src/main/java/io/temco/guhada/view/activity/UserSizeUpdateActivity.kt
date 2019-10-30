@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.util.DisplayMetrics
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
@@ -33,6 +34,10 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
     override fun getViewType(): Type.View = Type.View.USER_SIZE_UPDATE
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun init() {
         loadingIndicatorUtil = LoadingIndicatorUtil(this)
         mRequestManager = Glide.with(this)
@@ -50,7 +55,9 @@ class UserSizeUpdateActivity : BindActivity<io.temco.guhada.databinding.Activity
             mViewModel.setUserSize(false, userSize)
         }
 
-        mBinding.setOnClickCloseButton { finish() }
+        mBinding.setOnClickCloseButton {
+            finish()
+        }
 
 
         // 드롭다운 스피너

@@ -12,6 +12,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCategoryListListener
+import io.temco.guhada.common.sns.SnsLoginModule
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
@@ -150,6 +151,9 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
                     Preferences.clearToken(true, (applicationContext as BaseApplication))
                     changeLoginStatus(false)
                     gotoMain(true)
+                    
+                    // sns 로그아웃
+                    SnsLoginModule.logoutSNS()
                 }
             } else {
                 mBinding.layoutHeader.textLogin.setText(getString(R.string.side_menu_login_need))

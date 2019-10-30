@@ -52,6 +52,7 @@ public class ProductListPagerAdapter extends FragmentStatePagerAdapter {
             ProductListFragment frag = (ProductListFragment) object;
             if (frag.getPosition() < mCategoryList.size()) {
                 Category data = mCategoryList.get(frag.getPosition());
+                if(CustomLog.getFlag())CustomLog.L("ProductListPagerAdapter getItemPosition","mPosition",frag.getPosition(),"data",data);
                 if (data != null) {
                     frag.onUpdate(data);
                 }

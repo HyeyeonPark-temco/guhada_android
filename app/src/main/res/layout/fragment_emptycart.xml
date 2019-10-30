@@ -3,15 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="onClickBookmark"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="onClickContinue"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.cart.EmptyCartViewModel" />
@@ -46,9 +50,9 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="4dp"
             android:background="@color/greyish_brown"
+            android:onClick="@{onClickContinue}"
             android:text="@string/cart_button_continue"
             android:textColor="@color/common_white"
-            android:onClick="@{onClickContinue}"
             android:textSize="@dimen/text_14"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -91,16 +95,16 @@
             android:id="@+id/recyclerview_cart_recommend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
             android:layout_marginTop="12dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintTop_toBottomOf="@id/textview_emptycart_recommend"
             app:layout_constraintVertical_bias="0.5"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintVertical_chainStyle="packed"
             app:spanCount="3" />
 
@@ -108,13 +112,13 @@
             android:id="@+id/linearlayout_cart"
             android:layout_width="match_parent"
             android:layout_height="57dp"
-            android:visibility="invisible"
             android:orientation="vertical"
-            app:layout_constraintVertical_bias="1"
-            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerview_cart_recommend"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintVertical_bias="1">
 
             <!-- LINE -->
             <View
@@ -133,24 +137,24 @@
                     android:id="@+id/layout_maintab_layout1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
                     android:onClick="@{clickListener}"
-                    android:layout_weight="1">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageview_maintab_icon1"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/tool_icon_category_off"/>
+                        android:background="@drawable/tool_icon_category_off" />
 
                     <TextView
                         android:id="@+id/textview_maintab_title1"
                         style="@style/TextTabStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/common_category"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:text="@string/common_category" />
                 </LinearLayout>
 
 
@@ -158,10 +162,10 @@
                     android:id="@+id/layout_maintab_layout2"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
                     android:onClick="@{clickListener}"
-                    android:layout_weight="1">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageview_maintab_icon2"
@@ -174,8 +178,8 @@
                         style="@style/TextTabStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/common_brand"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:text="@string/common_brand" />
                 </LinearLayout>
 
 
@@ -183,10 +187,10 @@
                     android:id="@+id/layout_maintab_layout3"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
                     android:onClick="@{clickListener}"
-                    android:layout_weight="1">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageview_maintab_icon3"
@@ -199,8 +203,8 @@
                         style="@style/TextTabStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/common_home"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:text="@string/common_home" />
                 </LinearLayout>
 
 
@@ -208,10 +212,10 @@
                     android:id="@+id/layout_maintab_layout4"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
                     android:onClick="@{clickListener}"
-                    android:layout_weight="1">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageview_maintab_icon4"
@@ -224,8 +228,8 @@
                         style="@style/TextTabStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/common_community"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:text="@string/common_community" />
                 </LinearLayout>
 
 
@@ -233,10 +237,10 @@
                     android:id="@+id/layout_maintab_layout5"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
                     android:onClick="@{clickListener}"
-                    android:layout_weight="1">
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/imageview_maintab_icon5"
@@ -249,8 +253,8 @@
                         style="@style/TextTabStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/common_my_page"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:text="@string/common_my_page" />
                 </LinearLayout>
             </LinearLayout>
 

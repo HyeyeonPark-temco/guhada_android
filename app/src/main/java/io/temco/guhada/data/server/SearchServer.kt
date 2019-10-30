@@ -20,7 +20,6 @@ import io.temco.guhada.data.model.search.Popular
 import io.temco.guhada.data.model.search.ProductSearchFilterValue
 import io.temco.guhada.data.model.seller.Criteria
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
-import io.temco.guhada.data.retrofit.service.ProductService
 import io.temco.guhada.data.retrofit.service.SearchService
 import retrofit2.Call
 import retrofit2.Callback
@@ -292,10 +291,6 @@ class SearchServer {
         }
 
 
-
-
-
-
         @JvmStatic
         fun getProductListByCategoryFilter(type: Type.ProductOrder, body: FilterBody, page: Int, listener: OnServerListener?) {
             if (listener != null) {
@@ -399,6 +394,27 @@ class SearchServer {
             }
         }
 
+
+        /**
+         * @author park jungho
+         * 19.07.18
+         * 플러스 아이템 목록 조회
+         */
+        @JvmStatic
+        fun getProductByPlusItem(unitPerPage: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getProductByPlusItem(unitPerPage)
+                RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
+                    override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
+                        listener.onResult(response.isSuccessful, response.body())
+                    }
+
+                    override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
+                        listener.onResult(false, t.message)
+                    }
+                })
+            }
+        }
 
 
 

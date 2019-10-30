@@ -7,6 +7,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.ReviewAvailableOrder
 import io.temco.guhada.data.viewmodel.ReviewPointDialogViewModel
 import io.temco.guhada.view.activity.base.BindActivity
@@ -32,8 +33,28 @@ class ReviewPointDialogActivity : BindActivity<io.temco.guhada.databinding.Activ
         if (intent != null && intent.extras != null) {
             if (intent.extras.containsKey("type")) {
                 mViewModel.mTypeNotPresentException.set(intent.extras.getInt("type"))
-                mBinding.maxPoint = 12345
-                mBinding.textviewReviewpointdialogComplete.text = Html.fromHtml(resources.getString(R.string.review_result_dialog_complete_payment_desc, 12345))
+
+                /**
+                 * 적립 포인트 dada
+                 * @author Hyeyeon Park
+                 * @since 2019.10.29
+                 */
+                val pointInfo = intent.getSerializableExtra("pointInfo")
+                if (pointInfo != null && pointInfo is PointPopupInfo) {
+                    mBinding.point = pointInfo.savedPoint
+                    mBinding.totalPoint = pointInfo.totalFreePoint
+
+                    mBinding.message = if (pointInfo.message.isNullOrEmpty()) {
+                        when (mViewModel.mTypeNotPresentException.get()) {
+                            0 -> getString(R.string.review_result_dialog_subtitle1)
+                            1 -> getString(R.string.review_result_dialog_subtitle2)
+                            2 -> getString(R.string.review_result_dialog_subtitle3)
+                            else -> ""
+                        }
+                    } else pointInfo.message
+
+                    mBinding.textviewReviewpointdialogComplete.text = Html.fromHtml(resources.getString(R.string.review_result_dialog_complete_payment_desc, pointInfo.dueSavedPoint))
+                }
             }
         }
         mViewModel.getPointSummary()
@@ -49,23 +70,25 @@ class ReviewPointDialogActivity : BindActivity<io.temco.guhada.databinding.Activ
                     intent.getSerializableExtra("purchaseOrder").let {
                         if (it != null) {
                             val purchaseOrder = it as PurchaseOrder
-                            this.dealId = purchaseOrder.dealId
-                            this.orderProdGroupId = purchaseOrder.orderProdGroupId.toInt()
-                            this.productId = purchaseOrder.productId
-                            this.brandName = purchaseOrder.brandName
-                            this.prodName = purchaseOrder.dealName
+                            this.dealId = purchaseOrder.dealId ?: 0
+                            this.orderProdGroupId = purchaseOrder.orderProdGroupId.toInt() ?: 0
+                            this.productId = purchaseOrder.productId ?: 0
+                            this.brandName = purchaseOrder.brandName ?: ""
+                            this.prodName = purchaseOrder.productName ?: ""
                             this.optionAttribute1 = purchaseOrder.optionAttribute1 ?: ""
                             this.optionAttribute2 = purchaseOrder.optionAttribute2 ?: ""
                             this.optionAttribute3 = purchaseOrder.optionAttribute3 ?: ""
-                            this.season = purchaseOrder.season
-                            this.discountPrice = purchaseOrder.discountPrice
-                            this.orderPrice = purchaseOrder.orderPrice
-                            this.originalPrice = purchaseOrder.originalPrice
-                            this.quantity = purchaseOrder.quantity
-                            this.imageUrl = purchaseOrder.imageUrl
-                            this.imageName = purchaseOrder.imageName
+                            this.season = purchaseOrder.season ?: ""
+                            this.discountPrice = purchaseOrder.discountPrice ?: 0
+                            this.orderPrice = purchaseOrder.orderPrice ?: 0
+                            this.originalPrice = purchaseOrder.originalPrice ?: 0
+                            this.quantity = purchaseOrder.quantity ?: 0
+                            this.imageUrl = purchaseOrder.imageUrl ?: ""
+                            this.imageName = purchaseOrder.imageName ?: ""
                             this.shipCompleteTimestamp = purchaseOrder.shipCompleteTimestamp
                                     ?: "" // [2019.08.16] 현재 미배송 상품에도 연결되서 shipCompleteTimestamp 비어있음
+                            this.sellerId = purchaseOrder.sellerId ?: 0
+
                         }
                     }
                 }

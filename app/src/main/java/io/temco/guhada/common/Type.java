@@ -72,6 +72,7 @@ public class Type {
         VERIFY,
         SHIPPING_TRACKING,
         VERIFY_EMAIL,
+        SCHEME,
         PHOTO_PAGER
     }
 
@@ -84,8 +85,10 @@ public class Type {
         MY_PAGE
     }
 
-    /** Prod 여부 (true: prod; false: dev) **/
-    public static boolean isTempProd = false;
+    /** 임시 서버 연결 여부 (true: TempServer name; false: dev) **/
+    public static boolean isTempServer= false;
+    public static String[] ServerTypeArray = { "http://dev.", "http://qa.", "https://stg.", "https://" };
+    public static String serverType = ServerTypeArray[1];
     ////////////////////////////////////////////////
     // Server
     public enum Server {
@@ -166,8 +169,7 @@ public class Type {
             case RELEASE:
                 return "http://settle.guhada.com/";
             default:
-                if(isTempProd)return "http://settle.guhada.com/";
-                else return "http://settle.guhada.com/";
+                return "http://settle.guhada.com/";
         }
     }
 
@@ -180,7 +182,7 @@ public class Type {
             case RELEASE:
                 return "https://ship.guhada.com/";
             default:
-                if(isTempProd)return "http://ship.guhada.com/";
+                if(isTempServer)return serverType+"ship.guhada.com/";
                 else return "http://dev.ship.guhada.com/";
         }
     }
@@ -194,7 +196,7 @@ public class Type {
             case RELEASE:
                 return "https://search.guhada.com/";
             default:
-                if(isTempProd) return "https://search.guhada.com/";
+                if(isTempServer)return serverType+"search.guhada.com/";
                 else return "http://dev.search.guhada.com:9090/";
         }
     }
@@ -208,7 +210,7 @@ public class Type {
             case RELEASE:
                 return "https://product.guhada.com/";
             default:
-                if(isTempProd) return "https://product.guhada.com/";
+                if(isTempServer)return serverType+"product.guhada.com/";
                 else return "http://dev.product.guhada.com/";
         }
     }
@@ -222,7 +224,7 @@ public class Type {
             case RELEASE:
                 return "https://bbs.guhada.com/";
             default:
-                if(isTempProd) return "https://bbs.guhada.com/";
+                if(isTempServer)return serverType+"bbs.guhada.com/";
                 else return "http://dev.bbs.guhada.com/";
         }
     }
@@ -236,7 +238,7 @@ public class Type {
             case RELEASE:
                 return "https://user.guhada.com/";
             default:
-                if(isTempProd) return "https://user.guhada.com/";
+                if(isTempServer)return serverType+"user.guhada.com/";
                 else return "http://dev.user.guhada.com/";
         }
     }
@@ -250,7 +252,7 @@ public class Type {
             case RELEASE:
                 return "https://claim.guhada.com/";
             default:
-                if(isTempProd) return "https://claim.guhada.com/";
+                if(isTempServer)return serverType+"claim.guhada.com/";
                 else return "http://dev.claim.guhada.com/";//:8081
         }
     }
@@ -264,7 +266,7 @@ public class Type {
             case RELEASE:
                 return "https://order.guhada.com/";
             default:
-                if(isTempProd) return "https://order.guhada.com/";
+                if(isTempServer)return serverType+"order.guhada.com/";
                 else return "http://dev.order.guhada.com/";
         }
     }
@@ -278,7 +280,7 @@ public class Type {
             case RELEASE:
                 return "https://payment.guhada.com/";
             default:
-                if(isTempProd) return "https://payment.guhada.com/";
+                if(isTempServer)return serverType+"payment.guhada.com/";
                 else return "http://dev.payment.guhada.com:8081/";
         }
     }
@@ -292,9 +294,8 @@ public class Type {
             case RELEASE:
                 return "https://benefit.guhada.com/";
             default:
-                if(isTempProd) return "https://benefit.guhada.com/";
-                else return "http://dev.benefit.guhada.com" +
-                        "/";
+                if(isTempServer)return serverType+"benefit.guhada.com/";
+                else return "http://dev.benefit.guhada.com" +"/";
         }
     }
 
@@ -307,7 +308,7 @@ public class Type {
             case RELEASE:
                 return "https://gateway.guhada.com/";
             default:
-                if(isTempProd) return "https://gateway.guhada.com/";
+                if(isTempServer)return serverType+"gateway.guhada.com/";
                 else return "http://dev.gateway.guhada.com/";
         }
     }
@@ -322,7 +323,7 @@ public class Type {
             case RELEASE:
                 return "https://www.guhada.com/";
             default:
-                if(isTempProd) return "https://www.guhada.com/";
+                if(isTempServer)return serverType+"guhada.com/";
                 else return "http://dev.guhada.com/";
         }
     }

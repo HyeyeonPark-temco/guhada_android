@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background_default"
@@ -31,6 +32,7 @@
                 android:background="@color/common_blue_purple"
                 android:gravity="center"
                 android:text="@string/product_ship_free_split"
+                android:visibility="gone"
                 android:textColor="@color/common_white"
                 android:textSize="@dimen/text_9" />
 
@@ -54,7 +56,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="12dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -158,10 +160,10 @@
                 <TextView
                     style="@style/TextRegular"
                     android:id="@+id/text_seller_name"
-                    android:textColor="@color/greyish_brown_two"
-                    android:textSize="@dimen/text_10"
                     android:layout_width="wrap_content"
-                    android:layout_height="24dp"/>
+                    android:layout_height="28dp"
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_10"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

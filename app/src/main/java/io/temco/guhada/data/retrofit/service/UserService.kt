@@ -5,6 +5,8 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
+import io.temco.guhada.data.model.point.ExpectedPointResponse
+import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.*
@@ -195,7 +197,7 @@ interface UserService {
     /**
      * 네이버 유저 프로필 가져오기 API
      */
-    @GET("v1/nid//me")
+    @GET("/v1/nid/me")
     fun getNaverProfile(@Header("Authorization") auth: String): Call<NaverResponse>
 
     /**
@@ -410,7 +412,7 @@ interface UserService {
     @FormUrlEncoded
      */
     @POST("/products/{productId}/reviews")
-    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Body param: ReviewWrMdResponse): Call<BaseModel<Any>>
+    fun writeReview(@Header("Authorization") accessToken: String, @Path("productId") productId: Long, @Body param: ReviewWrMdResponse): Call<BaseModel<ReviewData>>
 
 
     /**
@@ -454,7 +456,7 @@ interface UserService {
      * 19.08.16
      */
     @POST("/users/user-size")
-    fun saveUserSize(@Header("Authorization") accessToken: String, @Body response: UserSize): Call<BaseModel<Any>>
+    fun saveUserSize(@Header("Authorization") accessToken: String, @Body response: UserSize): Call<BaseModel<PointPopupInfo>>
 
 
     /**

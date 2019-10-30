@@ -62,24 +62,32 @@
                 android:text="@string/information_title_partner"
                 android:onClick="@{OnClickListener}"
                 android:textColor="@color/black_four"
+                android:visibility="gone"
                 android:textSize="@dimen/text_11" />
 
             <TextView
                 android:id="@+id/textview_term_terms"
                 style="@style/TextRegularSingleLine"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:text="@string/information_title_terms"
                 android:onClick="@{OnClickListener}"
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_11" />
 
+            <TextView
+                android:id="@+id/textview_term_claim"
+                style="@style/TextRegularSingleLine"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="@string/information_title_claim"
+                android:onClick="@{OnClickListener}"
+                android:textColor="@color/black_four"
+                android:textSize="@dimen/text_11" />
+
         </LinearLayout>
 
-
-
-
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="14dp"
@@ -95,7 +103,7 @@
                 android:textColor="@color/black_four"
                 android:textSize="@dimen/text_11" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <View
             android:layout_width="match_parent"

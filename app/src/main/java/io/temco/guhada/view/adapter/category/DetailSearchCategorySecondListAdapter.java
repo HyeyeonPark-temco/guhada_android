@@ -57,7 +57,6 @@ public class DetailSearchCategorySecondListAdapter extends BaseCategoryListAdapt
                 }
             });
             mExpansionsCollection.add(holder.getBinding().layoutExpandContents);
-
         }
         holder.init(mContext, null, getItem(position), mCategoryListener, mCategoryHeaderListListener);
     }

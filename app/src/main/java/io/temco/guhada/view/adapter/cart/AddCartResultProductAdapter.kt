@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.item_addcartproduct.view.*
 
 /**
  * 장바구니 담기 완료 화면의 '이 상품과 함께 많이 구매한 상품' 리스트 adapter
+ * 장바구니 empty view의 실시간 인기상품 adapter
  * @author Hyeyeon Park
  * @since 2019.09.18
  */
@@ -26,8 +27,6 @@ class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAda
     var mClickItemTask: (dealId: Long) -> Unit = {}
 
     var width = 0
-    var height = 0
-    var layoutHeight = 0
     var margin = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
@@ -40,47 +39,23 @@ class AddCartResultProductAdapter : RecyclerView.Adapter<AddCartResultProductAda
     }
 
     inner class Holder(binding: ItemAddcartproductBinding) : BaseViewHolder<ItemAddcartproductBinding>(binding.root) {
-        fun bind(deal: Deal, position : Int) {
+        fun bind(deal: Deal, position: Int) {
             if (width == 0) {
                 val matrix = DisplayMetrics()
-                ((itemView.context as ContextWrapper).baseContext as Activity).windowManager.defaultDisplay.getMetrics(matrix)
-                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(binding.root.context, 30)) / 3
-                height = width
-                margin = CommonViewUtil.dipToPixel(binding.root.context, 5)
-                layoutHeight = height + CommonViewUtil.dipToPixel(binding.root.context, 80)
+                (itemView.context as Activity).windowManager.defaultDisplay.getMetrics(matrix)
+                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(itemView.context, 30)) / 3
+                margin = CommonViewUtil.dipToPixel(itemView.context, 6)
                 if (CustomLog.flag) CustomLog.L("ProductListAdapter $position", "matrix.widthPixels", matrix.widthPixels, "pwidth", width)
             }
-            val params = LinearLayout.LayoutParams(width, layoutHeight)
             val params2 = LinearLayout.LayoutParams(width, width)
-            if (position % 3 == 0) {
-                params.leftMargin = margin
-                params.rightMargin = margin
-            } else if (position % 3 == 1) {
-                params.leftMargin = margin
-                params.rightMargin = margin
-            } else if (position % 3 == 2) {
-                params.leftMargin = margin
-                params.rightMargin = margin
-            }
-            if (CustomLog.flag) CustomLog.L("ProductListAdapter $position", "params.leftMargin", params.leftMargin, "params.rightMargin", params.rightMargin)
-            mBinding.linearlayoutAddcartproductContainer.linearlayout_addcartproduct_container.layoutParams = params
-            mBinding.linearlayoutAddcartproductContainer.imageview_addcartproduct.layoutParams = params2
+            params2.leftMargin = 0
+            params2.rightMargin = margin
+            mBinding.relativeImageview.layoutParams = params2
 
-//            setSpacing()
             mBinding.linearlayoutAddcartproductContainer.setOnClickListener { mClickItemTask(deal.dealId.toLong()) }
             mBinding.deal = deal
             mBinding.executePendingBindings()
         }
 
-        private fun setSpacing() {
-            val mSpanCount = 3
-            val RIGHT_MARGIN = CommonViewUtil.convertDpToPixel(dp = 10, context = mBinding.root.context)
-            (mBinding.linearlayoutAddcartproductContainer.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                rightMargin = if ((adapterPosition + 1) % mSpanCount == 0) 0
-                else RIGHT_MARGIN
-            }.let {
-                mBinding.linearlayoutAddcartproductContainer.layoutParams = it
-            }
-        }
     }
 }

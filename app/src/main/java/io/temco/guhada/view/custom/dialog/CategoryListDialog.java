@@ -4,10 +4,13 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.util.List;
+
 import io.temco.guhada.R;
-import io.temco.guhada.common.Preferences;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.listener.OnCategoryListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.databinding.DialogCategoryListBinding;
 import io.temco.guhada.view.adapter.category.DialogCategoryFirstListAdapter;
@@ -28,10 +31,12 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
         return R.layout.dialog_category_list;
     }
 
+
     @Override
     protected void init() {
         mBinding.setClickListener(this);
         mBinding.layoutSubMenu.setClickListener(this);
+
 
         // List
         CommonUtil.delayRunnable(this::initList);
@@ -94,12 +99,18 @@ public class CategoryListDialog extends BaseDialog<DialogCategoryListBinding> im
         dismiss();
     }
 
+    private void clickHeaderData(int index, Category data) {
+        if(CustomLog.getFlag())CustomLog.L("clickHeaderData","index",index);
+    }
+
     private void initList() {
         // Category
+        List<Category> temp = ((BaseApplication)getActivity().getApplicationContext()).getCategoryList();
         mBinding.listContents.setLayoutManager(new LinearLayoutManager(getContext()));
         DialogCategoryFirstListAdapter adapter = new DialogCategoryFirstListAdapter(getContext());
         adapter.setOnCategoryListener(this::dissmissWithData);
-        adapter.setItems(Preferences.getCategories());
+        adapter.setmCategoryHeaderListListener(this::clickHeaderData);
+        adapter.setItems(temp);
         mBinding.listContents.setAdapter(adapter);
     }
 

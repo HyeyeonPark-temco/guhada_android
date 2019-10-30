@@ -41,6 +41,7 @@ import io.temco.guhada.common.listener.OnAddCategoryListener;
 import io.temco.guhada.common.listener.OnBrandListener;
 import io.temco.guhada.common.listener.OnCallBackListener;
 import io.temco.guhada.common.listener.OnCategoryListener;
+import io.temco.guhada.common.listener.OnClickSelectItemListener;
 import io.temco.guhada.common.listener.OnDetailSearchListener;
 import io.temco.guhada.common.listener.OnStateFragmentListener;
 import io.temco.guhada.common.util.CommonUtil;
@@ -61,6 +62,7 @@ import io.temco.guhada.databinding.FragmentProductListBinding;
 import io.temco.guhada.view.activity.ProductFilterListActivity;
 import io.temco.guhada.view.adapter.TagListAdapter;
 import io.temco.guhada.view.adapter.product.ProductListAdapter;
+import io.temco.guhada.view.adapter.product.ProductListCategoryTabAdapter;
 import io.temco.guhada.view.custom.dialog.BrandListDialog;
 import io.temco.guhada.view.custom.dialog.CategoryListDialog;
 import io.temco.guhada.view.custom.dialog.DetailSearchDialog;
@@ -134,6 +136,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
 
     @Override
     protected void init() {
+        if(CustomLog.getFlag())CustomLog.L("ProductListFragment","init---");
         mLoadingIndicator = new LoadingIndicatorUtil(getContext());
         disposable = new CompositeDisposable();
         db = GuhadaDB.Companion.getInstance(getContext());
@@ -180,8 +183,6 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             if(filterBody == null){
                 filterBody = new FilterBody();
                 filterBody.brandIds.add(mId);
-            }else{
-                filterBody.brandIds.clear();
             }
         } else if (mIsCategory == Type.ProductListViewType.SEARCH)  {
             if(filterBody == null){
@@ -235,9 +236,10 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mCategoryData = data;
                 mId = data.id;
                 setTabLayout();
+                filterBody = null;
                 initFilterBody();
-                if(CustomLog.getFlag())CustomLog.L("onTabSelected","onUpdate");
-                getProductListByCategory(false);
+                if(CustomLog.getFlag())CustomLog.L("onTabSelected","onUpdate mId",mId);
+                getProductListByCategory(true);
             }
         }
     }
@@ -419,91 +421,85 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             if (mCategoryData != null && mCategoryData.children != null && mCategoryData.children.size() > 0) {
                 mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
                 // Remove
-                if (mBinding.layoutHeader.layoutTab.getChildCount() > 0) {
-                    mBinding.layoutHeader.layoutTab.removeAllTabs();
+                if (mBinding.layoutHeader.recyclerTab.getAdapter() != null && mBinding.layoutHeader.recyclerTab.getAdapter().getItemCount() > 0) {
+                    ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setItems(new ArrayList<>());
                 }
-                // Add All (전체보기)
+                tabCategoryList = new ArrayList<>();
                 String title = getContext() != null ? getContext().getString(R.string.category_all) : null;
                 Category all = CommonUtil.createAllCategoryData(title, mCategoryData.fullDepthName, mCategoryData.id, mCategoryData.hierarchies);
-                addCategoryTab(all, mCategoryData.selectId == -1);
+                tabCategoryList.add(all);
+                tabIndex = 0;
                 // Add Category
                 int i=0;
                 tabWidth = 0;
 
                 if(mProductListData != null && mProductListData.categories != null) {
-                    if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet ---");
                     for (Category c : mProductListData.categories) {
-                        if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet c",c);
                         setFilterCategory(c);
-                        /*if(c.hierarchies.length == 1){
-                            setFilterTopCategory(c);
-                        }else{
-                            setFilterCategory(c);
-                        }*/
                     }
                 }
-                if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","--filterChildIdSet",(filterChildIdSet!=null?filterChildIdSet:"null"));
-                tabCategoryList = new ArrayList<>();
+
                 for (Category c : mCategoryData.children) {
                     if(filterChildIdSet != null && filterChildIdSet.contains(c.id)){
                         tabCategoryList.add(c);
-                        if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
-                            tabIndex = i+1;
-                            addCategoryTab(c, true);
-                            //loadCategory(c, false);
-                        }else{
-                            addCategoryTab(c, false);
-                        }
+                        if(c.id == mId) tabIndex = i+1;
                         i++;
                     }else{
                         if(filterChildIdSet == null){
                             tabCategoryList.add(c);
-                            if(mCategoryData.selectId != -1 && c.id == mCategoryData.selectId) {
-                                tabIndex = i+1;
-                                addCategoryTab(c, true);
-                                //loadCategory(c, false);
-                            }else{
-                                addCategoryTab(c, false);
-                            }
+                            if(c.id == mId) tabIndex = i+1;
                             i++;
                         }
                     }
                 }
-                // Select Event
-                mBinding.layoutHeader.layoutTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-                        TextView text = tab.getCustomView().findViewById(R.id.text_title);
-                        text.setTypeface(null, Typeface.BOLD);
-                        if (tab.getTag() != null && tab.getTag() instanceof Category) {
-                            if(CustomLog.getFlag())CustomLog.L("onTabSelected","tab.getTag", ((Category) tab.getTag()).toString());
-                            loadCategory((Category) tab.getTag(), false);
-                        }
-                    }
+                if(CustomLog.getFlag())CustomLog.L("clickSelectItemListener","tabIndex",tabIndex,"mId",mId,"tabCategoryList",tabCategoryList.get(tabIndex).id);
 
+                if(mBinding.layoutHeader.recyclerTab.getAdapter() == null){
+                    ProductListCategoryTabAdapter adapter = new ProductListCategoryTabAdapter();
+                    mBinding.layoutHeader.recyclerTab.setAdapter(adapter);
+                    adapter.setSelectIndex(tabIndex);
+                    adapter.setMList(tabCategoryList);
+                }else{
+                    ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setSelectIndex(tabIndex);
+                    ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setMList(tabCategoryList);
+                }
+                ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setMClickSelectItemListener(new OnClickSelectItemListener() {
                     @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-                        TextView text = tab.getCustomView().findViewById(R.id.text_title);
-                        text.setTypeface(null, Typeface.NORMAL);
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-                        if (tab.getTag() != null && tab.getTag() instanceof Category) {
-                            loadCategory((Category) tab.getTag(), true);
+                    public void clickSelectItemListener(int type, int index, @NotNull Object value) {
+                        Category data = (Category)value;
+                        if(CustomLog.getFlag())CustomLog.L("clickSelectItemListener","index",index,"mPosition",mPosition,"data",data);
+                        if(data.children != null){
+                            loadCategory(data, false);
+                        }else{
+                            ((ProductListCategoryTabAdapter)mBinding.layoutHeader.recyclerTab.getAdapter()).setSelectIndex(index);
+                            mBinding.layoutHeader.recyclerTab.getAdapter().notifyDataSetChanged();
+                            loadCategory(data, false);
                         }
                     }
                 });
-                if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","mCategoryData.selectId", mCategoryData.selectId);
-                if(mCategoryData.selectId != -1){
+                /*if(mCategoryData.selectId != -1){
                     mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
                         @Override
                         public void run() {
                             mBinding.layoutHeader.layoutTab.setScrollPosition(tabIndex,0f,true);
-                            loadCategory(tabCategoryList.get(tabIndex-1), false);
+                            int index = tabIndex-1;
+                            if(tabIndex==0) index = 0;
+                            if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","mCategoryData index", index , "tabIndex", tabIndex);
+                            loadCategory(tabCategoryList.get(index), false);
                         }
                     },150);
-                }
+                }*/
+                /*mBinding.layoutHeader.layoutTab.postDelayed(new Runnable(){
+                    @Override
+                    public void run() {
+                        mBinding.layoutHeader.layoutTab.setScrollPosition(tabIndex,0f,true);
+                        int index = tabIndex-1;
+                        if(tabIndex==0) index = 0;
+                        if(CustomLog.getFlag())CustomLog.L("setCategoryTabLayout","mCategoryData index", index , "tabIndex", tabIndex);
+                        loadCategory(tabCategoryList.get(index), false);
+                    }
+                },150);*/
+
                 // Scroll // Not Used
                 //setTabLayoutScrollEvent();
             } else {
@@ -584,7 +580,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 mId = data.id;
                 filterBody.categoryIds.clear();
                 filterBody.categoryIds.add(mId);
-                getProductListByCategory(true);
+                getProductListByCategoryLoad(true);
             }
         }
     }
@@ -620,7 +616,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void changeProductOrderWithLoadList(Type.ProductOrder type) {
         changeProductOrder(type);
         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
-            getProductListByCategory(true);
+            getProductListByCategoryLoad(true);
         } else  if (mIsCategory == Type.ProductListViewType.BRAND) {
             getProductListByBrand(true);
         }else  if (mIsCategory == Type.ProductListViewType.SEARCH) {
@@ -684,7 +680,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 // super.onScrolled(recyclerView, dx, dy);
                 if (mListAdapter.getItemCount() - mGridManager.findLastVisibleItemPosition() <= Info.LIST_PAGE_THRESHOLD) {
                     if (mIsCategory==Type.ProductListViewType.CATEGORY) {
-                        getProductListByCategory(false);
+                        getProductListByCategoryLoad(false);
                     } else if (mIsCategory==Type.ProductListViewType.BRAND) {
                         getProductListByBrand(false);
                     } else if (mIsCategory==Type.ProductListViewType.SEARCH) {
@@ -1346,11 +1342,9 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
                 if (success) {
                     mPageNumber++;
                     mListAdapter.setItems(((ProductList) o).deals);
-                    if (mProductListData == null){
-                        mProductListData = (ProductList) o;
-                        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.deals.size());
-                        setTabLayout();
-                    }
+                    mProductListData = (ProductList) o;
+                    if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("getProductListByCategory mProductListData",mProductListData.deals.size());
+                    setTabLayout();
                 }
                 emptyView("");
             }
@@ -1370,6 +1364,39 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
             mIsLoading = false;
             mLoadingIndicator.hide();
         });*/
+    }
+
+
+    /**
+     * @author park jungho
+     * 상품 리스트에서 카테고리 별 상품 리스트 데이터 가져오는 부분
+     *
+     */
+    private void getProductListByCategoryLoad(boolean reset) {
+        if (mIsLoading) return;
+        mIsLoading = true;
+        if (reset) {
+            resetList(false);
+        }
+        mLoadingIndicator.show();
+        SearchServer.getProductListByCategoryFilter(mCurrentOrderType, filterBody, mPageNumber, (success, o) -> {
+            if (mListAdapter != null) {
+                if (success) {
+                    mPageNumber++;
+                    mListAdapter.setItems(((ProductList) o).deals);
+                    if (mBinding != null) {
+                        if (mIsCategory == Type.ProductListViewType.CATEGORY) {
+                            mBinding.layoutHeader.layoutTabParent.setVisibility(View.VISIBLE);
+                        } else {
+                            mBinding.layoutHeader.layoutTabParent.setVisibility(View.GONE);
+                        }
+                    }
+                }
+                emptyView("");
+            }
+            mIsLoading = false;
+            mLoadingIndicator.hide();
+        });
     }
 
     /**

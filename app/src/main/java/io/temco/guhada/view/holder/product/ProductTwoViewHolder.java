@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -30,8 +29,6 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
     ////////////////////////////////////////////////
 
     int width = 0;
-    int height = 0;
-    int layoutHeight = 0;
     int margin = 0;
 
     public ProductTwoViewHolder(@NonNull View itemView) {
@@ -49,21 +46,22 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
             if(width == 0){
                 DisplayMetrics matrix = new DisplayMetrics();
                 ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(matrix);
-                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(context, 13)) / 2;
-                height = width;
-                margin = CommonViewUtil.dipToPixel(context, 4);
-                layoutHeight = height + CommonViewUtil.dipToPixel(context, 120);
+                width = (matrix.widthPixels - CommonViewUtil.dipToPixel(context, 24)) / 2;
+                margin = CommonViewUtil.dipToPixel(context, 10);
             }
 
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width,height);
-            param.leftMargin = margin;
-            param.leftMargin = margin;
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width, width);
+            if(position%2==0){
+                param.leftMargin = 0;
+                param.rightMargin = margin;
+            }else{
+                param.leftMargin = 0;
+                param.rightMargin = 0;
+            }
             mBinding.relativeImageLayout.setLayoutParams(param);
-            RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(width,layoutHeight);
-            mBinding.imageThumb.setLayoutParams(imageParams);
 
-            // Thumbnail
-            ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
+            RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(width,width);
+            mBinding.imageThumb.setLayoutParams(imageParams);
 
             // Brand
             mBinding.textBrand.setText(data.brandName);
@@ -72,17 +70,16 @@ public class ProductTwoViewHolder extends BaseProductViewHolder<ItemProductListT
             mBinding.textSeason.setText(data.productSeason);
 
             // Title
-            mBinding.textTitle.setText(data.dealName);
+            mBinding.textTitle.setText(data.productName);
 
-            if(data.isBoldName){
+            // Thumbnail
+            ImageUtil.loadImage(manager, mBinding.imageThumb, data.productImage.getUrl());
+
+            /*if(data.isBoldName){
                 mBinding.textTitle.setTypeface(null, Typeface.BOLD);
             }else{
                 mBinding.textTitle.setTypeface(null, Typeface.NORMAL);
-            }
-
-
-            // Size
-            // Empty...
+            }*/
 
             // Option
             if (mBinding.layoutColor.getChildCount() > 0) {

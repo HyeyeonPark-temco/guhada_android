@@ -5,6 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="black_overlay">#66000000</color>
     <color name="white_overlay">#D4ffffff</color>
+    <color name="white_overlay2">#B3ffffff</color>
     <color name="toast_background">#c4000000</color>
 
     <!-- COMMON -->
@@ -79,6 +80,7 @@
     <color name="color_dbdbdb">#dbdbdb</color>
     <color name="color_fbfbfb">#fbfbfb</color>
     <color name="cloudy_blue">#b7bec4</color>
+    <color name="watermelon">#ff4568</color>
 
 
 </resources>

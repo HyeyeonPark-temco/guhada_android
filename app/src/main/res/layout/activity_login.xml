@@ -120,7 +120,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/selector_checkbox_all"
                             android:button="@null"
-                            android:checked="@{viewModel.isIdSaved}"
+                            android:checked="@{viewModel.mIsIdSaved}"
                             android:onCheckedChanged="@{(view, checked)->viewModel.onCheckedSaveId(checked)}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -134,6 +134,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="@string/login_button_saveid"
+                            android:onClick="@{()->viewModel.onCheckedSaveId(!viewModel.mIsIdSaved)}"
                             android:textColor="@color/warm_grey_two"
                             android:textSize="@dimen/text_14"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -196,7 +197,6 @@
                         android:layout_gravity="center"
                         android:text="@string/login_simple"
                         android:textColor="@android:color/black" />
-
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -209,9 +209,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="25dp"
+                            android:visibility="gone"
                             android:onClick="@{()-> viewModel.onClickNaver()}"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:orientation="vertical">
 
                             <FrameLayout
                                 android:layout_width="wrap_content"
@@ -338,6 +338,147 @@
                                 android:textSize="@dimen/text_13" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <!--<LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/text_27"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_login_naver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="25dp"
+                            android:onClick="@{()-> viewModel.onClickNaver()}"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/btn_naver_icon" />
+
+                                <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
+                                    android:id="@+id/button_login_naver"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"
+                                android:text="@string/login_naver"
+                                android:textColor="@color/warm_grey_two"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_login_kakako"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="25dp"
+                            android:onClick="@{()-> viewModel.onClickKakao()}"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/btn_kakao_icon" />
+
+                                <com.kakao.usermgmt.LoginButton
+                                    android:id="@+id/button_login_kakao"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"
+                                android:text="@string/login_kakao"
+                                android:textColor="@color/warm_grey_two"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_login_facebook"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="25dp"
+                            android:onClick="@{()-> viewModel.onClickFacebook()}"
+                            android:orientation="vertical">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/btn_facebook_icon" />
+
+                                <com.facebook.login.widget.LoginButton
+                                    android:id="@+id/button_login_facebook"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone" />
+                            </FrameLayout>
+
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"
+                                android:text="@string/login_facebook"
+                                android:textColor="@color/warm_grey_two"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_login_google"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{()-> viewModel.onClickGoogle()}"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/btn_google_icon" />
+
+                            <TextView
+                                style="@style/TextMedium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"
+                                android:text="@string/login_google"
+                                android:textColor="@color/warm_grey_two"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+                    </LinearLayout>-->
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

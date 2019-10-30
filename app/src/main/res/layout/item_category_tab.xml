@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- DOT -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="11dp">
+
+            <ImageView
+                android:id="@+id/img_idc"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/drawable_round_corner_5"
+                android:background="@drawable/selector_tab_dot_category" />
+        </RelativeLayout>
+
+        <!-- TITLE -->
+        <TextView
+            android:id="@+id/text_title"
+            style="@style/TextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_category"
+            android:textSize="@dimen/text_15" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="14dp" />
+    </LinearLayout>
+</layout>
