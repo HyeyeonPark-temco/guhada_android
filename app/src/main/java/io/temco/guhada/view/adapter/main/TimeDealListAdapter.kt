@@ -11,12 +11,12 @@ import android.net.Uri
 import android.os.Handler
 import android.text.TextUtils
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
@@ -75,7 +75,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
         when (items[position].type) {
             HomeType.MainEvent -> return R.layout.customlayout_main_item_mainevent
             HomeType.SubTitleList -> return R.layout.customlayout_main_item_subtitlelist
-            HomeType.Dummy -> return R.layout.customlayout_main_item_dummy
+            HomeType.Dummy -> return R.layout.customlayout_main_item_timedaeldummy
             HomeType.Keyword -> return R.layout.customlayout_main_item_keyword
             HomeType.TimeDeal -> return R.layout.customlayout_main_item_timedeal
             HomeType.Footer -> return R.layout.item_terminfo_footer
@@ -101,7 +101,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                 return SubTitleViewHolder(binding.root, binding)
             }
             HomeType.Dummy -> {
-                val binding: CustomlayoutMainItemDummyBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
+                val binding: CustomlayoutMainItemTimedaeldummyBinding = DataBindingUtil.inflate(layoutInflater, getLayoutIdForPosition(viewType), parent, false)
                 return DummyViewHolder(binding.root, binding)
             }
             HomeType.Keyword -> {
@@ -608,14 +608,11 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
     /**
      * 메인 리스트에 더미 화면 view holder
      */
-    class DummyViewHolder(private val containerView: View, val binding: CustomlayoutMainItemDummyBinding) : ListViewHolder(containerView, binding) {
+    class DummyViewHolder(private val containerView: View, val binding: CustomlayoutMainItemTimedaeldummyBinding) : ListViewHolder(containerView, binding) {
         override fun init(context: Context?, manager: RequestManager?, data: Deal?, position: Int) {}
         override fun bind(viewModel: TimeDealListViewModel, position: Int, item: MainBaseModel) {
             if (item is DummyImage) {
-                var metrics = DisplayMetrics()
-                (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
-                binding.heightLayout.setmHeight((item.imageHeight * metrics.density).toInt())
-                binding.heightLayout.setmWidth((360 * metrics.density).toInt())
+                binding.imageDummy.layoutParams  = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, CommonViewUtil.dipToPixel(itemView.context, item.imageHeight))
                 binding.imageDummy.setBackgroundColor(Color.TRANSPARENT)
                 //binding.imageDummy.setBackgroundResource(item.imageRes)
             }
