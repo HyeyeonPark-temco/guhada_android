@@ -616,7 +616,7 @@ public class ProductListFragment extends BaseFragment<FragmentProductListBinding
     private void changeProductOrderWithLoadList(Type.ProductOrder type) {
         changeProductOrder(type);
         if (mIsCategory == Type.ProductListViewType.CATEGORY) {
-            getProductListByCategory(true);
+            getProductListByCategoryLoad(true);
         } else  if (mIsCategory == Type.ProductListViewType.BRAND) {
             getProductListByBrand(true);
         }else  if (mIsCategory == Type.ProductListViewType.SEARCH) {
