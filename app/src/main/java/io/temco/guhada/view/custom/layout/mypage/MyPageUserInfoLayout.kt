@@ -169,7 +169,11 @@ class MyPageUserInfoLayout constructor(
     override fun onStart() {}
     override fun onPause() {}
     override fun onStop() {}
-    override fun onDestroy() {}
+    override fun onDestroy() {
+        try {
+            SnsLoginModule.removeKakaoCallback()
+        }catch (e : Exception){if(CustomLog.flag)CustomLog.E(e)}
+    }
     override fun onFocusView() {}
     override fun onReleaseView() {}
 

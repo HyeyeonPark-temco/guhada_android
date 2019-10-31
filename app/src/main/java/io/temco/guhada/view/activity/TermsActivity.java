@@ -47,16 +47,20 @@ public class TermsActivity extends BindActivity<ActivityTermsBinding> {
 //                user.setAgreePurchaseTos(mViewModel.getUser().getAgreePurchaseTos());
 //                user.setAgreeSaleTos(mViewModel.getUser().getAgreeSaleTos());
 //                user.setAgreeSmsReception(mViewModel.getUser().getAgreeSmsReception());
+                if(resultCode == RESULT_OK){
 
-                getIntent().putExtra("agreeCollectPersonalInfoTos", mViewModel.getUser().getAgreeCollectPersonalInfoTos());
-                getIntent().putExtra("agreeEmailReception", mViewModel.getUser().getAgreeEmailReception());
-                getIntent().putExtra("agreePurchaseTos", mViewModel.getUser().getAgreePurchaseTos());
-                getIntent().putExtra("agreeSaleTos", mViewModel.getUser().getAgreeSaleTos());
-                getIntent().putExtra("agreeSmsReception", mViewModel.getUser().getAgreeSmsReception());
+                    getIntent().putExtra("agreeCollectPersonalInfoTos", mViewModel.getUser().getAgreeCollectPersonalInfoTos());
+                    getIntent().putExtra("agreeEmailReception", mViewModel.getUser().getAgreeEmailReception());
+                    getIntent().putExtra("agreePurchaseTos", mViewModel.getUser().getAgreePurchaseTos());
+                    getIntent().putExtra("agreeSaleTos", mViewModel.getUser().getAgreeSaleTos());
+                    getIntent().putExtra("agreeSmsReception", mViewModel.getUser().getAgreeSmsReception());
 
-                setResult(resultCode, getIntent());
+                    setResult(resultCode, getIntent());
 
-                TermsActivity.this.startActivityForResult(new Intent(TermsActivity.this, CustomDialogActivity.class), Flag.RequestCode.WELCOME_DIALOG);
+                    TermsActivity.this.startActivityForResult(new Intent(TermsActivity.this, CustomDialogActivity.class), Flag.RequestCode.WELCOME_DIALOG);
+                }else{
+                    finish();
+                }
             }
 
             @Override

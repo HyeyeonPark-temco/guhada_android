@@ -83,13 +83,7 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
                 super.onLoadResource(view, url);
 
                 String comparedUrl = url.split("\\?")[0];
-                String resultUrl1 = getResources().getString(R.string.verifyphone_result_url_prod1);    // BASE_URL: www.guhada.com
-                String resultUrl2 = getResources().getString(R.string.verifyphone_result_url_prod2);    // BASE_URL: web.guhada.com
-                String resultUrl3 = getResources().getString(R.string.verifyphone_result_url_dev);      // BASE_URL: dev.guhada.com
-                String resultUrl4 = getResources().getString(R.string.verifyphone_result_url_qa);       // BASE_URL: qa.guhada.com
-                String resultUrl5 = getResources().getString(R.string.verifyphone_result_url_stg);      // BASE_URL: stg.guhada.com
-
-                if (comparedUrl.equals(resultUrl1) || comparedUrl.equals(resultUrl2) || comparedUrl.equals(resultUrl3) || comparedUrl.equals(resultUrl4) || comparedUrl.equals(resultUrl5)) {
+                if (comparedUrl.contains("phone-certification-result")) {
                     mBinding.webviewVerifyphone.setVisibility(View.GONE);
                     getVerifyInfo(url);
                 }

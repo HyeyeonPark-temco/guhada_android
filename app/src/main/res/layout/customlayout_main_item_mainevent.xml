@@ -8,10 +8,11 @@
             type="io.temco.guhada.data.viewmodel.main.HomeListViewModel" />
     </data>
 
-    <RelativeLayout
+    <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+        android:id="@+id/heightLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="384dp">
+        android:layout_height="wrap_content">
 
         <io.temco.guhada.view.viewpager.InfiniteViewPager
             android:id="@+id/viewPager"
@@ -19,5 +20,61 @@
             android:layout_height="match_parent"
             android:background="#ffffffff"/>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:weightSum="1"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="14dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/activity_view_pager_indicator_underline"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginRight="18dp"
+                android:layout_weight="1"
+                android:weightSum="4"
+                android:orientation="horizontal"
+                android:background="@color/greyish_brown"  >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@{viewModel.mainHomeEventViewIndex==0 ? @color/common_white : @color/greyish_brown}"
+                    android:layout_weight="1"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@{viewModel.mainHomeEventViewIndex==1 ? @color/common_white : @color/greyish_brown}"
+                    android:layout_weight="1"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@{viewModel.mainHomeEventViewIndex==2 ? @color/common_white : @color/greyish_brown}"
+                    android:layout_weight="1"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@{viewModel.mainHomeEventViewIndex==3 ? @color/common_white : @color/greyish_brown}"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <TextView
+                style="@style/TextRegularSingleLine"
+                android:id="@+id/textview_index"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textColor="@color/common_white"
+                android:textSize="@dimen/text_12"
+                android:letterSpacing="0.05"
+                android:text="@{(viewModel.mainHomeEventViewIndex+1) + `/4`}"/>
+
+        </LinearLayout>
+
+    </io.temco.guhada.view.custom.layout.HeightRelativeLayout>
 </layout>

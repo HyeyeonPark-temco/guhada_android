@@ -13,6 +13,7 @@ import io.temco.guhada.common.listener.OnTermsListener;
 import io.temco.guhada.data.model.user.User;
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class TermsViewModel extends BaseObservableViewModel implements Observer {
@@ -142,7 +143,7 @@ public class TermsViewModel extends BaseObservableViewModel implements Observer 
     }
 
     public void onClickBack() {
-        listener.closeActivity(RESULT_OK);
+        listener.closeActivity(RESULT_CANCELED);
     }
 
     @Override
