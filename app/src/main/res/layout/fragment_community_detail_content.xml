@@ -166,11 +166,15 @@
                     android:onClick="@{clickBookmarkListener}"
                     android:background="@{viewModel.bbsBookMark ?  @drawable/round_108_select : @drawable/round_108}"/>
             </LinearLayout>
-            <ImageView
+            <!--<ImageView
                 android:layout_width="match_parent"
                 android:layout_height="134dp"
                 android:src="@drawable/community_banner_mobile"
-                android:background="#d6b5ad"/>
+                android:background="#d6b5ad"/>-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="134dp"
+                android:background="@drawable/timedeal_com_m_360"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

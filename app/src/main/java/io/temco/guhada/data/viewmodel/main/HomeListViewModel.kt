@@ -1,7 +1,10 @@
 package io.temco.guhada.data.viewmodel.main
 
 import android.content.Context
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
@@ -28,6 +31,17 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
     private val adapter = HomeListAdapter(this,listData.value!!)
 
     val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
+    var viewState = 0
+
+    var mainHomeEventViewIndex = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.mainHomeEventViewIndex)
+        }
+
+
 
     fun getListAdapter() = adapter
 
@@ -55,23 +69,17 @@ class HomeListRepository(val context : Context){
 
     private fun setInitData() {
         list.value = ArrayList()
-        /* val ddd = ArrayList<MainBaseModel>()
+         val ddd = ArrayList<MainBaseModel>()
          val tmpList = java.util.ArrayList<EventData>()
          // 메인 홈 이벤트 화면의 더미 데이터 --------------------------------
-         tmpList.add(EventData(0, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/a5e85e5d916e4e1e9d78d0a5e75a7411",
-                 R.drawable.main_01, "main_01", "", "", 0, ""))
-         tmpList.add(EventData(1, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/Aviator_Polarized_Lens_58mm_Sunglasses_RB3025-001.png",
-                 R.drawable.main_02, "hotkeyword05", "", "", 1, ""))
-         tmpList.add(EventData(2, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/19c8c40763734103a56bc1e93c26689a",
-                 R.drawable.main_03, "focuson04", "", "", 2, ""))
-         tmpList.add(EventData(3, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/013c833b13744fadbdebaacc38d968cd",
-                 R.drawable.main_04, "foryou_08", "", "", 3, ""))
-         tmpList.add(EventData(4, "https://d3ikprf0m31yc7.cloudfront.net/images/products/thumb/46b0d03ccb274329b822bba10d138adc",
-                 R.drawable.main_05, "banner09", "", "", 4, ""))
+         tmpList.add(EventData(0, "", R.drawable.timedeal_main_m_360, "main_banner_mobile", "", "", 0, ""))
+         tmpList.add(EventData(1, "", R.drawable.join_main_m_360, "main_banner_mobile", "", "", 1, ""))
+         tmpList.add(EventData(2, "", R.drawable.main_m_2per_360, "main_banner_mobile", "", "", 2, ""))
+         tmpList.add(EventData(3, "", R.drawable.open_main_m_360, "main_banner_mobile", "", "", 3, ""))
          val event = MainEvent(0, HomeType.MainEvent, tmpList)
          ddd.add(event)
-         list.value!!.add(event)*/
-        list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
+         list.value!!.add(event)
+        //list.value!!.add(DummyImage(list.value!!.size, HomeType.Dummy, R.drawable.main_banner_mobile, 384))
         // ------------------------------------------------------------------
         getPlusItem()
     }

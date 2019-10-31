@@ -128,6 +128,11 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
         override fun bind(viewModel: HomeListViewModel, position: Int, item: MainBaseModel) {
             if(item is MainEvent){
                 var data = item
+                var metrics = DisplayMetrics()
+                binding.viewModel = model
+                (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
+                binding.heightLayout.setmHeight((384 * metrics.density).toInt())
+                binding.heightLayout.setmWidth((360 * metrics.density).toInt())
                 if(infiniteAdapter == null){
                     infiniteAdapter = object : InfiniteGeneralFixedPagerAdapter<EventData>(data.eventList, true, true){
                         override fun getPageView(paramViewGroup: ViewGroup, paramInt: Int, item: EventData): View {
@@ -148,6 +153,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         eventListSize = binding.viewPager.offsetAmount
                         currentAdIndex = binding.viewPager.currentItem
                     }
+                    model.mainHomeEventViewIndex.set(0)
                     binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
                         override fun onPageScrollStateChanged(state: Int) {
                             if(state == ViewPager.SCROLL_STATE_IDLE){
@@ -159,11 +165,13 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {  }
                         override fun onPageSelected(position: Int) {
                             currentAdIndex = position
+                            model.mainHomeEventViewIndex.set(binding.viewPager.realCurrentItem)
+                            if(CustomLog.flag)CustomLog.L("MainEventViewHolder","onPageSelected currentAdIndex",binding.viewPager.realCurrentItem)
                         }
                     })
-                    if(position == 0){
-                        homeRolling()
-                    }
+                }
+                if(position == 0){
+                    homeRolling()
                 }
             }
         }
@@ -182,7 +190,11 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
         fun homeRolling(){
             try{
                 mHandler.removeCallbacks(homeAdRolling)
-                mHandler.postDelayed(homeAdRolling,5000)
+                if(model.viewState > 0){
+                    mHandler.postDelayed(homeAdRolling,5000)
+                }else{
+                    mHandler.removeCallbacks(homeAdRolling)
+                }
             }catch (e:Exception){
                 mHandler.removeCallbacks(homeAdRolling)
                 if(CustomLog.flag)CustomLog.E(e)
