@@ -110,7 +110,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open"
+                                android:onClick="@{() -> viewModel.onClickUserClaimSellerProduct()}"
+                                android:src="@{viewModel.userClaimSellerProductListShow ? @drawable/payment_icon_selectbox_close : @drawable/payment_icon_selectbox_open}"
+                                android:visibility="@{viewModel.checkUserClaimSellerOrderList ? View.GONE : View.VISIBLE}"
                                 android:layout_marginRight="20dp"/>
                         </LinearLayout>
 
@@ -178,8 +180,8 @@
                             <io.temco.guhada.view.CustomSpinner
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginRight="2dp"
                                 android:background="@drawable/border_all_whitethree"
                                 android:orientation="horizontal"
                                 android:overScrollMode="never"
