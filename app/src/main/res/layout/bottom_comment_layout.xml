@@ -41,8 +41,8 @@
             android:minWidth="120dp"
             android:visibility="@{TextUtils.isEmpty(viewModel.replyUserName) ? View.GONE : View.VISIBLE, default = gone}"
             android:gravity="center_vertical"
-            android:background="@drawable/border_line_r23"
             android:orientation="horizontal">
+            <!--android:background="@drawable/border_line_r23"-->
 
             <ImageButton
                 android:layout_width="32dp"
