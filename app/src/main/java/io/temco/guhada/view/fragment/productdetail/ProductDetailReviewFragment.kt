@@ -19,10 +19,12 @@ import io.temco.guhada.data.viewmodel.productdetail.ProductDetailReviewViewModel
 import io.temco.guhada.databinding.LayoutProductdetailReviewBinding
 import io.temco.guhada.view.activity.ProductFragmentDetailActivity
 import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewAdapter
+import io.temco.guhada.view.adapter.productdetail.ProductDetailReviewGraphScoreAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.ListBottomSheetFragment
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.fragment.mypage.MyPageTabType
+import io.temco.guhada.view.fragment.productdetail.ProductDetailReviewFragment.Companion.bindProductReviewSummary
 
 /**
  * 상품상세-상품 리뷰
@@ -241,7 +243,16 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         @JvmStatic
         @BindingAdapter("productReviewSummary")
         fun RecyclerView.bindProductReviewSummary(summary: ReviewSummary) {
-
+            if (summary.totalReviewsCount > 0)
+                this.adapter = ProductDetailReviewGraphScoreAdapter().apply {
+                    this.mList = when (this@bindProductReviewSummary.id) {
+                        R.id.recyclerview_productdetail_reviewgraph1 -> summary.satisfaction.sizes.toMutableList()
+                        R.id.recyclerview_productdetail_reviewgraph2 -> summary.satisfaction.colors.toMutableList()
+                        R.id.recyclerview_productdetail_reviewgraph3 -> summary.satisfaction.lengths.toMutableList()
+                        else -> mutableListOf()
+                    }
+                    this.mMax = summary.totalReviewsCount
+                }
         }
 
         @JvmStatic
