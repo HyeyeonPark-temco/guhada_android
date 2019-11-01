@@ -185,7 +185,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
     private fun setInitView() {
         mViewModel.userId = CommonUtil.checkUserId()
-        setUserData()
+        if (mViewModel.mUser.value == null)
+            setUserData()
     }
 
     private fun setUserData() {
