@@ -34,6 +34,9 @@ import io.temco.guhada.view.activity.SearchWordActivity
 import io.temco.guhada.view.adapter.base.CommonRecyclerAdapter
 import io.temco.guhada.view.holder.base.BaseProductViewHolder
 import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
+import java.lang.ref.WeakReference
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -43,6 +46,22 @@ import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
  */
 class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
+
+
+    lateinit var mHandler: Handler
+    lateinit var customRunnableMap: WeakReference<Runnable>
+
+    // 쓰레드 전체 종료
+    fun clearRunnable() {
+        if (CustomLog.flag) CustomLog.L("HomeListAdapter", "clearRunnable")
+        if (::customRunnableMap.isInitialized) {
+            if (::mHandler.isInitialized) {
+                if (CustomLog.flag) CustomLog.L("HomeListAdapter", "clearRunnable---")
+                mHandler.removeCallbacks(customRunnableMap.get())
+            }
+            customRunnableMap.clear()
+        }
+    }
     /**
      * HomeType 에 따른 item view  TextUtils
      */
@@ -62,6 +81,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
     }
 
     override fun setonCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+        if (!::mHandler.isInitialized) mHandler = Handler((parent.context as Activity).mainLooper)
         val layoutInflater = LayoutInflater.from(parent.context)
         when(items[viewType].type){
             HomeType.MainEvent->{
@@ -119,7 +139,6 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
      */
     inner class MainEventViewHolder(private val containerView: View, val binding: CustomlayoutMainItemMaineventBinding) : ListViewHolder(containerView, binding){
         var currentAdIndex : Int = -1
-        val mHandler : Handler = Handler((containerView.context as Activity).mainLooper)
         var eventListSize = 0
 
         private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
@@ -190,18 +209,13 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
         fun homeRolling(){
             try{
                 mHandler.removeCallbacks(homeAdRolling)
-                if(model.viewState > 0){
-                    mHandler.postDelayed(homeAdRolling,5000)
-                }else{
-                    mHandler.removeCallbacks(homeAdRolling)
-                }
+                mHandler.postDelayed(homeAdRolling,5000)
+                customRunnableMap = WeakReference(homeAdRolling)
             }catch (e:Exception){
                 mHandler.removeCallbacks(homeAdRolling)
                 if(CustomLog.flag)CustomLog.E(e)
             }
         }
-
-
 
     }
 

@@ -31,7 +31,6 @@ class HomeListViewModel(val context : Context) : BaseObservableViewModel() {
     private val adapter = HomeListAdapter(this,listData.value!!)
 
     val listData :LiveData<ArrayList<MainBaseModel>> get() = _listData
-    var viewState = 0
 
     var mainHomeEventViewIndex = ObservableInt(0)
         @Bindable

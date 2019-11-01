@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.Window
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
@@ -70,6 +74,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
             setCategoryData()
         })
         setView(false)
+        attachKeyboardListeners()
         setClickEvent()
     }
 
@@ -157,6 +162,9 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         try {
             if (::mLoadingIndicatorUtil.isInitialized) {
                 mLoadingIndicatorUtil.dismiss()
+            }
+            if (keyboardListenersAttached) {
+                rootLayout?.viewTreeObserver?.removeOnGlobalLayoutListener(keyboardLayoutListener)
             }
         } catch (e: Exception) {
             if (CustomLog.flag) CustomLog.E(e)
@@ -548,6 +556,50 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                     if (isFinish) finish()
                 }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
     }
+
+
+    private val keyboardLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+        val heightDiff = rootLayout!!.rootView.height - rootLayout!!.height
+        val contentViewTop = window.findViewById<View>(Window.ID_ANDROID_CONTENT).top
+
+        val broadcastManager = LocalBroadcastManager.getInstance(this@CreateBbsActivity)
+
+        if (heightDiff <= contentViewTop) {
+            onHideKeyboard()
+
+            val intent = Intent("KeyboardWillHide")
+            broadcastManager.sendBroadcast(intent)
+        } else {
+            val keyboardHeight = heightDiff - contentViewTop
+            onShowKeyboard(keyboardHeight)
+
+            val intent = Intent("KeyboardWillShow")
+            intent.putExtra("KeyboardHeight", keyboardHeight)
+            broadcastManager.sendBroadcast(intent)
+        }
+    }
+
+    private var keyboardListenersAttached = false
+    private var rootLayout: ViewGroup? = null
+
+    private fun onShowKeyboard(keyboardHeight: Int) {
+        if(CustomLog.flag)CustomLog.L("CreateBbsActivity","onShowKeyboard keyboardHeight",keyboardHeight)
+    }
+    private fun onHideKeyboard() {
+        if(CustomLog.flag)CustomLog.L("CreateBbsActivity","onShowKeyboard onHideKeyboard")
+    }
+
+    protected fun attachKeyboardListeners() {
+        if (keyboardListenersAttached) {
+            return
+        }
+
+        rootLayout = mBinding.linearlayoutReivewwriteParent
+        rootLayout!!.viewTreeObserver.addOnGlobalLayoutListener(keyboardLayoutListener)
+
+        keyboardListenersAttached = true
+    }
+
 
     ////////////////////////////////////////////////
 

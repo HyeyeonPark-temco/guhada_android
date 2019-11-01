@@ -44,7 +44,7 @@ class HomeListLayout constructor(
         mViewModel = HomeListViewModel(context)
         mBinding.viewModel = mViewModel
         if(CustomLog.flag) CustomLog.L("HomeListRepository","HomeListLayout ", "init -----")
-        mViewModel.viewState = 1
+
         mBinding.recyclerView.setHasFixedSize(true)
         mBinding.recyclerView.layoutManager = WrapGridLayoutManager(context as Activity, 2,LinearLayoutManager.VERTICAL, false)
 
@@ -253,15 +253,21 @@ class HomeListLayout constructor(
                 .start()
     }
 
-    override fun onFocusView() {  }
-    override fun onReleaseView() { }
+    override fun onFocusView() {
+        mViewModel.getListAdapter().notifyDataSetChanged()
+    }
+    override fun onReleaseView() {
+        mViewModel.getListAdapter().clearRunnable()
+    }
     override fun onStart() { }
     override fun onResume() {
-        /*mViewModel.viewState = 1*/
+        mViewModel.getListAdapter().notifyDataSetChanged()
         setRecentProductCount()
     }
-    override fun onPause() { /*mViewModel.viewState = -1 */}
+    override fun onPause() {
+        mViewModel.getListAdapter().clearRunnable()
+    }
     override fun onStop() { }
-    override fun onDestroy() { mViewModel.viewState = -1 }
+    override fun onDestroy() { }
 
 }
