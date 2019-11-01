@@ -83,11 +83,13 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 })
             } else sendData()
         }
+
+        setInitView()
     }
 
     override fun onResume() {
         super.onResume()
-        if (checkUserLogin()) setInitView()
+        checkUserLogin()
     }
 
 

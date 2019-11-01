@@ -39,27 +39,27 @@
                 android:layout_weight="1"
                 android:weightSum="4"
                 android:orientation="horizontal"
-                android:background="@color/greyish_brown"  >
+                android:background="@color/white_overlay3"  >
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==0 ? @color/common_white : @color/greyish_brown}"
+                    android:background="@{viewModel.mainHomeEventViewIndex==0 ? @color/common_white : @color/transparent}"
                     android:layout_weight="1"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==1 ? @color/common_white : @color/greyish_brown}"
+                    android:background="@{viewModel.mainHomeEventViewIndex==1 ? @color/common_white : @color/transparent}"
                     android:layout_weight="1"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==2 ? @color/common_white : @color/greyish_brown}"
+                    android:background="@{viewModel.mainHomeEventViewIndex==2 ? @color/common_white : @color/transparent}"
                     android:layout_weight="1"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@{viewModel.mainHomeEventViewIndex==3 ? @color/common_white : @color/greyish_brown}"
+                    android:background="@{viewModel.mainHomeEventViewIndex==3 ? @color/common_white : @color/transparent}"
                     android:layout_weight="1"/>
             </LinearLayout>
 
