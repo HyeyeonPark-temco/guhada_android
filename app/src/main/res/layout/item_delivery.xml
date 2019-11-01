@@ -19,7 +19,7 @@
             android:id="@+id/view_delivery_topline"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_6"
+            android:background="@color/white_four"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
