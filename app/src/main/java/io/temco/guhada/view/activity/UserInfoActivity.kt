@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.text.Editable
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.DatePicker
@@ -102,6 +103,10 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     val mobile = data?.getStringExtra("phoneNumber")
                     val di = data?.getStringExtra("di")
                     val name = data?.getStringExtra("name")
+                    val gender = data?.getStringExtra("gender") // FEMALE MALE
+                    val birth = data?.getStringExtra("birth")   // yyyy-MM-dd
+
+//                    Log.e("본인인증", "$gender $birth")
 
                     if (di != null)
                         mViewModel.mUser.value!!.userDetail.diCode = di
@@ -117,6 +122,10 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                         mBinding.textviewMypageuserinfoName.text = name
                         mViewModel.mUser.value!!.name = name
                     }
+
+                    if(!gender.isNullOrEmpty())
+                        mViewModel.checkGenderValue.set(gender)
+
                 }
             }
             RequestCode.VERIFY_USERINFO.flag -> { // 이메일 인증
