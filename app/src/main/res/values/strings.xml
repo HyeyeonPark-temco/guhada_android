@@ -451,6 +451,7 @@
     <string name="productdetail_qna_button_moreclaim">더보기</string>
 
     <string name="productdetail_review_close">닫기</string>
+    <string name="productdetail_review_show">자세히 보기</string>
     <string name="productdetail_review_all">전체리뷰</string>
     <string name="productdetail_review_photo">포토리뷰</string>
     <string name="productdetail_review_size">수치포함</string>

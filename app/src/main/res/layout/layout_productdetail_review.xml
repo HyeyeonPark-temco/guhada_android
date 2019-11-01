@@ -226,7 +226,8 @@
                         android:layout_marginStart="10dp"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:productReviewSummary="@{viewModel.reviewSummary}" />
+                        app:productReviewSummary="@{viewModel.reviewSummary}"
+                        app:reviewGraphCollapsed="@{viewModel.mIsGraphCollapsed}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -363,7 +364,8 @@
                         android:layout_marginStart="10dp"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:productReviewSummary="@{viewModel.reviewSummary}" />
+                        app:productReviewSummary="@{viewModel.reviewSummary}"
+                        app:reviewGraphCollapsed="@{viewModel.mIsGraphCollapsed}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -500,14 +502,17 @@
                         android:layout_marginStart="10dp"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:productReviewSummary="@{viewModel.reviewSummary}" />
+                        app:productReviewSummary="@{viewModel.reviewSummary}"
+                        app:reviewGraphCollapsed="@{viewModel.mIsGraphCollapsed}" />
                 </LinearLayout>
 
                 <FrameLayout
+                    android:id="@+id/framelayout_productdetail_reviewgraphbtn"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="18dp"
                     android:layout_height="40dp"
+                    android:layout_marginTop="18dp"
                     android:background="@drawable/border_all_whitethree"
+                    android:onClick="@{()->viewModel.onClickGraphButton()}"
                     android:visibility="visible">
 
                     <LinearLayout
@@ -519,15 +524,18 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginEnd="5dp"
-                            android:text="@string/productdetail_review_close"
+                            android:text="@{viewModel.mIsGraphCollapsed ? @string/productdetail_review_show : @string/productdetail_review_close, default = @string/productdetail_review_show }"
                             android:textColor="@color/black_four"
                             android:textSize="@dimen/text_14" />
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/detail_btn_close" />
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="3dp"
+                            android:src="@{viewModel.mIsGraphCollapsed ? @drawable/detail_btn_more_open : @drawable/detail_btn_more_close, default = @drawable/detail_btn_more_open }" />
                     </LinearLayout>
                 </FrameLayout>
             </LinearLayout>

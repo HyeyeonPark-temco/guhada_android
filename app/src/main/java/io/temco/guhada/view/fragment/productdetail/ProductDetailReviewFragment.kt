@@ -243,8 +243,8 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
         @JvmStatic
         @BindingAdapter("productReviewSummary")
         fun RecyclerView.bindProductReviewSummary(summary: ReviewSummary) {
-            if (summary.totalReviewsCount > 0)
-                this.adapter = ProductDetailReviewGraphScoreAdapter().apply {
+            if (summary.totalReviewsCount > 0) {
+                ProductDetailReviewGraphScoreAdapter().apply {
                     this.mList = when (this@bindProductReviewSummary.id) {
                         R.id.recyclerview_productdetail_reviewgraph1 -> summary.satisfaction.sizes.toMutableList()
                         R.id.recyclerview_productdetail_reviewgraph2 -> summary.satisfaction.colors.toMutableList()
@@ -252,7 +252,20 @@ class ProductDetailReviewFragment : BaseFragment<LayoutProductdetailReviewBindin
                         else -> mutableListOf()
                     }
                     this.mMax = summary.totalReviewsCount
+                }.let { adapter ->
+                    this.adapter = adapter
+                    adapter.setBiggest()
                 }
+            }
+        }
+
+        @JvmStatic
+        @BindingAdapter("reviewGraphCollapsed")
+        fun RecyclerView.bindReviewGraphCollapsed(isCollapsed: Boolean) {
+            if (this.adapter != null) {
+                if (isCollapsed) (this.adapter as ProductDetailReviewGraphScoreAdapter).setBiggest()
+                else (this.adapter as ProductDetailReviewGraphScoreAdapter).setAll()
+            }
         }
 
         @JvmStatic
