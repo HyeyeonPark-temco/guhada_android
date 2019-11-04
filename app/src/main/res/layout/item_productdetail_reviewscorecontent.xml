@@ -1,43 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="isBiggest"
+            type="Boolean" />
+
+        <variable
+            name="max"
+            type="Integer" />
+
+        <variable
+            name="reviewSatisfaction"
+            type="io.temco.guhada.data.model.review.ReviewSummary.SatisfactionContent" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <TextView
-            style="@style/TextMedium"
-            android:layout_width="wrap_content"
+            style="@style/TextMediumSingleLine"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:text="@string/dummy_content_singleline"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_14" />
+            android:text="@{reviewSatisfaction.description}"
+            android:textColor="@{isBiggest ? @color/colorPrimary : @color/warm_grey_two }"
+            android:textSize="@dimen/text_13" />
 
         <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/progressBar"
+            style="@style/ReviewGraphStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:indeterminate="true"
-            android:progressDrawable="@drawable/progressbar_productdetail_reviewscore" />
+            android:max="@{max}"
+            android:progressDrawable="@{isBiggest ? @drawable/progressbar_round_purple : @drawable/progressbar_round_grey }"
+            android:progress="@{reviewSatisfaction.count}" />
 
         <TextView
-            style="@style/TextMedium"
-            android:layout_width="wrap_content"
+            style="@style/TextMediumSingleLine"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text="55"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_14" />
+            android:layout_marginStart="10dp"
+            android:text="@{@string/common_format_people(reviewSatisfaction.count)}"
+            android:textColor="@{isBiggest ? @color/colorPrimary : @color/warm_grey_two }"
+            android:textSize="@dimen/text_13" />
 
-        <TextView
-            style="@style/TextMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/common_unit_person"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_14" />
     </LinearLayout>
 </layout>

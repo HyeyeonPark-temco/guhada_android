@@ -264,6 +264,10 @@
         <item name="android:progressDrawable">@drawable/selector_ratingbarbig_review</item>
     </style>
 
+    <style name="ReviewGraphStyle" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:minHeight">6dp</item>
+    </style>
+
     <!-- Payment -->
     <style name="PaymentTitleBlackTextStyle" parent="@style/TextBold">
         <item name="android:textSize">@dimen/text_15</item>

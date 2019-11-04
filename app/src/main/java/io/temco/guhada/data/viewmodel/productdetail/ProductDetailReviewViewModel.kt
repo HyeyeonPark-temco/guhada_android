@@ -2,6 +2,7 @@ package io.temco.guhada.data.viewmodel.productdetail
 
 import android.view.View
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import com.auth0.android.jwt.JWT
 import io.temco.guhada.BR
@@ -39,6 +40,9 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
     var mSelectedRating: String? = ProductDetailReviewFragment.ReviewRating.ALL.value
     var mSelectedSorting: String = ProductDetailReviewFragment.ReviewSorting.CREATED_DESC.value
     var mTabSelectBlock = true
+    var mIsGraphCollapsed = ObservableBoolean(true)
+        @Bindable
+        get() = field
 
     fun getProductReviewSummary() {
         if (productId > 0)
@@ -213,5 +217,10 @@ class ProductDetailReviewViewModel : BaseObservableViewModel() {
     // 첫 리뷰 작성하기
     fun onClickWriteReview() {
         listener.onClickWriteReview()
+    }
+
+    fun onClickGraphButton(){
+        mIsGraphCollapsed.set(!mIsGraphCollapsed.get())
+        notifyPropertyChanged(BR.mIsGraphCollapsed)
     }
 }
