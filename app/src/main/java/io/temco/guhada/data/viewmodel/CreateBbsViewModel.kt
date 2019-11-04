@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.MutableLiveData
 import io.temco.guhada.BR
 import io.temco.guhada.common.enum.ImageUploadTarget
@@ -74,6 +75,15 @@ class CreateBbsViewModel(val context : Context) : BaseObservableViewModel() {
         set(value) {
             field = value
             notifyPropertyChanged(BR.filterList)
+        }
+
+
+    var keyboardLayoutShowState = ObservableInt(-1) // 키보드가 올라 왔을때 레이아웃의 설정 -1:all show, 0:brand/productName hide, 1:
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.keyboardLayoutShowState)
         }
 
     var selectedCategoryIndex = -1

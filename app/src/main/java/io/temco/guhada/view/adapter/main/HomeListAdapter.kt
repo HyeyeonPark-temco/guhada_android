@@ -47,7 +47,7 @@ import kotlin.collections.ArrayList
 class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<MainBaseModel>) :
         CommonRecyclerAdapter<MainBaseModel, HomeListAdapter.ListViewHolder>(list){
 
-
+    var isViewPagerIdle = false
     lateinit var mHandler: Handler
     lateinit var customRunnableMap: WeakReference<Runnable>
 
@@ -149,6 +149,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                 var data = item
                 var metrics = DisplayMetrics()
                 binding.viewModel = model
+                isViewPagerIdle = true
                 (containerView.context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
                 binding.heightLayout.setmHeight((384 * metrics.density).toInt())
                 binding.heightLayout.setmWidth((360 * metrics.density).toInt())
@@ -156,8 +157,8 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     infiniteAdapter = object : InfiniteGeneralFixedPagerAdapter<EventData>(data.eventList, true, true){
                         override fun getPageView(paramViewGroup: ViewGroup, paramInt: Int, item: EventData): View {
                             val imageView = ImageView(paramViewGroup.context)
-                            imageView.setLayoutParams(ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-                            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP)
+                            imageView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
                             imageView.setBackgroundResource(data.eventList[paramInt].imgRes)
                             //ImageUtil.loadImage(Glide.with(containerView.context as Activity),imageView, data.eventList[paramInt].imgPath)
                             return imageView
@@ -175,17 +176,12 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
                     model.mainHomeEventViewIndex.set(0)
                     binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
                         override fun onPageScrollStateChanged(state: Int) {
-                            if(state == ViewPager.SCROLL_STATE_IDLE){
-                                homeRolling()
-                            }else{
-                                mHandler.removeCallbacks(homeAdRolling)
-                            }
+                            isViewPagerIdle = state == ViewPager.SCROLL_STATE_IDLE
                         }
                         override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {  }
                         override fun onPageSelected(position: Int) {
                             currentAdIndex = position
                             model.mainHomeEventViewIndex.set(binding.viewPager.realCurrentItem)
-                            if(CustomLog.flag)CustomLog.L("MainEventViewHolder","onPageSelected currentAdIndex",binding.viewPager.realCurrentItem)
                         }
                     })
                 }
@@ -196,7 +192,7 @@ class HomeListAdapter(private val model : HomeListViewModel, list : ArrayList<Ma
         }
         var homeAdRolling =  Runnable {
             try{
-                if(mHandler != null && binding.viewPager!=null){
+                if(mHandler != null && binding.viewPager!=null && isViewPagerIdle){
                     if(currentAdIndex > (eventListSize * 1000) -100) currentAdIndex = (eventListSize*1000) / 2
                     binding.viewPager.setCurrentItemSmooth(currentAdIndex+1)
                 }

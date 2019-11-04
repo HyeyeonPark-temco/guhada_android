@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +48,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private final int REQUEST_CODE_BRAND = 202;
 
     private Disposable disposable = null;
+    private Handler mHandler = null;
     //
 
     private MainPagerAdapter mPagerAdapter;
@@ -88,6 +90,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
         mDb = GuhadaDB.Companion.getInstance(this);
         mLoadingIndicatorUtil = new LoadingIndicatorUtil(this);
         CommonUtil.getUserIp();
+        mHandler = new Handler(getMainLooper());
         initMainPager();
         setEventBus();
     }
@@ -302,43 +305,6 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
             }
         });
-               /* .subscribe(new Observer<EventBusData>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(EventBusData data) {
-                        switch (data.getRequestCode()) {
-                            case Flag.RequestCode.PRODUCT_DETAIL:
-                                CommonUtil.startProductActivity(MainActivity.this, (Long) data.getData());
-                                break;
-                            case Flag.RequestCode.GO_TO_MAIN:
-                                finish();
-                                break;
-                            case Flag.RequestCode.EDIT_SHIPPING_ADDRESS:
-                                if (data.getData() != null) {
-                                    UserShipping shippingAddress = (UserShipping) data.getData();
-                                    Intent intent = new Intent(MainActivity.this, EditShippingAddressActivity.class);
-                                    intent.putExtra("orderShippingAddress", shippingAddress);
-                                    intent.putExtra("purchaseId", shippingAddress.getPId());
-                                    intent.putExtra("addButtonVisible", true);
-                                    startActivityForResult(intent, Flag.RequestCode.EDIT_SHIPPING_ADDRESS);
-                                }
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });*/
     }
 
     // Main Pager
@@ -446,16 +412,25 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 showBrandListDialog();
                 break;
             case 2: // Home
-                mPagerAdapter.removeProduct();
+                //mPagerAdapter.removeProduct();
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(0);
+                if(mHandler != null){
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
+                        }
+                    },150);
+                }
+                if(CustomLog.getFlag())CustomLog.L("selectTab","layoutPager",position,"isReselected",isReselected);
                 break;
             case 3: // Community
-                mPagerAdapter.removeProduct();
+                //mPagerAdapter.removeProduct();
                 if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(1);
                 break;
             case 4: // My Page
                 if (CommonUtil.checkToken()) {
-                    mPagerAdapter.removeProduct();
+                    //mPagerAdapter.removeProduct();
                     if (!isReselected) {
                         if (false) {
                             // if login

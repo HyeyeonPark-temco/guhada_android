@@ -20,7 +20,7 @@ class InfiniteViewPager : MultiTouchViewPager {
             if (isInfinity) {
                if (adapter is InfiniteGeneralFixedPagerAdapter<*>) {
                     this.realCount = (adapter as InfiniteGeneralFixedPagerAdapter<*>).realCount
-                    return 100 * this.realCount
+                    return 1000 * this.realCount
                 } else
                     return adapter!!.count
             } else {
