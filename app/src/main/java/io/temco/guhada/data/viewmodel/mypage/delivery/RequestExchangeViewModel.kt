@@ -170,7 +170,9 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     }
 
     fun requestExchange() {
-        if (mExchangeRequest.exchangeShippingAddress.shippingMessage.isEmpty() ||
+        if (mExchangeRequest.exchangeReasonDetail.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_hint_cause))
+        } else if (mExchangeRequest.exchangeShippingAddress.shippingMessage.isEmpty() ||
                 mExchangeRequest.exchangeShippingAddress.shippingMessage.equals(BaseApplication.getInstance().getString(R.string.shippingmemo_default))) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingmemo_default))
         } else {
