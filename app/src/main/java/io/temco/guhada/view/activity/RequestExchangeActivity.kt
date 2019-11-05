@@ -77,6 +77,8 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                 initCollection(it)
                 initShippingPayment(it)
                 initExchangeShipping(it)
+
+                mViewModel.mExchangeRequest.quantity = it.quantity
                 mBinding.executePendingBindings()
             }
         })
@@ -131,11 +133,11 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
         mBinding.includeRequestexchangeCause.hintMessage = resources.getString(R.string.requestorderstatus_exchange_hint_cause)
         mBinding.includeRequestexchangeCause.edittextRequestorderstatusCause.setText(purchaseOrder.exchangeReasonDetail)
         mBinding.includeRequestexchangeCause.quantityTitle = resources.getString(R.string.requestorderstatus_exchange_quantity)
-        mBinding.includeRequestexchangeCause.quantity = 1
+        mBinding.includeRequestexchangeCause.quantity = purchaseOrder.quantity
         mBinding.includeRequestexchangeCause.requestType = 1
 
         mBinding.includeRequestexchangeCause.setOnClickAmountMinus {
-            val quantity = mBinding.includeRequestexchangeCause.quantity ?: 0
+            val quantity = mViewModel.mExchangeRequest.quantity
             if (quantity - 1 <= 0)
                 ToastUtil.showMessage("교환 가능 최소 수량 1개")
             else mBinding.includeRequestexchangeCause.quantity = quantity - 1
@@ -144,7 +146,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
                     ?: 0
         }
         mBinding.includeRequestexchangeCause.setOnClickAmountPlus {
-            val quantity = mBinding.includeRequestexchangeCause.quantity ?: 0
+            val quantity = mViewModel.mExchangeRequest.quantity
             if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage("교환 가능 최대 수량 ${purchaseOrder.quantity}개")
             else mBinding.includeRequestexchangeCause.quantity = quantity + 1
 

@@ -31,7 +31,6 @@ import io.temco.guhada.view.adapter.ShippingCompanySpinnerAdapter
 class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityRequestrefundBinding>() {
     private lateinit var mViewModel: RequestRefundViewModel
 
-
     override fun getBaseTag(): String = RequestRefundActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_requestrefund
     override fun getViewType(): Type.View = Type.View.REQUEST_REFUND

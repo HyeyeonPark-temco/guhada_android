@@ -15,6 +15,7 @@ import io.temco.guhada.view.activity.base.BindActivity
  */
 class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>() {
     private lateinit var mPurchaseOrder: PurchaseOrder
+    private var mOption = ""
 
     override fun getBaseTag(): String = SuccessRequestRefundActivity::class.java.simpleName
 
@@ -49,9 +50,10 @@ class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>(
     }
 
     private fun initRefundInfo(refundRequest: RefundRequest) {
-        this.mPurchaseOrder.quantity = refundRequest.quantity
+        mPurchaseOrder.quantity = refundRequest.quantity
+        mOption = mPurchaseOrder.getOptionStr()
         mBinding.refundRequest = refundRequest
-        mBinding.includeSuccessrefundProductinfo.optionStr = mPurchaseOrder.getOptionStr()
+        mBinding.includeSuccessrefundProductinfo.optionStr = mOption
     }
 }
 
