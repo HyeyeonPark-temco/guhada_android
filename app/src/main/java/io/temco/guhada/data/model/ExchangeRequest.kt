@@ -11,7 +11,7 @@ import java.io.Serializable
  * @since 2019.08.19
  */
 class ExchangeRequest : Serializable {
-    var alreadySend = true
+    var alreadySend : Boolean? = null
     var claimShippingPriceType = ""
     var exchangeReason = ""
     var exchangeReasonDetail = ""
@@ -31,5 +31,10 @@ class ExchangeRequest : Serializable {
             ShippingPaymentType.DIRECT_SEND.type -> String.format(context.getString(R.string.successexchange_shippingpayment), context.getString(R.string.requestorderstatus_common_shipping_radio2))
             else -> "판매자 부담"
         }
+    }
+
+    fun getInvoiceInfo(): String {
+        return if (invoiceNo > 0) "$shippingCompanyName $invoiceNo"
+        else shippingCompanyName
     }
 }

@@ -31,7 +31,9 @@ class SellerStore {
     var businessHours: String? = ""
     var profileImageUrl = ""
 
-    @Expose
+    var recentlyRegisteredProductCount = 0  // 24시간 내에 등록된 상품 갯수
+
+   @Expose
     var isFollowing = true
 
     override fun toString(): String {

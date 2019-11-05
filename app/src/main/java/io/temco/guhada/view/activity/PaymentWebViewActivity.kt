@@ -34,23 +34,26 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
     private val INSTALL_URL = "http://mobile.vpay.co.kr/jsp/MISP/andown.jsp"
     private var URL = ""
     private val SELLER_ID = "P_MID"
-    private  val ORDER_ID = "P_OID"
+    private val ORDER_ID = "P_OID"
     private val ORDER_PRICE = "P_AMT"
-    private  val USER_NAME = "P_UNAME"
-    private  val PRODUCT_NAME = "P_GOODS"
+    private val USER_NAME = "P_UNAME"
+    private val PRODUCT_NAME = "P_GOODS"
     private val AUTH_NEXT_URL = "P_NEXT_URL"
-    private   val FINISH_URL = "P_RETURN_URL"
-    private  val TIMESTAMP = "P_TIMESTAMP"
-    private  val SIGNATURE = "P_SIGNATURE"
-    private  val HASH_SIGNKEY = "P_MKEY"
-    private  val OFFER_PERIOD = "P_OFFER_PERIOD"
-    private   val PURCHASE_EMAIL = "P_EMAIL"
-    private  val PURCHASE_MOBILE = "P_MOBILE"
-    private  val STORE_NAME = "P_MNAME"
+    private val FINISH_URL = "P_RETURN_URL"
+    private val TIMESTAMP = "P_TIMESTAMP"
+    private val SIGNATURE = "P_SIGNATURE"
+    private val HASH_SIGNKEY = "P_MKEY"
+    private val OFFER_PERIOD = "P_OFFER_PERIOD"
+    private val PURCHASE_EMAIL = "P_EMAIL"
+    private val PURCHASE_MOBILE = "P_MOBILE"
+    private val STORE_NAME = "P_MNAME"
     private val CHARSET = "EUC-KR"
 
     // 신용카드 전용 필드
     val COMPLEX_FIELD = "P_RESERVED"
+
+    // 가상계좌(무통장입금) 선택 필드
+    val VBANK_EXPIRE_DT = "P_VBANK_DT"
 
     override fun getBaseTag(): String = PaymentWebViewActivity::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_paymentwebview
@@ -81,8 +84,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
 
         when (intent.getStringExtra("payMethod")) {
             "CARD" -> params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("twotrs_isp=Y& block_isp=Y& twotrs_isp_noti=N&apprun_checked=Y", "EUC-KR")}"
-            "VBank" -> {
-            }      // 무통장 입금
+            "VBank" -> params = "$params&$VBANK_EXPIRE_DT=${URLEncoder.encode(mViewModel.pgResponse.expireDate, CHARSET)}" // 무통장 입금
             "DirectBank" -> params = "$params&$COMPLEX_FIELD=${URLEncoder.encode("apprun_checked=Y", "EUC-KR")}"   // 실시간 계좌이체
             "TOKEN" -> {
             }
@@ -146,7 +148,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                         val document = Jsoup.parse(it)
                         val resultCode = document.getElementById("resultCode")?.`val`() ?: ""
                         val resultMsg = document.select("input[name=resultMsg]").`val`() ?: ""
-                        if(CustomLog.flag) CustomLog.L("결제 결과 메세지", resultMsg)
+                        if (CustomLog.flag) CustomLog.L("결제 결과 메세지", resultMsg)
 
                         if (resultCode == RESULT_CODE_SUCCESS) {
                             val pgTid = document.getElementById("pgTid")?.`val`() ?: ""
@@ -211,7 +213,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                                 finish()
                             }
                         } else {
-                            intent.putExtra("resultMessage",resultMsg)
+                            intent.putExtra("resultMessage", resultMsg)
                             setResult(Activity.RESULT_CANCELED, intent)
                             finish()
                         }
@@ -221,7 +223,7 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
         }
 
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-            if(CustomLog.flag)  CustomLog.L("<LPAY>", url.toString())
+            if (CustomLog.flag) CustomLog.L("<LPAY>", url.toString())
 
             if (!url?.startsWith("http://")!! && !url.startsWith("https://") && !url.startsWith("javascript")) {
                 val intent: Intent
@@ -277,6 +279,6 @@ class PaymentWebViewActivity : BindActivity<ActivityPaymentwebviewBinding>() {
                 .setPositiveButton("확인") { dialog, which ->
                     finish()
                 }.create().show()
-        if(CustomLog.flag) CustomLog.L(tas, message)
+        if (CustomLog.flag) CustomLog.L(tas, message)
     }
 }
