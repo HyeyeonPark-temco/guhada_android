@@ -238,7 +238,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         }
     }
 
-
     override fun onStart() {
         super.onStart()
         if (customLayoutMap.isNotEmpty()) {
