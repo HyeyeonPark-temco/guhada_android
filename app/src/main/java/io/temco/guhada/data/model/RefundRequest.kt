@@ -13,8 +13,8 @@ import java.util.*
  * @author Hyeyeon Park
  */
 class RefundRequest : Serializable, Observable() {
-    var alreadySend = false
-    var claimShippingPriceType = ""
+    var alreadySend : Boolean? = null
+    var claimShippingPriceType = ShippingPaymentType.NONE.type    // 반품 배송비
     var invoiceNo = 0L
     var orderProdGroupId = 0L
     var quantity = 1

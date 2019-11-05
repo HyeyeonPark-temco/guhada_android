@@ -902,9 +902,12 @@
     <string name="requestorderstatus_refund_quantity">반품 수량</string>
     <string name="requestorderstatus_refund_cause">반품 사유를 선택해주세요.</string>
     <string name="requestorderstatus_refund_hint_cause">반품 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_refund_shipping">반품 배송비 결제 방식을 선택해주세요.</string>
     <string name="requestorderstatus_refund_button_submit">반품 신청</string>
     <string name="requestorderstatus_refund_button_update">반품 신청 수정</string>
     <string name="requestorderstatus_refund_selleraddress">반품 반송지</string>
+    <string name="requestorderstatus_refund_way_message1">반품상품 발송 여부를 선택해주세요.</string>
+    <string name="requestorderstatus_refund_way_message2">반품상품 발송 택배사를 선택해주세요.</string>
     <string name="requestorderstatus_refund_way_description">반품상품을 이미 발송하셨나요?</string>
     <string name="requestorderstatus_refund_way_title">반품 발송 여부</string>
     <string name="requestorderstatus_refund_shipping_title">반품배송비 결제</string>
