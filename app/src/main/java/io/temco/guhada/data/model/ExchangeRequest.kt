@@ -11,7 +11,7 @@ import java.io.Serializable
  * @since 2019.08.19
  */
 class ExchangeRequest : Serializable {
-    var alreadySend = true
+    var alreadySend : Boolean? = null
     var claimShippingPriceType = ""
     var exchangeReason = ""
     var exchangeReasonDetail = ""

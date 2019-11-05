@@ -181,7 +181,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundCause.quantity = purchaseOrder.quantity
         mBinding.includeRequestrefundCause.requestType = 2
         mBinding.includeRequestrefundCause.setOnClickAmountMinus {
-//            val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
             val quantity = mViewModel.mRefundRequest.quantity
             if (quantity - 1 <= 0) ToastUtil.showMessage("반품 가능 최소 수량 1개")
             else {
@@ -191,7 +190,6 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             }
         }
         mBinding.includeRequestrefundCause.setOnClickAmountPlus {
-//            val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
             val quantity = mViewModel.mRefundRequest.quantity
             if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage("반품 가능 최대 수량 ${purchaseOrder.quantity}개")
             else {

@@ -887,6 +887,9 @@
     <string name="requestorderstatus_exchange_quantity">교환 수량</string>
     <string name="requestorderstatus_exchange_cause">교환 사유를 선택해주세요.</string>
     <string name="requestorderstatus_exchange_hint_cause">교환 사유를 간략히 적어주세요.</string>
+    <string name="requestorderstatus_exchange_way_message1">교환상품 발송 여부를 선택해주세요.</string>
+    <string name="requestorderstatus_exchange_way_message2">교환상품 발송 택배사를 선택해주세요.</string>
+    <string name="requestorderstatus_exchange_shipping">교환 배송비 결제 방식을 선택해주세요.</string>
     <string name="requestorderstatus_exchange_button_submit">교환 신청</string>
     <string name="requestorderstatus_exchange_button_update">교환 신청 수정</string>
     <string name="requestorderstatus_exchange_address">교환상품 배송지</string>

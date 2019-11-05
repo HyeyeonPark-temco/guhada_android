@@ -164,6 +164,7 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
 
                     } else {
                         val cause = mViewModel.mPurchaseOrder.value?.exchangeReasonList!![position]
+                        mViewModel.mSelectedShippingPayment = cause
                         mViewModel.mExchangeRequest.exchangeReason = cause.code
                         mBinding.includeRequestexchangeCause.defaultMessage = cause.label
 
