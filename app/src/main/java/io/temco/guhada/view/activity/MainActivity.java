@@ -165,6 +165,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     }
                 }
             }, "Bearer " + accessToken);
+        } else {
+            EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, 0);
+            EventBusHelper.sendEvent(data);
         }
 
     }
