@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -58,13 +59,31 @@
                     android:background="@drawable/top_btn_search"
                     android:onClick="@{clickListener}" />
 
-                <ImageView
-                    android:id="@+id/image_shop_cart"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="@drawable/top_btn_bag"
-                    android:onClick="@{clickListener}" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp">
+
+                    <ImageView
+                        android:id="@+id/image_shop_cart"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/top_btn_bag"
+                        android:onClick="@{clickListener}" />
+
+                    <TextView
+                        android:id="@+id/textview_badge"
+                        style="@style/TextMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|top"
+                        android:background="@drawable/badge"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_9" />
+
+                </FrameLayout>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

@@ -144,6 +144,29 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             ((BaseApplication) getApplicationContext()).getMoveToMain().clear();
             ((BaseApplication) getApplicationContext()).setMoveToMain(null);
         }
+
+        /**
+         * 상단 툴바 장바구니 뱃지
+         * @author Hyeyeon Park
+         * @since 2019.11.05
+         */
+        Token token = Preferences.getToken();
+        if (token != null) {
+            String accessToken = token.getAccessToken();
+            OrderServer.getCart((success, o) -> {
+                if (success && o instanceof BaseModel) {
+                    if (((BaseModel) o).data instanceof CartResponse) {
+                        CartResponse response = (CartResponse) ((BaseModel) o).data;
+                        int count = response.getCartItemResponseList().size();
+                        BaseApplication.mCartCount = count;
+
+                        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, count);
+                        EventBusHelper.sendEvent(data);
+                    }
+                }
+            }, "Bearer " + accessToken);
+        }
+
     }
 
     @Override
@@ -158,7 +181,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("MainActivity", "onActivityResult", "requestCode",requestCode);
+        if (CustomLog.INSTANCE.getFlag())
+            CustomLog.INSTANCE.L("MainActivity", "onActivityResult", "requestCode", requestCode);
         String msg = "";
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -210,7 +234,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if (data != null) {
                         mPagerAdapter.removeAll();
                         String text = data.getExtras().getString("search_word");
-                        if (CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
+                        if (CustomLog.INSTANCE.getFlag())
+                            CustomLog.INSTANCE.L("MainActivity", "SEARCH_WORD", text);
                         mPagerAdapter.setProductSearchData(text);
                     }
                     break;
@@ -229,18 +254,21 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     break;*/
                 case Flag.RequestCode.NAVER_LOGIN_MY:
                     msg = "";
-                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
+                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
+                        msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN_MY:
                     msg = "";
-                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
+                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
+                        msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN_MY:
                     msg = "";
-                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
+                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
+                        msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
                 case Flag.RequestCode.VERIFY_EMAIL:
                     assert data != null;
                     String email = data.getStringExtra("email");
@@ -263,18 +291,21 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     break;*/
                 case Flag.RequestCode.NAVER_LOGIN_MY:
                     msg = "";
-                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
+                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
+                        msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
                     break;
                 case Flag.RequestCode.RC_GOOGLE_LOGIN_MY:
                     msg = "";
-                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
+                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
+                        msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
                     break;
                 case Flag.RequestCode.FACEBOOK_LOGIN_MY:
                     msg = "";
-                    if(data!=null && data.getExtras()!=null && data.getExtras().containsKey("resultMsg")) msg = data.getExtras().getString("resultMsg");
-                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode+","+msg)));
+                    if (data != null && data.getExtras() != null && data.getExtras().containsKey("resultMsg"))
+                        msg = data.getExtras().getString("resultMsg");
+                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_USERINFO_LOGIN, (resultCode + "," + msg)));
             }
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -284,9 +315,9 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     // PUBLIC
     ////////////////////////////////////////////////
 
-    public void moveMainTab(int index){
+    public void moveMainTab(int index) {
         mBinding.layoutContents.layoutPager.setCurrentItem(index);
-        selectTab(index, false,true);
+        selectTab(index, true);
     }
 
     ////////////////////////////////////////////////
@@ -441,7 +472,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                         },150);
                     }
                 }
-                if(CustomLog.getFlag())CustomLog.L("selectTab","layoutPager",position,"isReselected",isReselected);
+                if (CustomLog.getFlag())
+                    CustomLog.L("selectTab", "layoutPager", position, "isReselected", isReselected);
                 break;
             case 3: // Community
                 //mPagerAdapter.removeProduct();
@@ -509,11 +541,11 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     @Override
     protected void onDestroy() {
         if (mLoadingIndicatorUtil != null) mLoadingIndicatorUtil.dismiss();
-        if(mDisposable != null){
+        if (mDisposable != null) {
             mDisposable.dispose();
             mDisposable = null;
         }
-        if(disposable != null){
+        if (disposable != null) {
             disposable.dispose();
         }
         super.onDestroy();

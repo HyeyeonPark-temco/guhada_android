@@ -45,12 +45,20 @@ public class BaseApplication extends MultiDexApplication {
      */
     private ActivityMoveToMain moveToMain = null;
 
+    /**
+     * 상단 툴바 장바구니 뱃지 count
+     *
+     * @author Hyeyeon Park
+     * @since 2019.11.05
+     */
+    public static int mCartCount = 0;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mApplication = this;
         initUserMaypage = false;
-        moveToMain = new ActivityMoveToMain(0,false);
+        moveToMain = new ActivityMoveToMain(0, false);
         categoryList = null;
         getFCMToken();
 
@@ -120,6 +128,7 @@ public class BaseApplication extends MultiDexApplication {
 
     /**
      * google analytics
+     *
      * @return tracker
      */
     synchronized public Tracker getDefaultTracker() {
@@ -131,14 +140,14 @@ public class BaseApplication extends MultiDexApplication {
         return sTracker;
     }
 
-    synchronized public List<Category> getCategoryList(){
-        if(categoryList == null || categoryList.get() == null || categoryList.get().isEmpty()){
+    synchronized public List<Category> getCategoryList() {
+        if (categoryList == null || categoryList.get() == null || categoryList.get().isEmpty()) {
             categoryList = new WeakReference<>(Preferences.getCategories());
         }
         return categoryList.get();
     }
 
-    public void setCategoryList(List<Category> list){
+    public void setCategoryList(List<Category> list) {
         categoryList = new WeakReference<>(list);
     }
 
