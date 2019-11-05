@@ -19,6 +19,7 @@ import io.temco.guhada.common.EventBusData;
 import io.temco.guhada.common.EventBusHelper;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Info;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CustomLog;
@@ -26,9 +27,13 @@ import io.temco.guhada.common.util.LoadingIndicatorUtil;
 import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.db.GuhadaDB;
 import io.temco.guhada.data.model.Brand;
+import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.UserShipping;
+import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.cart.CartResponse;
 import io.temco.guhada.data.model.claim.Claim;
 import io.temco.guhada.data.model.user.UserSize;
+import io.temco.guhada.data.server.OrderServer;
 import io.temco.guhada.databinding.ActivityMainBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
 import io.temco.guhada.view.adapter.MainPagerAdapter;
@@ -106,36 +111,38 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
          * 메인으로 이동해서 선택될 탭 화면
          */
         if (((BaseApplication) getApplicationContext()).getMoveToMain() != null && ((BaseApplication) getApplicationContext()).getMoveToMain().isMoveToMain()) {
-            if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() != -1){
+            if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() != -1) {
                 if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN) {
 
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(2);
                     moveMainIndex = 0;
-                    if(((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1){
+                    if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1) {
                         moveMainIndex = ((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex();
                     }
-                    selectTab(2, false,false);
-                    if(CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME onResume","moveMainIndex",moveMainIndex);
-                    if(((BaseApplication) getApplicationContext()).getMoveToMain().isInitMain()){
-                        if(mHandler != null){
+                    selectTab(2, false, false);
+                    if (CustomLog.getFlag())
+                        CustomLog.L("GO_TO_MAIN_HOME onResume", "moveMainIndex", moveMainIndex);
+                    if (((BaseApplication) getApplicationContext()).getMoveToMain().isInitMain()) {
+                        if (mHandler != null) {
                             mHandler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME selectTab","index",0,"currentViewPagerIndex",currentViewPagerIndex);
-                                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,moveMainIndex));
+                                    if (CustomLog.getFlag())
+                                        CustomLog.L("GO_TO_MAIN_HOME selectTab", "index", 0, "currentViewPagerIndex", currentViewPagerIndex);
+                                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE, moveMainIndex));
                                     moveMainIndex = 0;
                                 }
-                            },150);
+                            }, 150);
                         }
                     }
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(3);
-                    selectTab(3, false,true);
+                    selectTab(3, false, true);
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_MYPAGE) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(4);
-                    selectTab(4, false,true);
-                    if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1){
+                    selectTab(4, false, true);
+                    if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1) {
                         EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_MOVE,
                                 ((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex()));
                     }
@@ -320,7 +327,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     public void moveMainTab(int index) {
         mBinding.layoutContents.layoutPager.setCurrentItem(index);
-        selectTab(index, true);
+        selectTab(index, false, true);
     }
 
     ////////////////////////////////////////////////
@@ -387,7 +394,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 @Override
                 public void onClick(View v) {
                     int position = (int) v.getTag();
-                    selectTab(position, position == currentViewPagerIndex,true);
+                    selectTab(position, position == currentViewPagerIndex, true);
                 }
             });
             switch (i) {
@@ -417,7 +424,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     break;
             }
         }
-        selectTab(current, current == currentViewPagerIndex,true);
+        selectTab(current, current == currentViewPagerIndex, true);
     }
 
     public void selectTab(int position, boolean isReselected, boolean moveIndex) {
@@ -463,16 +470,17 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 break;
             case 2: // Home
                 //mPagerAdapter.removeProduct();
-                if (!isReselected)mBinding.layoutContents.layoutPager.setCurrentItem(0);
+                if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(0);
                 if (moveIndex) {
-                    if(mHandler != null){
+                    if (mHandler != null) {
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                if(CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME selectTab","index",0,"currentViewPagerIndex",currentViewPagerIndex);
-                                EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
+                                if (CustomLog.getFlag())
+                                    CustomLog.L("GO_TO_MAIN_HOME selectTab", "index", 0, "currentViewPagerIndex", currentViewPagerIndex);
+                                EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE, 0));
                             }
-                        },150);
+                        }, 150);
                     }
                 }
                 if (CustomLog.getFlag())
@@ -495,7 +503,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 } else {
                     //ToastUtil.showMessage("로그인 후 사용해 주세요.");
                     CommonUtil.startLoginPage(MainActivity.this);
-                    selectTab(2, false,true);
+                    selectTab(2, false, true);
                 }
                 break;
         }
@@ -552,7 +560,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             disposable.dispose();
         }
         super.onDestroy();
-        if(((BaseApplication) getApplicationContext()).getMoveToMain() != null){
+        if (((BaseApplication) getApplicationContext()).getMoveToMain() != null) {
             ((BaseApplication) getApplicationContext()).getMoveToMain().clear();
             ((BaseApplication) getApplicationContext()).setMoveToMain(null);
         }
