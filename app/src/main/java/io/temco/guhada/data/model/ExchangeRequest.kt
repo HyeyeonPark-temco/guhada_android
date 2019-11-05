@@ -32,4 +32,9 @@ class ExchangeRequest : Serializable {
             else -> "판매자 부담"
         }
     }
+
+    fun getInvoiceInfo(): String {
+        return if (invoiceNo > 0) "$shippingCompanyName $invoiceNo"
+        else shippingCompanyName
+    }
 }
