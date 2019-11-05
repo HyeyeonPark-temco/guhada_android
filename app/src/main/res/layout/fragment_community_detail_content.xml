@@ -171,10 +171,72 @@
                 android:layout_height="134dp"
                 android:src="@drawable/community_banner_mobile"
                 android:background="#d6b5ad"/>-->
-            <ImageView
+
+            <io.temco.guhada.view.custom.layout.HeightRelativeLayout
+                android:id="@+id/heightLayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="134dp">
+
+                <io.temco.guhada.view.viewpager.InfiniteViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffffff"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:weightSum="1"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="14dp"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/activity_view_pager_indicator_underline"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_marginRight="18dp"
+                        android:layout_weight="1"
+                        android:weightSum="2"
+                        android:visibility="invisible"
+                        android:orientation="horizontal"
+                        android:background="@color/white_overlay3"  >
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@{viewModel.communityEventViewIndex==0 ? @color/common_white : @color/transparent}"
+                            android:layout_weight="1"/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@{viewModel.communityEventViewIndex==1 ? @color/common_white : @color/transparent}"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <TextView
+                        style="@style/TextRegularSingleLine"
+                        android:id="@+id/textview_index"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/common_white"
+                        android:textSize="@dimen/text_12"
+                        android:visibility="invisible"
+                        android:letterSpacing="0.05"
+                        android:text="@{(viewModel.communityEventViewIndex+1) + `/2`}"/>
+
+                </LinearLayout>
+
+            </io.temco.guhada.view.custom.layout.HeightRelativeLayout>
+            <!--<ImageView
                 android:layout_width="match_parent"
                 android:layout_height="134dp"
-                android:background="@drawable/timedeal_com_m_360"/>
+                android:background="@drawable/timedeal_com_m_360"/>-->
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

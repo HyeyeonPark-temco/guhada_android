@@ -91,7 +91,7 @@ class MenListLayout constructor(
 
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
-            (context as MainActivity).selectTab(4, false)
+            (context as MainActivity).selectTab(4, false, true)
             EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE,MyPageTabType.LAST_VIEW.ordinal))
         }
 
@@ -289,6 +289,13 @@ class MenListLayout constructor(
                     }
                 }
         )
+    }
+
+    fun listScrollTop() {
+        try{  mHomeFragment?.getmBinding()?.layoutAppbar?.setExpanded(true) }catch (e : Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
+        scrollToTop(false)
     }
 
     override fun onFocusView() {  }

@@ -47,6 +47,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
     private final int REQUEST_CODE_CATEGORY = 201;
     private final int REQUEST_CODE_BRAND = 202;
 
+    private int moveMainIndex = 0;
+
     private Disposable disposable = null;
     private Handler mHandler = null;
     //
@@ -109,16 +111,30 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_HOME) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(2);
-                    selectTab(2, false);
+                    moveMainIndex = 0;
+                    if(((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1){
+                        moveMainIndex = ((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex();
+                    }
+                    selectTab(2, false,false);
+                    if(CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME onResume","moveMainIndex",moveMainIndex);
                     if(((BaseApplication) getApplicationContext()).getMoveToMain().isInitMain()){
-                        EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
+                        if(mHandler != null){
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME selectTab","index",0,"currentViewPagerIndex",currentViewPagerIndex);
+                                    EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,moveMainIndex));
+                                    moveMainIndex = 0;
+                                }
+                            },150);
+                        }
                     }
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_COMUNITY) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(3);
-                    selectTab(3, false);
+                    selectTab(3, false,true);
                 } else if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultCode() == Flag.ResultCode.GO_TO_MAIN_MYPAGE) {
                     mBinding.layoutContents.layoutPager.setCurrentItem(4);
-                    selectTab(4, false);
+                    selectTab(4, false,true);
                     if (((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex() != -1){
                         EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.MYPAGE_MOVE,
                                 ((BaseApplication) getApplicationContext()).getMoveToMain().getResultPageIndex()));
@@ -270,7 +286,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     public void moveMainTab(int index){
         mBinding.layoutContents.layoutPager.setCurrentItem(index);
-        selectTab(index, false);
+        selectTab(index, false,true);
     }
 
     ////////////////////////////////////////////////
@@ -337,7 +353,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 @Override
                 public void onClick(View v) {
                     int position = (int) v.getTag();
-                    selectTab(position, position == currentViewPagerIndex);
+                    selectTab(position, position == currentViewPagerIndex,true);
                 }
             });
             switch (i) {
@@ -367,10 +383,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     break;
             }
         }
-        selectTab(current, current == currentViewPagerIndex);
+        selectTab(current, current == currentViewPagerIndex,true);
     }
 
-    public void selectTab(int position, boolean isReselected) {
+    public void selectTab(int position, boolean isReselected, boolean moveIndex) {
         int index = currentViewPagerIndex;
         if (position >= 2) index = position;
         for (int i = 0; i < layout_maintab_layout.length; i++) {
@@ -413,14 +429,17 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 break;
             case 2: // Home
                 //mPagerAdapter.removeProduct();
-                if (!isReselected) mBinding.layoutContents.layoutPager.setCurrentItem(0);
-                if(mHandler != null){
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
-                        }
-                    },150);
+                if (!isReselected)mBinding.layoutContents.layoutPager.setCurrentItem(0);
+                if (moveIndex) {
+                    if(mHandler != null){
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(CustomLog.getFlag())CustomLog.L("GO_TO_MAIN_HOME selectTab","index",0,"currentViewPagerIndex",currentViewPagerIndex);
+                                EventBusHelper.sendEvent(new EventBusData(Flag.RequestCode.HOME_MOVE,0));
+                            }
+                        },150);
+                    }
                 }
                 if(CustomLog.getFlag())CustomLog.L("selectTab","layoutPager",position,"isReselected",isReselected);
                 break;
@@ -441,7 +460,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                 } else {
                     //ToastUtil.showMessage("로그인 후 사용해 주세요.");
                     CommonUtil.startLoginPage(MainActivity.this);
-                    selectTab(2, false);
+                    selectTab(2, false,true);
                 }
                 break;
         }
@@ -498,6 +517,10 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             disposable.dispose();
         }
         super.onDestroy();
+        if(((BaseApplication) getApplicationContext()).getMoveToMain() != null){
+            ((BaseApplication) getApplicationContext()).getMoveToMain().clear();
+            ((BaseApplication) getApplicationContext()).setMoveToMain(null);
+        }
         BaseApplication.getInstance().setMoveToMain(null);
     }
 

@@ -3,6 +3,7 @@ package io.temco.guhada.view.fragment.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Point
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -32,6 +33,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
     private var currentPagerIndex : Int = 0
     lateinit var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>>
+    lateinit var mHandler: Handler
 
     var recentProductCount = 0
     // -----------------------------
@@ -44,6 +46,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     override fun getLayoutId() = R.layout.fragment_main_home
     override fun init() {
         customLayoutMap = WeakHashMap()
+        mHandler = Handler(context?.mainLooper)
         initHeader()
         setEvenBus()
     }
@@ -195,8 +198,20 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                     try{
                         var index = requestCode.data as Int
                         currentPagerIndex = index
-                        mBinding.viewpager.setCurrentItem(index)
-                        (customLayoutMap.get(0) as HomeListLayout).listScrollTop()
+                        mHandler.postDelayed(Runnable {
+                            mBinding.viewpager.setCurrentItem(currentPagerIndex,true)
+                            if (CustomLog.flag) CustomLog.L("GO_TO_MAIN_HOME setEvenBus -", "currentPagerIndex", currentPagerIndex)
+                            if(customLayoutMap.containsKey(currentPagerIndex)){
+                                when(currentPagerIndex){
+                                    0-> (customLayoutMap[currentPagerIndex] as HomeListLayout).listScrollTop()
+                                    1-> (customLayoutMap[currentPagerIndex] as WomenListLayout).listScrollTop()
+                                    2-> (customLayoutMap[currentPagerIndex] as MenListLayout).listScrollTop()
+                                    3-> (customLayoutMap[currentPagerIndex] as KidsListLayout).listScrollTop()
+                                    4-> (customLayoutMap[currentPagerIndex] as TimeDealListLayout).listScrollTop()
+                                }
+
+                            }
+                        },150)
                     }catch (e : Exception){
                         if(CustomLog.flag)CustomLog.E(e)
                     }

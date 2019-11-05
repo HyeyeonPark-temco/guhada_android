@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -113,7 +114,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
         windowManager.defaultDisplay.getMetrics(dm)
         val width = dm.widthPixels - CommonViewUtil.convertDpToPixel(40, this)
         val height = dm.heightPixels - CommonViewUtil.convertDpToPixel(60, this)
-        mBinding.linearlayoutReivewwriteParent.layoutParams = FrameLayout.LayoutParams(width, height)
+        mBinding.linearlayoutReivewwriteParent.layoutParams = ViewGroup.LayoutParams(width, height)
 
         // 내 사이즈 등록/수정
         mBinding.setOnClickUserSize {

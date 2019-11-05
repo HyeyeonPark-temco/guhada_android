@@ -83,7 +83,7 @@ class HomeListLayout constructor(
 
         mBinding.buttonFloatingItem.layoutFloatingButtonBadge.setOnClickListener { view ->
             (context as MainActivity).mBinding.layoutContents.layoutPager.currentItem = 4
-            (context as MainActivity).selectTab(4, false)
+            (context as MainActivity).selectTab(4, false, true)
             EventBusHelper.sendEvent(EventBusData(Flag.RequestCode.MYPAGE_MOVE,MyPageTabType.LAST_VIEW.ordinal))
         }
         getRecentProductCount()
