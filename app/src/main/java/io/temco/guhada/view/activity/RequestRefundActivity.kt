@@ -131,6 +131,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
                 initCollection(it)
                 initShippingPayment(it)
                 initBank(it)
+
+                mViewModel.mRefundRequest.quantity = it.quantity
                 mViewModel.mOrderProdGroupId = it.orderProdGroupId
                 mViewModel.getExpectedRefundPriceForRequest(it.quantity)
                 mBinding.executePendingBindings()
@@ -180,7 +182,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
         mBinding.includeRequestrefundCause.quantity = purchaseOrder.quantity
         mBinding.includeRequestrefundCause.requestType = 2
         mBinding.includeRequestrefundCause.setOnClickAmountMinus {
-            val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
+//            val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
+            val quantity = mViewModel.mRefundRequest.quantity
             if (quantity - 1 <= 0) ToastUtil.showMessage("반품 가능 최소 수량 1개")
             else {
                 mBinding.includeRequestrefundCause.quantity = quantity - 1
@@ -189,7 +192,8 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
             }
         }
         mBinding.includeRequestrefundCause.setOnClickAmountPlus {
-            val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
+//            val quantity = mBinding.includeRequestrefundCause.quantity ?: 0
+            val quantity = mViewModel.mRefundRequest.quantity
             if (quantity + 1 > purchaseOrder.quantity) ToastUtil.showMessage("반품 가능 최대 수량 ${purchaseOrder.quantity}개")
             else {
                 mBinding.includeRequestrefundCause.quantity = quantity + 1

@@ -13,7 +13,7 @@ import java.util.*
  * @author Hyeyeon Park
  */
 class RefundRequest : Serializable, Observable() {
-    var alreadySend : Boolean? = null
+    var alreadySend: Boolean? = null
     var claimShippingPriceType = ShippingPaymentType.NONE.type    // 반품 배송비
     var invoiceNo = 0L
     var orderProdGroupId = 0L
@@ -46,5 +46,10 @@ class RefundRequest : Serializable, Observable() {
             ShippingPaymentType.DIRECT_SEND.type -> String.format(context.getString(R.string.successrefund_shippingpayment), context.getString(R.string.requestorderstatus_common_shipping_radio2))
             else -> "판매자 부담"
         }
+    }
+
+    fun getInvoiceInfo(): String {
+        return if (invoiceNo > 0) "$shippingCompanyName $invoiceNo"
+        else shippingCompanyName
     }
 }
