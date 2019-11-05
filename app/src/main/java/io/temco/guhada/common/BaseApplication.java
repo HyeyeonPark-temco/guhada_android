@@ -1,6 +1,8 @@
 package io.temco.guhada.common;
 
 
+import android.util.DisplayMetrics;
+
 import androidx.multidex.MultiDexApplication;
 
 import com.facebook.FacebookSdk;
@@ -35,6 +37,7 @@ public class BaseApplication extends MultiDexApplication {
     private static Tracker sTracker;
 
     private static WeakReference<List<Category>> categoryList;
+    private DisplayMetrics matrix = null;
 
     /**
      * @author park jungho
@@ -50,6 +53,8 @@ public class BaseApplication extends MultiDexApplication {
         moveToMain = new ActivityMoveToMain(0,false);
         categoryList = null;
         getFCMToken();
+
+        matrix = new DisplayMetrics();
 
         // add GoogleAnalytics
         sAnalytics = GoogleAnalytics.getInstance(this);
@@ -78,6 +83,7 @@ public class BaseApplication extends MultiDexApplication {
         mApplication = null;
         initUserMaypage = false;
         categoryList = null;
+        matrix = null;
     }
 
     public static BaseApplication getInstance() {
@@ -136,4 +142,11 @@ public class BaseApplication extends MultiDexApplication {
         categoryList = new WeakReference<>(list);
     }
 
+    public DisplayMetrics getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(DisplayMetrics matrix) {
+        this.matrix = matrix;
+    }
 }
