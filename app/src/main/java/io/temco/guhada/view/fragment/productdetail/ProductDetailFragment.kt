@@ -32,6 +32,7 @@ import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
 import io.temco.guhada.common.Type
@@ -90,6 +91,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
 
+    override fun onResume() {
+        super.onResume()
+        setBadge()
+    }
+
     // room database init
     private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
     // rx Init
@@ -104,6 +110,10 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mBinding.includeProductdetailHeader.viewModel = mViewModel
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+    }
+
+    private fun setBadge() {
+        mBinding.includeProductdetailHeader.textviewBadge.text = BaseApplication.mCartCount.toString()
     }
 
     private fun initUtils() {

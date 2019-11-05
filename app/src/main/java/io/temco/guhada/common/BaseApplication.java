@@ -15,9 +15,7 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 
-
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
@@ -157,5 +155,11 @@ public class BaseApplication extends MultiDexApplication {
 
     public void setMatrix(DisplayMetrics matrix) {
         this.matrix = matrix;
+    }
+
+    public void setmCartCount(int count){
+        mCartCount = count;
+        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, count);
+        EventBusHelper.sendEvent(data);
     }
 }

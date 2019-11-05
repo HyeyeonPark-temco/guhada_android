@@ -165,16 +165,12 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
                     if (((BaseModel) o).data instanceof CartResponse) {
                         CartResponse response = (CartResponse) ((BaseModel) o).data;
                         int count = response.getCartItemResponseList().size();
-                        BaseApplication.mCartCount = count;
-
-                        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, count);
-                        EventBusHelper.sendEvent(data);
+                        BaseApplication.getInstance().setmCartCount(count);
                     }
                 }
             }, "Bearer " + accessToken);
         } else {
-            EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, 0);
-            EventBusHelper.sendEvent(data);
+            BaseApplication.getInstance().setmCartCount(0);
         }
 
     }
