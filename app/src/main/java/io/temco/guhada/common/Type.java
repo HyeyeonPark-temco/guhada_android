@@ -73,7 +73,8 @@ public class Type {
         SHIPPING_TRACKING,
         VERIFY_EMAIL,
         SCHEME,
-        PHOTO_PAGER
+        PHOTO_PAGER,
+        CARD_INTEREST
     }
 
     // Main

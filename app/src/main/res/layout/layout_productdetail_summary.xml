@@ -60,7 +60,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@color/white_four"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/linearlayout_productdetail_advantage"
@@ -71,7 +71,7 @@
             android:paddingTop="17dp"
             android:paddingEnd="20dp"
             android:paddingBottom="17dp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 style="@style/ProductDetailContentBlackTextStyle"
@@ -84,8 +84,9 @@
                 style="@style/ProductDetailContentDarkGreyTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/textview_productdetail_advantagetitle"
                 android:layout_weight="1"
-                android:text="@string/productdetail_advantage_point"
+                android:text="@string/productdetail_advantage_cardinterest"
                 android:textColor="@color/greyish_brown_two"
                 android:textSize="@dimen/text_13" />
 
@@ -101,46 +102,115 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/pale_grey"
-            android:orientation="horizontal"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"
+            android:background="@color/common_white"
+            android:orientation="vertical"
             android:visibility="@{viewModel.advantageInfoExpanded ? View.VISIBLE : View.GONE, default =visible}">
 
-            <TextView
-                style="@style/TextRegular"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearlayout_productdetail_advantagepoint"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/productdetail_advantage_point"
-                android:textColor="@color/warm_grey"
-                android:textSize="@dimen/text_12" />
+                android:background="@color/pale_grey"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="18dp"
+                android:visibility="gone"
+                android:paddingEnd="20dp"
+                android:paddingBottom="18dp">
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/productdetail_advantage_point"
+                    android:textColor="@color/warm_grey"
+                    android:textSize="@dimen/text_12" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textview_productdetail_advangatepoint_buy"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/productdetail_format_buypoint(0), default= @string/productdetail_format_buypoint}"
+                        android:textColor="@color/greyish_brown_two"
+                        android:textSize="@dimen/text_12" />
+
+                    <TextView
+                        android:id="@+id/textview_productdetail_advangatepoint_review"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/productdetail_format_reviewpoint(0), default= @string/productdetail_format_reviewpoint}"
+                        android:textColor="@color/greyish_brown_two"
+                        android:textSize="@dimen/text_12" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+
+                android:background="@color/pale_grey"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="18dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="18dp">
 
                 <TextView
-                    android:id="@+id/textview_productdetail_advangatepoint_buy"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/productdetail_format_buypoint(0), default= @string/productdetail_format_buypoint}"
-                    android:textColor="@color/greyish_brown_two"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/productdetail_advantage_cardinterest"
+                    android:textColor="@color/warm_grey"
                     android:textSize="@dimen/text_12" />
 
+
                 <TextView
-                    android:id="@+id/textview_productdetail_advangatepoint_review"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/productdetail_format_reviewpoint(0), default= @string/productdetail_format_reviewpoint}"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="5만원 이상 무이자"
                     android:textColor="@color/greyish_brown_two"
                     android:textSize="@dimen/text_12" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_productdetail_cardinterest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/productdetail_advantage_more"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="@dimen/text_12" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/detail_icon_down_arrow" />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

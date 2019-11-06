@@ -113,6 +113,9 @@
             android:name=".view.activity.ProductDetailActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".view.activity.CardInterestActivity"
+            android:screenOrientation="portrait" />
+
         <!-- BlockChain-->
         <activity
             android:name=".view.activity.BlockChainHistoryActivity"

@@ -46,6 +46,7 @@
                 android:background="@color/white_four" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_cardinterest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

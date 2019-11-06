@@ -2,6 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="card"
+            type="io.temco.guhada.data.model.CardInterest" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,10 +24,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="15dp"
-
-            android:minWidth="80dp"   app:layout_constraintBottom_toTopOf="@+id/view_cardinterest_line"
+            android:minWidth="80dp"
             android:minHeight="30dp"
             android:src="@color/white_four"
+            app:layout_constraintBottom_toTopOf="@+id/view_cardinterest_line"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,8 +36,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="12dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="12dp"
             android:layout_weight="1"
@@ -43,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3sp"
-                android:text="2019. 11. 01 ~ 2019. 11. 30\n5만원 이상 결제 시 2~7개월 무이자"
+                android:text="@{card.getDate()}"
                 android:textColor="@color/greyish_brown_two"
                 android:textSize="@dimen/text_12" />
 
@@ -53,9 +64,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="※ 10개월 부분무이자 (1, 2회차 고객 부담)"
+                android:text="@{card.etc}"
                 android:textColor="@color/warm_grey"
-                android:textSize="@dimen/text_12" />
+                android:textSize="@dimen/text_12"
+                android:visibility="@{TextUtils.isEmpty(card.etc) ? View.GONE : View.VISIBLE}" />
         </LinearLayout>
 
         <View
