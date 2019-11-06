@@ -113,7 +113,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun setBadge() {
-        mBinding.includeProductdetailHeader.textviewBadge.text = BaseApplication.getInstance().getmCartCount().toString()
+//        mBinding.includeProductdetailHeader.textviewBadge.text = BaseApplication.getInstance().getmCartCount().toString()
     }
 
     private fun initUtils() {

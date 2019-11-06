@@ -168,15 +168,15 @@ public class BaseApplication extends MultiDexApplication {
     }
 
     public void minusCartCount(int count) {
-        mCartCount -= count;
-        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
-        EventBusHelper.sendEvent(data);
+//        mCartCount -= count;
+//        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
+//        EventBusHelper.sendEvent(data);
     }
 
     public void plusCartCount() {
-        mCartCount += 1;
-        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
-        EventBusHelper.sendEvent(data);
+//        mCartCount += 1;
+//        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
+//        EventBusHelper.sendEvent(data);
     }
 
 }

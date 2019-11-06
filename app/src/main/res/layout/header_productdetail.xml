@@ -62,38 +62,48 @@
                 android:background="@drawable/top_btn_search"
                 android:onClick="@{()->viewModel.onClickSearch()}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/framelayout_headerproductdetail_cart"
+                app:layout_constraintEnd_toStartOf="@+id/imagebutton_headerproductdetail_bag"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/framelayout_headerproductdetail_cart"
+
+            <ImageButton
+                android:id="@+id/imagebutton_headerproductdetail_bag"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.onClickShoppingBag()}"
+                android:src="@drawable/top_btn_bag" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_headerproductdetail_bag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{()->viewModel.onClickShoppingBag()}"
-                    android:src="@drawable/top_btn_bag" />
+            <!--<FrameLayout-->
+                <!--android:id="@+id/framelayout_headerproductdetail_cart"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent">-->
 
-                <TextView
-                    android:id="@+id/textview_badge"
-                    style="@style/TextMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|top"
-                    android:background="@drawable/badge"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/common_white"
-                    android:textSize="@dimen/text_9" />
+                <!--<ImageButton-->
+                    <!--android:id="@+id/imagebutton_headerproductdetail_bag"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:onClick="@{()->viewModel.onClickShoppingBag()}"-->
+                    <!--android:src="@drawable/top_btn_bag" />-->
 
-            </FrameLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/textview_badge"-->
+                    <!--style="@style/TextMedium"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="end|top"-->
+                    <!--android:background="@drawable/badge"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="0"-->
+                    <!--android:textColor="@color/common_white"-->
+                    <!--android:textSize="@dimen/text_9" />-->
+            <!--</FrameLayout>-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 </layout>
