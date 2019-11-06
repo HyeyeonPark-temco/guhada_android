@@ -123,6 +123,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
     // 혜택 정보
     var mExpectedPoint: MutableLiveData<ExpectedPointResponse> = MutableLiveData()
 
+    var mSetBadgeTask: () -> Unit = {}
+
     fun getDetail() {
         ProductServer.getProductDetail(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
@@ -462,8 +464,11 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
                             TrackingUtil.sendKochavaEvent(it)
                         }
 
-                        if (cart.cartValidStatus.status)
+                        if (cart.cartValidStatus.status){
                             listener?.showAddCartResult()
+                            BaseApplication.getInstance().plusCartCount()
+                            mSetBadgeTask()
+                        }
                         else {
                             ToastUtil.showMessage(cart.cartValidStatus.cartErrorMessage)
                         }

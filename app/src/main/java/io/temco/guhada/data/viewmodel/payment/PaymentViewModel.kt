@@ -227,8 +227,10 @@ class PaymentViewModel(val listener: PaymentActivity.OnPaymentListener) : BaseOb
                 val resultCode = (o as BaseModel<*>).resultCode
                 if (resultCode == ResultCode.SUCCESS.flag) {
                     this.cart = o.data as Cart
-                    if (this.cart.cartValidStatus.status)
+                    if (this.cart.cartValidStatus.status){
                         getOrderForm(accessToken)
+                        BaseApplication.getInstance().plusCartCount()
+                    }
                     else {
                         listener.showMessage(this.cart.cartValidStatus.cartErrorMessage)
                         listener.closeActivity()

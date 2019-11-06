@@ -113,7 +113,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     }
 
     private fun setBadge() {
-        mBinding.includeProductdetailHeader.textviewBadge.text = BaseApplication.mCartCount.toString()
+        mBinding.includeProductdetailHeader.textviewBadge.text = BaseApplication.getInstance().getmCartCount().toString()
     }
 
     private fun initUtils() {
@@ -125,6 +125,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
         mViewModel.notifySellerStoreFollow = { bookMark -> mStoreFragment.setSellerBookMark(bookMark) }
+        mViewModel.mSetBadgeTask = { setBadge() }
         mViewModel.mExpectedCouponList.observe(this, Observer { list ->
             if (list.isEmpty()) {
                 mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.GONE

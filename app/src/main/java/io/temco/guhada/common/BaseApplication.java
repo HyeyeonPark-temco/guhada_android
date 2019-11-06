@@ -157,9 +157,26 @@ public class BaseApplication extends MultiDexApplication {
         this.matrix = matrix;
     }
 
-    public void setmCartCount(int count){
+    public int getmCartCount() {
+        return mCartCount;
+    }
+
+    public void setmCartCount(int count) {
         mCartCount = count;
         EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, count);
         EventBusHelper.sendEvent(data);
     }
+
+    public void minusCartCount(int count) {
+        mCartCount -= count;
+        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
+        EventBusHelper.sendEvent(data);
+    }
+
+    public void plusCartCount() {
+        mCartCount += 1;
+        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
+        EventBusHelper.sendEvent(data);
+    }
+
 }
