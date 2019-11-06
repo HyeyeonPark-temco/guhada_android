@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageview_cardinterest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="15dp"
+
+            android:minWidth="80dp"   app:layout_constraintBottom_toTopOf="@+id/view_cardinterest_line"
+            android:minHeight="30dp"
+            android:src="@color/white_four"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout_cardinterest_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/view_cardinterest_line"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@+id/imageview_cardinterest"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textview_cardinterest_info"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3sp"
+                android:text="2019. 11. 01 ~ 2019. 11. 30\n5만원 이상 결제 시 2~7개월 무이자"
+                android:textColor="@color/greyish_brown_two"
+                android:textSize="@dimen/text_12" />
+
+            <TextView
+                android:id="@+id/textview_cardinterest_etc"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="※ 10개월 부분무이자 (1, 2회차 고객 부담)"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_cardinterest_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_four"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1329,4 +1329,7 @@
     <!-- TIME DEAL -->
     <string name="timedeal_today">오늘마감</string>
     <string name="timedeal_remain">%d일 남음</string>
+
+    <!-- CARD INTEREST -->
+    <string name="cardinterest_title1">무이자 할부정보 (%d년 %d월)</string>
 </resources>
