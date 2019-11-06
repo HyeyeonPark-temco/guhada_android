@@ -1,27 +1,53 @@
 package io.temco.guhada.view.fragment.community.detail
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
+import android.os.Handler
 import android.text.TextUtils
+import android.util.DisplayMetrics
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.*
+import android.widget.ImageView
+import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
+import io.temco.guhada.common.ActivityMoveToMain
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Info
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.util.CommonViewUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.DateUtil
+import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.community.CommunityMobileDetail
 import io.temco.guhada.data.model.community.CommunityMobileDetailImage
 import io.temco.guhada.data.model.community.CommunityMobileDetailText
+import io.temco.guhada.data.model.main.EventData
+import io.temco.guhada.data.model.main.MainBaseModel
+import io.temco.guhada.data.model.main.MainEvent
 import io.temco.guhada.data.viewmodel.community.CommunityDetailViewModel
+import io.temco.guhada.data.viewmodel.main.HomeListViewModel
 import io.temco.guhada.databinding.FragmentCommunityDetailContentBinding
 import io.temco.guhada.view.adapter.CommunityMobileDetailAdapter
 import io.temco.guhada.view.fragment.base.BaseFragment
+import io.temco.guhada.view.viewpager.InfiniteGeneralFixedPagerAdapter
+import java.lang.ref.WeakReference
 
 
 class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) : BaseFragment<FragmentCommunityDetailContentBinding>() {
 
     // -----------------------------
+
+    private var infiniteAdapter: InfiniteGeneralFixedPagerAdapter<EventData>? = null
+    lateinit var mHandler: Handler
+    private var currentAdIndex : Int = -1
+    private var eventListSize = 0
+    var isViewPagerIdle = false
 
     ////////////////////////////////////////////////
     // OVERRIDE
@@ -41,6 +67,21 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
         viewModel.getBookMark()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(infiniteAdapter != null){
+            isViewPagerIdle = true
+            homeRolling()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if(infiniteAdapter != null){
+            isViewPagerIdle = false
+            mHandler.removeCallbacks(homeAdRolling)
+        }
+    }
     ////////////////////////////////////////////////
     // PUBLIC
     ////////////////////////////////////////////////
@@ -164,9 +205,95 @@ class CommunityDetailContentsFragment(val viewModel : CommunityDetailViewModel) 
                 (mBinding.recyclerviewCommunitydetailList.adapter as CommunityMobileDetailAdapter).setItems(viewModel.mobileContentsList)
             }
         }
+        mHandler = Handler(context?.mainLooper)
+        setViewPager()
         mBinding.executePendingBindings()
     }
 
+
+
+    private fun setViewPager(){
+        if(infiniteAdapter == null){
+            val tmpList = java.util.ArrayList<EventData>()
+            // 이벤트 더미 데이터 --------------------------------
+            tmpList.add(EventData(0, "#d6b5ad", R.drawable.community_banner_mobile, "main_banner_mobile", "", "", 0, ""))
+            tmpList.add(EventData(1, "", R.drawable.timedeal_com_m_360, "main_banner_mobile", "", "", 1, ""))
+
+            var metrics = DisplayMetrics()
+            isViewPagerIdle = true
+            (context as Activity).windowManager.defaultDisplay.getMetrics(metrics)
+            mBinding.heightLayout.setmHeight((134 * metrics.density).toInt())
+            mBinding.heightLayout.setmWidth((360 * metrics.density).toInt())
+            infiniteAdapter = object : InfiniteGeneralFixedPagerAdapter<EventData>(tmpList, true, true){
+                override fun getPageView(paramViewGroup: ViewGroup, paramInt: Int, item: EventData): View {
+                    val imageView = ImageView(paramViewGroup.context)
+                    if(item.imgPath.isNullOrEmpty()){
+                        imageView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        imageView.setBackgroundResource(tmpList[paramInt].imgRes)
+                        imageView.setOnClickListener {
+                            BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, 4,true,true)
+                            (context as Activity).setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                            (context as Activity).onBackPressed()
+                        }
+                    }else{
+                        imageView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        imageView.setBackgroundColor(Color.parseColor(item.imgPath))
+                        imageView.setImageResource(tmpList[paramInt].imgRes)
+                        imageView.setOnClickListener {
+                            BaseApplication.getInstance().moveToMain = ActivityMoveToMain(ResultCode.GO_TO_MAIN_HOME.flag, true,true)
+                            (context as Activity).setResult(Flag.ResultCode.GO_TO_MAIN_HOME)
+                            (context as Activity).onBackPressed()
+                        }
+                    }
+                    //ImageUtil.loadImage(Glide.with(containerView.context as Activity),imageView, data.eventList[paramInt].imgPath)
+                    return imageView
+                }
+                override fun getPageTitle(position: Int): CharSequence? = ""
+                override fun getPagerIcon(position: Int): Int = 0
+                override fun getPagerIconBackground(position: Int): Int = 0
+            }
+            mBinding.viewPager.adapter = infiniteAdapter
+
+            if(currentAdIndex == -1){
+                eventListSize = mBinding.viewPager.offsetAmount
+                currentAdIndex = mBinding.viewPager.currentItem
+            }
+            mBinding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+                override fun onPageScrollStateChanged(state: Int) {
+                    isViewPagerIdle = state == ViewPager.SCROLL_STATE_IDLE
+                }
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {  }
+                override fun onPageSelected(position: Int) {
+                    currentAdIndex = position
+                    viewModel.communityEventViewIndex.set(mBinding.viewPager.realCurrentItem)
+                }
+            })
+            homeRolling()
+        }
+    }
+
+    private var homeAdRolling =  Runnable {
+        try{
+            if(::mHandler.isInitialized && infiniteAdapter != null && isViewPagerIdle){
+                if(currentAdIndex > (eventListSize * 1000) -100) currentAdIndex = (eventListSize*1000) / 2
+                mBinding.viewPager.setCurrentItemSmooth(currentAdIndex+1)
+            }
+        }catch (e:Exception){
+            if(CustomLog.flag)CustomLog.E(e)
+        }
+        homeRolling()
+    }
+
+
+    private fun homeRolling(){
+        try{
+            mHandler.removeCallbacks(homeAdRolling)
+            mHandler.postDelayed(homeAdRolling,5000)
+        }catch (e:Exception){
+            mHandler.removeCallbacks(homeAdRolling)
+            if(CustomLog.flag)CustomLog.E(e)
+        }
+    }
 
     ////////////////////////////////////////////////
 

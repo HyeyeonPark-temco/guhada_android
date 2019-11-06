@@ -17,7 +17,7 @@
         android:id="@+id/framelayout_delivery_button"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@{text.equals(@string/mypage_delivery_button_purchaseconfirm) || text.equals(@string/mypage_delivery_button_writereview) ? @drawable/background_color_purple : @drawable/border_all_silver }"
+        android:background="@{text.equals(@string/mypage_delivery_button_purchaseconfirm) || text.equals(@string/mypage_delivery_button_writereview) ? @drawable/background_color_purple : @drawable/border_all_whitefour }"
         android:onClick="@{onClickListener}"
         android:orientation="vertical">
 

@@ -3,6 +3,7 @@ package io.temco.guhada.view.fragment.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Point
+import android.os.Handler
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -29,9 +30,10 @@ import java.util.*
 class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListener {
 
     // -------- LOCAL VALUE --------
-    private var viewPagerAdapter : CustomViewPagerAdapter<String>? = null
-    private var currentPagerIndex : Int = 0
+    private var viewPagerAdapter: CustomViewPagerAdapter<String>? = null
+    private var currentPagerIndex: Int = 0
     lateinit var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>>
+    lateinit var mHandler: Handler
 
     var recentProductCount = 0
     // -----------------------------
@@ -44,6 +46,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     override fun getLayoutId() = R.layout.fragment_main_home
     override fun init() {
         customLayoutMap = WeakHashMap()
+        mHandler = Handler(context?.mainLooper)
         initHeader()
         setEvenBus()
     }
@@ -51,11 +54,11 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     override fun onClick(v: View) {
         when (v.id) {
             // @TODO MENU
-            R.id.image_side_menu ->{
+            R.id.image_side_menu -> {
                 CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
             }
             R.id.image_search -> {
-                CommonUtil.startSearchWordActivity(context as MainActivity,"", true)
+                CommonUtil.startSearchWordActivity(context as MainActivity, "", true)
             }
             R.id.image_shop_cart -> {
                 CommonUtil.startCartActivity(context as MainActivity)
@@ -98,25 +101,43 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         setViewPager()
     }
 
-    private fun setViewPager(){
-        if(viewPagerAdapter == null){
+    private fun setViewPager() {
+        if (viewPagerAdapter == null) {
             context?.let {
                 var tabtitle = resources.getStringArray(R.array.main_titles)
-                viewPagerAdapter = object : CustomViewPagerAdapter<String>(it,tabtitle, tabtitle){
+                viewPagerAdapter = object : CustomViewPagerAdapter<String>(it, tabtitle, tabtitle) {
                     override fun setViewLayout(container: ViewGroup, item: String, position: Int): View {
-                        var vw : View
-                        when(position){
-                            0->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            1->{vw = WomenListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            2->{vw = MenListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            3->{vw = KidsListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            4->{vw = TimeDealListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            5->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            6->{vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }}
-                            else->{vw = HomeListLayout(it)}
+                        var vw: View
+                        mBinding.viewLine.visibility = View.GONE
+                        when (position) {
+                            0 -> {
+                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                            }
+                            1 -> {
+                                vw = WomenListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                            }
+                            2 -> {
+                                vw = MenListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                            }
+                            3 -> {
+                                vw = KidsListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                            }
+                            4 -> {
+                                vw = TimeDealListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                                mBinding.viewLine.visibility = View.VISIBLE
+                            }
+                            5 -> {
+                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                            }
+                            6 -> {
+                                vw = HomeListLayout(it).apply { mHomeFragment = this@HomeFragment }
+                            }
+                            else -> {
+                                vw = HomeListLayout(it)
+                            }
                             // WomenListLayout,KidsListLayout,MenListLayout
                         }
-                        if(vw is BaseListLayout<*,*>) lifecycle.addObserver(vw)
+                        if (vw is BaseListLayout<*, *>) lifecycle.addObserver(vw)
                         customLayoutMap.put(position, vw as BaseListLayout<*, *>)
                         return vw
                     }
@@ -134,7 +155,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                     customLayoutMap.get(currentPagerIndex)!!.onFocusView()
                     if (customLayoutMap.isNotEmpty()) {
                         for (k in customLayoutMap.keys) {
-                            if(k != currentPagerIndex)
+                            if (k != currentPagerIndex)
                                 customLayoutMap[k]!!.onReleaseView()
                         }
                     }
@@ -143,7 +164,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
         })
         mBinding.viewpager.offscreenPageLimit = 3
         mBinding.viewpager.currentItem = currentPagerIndex
-        mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager){
+        mBinding.layoutTab.addOnTabSelectedListener(object : TabLayout.ViewPagerOnTabSelectedListener(mBinding.viewpager) {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 currentPagerIndex = tab?.position ?: 0
                 mBinding.viewpager.setCurrentItem(currentPagerIndex)
@@ -158,7 +179,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
             //if(CustomLog.flag)CustomLog.L("HomeFragment","scrollX",scrollX)
         }*/
         mBinding.imageviewLayoutTab.setOnClickListener {
-            mBinding.viewpager.setCurrentItem(currentPagerIndex+1)
+            mBinding.viewpager.setCurrentItem(currentPagerIndex + 1)
         }
     }
 
@@ -188,15 +209,27 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
 
 
     @SuppressLint("CheckResult")
-    private fun setEvenBus(){
+    private fun setEvenBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
                 Flag.RequestCode.HOME_MOVE -> {
-                    try{
+                    try {
                         var index = requestCode.data as Int
                         currentPagerIndex = index
-                        mBinding.viewpager.setCurrentItem(index)
-                        (customLayoutMap.get(0) as HomeListLayout).listScrollTop()
+                        mHandler.postDelayed(Runnable {
+                            mBinding.viewpager.setCurrentItem(currentPagerIndex,true)
+                            if (CustomLog.flag) CustomLog.L("GO_TO_MAIN_HOME setEvenBus -", "currentPagerIndex", currentPagerIndex)
+                            if(customLayoutMap.containsKey(currentPagerIndex)){
+                                when(currentPagerIndex){
+                                    0-> (customLayoutMap[currentPagerIndex] as HomeListLayout).listScrollTop()
+                                    1-> (customLayoutMap[currentPagerIndex] as WomenListLayout).listScrollTop()
+                                    2-> (customLayoutMap[currentPagerIndex] as MenListLayout).listScrollTop()
+                                    3-> (customLayoutMap[currentPagerIndex] as KidsListLayout).listScrollTop()
+                                    4-> (customLayoutMap[currentPagerIndex] as TimeDealListLayout).listScrollTop()
+                                }
+
+                            }
+                        },150)
                     }catch (e : Exception){
                         if(CustomLog.flag)CustomLog.E(e)
                     }
@@ -235,7 +268,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
 
     override fun onStop() {
         super.onStop()
-        mBinding.layoutAppbar.setExpanded(true,false)
+        mBinding.layoutAppbar.setExpanded(true, false)
         if (customLayoutMap.isNotEmpty()) {
             for (v in customLayoutMap) {
                 v.value.onStop()
@@ -246,7 +279,7 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
 
     override fun onDestroy() {
         super.onDestroy()
-        mBinding.layoutAppbar.setExpanded(true,false)
+        mBinding.layoutAppbar.setExpanded(true, false)
         if (customLayoutMap.isNotEmpty()) {
             for (v in customLayoutMap) {
                 v.value.onDestroy()

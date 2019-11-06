@@ -12,10 +12,7 @@ import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
-import io.temco.guhada.data.model.BankAccount
-import io.temco.guhada.data.model.ExpectedRefundPrice
-import io.temco.guhada.data.model.RefundRequest
-import io.temco.guhada.data.model.ShippingCompany
+import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.seller.Seller
@@ -34,10 +31,9 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mShippingCompanyList: MutableLiveData<MutableList<ShippingCompany>> = MutableLiveData(mutableListOf())
     var mExpectedRefundPrice: MutableLiveData<ExpectedRefundPrice> = MutableLiveData()
-    var mShippingPayment: Int = ShippingPaymentType.NONE.pos
+    var mSelectedShippingPayment: OrderChangeCause? = null
     var mSuccessRequestRefundTask: (purchaseOrder: PurchaseOrder) -> Unit = {}
     var mSuccessUpdateRefundTask: () -> Unit = {}
-    var mCause = ""
     var mOrderProdGroupId = 0L
     var mOrderClaimId = 0L
     var mOrderClaimGroupId = 0L
@@ -47,7 +43,7 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
         get() = field
 
     // 반품 신청 call 여부
-    var mIsRefundCallFinished = false
+    private var mIsRefundCallFinished = false
 
     init {
         this.mRefundRequest.addObserver(this)
@@ -122,7 +118,7 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
         if (mPurchaseOrder.value?.paymentMethod == "Card") {
             callRequestRefund()
         } else {
-            if (mBankAccount.value?.result ?: false) {
+            if (mBankAccount.value?.result == true) {
                 callRequestRefund()
             } else {
                 ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_message_requiredcheckaccount))
@@ -131,34 +127,45 @@ class RequestRefundViewModel : BaseObservableViewModel(), java.util.Observer {
     }
 
     private fun callRequestRefund() {
-        if(!mIsRefundCallFinished){
-            mIsRefundCallFinished = true
+        if (mRefundRequest.refundReason.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_cause))
+        } else if (mRefundRequest.refundReasonDetail.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_hint_cause))
+        } else if (mRefundRequest.alreadySend == null) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_way_message1))
+        } else if (mRefundRequest.alreadySend == true && mRefundRequest.shippingCompanyCode.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_way_message2))
+        } else if (mSelectedShippingPayment == null || (mSelectedShippingPayment?.isFeeCharged == true && mRefundRequest.claimShippingPriceType == ShippingPaymentType.NONE.type)) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_refund_shipping))
+        } else {
+            if (!mIsRefundCallFinished) {
+                mIsRefundCallFinished = true
+                ServerCallbackUtil.callWithToken(task = { accessToken ->
+                    ClaimServer.requestRefund(OnServerListener { success, o ->
+                        mIsRefundCallFinished = false
 
-            ServerCallbackUtil.callWithToken(task = { accessToken ->
-                ClaimServer.requestRefund(OnServerListener { success, o ->
-                    mIsRefundCallFinished = false
-
-                    ServerCallbackUtil.executeByResultCode(success, o,
-                            successTask = {
-                                val result = it.data as PurchaseOrder
-                                mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
-                                mPurchaseOrder.value?.orderStatusText = result.orderStatusText
-                                mPurchaseOrder.value?.claimStatusText = result.claimStatusText
-                                mSuccessRequestRefundTask(mPurchaseOrder.value!!)
-                            },
-                            failedTask = {
-                                ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
-                            },
-                            dataIsNull = {
-                                if (it is BaseModel<*>) {
-                                    CommonUtil.debug(it.message)
-                                    ToastUtil.showMessage(it.message)
-                                } else {
-                                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-                                }
-                            })
-                }, accessToken = accessToken, refundRequest = mRefundRequest)
-            })
+                        ServerCallbackUtil.executeByResultCode(success, o,
+                                successTask = {
+                                    val result = it.data as PurchaseOrder
+                                    mPurchaseOrder.value?.paymentMethodText = result.paymentMethodText
+                                    mPurchaseOrder.value?.orderStatusText = result.orderStatusText
+                                    mPurchaseOrder.value?.claimStatusText = result.claimStatusText
+                                    mSuccessRequestRefundTask(mPurchaseOrder.value!!)
+                                },
+                                failedTask = {
+                                    ToastUtil.showMessage("[${it.resultCode}] ${BaseApplication.getInstance().getString(R.string.common_message_servererror)}")
+                                },
+                                dataIsNull = {
+                                    if (it is BaseModel<*>) {
+                                        CommonUtil.debug(it.message)
+                                        ToastUtil.showMessage(it.message)
+                                    } else {
+                                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                                    }
+                                })
+                    }, accessToken = accessToken, refundRequest = mRefundRequest)
+                })
+            }
         }
 
     }

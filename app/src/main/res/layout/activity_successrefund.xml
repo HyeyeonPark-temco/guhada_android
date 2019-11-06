@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text="@{refundRequest.alreadySend ? refundRequest.shippingCompanyName + ` ` + refundRequest.invoiceNo : @string/successrefund_notsend }" />
+                    android:text="@{refundRequest.alreadySend ? refundRequest.getInvoiceInfo() : @string/successrefund_notsend }" />
 
                 <View
                     android:layout_width="match_parent"

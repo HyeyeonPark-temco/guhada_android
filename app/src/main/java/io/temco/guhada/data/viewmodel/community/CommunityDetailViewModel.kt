@@ -135,6 +135,14 @@ class CommunityDetailViewModel (val context : Context) : BaseObservableViewModel
         }
 
 
+    var communityEventViewIndex = ObservableInt(0)
+        @Bindable
+        get() = field
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.communityEventViewIndex)
+        }
+
 
     fun onClickLike() {
 

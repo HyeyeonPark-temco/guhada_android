@@ -3,17 +3,16 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.view.View
+import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnClickSelectItemListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
-import io.temco.guhada.common.util.LoadingIndicatorUtil
-import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.CreateBbsResponse
 import io.temco.guhada.data.model.CreateBbsTempResponse
 import io.temco.guhada.data.model.ImageResponse
@@ -24,6 +23,7 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonRoundImageResponseAdapter
 import io.temco.guhada.view.custom.dialog.CustomMessageDialog
 import io.temco.guhada.view.fragment.ListBottomSheetFragment
+
 
 /**
  * @author park jungho
@@ -71,6 +71,19 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
         })
         setView(false)
         setClickEvent()
+
+        val matrix = DisplayMetrics()
+        this@CreateBbsActivity.windowManager.defaultDisplay.getMetrics(matrix)
+        var height = matrix.heightPixels - CommonViewUtil.dipToPixel(this@CreateBbsActivity, 362)
+        mBinding.edittextReportText.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height).apply {
+            rightMargin = CommonViewUtil.dipToPixel(this@CreateBbsActivity, 20)
+            leftMargin = CommonViewUtil.dipToPixel(this@CreateBbsActivity, 20)
+            bottomMargin = CommonViewUtil.dipToPixel(this@CreateBbsActivity, 20)
+        }
+
+        /*KeyboardVisibilityEvent.setEventListener(this@CreateBbsActivity) {
+            if(CustomLog.flag)CustomLog.L("KeyboardVisibilityEvent","setEventListener",it)
+        }*/
     }
 
 
@@ -548,6 +561,7 @@ class CreateBbsActivity : BindActivity<ActivityCreatebbsBinding>(), OnClickSelec
                     if (isFinish) finish()
                 }).show(manager = this.supportFragmentManager, tag = "ReportActivity")
     }
+
 
     ////////////////////////////////////////////////
 

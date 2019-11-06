@@ -1,10 +1,12 @@
 package io.temco.guhada.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -56,6 +58,8 @@ class SplashActivity : BindActivity<ActivitySplashBinding>() {
         db = GuhadaDB.getInstance(this)!!
         BaseApplication.getInstance().moveToMain = null
         getAppVersionData()
+
+        this.windowManager.defaultDisplay.getMetrics((this@SplashActivity.applicationContext as BaseApplication).matrix)
     }
 
     ////////////////////////////////////////////////

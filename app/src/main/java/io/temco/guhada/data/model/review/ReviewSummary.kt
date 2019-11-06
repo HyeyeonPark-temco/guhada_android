@@ -1,5 +1,6 @@
 package io.temco.guhada.data.model.review
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -8,11 +9,11 @@ import com.google.gson.annotations.SerializedName
  * @author Hyeyeon Park
  */
 class ReviewSummary {
-    @SerializedName("satisfactionSummary ")
+    @SerializedName("satisfactionSummary")
     var satisfaction: Satisfaction = Satisfaction()
+
     var totalReviewsCount: Int = 0
     var averageReviewsRating: Float = 0.0f
-
 
 
     class Satisfaction {
@@ -20,12 +21,14 @@ class ReviewSummary {
         var colors: List<SatisfactionContent> = ArrayList()
         var lengths: List<SatisfactionContent> = ArrayList()
     }
-    
+
     class SatisfactionContent {
         var name: String = ""
         var description: String = ""
         var count: Int = 0
 
+        @Expose
+        var total = 0
 
     }
 

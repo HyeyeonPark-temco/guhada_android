@@ -14,6 +14,9 @@ import io.temco.guhada.view.activity.base.BindActivity
  * @since 2019.08.20
  */
 class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>() {
+    private lateinit var mPurchaseOrder: PurchaseOrder
+    private var mOption = ""
+
     override fun getBaseTag(): String = SuccessRequestRefundActivity::class.java.simpleName
 
     override fun getLayoutId(): Int = R.layout.activity_successrefund
@@ -31,19 +34,26 @@ class SuccessRequestRefundActivity : BindActivity<ActivitySuccessrefundBinding>(
         }
         intent.getSerializableExtra("refundRequest").let {
             if (it != null)
-                mBinding.refundRequest = it as RefundRequest
+                initRefundInfo(it as RefundRequest)
         }
         mBinding.setOnClickClose { finish() }
         mBinding.executePendingBindings()
     }
 
     private fun initProductInfo(purchaseOrder: PurchaseOrder) {
+        this.mPurchaseOrder = purchaseOrder
         mBinding.includeSuccessrefundProductinfo.imageUrl = purchaseOrder.imageUrl
         mBinding.includeSuccessrefundProductinfo.brandName = purchaseOrder.brandName
         mBinding.includeSuccessrefundProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.productName}"
-        mBinding.includeSuccessrefundProductinfo.optionStr = purchaseOrder.getOptionStr()
         mBinding.includeSuccessrefundProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeSuccessrefundProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
+    }
+
+    private fun initRefundInfo(refundRequest: RefundRequest) {
+        mPurchaseOrder.quantity = refundRequest.quantity
+        mOption = mPurchaseOrder.getOptionStr()
+        mBinding.refundRequest = refundRequest
+        mBinding.includeSuccessrefundProductinfo.optionStr = mOption
     }
 }
 

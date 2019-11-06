@@ -74,7 +74,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="7dp"
                 android:src="@drawable/mypage_icon_new"
-                android:visibility="gone"
+                android:visibility="@{sellerStore.recentlyRegisteredProductCount == 0 ? View.GONE : View.VISIBLE, default = gone}"
                 app:layout_constraintLeft_toRightOf="@+id/textview_mypagefollow_brandname"
                 app:layout_constraintTop_toTopOf="parent" />
         </LinearLayout>

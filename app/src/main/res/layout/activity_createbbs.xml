@@ -149,14 +149,114 @@
             android:layout_height="1dp"
             android:background="@color/white_four"/>
 
+        <!-- 말머리 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:visibility="@{viewModel.filterListVisible ? View.VISIBLE : View.GONE , default = gone}" >
 
+            <!--<io.temco.guhada.view.CustomSpinner
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/border_all_whitethree"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:overlapAnchor="false"
+                android:popupBackground="@null"
+                android:spinnerMode="dropdown"
+                android:onItemSelected="@{(p, v, pos, id) -> viewModel.onFilterSelect(pos)}"
+                app:bindCreateBbsSpinner="@{viewModel.filterList}" />-->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="@{onClickMenuSubTitle}">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/common_white"
+                    android:orientation="horizontal"
+                    android:popupBackground="@null">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/black_four"
+                            android:text="@{viewModel.filterTitle}"
+                            android:visibility="@{TextUtils.isEmpty(viewModel.filterTitle) ? View.GONE : View.VISIBLE, default = gone}"
+                            android:textSize="@dimen/text_15" />
+
+                        <TextView
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/black_four"
+                            android:visibility="@{TextUtils.isEmpty(viewModel.filterTitle) ? View.VISIBLE : View.GONE, default = gone}"
+                            android:text="@string/create_bbs_header_select_desc"
+                            android:textSize="@dimen/text_15" />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/payment_icon_selectbox_open"
+                        android:layout_marginRight="20dp"/>
+                </LinearLayout>
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white_four"/>
+
+        </RelativeLayout>
+
+        <!-- 제목 -->
+
+        <EditText
+            android:id="@+id/edittext_report_title"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:gravity="center_vertical"
+            android:maxLines="3"
+            android:background="@color/common_white"
+            android:hint="@string/report_community_text06"
+            android:text="@{item.title}"
+            android:textColorHint="@color/pinkish_grey"
+            android:textColor="@color/black_four"
+            android:textSize="@dimen/text_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white_four"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:fillViewport="true"
             android:overScrollMode="never">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,116 +264,12 @@
                 android:weightSum="1"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="51dp"
-                    android:visibility="@{viewModel.filterListVisible ? View.VISIBLE : View.GONE , default = gone}" >
-
-                    <!--<io.temco.guhada.view.CustomSpinner
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/border_all_whitethree"
-                        android:orientation="horizontal"
-                        android:overScrollMode="never"
-                        android:overlapAnchor="false"
-                        android:popupBackground="@null"
-                        android:spinnerMode="dropdown"
-                        android:onItemSelected="@{(p, v, pos, id) -> viewModel.onFilterSelect(pos)}"
-                        app:bindCreateBbsSpinner="@{viewModel.filterList}" />-->
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:onClick="@{onClickMenuSubTitle}">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:background="@color/common_white"
-                            android:orientation="horizontal"
-                            android:popupBackground="@null">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="20dp"
-                                android:layout_weight="1">
-
-                                <TextView
-                                    style="@style/TextRegular"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center_vertical"
-                                    android:textColor="@color/black_four"
-                                    android:text="@{viewModel.filterTitle}"
-                                    android:visibility="@{TextUtils.isEmpty(viewModel.filterTitle) ? View.GONE : View.VISIBLE, default = gone}"
-                                    android:textSize="@dimen/text_15" />
-
-                                <TextView
-                                    style="@style/TextRegular"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center_vertical"
-                                    android:textColor="@color/black_four"
-                                    android:visibility="@{TextUtils.isEmpty(viewModel.filterTitle) ? View.VISIBLE : View.GONE, default = gone}"
-                                    android:text="@string/create_bbs_header_select_desc"
-                                    android:textSize="@dimen/text_15" />
-                            </RelativeLayout>
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:src="@drawable/payment_icon_selectbox_open"
-                                android:layout_marginRight="20dp"/>
-                        </LinearLayout>
-                    </FrameLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/white_four"/>
-
-                </RelativeLayout>
-
-
-                <EditText
-                    android:id="@+id/edittext_report_title"
-                    style="@style/TextRegular"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:gravity="center_vertical"
-                    android:maxLines="3"
-                    android:background="@color/common_white"
-                    android:hint="@string/report_community_text06"
-                    android:text="@{item.title}"
-                    android:textColorHint="@color/pinkish_grey"
-                    android:textColor="@color/black_four"
-                    android:textSize="@dimen/text_15" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/white_four"/>
-
                 <EditText
                     android:id="@+id/edittext_report_text"
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:paddingTop="6dp"
+                    android:layout_height="400dp"
+                    android:paddingTop="16dp"
                     android:gravity="start"
                     android:maxLines="500"
                     android:maxLength="1000"

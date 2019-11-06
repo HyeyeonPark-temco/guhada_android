@@ -14,6 +14,9 @@ import io.temco.guhada.view.activity.base.BindActivity
  * @since 2019.08.17
  */
 class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBinding>() {
+    private lateinit var mPurchaseOrder: PurchaseOrder
+    private var mOption = ""
+
     override fun getBaseTag(): String = SuccessRequestExchangeActivity::class.java.simpleName
 
     override fun getLayoutId(): Int = R.layout.activity_successexchange
@@ -28,19 +31,26 @@ class SuccessRequestExchangeActivity : BindActivity<ActivitySuccessexchangeBindi
             if (it != null) mBinding.sellerAddress = it as SellerAddress
         }
         intent.getSerializableExtra("exchangeRequest").let {
-            if (it != null) mBinding.exchangeRequest = it as ExchangeRequest
+            if (it != null) initExchangeInfo(it as ExchangeRequest)
         }
         mBinding.setOnClickClose { finish() }
         mBinding.executePendingBindings()
     }
 
     private fun initProductInfo(purchaseOrder: PurchaseOrder) {
+        mPurchaseOrder = purchaseOrder
         mBinding.includeSuccessexchangeProductinfo.imageUrl = purchaseOrder.imageUrl
         mBinding.includeSuccessexchangeProductinfo.brandName = purchaseOrder.brandName
         mBinding.includeSuccessexchangeProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.productName}"
-        mBinding.includeSuccessexchangeProductinfo.optionStr = purchaseOrder.getOptionStr()
         mBinding.includeSuccessexchangeProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeSuccessexchangeProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText
+    }
+
+    private fun initExchangeInfo(exchangeRequest: ExchangeRequest){
+        mPurchaseOrder.quantity = exchangeRequest.quantity
+        mOption = mPurchaseOrder.getOptionStr()
+        mBinding.exchangeRequest = exchangeRequest
+        mBinding.includeSuccessexchangeProductinfo.optionStr = mOption
     }
 }
 

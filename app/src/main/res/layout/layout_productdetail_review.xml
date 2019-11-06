@@ -85,41 +85,469 @@
                 android:layout_height="1dp"
                 android:background="@color/white_four" />
 
+
+            <LinearLayout
+                android:id="@+id/linearlayout_productdetail_reviewgraph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:text="사이즈"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.sizes[0].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.sizes[1].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.sizes[2].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.sizes[0].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.sizes[0].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.sizes[1].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.sizes[1].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.sizes[2].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.sizes[2].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_productdetail_reviewgraph1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:productReviewSummary="@{viewModel.reviewSummary}"
+                        app:reviewGraphCollapsed="@{viewModel.mIsGraphCollapsed}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:text="컬러"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.colors[0].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.colors[1].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.colors[2].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.colors[0].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.colors[0].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.colors[1].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.colors[1].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.colors[2].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.colors[2].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_productdetail_reviewgraph2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:productReviewSummary="@{viewModel.reviewSummary}"
+                        app:reviewGraphCollapsed="@{viewModel.mIsGraphCollapsed}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextMedium"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:text="길이감"
+                        android:textColor="@color/black_four"
+                        android:textSize="@dimen/text_13" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.lengths[0].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.lengths[1].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                        <TextView
+                            style="@style/TextMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="16dp"
+                            android:text="@{viewModel.reviewSummary.satisfaction.lengths[2].description}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.lengths[0].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.lengths[0].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.lengths[1].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.lengths[1].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:max="@{viewModel.reviewSummary.totalReviewsCount}"
+                                android:progress="@{viewModel.reviewSummary.satisfaction.lengths[2].count}" />
+
+                            <TextView
+                                style="@style/TextMediumSingleLine"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@{@string/common_format_people(viewModel.reviewSummary.satisfaction.lengths[2].count)}"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/text_13" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerview_productdetail_reviewgraph3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:productReviewSummary="@{viewModel.reviewSummary}"
+                        app:reviewGraphCollapsed="@{viewModel.mIsGraphCollapsed}" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/framelayout_productdetail_reviewgraphbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/border_all_whitethree"
+                    android:onClick="@{()->viewModel.onClickGraphButton()}"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:text="@{viewModel.mIsGraphCollapsed ? @string/productdetail_review_show : @string/productdetail_review_close, default = @string/productdetail_review_show }"
+                            android:textColor="@color/black_four"
+                            android:textSize="@dimen/text_14" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="3dp"
+                            android:src="@{viewModel.mIsGraphCollapsed ? @drawable/detail_btn_more_open : @drawable/detail_btn_more_close, default = @drawable/detail_btn_more_open }" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_productdetail_reviewscore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-            <!-- [임시] 평점 그래프 안보이게 -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/border_all_whitethree"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:text="@string/productdetail_review_close"
-                        android:textColor="@color/black_four"
-                        android:textSize="@dimen/text_14" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/detail_btn_close" />
-                </LinearLayout>
-            </FrameLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -150,10 +578,10 @@
                     android:id="@+id/textview_review_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/productdetaininfo_review_rating"
-                    android:textSize="@dimen/text_13"
                     android:layout_marginEnd="4dp"
+                    android:text="@string/productdetaininfo_review_rating"
                     android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_13"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageview_review_rating"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -172,10 +600,10 @@
                     android:id="@+id/textview_review_sorting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/productdetaininfo_review_sorting"
-                    android:textSize="@dimen/text_13"
                     android:layout_marginEnd="4dp"
+                    android:text="@string/productdetaininfo_review_sorting"
                     android:textColor="@color/greyish_brown_two"
+                    android:textSize="@dimen/text_13"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageview_review_sorting"
                     app:layout_constraintTop_toTopOf="parent" />

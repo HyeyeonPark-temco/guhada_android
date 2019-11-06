@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.text.Editable
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.DatePicker
@@ -83,11 +84,13 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 })
             } else sendData()
         }
+
+        setInitView()
     }
 
     override fun onResume() {
         super.onResume()
-        if (checkUserLogin()) setInitView()
+        checkUserLogin()
     }
 
 
@@ -100,24 +103,37 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     val mobile = data?.getStringExtra("phoneNumber")
                     val di = data?.getStringExtra("di")
                     val name = data?.getStringExtra("name")
+                    val gender = data?.getStringExtra("gender") // FEMALE MALE
+                    val birth = data?.getStringExtra("birth")   // yyyy-MM-dd
 
                     if (di != null)
                         mViewModel.mUser.value!!.userDetail.diCode = di
 
                     if (mobile != null) {
-                        var mob = CommonUtilKotlin.setMobileNumber(mobile.replace("-","").replace(" ",""))
+                        var mob = CommonUtilKotlin.setMobileNumber(mobile.replace("-", "").replace(" ", ""))
                         mBinding.textviewMypageuserinfoMobile.setText(mob)
-                        mViewModel.mUser.value!!.mobile = mobile
-                        mViewModel.mUser.value!!.phoneNumber = mobile
+                        mViewModel.mUser.value?.mobile = mobile
+                        mViewModel.mUser.value?.phoneNumber = mobile
                     }
 
                     if (!name.isNullOrEmpty()) {
                         mBinding.textviewMypageuserinfoName.text = name
-                        mViewModel.mUser.value!!.name = name
+                        mViewModel.mUser.value?.name = name
+                    }
+
+                    if (!gender.isNullOrEmpty()){
+                        mViewModel.mUser.value?.userGender = gender
+                        mViewModel.checkGenderValue.set(gender)
+                    }
+
+                    if (!birth.isNullOrEmpty()) {
+                        mViewModel.mUser.value?.birth = birth
+                        setBirth()
                     }
                 }
             }
-            RequestCode.VERIFY_USERINFO.flag -> { // 이메일 인증
+            RequestCode.VERIFY_USERINFO.flag -> {
+                // 이메일 인증
                 if (resultCode == Activity.RESULT_OK) {
                     val email = data?.getStringExtra("email")
                     if (email != null) {
@@ -131,7 +147,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     }
 
     private fun sendData() {
-        if(!mViewModel.mIsNicknameValid.get()){
+        if (!mViewModel.mIsNicknameValid.get()) {
             CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 닉네임을 확인해 주세요.", false, false)
             return
         }
@@ -185,7 +201,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
     private fun setInitView() {
         mViewModel.userId = CommonUtil.checkUserId()
-        setUserData()
+        if (mViewModel.mUser.value == null)
+            setUserData()
     }
 
     private fun setUserData() {
@@ -196,7 +213,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
                 mBinding.user = mViewModel.mUser.value!!
                 mBinding.includeMypageuserinfoBank.user = mViewModel.mUser.value!!
-                mBinding.edittextMypageuserinfoNickname.text = Editable.Factory.getInstance().newEditable(mViewModel.mUser.value!!.nickname ?: "")
+                mBinding.edittextMypageuserinfoNickname.text = Editable.Factory.getInstance().newEditable(mViewModel.mUser.value!!.nickname
+                        ?: "")
 
                 mViewModel.mBankAccount.value = BankAccount().apply {
                     bankNumber = mViewModel.mUser.value!!.userDetail.accountNumber ?: ""
@@ -204,8 +222,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     //name = mViewModel.mUser.value!!.userDetail.verifiedName ?: ""
                 }
 
-                if(!TextUtils.isEmpty(mViewModel.mUser.value!!.mobile)){
-                    var mobile = CommonUtilKotlin.setMobileNumber(mViewModel.mUser.value!!.mobile.replace("-","").replace(" ",""))
+                if (!TextUtils.isEmpty(mViewModel.mUser.value!!.mobile)) {
+                    var mobile = CommonUtilKotlin.setMobileNumber(mViewModel.mUser.value!!.mobile.replace("-", "").replace(" ", ""))
                     mBinding.textviewMypageuserinfoMobile.setText(mobile)
                 }
 
@@ -214,7 +232,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
                 // 환불 계좌정보
                 initRefundAccountView()
-                if(!TextUtils.isEmpty(mViewModel.mUser.value!!.userDetail.accountNumber)){
+                if (!TextUtils.isEmpty(mViewModel.mUser.value!!.userDetail.accountNumber)) {
                     mViewModel.accountVerifiedIdentity = true
                     mViewModel.mRefundRequest.refundBankAccountNumber = mViewModel.mUser.value!!.userDetail.accountNumber!!
                 }
@@ -249,12 +267,13 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         // 스피너 드롭다운 Max Height 5개 높이로 설정
         val popup = AppCompatSpinner::class.java.getDeclaredField("mPopup")
         popup.isAccessible = true
-        val popupWindow= popup.get(mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank) as androidx.appcompat.widget.ListPopupWindow
+        val popupWindow = popup.get(mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank) as androidx.appcompat.widget.ListPopupWindow
         popupWindow.height = CommonViewUtil.convertDpToPixel(200, mBinding.root.context)
-        mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.mListener = object : CustomSpinner.OnCustomSpinnerListener{
+        mBinding.includeMypageuserinfoBank.spinnerRequestorderstatusBank.mListener = object : CustomSpinner.OnCustomSpinnerListener {
             override fun onSpinnerOpened() {
                 mViewModel.userBankSpinnerArrow.set(true)
             }
+
             override fun onSpinnerClosed() {
                 mViewModel.userBankSpinnerArrow.set(false)
             }
@@ -273,11 +292,11 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
         mBinding.setOnClickEmailButton {
             mViewModel.mUser.value!!.userDetail.agreeEmailReception = !mViewModel.mUser.value!!.userDetail.agreeEmailReception
-            mBinding.checkboxMypageuserinfoEmail.setImageResource(if(mViewModel.mUser.value!!.userDetail.agreeEmailReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
+            mBinding.checkboxMypageuserinfoEmail.setImageResource(if (mViewModel.mUser.value!!.userDetail.agreeEmailReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
         }
         mBinding.setOnClickSmsButton {
             mViewModel.mUser.value!!.userDetail.agreeSmsReception = !mViewModel.mUser.value!!.userDetail.agreeSmsReception
-            mBinding.checkboxMypageuserinfoSms.setImageResource(if(mViewModel.mUser.value!!.userDetail.agreeSmsReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
+            mBinding.checkboxMypageuserinfoSms.setImageResource(if (mViewModel.mUser.value!!.userDetail.agreeSmsReception) R.drawable.checkbox_selected else R.drawable.checkbox_select)
         }
     }
 
@@ -300,20 +319,20 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
         if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet format", String.format("%04d-%02d-%02d", cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH) + 1), cal.get(Calendar.DAY_OF_MONTH)))
         mBinding.setOnClickDateButton {
             datePicker = DatePickerDialog(this@UserInfoActivity, R.style.CalendarDialogTheme, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth))
-                    var selectCal = Calendar.getInstance().apply {
-                        set(Calendar.YEAR,year)
-                        set(Calendar.MONTH,month)
-                        set(Calendar.DAY_OF_MONTH,dayOfMonth)
-                    }
+                if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth))
+                var selectCal = Calendar.getInstance().apply {
+                    set(Calendar.YEAR, year)
+                    set(Calendar.MONTH, month)
+                    set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                }
 
-                    if(DateUtil.getNowDateDiffDay(selectCal.timeInMillis) > 1){
-                        mViewModel.mUser.value!!.birth = String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth)
-                        setBirth()
-                    }else{
-                        if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", "getNowDateDiffDay ", DateUtil.getNowDateDiffDay(selectCal.timeInMillis))
-                        CommonViewUtil.showDialog(this@UserInfoActivity,"잘못된 날자를 선택하였습니다.",false,false)
-                    }
+                if (DateUtil.getNowDateDiffDay(selectCal.timeInMillis) > 1) {
+                    mViewModel.mUser.value!!.birth = String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth)
+                    setBirth()
+                } else {
+                    if (CustomLog.flag) CustomLog.L("DatePickerDialog onDateSet OnDateSetListener", "getNowDateDiffDay ", DateUtil.getNowDateDiffDay(selectCal.timeInMillis))
+                    CommonViewUtil.showDialog(this@UserInfoActivity, "잘못된 날자를 선택하였습니다.", false, false)
+                }
             }, cal.get(Calendar.YEAR), (cal.get(Calendar.MONTH)), cal.get(Calendar.DAY_OF_MONTH))
             datePicker.show()
         }
@@ -477,13 +496,13 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 val accountBankCode = mViewModel.mRefundRequest.refundBankCode
 
                 // 계좌번호 인증시 유저 정보에 추가
-                if(mViewModel.accountVerifiedIdentity && !TextUtils.isEmpty(accountOwner) && !TextUtils.isEmpty(accountNumber) && !TextUtils.isEmpty(accountBankCode)){
+                if (mViewModel.accountVerifiedIdentity && !TextUtils.isEmpty(accountOwner) && !TextUtils.isEmpty(accountNumber) && !TextUtils.isEmpty(accountBankCode)) {
                     mViewModel.mUser.value!!.userDetail.accountHolder = accountOwner
                     mViewModel.mUser.value!!.userDetail.accountNumber = accountNumber
                     mViewModel.mUser.value!!.userDetail.bankCode = accountBankCode
                     mViewModel.mUser.value!!.userDetail.bankName = mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString()
                     if (CustomLog.flag) CustomLog.L("MyPageUserInfoLayout callBackListener", "mBankAccount observe",
-                            accountOwner,accountNumber,accountBankCode,mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString())
+                            accountOwner, accountNumber, accountBankCode, mBinding.includeMypageuserinfoBank.textviewRequestrefundBankname.text.toString())
                     mBinding.includeMypageuserinfoBank.edittextRequestrefundBankowner.setText(it.name)
                 }
             })

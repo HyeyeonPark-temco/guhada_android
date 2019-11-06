@@ -11,6 +11,7 @@ import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.ExchangeRequest
+import io.temco.guhada.data.model.OrderChangeCause
 import io.temco.guhada.data.model.ShippingCompany
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.Order
@@ -36,6 +37,7 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     var mShippingPayment: Int = ShippingPaymentType.BOX.pos
     var mOrderProdGroupId = 0L
     var mOrderClaimId = 0L
+    var mSelectedShippingPayment: OrderChangeCause? = null
 
     // 교환 신청 call 여부
     var mIsExchangeCallFinished = false
@@ -170,7 +172,17 @@ class RequestExchangeViewModel : BaseObservableViewModel() {
     }
 
     fun requestExchange() {
-        if (mExchangeRequest.exchangeShippingAddress.shippingMessage.isEmpty() ||
+        if (mExchangeRequest.exchangeReason.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_cause))
+        } else if (mExchangeRequest.exchangeReasonDetail.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_hint_cause))
+        } else if (mExchangeRequest.alreadySend == null) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_way_message1))
+        } else if (mExchangeRequest.alreadySend == true && mExchangeRequest.shippingCompanyCode.isNullOrEmpty()) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_way_message2))
+        } else if (mSelectedShippingPayment == null || (mSelectedShippingPayment?.isFeeCharged == true && mExchangeRequest.claimShippingPriceType == ShippingPaymentType.NONE.type)) {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.requestorderstatus_exchange_shipping))
+        } else if (mExchangeRequest.exchangeShippingAddress.shippingMessage.isEmpty() ||
                 mExchangeRequest.exchangeShippingAddress.shippingMessage.equals(BaseApplication.getInstance().getString(R.string.shippingmemo_default))) {
             ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.shippingmemo_default))
         } else {

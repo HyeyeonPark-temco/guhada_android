@@ -11,7 +11,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 35
-        versionName "1.0.4"
+        versionName "1.0.4.3"
         // x.x.x   - 정식 업데이트 버전
         // x.x.x.a - a : 테스트 업데이트 버전, 정식업데이트 되면 제거후 테스트 시작시 초기화 0 부터시작 ~
 
@@ -203,6 +203,13 @@ dependencies {
 
     // Kochava SDK
     implementation 'com.kochava.base:tracker:3.6.2'
+
+
+    // facebook SDK
+    implementation 'com.facebook.android:facebook-android-sdk:5.9.0'
+
+    // Keyboard Visibility Event
+    //implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'
 
     // ----------------------------------------------------------
 

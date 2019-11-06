@@ -40,7 +40,7 @@ abstract class InfiniteGeneralFixedPagerAdapter<T> : PagerAdapter {
 
     override fun getCount(): Int {
         return if (isInfinity) {
-            if (this.realCount > 1) realCount * 200 else this.realCount
+            if (this.realCount > 1) realCount * 2000 else this.realCount
         } else {
             realCount
             //this.count
