@@ -5,7 +5,7 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import io.temco.guhada.data.model.Token;
 
 public interface OnSnsLoginListener {
-    void redirectTermsActivity(int type, Object data);
+    void redirectTermsActivity(int type, Object data, String email);
     void redirectMainActivity(Token data);
 
     void kakaoLogin(UserProfile result);

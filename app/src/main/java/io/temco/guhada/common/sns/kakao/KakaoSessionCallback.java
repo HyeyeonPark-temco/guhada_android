@@ -48,7 +48,7 @@ public class KakaoSessionCallback implements ISessionCallback {
                         if (model.resultCode == Flag.ResultCode.SUCCESS) {
                             mListener.kakaoLogin(result);
                         } else {
-                            mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result);
+                            mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result, result.getEmail());
                         }
                     } else {
                         String message = (String) o;

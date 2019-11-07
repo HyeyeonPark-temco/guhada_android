@@ -93,7 +93,7 @@ public class SnsLoginModule {
                                     if (model.resultCode == Flag.ResultCode.SUCCESS) {
                                         naverLogin(naverUser, serverListener);
                                     } else {
-                                        loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser);
+                                        loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser, naverUser.getEmail());
                                     }
                                 } else {
                                     Toast.makeText(context, (String) obj, Toast.LENGTH_SHORT).show();
@@ -166,7 +166,7 @@ public class SnsLoginModule {
                                     googleLogin(account, serverListener);
                                     break;
                                 case Flag.ResultCode.DATA_NOT_FOUND:
-                                    loginListener.redirectTermsActivity(requestCode, account);
+                                    loginListener.redirectTermsActivity(requestCode, account, account.getEmail());
                                     break;
                             }
                         } else {
