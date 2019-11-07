@@ -11,14 +11,12 @@ import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnJoinListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
-import java.util.*
 
-class JoinViewModel : BaseObservableViewModel(), Observer {
+class JoinViewModel : BaseObservableViewModel() {
     lateinit var listener: OnJoinListener
     var toolBarTitle = ""
     var user = User()
@@ -27,19 +25,18 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
     var allChecked = ObservableBoolean(false)
         @Bindable
         get() = field
+
     var essentialChecked = ObservableBoolean(false)
         @Bindable
         get() = field
+
     var optionalChecked = ObservableBoolean(false)
         @Bindable
         get() = field
+
     val selectTermPlusView = ObservableBoolean(false)
         @Bindable
         get() = field
-
-    init {
-        this.user.addObserver(this)
-    }
 
     // CLICK LISTENER
     fun onClickBack() = listener.closeActivity(RESULT_CANCELED)
@@ -62,7 +59,6 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
                 val model = o as BaseModel<*>
                 when (model.resultCode) {
                     ResultCode.SUCCESS.flag -> {
-                        user.deleteObserver(this)
                         user.email = if (model.data is String) model.data as String else user.email
                         listener.closeActivity(RESULT_OK)
                     }
@@ -92,7 +88,7 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
 
         if (checked)
             setEssentialTerms(true)
-        else if (user.agreePurchaseTos!! && user.agreeCollectPersonalInfoTos!!)
+        else if (user.agreePurchaseTos && user.agreeCollectPersonalInfoTos)
             setEssentialTerms(false)
     }
 
@@ -116,6 +112,7 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
         user.agreeSaleTos = checked
         user.agreeEmailReception = checked
         user.agreeSmsReception = checked
+        checkOptionalTermsAllChecked()
     }
 
     fun onClickSelectTermPlusView() {
@@ -133,6 +130,21 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
         checkEssentialTermsAllChecked()
     }
 
+    fun onCheckSaleTos(checked: Boolean) {
+        user.agreeSaleTos = checked
+        checkOptionalTermsAllChecked()
+    }
+
+    fun onCheckEmailReception(checked: Boolean) {
+        user.agreeEmailReception = checked
+        checkOptionalTermsAllChecked()
+    }
+
+    fun onCheckSmsReception(checked: Boolean) {
+        user.agreeSmsReception = checked
+        checkOptionalTermsAllChecked()
+    }
+
     private fun checkEssentialTermsAllChecked() {
         val isEssentialAllChecked = user.agreeCollectPersonalInfoTos && user.agreePurchaseTos
 
@@ -142,33 +154,15 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
         }
     }
 
-    fun onCheckSaleTos(checked: Boolean) {
-        user.agreeSaleTos = checked
-    }
+    private fun checkOptionalTermsAllChecked() {
+        val saleTosChecked = user.agreeSaleTos!!
+        val emailReceptionChecked = user.agreeEmailReception!!
+        val smsReceptionChecked = user.agreeSmsReception!!
+        val isOptionAllChecked = saleTosChecked && emailReceptionChecked && smsReceptionChecked
 
-    fun onCheckEmailReception(checked: Boolean) {
-        user.agreeEmailReception = checked
-    }
-
-    fun onCheckSmsReception(checked: Boolean) {
-        user.agreeSmsReception = checked
-    }
-
-    override fun update(o: Observable?, arg: Any?) {
-        if (arg is String) {
-            when (arg) {
-                "agreeSaleTos", "agreeEmailReception", "agreeSmsReception" -> {
-                    val saleTosChecked = user.agreeSaleTos!!
-                    val emailReceptionChecked = user.agreeEmailReception!!
-                    val smsReceptionChecked = user.agreeSmsReception!!
-                    val isOptionAllChecked = saleTosChecked && emailReceptionChecked && smsReceptionChecked
-
-                    if (optionalChecked.get() != isOptionAllChecked) {
-                        optionalChecked = ObservableBoolean(isOptionAllChecked)
-                        notifyPropertyChanged(BR.optionalChecked)
-                    }
-                }
-            }
+        if (optionalChecked.get() != isOptionAllChecked) {
+            optionalChecked.set(isOptionAllChecked)
+            notifyPropertyChanged(BR.optionalChecked)
         }
     }
 }
