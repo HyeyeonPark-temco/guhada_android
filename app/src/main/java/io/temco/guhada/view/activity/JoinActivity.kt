@@ -5,6 +5,7 @@ import android.content.Intent
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
+import androidx.databinding.ObservableBoolean
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
@@ -115,6 +116,7 @@ class JoinActivity : BindActivity<ActivityJoinBinding>() {
         BorderEditTextView.setInverseBindingListener(mBinding.edittextJoinPassword) {
             val pas1 = mBinding.edittextJoinPassword.text
             val pas2 = mBinding.edittextJoinConfirmpassword.text
+
             if (!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && pas1 != pas2) {
                 mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd)
                 mBinding.textviewJoinConfirmpasswordfocus.visibility = View.VISIBLE
@@ -126,6 +128,7 @@ class JoinActivity : BindActivity<ActivityJoinBinding>() {
                     mBinding.textviewJoinConfirmpasswordfocus.visibility = View.GONE
                 }
             }
+
             mViewModel.essentialChecked.set(mViewModel.essentialChecked.get())
             mViewModel.notifyPropertyChanged(BR.essentialChecked)
         }
@@ -133,11 +136,13 @@ class JoinActivity : BindActivity<ActivityJoinBinding>() {
         BorderEditTextView.setInverseBindingListener(mBinding.edittextJoinConfirmpassword) {
             val pas1 = mBinding.edittextJoinPassword.text
             val pas2 = mBinding.edittextJoinConfirmpassword.text
+
             if (!TextUtils.isEmpty(pas1) && !TextUtils.isEmpty(pas2) && pas1 != pas2) {
                 mBinding.textviewJoinConfirmpasswordfocus.setText(R.string.findpwd_message_notequalpwd)
                 mBinding.textviewJoinConfirmpasswordfocus.visibility = View.VISIBLE
             } else
                 mBinding.textviewJoinConfirmpasswordfocus.visibility = View.GONE
+
             mViewModel.essentialChecked.set(mViewModel.essentialChecked.get())
             mViewModel.notifyPropertyChanged(BR.essentialChecked)
         }
