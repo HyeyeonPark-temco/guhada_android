@@ -15,9 +15,7 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 
-
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.temco.guhada.R;
@@ -45,12 +43,20 @@ public class BaseApplication extends MultiDexApplication {
      */
     private ActivityMoveToMain moveToMain = null;
 
+    /**
+     * 상단 툴바 장바구니 뱃지 count
+     *
+     * @author Hyeyeon Park
+     * @since 2019.11.05
+     */
+    public static int mCartCount = 0;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mApplication = this;
         initUserMaypage = false;
-        moveToMain = new ActivityMoveToMain(0,false);
+        moveToMain = new ActivityMoveToMain(0, false);
         categoryList = null;
         getFCMToken();
 
@@ -120,6 +126,7 @@ public class BaseApplication extends MultiDexApplication {
 
     /**
      * google analytics
+     *
      * @return tracker
      */
     synchronized public Tracker getDefaultTracker() {
@@ -131,14 +138,14 @@ public class BaseApplication extends MultiDexApplication {
         return sTracker;
     }
 
-    synchronized public List<Category> getCategoryList(){
-        if(categoryList == null || categoryList.get() == null || categoryList.get().isEmpty()){
+    synchronized public List<Category> getCategoryList() {
+        if (categoryList == null || categoryList.get() == null || categoryList.get().isEmpty()) {
             categoryList = new WeakReference<>(Preferences.getCategories());
         }
         return categoryList.get();
     }
 
-    public void setCategoryList(List<Category> list){
+    public void setCategoryList(List<Category> list) {
         categoryList = new WeakReference<>(list);
     }
 
@@ -149,4 +156,27 @@ public class BaseApplication extends MultiDexApplication {
     public void setMatrix(DisplayMetrics matrix) {
         this.matrix = matrix;
     }
+
+    public int getmCartCount() {
+        return mCartCount;
+    }
+
+    public void setmCartCount(int count) {
+        mCartCount = count;
+        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, count);
+        EventBusHelper.sendEvent(data);
+    }
+
+    public void minusCartCount(int count) {
+//        mCartCount -= count;
+//        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
+//        EventBusHelper.sendEvent(data);
+    }
+
+    public void plusCartCount() {
+//        mCartCount += 1;
+//        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
+//        EventBusHelper.sendEvent(data);
+    }
+
 }

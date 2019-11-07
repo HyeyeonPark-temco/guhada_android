@@ -11,6 +11,7 @@ import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.viewmodel.mypage.MyPageViewModel
@@ -22,7 +23,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
 import java.util.*
 
-enum class MyPageTabType{DELIVERY,DELIVERY_CANCEL_EX,POINT,COUPON,BOOKMARK,FOLLOW_SELLER,LAST_VIEW,REVIEW,CLAIM,ADDRESS}
+enum class MyPageTabType { DELIVERY, DELIVERY_CANCEL_EX, POINT, COUPON, BOOKMARK, FOLLOW_SELLER, LAST_VIEW, REVIEW, CLAIM, ADDRESS }
 /**
  * 19.07.22
  * @author park jungho
@@ -67,12 +68,12 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun onClick(v: View) {
         when (v.id) {
             // @TODO MENU
-            R.id.image_side_menu ->{
+            R.id.image_side_menu -> {
                 CommonUtil.startMenuActivity(context as MainActivity, Flag.RequestCode.SIDE_MENU)
             }
             R.id.image_search -> {
                 //CommonUtil.debug("image_search")
-                CommonUtil.startSearchWordActivity(context as MainActivity,null, true)
+                CommonUtil.startSearchWordActivity(context as MainActivity, null, true)
             }
             R.id.image_shop_cart -> {
                 //CommonUtil.debug("image_shop_cart")
@@ -85,7 +86,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun onStart() {
         super.onStart()
         if (CustomLog.flag) CustomLog.L("MyPageMainFragment ", "onStart----------------")
-        if((context?.applicationContext as BaseApplication).isInitUserMaypage){
+        if ((context?.applicationContext as BaseApplication).isInitUserMaypage) {
             (context?.applicationContext as BaseApplication).isInitUserMaypage = false
             initView = false
             viewPagerAdapter = null
@@ -100,7 +101,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     override fun onResume() {
         super.onResume()
         if (CustomLog.flag) CustomLog.L("MyPageMainFragment ", "onResume----------------")
-        if(CommonUtil.checkToken() && !initView){
+        if (CommonUtil.checkToken() && !initView) {
             initHeader()
         }
         if (customLayoutMap.isNotEmpty()) {
@@ -142,7 +143,7 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     // PUBLIC
     ////////////////////////////////////////////////
 
-    fun setPagerIndexMove(index : Int){
+    fun setPagerIndexMove(index: Int) {
         currentPagerIndex = index
         mBinding.viewpager.setCurrentItem(index)
     }
@@ -264,12 +265,16 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
     }
 
     @SuppressLint("CheckResult")
-    private fun setEventBus(){
+    private fun setEventBus() {
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
                 Flag.RequestCode.MYPAGE_MOVE -> {
                     if (CustomLog.flag) CustomLog.L("MyPageMainFragment LIFECYCLE", "EventBusHelper----------------MYPAGE_MOVE")
                     setPagerIndexMove(requestCode.data as Int)
+                }
+                RequestCode.CART_BADGE.flag -> {
+                    val count = requestCode.data as Int
+                    mBinding.layoutHeader.textviewBadge.text = count.toString()
                 }
             }
         }
