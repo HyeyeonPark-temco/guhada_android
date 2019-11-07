@@ -3,7 +3,6 @@ package io.temco.guhada.view.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 

@@ -84,9 +84,6 @@ public class User extends Observable implements Serializable {
 
     public void setAgreeCollectPersonalInfoTos(Boolean agreeCollectPersonalInfoTos) {
         this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos;
-        setChanged();
-        notifyObservers("agreeCollectPersonalInfoTos");
-
         userDetail.setAgreeCollectPersonalInfoTos(agreeCollectPersonalInfoTos);
     }
 
@@ -96,9 +93,6 @@ public class User extends Observable implements Serializable {
 
     public void setAgreePurchaseTos(Boolean agreePurchaseTos) {
         this.agreePurchaseTos = agreePurchaseTos;
-        setChanged();
-        notifyObservers("agreePurchaseTos");
-
         userDetail.setAgreePurchaseTos(agreePurchaseTos);
     }
 
@@ -109,9 +103,6 @@ public class User extends Observable implements Serializable {
 
     public void setAgreeEmailReception(Boolean agreeEmailReception) {
         this.agreeEmailReception = agreeEmailReception;
-        setChanged();
-        notifyObservers("agreeEmailReception");
-
         userDetail.setAgreeEmailReception(agreeEmailReception);
     }
 
@@ -121,9 +112,6 @@ public class User extends Observable implements Serializable {
 
     public void setAgreeSaleTos(Boolean agreeSaleTos) {
         this.agreeSaleTos = agreeSaleTos;
-        setChanged();
-        notifyObservers("agreeSaleTos");
-
         userDetail.setAgreeSaleTos(agreeSaleTos);
     }
 
@@ -133,9 +121,6 @@ public class User extends Observable implements Serializable {
 
     public void setAgreeSmsReception(Boolean agreeSmsReception) {
         this.agreeSmsReception = agreeSmsReception;
-        setChanged();
-        notifyObservers("agreeSmsReception");
-
         userDetail.setAgreeSmsReception(agreeSmsReception);
     }
 
