@@ -84,9 +84,6 @@ public class User extends Observable implements Serializable {
 
     public void setAgreeCollectPersonalInfoTos(Boolean agreeCollectPersonalInfoTos) {
         this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos;
-        setChanged();
-        notifyObservers("agreeCollectPersonalInfoTos");
-
         userDetail.setAgreeCollectPersonalInfoTos(agreeCollectPersonalInfoTos);
     }
 
@@ -96,9 +93,6 @@ public class User extends Observable implements Serializable {
 
     public void setAgreePurchaseTos(Boolean agreePurchaseTos) {
         this.agreePurchaseTos = agreePurchaseTos;
-        setChanged();
-        notifyObservers("agreePurchaseTos");
-
         userDetail.setAgreePurchaseTos(agreePurchaseTos);
     }
 

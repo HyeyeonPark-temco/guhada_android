@@ -109,6 +109,7 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
     private fun setEssentialTerms(checked: Boolean) {
         user.agreePurchaseTos = checked
         user.agreeCollectPersonalInfoTos = checked
+        checkEssentialTermsAllChecked()
     }
 
     private fun setOptionalTerms(checked: Boolean) {
@@ -124,10 +125,21 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
 
     fun onCheckPurchaseTos(checked: Boolean) {
         user.agreePurchaseTos = checked
+        checkEssentialTermsAllChecked()
     }
 
     fun onCheckPrivacyTos(checked: Boolean) {
         user.agreeCollectPersonalInfoTos = checked
+        checkEssentialTermsAllChecked()
+    }
+
+    private fun checkEssentialTermsAllChecked() {
+        val isEssentialAllChecked = user.agreeCollectPersonalInfoTos && user.agreePurchaseTos
+
+        if (essentialChecked.get() != isEssentialAllChecked) {
+            essentialChecked.set(isEssentialAllChecked)
+            notifyPropertyChanged(BR.essentialChecked)
+        }
     }
 
     fun onCheckSaleTos(checked: Boolean) {
@@ -145,21 +157,6 @@ class JoinViewModel : BaseObservableViewModel(), Observer {
     override fun update(o: Observable?, arg: Any?) {
         if (arg is String) {
             when (arg) {
-                // ESSENTIAL TERMS
-                "agreeCollectPersonalInfoTos", "agreePurchaseTos" -> {
-                    val personalInfoTosChecked = user.agreeCollectPersonalInfoTos!!
-                    val purchaseTosChecked = user.agreePurchaseTos!!
-                    val isEssentialAllChecked = personalInfoTosChecked && purchaseTosChecked
-
-                    if (essentialChecked.get() != isEssentialAllChecked) {
-                        essentialChecked = ObservableBoolean(isEssentialAllChecked)
-                        notifyPropertyChanged(BR.essentialChecked)
-                    }
-
-                    if (CustomLog.flag) CustomLog.L("update", "isEssentialAllChecked", isEssentialAllChecked)
-                    if (CustomLog.flag) CustomLog.L("update", "essentialChecked.get() ", essentialChecked.get())
-                }
-
                 "agreeSaleTos", "agreeEmailReception", "agreeSmsReception" -> {
                     val saleTosChecked = user.agreeSaleTos!!
                     val emailReceptionChecked = user.agreeEmailReception!!
