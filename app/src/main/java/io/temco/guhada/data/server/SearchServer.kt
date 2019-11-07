@@ -52,7 +52,6 @@ class SearchServer {
             }
         }
 
-
         @JvmStatic
         fun getProductListByCategory(type: Type.ProductOrder, id: Int, page: Int, listener: OnServerListener?) {
             if (listener != null) {
@@ -66,8 +65,7 @@ class SearchServer {
                         .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                         .enqueue(object : Callback<BaseModel<ProductList>> {
                             override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                resultListener(listener,call,response)
-                                /*if (response.isSuccessful) {
+                                if (response.isSuccessful) {
                                     if (response.body()!!.resultCode == 200) {
                                         listener.onResult(true, response.body()!!.data)
                                     } else {
@@ -79,7 +77,7 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-                                }*/
+                                }
                             }
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
@@ -104,7 +102,19 @@ class SearchServer {
                         .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                         .enqueue(object : Callback<BaseModel<ProductList>> {
                             override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
 
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
@@ -126,8 +136,21 @@ class SearchServer {
                         .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                         .enqueue(object : Callback<BaseModel<ProductList>> {
                             override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
+
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }
@@ -145,7 +168,19 @@ class SearchServer {
                         .getSearchPopularKeyword(itemCount)
                         .enqueue(object : Callback<BaseModel<Popular>> {
                             override fun onResponse(call: Call<BaseModel<Popular>>, response: Response<BaseModel<Popular>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body())
+                                    } else {
+                                        listener.onResult(false, response.body())
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
 
                             override fun onFailure(call: Call<BaseModel<Popular>>, t: Throwable) {
@@ -164,7 +199,19 @@ class SearchServer {
                         .getSearchAutoComplete(keyword)
                         .enqueue(object : Callback<BaseModel<AutoComplete>> {
                             override fun onResponse(call: Call<BaseModel<AutoComplete>>, response: Response<BaseModel<AutoComplete>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body())
+                                    } else {
+                                        listener.onResult(false, response.body())
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
 
                             override fun onFailure(call: Call<BaseModel<AutoComplete>>, t: Throwable) {
@@ -228,7 +275,7 @@ class SearchServer {
                 val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, false).getProductByBestItem(unitPerPage)
                 RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
                     override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
-                        resultListener(listener,call,response)
+                        listener.onResult(response.isSuccessful, response.body())
                     }
 
                     override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
@@ -250,7 +297,19 @@ class SearchServer {
                         .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                         .enqueue(object : Callback<BaseModel<ProductList>> {
                             override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
@@ -273,9 +332,20 @@ class SearchServer {
                         .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                         .enqueue(object : Callback<BaseModel<ProductList>> {
                             override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
-
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }
@@ -294,8 +364,21 @@ class SearchServer {
                         .getFilterProductListData(body, page, Info.LIST_PAGE_UNIT)
                         .enqueue(object : Callback<BaseModel<ProductList>> {
                             override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
+
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }
@@ -315,9 +398,21 @@ class SearchServer {
                 val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getProductByPlusItem(unitPerPage)
                 RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
                     override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
-                        resultListener(listener,call,response)
+                        //listener.onResult(response.isSuccessful, response.body())
+                        if (response.isSuccessful) {
+                            if (response.body()!!.resultCode == 200) {
+                                listener.onResult(true, response.body())
+                            } else {
+                                listener.onResult(false, response.body()!!.message)
+                            }
+                        } else {
+                            try {
+                                listener.onResult(false, response.errorBody()!!.string())
+                            } catch (e: IOException) {
+                                // e.printStackTrace();
+                            }
+                        }
                     }
-
                     override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
@@ -332,13 +427,25 @@ class SearchServer {
             if (listener != null) {
                 // Body
                 body.searchResultOrder = Type.ProductOrder.get(type)
-                if(CustomLog.flag)CustomLog.L("getProductListByCategoryFilterMain","body",body)
+                if(CustomLog.flag)CustomLog.L("getProductListByCategory","body",body)
                 // Request
                 RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
                         .getFilterProductListData(body, page, 1)
                         .enqueue(object : Callback<BaseModel<ProductList>> {
                             override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
-                                resultListener(listener,call,response)
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
                             }
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)

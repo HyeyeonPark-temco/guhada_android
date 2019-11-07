@@ -269,12 +269,16 @@ class MyPageMainFragment : BaseFragment<FragmentMainMypagehomeBinding>(), View.O
         EventBusHelper.mSubject.subscribe { requestCode ->
             when (requestCode.requestCode) {
                 Flag.RequestCode.MYPAGE_MOVE -> {
-                    if (CustomLog.flag) CustomLog.L("MyPageMainFragment LIFECYCLE", "EventBusHelper----------------MYPAGE_MOVE")
                     setPagerIndexMove(requestCode.data as Int)
                 }
                 RequestCode.CART_BADGE.flag -> {
                     val count = requestCode.data as Int
-                    mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    if(count > 0){
+                        mBinding.layoutHeader.textviewBadge.visibility = View.VISIBLE
+                        mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    }else{
+                        mBinding.layoutHeader.textviewBadge.visibility = View.GONE
+                    }
                 }
             }
         }

@@ -276,7 +276,6 @@ class WomenListLayout constructor(
                             mBinding.recyclerviewWomenlist.adapter = SubTitleListAdapter().apply { mList = mViewModel.categoryList!! }
                             (mBinding.recyclerviewWomenlist.adapter as SubTitleListAdapter).mClickSelectItemListener = object : OnClickSelectItemListener{
                                 override fun clickSelectItemListener(type: Int, index: Int, value: Any) {
-                                    if(CustomLog.flag)CustomLog.L("WomenListLayout","value", value as CategoryEntity)
                                     var hierarchy = (value as CategoryEntity).hierarchy.split(",")
                                     var array = arrayListOf<Int>()
                                     for (i in hierarchy) array.add(i.toInt())
@@ -286,9 +285,6 @@ class WomenListLayout constructor(
                             mBinding.executePendingBindings()
                         } else {
                             (mBinding.recyclerviewWomenlist.adapter as SubTitleListAdapter).setItems(mViewModel.categoryList!!)
-                        }
-                        for (i in it){
-                            if(CustomLog.flag)CustomLog.L("WomenListLayout",i.toString())
                         }
                     }
                 }
@@ -300,35 +296,37 @@ class WomenListLayout constructor(
         var filterBody = FilterBody()
         filterBody.categoryIds.add(1)
         SearchServer.getProductListByCategoryFilterMain(Type.ProductOrder.NEW_PRODUCT, filterBody, 1, OnServerListener{ success, o ->
-            if(success){
-                var list = o as ProductList
-                if(CustomLog.flag)CustomLog.L("getProductListByCategoryFilterMain",list.categories[0].children.size,"list",list.categories[0].children)
-                if(!list.categories[0].children.isNullOrEmpty()){
-                    var cTabList = mutableListOf<CategoryEntity>()
-                    cTabList.add(CategoryEntity(list.categories[0], "", 0,list.categories[0].hierarchies[list.categories[0].hierarchies.size-1]))
-                    for (category in list.categories[0].children){
-                        if(CustomLog.flag)CustomLog.L("getProductListByCategoryFilterMain","category",category.title)
-                        cTabList.add(CategoryEntity(category, "", 0,category.hierarchies[category.hierarchies.size-1]))
-                    }
-                    mViewModel.categoryList = cTabList
-                    mViewModel.categoryList!![0].title = "전체보기"
-                    if (mBinding.recyclerviewWomenlist.adapter == null) {
-                        mBinding.recyclerviewWomenlist.adapter = SubTitleListAdapter().apply { mList = mViewModel.categoryList!! }
-                        (mBinding.recyclerviewWomenlist.adapter as SubTitleListAdapter).mClickSelectItemListener = object : OnClickSelectItemListener {
-                            override fun clickSelectItemListener(type: Int, index: Int, value: Any) {
-                                if(CustomLog.flag)CustomLog.L("WomenListLayout","value", value as CategoryEntity)
-                                var hierarchy = (value as CategoryEntity).hierarchy.split(",")
-                                var array = arrayListOf<Int>()
-                                for (i in hierarchy) array.add(i.toInt())
-                                CommonUtil.startCategoryScreen(context as MainActivity, Type.Category.NORMAL, array.toIntArray(), false)
-                            }
+            try{
+                if(success){
+                    var list = o as ProductList
+                    if(!list.categories[0].children.isNullOrEmpty()){
+                        var cTabList = mutableListOf<CategoryEntity>()
+                        cTabList.add(CategoryEntity(list.categories[0], "", 0,list.categories[0].hierarchies[list.categories[0].hierarchies.size-1]))
+                        for (category in list.categories[0].children){
+                            cTabList.add(CategoryEntity(category, "", 0,category.hierarchies[category.hierarchies.size-1]))
                         }
-                        mBinding.executePendingBindings()
-                    } else {
-                        (mBinding.recyclerviewWomenlist.adapter as SubTitleListAdapter).setItems(mViewModel.categoryList!!)
+                        mViewModel.categoryList = cTabList
+                        mViewModel.categoryList!![0].title = "전체보기"
+                        if (mBinding.recyclerviewWomenlist.adapter == null) {
+                            mBinding.recyclerviewWomenlist.adapter = SubTitleListAdapter().apply { mList = mViewModel.categoryList!! }
+                            (mBinding.recyclerviewWomenlist.adapter as SubTitleListAdapter).mClickSelectItemListener = object : OnClickSelectItemListener {
+                                override fun clickSelectItemListener(type: Int, index: Int, value: Any) {
+                                    var hierarchy = (value as CategoryEntity).hierarchy.split(",")
+                                    var array = arrayListOf<Int>()
+                                    for (i in hierarchy) array.add(i.toInt())
+                                    CommonUtil.startCategoryScreen(context as MainActivity, Type.Category.NORMAL, array.toIntArray(), false)
+                                }
+                            }
+                            mBinding.executePendingBindings()
+                        } else {
+                            (mBinding.recyclerviewWomenlist.adapter as SubTitleListAdapter).setItems(mViewModel.categoryList!!)
+                        }
                     }
+                }else{
+                    getCategory()
                 }
-            }else{
+            }catch (e : Exception){
+                if(CustomLog.flag)CustomLog.E(e)
                 getCategory()
             }
         })

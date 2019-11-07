@@ -99,6 +99,8 @@ object CommonUtilKotlin  {
     }
 
 
+
+
     fun setMobileNumber(mobile : String) : String {
         var mo = ""
         if(mobile.substring(0,2) == "01" && mobile.length in 10..11){

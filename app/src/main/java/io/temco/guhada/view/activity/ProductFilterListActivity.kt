@@ -147,6 +147,12 @@ class ProductFilterListActivity : BindActivity<ActivityProductfilterlistBinding>
 
     override fun onResume() {
         super.onResume()
+        /**
+         * 상단 툴바 장바구니 뱃지
+         * @author Hyeyeon Park
+         * @since 2019.11.05
+         */
+        CommonUtil.getCartItemCount()
     }
 
     override fun onStop() {
