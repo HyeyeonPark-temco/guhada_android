@@ -282,7 +282,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                         findAccountListener.showSnackBar(message);
                 }
             } else {
-                findAccountListener.showMessage((String) o);
+                ToastUtil.showMessage((String) o);
             }
             findAccountListener.hideLoadingIndicator();
         }, jsonObject);
@@ -324,11 +324,11 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                         findAccountListener.showSnackBar(message);
                         break;
                     default:
-                        findAccountListener.showMessage(model.message);
+                        ToastUtil.showMessage(model.message);
                         break;
                 }
             } else {
-                findAccountListener.showMessage(model.message);
+                ToastUtil.showMessage(model.message);
             }
 
         }, jsonObject);

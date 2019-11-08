@@ -67,19 +67,16 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
-            public void redirectTermsActivity(int type, Object data) {
+            public void redirectTermsActivity(int type, Object data, String email) {
                 mViewModel.setSnsUser(data);
                 Intent intent = new Intent(LoginActivity.this, TermsActivity.class);
-//                intent.putExtra("user", (SnsUser) data);
+                intent.putExtra("email", email);
                 startActivityForResult(intent, type);
             }
 
             @Override
             public void redirectMainActivity(Token data) {
                 Preferences.setToken(data);
-
-//                Token token = Preferences.getToken();
-//                Toast.makeText(LoginActivity.this, "[LOGIN SUCCESS] " + token.getAccessToken(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
