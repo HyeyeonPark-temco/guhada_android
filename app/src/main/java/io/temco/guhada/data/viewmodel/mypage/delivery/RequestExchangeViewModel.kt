@@ -26,7 +26,7 @@ import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class RequestExchangeViewModel : BaseObservableViewModel() {
-    var mPurchaseOrder: MutableLiveData<PurchaseOrder> = MutableLiveData(PurchaseOrder())
+    var mPurchaseOrder: MutableLiveData<PurchaseOrder> = MutableLiveData()
     var mExchangeRequest = ExchangeRequest()
     var mSeller: MutableLiveData<Seller> = MutableLiveData()
     var mSellerAddress: MutableLiveData<SellerAddress> = MutableLiveData()

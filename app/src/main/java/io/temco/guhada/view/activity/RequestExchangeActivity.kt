@@ -114,7 +114,9 @@ class RequestExchangeActivity : BindActivity<ActivityRequestexchangeBinding>() {
     private fun initProductInfo() {
         mBinding.includeRequestexchangeProductinfo.imageUrl = mViewModel.mPurchaseOrder.value?.imageUrl
         mBinding.includeRequestexchangeProductinfo.brandName = mViewModel.mPurchaseOrder.value?.brandName
-        mBinding.includeRequestexchangeProductinfo.productName = "${mViewModel.mPurchaseOrder.value?.season} ${mViewModel.mPurchaseOrder.value?.dealName}"
+        mBinding.includeRequestexchangeProductinfo.productName =
+                if (mViewModel.mPurchaseOrder.value?.season.isNullOrEmpty()) mViewModel.mPurchaseOrder.value?.productName
+                else "${mViewModel.mPurchaseOrder.value?.season} ${mViewModel.mPurchaseOrder.value?.productName}"
         mBinding.includeRequestexchangeProductinfo.optionStr = mViewModel.mPurchaseOrder.value?.getOptionStr()
         mBinding.includeRequestexchangeProductinfo.price = mViewModel.mPurchaseOrder.value?.originalPrice
         mBinding.includeRequestexchangeProductinfo.purchaseStatusText = mViewModel.mPurchaseOrder.value?.purchaseStatusText
