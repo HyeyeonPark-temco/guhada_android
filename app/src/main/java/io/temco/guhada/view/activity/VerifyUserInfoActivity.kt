@@ -27,7 +27,8 @@ class VerifyUserInfoActivity : AppCompatActivity() {
 
         mViewModel = VerifyEmailViewModel().apply {
             this.mIsEmail = intent.getBooleanExtra("isEmail", false)
-            this.mEmail.set(intent.getStringExtra("email"))
+            this.mOriginEmail = intent.getStringExtra("email")
+            this.mEmail.set(mOriginEmail)
             this.mName.set(intent.getStringExtra("name"))
         }
         mViewModel.mOnSuccessVerify = {
@@ -39,6 +40,7 @@ class VerifyUserInfoActivity : AppCompatActivity() {
                 intent.putExtra("mobile", mViewModel.mMobile.get())
             }
             intent.putExtra("name", mViewModel.mName.get())
+            intent.putExtra("verifyNumber", mViewModel.mVerifyNumber.get())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }

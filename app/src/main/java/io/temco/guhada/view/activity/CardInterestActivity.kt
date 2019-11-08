@@ -20,6 +20,8 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  * @since 2019..11.06
  */
 class CardInterestActivity : BindActivity<ActivityCardinterestBinding>() {
+
+
     private lateinit var mViewModel: CardInterestViewModel
 
     override fun getBaseTag(): String = CardInterestActivity::class.java.simpleName
