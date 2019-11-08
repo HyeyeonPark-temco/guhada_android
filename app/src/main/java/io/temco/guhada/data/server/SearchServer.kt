@@ -52,7 +52,6 @@ class SearchServer {
             }
         }
 
-
         @JvmStatic
         fun getProductListByCategory(type: Type.ProductOrder, id: Int, page: Int, listener: OnServerListener?) {
             if (listener != null) {
@@ -115,7 +114,6 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
 
@@ -150,7 +148,6 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
 
@@ -183,7 +180,6 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
 
@@ -215,7 +211,6 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
 
@@ -349,10 +344,8 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
-
                             override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
                                 listener.onResult(false, t.message)
                             }
@@ -383,7 +376,6 @@ class SearchServer {
                                     } catch (e: IOException) {
                                         // e.printStackTrace();
                                     }
-
                                 }
                             }
 
@@ -406,13 +398,59 @@ class SearchServer {
                 val call = RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true).getProductByPlusItem(unitPerPage)
                 RetryableCallback.APIHelper.enqueueWithRetry(call, object : Callback<BaseModel<HomeDeal>> {
                     override fun onResponse(call: Call<BaseModel<HomeDeal>>, response: Response<BaseModel<HomeDeal>>) {
-                        listener.onResult(response.isSuccessful, response.body())
+                        //listener.onResult(response.isSuccessful, response.body())
+                        if (response.isSuccessful) {
+                            if (response.body()!!.resultCode == 200) {
+                                listener.onResult(true, response.body())
+                            } else {
+                                listener.onResult(false, response.body()!!.message)
+                            }
+                        } else {
+                            try {
+                                listener.onResult(false, response.errorBody()!!.string())
+                            } catch (e: IOException) {
+                                // e.printStackTrace();
+                            }
+                        }
                     }
-
                     override fun onFailure(call: Call<BaseModel<HomeDeal>>, t: Throwable) {
                         listener.onResult(false, t.message)
                     }
                 })
+            }
+        }
+
+
+
+        @JvmStatic
+        fun getProductListByCategoryFilterMain(type: Type.ProductOrder, body: FilterBody, page: Int, listener: OnServerListener?) {
+            if (listener != null) {
+                // Body
+                body.searchResultOrder = Type.ProductOrder.get(type)
+                if(CustomLog.flag)CustomLog.L("getProductListByCategory","body",body)
+                // Request
+                RetrofitManager.createService(Type.Server.SEARCH, SearchService::class.java, true)
+                        .getFilterProductListData(body, page, 1)
+                        .enqueue(object : Callback<BaseModel<ProductList>> {
+                            override fun onResponse(call: Call<BaseModel<ProductList>>, response: Response<BaseModel<ProductList>>) {
+                                if (response.isSuccessful) {
+                                    if (response.body()!!.resultCode == 200) {
+                                        listener.onResult(true, response.body()!!.data)
+                                    } else {
+                                        listener.onResult(false, response.body()!!.message)
+                                    }
+                                } else {
+                                    try {
+                                        listener.onResult(false, response.errorBody()!!.string())
+                                    } catch (e: IOException) {
+                                        // e.printStackTrace();
+                                    }
+                                }
+                            }
+                            override fun onFailure(call: Call<BaseModel<ProductList>>, t: Throwable) {
+                                listener.onResult(false, t.message)
+                            }
+                        })
             }
         }
 

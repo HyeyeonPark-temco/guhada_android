@@ -113,7 +113,12 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
             when (requestCode.requestCode) {
                 RequestCode.CART_BADGE.flag -> {
                     val count = requestCode.data as Int
-                    mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    if(count > 0){
+                        mBinding.layoutHeader.textviewBadge.visibility = View.VISIBLE
+                        mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    }else{
+                        mBinding.layoutHeader.textviewBadge.visibility = View.GONE
+                    }
                 }
             }
         }

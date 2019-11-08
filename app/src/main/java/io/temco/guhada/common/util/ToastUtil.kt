@@ -19,7 +19,7 @@ object ToastUtil : FrameLayout(BaseApplication.getInstance().applicationContext)
     private lateinit var mBinding: ViewToastBinding
 
     @JvmStatic
-    fun showMessage(message: String) {
+    fun showMessage(message: String?) {
         if (Looper.myLooper() == null)
             Looper.prepare()
 
@@ -27,7 +27,7 @@ object ToastUtil : FrameLayout(BaseApplication.getInstance().applicationContext)
             mBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.view_toast, this, false)
         }
 
-        mBinding.message = message
+        mBinding.message = message ?: ""
 //        mBinding.executePendingBindings()
         Toast(context)
                 .apply {

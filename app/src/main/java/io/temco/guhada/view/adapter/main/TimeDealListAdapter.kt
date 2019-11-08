@@ -28,6 +28,7 @@ import com.bumptech.glide.RequestManager
 import io.temco.guhada.R
 import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
+import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Deal
 import io.temco.guhada.data.model.main.*
@@ -480,6 +481,7 @@ class TimeDealListAdapter(private val model: TimeDealListViewModel, val list: Ar
                 binding.itemLayout.contentDescription = item.deal.dealId.toString()
                 binding.itemLayout.setOnClickListener {
                     var id = it.contentDescription.toString().toLong()
+                    TrackingUtil.sendKochavaEvent(TrackingEvent.MainEvent.View_Time_Deal_Product.eventName,id.toString())
                     CommonUtil.startProductActivity(viewModel.context as Activity, id)
                 }
                 ImageUtil.loadImage(Glide.with(containerView.context as Activity), binding.imageThumb, item.deal.productImage.url)

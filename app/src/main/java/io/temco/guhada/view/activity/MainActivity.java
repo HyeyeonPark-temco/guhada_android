@@ -157,7 +157,8 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
          * @author Hyeyeon Park
          * @since 2019.11.05
          */
-        Token token = Preferences.getToken();
+        CommonUtil.getCartItemCount();
+        /*Token token = Preferences.getToken();
         if (token != null) {
             String accessToken = token.getAccessToken();
             OrderServer.getCart((success, o) -> {
@@ -171,7 +172,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             }, "Bearer " + accessToken);
         } else {
             BaseApplication.getInstance().setmCartCount(0);
-        }
+        }*/
 
     }
 

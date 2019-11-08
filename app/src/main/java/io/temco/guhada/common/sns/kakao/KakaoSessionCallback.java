@@ -11,10 +11,12 @@ import com.kakao.usermgmt.callback.UnLinkResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 
+import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.listener.OnSnsLoginListener;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.ToastUtil;
 import io.temco.guhada.data.model.base.BaseModel;
 import io.temco.guhada.data.server.UserServer;
 
@@ -45,14 +47,22 @@ public class KakaoSessionCallback implements ISessionCallback {
                 UserServer.checkExistSnsUser((success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
-                        if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                            mListener.kakaoLogin(result);
-                        } else {
-                            mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result);
+                        switch (model.resultCode) {
+                            case Flag.ResultCode.SUCCESS:
+                                mListener.kakaoLogin(result);
+                                break;
+                            case Flag.ResultCode.DATA_NOT_FOUND:
+                                mListener.redirectTermsActivity(Flag.RequestCode.KAKAO_LOGIN, result, result.getEmail());
+                                break;
+                            default:
+                                ToastUtil.showMessage(((BaseModel) o).message);
+                                break;
                         }
                     } else {
-                        String message = (String) o;
-                        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        if (o instanceof BaseModel)
+                            ToastUtil.showMessage(((BaseModel) o).message);
+                         else
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror));
                     }
                 }, "KAKAO", String.valueOf(result.getId()), result.getEmail());
             }

@@ -466,7 +466,8 @@ class ProductDetailViewModel(val listener: OnProductDetailListener?) : BaseObser
 
                         if (cart.cartValidStatus.status){
                             listener?.showAddCartResult()
-                            BaseApplication.getInstance().plusCartCount()
+                            CommonUtil.getCartItemCount()
+                            //BaseApplication.getInstance().plusCartCount()
                             mSetBadgeTask()
                         }
                         else {

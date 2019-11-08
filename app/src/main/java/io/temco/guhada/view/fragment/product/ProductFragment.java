@@ -1,12 +1,16 @@
 package io.temco.guhada.view.fragment.product;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 
+import io.reactivex.functions.Consumer;
 import io.temco.guhada.R;
+import io.temco.guhada.common.EventBusData;
+import io.temco.guhada.common.EventBusHelper;
 import io.temco.guhada.common.Flag;
 import io.temco.guhada.common.Type;
 import io.temco.guhada.common.listener.OnBackPressListener;
@@ -85,6 +89,7 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
                 mBinding.layoutHeaderSearch.layoutHeaderSearch.setVisibility(View.GONE);
             }
         });
+        setEvenBus();
     }
 
     @Override
@@ -274,5 +279,22 @@ public class ProductFragment extends BaseFragment<FragmentProductBinding> implem
         }
     }
 
+    @SuppressLint("CheckResult")
+    private void setEvenBus() {
+        EventBusHelper.INSTANCE.getMSubject().subscribe(new Consumer<EventBusData>() {
+            @Override
+            public void accept(EventBusData eventBusData) {
+                if(eventBusData.getRequestCode() == Flag.RequestCode.CART_BADGE){
+                    int count = Integer.parseInt(eventBusData.getData().toString());
+                    if(count > 0){
+                        mBinding.layoutHeader.textviewBadge.setVisibility(View.VISIBLE);
+                        mBinding.layoutHeader.textviewBadge.setText((count+""));
+                    }else{
+                        mBinding.layoutHeader.textviewBadge.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+    }
     ////////////////////////////////////////////////
 }

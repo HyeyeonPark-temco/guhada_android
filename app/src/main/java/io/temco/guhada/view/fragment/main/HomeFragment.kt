@@ -30,8 +30,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     private var currentPagerIndex: Int = 0
     lateinit var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>>
     lateinit var mHandler: Handler
-
-    var recentProductCount = 0
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -232,7 +230,12 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                 }
                 RequestCode.CART_BADGE.flag -> {
                     val count = requestCode.data as Int
-                    mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    if(count > 0){
+                        mBinding.layoutHeader.textviewBadge.visibility = View.VISIBLE
+                        mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    }else{
+                        mBinding.layoutHeader.textviewBadge.visibility = View.GONE
+                    }
                 }
             }
         }

@@ -381,7 +381,7 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
             var listPhoto = arrayListOf<ReviewPhoto>()
             for ((index, data) in mViewModel.mReviewEditPhotos.value!!.withIndex()) {
                 if (data.id == -99) {
-                    mViewModel.uploadImage(data.reviewPhotoUrl, mViewModel.reviewPhotoUrl, index, object : OnCallBackListener {
+                    mViewModel.uploadImagePathQuery(data.reviewPhotoUrl, mViewModel.reviewPhotoUrl, index, object : OnCallBackListener {
                         override fun callBackListener(resultFlag: Boolean, value: Any) {
                             if (CustomLog.flag) CustomLog.L("clickReviewWriteOrModify", "uploadImage", resultFlag, "index", index)
                             var image = value as ImageResponse
@@ -392,7 +392,8 @@ class ReviewWriteActivity : BindActivity<io.temco.guhada.databinding.ActivityRev
                             reviewPhoto.imageStatus = ImageStatus.ADDED.name
                             reviewPhoto.photoOrder = index
                             reviewPhoto.reviewPhotoUrl = image.url
-                            listPhoto.add(index, reviewPhoto)
+                            if(listPhoto.isEmpty() || listPhoto.size < index) listPhoto.add(reviewPhoto)
+                            else listPhoto.add(index, reviewPhoto)
                             if (mViewModel.mReviewEditPhotos.value!!.size == listPhoto.size) {
                                 clickReviewWriteOrModify(listPhoto)
                             }

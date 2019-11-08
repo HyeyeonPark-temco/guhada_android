@@ -239,7 +239,7 @@ class UserClaimSellerRepository(val viewModel : UserClaimSellerViewModel){
 
 
     fun uploadImage(fileNm : String, path : String,index : Int,listener : OnCallBackListener){
-        GatewayServer.uploadImagePath(OnServerListener { success, o ->
+        GatewayServer.uploadImagePathQuery(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
                         var data = (o as BaseModel<*>).data as ImageResponse

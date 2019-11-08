@@ -47,7 +47,10 @@ import io.temco.guhada.common.Type;
 import io.temco.guhada.data.model.Brand;
 import io.temco.guhada.data.model.Category;
 import io.temco.guhada.data.model.Token;
+import io.temco.guhada.data.model.base.BaseModel;
+import io.temco.guhada.data.model.cart.CartResponse;
 import io.temco.guhada.data.model.point.PointPopupInfo;
+import io.temco.guhada.data.server.OrderServer;
 import io.temco.guhada.view.activity.CartActivity;
 import io.temco.guhada.view.activity.ImageGetActivity;
 import io.temco.guhada.view.activity.LoginActivity;
@@ -541,6 +544,28 @@ public class CommonUtil {
     }
 
 
+    /**
+     * 상단 툴바 장바구니 뱃지
+     * @author Hyeyeon Park
+     * @since 2019.11.05
+     */
+    public static void getCartItemCount() {
+        Token token = Preferences.getToken();
+        if (token != null) {
+            String accessToken = token.getAccessToken();
+            OrderServer.getCart((success, o) -> {
+                if (success && o instanceof BaseModel) {
+                    if (((BaseModel) o).data instanceof CartResponse) {
+                        CartResponse response = (CartResponse) ((BaseModel) o).data;
+                        int count = response.getCartItemResponseList().size();
+                        BaseApplication.getInstance().setmCartCount(count);
+                    }
+                }
+            }, "Bearer " + accessToken);
+        } else {
+            BaseApplication.getInstance().setmCartCount(0);
+        }
+    }
 
 
 

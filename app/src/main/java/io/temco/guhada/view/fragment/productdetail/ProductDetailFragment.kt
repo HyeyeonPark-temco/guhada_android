@@ -33,10 +33,7 @@ import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
-import io.temco.guhada.common.BaseApplication
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Info
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnMainListener
@@ -107,6 +104,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         initViewModel()
         initTabListener()
         setDetectScrollView()
+        setEvenBus()
 
         mBinding.includeProductdetailHeader.viewModel = mViewModel
         mBinding.viewModel = mViewModel
@@ -957,6 +955,24 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+
+
+    @SuppressLint("CheckResult")
+    private fun setEvenBus() {
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                RequestCode.CART_BADGE.flag -> {
+                    val count = requestCode.data as Int
+                    if(count > 0){
+                        mBinding.includeProductdetailHeader.textviewBadge.visibility = View.VISIBLE
+                        mBinding.includeProductdetailHeader.textviewBadge.text = count.toString()
+                    }else{
+                        mBinding.includeProductdetailHeader.textviewBadge.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {

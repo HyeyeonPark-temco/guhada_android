@@ -30,6 +30,12 @@ object TrackingEvent {
     enum class Cart(val eventName: String) {
         Add_To_Cart("Add_To_Cart")
     }
+
+
+    enum class MainEvent(val eventName: String) {
+        View_Time_Deal_Product("View_Time_Deal_Product"),
+        View_Lucky_Event_Product("View_Lucky_Event_Product")
+    }
 }
 
 

@@ -79,6 +79,7 @@
                         android:layout_gravity="end|top"
                         android:background="@drawable/badge"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:text="0"
                         android:textColor="@color/common_white"
                         android:textSize="@dimen/text_9" />

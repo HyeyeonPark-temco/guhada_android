@@ -20,13 +20,17 @@ import io.temco.guhada.common.Flag
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnClickSelectItemListener
+import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.data.db.GuhadaDB
 import io.temco.guhada.data.db.entity.CategoryEntity
 import io.temco.guhada.data.db.entity.CategoryLabelType
+import io.temco.guhada.data.model.ProductList
+import io.temco.guhada.data.model.body.FilterBody
 import io.temco.guhada.data.model.main.MainBaseModel
+import io.temco.guhada.data.server.SearchServer
 import io.temco.guhada.data.viewmodel.main.MenListViewModel
 import io.temco.guhada.databinding.CustomlayoutMainMenlistBinding
 import io.temco.guhada.view.WrapGridLayoutManager
@@ -96,7 +100,7 @@ class MenListLayout constructor(
         }
 
         getRecentProductCount()
-        getCategory()
+        getCategoryFilter()
     }
 
 
@@ -272,7 +276,6 @@ class MenListLayout constructor(
                             mBinding.recyclerviewMenlist.adapter = SubTitleListAdapter().apply { mList = mViewModel.categoryList!! }
                             (mBinding.recyclerviewMenlist.adapter as SubTitleListAdapter).mClickSelectItemListener = object : OnClickSelectItemListener {
                                 override fun clickSelectItemListener(type: Int, index: Int, value: Any) {
-                                    if(CustomLog.flag)CustomLog.L("WomenListLayout","value", value as CategoryEntity)
                                     var hierarchy = (value as CategoryEntity).hierarchy.split(",")
                                     var array = arrayListOf<Int>()
                                     for (i in hierarchy) array.add(i.toInt())
@@ -283,12 +286,50 @@ class MenListLayout constructor(
                         } else {
                             (mBinding.recyclerviewMenlist.adapter as SubTitleListAdapter).setItems(mViewModel.categoryList!!)
                         }
-                        for (i in it){
-                            if(CustomLog.flag)CustomLog.L("WomenListLayout",i.toString())
-                        }
                     }
                 }
         )
+    }
+
+
+    private fun getCategoryFilter(){
+        var filterBody = FilterBody()
+        filterBody.categoryIds.add(2)
+        SearchServer.getProductListByCategoryFilterMain(Type.ProductOrder.NEW_PRODUCT, filterBody, 1, OnServerListener{ success, o ->
+            try{
+                if(success){
+                    var list = o as ProductList
+                    if(!list.categories[0].children.isNullOrEmpty()){
+                        var cTabList = mutableListOf<CategoryEntity>()
+                        cTabList.add(CategoryEntity(list.categories[0], "", 0,list.categories[0].hierarchies[list.categories[0].hierarchies.size-1]))
+                        for (category in list.categories[0].children){
+                            cTabList.add(CategoryEntity(category, "", 0,category.hierarchies[category.hierarchies.size-1]))
+                        }
+                        mViewModel.categoryList = cTabList
+                        mViewModel.categoryList!![0].title = "전체보기"
+                        if (mBinding.recyclerviewMenlist.adapter == null) {
+                            mBinding.recyclerviewMenlist.adapter = SubTitleListAdapter().apply { mList = mViewModel.categoryList!! }
+                            (mBinding.recyclerviewMenlist.adapter as SubTitleListAdapter).mClickSelectItemListener = object : OnClickSelectItemListener {
+                                override fun clickSelectItemListener(type: Int, index: Int, value: Any) {
+                                    var hierarchy = (value as CategoryEntity).hierarchy.split(",")
+                                    var array = arrayListOf<Int>()
+                                    for (i in hierarchy) array.add(i.toInt())
+                                    CommonUtil.startCategoryScreen(context as MainActivity, Type.Category.NORMAL, array.toIntArray(), false)
+                                }
+                            }
+                            mBinding.executePendingBindings()
+                        } else {
+                            (mBinding.recyclerviewMenlist.adapter as SubTitleListAdapter).setItems(mViewModel.categoryList!!)
+                        }
+                    }
+                }else{
+                    getCategory()
+                }
+            }catch (e : Exception){
+                if(CustomLog.flag)CustomLog.E(e)
+                getCategory()
+            }
+        })
     }
 
     fun listScrollTop() {

@@ -87,7 +87,7 @@ public class Type {
     }
 
     /** 임시 서버 연결 여부 (true: TempServer name; false: dev) **/
-    public static boolean isTempServer= false;
+    public static boolean isTempServer= true;
     public static String[] ServerTypeArray = { "http://dev.", "http://qa.", "https://stg.", "https://" };
     public static String serverType = ServerTypeArray[1];
     ////////////////////////////////////////////////
