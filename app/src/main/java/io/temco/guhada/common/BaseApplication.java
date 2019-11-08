@@ -26,7 +26,7 @@ import io.temco.guhada.data.model.Category;
 /*
     MultiDexApplication 변경
  */
-public class BaseApplication extends MultiDexApplication {
+public class BaseApplication extends MultiDexApplication  {
 
     private static BaseApplication mApplication;
     private boolean initUserMaypage;
@@ -178,5 +178,7 @@ public class BaseApplication extends MultiDexApplication {
 //        EventBusData data = new EventBusData(Flag.RequestCode.CART_BADGE, mCartCount);
 //        EventBusHelper.sendEvent(data);
     }
+
+
 
 }

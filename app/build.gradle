@@ -10,7 +10,7 @@ android {
         applicationId "io.temco.guhada"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 36
+        versionCode 37
         versionName "1.0.5"
         // x.x.x   - 정식 업데이트 버전
         // x.x.x.a - a : 테스트 업데이트 버전, 정식업데이트 되면 제거후 테스트 시작시 초기화 0 부터시작 ~
@@ -207,6 +207,8 @@ dependencies {
 
     // facebook SDK
     implementation 'com.facebook.android:facebook-android-sdk:5.9.0'
+
+    //implementation 'android.arch.lifecycle:extensions:1.1.1'
 
     // Keyboard Visibility Event
     //implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0'

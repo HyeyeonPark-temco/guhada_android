@@ -151,6 +151,10 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 닉네임을 확인해 주세요.", false, false)
             return
         }
+        if (TextUtils.isEmpty(mBinding.edittextMypageuserinfoEmail.text.toString())) {
+            CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 아이디(이메일)을 확인해 주세요.", false, false)
+            return
+        }
         var userUpInfo: UserUpdateInfo = UserUpdateInfo().apply {
             if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())) {
                 if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&

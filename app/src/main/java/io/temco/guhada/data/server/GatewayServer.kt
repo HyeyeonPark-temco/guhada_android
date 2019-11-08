@@ -19,7 +19,7 @@ import retrofit2.Response
 import java.io.File
 import com.kakao.auth.StringSet.file
 import okhttp3.MultipartBody
-
+import java.net.URLEncoder
 
 
 class GatewayServer {
@@ -93,7 +93,8 @@ class GatewayServer {
         fun uploadImage(listener: OnServerListener, cloudResourceList : String, fileNm: String) {
             var file = File(fileNm)
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val part = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+            //val part = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+            val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
             var cloudResource = RequestBody.create(MediaType.parse("multipart/form-data"), cloudResourceList)
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .uploadImage(cloudResource, part).enqueue(object : Callback<BaseModel<ImageResponse>> {
@@ -130,7 +131,7 @@ class GatewayServer {
         fun uploadImagePath(listener: OnServerListener, uploadPath : String, fileNm: String) {
             var file = File(fileNm)
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val part = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+            val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
             var path = RequestBody.create(MediaType.parse("multipart/form-data"), uploadPath)
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .uploadImagePath(path, part).enqueue(object : Callback<BaseModel<ImageResponse>> {
@@ -167,7 +168,7 @@ class GatewayServer {
         fun uploadImagePathQuery(listener: OnServerListener, uploadPath  : String, fileNm: String) {
             var file = File(fileNm)
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val part = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+            val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .uploadImagePathQuery(uploadPath , part).enqueue(object : Callback<BaseModel<ImageResponse>> {
                         override fun onResponse(call: Call<BaseModel<ImageResponse>>, response: Response<BaseModel<ImageResponse>>) {
@@ -204,7 +205,7 @@ class GatewayServer {
         fun uploadImagePath2(listener: OnServerListener, path : String, fileNm: String) {
             var file = File(fileNm)
             val fileReqBody = RequestBody.create(MediaType.parse("image/*"), file)
-            val part = MultipartBody.Part.createFormData("file", file.name, fileReqBody)
+            val part = MultipartBody.Part.createFormData("file", URLEncoder.encode(file.name, "utf-8"), fileReqBody)
             RetrofitManager.createService(Type.Server.GATEWAY, GatewayService::class.java, true)
                     .uploadImagePath2(path, part).enqueue(object : Callback<BaseModel<ImageResponse>> {
                         override fun onResponse(call: Call<BaseModel<ImageResponse>>, response: Response<BaseModel<ImageResponse>>) {

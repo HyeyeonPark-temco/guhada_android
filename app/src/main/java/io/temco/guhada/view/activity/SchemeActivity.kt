@@ -6,6 +6,14 @@ import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.view.activity.base.BindActivity
+import android.app.ActivityManager.MOVE_TASK_WITH_HOME
+import android.R.id
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningTaskInfo
+import android.content.Context
+import android.content.Context.ACTIVITY_SERVICE
+
+
 
 
 /**
@@ -28,9 +36,23 @@ class SchemeActivity : BindActivity<io.temco.guhada.databinding.ActivityCustomdi
         }catch (e : Exception){
             if(CustomLog.flag)CustomLog.E(e)
         }
-        startActivity(Intent(this, SplashActivity::class.java))
-        finish()
+        bring2Front()
     }
 
     ////////////////////////////////////////////////////////////////////////////////
+
+
+    private fun bring2Front() {
+        val activtyManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val runningTaskInfos = activtyManager.getRunningTasks(10)
+        for (runningTaskInfo in runningTaskInfos) {
+            if (this.packageName == runningTaskInfo.topActivity.getPackageName()) {
+                activtyManager.moveTaskToFront(runningTaskInfo.id, ActivityManager.MOVE_TASK_WITH_HOME)
+                finish()
+                return
+            }
+        }
+        startActivity(Intent(this, SplashActivity::class.java))
+        finish()
+    }
 }
