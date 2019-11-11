@@ -1,5 +1,7 @@
 package io.temco.guhada.common.util;
 
+import android.util.Log;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,6 +9,7 @@ import io.temco.guhada.common.listener.OnTimerListener;
 
 /**
  * Timer Util
+ *
  * @author Hyeyeon Park
  */
 public class CountTimer {
@@ -14,6 +17,7 @@ public class CountTimer {
     private static TimerTask mTimerTask;
     private static String timerSecond;
     private static String timerMinute;
+    private static int totalSecond;
 
     ////////////////////////////////////////////////
 
@@ -21,6 +25,7 @@ public class CountTimer {
         mTimerTask = new TimerTask() {
             @Override
             public void run() {
+                totalSecond++;
                 int second = Integer.parseInt(timerSecond);
                 if (second > 0) {
                     if (second < 10) {
@@ -55,15 +60,17 @@ public class CountTimer {
     /**
      * Start Timer Method
      * ex) 3분 0초 --> initialSecond: 60; initialMinute: 2
+     *
      * @param initialSecond 시작 Second
      * @param initialMinute 시작 Minute -1
-     * @param listener 시간 변경 시 호출되는 리스너
+     * @param listener      시간 변경 시 호출되는 리스너
      */
     public static void startVerifyNumberTimer(String initialSecond, String initialMinute, OnTimerListener listener) {
         if (mTimerTask != null) {
             mTimerTask.cancel();
         }
 
+        totalSecond = 0;
         timerSecond = initialSecond;
         timerMinute = initialMinute;
         initTimer(listener);
@@ -74,9 +81,14 @@ public class CountTimer {
     }
 
     public static void stopTimer() {
+        totalSecond = 0;
         if (mTimerTask != null) {
             mTimerTask.cancel();
         }
+    }
+
+    public static boolean isResendable() {
+        return totalSecond == 0 || totalSecond > 59;
     }
 
     ////////////////////////////////////////////////

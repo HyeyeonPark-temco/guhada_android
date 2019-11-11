@@ -90,7 +90,6 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
                 }.let { user -> sendVerifyNumber(user) }
             }
         }
-
     }
 
     /**
@@ -111,40 +110,43 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
      * 인증번호 발송
      */
     private fun sendVerifyNumber(user: User) {
-        val successTask: (success: Boolean, o: BaseModel<*>) -> Unit = { success, o: BaseModel<*> ->
-            val model = o as BaseModel<*>
-            if (success) {
-                when (model.resultCode) {
-                    200 -> {
-                        mVerifyEmailVisibility = ObservableInt(View.VISIBLE)
-                        notifyPropertyChanged(BR.mVerifyEmailVisibility)
+        if (CountTimer.isResendable()) {
+            val successTask: (success: Boolean, o: BaseModel<*>) -> Unit = { success, o: BaseModel<*> ->
+                val model = o as BaseModel<*>
+                if (success) {
+                    when (model.resultCode) {
+                        200 -> {
+                            mVerifyEmailVisibility = ObservableInt(View.VISIBLE)
+                            notifyPropertyChanged(BR.mVerifyEmailVisibility)
 
-                        val second = java.lang.Double.parseDouble((o.data as LinkedTreeMap<*, *>)["data"]!!.toString())
-                        val minute = (second / 60000).toInt()
-                        if (minute.toString().length == 1) {
-                            mTimerSecond = ObservableField("60")
-                            mTimerMinute = ObservableField("0${minute - 1}")
-                            startTimer()
-                        } else {
-                            mTimerSecond = ObservableField("60")
-                            mTimerMinute = ObservableField("${minute - 1}")
-                            startTimer()
+                            val second = java.lang.Double.parseDouble((o.data as LinkedTreeMap<*, *>)["data"]!!.toString())
+                            val minute = (second / 60000).toInt()
+                            if (minute.toString().length == 1) {
+                                mTimerSecond = ObservableField("60")
+                                mTimerMinute = ObservableField("0${minute - 1}")
+                                startTimer()
+                            } else {
+                                mTimerSecond = ObservableField("60")
+                                mTimerMinute = ObservableField("${minute - 1}")
+                                startTimer()
+                            }
                         }
+                        6005 -> ToastUtil.showMessage(BaseApplication.getInstance().resources.getString(R.string.findpwd_message_wronginfo))
+                        else -> ToastUtil.showMessage(model.message)
                     }
-                    6005 -> ToastUtil.showMessage(BaseApplication.getInstance().resources.getString(R.string.findpwd_message_wronginfo))
-                    else -> ToastUtil.showMessage(model.message)
+                } else {
+                    ToastUtil.showMessage(model.message)
                 }
-            } else {
-                ToastUtil.showMessage(model.message)
             }
+
+            if (mIsEmail)
+                ServerCallbackUtil.callWithToken(task = { accessToken ->
+                    UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user, accessToken = accessToken)
+                })
+            else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
+        } else {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_resendable))
         }
-
-        if (mIsEmail)
-            ServerCallbackUtil.callWithToken(task = { accessToken ->
-                UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user, accessToken = accessToken)
-            })
-        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
-
     }
 
 

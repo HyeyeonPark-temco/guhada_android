@@ -7,6 +7,7 @@ import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CountTimer
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.VerifyEmailViewModel
 import io.temco.guhada.databinding.ActivityVerifyuserinfoBinding
@@ -49,4 +50,8 @@ class VerifyUserInfoActivity : AppCompatActivity() {
         mBinding.viewModel = mViewModel
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        CountTimer.stopTimer()
+    }
 }
