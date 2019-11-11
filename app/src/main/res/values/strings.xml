@@ -78,6 +78,8 @@
     <string name="common_message_nfc_unsupported">NFC 미지원 기기입니다.</string>
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
 
+    <string name="common_message_resendable">인증번호 재발송은 발송 1분 후에 가능합니다.</string>
+
     <string name="common_minus">-</string>
     <string name="common_plus">+</string>
 

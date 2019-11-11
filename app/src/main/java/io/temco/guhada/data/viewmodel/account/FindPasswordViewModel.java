@@ -266,9 +266,10 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             listener.showLoadingIndicator();
             user.deleteObserver(this);
 
-            Token token = Preferences.getToken();
-            if (token != null && token.getAccessToken() != null) {
+            if (CountTimer.isResendable()) {
                 UserServer.verifyEmail((success, o) -> {
+                    listener.hideLoadingIndicator();
+
                     if (success) {
                         BaseModel model = (BaseModel) o;
                         switch (model.resultCode) {
@@ -276,16 +277,30 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                                 verifyEmailVisibility = View.VISIBLE;
                                 notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                                //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
-                                Double second = Double.parseDouble(((LinkedTreeMap) ((BaseModel) o).data).get("data").toString());
-                                int minute = (int) (second / 60000);
-                                if (String.valueOf(minute).length() == 1) {
-                                    listener.startTimer("0" + (minute - 1), "60");
-                                } else {
-                                    listener.startTimer(String.valueOf(minute - 1), "60");
-                                }
+                                Object result = ((LinkedTreeMap) ((BaseModel) o).data).get("data");
+                                int second;
+                                if (result != null) second = (int) Math.round((Double) result);
+                                else second = 600000;
+                                int minute = second / 60000;
+
+                                CountTimer.startVerifyNumberTimer("00", String.valueOf(minute), new OnTimerListener() {
+                                    @Override
+                                    public void changeSecond(String second) {
+                                        timerSecond = second;
+                                    }
+
+                                    @Override
+                                    public void changeMinute(String minute) {
+                                        timerMinute = minute;
+                                    }
+
+                                    @Override
+                                    public void notifyMinuteAndSecond() {
+                                        notifyPropertyChanged(BR.timerSecond);
+                                        notifyPropertyChanged(BR.timerMinute);
+                                    }
+                                });
                                 listener.hideKeyboard();
-                                listener.hideLoadingIndicator();
                                 break;
                             case 6005:
                                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
@@ -297,9 +312,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                         String message = (String) o;
                         listener.showSnackBar(message);
                     }
+
                     user.addObserver(this);
-                    listener.hideLoadingIndicator();
-                }, user, token.getAccessToken());
+                }, user);
             }
         } else {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
@@ -442,50 +457,58 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
      * 인증 번호 요청
      */
     public void onClickSendPhone() {
-        if (!CommonUtil.validateEmail(user.getEmail())) {
-            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
-        } else {
+        if (CommonUtil.validateEmail(user.getEmail())) {
             user.deleteObserver(this);
-            UserServer.verifyPhone((success, o) -> {
-                if (success) {
-                    BaseModel model = (BaseModel) o;
-                    if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                        resetTimer();
+            if (CountTimer.isResendable()) {
+                UserServer.verifyPhone((success, o) -> {
+                    if (success) {
+                        BaseModel model = (BaseModel) o;
+                        if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                            resetTimer();
 
-                        if (!verifyNumber.isEmpty()) {
-                            listener.setVerifyNumberViewEmpty();
+                            if (!verifyNumber.isEmpty()) {
+                                listener.setVerifyNumberViewEmpty();
+                            }
+
+                            verifyPhoneVisibility = View.VISIBLE;
+                            notifyPropertyChanged(BR.verifyPhoneVisibility);
+
+                            Object result = ((LinkedTreeMap) ((BaseModel) o).data).get("data");
+                            int second;
+                            if (result != null) second = (int) Math.round((Double) result);
+                            else second = 180000;
+                            int minute = second / 60000;
+
+                            CountTimer.startVerifyNumberTimer("00", String.valueOf(minute), new OnTimerListener() {
+                                @Override
+                                public void changeSecond(String second) {
+                                    timerSecond = second;
+                                }
+
+                                @Override
+                                public void changeMinute(String minute) {
+                                    timerMinute = minute;
+                                }
+
+                                @Override
+                                public void notifyMinuteAndSecond() {
+                                    notifyPropertyChanged(BR.timerMinute);
+                                    notifyPropertyChanged(BR.timerSecond);
+                                }
+                            });
+
+                        } else {
+                            listener.showSnackBar(model.message);
                         }
-
-                        verifyPhoneVisibility = View.VISIBLE;
-                        notifyPropertyChanged(BR.verifyPhoneVisibility);
-
-                        CountTimer.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
-                            @Override
-                            public void changeSecond(String second) {
-                                timerSecond = second;
-                            }
-
-                            @Override
-                            public void changeMinute(String minute) {
-                                timerMinute = minute;
-                            }
-
-                            @Override
-                            public void notifyMinuteAndSecond() {
-                                notifyPropertyChanged(BR.timerMinute);
-                                notifyPropertyChanged(BR.timerSecond);
-                            }
-                        });
-
                     } else {
-                        listener.showSnackBar(model.message);
+                        String message = o != null ? (String) o : "잠시 후 다시 시도해주세요.";
+                        listener.showSnackBar(message);
                     }
-                } else {
-                    String message = o != null ? (String) o : "잠시 후 다시 시도해주세요.";
-                    listener.showSnackBar(message);
-                }
-                user.addObserver(this);
-            }, user);
+                    user.addObserver(this);
+                }, user);
+            }
+        } else {
+            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
         }
     }
 

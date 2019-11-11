@@ -24,23 +24,42 @@
         android:paddingTop="40dp"
         android:paddingBottom="20dp">
 
-        <TextView
-            style="@style/PaymentTitleBlackTextStyle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginBottom="5dp"
-            android:text="@string/payment_title_paymentway"
-            android:textSize="@dimen/text_15"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/PaymentTitleBlackTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/payment_title_paymentway"
+                android:textSize="@dimen/text_15"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textview_payment_cardinterest"
+                android:layout_width="wrap_content"
+                style="@style/TextRegular"
+                android:layout_height="wrap_content"
+                android:textColor="@color/warm_grey"
+                android:textSize="@dimen/text_12"
+                android:layout_gravity="center"
+                android:text="@string/productdetail_advantage_cardinterest"
+                app:underLine="@{true}"/>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_payment_way"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -567,9 +586,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_gravity="end"
                     android:background="@drawable/border_payment_coolgrey_bottom"
+                    android:gravity="center"
                     android:onClick="@{purchaseClickListener}"
                     android:text="@string/common_show"
                     android:textColor="@color/cool_grey"

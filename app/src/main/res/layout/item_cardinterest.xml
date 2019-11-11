@@ -29,7 +29,8 @@
             android:src="@color/white_four"
             app:layout_constraintBottom_toTopOf="@+id/view_cardinterest_line"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:imageUrl="@{card.imgUrl}"/>
 
         <LinearLayout
             android:id="@+id/linearlayout_cardinterest_info"

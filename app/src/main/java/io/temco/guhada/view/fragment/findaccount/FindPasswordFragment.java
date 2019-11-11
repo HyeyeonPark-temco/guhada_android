@@ -52,4 +52,10 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
     public void clearVerifyNumber() {
         mBinding.edittextFindpwdPhoneverify.setText("");
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mViewModel.getUser().deleteObserver(mViewModel);
+    }
 }

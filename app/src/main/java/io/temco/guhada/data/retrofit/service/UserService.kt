@@ -104,7 +104,7 @@ interface UserService {
      * 이메일로 인증번호 발송 API
      */
     @POST("/verify/sendEmail")
-    fun verifyEmail(@Header("Authorization") accessToken: String, @Body user: User): Call<BaseModel<Any>>
+    fun verifyEmail(@Body user: User): Call<BaseModel<Any>>
 
     /**
      * 휴대폰 번호로 인증번호 발송 API
@@ -249,7 +249,7 @@ interface UserService {
     fun getProductReviewWithSorting(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String): Call<BaseModel<ReviewResponse>>
 
     @GET("/products/{productId}/reviews")
-    fun getProductReviewWithSortingAndRating(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String,  @Query("rating") rating: String): Call<BaseModel<ReviewResponse>>
+    fun getProductReviewWithSortingAndRating(@Path("productId") productId: Long, @Query("page") page: Int, @Query("size") size: Int, @Query("sort") sorting: String, @Query("rating") rating: String): Call<BaseModel<ReviewResponse>>
 
     /**
      * 상품 리뷰 리스트(포토 리뷰) 조회 API
@@ -552,7 +552,7 @@ interface UserService {
      * @author Hyeyeon Park
      */
     @GET("/banks")
-    fun getBanks() : Call<BaseModel<MutableList<PurchaseOrder.Bank>>>
+    fun getBanks(): Call<BaseModel<MutableList<PurchaseOrder.Bank>>>
 
     /**
      * 아이디 발송하기
@@ -560,7 +560,7 @@ interface UserService {
      * @author Hyeyeon Park
      */
     @POST("/notification/mobile/id")
-    fun sendEmailToPhone(@Body jsonObject: JsonObject) : Call<BaseModel<Any>>
+    fun sendEmailToPhone(@Body jsonObject: JsonObject): Call<BaseModel<Any>>
 
 
     /**
@@ -576,5 +576,5 @@ interface UserService {
      * @author Hyeyeon Park
      */
     @GET("/users/{userId}/followings")
-    fun getFollowingStores(@Path("userId") userId : Long) : Call<BaseModel<MutableList<SellerStore>>>
+    fun getFollowingStores(@Path("userId") userId: Long): Call<BaseModel<MutableList<SellerStore>>>
 }

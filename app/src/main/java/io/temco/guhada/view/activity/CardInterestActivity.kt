@@ -20,8 +20,6 @@ import io.temco.guhada.view.holder.base.BaseViewHolder
  * @since 2019..11.06
  */
 class CardInterestActivity : BindActivity<ActivityCardinterestBinding>() {
-
-
     private lateinit var mViewModel: CardInterestViewModel
 
     override fun getBaseTag(): String = CardInterestActivity::class.java.simpleName
@@ -43,7 +41,10 @@ class CardInterestActivity : BindActivity<ActivityCardinterestBinding>() {
     private fun initViewModel() {
         mViewModel = CardInterestViewModel()
         mViewModel.mCardInterest.observe(this, Observer {
-            this@CardInterestActivity.mBinding.recyclerviewCardinterest.adapter = CardInterestAdapter().apply { this.mList = it }
+            if(it.isNotEmpty()){
+                this@CardInterestActivity.mBinding.recyclerviewCardinterest.adapter = CardInterestAdapter().apply { this.mList = it }
+                this@CardInterestActivity.mBinding.textviewCardinterestMonth.text = String.format(this@CardInterestActivity.getString(R.string.cardinterest_title1), it[0].eventMonth.split(".")[0].toInt(), it[0].eventMonth.split(".")[1].toInt())
+            }
         })
         mViewModel.getCardInterest()
     }

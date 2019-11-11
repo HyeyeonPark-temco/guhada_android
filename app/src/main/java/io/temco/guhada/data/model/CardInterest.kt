@@ -18,6 +18,8 @@ class CardInterest {
             else "※ $field"
         }
     var createDate = ""
+    var eventMonth = ""
+    var imgUrl = ""
 
     fun getDate(): String = "$startEventDate ~ $endEventDate\n$note"
 }

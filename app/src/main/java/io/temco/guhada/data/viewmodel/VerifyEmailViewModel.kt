@@ -74,7 +74,7 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
                 checkDuplicateEmail(successTask = {
                     User().apply {
                         this.email = mEmail.get()
-                        this.name = mName.get()
+                        this.name = null
                     }.let { user -> sendVerifyNumber(user) }
                 })
             } else {
@@ -90,7 +90,6 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
                 }.let { user -> sendVerifyNumber(user) }
             }
         }
-
     }
 
     /**
@@ -141,10 +140,9 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
 
         if (mIsEmail)
             ServerCallbackUtil.callWithToken(task = { accessToken ->
-                UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user, accessToken = accessToken)
+                UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user)
             })
-        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
-
+        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user)
     }
 
 
