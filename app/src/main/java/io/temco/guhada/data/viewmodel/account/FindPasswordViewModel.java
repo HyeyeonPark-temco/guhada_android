@@ -266,7 +266,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             listener.showLoadingIndicator();
             user.deleteObserver(this);
 
-            if(CountTimer.isResendable()){
+            if (CountTimer.isResendable()) {
                 UserServer.verifyEmail((success, o) -> {
                     listener.hideLoadingIndicator();
 
@@ -277,10 +277,13 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                                 verifyEmailVisibility = View.VISIBLE;
                                 notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                                Double second = Double.parseDouble(((LinkedTreeMap) ((BaseModel) o).data).get("data").toString());
-                                int minute = (int) (second / 60000);
+                                Object result = ((LinkedTreeMap) ((BaseModel) o).data).get("data");
+                                int second;
+                                if (result != null) second = (int) Math.round((Double) result);
+                                else second = 600000;
+                                int minute = second / 60000;
 
-                                CountTimer.startVerifyNumberTimer("0", String.valueOf(minute), new OnTimerListener() {
+                                CountTimer.startVerifyNumberTimer("00", String.valueOf(minute), new OnTimerListener() {
                                     @Override
                                     public void changeSecond(String second) {
                                         timerSecond = second;
@@ -456,7 +459,7 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
     public void onClickSendPhone() {
         if (CommonUtil.validateEmail(user.getEmail())) {
             user.deleteObserver(this);
-            if(CountTimer.isResendable()){
+            if (CountTimer.isResendable()) {
                 UserServer.verifyPhone((success, o) -> {
                     if (success) {
                         BaseModel model = (BaseModel) o;
@@ -470,7 +473,13 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                             verifyPhoneVisibility = View.VISIBLE;
                             notifyPropertyChanged(BR.verifyPhoneVisibility);
 
-                            CountTimer.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
+                            Object result = ((LinkedTreeMap) ((BaseModel) o).data).get("data");
+                            int second;
+                            if (result != null) second = (int) Math.round((Double) result);
+                            else second = 180000;
+                            int minute = second / 60000;
+
+                            CountTimer.startVerifyNumberTimer("00", String.valueOf(minute), new OnTimerListener() {
                                 @Override
                                 public void changeSecond(String second) {
                                     timerSecond = second;

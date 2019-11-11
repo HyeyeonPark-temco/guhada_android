@@ -1,7 +1,5 @@
 package io.temco.guhada.common.util;
 
-import android.util.Log;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,7 +17,7 @@ public class CountTimer {
     private static TimerTask mTimerTask;
     private static String timerSecond;
     private static String timerMinute;
-    private static int totalSecond;
+    private static int totalSecond;         // 총 진행 시간
 
     ////////////////////////////////////////////////
 
