@@ -34,6 +34,7 @@
                 android:id="@+id/edittext_findpwd_emailname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="@{viewModel.mIsEmail ? View.GONE : View.VISIBLE}"
                 android:layout_marginTop="12dp"
                 app:hint="@string/findpwd_hint_name"
                 app:txt="@={viewModel.mName}" />
@@ -143,11 +144,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="23dp"
-                    android:background="@{!viewModel.mName.isEmpty() &amp;&amp; (!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? @color/colorPrimary : @color/silver, default=@color/silver}"
-                    android:clickable="@{!viewModel.mName.isEmpty() &amp;&amp; (!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? true : false, default=false}"
+                    android:background="@{(!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? @color/colorPrimary : @color/silver, default=@color/silver}"
+                    android:clickable="@{(!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? true : false, default=false}"
                     android:onClick="@{()->viewModel.onClickSendVerifyNumber()}"
                     android:text="@string/findpwd_button_requestverify"
                     android:visibility="@{viewModel.mVerifyEmailVisibility == View.VISIBLE ? View.GONE : View.VISIBLE, default=visible}" />
+
+                <!--android:background="@{!viewModel.mName.isEmpty() &amp;&amp; (!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? @color/colorPrimary : @color/silver, default=@color/silver}"-->
+                <!--android:clickable="@{!viewModel.mName.isEmpty() &amp;&amp; (!viewModel.mEmail.isEmpty() || !viewModel.mMobile.isEmpty()) ? true : false, default=false}"-->
 
                 <Button
                     style="@style/InactivatedButtonStyle"

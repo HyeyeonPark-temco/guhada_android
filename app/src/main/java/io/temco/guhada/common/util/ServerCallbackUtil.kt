@@ -96,7 +96,8 @@ class ServerCallbackUtil {
                                 cancelQuantityErrorTask: (BaseModel<*>) -> Unit = {
                                     CommonUtil.debug("[${it.resultCode}] ${it.result}")
                                     ToastUtil.showMessage(it.result)
-                                }
+                                },
+                                alreadyExistEmailTask: (BaseModel<*>) -> Unit = {}
 
         ) {
             if (o != null) {
@@ -113,6 +114,7 @@ class ServerCallbackUtil {
                         ResultCode.INVALID_VERIFICATION_NUMBER.flag -> invalidVerificationNumberTask(model)
                         ResultCode.WRONG_INFORMATION.flag -> wrongInfoTask(model)
                         ResultCode.CANCEL_QUANTITY_ERROR.flag -> cancelQuantityErrorTask(model)
+                        ResultCode.ALREADY_EXIST_EMAIL.flag -> alreadyExistEmailTask(model)
                         else -> dataIsNull(model)
                     }
                 } else {

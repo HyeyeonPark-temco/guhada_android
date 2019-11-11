@@ -58,17 +58,17 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
 
         // INIT SNS LOGIN
         mLoginListener = object : OnSnsLoginListener {
-            override fun kakaoLogin(result: UserProfile) {
-                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener kakaoLogin")
-                SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
-            }
-
-            override fun redirectTermsActivity(type: Int, data: Any) {
+            override fun redirectTermsActivity(type: Int, data: Any?, email: String?) {
                 if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectTermsActivity")
                 setResultFinish(Activity.RESULT_CANCELED, "회원정보를 찾을 수 없습니다.")
                 /*mViewModel.setSnsUser(data)
                 val intent = Intent(this@MyPageTempLoginActivity, TermsActivity::class.java)
                 startActivityForResult(intent, type)*/
+            }
+
+            override fun kakaoLogin(result: UserProfile) {
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener kakaoLogin")
+                SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
             }
 
             override fun redirectMainActivity(data: Token) {

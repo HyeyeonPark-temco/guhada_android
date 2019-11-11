@@ -4,11 +4,14 @@ import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
 import androidx.databinding.ObservableInt
+import com.google.android.gms.common.util.DataUtils
 import io.temco.guhada.BR
 import io.temco.guhada.common.enum.PaymentWayType
+import io.temco.guhada.common.util.DateUtil
 import io.temco.guhada.data.model.order.PurchaseOrderResponse
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 import io.temco.guhada.view.activity.PaymentResultActivity
+import java.sql.Timestamp
 
 class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResultListener) : BaseObservableViewModel() {
     var pointVisibility: ObservableInt = ObservableInt(View.GONE)
@@ -22,12 +25,14 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
                 PaymentWayType.CARD.code -> {
                     paymentMethod = ObservableField(PaymentWayType.CARD.label)
                     methodName = ObservableField(value.payment.method)
-                    setCreatedAtText(value.payment.completeAt)
+                    completeAtText = ObservableField(DateUtil.convertDateTimestamp(timestamp = value.payment.requestTimestamp, separator = "."))
+                    notifyPropertyChanged(BR.completeAtText)
                 }
                 PaymentWayType.VBANK.code -> {
                     paymentMethod = ObservableField(PaymentWayType.VBANK.label)
                     methodName = ObservableField("${value.payment.vbankBankName} ${value.payment.vbankNo}")
-                    setCreatedAtText(value.payment.requestAt)
+                    completeAtText = ObservableField("${DateUtil.convertDateTimestamp(timestamp = value.payment.vbankExpireTimestamp, separator = ".")}까지")
+                    notifyPropertyChanged(BR.completeAtText)
                 }
                 PaymentWayType.DIRECT_BANK.code -> paymentMethod = ObservableField(PaymentWayType.DIRECT_BANK.label)
                 PaymentWayType.TOKEN.code -> paymentMethod = ObservableField(PaymentWayType.TOKEN.label)
@@ -63,14 +68,4 @@ class PaymentResultViewModel(val listener: PaymentResultActivity.OnPaymentResult
         pointVisibility = if (pointVisibility.get() == View.GONE) ObservableInt(View.VISIBLE) else ObservableInt(View.GONE)
         notifyPropertyChanged(BR.pointVisibility)
     }
-
-
-    private fun setCreatedAtText(arr: IntArray) {
-        if (arr.isNotEmpty()) {
-            completeAtText = ObservableField("${arr[0]}.${arr[1]}.${arr[2]} ${arr[3] ?: ""}:${arr[4]
-                    ?: ""} 까지")
-            notifyPropertyChanged(BR.completeAtText)
-        }
-    }
-
 }

@@ -5,6 +5,7 @@ import android.app.Activity.RESULT_OK
 import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
+import com.auth0.android.jwt.JWT
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -37,7 +38,7 @@ import org.json.JSONObject
  */
 class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservableViewModel() {
     var toolBarTitle = ""
-    var id = Preferences.getSavedId()
+    var id = if (Preferences.isIdSaved()) Preferences.getSavedId() else ""
         @Bindable
         get() = field
         set(value) {
@@ -81,8 +82,22 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
         TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_InputId.eventName)
         TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_Inputpw.eventName)
         TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_LoginButton.eventName)
+        signIn(email = id)
+    }
 
-        if (CommonUtil.validateEmail(id)) {
+    fun onClickMypageSignIn() {
+        val savedEmail = Preferences.getSavedId()
+        val email = if (savedEmail.isNullOrEmpty())
+            Preferences.getToken().let { token ->
+                JWT(token.accessToken ?: "").getClaim("user_name").asString()
+            }
+        else savedEmail
+
+        if (!email.isNullOrEmpty()) signIn(email)
+    }
+
+    private fun signIn(email: String) {
+        if (CommonUtil.validateEmail(email)) {
             UserServer.signIn(OnServerListener { success, o ->
                 if (CustomLog.flag) CustomLog.L("LoginViewModel onClickSignIn", "success", success)
                 if (success) {
@@ -94,12 +109,8 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                             if (Preferences.getToken() != null) Preferences.clearToken(false)
                             Preferences.setToken(token)
                             // save id
-                            if (mIsIdSaved.get()) {
-                                val savedId = Preferences.getSavedId()
-                                if (savedId != id) {
-                                    Preferences.setSavedId(id)
-                                }
-                            }
+                            if (mIsIdSaved.get())
+                                Preferences.setSavedId(email)
 
                             loginListener.closeActivity(RESULT_OK)
                             CommonUtil.debug(token.accessToken)
@@ -111,7 +122,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
                     loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.common_message_servererror))
                     CommonUtil.debug(o as String)
                 }
-            }, User(id, pwd))
+            }, User(email, pwd))
         } else {
             loginListener.showSnackBar(BaseApplication.getInstance().resources.getString(R.string.login_message_wrongidformat))
         }
@@ -154,7 +165,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     }
 
     fun onCheckedSaveId(checked: Boolean) {
-        if(mIsIdSaved.get() != checked){
+        if (mIsIdSaved.get() != checked) {
             TrackingUtil.sendKochavaEvent(TrackingEvent.Login.Login_MainP_SaveIdClick.eventName)
 
             mIsIdSaved.set(checked)

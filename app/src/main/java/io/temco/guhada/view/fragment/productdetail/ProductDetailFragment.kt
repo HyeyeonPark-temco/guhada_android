@@ -320,6 +320,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initSummary() {
         mViewModel.getProductReviewSummary()
         mViewModel.getSellerSatisfaction()
@@ -331,7 +332,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener { redirectSellerInfoActivity() }
         mBinding.includeProductdetailContentsummary.framelayooutProductdetailSellerstore.setOnClickListener { redirectSellerInfoActivity() }
 
-        // 혜택 정보
+        // 혜택 정보-포인트 적립
         mViewModel.mExpectedPoint.observe(this, Observer {
             var advantageBuyPoint = 0
             var advantageReviewPoint = 0
@@ -344,11 +345,12 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
 
             if (advantageBuyPoint == 0 && advantageReviewPoint == 0) {
-                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.GONE
-                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.GONE
+                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantagepoint.visibility = View.GONE
+//                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.GONE
             } else {
-                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.VISIBLE
-                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.VISIBLE
+                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantagepoint.visibility = View.VISIBLE
+                mBinding.includeProductdetailContentsummary.textviewProductdetailAdvantagetitle.text = "${getString(R.string.productdetail_advantage_point)}  ${getString(R.string.productdetail_advantage_cardinterest)}"
+//                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.VISIBLE
 
                 if (advantageBuyPoint > 0 && advantageReviewPoint > 0)
                     (mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.layoutParams as ViewGroup.MarginLayoutParams).apply {
@@ -366,6 +368,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 } else mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.visibility = View.GONE
             }
         })
+
+        // 혜택정보-무이자 할부
+        mBinding.includeProductdetailContentsummary.linearlayoutProductdetailCardinterest.setOnClickListener {
+//            mBinding.root.context.startActivity(Intent(context, CardInterestActivity::class.java))
+        }
     }
 
     private fun redirectSellerInfoActivity() {
