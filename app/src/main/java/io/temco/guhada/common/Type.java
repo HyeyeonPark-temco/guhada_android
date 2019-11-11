@@ -75,7 +75,8 @@ public class Type {
         SCHEME,
         LUCKY_EVENT,
         LUCKY_EVENT_DIALOG,
-        PHOTO_PAGER
+        PHOTO_PAGER,
+        CARD_INTEREST
     }
 
     // Main

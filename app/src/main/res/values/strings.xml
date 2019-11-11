@@ -340,6 +340,8 @@
 
     <!-- PRODUCT DETAIL -->
     <string name="productdetail_advantage_point">포인트 적립</string>
+    <string name="productdetail_advantage_cardinterest">무이자 할부</string>
+    <string name="productdetail_advantage_more">자세히</string>
     <string name="productdetail_dummy_advantage2">추가 적립 포인트 1,000원</string>
     <string name="productdetail_dummy_shippingtype">택배, 등기, 소포</string>
 
@@ -1329,4 +1331,8 @@
     <!-- TIME DEAL -->
     <string name="timedeal_today">오늘마감</string>
     <string name="timedeal_remain">%d일 남음</string>
+
+    <!-- CARD INTEREST -->
+    <string name="cardinterest_header">무이자 할부 안내</string>
+    <string name="cardinterest_title1">무이자 할부정보 (%d년 %d월)</string>
 </resources>

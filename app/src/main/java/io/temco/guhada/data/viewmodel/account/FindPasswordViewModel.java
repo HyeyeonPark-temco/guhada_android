@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel.account;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.databinding.Bindable;
@@ -15,13 +16,17 @@ import io.temco.guhada.BR;
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
+import io.temco.guhada.common.Preferences;
 import io.temco.guhada.common.listener.OnFindPasswordListener;
 import io.temco.guhada.common.listener.OnServerListener;
 import io.temco.guhada.common.listener.OnTimerListener;
 import io.temco.guhada.common.util.CommonUtil;
 import io.temco.guhada.common.util.CountTimer;
 import io.temco.guhada.common.util.CustomLog;
+import io.temco.guhada.common.util.ServerCallbackUtil;
+import io.temco.guhada.common.util.TextUtil;
 import io.temco.guhada.common.util.ToastUtil;
+import io.temco.guhada.data.model.Token;
 import io.temco.guhada.data.model.Verification;
 import io.temco.guhada.data.model.base.BaseErrorModel;
 import io.temco.guhada.data.model.base.BaseModel;
@@ -260,38 +265,42 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
         if (CommonUtil.validateEmail(user.getEmail())) {
             listener.showLoadingIndicator();
             user.deleteObserver(this);
-            UserServer.verifyEmail((success, o) -> {
-                if (success) {
-                    BaseModel model = (BaseModel) o;
-                    switch (model.resultCode) {
-                        case 200:
-                            verifyEmailVisibility = View.VISIBLE;
-                            notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                            //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
-                            Double second = Double.parseDouble(((LinkedTreeMap) ((BaseModel) o).data).get("data").toString());
-                            int minute = (int) (second / 60000);
-                            if (String.valueOf(minute).length() == 1) {
-                                listener.startTimer("0" + (minute - 1), "60");
-                            } else {
-                                listener.startTimer(String.valueOf(minute - 1), "60");
-                            }
-                            listener.hideKeyboard();
-                            listener.hideLoadingIndicator();
-                            break;
-                        case 6005:
-                            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
-                            break;
-                        default:
-                            listener.showSnackBar(model.message);
+            Token token = Preferences.getToken();
+            if (token != null && token.getAccessToken() != null) {
+                UserServer.verifyEmail((success, o) -> {
+                    if (success) {
+                        BaseModel model = (BaseModel) o;
+                        switch (model.resultCode) {
+                            case 200:
+                                verifyEmailVisibility = View.VISIBLE;
+                                notifyPropertyChanged(BR.verifyEmailVisibility);
+
+                                //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
+                                Double second = Double.parseDouble(((LinkedTreeMap) ((BaseModel) o).data).get("data").toString());
+                                int minute = (int) (second / 60000);
+                                if (String.valueOf(minute).length() == 1) {
+                                    listener.startTimer("0" + (minute - 1), "60");
+                                } else {
+                                    listener.startTimer(String.valueOf(minute - 1), "60");
+                                }
+                                listener.hideKeyboard();
+                                listener.hideLoadingIndicator();
+                                break;
+                            case 6005:
+                                listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
+                                break;
+                            default:
+                                listener.showSnackBar(model.message);
+                        }
+                    } else {
+                        String message = (String) o;
+                        listener.showSnackBar(message);
                     }
-                } else {
-                    String message = (String) o;
-                    listener.showSnackBar(message);
-                }
-                user.addObserver(this);
-                listener.hideLoadingIndicator();
-            }, user);
+                    user.addObserver(this);
+                    listener.hideLoadingIndicator();
+                }, user, token.getAccessToken());
+            }
         } else {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
         }

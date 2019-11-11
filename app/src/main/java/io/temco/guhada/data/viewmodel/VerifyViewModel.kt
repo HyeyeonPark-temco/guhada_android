@@ -102,18 +102,20 @@ class VerifyViewModel : BaseObservableViewModel() {
     // 이메일로 인증번호 전송
     private fun sendNumber() {
         mUser.email = mVerifyEmail.get()
-        UserServer.verifyEmail(OnServerListener { success, o ->
-            ServerCallbackUtil.executeByResultCode(success, o,
-                    successTask = {
-                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.verify_message_send))
-                        mActiveSendButton = ObservableBoolean(true)
-                        notifyPropertyChanged(BR.mActiveSendButton)
-                        startTimer(minute = START_MINUTE, second = START_SECOND)
-                    },
-                    wrongInfoTask = {
-                        ToastUtil.showMessage(it.message)
-                    })
-        }, user = mUser)
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            UserServer.verifyEmail(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o,
+                        successTask = {
+                            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.verify_message_send))
+                            mActiveSendButton = ObservableBoolean(true)
+                            notifyPropertyChanged(BR.mActiveSendButton)
+                            startTimer(minute = START_MINUTE, second = START_SECOND)
+                        },
+                        wrongInfoTask = {
+                            ToastUtil.showMessage(it.message)
+                        })
+            }, user = mUser, accessToken = accessToken)
+        })
     }
 
     // TODO 인증 완료 화면 미정 [2019.09.05]
@@ -149,7 +151,7 @@ class VerifyViewModel : BaseObservableViewModel() {
                 } else {
                     ToastUtil.showMessage(model.message)
                 }
-            }, accessToken = accessToken, verificationNumber = jsonObject)
+            }, accessToken = accessToken, jsonObject = jsonObject)
         })
     }
 

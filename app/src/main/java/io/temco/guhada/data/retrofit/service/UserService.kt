@@ -104,7 +104,7 @@ interface UserService {
      * 이메일로 인증번호 발송 API
      */
     @POST("/verify/sendEmail")
-    fun verifyEmail(@Body user: User): Call<BaseModel<Any>>
+    fun verifyEmail(@Header("Authorization") accessToken: String, @Body user: User): Call<BaseModel<Any>>
 
     /**
      * 휴대폰 번호로 인증번호 발송 API
@@ -509,7 +509,7 @@ interface UserService {
      * @since 2019.09.23
      */
     @PUT("/users/email-verify")
-    fun updateEmailVerify(@Header("Authorization") accessToken: String, @Body verificationNumber: JsonObject): Call<BaseModel<Any>>
+    fun updateEmailVerify(@Header("Authorization") accessToken: String, @Body jsonObject: JsonObject): Call<BaseModel<Any>>
 
     /**
      * review image 업로드 url

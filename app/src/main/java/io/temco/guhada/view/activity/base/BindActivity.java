@@ -18,6 +18,9 @@ import androidx.databinding.ViewDataBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.WeakHashMap;
+
 import io.temco.guhada.R;
 import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.Flag;
@@ -55,7 +58,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"onCreate");
+        if(CustomLog.getFlag())CustomLog.L(this.getClass().getSimpleName(),"onCreate");
         super.onCreate(savedInstanceState);
         try{
             mBinding = DataBindingUtil.setContentView(this, getLayoutId());
@@ -65,8 +68,12 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
             }
             init();
             handler = new Handler(this.getMainLooper());
+            if(BaseApplication.getInstance().getActivityState() == null) {
+                BaseApplication.getInstance().setActivityState(new HashMap<>());
+            }
+            BaseApplication.getInstance().getActivityState().put(this.getClass().getSimpleName(),"onCreate");
         }catch (Exception e){
-            if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.E(e);
+            if(CustomLog.getFlag())CustomLog.E(e);
         }
     }
 
@@ -161,7 +168,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         if (!"MainActivity".equalsIgnoreCase(this.getClass().getSimpleName())){
             if(((BaseApplication)getApplicationContext()).getMoveToMain() !=null &&
                     ((BaseApplication)getApplicationContext()).getMoveToMain().isMoveToMain()){
-                if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L("BindActivity",this.getClass().getSimpleName(),"onResume finish");
+                if(CustomLog.getFlag())CustomLog.L("BindActivity",this.getClass().getSimpleName(),"onResume finish");
                 setResult(Flag.RequestCode.GO_TO_MAIN);
                 finish();
             }
@@ -170,7 +177,7 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
 
     @Override
     protected void onPause() {
-        if(CustomLog.INSTANCE.getFlag())CustomLog.INSTANCE.L(this.getClass().getSimpleName(),"onPause");
+        if(CustomLog.getFlag())CustomLog.L(this.getClass().getSimpleName(),"onPause");
         if (!"SplashActivity".equalsIgnoreCase(this.getClass().getSimpleName())) disableNfc();
         super.onPause();
     }
@@ -181,6 +188,13 @@ public abstract class BindActivity<B extends ViewDataBinding> extends BaseActivi
         if (intent != null) readData(intent);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(BaseApplication.getInstance().getActivityState() != null){
+            BaseApplication.getInstance().getActivityState().remove(this.getClass().getSimpleName());
+        }
+    }
 
     //////////////////////////////////////////////
 

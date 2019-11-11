@@ -112,8 +112,8 @@ class UserServer {
          * User 중 email, name 필드만 입력
          */
         @JvmStatic
-        fun verifyEmail(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).verifyEmail(user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
+        fun verifyEmail(listener: OnServerListener, user: User, accessToken: String) =
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java).verifyEmail(user = user, accessToken = accessToken).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
 
         /**
          * 핸드폰 번호로 인증번호 전송하기
@@ -776,7 +776,7 @@ class UserServer {
          * @since 2019.09.23
          */
         @JvmStatic
-        fun updateEmailVerify(listener: OnServerListener, accessToken: String, verificationNumber: JsonObject) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateEmailVerify(accessToken = accessToken, verificationNumber = verificationNumber)
+        fun updateEmailVerify(listener: OnServerListener, accessToken: String, jsonObject: JsonObject) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).updateEmailVerify(accessToken = accessToken, jsonObject = jsonObject)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
 

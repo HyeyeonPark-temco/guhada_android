@@ -92,14 +92,14 @@ class MyPageUserInfoLayout constructor(
 
         // INIT SNS LOGIN
         mLoginListener = object : OnSnsLoginListener {
+            override fun redirectTermsActivity(type: Int, data: Any?, email: String?) {
+                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectTermsActivity")
+                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
+            }
+
             override fun kakaoLogin(result: UserProfile) {
                 if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener kakaoLogin")
                 SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
-            }
-
-            override fun redirectTermsActivity(type: Int, data: Any, email:String) {
-                if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectTermsActivity")
-                CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
             }
 
             override fun redirectMainActivity(data: Token) {
