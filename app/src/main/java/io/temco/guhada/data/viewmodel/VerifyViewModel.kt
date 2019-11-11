@@ -114,7 +114,7 @@ class VerifyViewModel : BaseObservableViewModel() {
                         wrongInfoTask = {
                             ToastUtil.showMessage(it.message)
                         })
-            }, user = mUser, accessToken = accessToken)
+            }, user = mUser)
         })
     }
 

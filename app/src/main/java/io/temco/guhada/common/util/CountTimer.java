@@ -81,8 +81,6 @@ public class CountTimer {
             // 1초마다 반복
             Timer timer = new Timer();
             timer.schedule(mTimerTask, 0, 1000);
-        } else {
-            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_resendable));
         }
     }
 
@@ -93,8 +91,12 @@ public class CountTimer {
         }
     }
 
-    private static boolean isResendable() {
-        return totalSecond == 0 || totalSecond > 59;
+    public static boolean isResendable() {
+        if (totalSecond == 0 || totalSecond > 59) return true;
+        else {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_resendable));
+            return false;
+        }
     }
 
     ////////////////////////////////////////////////

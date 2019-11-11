@@ -140,9 +140,9 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
 
         if (mIsEmail)
             ServerCallbackUtil.callWithToken(task = { accessToken ->
-                UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user, accessToken = accessToken)
+                UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user)
             })
-        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
+        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user)
     }
 
 

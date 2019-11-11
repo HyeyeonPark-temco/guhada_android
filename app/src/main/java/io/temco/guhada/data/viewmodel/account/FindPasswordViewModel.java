@@ -266,9 +266,10 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
             listener.showLoadingIndicator();
             user.deleteObserver(this);
 
-            Token token = Preferences.getToken();
-            if (token != null && token.getAccessToken() != null) {
+            if(CountTimer.isResendable()){
                 UserServer.verifyEmail((success, o) -> {
+                    listener.hideLoadingIndicator();
+
                     if (success) {
                         BaseModel model = (BaseModel) o;
                         switch (model.resultCode) {
@@ -276,16 +277,27 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                                 verifyEmailVisibility = View.VISIBLE;
                                 notifyPropertyChanged(BR.verifyEmailVisibility);
 
-                                //  int minute = (int) ((double) ((BaseModel) o).data / 60000);
                                 Double second = Double.parseDouble(((LinkedTreeMap) ((BaseModel) o).data).get("data").toString());
                                 int minute = (int) (second / 60000);
-                                if (String.valueOf(minute).length() == 1) {
-                                    listener.startTimer("0" + (minute - 1), "60");
-                                } else {
-                                    listener.startTimer(String.valueOf(minute - 1), "60");
-                                }
+
+                                CountTimer.startVerifyNumberTimer("0", String.valueOf(minute), new OnTimerListener() {
+                                    @Override
+                                    public void changeSecond(String second) {
+                                        timerSecond = second;
+                                    }
+
+                                    @Override
+                                    public void changeMinute(String minute) {
+                                        timerMinute = minute;
+                                    }
+
+                                    @Override
+                                    public void notifyMinuteAndSecond() {
+                                        notifyPropertyChanged(BR.timerSecond);
+                                        notifyPropertyChanged(BR.timerMinute);
+                                    }
+                                });
                                 listener.hideKeyboard();
-                                listener.hideLoadingIndicator();
                                 break;
                             case 6005:
                                 listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_wronginfo));
@@ -297,9 +309,9 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                         String message = (String) o;
                         listener.showSnackBar(message);
                     }
+
                     user.addObserver(this);
-                    listener.hideLoadingIndicator();
-                }, user, token.getAccessToken());
+                }, user);
             }
         } else {
             listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
