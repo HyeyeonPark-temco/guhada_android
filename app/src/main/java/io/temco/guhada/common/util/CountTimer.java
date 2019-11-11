@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.temco.guhada.R;
+import io.temco.guhada.common.BaseApplication;
 import io.temco.guhada.common.listener.OnTimerListener;
 
 /**
@@ -66,18 +68,22 @@ public class CountTimer {
      * @param listener      시간 변경 시 호출되는 리스너
      */
     public static void startVerifyNumberTimer(String initialSecond, String initialMinute, OnTimerListener listener) {
-        if (mTimerTask != null) {
-            mTimerTask.cancel();
+        if (isResendable()) {
+            if (mTimerTask != null) {
+                mTimerTask.cancel();
+            }
+
+            totalSecond = 0;
+            timerSecond = initialSecond;
+            timerMinute = initialMinute;
+            initTimer(listener);
+
+            // 1초마다 반복
+            Timer timer = new Timer();
+            timer.schedule(mTimerTask, 0, 1000);
+        } else {
+            ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_resendable));
         }
-
-        totalSecond = 0;
-        timerSecond = initialSecond;
-        timerMinute = initialMinute;
-        initTimer(listener);
-
-        // 1초마다 반복
-        Timer timer = new Timer();
-        timer.schedule(mTimerTask, 0, 1000);
     }
 
     public static void stopTimer() {
@@ -87,7 +93,7 @@ public class CountTimer {
         }
     }
 
-    public static boolean isResendable() {
+    private static boolean isResendable() {
         return totalSecond == 0 || totalSecond > 59;
     }
 
