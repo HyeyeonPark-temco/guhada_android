@@ -63,7 +63,7 @@ class MyPageTempLoginActivity : BindActivity<ActivityMypagetemploginBinding>() {
                 SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
             }
 
-            override fun redirectTermsActivity(type: Int, data: Any) {
+            override fun redirectTermsActivity(type: Int, data: Any, email:String) {
                 if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectTermsActivity")
                 setResultFinish(Activity.RESULT_CANCELED, "회원정보를 찾을 수 없습니다.")
                 /*mViewModel.setSnsUser(data)

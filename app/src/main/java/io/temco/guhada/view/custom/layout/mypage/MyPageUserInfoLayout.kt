@@ -97,7 +97,7 @@ class MyPageUserInfoLayout constructor(
                 SnsLoginModule.kakaoLogin(result, getSnsLoginServerListener())
             }
 
-            override fun redirectTermsActivity(type: Int, data: Any) {
+            override fun redirectTermsActivity(type: Int, data: Any, email:String) {
                 if (CustomLog.flag) CustomLog.L("MyPageTempLoginActivity", "OnSnsLoginListener redirectTermsActivity")
                 CommonUtil.showSnackBarCoordinatorLayout(mBinding.includeMypageuserinfoUserpassword.linearlayoutLogin, "회원정보를 찾을 수 없습니다.")
             }

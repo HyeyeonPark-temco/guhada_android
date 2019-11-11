@@ -73,6 +73,8 @@ public class Type {
         SHIPPING_TRACKING,
         VERIFY_EMAIL,
         SCHEME,
+        LUCKY_EVENT,
+        LUCKY_EVENT_DIALOG,
         PHOTO_PAGER
     }
 
