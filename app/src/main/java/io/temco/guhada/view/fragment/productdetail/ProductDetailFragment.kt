@@ -371,7 +371,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
 
         // 혜택정보-무이자 할부
         mBinding.includeProductdetailContentsummary.linearlayoutProductdetailCardinterest.setOnClickListener {
-//            mBinding.root.context.startActivity(Intent(context, CardInterestActivity::class.java))
+            mBinding.root.context.startActivity(Intent(context, CardInterestActivity::class.java))
         }
     }
 
