@@ -454,50 +454,52 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
      * 인증 번호 요청
      */
     public void onClickSendPhone() {
-        if (!CommonUtil.validateEmail(user.getEmail())) {
-            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
-        } else {
+        if (CommonUtil.validateEmail(user.getEmail())) {
             user.deleteObserver(this);
-            UserServer.verifyPhone((success, o) -> {
-                if (success) {
-                    BaseModel model = (BaseModel) o;
-                    if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                        resetTimer();
+            if(CountTimer.isResendable()){
+                UserServer.verifyPhone((success, o) -> {
+                    if (success) {
+                        BaseModel model = (BaseModel) o;
+                        if (model.resultCode == Flag.ResultCode.SUCCESS) {
+                            resetTimer();
 
-                        if (!verifyNumber.isEmpty()) {
-                            listener.setVerifyNumberViewEmpty();
+                            if (!verifyNumber.isEmpty()) {
+                                listener.setVerifyNumberViewEmpty();
+                            }
+
+                            verifyPhoneVisibility = View.VISIBLE;
+                            notifyPropertyChanged(BR.verifyPhoneVisibility);
+
+                            CountTimer.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
+                                @Override
+                                public void changeSecond(String second) {
+                                    timerSecond = second;
+                                }
+
+                                @Override
+                                public void changeMinute(String minute) {
+                                    timerMinute = minute;
+                                }
+
+                                @Override
+                                public void notifyMinuteAndSecond() {
+                                    notifyPropertyChanged(BR.timerMinute);
+                                    notifyPropertyChanged(BR.timerSecond);
+                                }
+                            });
+
+                        } else {
+                            listener.showSnackBar(model.message);
                         }
-
-                        verifyPhoneVisibility = View.VISIBLE;
-                        notifyPropertyChanged(BR.verifyPhoneVisibility);
-
-                        CountTimer.startVerifyNumberTimer(timerSecond, timerMinute, new OnTimerListener() {
-                            @Override
-                            public void changeSecond(String second) {
-                                timerSecond = second;
-                            }
-
-                            @Override
-                            public void changeMinute(String minute) {
-                                timerMinute = minute;
-                            }
-
-                            @Override
-                            public void notifyMinuteAndSecond() {
-                                notifyPropertyChanged(BR.timerMinute);
-                                notifyPropertyChanged(BR.timerSecond);
-                            }
-                        });
-
                     } else {
-                        listener.showSnackBar(model.message);
+                        String message = o != null ? (String) o : "잠시 후 다시 시도해주세요.";
+                        listener.showSnackBar(message);
                     }
-                } else {
-                    String message = o != null ? (String) o : "잠시 후 다시 시도해주세요.";
-                    listener.showSnackBar(message);
-                }
-                user.addObserver(this);
-            }, user);
+                    user.addObserver(this);
+                }, user);
+            }
+        } else {
+            listener.showSnackBar(BaseApplication.getInstance().getResources().getString(R.string.findpwd_message_invalidemailformat));
         }
     }
 
