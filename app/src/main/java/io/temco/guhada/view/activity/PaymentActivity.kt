@@ -171,7 +171,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
     }
 
-    private fun setProductFromCart(){
+    private fun setProductFromCart() {
         if (intent.getSerializableExtra("productList") != null) {
             mViewModel.productList = intent.getSerializableExtra("productList") as ArrayList<BaseProduct>
         }
@@ -181,7 +181,7 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         }
     }
 
-    private fun setProductFromNowBuy(){
+    private fun setProductFromNowBuy() {
         mViewModel.quantity = intent.getIntExtra("quantity", 1)
         mViewModel.purchaseOrderResponse.observe(this@PaymentActivity, Observer {
             // 주문 완료 페이지 이동
@@ -347,6 +347,9 @@ class PaymentActivity : BindActivity<ActivityPaymentBinding>() {
         mPaymentWayAdapter.mViewModel = mViewModel
         mPaymentWayAdapter.setItems(mViewModel.order.paymentsMethod)
         mBinding.includePaymentPaymentway.recyclerviewPaymentWay.adapter = mPaymentWayAdapter
+        mBinding.includePaymentPaymentway.textviewPaymentCardinterest.setOnClickListener {
+            startActivity(Intent(this@PaymentActivity, CardInterestActivity::class.java))
+        }
     }
 
     private fun initRecipient() {
