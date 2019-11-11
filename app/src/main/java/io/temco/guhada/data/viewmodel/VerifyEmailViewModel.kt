@@ -74,7 +74,7 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
                 checkDuplicateEmail(successTask = {
                     User().apply {
                         this.email = mEmail.get()
-                        this.name = mName.get()
+                        this.name = null
                     }.let { user -> sendVerifyNumber(user) }
                 })
             } else {
