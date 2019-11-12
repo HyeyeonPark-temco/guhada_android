@@ -32,12 +32,16 @@ import io.temco.guhada.view.fragment.findaccount.FindPasswordFragment;
 
 /**
  * 아이디 찾기, 비밀번호 재설정 Activity
+ *
  * @author Hyeyeon Park
  */
 public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding> {
     private FindAccountViewModel mViewModel;
     private FindAccountPagerAdapter mAdapter;
     private LoadingIndicatorUtil mLoadingIndicatorUtil;
+    private FindIdFragment findIdFragment;
+    private FindPasswordFragment findPasswordFragment;
+
     private int POSITION_FIND_ID = 0;
     private int POSITION_FIND_PWD = 1;
 
@@ -126,13 +130,21 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
             @Override
             public void onSuccessGetIdentifyVerify() {
                 if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
-                    FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
-                    passwordViewModel.setMobile(mViewModel.user.getMobile());
-                    passwordViewModel.setDi(mViewModel.di);
-                    passwordViewModel.setResultVisibility(new ObservableInt(View.VISIBLE));
-                    passwordViewModel.setUser(mViewModel.user);
-                    passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
-                    passwordViewModel.notifyPropertyChanged(BR.user);
+                    FindPasswordViewModel viewModel = findPasswordFragment.getmViewModel();
+                    if (viewModel != null) {
+                        viewModel.setMobile(mViewModel.user.getMobile());
+                        viewModel.setDi(mViewModel.di);
+                        viewModel.setResultVisibility(new ObservableInt(View.VISIBLE));
+                        viewModel.setUser(mViewModel.user);
+                        viewModel.notifyPropertyChanged(BR.resultVisibility);
+                        viewModel.notifyPropertyChanged(BR.user);
+                    }
+                } else {
+                    FindAccountViewModel viewModel = findIdFragment.getmVewModel();
+                    if (viewModel != null) {
+                        viewModel.setResultVisibility(new ObservableInt(View.VISIBLE));
+                        viewModel.notifyPropertyChanged(BR.resultVisibility);
+                    }
                 }
                 hideKeyboard();
                 hideLoadingIndicator();
@@ -146,11 +158,11 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
         // PAGER
         mAdapter = new FindAccountPagerAdapter(getSupportFragmentManager());
 
-        FindIdFragment findIdFragment = new FindIdFragment();
+        findIdFragment = new FindIdFragment();
         findIdFragment.setmVewModel(mViewModel);
         mAdapter.addFragment(findIdFragment);
 
-        FindPasswordFragment findPasswordFragment = new FindPasswordFragment();
+        findPasswordFragment = new FindPasswordFragment();
         findPasswordFragment.setmViewModel(new FindPasswordViewModel(new OnFindPasswordListener() {
             @Override
             public void showLoadingIndicator() {
@@ -232,12 +244,6 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mBinding.viewpagerFindaccount.setCurrentItem(tab.getPosition());
-//                stopTimer();
-//                mViewModel.resetTimer();
-//                mViewModel.setCheckedFindIdByInfo(false);
-//                mViewModel.setCheckedFindIdByVerifyingPhone(false);
-//                mViewModel.notifyPropertyChanged(BR.checkedFindIdByInfo);
-//                mViewModel.notifyPropertyChanged(BR.checkedFindIdByVerifyingPhone);
             }
 
             @Override
@@ -275,15 +281,11 @@ public class FindAccountActivity extends BindActivity<ActivityFindaccountBinding
                     mViewModel.di = di;
                     mViewModel.getIdentityVerify(di);
 
-                    //
                     if (mBinding.tablayoutFindaccount.getSelectedTabPosition() == POSITION_FIND_PWD) {
                         FindPasswordViewModel passwordViewModel = ((FindPasswordFragment) mAdapter.getItem(POSITION_FIND_PWD)).getmViewModel();
                         passwordViewModel.setMobile(mViewModel.user.getMobile());
                         passwordViewModel.setDi(mViewModel.di);
-                        passwordViewModel.setResultVisibility(new ObservableInt(View.VISIBLE));
                         passwordViewModel.setUser(mViewModel.user);
-
-                        passwordViewModel.notifyPropertyChanged(BR.resultVisibility);
                         passwordViewModel.notifyPropertyChanged(BR.user);
                     }
                 }

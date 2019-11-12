@@ -8,6 +8,7 @@ import io.temco.guhada.view.fragment.base.BaseFragment;
 
 /**
  * 비밀번호 재설정 Fragment
+ *
  * @author Hyeyeon Park
  */
 public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBinding> {
@@ -56,6 +57,7 @@ public class FindPasswordFragment extends BaseFragment<FragmentFindpasswordBindi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mViewModel.getUser().deleteObserver(mViewModel);
+        if (mViewModel.getUser() != null)
+            mViewModel.getUser().deleteObserver(mViewModel);
     }
 }

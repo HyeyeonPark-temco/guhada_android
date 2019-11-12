@@ -186,4 +186,6 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
             }
         })
     }
+
+
 }

@@ -103,30 +103,37 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     val gender = data?.getStringExtra("gender") // FEMALE MALE
                     val birth = data?.getStringExtra("birth")   // yyyy-MM-dd
 
-                    if (di != null)
+                    if (di != null){
                         mViewModel.mUser.value!!.userDetail.diCode = di
+                        mViewModel.mVerification.diCode = di
+                    }
 
                     if (mobile != null) {
                         var mob = CommonUtilKotlin.setMobileNumber(mobile.replace("-", "").replace(" ", ""))
                         mBinding.textviewMypageuserinfoMobile.setText(mob)
                         mViewModel.mUser.value?.mobile = mobile
                         mViewModel.mUser.value?.phoneNumber = mobile
+                        mViewModel.mVerification.mobile = mobile
                     }
 
                     if (!name.isNullOrEmpty()) {
                         mBinding.textviewMypageuserinfoName.text = name
                         mViewModel.mUser.value?.name = name
+                        mViewModel.mVerification.name = name
                     }
 
                     if (!gender.isNullOrEmpty()) {
                         mViewModel.mUser.value?.userGender = gender
                         mViewModel.checkGenderValue.set(gender)
+                        mViewModel.mVerification.gender = gender
                     }
 
                     if (!birth.isNullOrEmpty()) {
                         mViewModel.mUser.value?.birth = birth
                         setBirth()
                     }
+
+                    mViewModel.updateIdentityVerify()
                 }
             }
             RequestCode.VERIFY_USERINFO.flag -> {

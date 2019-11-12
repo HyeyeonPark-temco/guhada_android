@@ -1,4 +1,6 @@
 import android.util.Log
+import android.view.View
+import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.util.DateUtil
 import org.joda.time.DateTime
 import org.joda.time.Hours
@@ -42,6 +44,43 @@ class Test {
     @Test
     fun timeDealTest() {
         print(DateUtil.getTimezoneOffsetMs())
+    }
+
+
+    @Test
+    fun op() {
+        print(execute(1, Operation.Increment))
+        print(execute(1, Operation.Add(2)))
+
+        val ui = Ui() + UiOp.Show + UiOp.Hide
+//        run(View(BaseApplication.getInstance().applicationContext), ui)
+    }
+
+
+    class Ui(val uiOps: List<Any> = emptyList()) {
+        operator fun plus(uiOp: UiOp) = Ui(uiOps + uiOp)
+    }
+
+    sealed class UiOp {
+        object Show : UiOp()
+        object Hide : UiOp()
+    }
+
+    sealed class Operation {
+        class Add(val value: Int) : Operation()
+        class Multiply(val value: Int) : Operation()
+        object Increment : Operation()
+    }
+
+    fun execute(x: Int, op: Operation) = when (op) {
+        is Operation.Add -> x + op.value
+        is Operation.Multiply -> x * op.value
+        is Operation.Increment -> x + 1
+    }
+
+    fun uiExecute(view: View, op: UiOp) = when (op) {
+        UiOp.Show -> view.visibility = View.VISIBLE
+        UiOp.Hide -> view.visibility = View.GONE
     }
 
     private fun print(text: Any) {
