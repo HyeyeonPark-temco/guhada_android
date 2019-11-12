@@ -1,16 +1,24 @@
 package io.temco.guhada.data.viewmodel.account
 
+import android.app.Activity
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import io.temco.guhada.BR
+import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 
 class TermsViewModel : BaseObservableViewModel() {
+    enum class TermsType(val type: Int) {
+        PURCHASE(0), PERSONAL(1), SALES(2)
+    }
+
     var user = User()
     var mCloseTask: (resultCode: Int) -> Unit = {}
+    var mRedirectTermsTask: (type: Int) -> Unit = {}
 
     val allChecked = ObservableBoolean(false)
         @Bindable
@@ -77,9 +85,11 @@ class TermsViewModel : BaseObservableViewModel() {
         checkOptionalTermsAllChecked()
     }
 
-    // CLICK LISTENER
+    fun onClickPurchaseTerms() = mRedirectTermsTask(TermsType.PURCHASE.type)
+    fun onClickPersonalTerms() = mRedirectTermsTask(TermsType.PERSONAL.type)
+    fun onClickSalesTerms() = mRedirectTermsTask(TermsType.SALES.type)
     fun onClickSignUp() = mCloseTask(RESULT_OK)
-    fun onClickBack()  = mCloseTask(RESULT_CANCELED)
+    fun onClickBack() = mCloseTask(RESULT_CANCELED)
 
     private fun setEssentialTerms(checked: Boolean) {
         user.agreePurchaseTos = checked
