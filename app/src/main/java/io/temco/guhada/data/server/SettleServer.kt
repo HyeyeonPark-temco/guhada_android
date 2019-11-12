@@ -10,6 +10,7 @@ import io.temco.guhada.data.model.CardInterest
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
+import io.temco.guhada.data.model.event.EventList
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.SettleService
 import retrofit2.Call
@@ -77,11 +78,11 @@ class SettleServer {
          */
         @JvmStatic
         fun getEventList(listener: OnServerListener) {
-            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).appVersion().enqueue(object : Callback<BaseModel<AppVersionCheck>> {
-                override fun onResponse(call: Call<BaseModel<AppVersionCheck>>, response: Response<BaseModel<AppVersionCheck>>) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getEventList().enqueue(object : Callback<BaseModel<EventList>> {
+                override fun onResponse(call: Call<BaseModel<EventList>>, response: Response<BaseModel<EventList>>) {
                     resultListener(listener, call, response)
                 }
-                override fun onFailure(call: Call<BaseModel<AppVersionCheck>>, t: Throwable) {
+                override fun onFailure(call: Call<BaseModel<EventList>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
             })
