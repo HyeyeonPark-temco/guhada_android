@@ -412,17 +412,19 @@ public class FindPasswordViewModel extends BaseObservableViewModel implements Ob
                     verification.setVerificationNumber(verifyNumber);
                     verification.setVerificationTarget(user.getMobile());
                     verification.setVerificationTargetType(Verification.IdentityVerifyMethod.MOBILE.getCode());
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("diCode", di);
+                    UserServer.changePasswordByIdentifying(serverListener, verification);
 
-                    UserServer.getIdentityVerify((success, o) -> {
-                        BaseModel<Object> model = (BaseModel<Object>) o;
-                        if (success && model.resultCode == Flag.ResultCode.SUCCESS) {
-                            UserServer.changePasswordByIdentifying(serverListener, verification);
-                        } else {
-                            ToastUtil.showMessage(model.message);
-                        }
-                    }, jsonObject);
+//                    JsonObject jsonObject = new JsonObject();
+//                    jsonObject.addProperty("diCode", di);
+//
+//                    UserServer.getIdentityVerify((success, o) -> {
+//                        BaseModel<Object> model = (BaseModel<Object>) o;
+//                        if (success && model.resultCode == Flag.ResultCode.SUCCESS) {
+//                            UserServer.changePasswordByIdentifying(serverListener, verification);
+//                        } else {
+//                            ToastUtil.showMessage(model.message);
+//                        }
+//                    }, jsonObject);
                 } else {
                     if (checkedFindPwdByEmail) {
                         verification.setVerificationNumber(verifyNumber);

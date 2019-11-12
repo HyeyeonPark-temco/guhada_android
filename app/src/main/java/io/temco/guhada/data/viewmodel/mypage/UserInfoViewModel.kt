@@ -13,6 +13,7 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -21,6 +22,7 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BankAccount
 import io.temco.guhada.data.model.RefundRequest
+import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.User
@@ -53,6 +55,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     var userEmail = ""
     var mUser: MutableLiveData<User> = MutableLiveData()
     var mVerifyNumber = ""
+    var mVerification: Verification = Verification()
 
     // 환불계좌 입력 여부
     var accountVerifiedIdentity = false
@@ -245,6 +248,22 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
         })
     }
 
+    /**
+     * 본인인증 정보 업데이트
+     */
+    fun updateIdentityVerify() {
+        ServerCallbackUtil.callWithToken(task = {
+            UserServer.updateIdentityVerify(OnServerListener { success, o ->
+                val resultCode = (o as BaseModel<*>).resultCode
+                if (resultCode == ResultCode.SUCCESS.flag) {
+
+                } else {
+                    ToastUtil.showMessage(o.message ?: "유저 정보 업데이트 오류")
+                }
+            }, accessToken = it, verification = mVerification)
+        })
+    }
+
 }
 
 
@@ -341,5 +360,4 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
                     }
                 }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
-
 }
