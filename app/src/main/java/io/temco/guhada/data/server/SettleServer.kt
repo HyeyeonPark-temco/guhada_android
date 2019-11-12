@@ -71,5 +71,21 @@ class SettleServer {
                         .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<CardInterest>>> { listener.onResult(it.isSuccessful, it.body()) })
 
 
+
+        /**
+         * 중복된 이메일인지 검증
+         */
+        @JvmStatic
+        fun getEventList(listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).appVersion().enqueue(object : Callback<BaseModel<AppVersionCheck>> {
+                override fun onResponse(call: Call<BaseModel<AppVersionCheck>>, response: Response<BaseModel<AppVersionCheck>>) {
+                    resultListener(listener, call, response)
+                }
+                override fun onFailure(call: Call<BaseModel<AppVersionCheck>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
     }
 }
