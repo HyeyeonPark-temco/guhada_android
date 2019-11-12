@@ -474,7 +474,6 @@
             </LinearLayout>
         </ScrollView>
 
-
         <Button
             android:id="@+id/button_join_signup"
             style="@style/InactivatedButtonStyle"

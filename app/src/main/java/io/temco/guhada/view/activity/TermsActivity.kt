@@ -34,6 +34,7 @@ class TermsActivity : BindActivity<ActivityTermsBinding>() {
             }
         }
         mBinding.viewModel = mViewModel
+        mBinding.includeTerms.viewModel = mViewModel
         mBinding.includeTermsHeader.viewModel = mViewModel
         mBinding.executePendingBindings()
     }
