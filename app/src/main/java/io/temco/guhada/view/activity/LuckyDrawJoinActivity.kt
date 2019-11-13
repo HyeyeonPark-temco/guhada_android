@@ -2,6 +2,7 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
@@ -21,6 +22,7 @@ import java.net.URLDecoder
  */
 class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
     private lateinit var mViewModel: LuckyDrawJoinViewModel
+    private lateinit var mTermsViewModel: TermsViewModel
 
     override fun getBaseTag(): String = LuckyDrawJoinActivity::class.java.simpleName
 
@@ -32,8 +34,7 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
         mViewModel = LuckyDrawJoinViewModel().apply {
             this.mVerifyMobileTask = { startActivityForResult(Intent(this@LuckyDrawJoinActivity, VerifyPhoneActivity::class.java), RequestCode.VERIFY_PHONE.flag) }
         }
-        mBinding.viewModel = mViewModel
-        mBinding.includeLuckydrawjoinTerms.viewModel = TermsViewModel().apply {
+        mTermsViewModel = TermsViewModel().apply {
             this.mRedirectTermsTask = { type ->
                 when (type) {
                     TermsViewModel.TermsType.PURCHASE.type -> CommonUtilKotlin.startTermsPurchase(this@LuckyDrawJoinActivity)
@@ -41,7 +42,26 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
                     TermsViewModel.TermsType.SALES.type -> CommonUtilKotlin.startTermsSale(this@LuckyDrawJoinActivity)
                 }
             }
+
+            this.mCheckTermsTask = {
+                val isAllChecked = this.user.agreeSaleTos && this.user.agreeEmailReception && this.user.agreeSmsReception && this.user.agreePurchaseTos && this.user.agreeCollectPersonalInfoTos
+                this.mIsJoinTermsChecked.set(isAllChecked)
+                this.notifyPropertyChanged(BR.mIsJoinTermsChecked)
+
+//                mViewModel.mIsTermsAllChecked.set(isAllChecked)
+//                mViewModel.notifyPropertyChanged(BR.mIsTermsAllChecked)
+
+                Log.e("약관", isAllChecked.toString())
+            }
+
+            this.mCloseTask = {
+                // 회원가입 버튼 클릭
+
+            }
         }
+
+        mBinding.viewModel = mViewModel
+        mBinding.includeLuckydrawjoinTerms.viewModel = mTermsViewModel
 
         mBinding.includeLuckydrawjoinHeader.title = getString(R.string.join_title)
         mBinding.includeLuckydrawjoinHeader.setOnClickCloseButton { finish() }
@@ -56,10 +76,12 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == Activity.RESULT_OK){
-            val name = data?.getStringExtra("name")?:getString(R.string.mypage_userinfo_passwaord_infotitle2)
-            val phoneNumber = data?.getStringExtra("phoneNumber")?:getString(R.string.luckydraw_hint_mobile)
-            val di = data?.getStringExtra("di")?:""
+        if (resultCode == Activity.RESULT_OK) {
+            val name = data?.getStringExtra("name")
+                    ?: getString(R.string.mypage_userinfo_passwaord_infotitle2)
+            val phoneNumber = data?.getStringExtra("phoneNumber")
+                    ?: getString(R.string.luckydraw_hint_mobile)
+            val di = data?.getStringExtra("di") ?: ""
 
             mViewModel.mDiCode = di
             mViewModel.mName.set(URLDecoder.decode(name))

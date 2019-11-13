@@ -86,7 +86,12 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mMobile = ObservableField(BaseApplication.getInstance().getString(R.string.luckydraw_hint_mobile))
         @Bindable
         get() = field
-    var mIsMobileVerified =  ObservableBoolean(false)
+    var mIsMobileVerified = ObservableBoolean(false)
+        @Bindable
+        get() = field
+
+    // join
+    var mIsTermsAllChecked = ObservableBoolean(false)
         @Bindable
         get() = field
 
@@ -205,7 +210,6 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
         notifyPropertyChanged(BR.mTimerMinute)
         notifyPropertyChanged(BR.mTimerSecond)
     }
-
 
     fun onClickVerifyMobile() = mVerifyMobileTask()
 }

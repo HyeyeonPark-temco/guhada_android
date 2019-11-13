@@ -385,8 +385,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_margin="20dp"
-            android:background="@{viewModel.essentialChecked ? @color/colorPrimary : @color/silver}"
-            android:clickable="@{viewModel.essentialChecked ? true: false}"
+            android:background="@{viewModel.mIsJoinTermsChecked ? @color/colorPrimary : @color/silver}"
+            android:clickable="@{viewModel.mIsJoinTermsChecked ? true: false}"
             android:onClick="@{onClickSignUp}"
             android:text="@string/terms_button" />
     </LinearLayout>
