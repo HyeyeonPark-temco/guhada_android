@@ -44,7 +44,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:isError = "@{viewModel.mIsEmailVerified ? false : true}"
+                        app:isError = "@{viewModel.mIsEmailDuplicate}"
                         app:txt="@={viewModel.mEmail}"
                         app:hint="@string/mypage_userinfo_passwaord_infotitle4"
                         app:type="email"

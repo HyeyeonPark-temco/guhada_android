@@ -45,7 +45,9 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 
             if (value.isNotEmpty()) resetEmailVerify()
         }
-    var mIsEmailDuplicate: Boolean? = null
+    var mIsEmailDuplicate = ObservableBoolean(false)
+        @Bindable
+        get() = field
     var mIsEmailVerified = ObservableBoolean(false)
         @Bindable
         get() = field
@@ -122,7 +124,7 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 
     fun onClickVerifyEmail() {
         if (!mIsEmailVerified.get()) {
-            if (mIsEmailDuplicate == null || mIsEmailDuplicate == true) {
+            if (!mIsEmailDuplicate.get()) {
                 checkDuplicateEmail()
             } else {
 
@@ -180,7 +182,8 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
             UserServer.checkEmail(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
-                            mIsEmailDuplicate = false
+                            mIsEmailDuplicate.set(false)
+                            notifyPropertyChanged(BR.mIsEmailDuplicate)
                             mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_verifyemail))
 
 //                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
@@ -190,7 +193,9 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                             val message = if (o is BaseModel<*>) o.message else BaseApplication.getInstance().getString(R.string.common_message_servererror)
                             ToastUtil.showMessage(message)
 
-                            mIsEmailDuplicate = true
+                            mIsEmailDuplicate.set(true)
+                            notifyPropertyChanged(BR.mIsEmailDuplicate)
+
                             mEmailVerifyVisible.set(false)
                             notifyPropertyChanged(BR.mEmailVerifyVisible)
 
@@ -224,7 +229,7 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     }
 
     private fun resetEmailVerify() {
-        mIsEmailDuplicate = null
+        mIsEmailDuplicate.set(false)
         mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_checkduplicate))
 
         if (mIsEmailVerified.get()) mIsEmailVerified = ObservableBoolean(false)
@@ -277,7 +282,6 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                 if (o.resultCode == ResultCode.SUCCESS.flag) {
                     ToastUtil.showMessage("럭키드로우 회원가입 완료")
                     if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
-
 
 
                     /// 응모하기 api 예정
