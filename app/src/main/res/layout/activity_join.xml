@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.text.InputType" />
+
         <import type="android.view.View" />
 
         <variable
@@ -29,8 +30,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <include
             android:id="@+id/include_join_header"
@@ -68,20 +69,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint="@string/login_hint_email"
+                        app:isError="false"
                         app:txt="@={viewModel.user.email}"
                         app:type="text" />
 
                     <TextView
-                        style="@style/TextRegular"
                         android:id="@+id/textview_join_emailfocus"
+                        style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="10dp"
-                        android:visibility="gone"
+                        android:text="@string/findpwd_message_invalidemailformat"
                         android:textColor="@color/brick"
                         android:textSize="@dimen/text_12"
-                        android:text="@string/findpwd_message_invalidemailformat"/>
+                        android:visibility="gone" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_join_password"
@@ -90,39 +92,41 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         app:hint="@string/login_hint_password"
+                        app:isError="false"
                         app:txt="@={viewModel.user.password}"
                         app:type="password" />
 
                     <TextView
-                        style="@style/TextRegular"
                         android:id="@+id/textview_join_passwordfocus"
+                        style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:visibility="gone"
+                        android:text="@string/findpwd_message_invalidformat"
                         android:textColor="@color/brick"
                         android:textSize="@dimen/text_12"
-                        android:text="@string/findpwd_message_invalidformat"/>
+                        android:visibility="gone" />
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_join_confirmpassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint="비밀번호 확인"
+                        app:isError="false"
                         app:txt="@={viewModel.user.confirmPassword}"
                         app:type="password" />
 
                     <TextView
-                        style="@style/TextRegular"
                         android:id="@+id/textview_join_confirmpasswordfocus"
+                        style="@style/TextRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="10dp"
-                        android:visibility="gone"
+                        android:text="@string/findpwd_message_notequalpwd"
                         android:textColor="@color/brick"
                         android:textSize="@dimen/text_12"
-                        android:text="@string/findpwd_message_notequalpwd"/>
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -341,10 +345,10 @@
                             android:id="@+id/view_join_plus"
                             android:layout_width="16dp"
                             android:layout_height="16dp"
-                            android:src="@drawable/detail_btn_open"
                             android:background="@color/transparent"
-                            android:scaleType="center"
                             android:onClick="@{()->viewModel.onClickSelectTermPlusView()}"
+                            android:scaleType="center"
+                            android:src="@drawable/detail_btn_open"
                             android:visibility="@{viewModel.selectTermPlusView ? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -400,8 +404,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:visibility="@{viewModel.selectTermPlusView ? View.VISIBLE : View.GONE}"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="@{viewModel.selectTermPlusView ? View.VISIBLE : View.GONE}">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="wrap_content"

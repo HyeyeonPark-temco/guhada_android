@@ -140,7 +140,6 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
 
     @BindingAdapter("txt")
     public static void setEditTextContent(BorderEditTextView view, @Nullable String text) {
-        Log.e("ㅇㅇㅇㅇ", text);
         view.binding.editText.setText(text);
 
         if (text == null || text.isEmpty()) {

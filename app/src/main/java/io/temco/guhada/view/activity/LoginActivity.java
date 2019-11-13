@@ -35,6 +35,8 @@ import io.temco.guhada.data.model.user.SnsUser;
 import io.temco.guhada.data.viewmodel.account.LoginViewModel;
 import io.temco.guhada.databinding.ActivityLoginBinding;
 import io.temco.guhada.view.activity.base.BindActivity;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 
 public class LoginActivity extends BindActivity<ActivityLoginBinding> {
     private LoginViewModel mViewModel;
@@ -147,6 +149,12 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             }
 
             @Override
+            public void redirectLuckyDrawJoinActivity() {
+                Intent intent = new Intent(LoginActivity.this, LuckyDrawJoinActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
             public void showMessage(String message) {
                 ToastUtil.showMessage(message);
 //                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -163,6 +171,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 finish();
             }
         });
+        mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", false));
         mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);

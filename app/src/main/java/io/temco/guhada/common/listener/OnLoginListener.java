@@ -17,4 +17,6 @@ public interface OnLoginListener extends OnBaseActivityListener {
     void showSnackBar(String message);
 
     void redirectFindAccountActivity();
+
+    void redirectLuckyDrawJoinActivity();
 }
