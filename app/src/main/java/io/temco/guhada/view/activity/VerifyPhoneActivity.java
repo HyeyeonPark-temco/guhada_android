@@ -116,8 +116,7 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
             if (value != null) {
                 map.put(key, value);
             }
-
-
+        }
 //        LinkedHashMap<String, String> map = new LinkedHashMap<>();
 //        try {
 //            URL url = new URL(path);
@@ -131,31 +130,31 @@ public class VerifyPhoneActivity extends BindActivity<ActivityVerifyphoneBinding
 //            if (CustomLog.getFlag()) CustomLog.E(e.getMessage());
 //        }
 
-            String name = map.get("sName");
-            String phoneNumber = map.get("sMobileNo");
-            String di = map.get("sDueInfo");
+        String name = map.get("sName");
+        String phoneNumber = map.get("sMobileNo");
+        String di = map.get("sDueInfo");
 
-            String authType = map.get("sAuthType");
-            String gender = map.get("sGender");
-            String birth = map.get("sBirthDate");
-            String nationalInfo = map.get("sNationalInfo");
-            String mobileCo = map.get("sMobileCo");
-            String requestNumber = map.get("sRequestNumber");
-            String responseNumber = map.get("sResponseNumber");
+        String authType = map.get("sAuthType");
+        String gender = map.get("sGender");
+        String birth = map.get("sBirthDate");
+        String nationalInfo = map.get("sNationalInfo");
+        String mobileCo = map.get("sMobileCo");
+        String requestNumber = map.get("sRequestNumber");
+        String responseNumber = map.get("sResponseNumber");
 
-            if (CustomLog.getFlag() && di != null) CustomLog.L("본인인증 di", di);
+        if (CustomLog.getFlag() && di != null) CustomLog.L("본인인증 di", di);
 
-            Intent intent = getIntent();
-            intent.putExtra("name", name);
-            intent.putExtra("phoneNumber", phoneNumber);
-            intent.putExtra("di", di);
-            if (birth != null)
-                intent.putExtra("birth", birth.substring(0, 4) + "-" + birth.substring(4, 6) + "-" + birth.substring(6, 8));
-            if (gender != null)
-                intent.putExtra("gender", gender.equals(Verification.Gender.FEMALE.getCode()) ? Verification.Gender.FEMALE.getLabel() : Verification.Gender.MALE.getLabel());
-            setResult(RESULT_OK, intent);
-            finish();
-        }
+        Intent intent = getIntent();
+        intent.putExtra("name", name);
+        intent.putExtra("phoneNumber", phoneNumber);
+        intent.putExtra("di", di);
+        if (birth != null)
+            intent.putExtra("birth", birth.substring(0, 4) + "-" + birth.substring(4, 6) + "-" + birth.substring(6, 8));
+        if (gender != null)
+            intent.putExtra("gender", gender.equals(Verification.Gender.FEMALE.getCode()) ? Verification.Gender.FEMALE.getLabel() : Verification.Gender.MALE.getLabel());
+        setResult(RESULT_OK, intent);
+        finish();
+
     }
 }
 

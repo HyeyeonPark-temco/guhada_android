@@ -86,6 +86,9 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mMobile = ObservableField(BaseApplication.getInstance().getString(R.string.luckydraw_hint_mobile))
         @Bindable
         get() = field
+    var mIsMobileVerified =  ObservableBoolean(false)
+        @Bindable
+        get() = field
 
     fun onClickVerifyEmail() {
         if (!mIsEmailVerified.get()) {

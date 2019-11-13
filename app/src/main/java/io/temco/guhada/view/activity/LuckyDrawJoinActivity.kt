@@ -2,10 +2,10 @@ package io.temco.guhada.view.activity
 
 import android.app.Activity
 import android.content.Intent
+import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
-import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CountTimer
 import io.temco.guhada.data.viewmodel.LuckyDrawJoinViewModel
@@ -64,6 +64,11 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
             mViewModel.mDiCode = di
             mViewModel.mName.set(URLDecoder.decode(name))
             mViewModel.mMobile.set(phoneNumber)
+            mViewModel.mIsMobileVerified.set(true)
+
+            mViewModel.notifyPropertyChanged(BR.mName)
+            mViewModel.notifyPropertyChanged(BR.mMobile)
+            mViewModel.notifyPropertyChanged(BR.mIsMobileVerified)
         }
     }
 }
