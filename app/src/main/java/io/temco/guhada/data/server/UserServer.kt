@@ -900,6 +900,15 @@ class UserServer {
         fun getFollowingStores(listener: OnServerListener, userId: Long) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getFollowingStores(userId = userId)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<SellerStore>>>(successTask = { listener.onResult(true, it.body()) }))
 
+        /**
+         * 럭키드로우 이메일 회원가입
+         * @author Hyeyeon Park
+         * @since 2019.11.13
+         */
+        @JvmStatic
+        fun signUpEventUser(listener: OnServerListener, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).signUpEventUser(eventUser = eventUser)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
 
     }
 

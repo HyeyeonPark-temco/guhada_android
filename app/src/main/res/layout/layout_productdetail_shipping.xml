@@ -64,7 +64,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical"
-                android:visibility="@{viewModel.refundInfoExpanded? View.VISIBLE : View.GONE, default = gone}"
+                android:visibility="@{viewModel.refundInfoExpanded? View.VISIBLE : View.GONE, default = visible}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

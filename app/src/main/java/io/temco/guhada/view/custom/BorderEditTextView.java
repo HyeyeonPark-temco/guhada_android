@@ -102,7 +102,7 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus)
             binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        else if (mIsError)
+        else if (mIsError && !getText().isEmpty())
             binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(getResources().getColor(R.color.brick));
         else
             binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(getResources().getColor(R.color.pinkish_grey));
@@ -130,7 +130,9 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
     }
 
     private void setErrorMessageVisibility(boolean isError) {
-        if(!getText().isEmpty()){
+        if (getText().isEmpty()) {
+            this.binding.textviewError.setVisibility(View.GONE);
+        }else {
             if (isError) this.binding.textviewError.setVisibility(View.VISIBLE);
             else this.binding.textviewError.setVisibility(View.GONE);
         }
@@ -138,9 +140,12 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
 
     @BindingAdapter("txt")
     public static void setEditTextContent(BorderEditTextView view, @Nullable String text) {
-        String old = view.getText();
-        if (!old.equals(text)) {
-            view.binding.editText.setText(text);
+        Log.e("ㅇㅇㅇㅇ", text);
+        view.binding.editText.setText(text);
+
+        if (text == null || text.isEmpty()) {
+            view.binding.textviewError.setVisibility(View.GONE);
+            view.binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(view.binding.getRoot().getContext().getResources().getColor(R.color.pinkish_grey));
         }
     }
 
@@ -168,6 +173,9 @@ public class BorderEditTextView extends ConstraintLayout implements View.OnFocus
 
     @BindingAdapter("isError")
     public static void setErrorBg(BorderEditTextView view, boolean isError) {
+        if (!isError)
+            view.binding.constraintlayoutBorderedittextContaiiner.setBackgroundColor(view.binding.getRoot().getContext().getResources().getColor(R.color.pinkish_grey));
+
         view.setIsError(isError);
         view.setErrorMessageVisibility(isError);
     }

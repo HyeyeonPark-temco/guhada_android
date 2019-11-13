@@ -3,6 +3,7 @@ package io.temco.guhada.view.activity
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import androidx.databinding.ObservableBoolean
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.Type
@@ -33,6 +34,15 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
     override fun init() {
         mViewModel = LuckyDrawJoinViewModel().apply {
             this.mVerifyMobileTask = { startActivityForResult(Intent(this@LuckyDrawJoinActivity, VerifyPhoneActivity::class.java), RequestCode.VERIFY_PHONE.flag) }
+            this.mNotifyJoinAvailableTask = {
+                val isAllVerified = mViewModel.mIsEmailVerified.get() && mViewModel.mIsPasswordVerified.get() && mViewModel.mIsPasswordConfirmVerified.get() && mViewModel.mIsMobileVerified.get()
+                mTermsViewModel.mIsJoinTermsChecked.set(mViewModel.mIsTermsAllChecked && isAllVerified)
+                mTermsViewModel.notifyPropertyChanged(BR.mIsJoinTermsChecked)
+            }
+            this.mResetVerifyNumberTask = {
+                mViewModel.mEmailVerifyNumber = ""
+                mBinding.edittextLuckydrawjoinEmailverifynumber.text = ""
+            }
         }
         mTermsViewModel = TermsViewModel().apply {
             this.mRedirectTermsTask = { type ->
@@ -45,23 +55,21 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
 
             this.mCheckTermsTask = {
                 val isAllChecked = this.user.agreeSaleTos && this.user.agreeEmailReception && this.user.agreeSmsReception && this.user.agreePurchaseTos && this.user.agreeCollectPersonalInfoTos
-                this.mIsJoinTermsChecked.set(isAllChecked)
+                val isAllVerified = mViewModel.mIsEmailVerified.get() && mViewModel.mIsPasswordVerified.get() && mViewModel.mIsPasswordConfirmVerified.get() && mViewModel.mIsMobileVerified.get()
+
+                mViewModel.mIsJoinAvailable.set(isAllChecked && isAllVerified)
+                mViewModel.mIsTermsAllChecked = isAllChecked
+                this.mIsJoinTermsChecked.set(isAllChecked && isAllVerified)
                 this.notifyPropertyChanged(BR.mIsJoinTermsChecked)
-
-//                mViewModel.mIsTermsAllChecked.set(isAllChecked)
-//                mViewModel.notifyPropertyChanged(BR.mIsTermsAllChecked)
-
-                Log.e("약관", isAllChecked.toString())
-            }
-
-            this.mCloseTask = {
-                // 회원가입 버튼 클릭
-
             }
         }
 
         mBinding.viewModel = mViewModel
         mBinding.includeLuckydrawjoinTerms.viewModel = mTermsViewModel
+        mBinding.includeLuckydrawjoinTerms.setOnClickSignUp {
+            mViewModel.signUpEventUser(agreeCollectPersonalInfoTos = mTermsViewModel.user.agreeCollectPersonalInfoTos, agreePurchaseTos = mTermsViewModel.user.agreePurchaseTos,
+                    agreeSaleTos = mTermsViewModel.user.agreeSaleTos, agreeEmailReception = mTermsViewModel.user.agreeEmailReception, agreeSmsReception = mTermsViewModel.user.agreeSmsReception)
+        }
 
         mBinding.includeLuckydrawjoinHeader.title = getString(R.string.join_title)
         mBinding.includeLuckydrawjoinHeader.setOnClickCloseButton { finish() }
@@ -82,11 +90,15 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
             val phoneNumber = data?.getStringExtra("phoneNumber")
                     ?: getString(R.string.luckydraw_hint_mobile)
             val di = data?.getStringExtra("di") ?: ""
+            val birth = data?.getStringExtra("birth") ?: ""
+            val gender = data?.getStringExtra("gender") ?: ""
 
             mViewModel.mDiCode = di
+            mViewModel.mBirth = birth
+            mViewModel.mGender = gender
             mViewModel.mName.set(URLDecoder.decode(name))
             mViewModel.mMobile.set(phoneNumber)
-            mViewModel.mIsMobileVerified.set(true)
+            mViewModel.mIsMobileVerified = ObservableBoolean(true)
 
             mViewModel.notifyPropertyChanged(BR.mName)
             mViewModel.notifyPropertyChanged(BR.mMobile)

@@ -178,7 +178,8 @@
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/box_all_palegrey"
                     android:gravity="center_vertical"
-                    android:padding="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     android:text="@{viewModel.mName, default = @string/mypage_userinfo_passwaord_infotitle2}"
                     android:textSize="@dimen/text_13" />
 
@@ -196,10 +197,11 @@
                         android:layout_width="0dp"
                         android:layout_height="45dp"
                         android:layout_weight="1"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
                         android:background="@drawable/box_all_palegrey"
                         android:gravity="center_vertical"
                         android:onClick="@{()->viewModel.onClickVerifyMobile()}"
-                        android:padding="15dp"
                         android:text="@{viewModel.mMobile, default = @string/luckydraw_hint_mobile}"
                         android:textSize="@dimen/text_13" />
 

@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -11,12 +12,10 @@ import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.enum.VerificationType
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnTimerListener
-import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CountTimer
-import io.temco.guhada.common.util.ServerCallbackUtil
-import io.temco.guhada.common.util.ToastUtil
+import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.user.EventUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -50,36 +49,56 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mIsEmailVerified = ObservableBoolean(false)
         @Bindable
         get() = field
+        set(value) {
+            field = value
+            mNotifyJoinAvailableTask()
+        }
+
     var mEmailVerifyNumber = ""
+        set(value) {
+            if (value.isNotEmpty())
+                field = value
+        }
+    var mResetVerifyNumberTask: () -> Unit = {}
 
     // password
     var mPassword = ""
         set(value) {
             field = value
-            mIsPasswordVerified.set(CommonUtil.validatePassword(value))
+            mIsPasswordVerified = ObservableBoolean(CommonUtil.validatePassword(value))
             notifyPropertyChanged(BR.mIsPasswordVerified)
 
             if (mConfirmPassword.isNotEmpty()) {
-                mIsPasswordConfirmVerified.set(mPassword == mConfirmPassword)
+                mIsPasswordConfirmVerified = ObservableBoolean(mPassword == mConfirmPassword)
                 notifyPropertyChanged(BR.mIsPasswordConfirmVerified)
             }
         }
     var mConfirmPassword = ""
         set(value) {
             field = value
-            mIsPasswordConfirmVerified.set(mPassword == value)
+            mIsPasswordConfirmVerified = ObservableBoolean(mPassword == value)
             notifyPropertyChanged(BR.mIsPasswordConfirmVerified)
         }
     var mIsPasswordVerified = ObservableBoolean(false)
         @Bindable
         get() = field
+        set(value) {
+            field = value
+            mNotifyJoinAvailableTask()
+        }
     var mIsPasswordConfirmVerified = ObservableBoolean(false)
         @Bindable
         get() = field
+        set(value) {
+            field = value
+            mNotifyJoinAvailableTask()
+        }
 
     // verify mobile
     var mVerifyMobileTask: () -> Unit = {}
     var mDiCode = ""
+    var mBirth = ""
+    var mGender = ""
     var mName = ObservableField(BaseApplication.getInstance().getString(R.string.mypage_userinfo_passwaord_infotitle2))
         @Bindable
         get() = field
@@ -89,11 +108,17 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mIsMobileVerified = ObservableBoolean(false)
         @Bindable
         get() = field
+        set(value) {
+            field = value
+            mNotifyJoinAvailableTask()
+        }
 
     // join
-    var mIsTermsAllChecked = ObservableBoolean(false)
+    var mIsTermsAllChecked = false
+    var mIsJoinAvailable = ObservableBoolean(false)
         @Bindable
         get() = field
+    var mNotifyJoinAvailableTask: () -> Unit = {}
 
     fun onClickVerifyEmail() {
         if (!mIsEmailVerified.get()) {
@@ -140,8 +165,8 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
         verification.verificationTarget = mEmail
         verifyNumber(verification, successTask = {
             CountTimer.stopTimer()
-            mEmailVerifyNumber = ""
             mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_finishverify))
+            mResetVerifyNumberTask()
 
             mIsEmailVerified.set(true)
             notifyPropertyChanged(BR.mIsEmailVerified)
@@ -157,6 +182,8 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                         successTask = {
                             mIsEmailDuplicate = false
                             mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_verifyemail))
+
+//                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
                         },
                         alreadyExistEmailTask = {
                             // 중복 이메일
@@ -166,6 +193,8 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                             mIsEmailDuplicate = true
                             mEmailVerifyVisible.set(false)
                             notifyPropertyChanged(BR.mEmailVerifyVisible)
+
+//                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.mypage_userinfo_hint_errornickname))
                         })
             }, email = mEmail)
     }
@@ -198,18 +227,64 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
         mIsEmailDuplicate = null
         mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_checkduplicate))
 
-        mIsEmailVerified = ObservableBoolean(false)
-//        notifyPropertyChanged(BR.mIsEmailVerified)
+        if (mIsEmailVerified.get()) mIsEmailVerified = ObservableBoolean(false)
+        if (mEmailVerifyVisible.get()) {
+            mEmailVerifyVisible.set(false)
+            notifyPropertyChanged(BR.mEmailVerifyVisible)
+        }
 
-        mEmailVerifyVisible.set(false)
-        notifyPropertyChanged(BR.mEmailVerifyVisible)
-
-        CountTimer.stopTimer()
-        mTimerMinute.set("00")
-        mTimerSecond.set("00")
-        notifyPropertyChanged(BR.mTimerMinute)
-        notifyPropertyChanged(BR.mTimerSecond)
+        if (mTimerMinute.get() != "00" || mTimerSecond.get() != "00") {
+            CountTimer.stopTimer()
+            mTimerMinute.set("00")
+            mTimerSecond.set("00")
+            notifyPropertyChanged(BR.mTimerMinute)
+            notifyPropertyChanged(BR.mTimerSecond)
+        }
     }
 
     fun onClickVerifyMobile() = mVerifyMobileTask()
+
+    fun signUpEventUser(agreeCollectPersonalInfoTos: Boolean, agreePurchaseTos: Boolean, agreeSaleTos: Boolean, agreeEmailReception: Boolean, agreeSmsReception: Boolean) {
+        val eventUser = EventUser().apply {
+            this.identityVerify = IdentityVerify().apply {
+                this.birth = mBirth
+                this.diCode = mDiCode
+                this.gender = mGender
+                this.identityVerifyMethod = Verification.IdentityVerifyMethod.MOBILE.code
+                this.mobile = mMobile.get() ?: ""
+                this.name = mName.get() ?: ""
+            }
+
+            this.userSignUp = UserSignUp().apply {
+                this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
+                this.agreePurchaseTos = agreePurchaseTos
+                this.agreeSaleTos = agreeSaleTos
+                this.agreeEmailReception = agreeEmailReception
+                this.agreeSmsReception = agreeSmsReception
+                this.email = mEmail
+                this.password = mPassword
+            }
+
+            this.verification = Verification().apply {
+                this.verificationNumber = mEmailVerifyNumber.toInt()
+                this.verificationTarget = mEmail
+                this.verificationTargetType = VerificationType.EMAIL.type
+            }
+        }
+
+        UserServer.signUpEventUser(OnServerListener { success, o ->
+            if (success && o is BaseModel<*>)
+                if (o.resultCode == ResultCode.SUCCESS.flag) {
+                    ToastUtil.showMessage("럭키드로우 회원가입 완료")
+                    if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
+
+
+
+                    /// 응모하기 api 예정
+                } else
+                    ToastUtil.showMessage(o.message)
+            else
+                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+        }, eventUser = eventUser)
+    }
 }

@@ -577,4 +577,12 @@ interface UserService {
      */
     @GET("/users/{userId}/followings")
     fun getFollowingStores(@Path("userId") userId: Long): Call<BaseModel<MutableList<SellerStore>>>
+
+    /**
+     * 럭키드로우 이메일 회원가입 API
+     * @author Hyeyeon Park
+     * @since 2019.11.13
+     */
+    @POST("/event/users")
+    fun signUpEventUser(@Body eventUser: EventUser): Call<BaseModel<Any>>
 }
