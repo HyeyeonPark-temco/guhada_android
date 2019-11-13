@@ -113,7 +113,7 @@ class UserServer {
          */
         @JvmStatic
         fun verifyEmail(listener: OnServerListener, user: User) =
-                RetrofitManager.createService(Type.Server.USER, UserService::class.java).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
+                RetrofitManager.createService(Type.Server.USER, UserService::class.java, true).verifyEmail(user = user).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>({ successResponse -> listener.onResult(true, successResponse.body()) }, "이메일로 인증번호 전송하기 오류"))
 
         /**
          * 핸드폰 번호로 인증번호 전송하기

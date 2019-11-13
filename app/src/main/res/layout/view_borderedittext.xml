@@ -9,45 +9,62 @@
             type="io.temco.guhada.view.custom.BorderEditTextView" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintlayout_borderedittext_contaiiner"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/white_four"
+        android:layout_height="wrap_content"
+        android:background="@color/common_white"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="1dp"
-            android:background="@color/common_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/editText"
+        <LinearLayout
+            android:id="@+id/constraintlayout_borderedittext_contaiiner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_four"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="13dp"
-                android:layout_marginEnd="13dp"
-                android:background="@null"
-                android:ems="10"
-                android:gravity="start|center_vertical"
-                android:inputType="textPersonName"
-                android:textColor="@color/black_four"
-                android:textColorHint="@color/warm_grey_two"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/text_13"
+                android:layout_height="45dp"
+                android:layout_margin="1dp"
+                android:background="@color/common_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toTopOf="parent">
 
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginEnd="13dp"
+                    android:background="@null"
+                    android:ems="10"
+                    android:gravity="start|center_vertical"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/black_four"
+                    android:textColorHint="@color/warm_grey_two"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/text_13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </LinearLayout>
+        <TextView
+            android:id="@+id/textview_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="13dp"
+            android:visibility="gone"
+            android:text="error"
+            android:textColor="@color/brick"
+            android:textSize="@dimen/text_12" />
+    </LinearLayout>
 </layout>

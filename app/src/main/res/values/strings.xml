@@ -1339,9 +1339,10 @@
     <string name="cardinterest_title1">무이자 할부정보 (%d년 %d월)</string>
 
     <!-- LUCKY DRAW -->
+    <string name="luckydraw_checkduplicate">중복확인</string>
     <string name="luckydraw_verifyemail">메일인증</string>
     <string name="luckydraw_verifymobile">본인인증</string>
-    <string name="luckydraw_reverifyemail">재인증</string>
+    <string name="luckydraw_resend">재전송</string>
     <string name="luckydraw_finishverify">인증완료</string>
     <string name="luckydraw_hint_mobile">전화번호</string>
 

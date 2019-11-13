@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.LuckyDrawJoinViewModel" />
@@ -41,19 +44,23 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        app:isError = "@{viewModel.mIsEmailVerified ? false : true}"
+                        app:txt="@={viewModel.mEmail}"
                         app:hint="@string/mypage_userinfo_passwaord_infotitle4"
-                        app:type="email" />
+                        app:type="email"
+                        app:errorMessage="@string/mypage_userinfo_hint_errornickname"/>
 
                     <Button
                         android:id="@+id/button_luckydrawjoin_sendemailverify"
                         style="@style/borderlessStyle"
                         android:layout_width="85dp"
                         android:layout_height="45dp"
-                        android:layout_gravity="center"
+                        android:layout_gravity="top"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/border_all_whitefour"
                         android:gravity="center"
-                        android:text="@string/luckydraw_verifyemail"
+                        android:onClick="@{()->viewModel.onClickVerifyEmail()}"
+                        android:text="@{viewModel.mEmailVerifyBtnText, default = @string/luckydraw_checkduplicate }"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
@@ -64,13 +71,15 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="@{viewModel.mEmailVerifyVisible ? View.VISIBLE : View.GONE, default = gone}">
 
                     <io.temco.guhada.view.custom.BorderEditTextView
                         android:id="@+id/edittext_luckydrawjoin_emailverifynumber"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        app:txt="@={viewModel.mEmailVerifyNumber}"
                         android:background="@drawable/border_all_whitefour"
                         app:hint="@string/findpwd_hint_verifynumber"
                         app:type="number">
@@ -89,7 +98,7 @@
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{viewModel.timerMinute, default=00}"
+                                android:text="@{viewModel.mTimerMinute, default=00}"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="@dimen/text_13" />
 
@@ -108,7 +117,7 @@
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{viewModel.timerSecond, default=00}"
+                                android:text="@{viewModel.mTimerSecond, default=00}"
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="@dimen/text_13" />
                         </LinearLayout>
@@ -123,6 +132,7 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/border_all_whitefour"
                         android:gravity="center"
+                        android:onClick="@{()->viewModel.onClickVerifyNumber()}"
                         android:text="@string/luckydraw_finishverify"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
@@ -135,7 +145,10 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
+                    app:txt="@={viewModel.mPassword}"
                     android:background="@drawable/border_all_whitefour"
+                    app:errorMessage="@string/findpwd_message_invalidformat"
+                    app:isError="@{viewModel.mIsPasswordVerified ? false : true}"
                     app:hint="@string/join_hint_password"
                     app:type="password" />
 
@@ -145,6 +158,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
+                    app:txt="@={viewModel.mConfirmPassword}"
+                    app:errorMessage="@string/findpwd_message_notequalpwd"
+                    app:isError="@{viewModel.mIsPasswordConfirmVerified ? false : true}"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/border_all_whitefour"
                     app:hint="@string/join_hint_confirmpassword"
@@ -156,19 +172,19 @@
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
+                    android:onClick="@{()->viewModel.onClickVerifyMobile()}"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/box_all_palegrey"
                     android:gravity="center_vertical"
                     android:padding="15dp"
-                    android:text="@string/mypage_userinfo_passwaord_infotitle2"
+                    android:text="@{viewModel.mName, default = @string/mypage_userinfo_passwaord_infotitle2}"
                     android:textSize="@dimen/text_13" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
@@ -182,14 +198,16 @@
                         android:layout_weight="1"
                         android:background="@drawable/box_all_palegrey"
                         android:gravity="center_vertical"
+                        android:onClick="@{()->viewModel.onClickVerifyMobile()}"
                         android:padding="15dp"
-                        android:text="@string/luckydraw_hint_mobile"
+                        android:text="@{viewModel.mMobile, default = @string/luckydraw_hint_mobile}"
                         android:textSize="@dimen/text_13" />
 
                     <Button
                         android:id="@+id/button_luckydrawjoin_verifymobile"
                         style="@style/borderlessStyle"
                         android:layout_width="85dp"
+                        android:onClick="@{()->viewModel.onClickVerifyMobile()}"
                         android:layout_height="45dp"
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
