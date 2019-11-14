@@ -24,7 +24,13 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  * @author Hyeyeon Park
  */
 class LuckyDrawJoinViewModel : BaseObservableViewModel() {
-    var mIsSnsJoin = false
+    var mIsSns = false
+        set(value) {
+            field = value
+            mIsPasswordVerified.set(value)
+            mIsPasswordConfirmVerified.set(value)
+        }
+    var mSnsSignUp: EventUser.SnsSignUp? = null
 
     // email
     var mTimerMinute = ObservableField("00")
@@ -42,7 +48,6 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mEmail = ""
         set(value) {
             field = value
-
             if (value.isNotEmpty()) resetEmailVerify()
         }
     var mIsEmailDuplicate = ObservableBoolean(false)
@@ -67,19 +72,23 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mPassword = ""
         set(value) {
             field = value
-            mIsPasswordVerified = ObservableBoolean(CommonUtil.validatePassword(value))
-            notifyPropertyChanged(BR.mIsPasswordVerified)
+            if (!mIsSns) {
+                mIsPasswordVerified = ObservableBoolean(CommonUtil.validatePassword(value))
+                notifyPropertyChanged(BR.mIsPasswordVerified)
 
-            if (mConfirmPassword.isNotEmpty()) {
-                mIsPasswordConfirmVerified = ObservableBoolean(mPassword == mConfirmPassword)
-                notifyPropertyChanged(BR.mIsPasswordConfirmVerified)
+                if (mConfirmPassword.isNotEmpty()) {
+                    mIsPasswordConfirmVerified = ObservableBoolean(mPassword == mConfirmPassword)
+                    notifyPropertyChanged(BR.mIsPasswordConfirmVerified)
+                }
             }
         }
     var mConfirmPassword = ""
         set(value) {
             field = value
-            mIsPasswordConfirmVerified = ObservableBoolean(mPassword == value)
-            notifyPropertyChanged(BR.mIsPasswordConfirmVerified)
+            if (!mIsSns) {
+                mIsPasswordConfirmVerified = ObservableBoolean(mPassword == value)
+                notifyPropertyChanged(BR.mIsPasswordConfirmVerified)
+            }
         }
     var mIsPasswordVerified = ObservableBoolean(false)
         @Bindable
@@ -127,7 +136,6 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
             if (!mIsEmailDuplicate.get()) {
                 checkDuplicateEmail()
             } else {
-
                 if (CountTimer.isResendable()) {
                     sendEmailVerifyNumber(successTask = { o ->
                         mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_resend))
@@ -196,9 +204,8 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 
                             mResetVerifyNumberTask()
 
-                            mIsEmailVerified.set(true)
+                            mIsEmailVerified = ObservableBoolean(true)
                             notifyPropertyChanged(BR.mIsEmailVerified)
-
                         },
                         alreadyExistEmailTask = {
                             // 중복 이메일
@@ -208,7 +215,7 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                             mIsEmailDuplicate.set(true)
                             notifyPropertyChanged(BR.mIsEmailDuplicate)
 
-                            mEmailVerifyVisible.set(false)
+                            mIsEmailVerified = ObservableBoolean(false)
                             notifyPropertyChanged(BR.mEmailVerifyVisible)
 
 //                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.mypage_userinfo_hint_errornickname))
@@ -272,35 +279,62 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                 this.name = mName.get() ?: ""
             }
 
-            this.userSignUp = UserSignUp().apply {
-                this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
-                this.agreePurchaseTos = agreePurchaseTos
-                this.agreeSaleTos = agreeSaleTos
-                this.agreeEmailReception = agreeEmailReception
-                this.agreeSmsReception = agreeSmsReception
-                this.email = mEmail
-                this.password = mPassword
-            }
+//            this.verification = Verification().apply {
+//                this.verificationNumber = mEmailVerifyNumber.toInt()
+//                this.verificationTarget = mEmail
+//                this.verificationTargetType = VerificationType.EMAIL.type
+//            }
 
-            this.verification = Verification().apply {
-                this.verificationNumber = mEmailVerifyNumber.toInt()
-                this.verificationTarget = mEmail
-                this.verificationTargetType = VerificationType.EMAIL.type
+            if (mSnsSignUp != null) {
+                this.snsSignUp = mSnsSignUp as EventUser.SnsSignUp
+                this.snsSignUp.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
+                this.snsSignUp.agreePurchaseTos = agreePurchaseTos
+                this.snsSignUp.agreeSaleTos = agreeSaleTos
+                this.snsSignUp.agreeEmailReception = agreeEmailReception
+                this.snsSignUp.agreeSmsReception = agreeSmsReception
+                this.snsSignUp.email = mEmail
+                this.snsSignUp.password = mPassword
+            } else {
+                this.userSignUp = EventUser.UserSignUp().apply {
+                    this.agreeCollectPersonalInfoTos = agreeCollectPersonalInfoTos
+                    this.agreePurchaseTos = agreePurchaseTos
+                    this.agreeSaleTos = agreeSaleTos
+                    this.agreeEmailReception = agreeEmailReception
+                    this.agreeSmsReception = agreeSmsReception
+                    this.email = mEmail
+                    this.password = mPassword
+                }
             }
         }
+        if (mSnsSignUp != null) {
+            UserServer.signUpEventSnsUser(OnServerListener { success, o ->
+                if (success && o is BaseModel<*>)
+                    if (o.resultCode == ResultCode.SUCCESS.flag) {
+                        ToastUtil.showMessage("럭키드로우 SNS 회원가입 완료")
+                        if (CustomLog.flag) CustomLog.L("럭키드로우 SNS 회원가입", mEmail)
 
-        UserServer.signUpEventUser(OnServerListener { success, o ->
-            if (success && o is BaseModel<*>)
-                if (o.resultCode == ResultCode.SUCCESS.flag) {
-                    ToastUtil.showMessage("럭키드로우 회원가입 완료")
-                    if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
+                        /// 응모하기 api 예정
+                    } else
+                        ToastUtil.showMessage(o.message)
+                else
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+            }, eventUser = eventUser)
+        } else {
+            UserServer.signUpEventUser(OnServerListener { success, o ->
+                if (success && o is BaseModel<*>)
+                    if (o.resultCode == ResultCode.SUCCESS.flag) {
+                        ToastUtil.showMessage("럭키드로우 Email 회원가입 완료")
+                        if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
 
 
-                    /// 응모하기 api 예정
-                } else
-                    ToastUtil.showMessage(o.message)
-            else
-                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
-        }, eventUser = eventUser)
+                        /// 응모하기 api 예정
+                    } else
+                        ToastUtil.showMessage(o.message)
+                else
+                    ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+            }, eventUser = eventUser)
+        }
+
+
     }
 }

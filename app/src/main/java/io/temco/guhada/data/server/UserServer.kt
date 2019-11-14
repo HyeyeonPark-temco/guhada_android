@@ -909,6 +909,14 @@ class UserServer {
         fun signUpEventUser(listener: OnServerListener, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).signUpEventUser(eventUser = eventUser)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
+        /**
+         * 럭키드로우 이메일 회원가입
+         * @author Hyeyeon Park
+         * @since 2019.11.13
+         */
+        @JvmStatic
+        fun signUpEventSnsUser(listener: OnServerListener, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).signUpEventSnsUser(eventUser = eventUser)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
     }
 

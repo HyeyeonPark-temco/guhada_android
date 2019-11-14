@@ -232,6 +232,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
         tempSnsUser.userProfile!!.email = email
     }
 
+    // 페이스북 로그인
     fun facebookLogin(`object`: JSONObject, serverListener: OnServerListener) {
         try {
             val email = `object`.getString("email")

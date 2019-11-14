@@ -10,6 +10,8 @@ import io.temco.guhada.common.Type
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CountTimer
+import io.temco.guhada.data.model.event.EventUser
+import io.temco.guhada.data.model.user.SnsUser
 import io.temco.guhada.data.viewmodel.LuckyDrawJoinViewModel
 import io.temco.guhada.data.viewmodel.account.TermsViewModel
 import io.temco.guhada.databinding.ActivityLuckydrawJoinBinding
@@ -33,15 +35,24 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
 
     override fun init() {
         mViewModel = LuckyDrawJoinViewModel().apply {
-            this.mIsSnsJoin = intent.getBooleanExtra("isSns", false)
+            // sns 가입
+            intent.getSerializableExtra("snsUser").let {
+                if (it != null){
+                    this.mSnsSignUp = it as EventUser.SnsSignUp
+                    this.mEmail = it.email
+                    this.mIsSns =  true
+                }
+            }
+
             this.mVerifyMobileTask = { startActivityForResult(Intent(this@LuckyDrawJoinActivity, VerifyPhoneActivity::class.java), RequestCode.VERIFY_PHONE.flag) }
             this.mNotifyJoinAvailableTask = {
-                val isAllVerified = mViewModel.mIsEmailVerified.get() && mViewModel.mIsPasswordVerified.get() && mViewModel.mIsPasswordConfirmVerified.get() && mViewModel.mIsMobileVerified.get()
-                mTermsViewModel.mIsJoinTermsChecked.set(mViewModel.mIsTermsAllChecked && isAllVerified)
+                val isAllVerified = this.mIsEmailVerified.get() && this.mIsPasswordVerified.get() && this.mIsPasswordConfirmVerified.get() && this.mIsMobileVerified.get()
+                this.mIsJoinAvailable.set(this.mIsTermsAllChecked && isAllVerified)
+                mTermsViewModel.mIsJoinTermsChecked.set(this.mIsTermsAllChecked && isAllVerified)
                 mTermsViewModel.notifyPropertyChanged(BR.mIsJoinTermsChecked)
             }
             this.mResetVerifyNumberTask = {
-                mViewModel.mEmailVerifyNumber = ""
+                this.mEmailVerifyNumber = ""
                 mBinding.edittextLuckydrawjoinEmailverifynumber.text = ""
             }
         }
@@ -60,6 +71,8 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
 
                 mViewModel.mIsJoinAvailable.set(isAllChecked && isAllVerified)
                 mViewModel.mIsTermsAllChecked = isAllChecked
+
+                // "회원가입" 버튼 활성화 field
                 this.mIsJoinTermsChecked.set(isAllChecked && isAllVerified)
                 this.notifyPropertyChanged(BR.mIsJoinTermsChecked)
             }

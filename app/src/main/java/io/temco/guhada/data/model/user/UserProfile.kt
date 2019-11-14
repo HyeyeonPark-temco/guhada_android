@@ -1,11 +1,13 @@
 package io.temco.guhada.data.model.user
 
+import java.io.Serializable
+
 /**
  * SNS 회원 정보 클래스
  * @see SnsUser
  * @author Hyeyeon Park
  */
-class UserProfile {
+open class UserProfile : Serializable {
     var snsId: String? = ""
     var email: String? = ""
     var name: String? = ""

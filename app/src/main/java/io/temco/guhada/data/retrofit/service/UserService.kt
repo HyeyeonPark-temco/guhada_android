@@ -579,9 +579,19 @@ interface UserService {
 
     /**
      * 럭키드로우 이메일 회원가입 API
+     * response: email (String)
      * @author Hyeyeon Park
      * @since 2019.11.13
      */
     @POST("/event/users")
     fun signUpEventUser(@Body eventUser: EventUser): Call<BaseModel<Any>>
+
+    /**
+     * 럭키드로우 SNS 회원가입 API
+     * response: email (String)
+     * @author Hyeyeon Park
+     * @since 2019.11.14
+     */
+    @POST("/event/sns-users")
+    fun signUpEventSnsUser(@Body eventUser: EventUser): Call<BaseModel<Any>>
 }

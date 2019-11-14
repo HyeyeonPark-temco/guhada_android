@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="io.temco.guhada.data.viewmodel.account.TermsViewModel" />
@@ -184,8 +185,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="@{()->viewModel.onClickPersonalTerms()}"
                     android:layout_marginStart="25dp"
+                    android:onClick="@{()->viewModel.onClickPersonalTerms()}"
                     android:text="@string/join_show"
                     android:textColor="@color/warm_grey_two"
                     android:textSize="@dimen/text_12"
@@ -279,9 +280,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
+                    android:onClick="@{()->viewModel.onClickSalesTerms()}"
                     android:text="@string/join_show"
                     android:textColor="@color/warm_grey_two"
-                    android:onClick="@{()->viewModel.onClickSalesTerms()}"
                     android:textSize="@dimen/text_12"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textview_join_sale"
@@ -386,7 +387,7 @@
             android:layout_gravity="bottom"
             android:layout_margin="20dp"
             android:background="@{viewModel.mIsJoinTermsChecked ? @color/colorPrimary : @color/silver}"
-        android:clickable="@{viewModel.mIsJoinTermsChecked ? true: false}"
+            android:clickable="@{viewModel.mIsJoinTermsChecked ? true: false}"
             android:onClick="@{onClickSignUp}"
             android:text="@string/terms_button" />
 
