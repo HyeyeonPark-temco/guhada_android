@@ -69,8 +69,8 @@
     <string name="common_month_three">3개월</string>
     <string name="common_year_one">1년</string>
 
-    <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
-    <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string> <!-- 임시 -->
+    <string name="common_message_error">일시적인 오류입니다. 다시 시도해주세요.</string>
+    <string name="common_message_servererror">일시적인 서버 오류입니다. 다시 시도해주세요.</string>
     <string name="common_message_timeout">서버 응답이 없습니다. 다시 시도해주세요.</string>
     <string name="common_message_ing">준비중입니다.</string>
     <string name="common_message_expiretoken">다시 로그인해주세요.</string><!-- fix (토큰이 만료되었습니다. 다시 로그인해주세요.) -->
@@ -79,6 +79,7 @@
     <string name="common_message_nfc_off">NFC를 켜주세요.</string>
 
     <string name="common_message_resendable">인증번호 재발송은 발송 1분 후에 가능합니다.</string>
+    <string name="common_message_networkerror">인터넷 연결을 확인해주세요.</string>
 
     <string name="common_minus">-</string>
     <string name="common_plus">+</string>
