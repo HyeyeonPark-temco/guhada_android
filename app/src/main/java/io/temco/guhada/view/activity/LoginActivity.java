@@ -171,7 +171,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                 finish();
             }
         });
-        mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", true));
+        mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", false));
         mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);

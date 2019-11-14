@@ -33,6 +33,7 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
 
     override fun init() {
         mViewModel = LuckyDrawJoinViewModel().apply {
+            this.mIsSnsJoin = intent.getBooleanExtra("isSns", false)
             this.mVerifyMobileTask = { startActivityForResult(Intent(this@LuckyDrawJoinActivity, VerifyPhoneActivity::class.java), RequestCode.VERIFY_PHONE.flag) }
             this.mNotifyJoinAvailableTask = {
                 val isAllVerified = mViewModel.mIsEmailVerified.get() && mViewModel.mIsPasswordVerified.get() && mViewModel.mIsPasswordConfirmVerified.get() && mViewModel.mIsMobileVerified.get()

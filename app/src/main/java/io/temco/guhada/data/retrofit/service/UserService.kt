@@ -3,15 +3,14 @@ package io.temco.guhada.data.retrofit.service
 import com.google.gson.JsonObject
 import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseModel
+import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
-import io.temco.guhada.data.model.point.ExpectedPointResponse
 import io.temco.guhada.data.model.point.PointPopupInfo
 import io.temco.guhada.data.model.review.*
 import io.temco.guhada.data.model.seller.*
 import io.temco.guhada.data.model.user.*
 import kotlinx.coroutines.Deferred
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 

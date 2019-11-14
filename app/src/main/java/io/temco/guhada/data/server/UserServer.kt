@@ -12,6 +12,7 @@ import io.temco.guhada.data.model.*
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
+import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.naver.NaverResponse
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.point.PointPopupInfo
@@ -23,7 +24,6 @@ import io.temco.guhada.data.retrofit.service.UserService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import org.apache.commons.lang3.mutable.Mutable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

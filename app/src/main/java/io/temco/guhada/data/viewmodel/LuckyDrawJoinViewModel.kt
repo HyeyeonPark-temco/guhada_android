@@ -14,7 +14,7 @@ import io.temco.guhada.common.listener.OnTimerListener
 import io.temco.guhada.common.util.*
 import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
-import io.temco.guhada.data.model.user.EventUser
+import io.temco.guhada.data.model.event.EventUser
 import io.temco.guhada.data.model.user.User
 import io.temco.guhada.data.server.UserServer
 import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
@@ -24,6 +24,7 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
  * @author Hyeyeon Park
  */
 class LuckyDrawJoinViewModel : BaseObservableViewModel() {
+    var mIsSnsJoin = false
 
     // email
     var mTimerMinute = ObservableField("00")
