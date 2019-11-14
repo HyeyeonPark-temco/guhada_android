@@ -20,19 +20,24 @@ class EventUser {
 
 
     // 회원정보 수정 시 사용
+    var acceptTerms = AcceptTerms()
     var email = ""
-    var emailVerified = ""                  // 이메일 수정 가능 여부 판단 (true: 수정 불가)
-    var validEmail = false                  // 유효한 이메일 format 여부
+    var emailVerified = false                 // 이메일 수정 가능 여부 판단 (true: 수정 불가)
+    var validEmail = false                  // 유효한 이메일 format 여부 (false: 이메일 필드 지우고 새로 입력받아야 함; sns의 경우 KAKAO:12345 로 email이 저장되는 경우가 있음)
     var verifiedIdentityUpdated = false
 
-    open class UserSignUp : Serializable {
+    open class UserSignUp : AcceptTerms(), Serializable {
+
+        var email = ""
+        var password = ""
+    }
+
+    open class AcceptTerms : Serializable {
         var agreeCollectPersonalInfoTos = false
         var agreeEmailReception = false
         var agreePurchaseTos = false
         var agreeSaleTos = false
         var agreeSmsReception = false
-        var email = ""
-        var password = ""
     }
 
     /**

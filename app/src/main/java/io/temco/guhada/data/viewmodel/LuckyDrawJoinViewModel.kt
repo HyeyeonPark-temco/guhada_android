@@ -22,14 +22,16 @@ import io.temco.guhada.data.viewmodel.base.BaseObservableViewModel
 /**
  * 럭키드로우 회원가입 ViewModel
  * @author Hyeyeon Park
+ * @author 2019.11.12
  */
-class LuckyDrawJoinViewModel : BaseObservableViewModel() {
+open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     var mIsSns = false
         set(value) {
             field = value
             mIsPasswordVerified.set(value)
             mIsPasswordConfirmVerified.set(value)
         }
+
     var mSnsSignUp: EventUser.SnsSignUp? = null
 
     // email
@@ -313,7 +315,7 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                         ToastUtil.showMessage("럭키드로우 SNS 회원가입 완료")
                         if (CustomLog.flag) CustomLog.L("럭키드로우 SNS 회원가입", mEmail)
 
-                        /// 응모하기 api 예정
+                        // [TODO] 럭키드로우 응모
                     } else
                         ToastUtil.showMessage(o.message)
                 else
@@ -327,7 +329,7 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                         if (CustomLog.flag) CustomLog.L("럭키드로우 이메일 회원가입", mEmail)
 
 
-                        /// 응모하기 api 예정
+                        // [TODO] 럭키드로우 응모
                     } else
                         ToastUtil.showMessage(o.message)
                 else

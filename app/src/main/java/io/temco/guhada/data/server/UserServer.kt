@@ -918,7 +918,25 @@ class UserServer {
         fun signUpEventSnsUser(listener: OnServerListener, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).signUpEventSnsUser(eventUser = eventUser)
                 .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
 
+
+        /**
+         * 럭키드로우 유저 정보 조회
+         * @author Hyeyeon Park
+         * @since 2019.11.14
+         */
+        @JvmStatic
+        fun getEventUser(listener: OnServerListener, accessToken: String) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false).getEventUser(accessToken = accessToken)
+                .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<EventUser>>(successTask = { listener.onResult(true, it.body()) }))
+
+
+        /**
+         * 럭키드로우 유저 정보 수정
+         * @author Hyeyeon Park
+         * @since 2019.11.14
+         */
+        fun updateEventUser(listener: OnServerListener, accessToken: String, eventUser: EventUser) = RetrofitManager.createService(Type.Server.USER, UserService::class.java, true, false)
+                .updateEventUser(accessToken = accessToken, eventUser = eventUser).enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<Any>>(successTask = { listener.onResult(true, it.body()) }))
+
+
     }
-
-
 }

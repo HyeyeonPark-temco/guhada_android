@@ -594,4 +594,23 @@ interface UserService {
      */
     @POST("/event/sns-users")
     fun signUpEventSnsUser(@Body eventUser: EventUser): Call<BaseModel<Any>>
+
+    /**
+     * 럭키드로우 유저 정보 조회 API
+     * @author Hyeyeon Park
+     * @since 2019.11.14
+     */
+    @GET("/event/users")
+    fun getEventUser(@Header("Authorization") accessToken: String): Call<BaseModel<EventUser>>
+
+    /**
+     * 럭키드로우 유저 정보 수정 API
+     * response: email (String)
+     * @author Hyeyeon Park
+     * @since 2019.11.14
+     */
+    @PUT("/event/users")
+    fun updateEventUser(@Header("Authorization") accessToken: String, @Body eventUser: EventUser): Call<BaseModel<Any>>
+
+
 }

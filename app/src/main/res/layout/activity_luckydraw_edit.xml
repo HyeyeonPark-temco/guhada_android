@@ -7,8 +7,12 @@
         <import type="android.view.View" />
 
         <variable
+            name="eventUser"
+            type="io.temco.guhada.data.model.event.EventUser" />
+
+        <variable
             name="viewModel"
-            type="io.temco.guhada.data.viewmodel.LuckyDrawJoinViewModel" />
+            type="io.temco.guhada.data.viewmodel.LuckyDrawEditViewModel" />
     </data>
 
     <LinearLayout
@@ -39,16 +43,36 @@
                     android:layout_marginEnd="20dp"
                     android:orientation="horizontal">
 
-                    <io.temco.guhada.view.custom.BorderEditTextView
-                        android:id="@+id/edittext_luckydrawjoin_email"
+                    <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:errorMessage="@string/mypage_userinfo_hint_errornickname"
-                        app:hint="@string/mypage_userinfo_passwaord_infotitle4"
-                        app:isError="@{viewModel.mIsEmailDuplicate}"
-                        app:txt="@={viewModel.mEmail}"
-                        app:type="email" />
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/textview_luckydrawjoin_email"
+                            style="@style/TextRegular"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/box_all_palegrey"
+                            android:gravity="center_vertical"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:visibility="@{eventUser.emailVerified ? View.VISIBLE : View.GONE, default = gone}"
+                            android:text="@{eventUser.email}"
+                            android:textSize="@dimen/text_13" />
+
+                        <io.temco.guhada.view.custom.BorderEditTextView
+                            android:id="@+id/edittext_luckydrawjoin_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{eventUser.emailVerified ? View.GONE : View.VISIBLE, default = visible}"
+                            app:errorMessage="@string/mypage_userinfo_hint_errornickname"
+                            app:hint="@string/mypage_userinfo_passwaord_infotitle4"
+                            app:isError="@{viewModel.mIsEmailDuplicate}"
+                            app:txt="@={viewModel.mEmail}"
+                            app:type="email" />
+                    </FrameLayout>
+
 
                     <Button
                         android:id="@+id/button_luckydrawjoin_sendemailverify"
@@ -58,6 +82,7 @@
                         android:layout_gravity="top"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/border_all_whitefour"
+                        android:clickable="@{eventUser.emailVerified ? false : true}"
                         android:gravity="center"
                         android:onClick="@{()->viewModel.onClickVerifyEmail()}"
                         android:text="@{viewModel.mEmailVerifyBtnText, default = @string/luckydraw_checkduplicate }"
@@ -138,37 +163,6 @@
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
 
-                <io.temco.guhada.view.custom.BorderEditTextView
-                    android:id="@+id/edittext_luckydrawjoin_pwd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/border_all_whitefour"
-                    android:visibility="@{viewModel.mIsSns? View.GONE : View.VISIBLE}"
-                    app:errorMessage="@string/findpwd_message_invalidformat"
-                    app:hint="@string/join_hint_password"
-                    app:isError="@{viewModel.mIsPasswordVerified ? false : true}"
-                    app:txt="@={viewModel.mPassword}"
-                    app:type="password" />
-
-                <io.temco.guhada.view.custom.BorderEditTextView
-                    android:id="@+id/edittext_luckydrawjoin_confirmpwd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/border_all_whitefour"
-                    android:visibility="@{viewModel.mIsSns? View.GONE : View.VISIBLE}"
-                    app:errorMessage="@string/findpwd_message_notequalpwd"
-                    app:hint="@string/join_hint_confirmpassword"
-                    app:isError="@{viewModel.mIsPasswordConfirmVerified ? false : true}"
-                    app:txt="@={viewModel.mConfirmPassword}"
-                    app:type="password" />
-
-
                 <TextView
                     android:id="@+id/textview_luckydrawjoin_name"
                     style="@style/TextRegular"
@@ -217,7 +211,7 @@
                         android:background="@drawable/border_all_whitefour"
                         android:gravity="center"
                         android:onClick="@{()->viewModel.onClickVerifyMobile()}"
-                        android:text="@{viewModel.mIsMobileVerified ? @string/luckydraw_finishverify : @string/luckydraw_verifymobile, default =  @string/luckydraw_verifymobile}"
+                        android:text="@{viewModel.mIsMobileVerified || eventUser.verifiedIdentityUpdated ? @string/luckydraw_finishverify : @string/luckydraw_verifymobile, default =  @string/luckydraw_verifymobile}"
                         android:textColor="@color/black_four"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>

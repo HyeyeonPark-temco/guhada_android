@@ -37,10 +37,10 @@ class LuckyDrawJoinActivity : BindActivity<ActivityLuckydrawJoinBinding>() {
         mViewModel = LuckyDrawJoinViewModel().apply {
             // sns 가입
             intent.getSerializableExtra("snsUser").let {
-                if (it != null){
+                if (it != null) {
                     this.mSnsSignUp = it as EventUser.SnsSignUp
                     this.mEmail = it.email
-                    this.mIsSns =  true
+                    this.mIsSns = true
                 }
             }
 

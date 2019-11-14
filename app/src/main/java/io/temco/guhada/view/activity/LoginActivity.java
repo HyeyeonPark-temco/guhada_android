@@ -125,7 +125,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
                         }
                     }
 
-                    io.temco.guhada.data.model.user.UserProfile profile = new  io.temco.guhada.data.model.user.UserProfile();
+                    io.temco.guhada.data.model.user.UserProfile profile = new io.temco.guhada.data.model.user.UserProfile();
                     profile.setSnsId(snsId);
                     profile.setEmail(email);
                     profile.setFamilyName(familyName);
@@ -239,11 +239,16 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
             @Override
             public void closeActivity(int resultCode) {
-                setResult(resultCode);
-                finish();
+                if (mViewModel.getMIsEvent()) {
+                    Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
+                    startActivity(intent);
+                } else {
+                    setResult(resultCode);
+                    finish();
+                }
             }
         });
-        mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", false));
+        mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", true));
         mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);
         mBinding.includeLoginHeader.setViewModel(mViewModel);

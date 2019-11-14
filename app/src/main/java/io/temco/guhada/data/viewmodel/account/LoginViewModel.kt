@@ -67,7 +67,7 @@ class LoginViewModel(private val loginListener: OnLoginListener) : BaseObservabl
     var snsUser: Any? = null
     var tempSnsUser = SnsUser()
 
-    // 럭키드로우 분기 falg
+    // 럭키드로우 회원가입 분기 falg
     var mIsEvent = false
 
 

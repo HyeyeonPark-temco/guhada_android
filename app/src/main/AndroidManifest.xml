@@ -369,6 +369,8 @@
         <activity android:name=".view.activity.LuckyDrawJoinActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".view.activity.LuckyDrawEditActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- Lucky Event -->
         <activity
