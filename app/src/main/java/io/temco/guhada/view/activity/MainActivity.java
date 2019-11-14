@@ -188,8 +188,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (CustomLog.INSTANCE.getFlag())
-            CustomLog.INSTANCE.L("MainActivity", "onActivityResult", "requestCode", requestCode);
+        if (CustomLog.getFlag())CustomLog.L("MainActivity", "onActivityResult", "requestCode", requestCode);
         String msg = "";
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -562,6 +561,7 @@ public class MainActivity extends BindActivity<ActivityMainBinding> {
             ((BaseApplication) getApplicationContext()).setMoveToMain(null);
         }
         BaseApplication.getInstance().setMoveToMain(null);
+        BaseApplication.getInstance().clearActState();
     }
 
     public CompositeDisposable getmDisposable() {

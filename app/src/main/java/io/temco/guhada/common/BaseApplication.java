@@ -16,17 +16,19 @@ import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
 
 import io.temco.guhada.R;
 import io.temco.guhada.common.sns.kakao.KakaoSDKAdapter;
 import io.temco.guhada.common.util.CommonUtil;
+import io.temco.guhada.common.util.CustomLog;
 import io.temco.guhada.data.model.Category;
 
 /*
     MultiDexApplication 변경
  */
-public class BaseApplication extends MultiDexApplication  {
+public class BaseApplication extends MultiDexApplication   {
 
     private static BaseApplication mApplication;
     private boolean initUserMaypage;
@@ -36,6 +38,7 @@ public class BaseApplication extends MultiDexApplication  {
 
     private static WeakReference<List<Category>> categoryList;
     private DisplayMetrics matrix = null;
+    private static HashMap<String,String> activityState;
 
     /**
      * @author park jungho
@@ -78,6 +81,8 @@ public class BaseApplication extends MultiDexApplication  {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
+        if (CustomLog.getFlag())CustomLog.L("BaseApplication activityState onCreate", "new WeakHashMap");
+        activityState = new HashMap<>();
         //
         com.kochava.base.Tracker.configure(new com.kochava.base.Tracker.Configuration(getApplicationContext()).setAppGuid("koguhada-android-uzvie5kg"));
     }
@@ -90,6 +95,8 @@ public class BaseApplication extends MultiDexApplication  {
         initUserMaypage = false;
         categoryList = null;
         matrix = null;
+        activityState = null;
+        if (CustomLog.getFlag())CustomLog.L("BaseApplication activityState onTerminate", "new WeakHashMap");
     }
 
     public static BaseApplication getInstance() {
@@ -179,6 +186,17 @@ public class BaseApplication extends MultiDexApplication  {
 //        EventBusHelper.sendEvent(data);
     }
 
+    public HashMap<String, String> getActivityState() {
+        return activityState;
+    }
+
+    public void setActivityState(HashMap<String, String> activityState) {
+        this.activityState = activityState;
+    }
+
+    public void clearActState(){
+        activityState = null;
+    }
 
 
 }

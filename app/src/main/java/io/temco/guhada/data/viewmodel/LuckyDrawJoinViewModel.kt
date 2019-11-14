@@ -1,6 +1,5 @@
 package io.temco.guhada.data.viewmodel
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -184,9 +183,21 @@ class LuckyDrawJoinViewModel : BaseObservableViewModel() {
                         successTask = {
                             mIsEmailDuplicate.set(false)
                             notifyPropertyChanged(BR.mIsEmailDuplicate)
-                            mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_verifyemail))
 
+//                            mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_verifyemail))
 //                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.payment_message_verifyemail))
+
+                            /**
+                             * [19.11.14] 이메일 인증 제외로 결정 (cto님 피셜)
+                             * @author Hyeyeon Park
+                             */
+                            mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_finishcheck))
+
+                            mResetVerifyNumberTask()
+
+                            mIsEmailVerified.set(true)
+                            notifyPropertyChanged(BR.mIsEmailVerified)
+
                         },
                         alreadyExistEmailTask = {
                             // 중복 이메일
