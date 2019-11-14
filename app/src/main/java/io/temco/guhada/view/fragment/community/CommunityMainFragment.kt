@@ -1,6 +1,7 @@
 package io.temco.guhada.view.fragment.community
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import android.widget.TextView
@@ -9,7 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
+import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.common.util.LoadingIndicatorUtil
@@ -19,6 +22,7 @@ import io.temco.guhada.databinding.FragmentMainCommunityBinding
 import io.temco.guhada.view.activity.CreateBbsActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.adapter.CommunityPagerAdapter
+import io.temco.guhada.view.custom.layout.main.HomeListLayout
 import io.temco.guhada.view.fragment.base.BaseFragment
 import java.util.ArrayList
 
@@ -53,6 +57,7 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
         mLoadingIndicatorUtil = LoadingIndicatorUtil(context!!)
         mBinding.viewModel = mViewModel
         viewPagerAdapter = null
+        setEvenBus()
     }
 
 
@@ -101,6 +106,23 @@ class CommunityMainFragment : BaseFragment<FragmentMainCommunityBinding>(), View
     ////////////////////////////////////////////////
     // PRIVATE
     ////////////////////////////////////////////////
+
+    @SuppressLint("CheckResult")
+    private fun setEvenBus() {
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                RequestCode.CART_BADGE.flag -> {
+                    val count = requestCode.data as Int
+                    if(count > 0){
+                        mBinding.layoutHeader.textviewBadge.visibility = View.VISIBLE
+                        mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    }else{
+                        mBinding.layoutHeader.textviewBadge.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
 
     private fun setView(){
         mViewModel.communityInfoList.observe(this, Observer {

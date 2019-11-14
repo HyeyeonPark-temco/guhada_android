@@ -11,6 +11,7 @@ import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
 import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.ResultCode
+import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnCategoryListListener
 import io.temco.guhada.common.sns.SnsLoginModule
 import io.temco.guhada.common.util.CommonUtil
@@ -60,9 +61,13 @@ class SideMenuActivity : BindActivity<ActivitySidemenuBinding>() , View.OnClickL
     }
 
     override fun init() {
-        mViewModel = SideMenuViewModel()
+        mViewModel = SideMenuViewModel(this)
         mBinding.viewModel = mViewModel
+        /*mViewModel.getEventList(object : OnCallBackListener{
+            override fun callBackListener(resultFlag: Boolean, value: Any) {
 
+            }
+        })*/
         setViewInit()
         if(CustomLog.flag)setAppInfo()
     }

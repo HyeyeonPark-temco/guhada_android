@@ -163,7 +163,7 @@ class RequestRefundActivity : BindActivity<io.temco.guhada.databinding.ActivityR
     private fun initProductInfo(purchaseOrder: PurchaseOrder) {
         mBinding.includeRequestrefundProductinfo.imageUrl = purchaseOrder.imageUrl
         mBinding.includeRequestrefundProductinfo.brandName = purchaseOrder.brandName
-        mBinding.includeRequestrefundProductinfo.productName = "${purchaseOrder.season} ${purchaseOrder.dealName}"
+        mBinding.includeRequestrefundProductinfo.productName = if(purchaseOrder.season.isNullOrEmpty()) purchaseOrder.productName else "${purchaseOrder.season} ${purchaseOrder.productName}"
         mBinding.includeRequestrefundProductinfo.optionStr = purchaseOrder.getOptionStr()
         mBinding.includeRequestrefundProductinfo.price = purchaseOrder.originalPrice
         mBinding.includeRequestrefundProductinfo.purchaseStatusText = purchaseOrder.purchaseStatusText

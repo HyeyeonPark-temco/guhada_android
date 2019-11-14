@@ -73,7 +73,10 @@ public class Type {
         SHIPPING_TRACKING,
         VERIFY_EMAIL,
         SCHEME,
-        PHOTO_PAGER
+        LUCKY_EVENT,
+        LUCKY_EVENT_DIALOG,
+        PHOTO_PAGER,
+        CARD_INTEREST
     }
 
     // Main
@@ -88,7 +91,7 @@ public class Type {
     /** 임시 서버 연결 여부 (true: TempServer name; false: dev) **/
     public static boolean isTempServer= false;
     public static String[] ServerTypeArray = { "http://dev.", "http://qa.", "https://stg.", "https://" };
-    public static String serverType = ServerTypeArray[1];
+    public static String serverType = ServerTypeArray[0];
     ////////////////////////////////////////////////
     // Server
     public enum Server {
@@ -169,7 +172,9 @@ public class Type {
             case RELEASE:
                 return "http://settle.guhada.com/";
             default:
-                return "http://settle.guhada.com/";
+                if(isTempServer)return "http://settle.guhada.com/";/*serverType+"settle.guhada.com/";*/
+                else return "http://dev.settle.guhada.com/";
+
         }
     }
 

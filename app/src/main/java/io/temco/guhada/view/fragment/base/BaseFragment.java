@@ -51,11 +51,17 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        mContainer = container;
-        init();
-        return mBinding.getRoot();
+        try{
+            mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+            mContainer = container;
+            init();
+            return mBinding.getRoot();
+        }catch (Exception e){
+
+        }
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
+
 
     ////////////////////////////////////////////////
     // ABSTRACT

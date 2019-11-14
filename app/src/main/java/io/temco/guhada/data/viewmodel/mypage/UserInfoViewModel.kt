@@ -1,6 +1,7 @@
 package io.temco.guhada.data.viewmodel.mypage
 
 import android.content.Context
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -11,6 +12,8 @@ import com.google.gson.JsonObject
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Preferences
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnCallBackListener
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CommonUtil
@@ -19,6 +22,7 @@ import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.BankAccount
 import io.temco.guhada.data.model.RefundRequest
+import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.order.PurchaseOrder
 import io.temco.guhada.data.model.user.User
@@ -49,7 +53,9 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     var userId: Long = 0L
     var defaultSnsType = ""
     var userEmail = ""
-    var mUser : MutableLiveData<User> = MutableLiveData()
+    var mUser: MutableLiveData<User> = MutableLiveData()
+    var mVerifyNumber = ""
+    var mVerification: Verification = Verification()
 
     // 환불계좌 입력 여부
     var accountVerifiedIdentity = false
@@ -100,9 +106,9 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
     var mBankAccount = MutableLiveData<BankAccount>()
     var mIsCheckAccountAvailable = ObservableBoolean(true)
     var mRefundRequest = RefundRequest()
-    var mBankNumInputAvailableTask : () -> Unit = {}
+    var mBankNumInputAvailableTask: () -> Unit = {}
 
-    fun userLoginType(listener: OnCallBackListener){
+    fun userLoginType(listener: OnCallBackListener) {
         repository.checkSnsUserType(listener)
     }
 
@@ -111,18 +117,18 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
         this.mRefundRequest.addObserver(this)
     }
 
-    fun clickGenderButton(value : String){
-        if(CustomLog.flag)CustomLog.L("clickGenderButton","value",value)
+    fun clickGenderButton(value: String) {
+        if (CustomLog.flag) CustomLog.L("clickGenderButton", "value", value)
         checkGenderValue.set(value)
         mUser.value!!.userGender = value
     }
 
-    fun getUserByNickName(nickname : String, listener: OnCallBackListener?) {
+    fun getUserByNickName(nickname: String, listener: OnCallBackListener?) {
         isNickNameFocus = false
         UserServer.getUserByNickName(OnServerListener { success, o ->
             ServerCallbackUtil.executeByResultCode(success, o,
                     successTask = {
-                        if(nickname == oldNickname){
+                        if (nickname == oldNickname) {
                             mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.common_blue_purple))
                             mNickNameCheckIconVisible = ObservableBoolean(true)
                             mIsNicknameValid = ObservableBoolean(true)
@@ -131,7 +137,7 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
                             notifyPropertyChanged(BR.mNickNameCheckIconVisible)
                             notifyPropertyChanged(BR.mNickNameBg)
                             listener?.callBackListener(true, "dataNotFoundTask")
-                        }else{
+                        } else {
                             mNickNameBg = ObservableInt(BaseApplication.getInstance().resources.getColor(R.color.brick))
                             mNickNameCheckIconVisible = ObservableBoolean(true)
                             mIsNicknameValid = ObservableBoolean(false)
@@ -215,14 +221,47 @@ class UserInfoViewModel(val context: Context) : BaseObservableViewModel(), Obser
 
 
     // 0 : email, 1 : naver, 2 : kakao, 3 : facebook, 4 : google
-    fun setSnsType(){
-        when(defaultSnsType){
-            "EMAIL"-> mypageUserInfoLoginCheckType.set(0)
-            "NAVER"-> mypageUserInfoLoginCheckType.set(1)
-            "KAKAO"-> mypageUserInfoLoginCheckType.set(2)
-            "FACEBOOK"-> mypageUserInfoLoginCheckType.set(3)
-            "GOOGLE"-> mypageUserInfoLoginCheckType.set(4)
+    fun setSnsType() {
+        when (defaultSnsType) {
+            "EMAIL" -> mypageUserInfoLoginCheckType.set(0)
+            "NAVER" -> mypageUserInfoLoginCheckType.set(1)
+            "KAKAO" -> mypageUserInfoLoginCheckType.set(2)
+            "FACEBOOK" -> mypageUserInfoLoginCheckType.set(3)
+            "GOOGLE" -> mypageUserInfoLoginCheckType.set(4)
         }
+    }
+
+    fun updateEmail(email: String, verificationNumber: String, successTask: () -> Unit) {
+        ServerCallbackUtil.callWithToken(task = { accessToken ->
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("verificationNumber", verificationNumber)
+            jsonObject.addProperty("email", email)
+
+            UserServer.updateEmailVerify(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o, successTask = {
+                    userEmail = email
+                    mUser.value?.email = email
+                    Preferences.setSavedId(email)
+                    successTask()
+                })
+            }, accessToken = accessToken, jsonObject = jsonObject)
+        })
+    }
+
+    /**
+     * 본인인증 정보 업데이트
+     */
+    fun updateIdentityVerify() {
+        ServerCallbackUtil.callWithToken(task = {
+            UserServer.updateIdentityVerify(OnServerListener { success, o ->
+                val resultCode = (o as BaseModel<*>).resultCode
+                if (resultCode == ResultCode.SUCCESS.flag) {
+
+                } else {
+                    ToastUtil.showMessage(o.message ?: "유저 정보 업데이트 오류")
+                }
+            }, accessToken = it, verification = mVerification)
+        })
     }
 
 }
@@ -247,7 +286,8 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
                     dataIsNull = {
                         mViewModel.defaultSnsType = "EMAIL"
                         mViewModel.setSnsType()
-                        listener.callBackListener(true, "EMAIL") }
+                        listener.callBackListener(true, "EMAIL")
+                    }
             )
         }, mViewModel.userId)
     }
@@ -259,7 +299,7 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
                     successTask = {
                         var value = (it as BaseModel<*>).list as List<User>
                         if (CustomLog.flag) CustomLog.L("userData value", value)
-                        if(!value.isNullOrEmpty() && value.size > 0){
+                        if (!value.isNullOrEmpty() && value.size > 0) {
                             mViewModel.mUser.value = value[0]
                             mViewModel.userEmail = value[0].email
                             mViewModel.oldNickname = value[0].nickname
@@ -276,10 +316,10 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
     }
 
 
-    fun getUserSize(listener: OnCallBackListener){
+    fun getUserSize(listener: OnCallBackListener) {
         ServerCallbackUtil.callWithToken(
                 task = {
-                    if (it != null){
+                    if (it != null) {
                         UserServer.getUserSize(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
@@ -288,10 +328,10 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
                                         listener.callBackListener(true, data)
                                     },
                                     dataNotFoundTask = { listener.callBackListener(false, "") },
-                                    failedTask = { listener.callBackListener(false, "")  },
-                                    userLikeNotFoundTask = { listener.callBackListener(false, "")  },
-                                    serverRuntimeErrorTask = { listener.callBackListener(false, "")  },
-                                    dataIsNull = { listener.callBackListener(false, "")  }
+                                    failedTask = { listener.callBackListener(false, "") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "") },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "") },
+                                    dataIsNull = { listener.callBackListener(false, "") }
                             )
                         }, accessToken = it)
                     }
@@ -299,26 +339,25 @@ class UserInfoRepository(val mViewModel: UserInfoViewModel) {
     }
 
 
-    fun updateUserInfo(info : UserUpdateInfo, listener: OnCallBackListener){
+    fun updateUserInfo(info: UserUpdateInfo, listener: OnCallBackListener) {
         ServerCallbackUtil.callWithToken(
                 task = {
-                    if (it != null){
+                    if (it != null) {
                         UserServer.updateUserInfo(OnServerListener { success, o ->
                             ServerCallbackUtil.executeByResultCode(success, o,
                                     successTask = {
                                         var data = (o as BaseModel<*>).data
-                                        if(CustomLog.flag)CustomLog.L("updateUserInfo","data",data)
+                                        if (CustomLog.flag) CustomLog.L("updateUserInfo", "data", data)
                                         listener.callBackListener(true, data)
                                     },
                                     dataNotFoundTask = { listener.callBackListener(false, "dataNotFoundTask") },
-                                    failedTask = { listener.callBackListener(false, "failedTask")  },
-                                    userLikeNotFoundTask = { listener.callBackListener(false, "")  },
-                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask")  },
-                                    dataIsNull = { listener.callBackListener(false, "dataIsNull")  }
+                                    failedTask = { listener.callBackListener(false, "failedTask") },
+                                    userLikeNotFoundTask = { listener.callBackListener(false, "") },
+                                    serverRuntimeErrorTask = { listener.callBackListener(false, "serverRuntimeErrorTask") },
+                                    dataIsNull = { listener.callBackListener(false, "dataIsNull") }
                             )
-                        }, accessToken = it,userId = mViewModel.userId, userInfo = info)
+                        }, accessToken = it, userId = mViewModel.userId, userInfo = info)
                     }
                 }, invalidTokenTask = { listener.callBackListener(false, "invalidTokenTask") })
     }
-
 }

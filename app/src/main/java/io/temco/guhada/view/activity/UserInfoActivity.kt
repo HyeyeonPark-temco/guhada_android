@@ -5,10 +5,8 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.text.Editable
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.DatePicker
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.Observer
@@ -32,7 +30,6 @@ import io.temco.guhada.view.activity.base.BindActivity
 import io.temco.guhada.view.adapter.CommonSpinnerAdapter
 import io.temco.guhada.view.custom.BorderEditTextView
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * @author park jungho
@@ -106,40 +103,53 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                     val gender = data?.getStringExtra("gender") // FEMALE MALE
                     val birth = data?.getStringExtra("birth")   // yyyy-MM-dd
 
-                    if (di != null)
+                    if (di != null){
                         mViewModel.mUser.value!!.userDetail.diCode = di
+                        mViewModel.mVerification.diCode = di
+                    }
 
                     if (mobile != null) {
                         var mob = CommonUtilKotlin.setMobileNumber(mobile.replace("-", "").replace(" ", ""))
                         mBinding.textviewMypageuserinfoMobile.setText(mob)
                         mViewModel.mUser.value?.mobile = mobile
                         mViewModel.mUser.value?.phoneNumber = mobile
+                        mViewModel.mVerification.mobile = mobile
                     }
 
                     if (!name.isNullOrEmpty()) {
                         mBinding.textviewMypageuserinfoName.text = name
                         mViewModel.mUser.value?.name = name
+                        mViewModel.mVerification.name = name
                     }
 
-                    if (!gender.isNullOrEmpty()){
+                    if (!gender.isNullOrEmpty()) {
                         mViewModel.mUser.value?.userGender = gender
                         mViewModel.checkGenderValue.set(gender)
+                        mViewModel.mVerification.gender = gender
                     }
 
                     if (!birth.isNullOrEmpty()) {
                         mViewModel.mUser.value?.birth = birth
                         setBirth()
                     }
+
+                    mViewModel.updateIdentityVerify()
                 }
             }
             RequestCode.VERIFY_USERINFO.flag -> {
                 // 이메일 인증
                 if (resultCode == Activity.RESULT_OK) {
                     val email = data?.getStringExtra("email")
+                    val verifyNumber = data?.getStringExtra("verifyNumber")
+
                     if (email != null) {
+                        emailVerifiedIdentity = true
                         mBinding.edittextMypageuserinfoEmail.setText(email)
-                        mViewModel.mUser.value!!.email = email
+                        mViewModel.userEmail = email
+//                        mViewModel.mUser.value!!.email = email
                     }
+
+                    if (verifyNumber != null) mViewModel.mVerifyNumber = verifyNumber
                 }
             }
             Flag.RequestCode.USER_SIZE -> if (resultCode == Activity.RESULT_OK) getUserSize()
@@ -151,7 +161,23 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
             CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 닉네임을 확인해 주세요.", false, false)
             return
         }
+
+        if (TextUtils.isEmpty(mBinding.edittextMypageuserinfoEmail.text.toString())) {
+            CommonViewUtil.showDialog(this@UserInfoActivity, "입력하신 아이디(이메일)을 확인해 주세요.", false, false)
+            return
+        }
         var userUpInfo: UserUpdateInfo = UserUpdateInfo().apply {
+            if (emailVerifiedIdentity)
+                mViewModel.updateEmail(email = mViewModel.userEmail, verificationNumber = mViewModel.mVerifyNumber, successTask = {
+                    emailVerifiedIdentity = false
+                    updateUserInfo()
+                })
+            else updateUserInfo()
+        }
+    }
+
+    private fun updateUserInfo() {
+        val userUpInfo: UserUpdateInfo = UserUpdateInfo().apply {
             if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) || !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString())) {
                 if (!TextUtils.isEmpty(mBinding.edittextJoinPassword.text.toString()) && !TextUtils.isEmpty(mBinding.edittextJoinConfirmpassword.text.toString()) &&
                         CommonUtil.validatePassword(mBinding.edittextJoinPassword.text.toString()) && mBinding.edittextJoinPassword.text.toString() == mBinding.edittextJoinConfirmpassword.text.toString()) {
@@ -170,10 +196,6 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 setData(mViewModel.mUser.value!!, null, null, mViewModel.accountVerifiedIdentity, verifiedIdentity)
             }
         }
-        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init userUpInfo", userUpInfo)
-        /*if(emailVerifiedIdentity){ // 이메일 인증 일단 빠짐
-
-        }*/
 
         mViewModel.repository.updateUserInfo(userUpInfo, object : OnCallBackListener {
             override fun callBackListener(resultFlag: Boolean, value: Any) {
@@ -185,6 +207,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
                 }
             }
         })
+
+        if (CustomLog.flag) CustomLog.L("UserInfoActivity", "init userUpInfo", userUpInfo)
     }
 
     private fun checkUserLogin(): Boolean {
@@ -249,7 +273,7 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
 
 
         // 이메일 인증
-        //mBinding.edittextMypageuserinfoEmail.setOnClickListener { redirectUserInfoVerifyActivity(true) }
+        mBinding.edittextMypageuserinfoEmail.setOnClickListener { redirectUserInfoVerifyActivity(true) }
 
         // 휴대폰 번호 인증
         mBinding.textviewMypageuserinfoMobile.setOnClickListener {
@@ -342,8 +366,8 @@ class UserInfoActivity : BindActivity<ActivityUserinfoBinding>() {
     private fun redirectUserInfoVerifyActivity(isEmail: Boolean) {
         val intent = Intent(mBinding.root.context, VerifyUserInfoActivity::class.java)
         intent.putExtra("isEmail", isEmail)
-        intent.putExtra("name", mViewModel.mUser?.value?.name ?: "")
-        intent.putExtra("email", mViewModel.mUser?.value?.email ?: "")
+        intent.putExtra("name", mViewModel.mUser.value?.name ?: "")
+        intent.putExtra("email", mViewModel.mUser.value?.email ?: "")
         (mBinding.root.context as Activity).startActivityForResult(intent, RequestCode.VERIFY_USERINFO.flag)
     }
 

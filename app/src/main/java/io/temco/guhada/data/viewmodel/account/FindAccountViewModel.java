@@ -282,7 +282,7 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                         findAccountListener.showSnackBar(message);
                 }
             } else {
-                findAccountListener.showMessage((String) o);
+                ToastUtil.showMessage((String) o);
             }
             findAccountListener.hideLoadingIndicator();
         }, jsonObject);
@@ -304,7 +304,6 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
 
         UserServer.findUserId((success, o) -> {
             findAccountListener.hideLoadingIndicator();
-
             BaseModel model = (BaseModel) o;
             if (success) {
                 switch (model.resultCode) {
@@ -315,20 +314,22 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
                         this.user.setPhoneNumber(obj.getPhoneNumber());
                         this.user.setJoinAt(obj.getJoinAt());
 
-                        resultVisibility = new ObservableInt(View.VISIBLE);
-                        notifyPropertyChanged(BR.resultVisibility);
+//                        resultVisibility = new ObservableInt(View.VISIBLE);
+//                        notifyPropertyChanged(BR.resultVisibility);
                         notifyPropertyChanged(BR.user);
+
+                        findAccountListener.onSuccessGetIdentifyVerify();
                         break;
                     case Flag.ResultCode.DATA_NOT_FOUND:
                         String message = BaseApplication.getInstance().getResources().getString(R.string.findid_message_wronginfo);
                         findAccountListener.showSnackBar(message);
                         break;
                     default:
-                        findAccountListener.showMessage(model.message);
+                        ToastUtil.showMessage(model.message);
                         break;
                 }
             } else {
-                findAccountListener.showMessage(model.message);
+                ToastUtil.showMessage(model.message);
             }
 
         }, jsonObject);
@@ -369,6 +370,21 @@ public class FindAccountViewModel extends BaseObservableViewModel implements Obs
             }
         }, jsonObject);
     }
+
+//    public void getIdentityVerify(){
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject.addProperty("diCode", di);
+//
+//        UserServer.getIdentityVerify((success, o) -> {
+//            BaseModel<Object> model = (BaseModel<Object>) o;
+//            if (success && model.resultCode == Flag.ResultCode.SUCCESS) {
+//                resultVisibility = new ObservableInt(View.VISIBLE);
+//                notifyPropertyChanged(BR.resultVisibility);
+//            } else {
+//                ToastUtil.showMessage(model.message);
+//            }
+//        }, jsonObject);
+//    }
 
     @Override
     public void update(Observable o, Object arg) {

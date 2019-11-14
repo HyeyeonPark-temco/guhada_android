@@ -1,5 +1,6 @@
 package io.temco.guhada.data.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
@@ -9,10 +10,12 @@ import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
 import io.temco.guhada.common.Flag
+import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.listener.OnTimerListener
 import io.temco.guhada.common.util.CommonUtil
 import io.temco.guhada.common.util.CountTimer
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.model.Verification
 import io.temco.guhada.data.model.base.BaseModel
@@ -32,6 +35,8 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
     var mTimerMinute = ObservableField("02")
         @Bindable
         get() = field
+
+    var mOriginEmail = ""
     var mEmail = ObservableField("")
         @Bindable
         get() = field
@@ -66,10 +71,12 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
     fun onClickSendVerifyNumber() {
         if (mIsEmail) {
             if (CommonUtil.validateEmail(mEmail.get())) {
-                User().apply {
-                    this.email = mEmail.get()
-                    this.name = mName.get()
-                }.let { user -> sendVerifyNumber(user) }
+                checkDuplicateEmail(successTask = {
+                    User().apply {
+                        this.email = mEmail.get()
+                        this.name = null
+                    }.let { user -> sendVerifyNumber(user) }
+                })
             } else {
                 ToastUtil.showMessage((BaseApplication.getInstance().resources.getString(R.string.findpwd_message_invalidemailformat)))
             }
@@ -83,7 +90,20 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
                 }.let { user -> sendVerifyNumber(user) }
             }
         }
+    }
 
+    /**
+     * 중복 이메일 체크
+     */
+    fun checkDuplicateEmail(successTask: () -> Unit) {
+        if (!mEmail.get().isNullOrEmpty())
+            UserServer.checkEmail(OnServerListener { success, o ->
+                ServerCallbackUtil.executeByResultCode(success, o, successTask = { successTask() }, alreadyExistEmailTask = {
+                    if (mOriginEmail == mEmail.get()) successTask()
+                    else if (o is BaseModel<*>) ToastUtil.showMessage(o.message)
+                    else ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror))
+                })
+            }, email = mEmail.get()!!)
     }
 
     /**
@@ -118,9 +138,11 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
             }
         }
 
-        if (mIsEmail) UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
-        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user)
-
+        if (mIsEmail)
+            ServerCallbackUtil.callWithToken(task = { accessToken ->
+                UserServer.verifyEmail(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user)
+            })
+        else UserServer.verifyPhone(OnServerListener { success, o -> successTask(success, o as BaseModel<*>) }, user = user)
     }
 
 
@@ -164,4 +186,6 @@ class VerifyEmailViewModel : BaseObservableViewModel() {
             }
         })
     }
+
+
 }

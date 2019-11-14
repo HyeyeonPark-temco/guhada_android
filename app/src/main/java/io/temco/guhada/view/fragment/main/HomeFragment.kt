@@ -1,7 +1,6 @@
 package io.temco.guhada.view.fragment.main
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Point
 import android.os.Handler
 import android.view.View
@@ -12,18 +11,15 @@ import com.google.android.material.tabs.TabLayout
 import io.temco.guhada.R
 import io.temco.guhada.common.EventBusHelper
 import io.temco.guhada.common.Flag
-import io.temco.guhada.common.listener.OnCallBackListener
+import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.util.CommonUtil
-import io.temco.guhada.common.util.CommonUtilKotlin
 import io.temco.guhada.common.util.CustomLog
 import io.temco.guhada.databinding.FragmentMainHomeBinding
-import io.temco.guhada.view.activity.CustomDialogActivity
 import io.temco.guhada.view.activity.MainActivity
 import io.temco.guhada.view.custom.layout.common.BaseListLayout
 import io.temco.guhada.view.custom.layout.main.*
 import io.temco.guhada.view.fragment.base.BaseFragment
 import io.temco.guhada.view.viewpager.CustomViewPagerAdapter
-import java.lang.Exception
 import java.util.*
 
 
@@ -34,8 +30,6 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
     private var currentPagerIndex: Int = 0
     lateinit var customLayoutMap: WeakHashMap<Int, BaseListLayout<*, *>>
     lateinit var mHandler: Handler
-
-    var recentProductCount = 0
     // -----------------------------
 
     ////////////////////////////////////////////////
@@ -234,10 +228,18 @@ class HomeFragment : BaseFragment<FragmentMainHomeBinding>(), View.OnClickListen
                         if(CustomLog.flag)CustomLog.E(e)
                     }
                 }
+                RequestCode.CART_BADGE.flag -> {
+                    val count = requestCode.data as Int
+                    if(count > 0){
+                        mBinding.layoutHeader.textviewBadge.visibility = View.VISIBLE
+                        mBinding.layoutHeader.textviewBadge.text = count.toString()
+                    }else{
+                        mBinding.layoutHeader.textviewBadge.visibility = View.GONE
+                    }
+                }
             }
         }
     }
-
 
     override fun onStart() {
         super.onStart()

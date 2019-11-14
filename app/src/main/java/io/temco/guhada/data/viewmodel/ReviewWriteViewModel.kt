@@ -234,4 +234,24 @@ class ReviewWriteViewModel (val context : Context) : BaseObservableViewModel() {
     }
 
 
+    fun uploadImagePathQuery(fileNm : String, path : String, index : Int,listener : OnCallBackListener){
+        GatewayServer.uploadImagePathQuery(OnServerListener { success, o ->
+            ServerCallbackUtil.executeByResultCode(success, o,
+                    successTask = {
+                        var data = (o as BaseModel<*>).data as ImageResponse
+                        if (CustomLog.flag) CustomLog.L("MyPageReviewRepository", "uploadImage successTask ",data.toString())
+                        data.index = index
+                        listener.callBackListener(true,data)
+                    },
+                    dataNotFoundTask = { listener.callBackListener(false,"dataNotFoundTask") },
+                    failedTask = { listener.callBackListener(false,"failedTask") },
+                    userLikeNotFoundTask = { listener.callBackListener(false,"userLikeNotFoundTask") },
+                    serverRuntimeErrorTask = {  listener.callBackListener(false,"serverRuntimeErrorTask") },
+                    dataIsNull = { listener.callBackListener(false,"dataIsNull") }
+            )
+        },path,fileNm)
+
+    }
+
+
 }

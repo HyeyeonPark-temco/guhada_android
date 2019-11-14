@@ -1,5 +1,6 @@
 package io.temco.guhada.common;
 
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -26,7 +27,7 @@ public class BindAdapter {
     }
 
     @BindingAdapter({"imageRes"})
-    public static void setImage(ImageView view,  Drawable value) {
+    public static void setImage(ImageView view, Drawable value) {
         view.setImageDrawable(value);
     }
 
@@ -66,5 +67,8 @@ public class BindAdapter {
         }
     }
 
-
+    @BindingAdapter("underLine")
+    public static void setUnderLine(TextView textView, boolean value) {
+        if (value) textView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+    }
 }

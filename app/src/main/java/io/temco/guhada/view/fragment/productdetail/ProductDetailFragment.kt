@@ -1,5 +1,6 @@
 package io.temco.guhada.view.fragment.productdetail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -32,9 +33,7 @@ import io.reactivex.schedulers.Schedulers
 import io.temco.guhada.BR
 import io.temco.guhada.BuildConfig
 import io.temco.guhada.R
-import io.temco.guhada.common.Flag
-import io.temco.guhada.common.Info
-import io.temco.guhada.common.Type
+import io.temco.guhada.common.*
 import io.temco.guhada.common.enum.RequestCode
 import io.temco.guhada.common.enum.TrackingEvent
 import io.temco.guhada.common.listener.OnMainListener
@@ -90,6 +89,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
     override fun getBaseTag(): String = ProductDetailFragment::class.java.simpleName
     override fun getLayoutId(): Int = R.layout.activity_product_detail
 
+    override fun onResume() {
+        super.onResume()
+        setBadge()
+    }
+
     // room database init
     private val db: GuhadaDB by lazy { GuhadaDB.getInstance(this.context as Activity)!! }
     // rx Init
@@ -100,10 +104,15 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         initViewModel()
         initTabListener()
         setDetectScrollView()
+        setEvenBus()
 
         mBinding.includeProductdetailHeader.viewModel = mViewModel
         mBinding.viewModel = mViewModel
         mBinding.executePendingBindings()
+    }
+
+    private fun setBadge() {
+//        mBinding.includeProductdetailHeader.textviewBadge.text = BaseApplication.getInstance().getmCartCount().toString()
     }
 
     private fun initUtils() {
@@ -115,6 +124,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mViewModel = ProductDetailViewModel(this)
         mViewModel.dealId = dealId
         mViewModel.notifySellerStoreFollow = { bookMark -> mStoreFragment.setSellerBookMark(bookMark) }
+        mViewModel.mSetBadgeTask = { setBadge() }
         mViewModel.mExpectedCouponList.observe(this, Observer { list ->
             if (list.isEmpty()) {
                 mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.visibility = View.GONE
@@ -123,24 +133,9 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
         })
         mViewModel.product.observe(this, Observer<Product> { product ->
-            // [Tracking] 상품 조회
-            Tracker.Event(TrackingEvent.Product.View_Product.eventName).let {
-                it.addCustom("dealId", product.dealId.toString())
-                it.addCustom("productId", product.productId.toString())
-                it.addCustom("brandId", product.brandId.toString())
-                it.addCustom("sellerId", product.sellerId.toString())
-                it.addCustom("season", product.season)
-                it.addCustom("name", product.name)
-                it.addCustom("sellPrice", product.sellPrice.toString())
-                it.addCustom("discountPrice", product.discountPrice.toString())
-                TrackingUtil.sendKochavaEvent(it)
-            }
-
             mBinding.product = product
 
-            /**
-             * [상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
-             */
+            //[상세정보|상품문의|셀러스토어] 탭 상단부, 컨텐츠 웹뷰 먼저 display
             mViewModel.getDueSavePoint()
             mViewModel.getExpectedCoupon()
             initSummary()
@@ -148,18 +143,15 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             initContent(product)
             hideLoadingIndicator()
 
-            /**
-             * [상세정보|상품문의|셀러스토어] 탭 하단부 display
-             */
+            // [상세정보|상품문의|셀러스토어] 탭 하단부 display
             GlobalScope.launch {
                 mBinding.includeProductdetailContentbody.viewModel = mViewModel
                 mBinding.includeProductdetailContentinfo.viewModel = mViewModel
                 mBinding.includeProductdetailContentshipping.viewModel = mViewModel
                 mBinding.includeProductdetailContentnotifies.viewModel = mViewModel
                 mViewModel.getSellerBookMark(Type.BookMarkTarget.SELLER.name)
-                /**
-                 * 북마크 여부 확인
-                 */
+
+                // 북마크 여부 확인
                 mViewModel.getBookMark(Type.BookMarkTarget.PRODUCT.name, mViewModel.product.value!!.productId)
                 mViewModel.getSellerInfo()
                 mViewModel.getSellerStoreInfo()
@@ -169,46 +161,67 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 initReview()
                 initStore()
 
+                setViewTracking(product)
                 sendAnalyticEvent(product)
-
-            }
-            /**
-             * 19.07.25
-             * 최근본상품의 상품 DB에 추가
-             */
-            if (product.productId > 0L) {
-                mDisposable.add(Observable.just(product).subscribeOn(Schedulers.io()).subscribe {
-                    db.recentDealDao().delete(dealId)
-                    var recentDealEntity = RecentDealEntity()
-                    recentDealEntity.initData(Calendar.getInstance().timeInMillis, dealId, Gson().toJson(it), "")
-                    if (CustomLog.flag) CustomLog.L("initViewModel", recentDealEntity.toString())
-                    db.recentDealDao().insert(recentDealEntity)
-                    var list = db.recentDealDao().getAll(21)
-                    if (list.size >= 21) {
-                        db.recentDealDao().delete(list[list.size - 1])
-                    }
-                })
             }
 
-            /**
-             * 공유하기
-             */
-            mBinding.includeProductdetailContentheader.imagebuttonProductdetailShare.setOnClickListener {
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, Info.SHARE_PRODUCT_URL + product.dealId)
-                    type = "text/plain"
-                }
-                (context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
-            }
-
+            addRecentlyView(product)
+            setShareClickListener(product.dealId)
             mBinding.executePendingBindings()
         })
 
         if (mViewModel.dealId > INVALID_DEAL_ID) {
             mViewModel.getDetail()
         }
+    }
 
+    /**
+     * [코차바] 상품조회
+     */
+    private fun setViewTracking(product: Product) {
+        Tracker.Event(TrackingEvent.Product.View_Product.eventName).let {
+            it.addCustom("dealId", product.dealId.toString())
+            it.addCustom("productId", product.productId.toString())
+            it.addCustom("brandId", product.brandId.toString())
+            it.addCustom("sellerId", product.sellerId.toString())
+            it.addCustom("season", product.season)
+            it.addCustom("name", product.name)
+            it.addCustom("sellPrice", product.sellPrice.toString())
+            it.addCustom("discountPrice", product.discountPrice.toString())
+            TrackingUtil.sendKochavaEvent(it)
+        }
+    }
+
+    /**
+     * 19.07.25
+     * 최근본상품의 상품 DB에 추가
+     */
+    private fun addRecentlyView(product: Product) {
+        if (product.productId > 0L) {
+            mDisposable.add(Observable.just(product).subscribeOn(Schedulers.io()).subscribe {
+                db.recentDealDao().delete(dealId)
+                var recentDealEntity = RecentDealEntity()
+                recentDealEntity.initData(Calendar.getInstance().timeInMillis, dealId, Gson().toJson(it), "")
+                if (CustomLog.flag) CustomLog.L("initViewModel", recentDealEntity.toString())
+                db.recentDealDao().insert(recentDealEntity)
+                var list = db.recentDealDao().getAll(21)
+                if (list.size >= 21) {
+                    db.recentDealDao().delete(list[list.size - 1])
+                }
+            })
+        }
+    }
+
+    // 공유하기
+    private fun setShareClickListener(dealId: Long) {
+        mBinding.includeProductdetailContentheader.imagebuttonProductdetailShare.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, Info.SHARE_PRODUCT_URL + dealId)
+                type = "text/plain"
+            }
+            (context as Activity).startActivity(Intent.createChooser(sendIntent, "공유"))
+        }
     }
 
     private fun setCouponDownloadView(list: MutableList<Coupon>) {
@@ -252,20 +265,8 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                     else String.format(context?.getString(R.string.productdetail_coupon_rate)!!, "${highestRate * 100}%")
             mBinding.includeProductdetailContentheader.linearlayoutProductdetailCoupon.setOnClickListener {
                 ServerCallbackUtil.callWithToken(
-                        task = {
-                            val intent = Intent(context, CouponDownloadDialogActivity::class.java)
-                            intent.putParcelableArrayListExtra("couponList", ArrayList(list))
-                            intent.putExtra("dCategoryId", mViewModel.product.value?.dCategoryId)
-                            intent.putExtra("lCategoryId", mViewModel.product.value?.lCategoryId)
-                            intent.putExtra("mCategoryId", mViewModel.product.value?.mCategoryId)
-                            intent.putExtra("sCategoryId", mViewModel.product.value?.sCategoryId)
-                            intent.putExtra("dealId", mViewModel.product.value?.dealId)
-                            intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
-                            (mBinding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.COUPON_DOWNLOAD.flag)
-                        },
-                        invalidTokenTask = {
-                            ToastUtil.showMessage(mBinding.root.context.getString(R.string.login_message_requiredlogin))
-                        })
+                        task = { redirectCouponDownloadActivity(list) },
+                        invalidTokenTask = { ToastUtil.showMessage(mBinding.root.context.getString(R.string.login_message_requiredlogin)) })
             }
 
             if (isAllAlreadySaved) setSaveCouponDisabled()
@@ -274,43 +275,52 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+    private fun redirectCouponDownloadActivity(list: MutableList<Coupon>) {
+        val intent = Intent(context, CouponDownloadDialogActivity::class.java)
+        intent.putParcelableArrayListExtra("couponList", ArrayList(list))
+        intent.putExtra("dCategoryId", mViewModel.product.value?.dCategoryId)
+        intent.putExtra("lCategoryId", mViewModel.product.value?.lCategoryId)
+        intent.putExtra("mCategoryId", mViewModel.product.value?.mCategoryId)
+        intent.putExtra("sCategoryId", mViewModel.product.value?.sCategoryId)
+        intent.putExtra("dealId", mViewModel.product.value?.dealId)
+        intent.putExtra("sellerId", mViewModel.product.value?.sellerId)
+        (mBinding.root.context as AppCompatActivity).startActivityForResult(intent, RequestCode.COUPON_DOWNLOAD.flag)
+    }
+
     private fun initTabListener() {
         val DETAIL_TAB_POS = 0
-        val STORE_TAB_POS = 2
-        val detailTabText = ((mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(DETAIL_TAB_POS) as LinearLayout).getChildAt(1) as TextView
-        detailTabText.setTypeface(detailTabText.typeface, Typeface.BOLD)
-        detailTabText.setTextColor(mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+        val detailTab = mBinding.includeProductdetailContentbody.tablayoutProductdetail.getTabAt(DETAIL_TAB_POS)
+        setTabTextStyle(tab = detailTab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
 
         mBinding.includeProductdetailContentbody.tablayoutProductdetail.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                if (tab != null) {
-                    val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
-                    val textView =
-                            if (tab.position == STORE_TAB_POS) tabLayout.findViewById(R.id.textview_tab)
-                            else tabLayout.getChildAt(1) as TextView
-                    textView.setTypeface(null, Typeface.NORMAL)
-                    textView.setTextColor(mBinding.root.context.resources.getColor(R.color.black_four))
-                }
+                setTabTextStyle(tab = tab, textStyle = Typeface.NORMAL, textColor = mBinding.root.context.resources.getColor(R.color.black_four))
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab != null) {
-                    val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
-                    val textView =
-                            if (tab.position == STORE_TAB_POS) tabLayout.findViewById(R.id.textview_tab)
-                            else tabLayout.getChildAt(1) as TextView
-                    textView.setTypeface(textView.typeface, Typeface.BOLD)
-                    textView.setTextColor(mBinding.root.context.resources.getColor(R.color.common_blue_purple))
-                }
-
-                this@ProductDetailFragment.scrollToElement(tab?.position ?: 0)
+                setTabTextStyle(tab = tab, textStyle = Typeface.BOLD, textColor = mBinding.root.context.resources.getColor(R.color.common_blue_purple))
+                this@ProductDetailFragment.scrollToElement(tab?.position ?: DETAIL_TAB_POS)
             }
         })
     }
 
+    private fun setTabTextStyle(tab: TabLayout.Tab?, textStyle: Int, textColor: Int) {
+        val STORE_TAB_POS = 2
+        if (tab != null) {
+            val tabLayout = (mBinding.includeProductdetailContentbody.tablayoutProductdetail.getChildAt(0) as ViewGroup).getChildAt(tab.position) as LinearLayout
+            val textView =
+                    if (tab.position == STORE_TAB_POS) tabLayout.findViewById(R.id.textview_tab)
+                    else tabLayout.getChildAt(1) as TextView
+            val typeface = if (textStyle == Typeface.BOLD) textView.typeface else null
+            textView.setTypeface(typeface, textStyle)
+            textView.setTextColor(textColor)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun initSummary() {
         mViewModel.getProductReviewSummary()
         mViewModel.getSellerSatisfaction()
@@ -322,7 +332,7 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         mBinding.includeProductdetailContentsummary.imageviewProductdetailSellerprofile.setOnClickListener { redirectSellerInfoActivity() }
         mBinding.includeProductdetailContentsummary.framelayooutProductdetailSellerstore.setOnClickListener { redirectSellerInfoActivity() }
 
-        // 혜택 정보
+        // 혜택 정보-포인트 적립
         mViewModel.mExpectedPoint.observe(this, Observer {
             var advantageBuyPoint = 0
             var advantageReviewPoint = 0
@@ -335,11 +345,12 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
             }
 
             if (advantageBuyPoint == 0 && advantageReviewPoint == 0) {
-                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.GONE
-                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.GONE
+                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantagepoint.visibility = View.GONE
+//                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.GONE
             } else {
-                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantage.visibility = View.VISIBLE
-                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.VISIBLE
+                mBinding.includeProductdetailContentsummary.linearlayoutProductdetailAdvantagepoint.visibility = View.VISIBLE
+                mBinding.includeProductdetailContentsummary.textviewProductdetailAdvantagetitle.text = "${getString(R.string.productdetail_advantage_point)}  ${getString(R.string.productdetail_advantage_cardinterest)}"
+//                mBinding.includeProductdetailContentsummary.viewProductdetailAdvantage.visibility = View.VISIBLE
 
                 if (advantageBuyPoint > 0 && advantageReviewPoint > 0)
                     (mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.layoutParams as ViewGroup.MarginLayoutParams).apply {
@@ -357,6 +368,11 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
                 } else mBinding.includeProductdetailContentsummary.textviewProductdetailAdvangatepointReview.visibility = View.GONE
             }
         })
+
+        // 혜택정보-무이자 할부
+        mBinding.includeProductdetailContentsummary.linearlayoutProductdetailCardinterest.setOnClickListener {
+            mBinding.root.context.startActivity(Intent(context, CardInterestActivity::class.java))
+        }
     }
 
     private fun redirectSellerInfoActivity() {
@@ -939,6 +955,24 @@ class ProductDetailFragment : BaseFragment<ActivityProductDetailBinding>(), OnPr
         }
     }
 
+
+
+    @SuppressLint("CheckResult")
+    private fun setEvenBus() {
+        EventBusHelper.mSubject.subscribe { requestCode ->
+            when (requestCode.requestCode) {
+                RequestCode.CART_BADGE.flag -> {
+                    val count = requestCode.data as Int
+                    if(count > 0){
+                        mBinding.includeProductdetailHeader.textviewBadge.visibility = View.VISIBLE
+                        mBinding.includeProductdetailHeader.textviewBadge.text = count.toString()
+                    }else{
+                        mBinding.includeProductdetailHeader.textviewBadge.visibility = View.GONE
+                    }
+                }
+            }
+        }
+    }
     companion object {
         @JvmStatic
         fun startActivity(context: Context, id: Int) {

@@ -146,6 +146,7 @@ class ProductFragmentDetailActivity : BindActivity<io.temco.guhada.databinding.A
     override fun onResume() {
         super.onResume()
         checkLogin()
+        CommonUtil.getCartItemCount()
     }
 
     override fun onPause() {

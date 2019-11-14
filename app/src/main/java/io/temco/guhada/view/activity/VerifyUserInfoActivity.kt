@@ -7,6 +7,7 @@ import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import io.temco.guhada.R
+import io.temco.guhada.common.util.CountTimer
 import io.temco.guhada.common.util.ToastUtil
 import io.temco.guhada.data.viewmodel.VerifyEmailViewModel
 import io.temco.guhada.databinding.ActivityVerifyuserinfoBinding
@@ -27,7 +28,8 @@ class VerifyUserInfoActivity : AppCompatActivity() {
 
         mViewModel = VerifyEmailViewModel().apply {
             this.mIsEmail = intent.getBooleanExtra("isEmail", false)
-            this.mEmail.set(intent.getStringExtra("email"))
+            this.mOriginEmail = intent.getStringExtra("email")
+            this.mEmail.set(mOriginEmail)
             this.mName.set(intent.getStringExtra("name"))
         }
         mViewModel.mOnSuccessVerify = {
@@ -39,6 +41,7 @@ class VerifyUserInfoActivity : AppCompatActivity() {
                 intent.putExtra("mobile", mViewModel.mMobile.get())
             }
             intent.putExtra("name", mViewModel.mName.get())
+            intent.putExtra("verifyNumber", mViewModel.mVerifyNumber.get())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -47,4 +50,8 @@ class VerifyUserInfoActivity : AppCompatActivity() {
         mBinding.viewModel = mViewModel
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        CountTimer.stopTimer()
+    }
 }

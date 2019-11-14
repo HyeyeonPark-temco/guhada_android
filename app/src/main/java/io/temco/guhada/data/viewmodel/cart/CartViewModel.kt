@@ -61,14 +61,14 @@ class CartViewModel : BaseObservableViewModel() {
         @Bindable
         get() = field
         set(value) {
-            field= value
+            field = value
 
-           if(value.size == 0) {
-               allChecked = ObservableBoolean(false)
-               notifyPropertyChanged(BR.allChecked)
+            if (value.size == 0) {
+                allChecked = ObservableBoolean(false)
+                notifyPropertyChanged(BR.allChecked)
             } else {
 
-           }
+            }
         }
 
     var allChecked = ObservableBoolean(false)
@@ -104,6 +104,7 @@ class CartViewModel : BaseObservableViewModel() {
         allChecked = ObservableBoolean(checked)
         notifyPropertyChanged(BR.allChecked)
     }
+
     fun onCheckedAll() {
         allChecked = ObservableBoolean(!allChecked.get())
         notifyPropertyChanged(BR.allChecked)
@@ -246,6 +247,8 @@ class CartViewModel : BaseObservableViewModel() {
             OrderServer.deleteCartItem(OnServerListener { success, o ->
                 executeByResultCode(success, o,
                         successTask = {
+                            BaseApplication.getInstance().minusCartCount(selectCartItemId.toIntArray().size)
+
                             // 초기화
                             selectedCartItem = mutableListOf()
                             selectCartItemId = mutableListOf()

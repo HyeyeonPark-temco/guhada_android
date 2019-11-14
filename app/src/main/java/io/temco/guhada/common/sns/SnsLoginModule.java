@@ -90,13 +90,22 @@ public class SnsLoginModule {
                             UserServer.checkExistSnsUser((successCheckExist, obj) -> {
                                 if (successCheckExist) {
                                     BaseModel model = (BaseModel) obj;
-                                    if (model.resultCode == Flag.ResultCode.SUCCESS) {
-                                        naverLogin(naverUser, serverListener);
-                                    } else {
-                                        loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser);
+                                    switch (model.resultCode) {
+                                        case Flag.ResultCode.SUCCESS:
+                                            naverLogin(naverUser, serverListener);
+                                            break;
+                                        case Flag.ResultCode.DATA_NOT_FOUND:
+                                            loginListener.redirectTermsActivity(Flag.RequestCode.NAVER_LOGIN, naverUser, naverUser.getEmail());
+                                            break;
+                                        default:
+                                            ToastUtil.showMessage(((BaseModel) obj).message);
+                                            break;
                                     }
                                 } else {
-                                    Toast.makeText(context, (String) obj, Toast.LENGTH_SHORT).show();
+                                    if (obj instanceof BaseModel)
+                                        ToastUtil.showMessage(((BaseModel) obj).message);
+                                    else
+                                        ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror));
                                 }
                             }, "NAVER", ((NaverUser) o).getId(), naverUser.getEmail());
                         } else {
@@ -166,11 +175,17 @@ public class SnsLoginModule {
                                     googleLogin(account, serverListener);
                                     break;
                                 case Flag.ResultCode.DATA_NOT_FOUND:
-                                    loginListener.redirectTermsActivity(requestCode, account);
+                                    loginListener.redirectTermsActivity(requestCode, account, account.getEmail());
+                                    break;
+                                default:
+                                    ToastUtil.showMessage(((BaseModel) o).message);
                                     break;
                             }
                         } else {
-                            Toast.makeText(BaseApplication.getInstance(), (String) o, Toast.LENGTH_SHORT).show();
+                            if (o instanceof BaseModel)
+                                ToastUtil.showMessage(((BaseModel) o).message);
+                            else
+                                ToastUtil.showMessage(BaseApplication.getInstance().getString(R.string.common_message_servererror));
                         }
                     }, "GOOGLE", account.getId(), account.getEmail());
                 } else {

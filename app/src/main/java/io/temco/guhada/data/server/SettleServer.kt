@@ -4,10 +4,13 @@ import com.google.gson.Gson
 import io.temco.guhada.common.Type
 import io.temco.guhada.common.listener.OnServerListener
 import io.temco.guhada.common.util.CustomLog
+import io.temco.guhada.common.util.ServerCallbackUtil
 import io.temco.guhada.data.model.AppVersionCheck
+import io.temco.guhada.data.model.CardInterest
 import io.temco.guhada.data.model.base.BaseErrorModel
 import io.temco.guhada.data.model.base.BaseModel
 import io.temco.guhada.data.model.base.Message
+import io.temco.guhada.data.model.event.EventList
 import io.temco.guhada.data.retrofit.manager.RetrofitManager
 import io.temco.guhada.data.retrofit.service.SettleService
 import retrofit2.Call
@@ -21,7 +24,7 @@ class SettleServer {
     companion object {
 
         @JvmStatic
-        fun <C , R>resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>){
+        fun <C, R> resultListener(listener: OnServerListener, call: Call<C>, response: Response<R>) {
             if (response.code() in 200..400 && response.body() != null) {
                 listener.onResult(true, response.body())
             } else {
@@ -49,9 +52,37 @@ class SettleServer {
         fun checkAppVersion(listener: OnServerListener) {
             RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).appVersion().enqueue(object : Callback<BaseModel<AppVersionCheck>> {
                 override fun onResponse(call: Call<BaseModel<AppVersionCheck>>, response: Response<BaseModel<AppVersionCheck>>) {
-                    resultListener(listener,call, response)
+                    resultListener(listener, call, response)
                 }
+
                 override fun onFailure(call: Call<BaseModel<AppVersionCheck>>, t: Throwable) {
+                    listener.onResult(false, t.message)
+                }
+            })
+        }
+
+        /**
+         * 무이자 할부 카드 리스트 조회
+         * @author Hyeyeon Park
+         * @since 2019..11.06
+         */
+        @JvmStatic
+        fun getCardInterst(listener: OnServerListener) =
+                RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, false, false).getCardInterest()
+                        .enqueue(ServerCallbackUtil.ServerResponseCallback<BaseModel<MutableList<CardInterest>>> { listener.onResult(it.isSuccessful, it.body()) })
+
+
+
+        /**
+         * 중복된 이메일인지 검증
+         */
+        @JvmStatic
+        fun getEventList(listener: OnServerListener) {
+            RetrofitManager.createService(Type.Server.SETTLE, SettleService::class.java, true).getEventList().enqueue(object : Callback<BaseModel<EventList>> {
+                override fun onResponse(call: Call<BaseModel<EventList>>, response: Response<BaseModel<EventList>>) {
+                    resultListener(listener, call, response)
+                }
+                override fun onFailure(call: Call<BaseModel<EventList>>, t: Throwable) {
                     listener.onResult(false, t.message)
                 }
             })
