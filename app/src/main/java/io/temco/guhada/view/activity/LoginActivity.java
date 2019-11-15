@@ -140,7 +140,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
 
                     Intent intent = new Intent(LoginActivity.this, LuckyDrawJoinActivity.class);
                     intent.putExtra("snsUser", snsSignUp);
-                    startActivityForResult(intent, type);
+                    startActivityForResult(intent, Flag.RequestCode.LUCKY_DRAW_EVENT);
                 } else {
                     Intent intent = new Intent(LoginActivity.this, TermsActivity.class);
                     intent.putExtra("email", email);
@@ -223,7 +223,7 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             @Override
             public void redirectLuckyDrawJoinActivity() {
                 Intent intent = new Intent(LoginActivity.this, LuckyDrawJoinActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, Flag.RequestCode.LUCKY_DRAW_EVENT);
             }
 
             @Override
@@ -241,13 +241,14 @@ public class LoginActivity extends BindActivity<ActivityLoginBinding> {
             public void closeActivity(int resultCode) {
                 if (mViewModel.getEventData() != null) {
                     Intent intent = new Intent(LoginActivity.this, LuckyDrawEditActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, Flag.RequestCode.LUCKY_DRAW_EVENT);
                 } else {
                     setResult(resultCode);
                     finish();
                 }
             }
         });
+        //mViewModel.setMIsEvent(getIntent().getBooleanExtra("isEvent", false));
         mViewModel.setEventData((LuckyDrawList) getIntent().getSerializableExtra("eventData"));
         mViewModel.setToolBarTitle(getResources().getString(R.string.login_title));
         mBinding.setViewModel(mViewModel);

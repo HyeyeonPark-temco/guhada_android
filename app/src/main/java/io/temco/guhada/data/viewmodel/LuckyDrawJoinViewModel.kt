@@ -3,10 +3,12 @@ package io.temco.guhada.data.viewmodel
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import com.auth0.android.jwt.JWT
 import com.google.gson.internal.LinkedTreeMap
 import io.temco.guhada.BR
 import io.temco.guhada.R
 import io.temco.guhada.common.BaseApplication
+import io.temco.guhada.common.Preferences
 import io.temco.guhada.common.enum.ResultCode
 import io.temco.guhada.common.enum.VerificationType
 import io.temco.guhada.common.listener.OnServerListener
@@ -136,7 +138,20 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     fun onClickVerifyEmail() {
         if (!mIsEmailVerified.get()) {
             if (!mIsEmailDuplicate.get()) {
-                checkDuplicateEmail()
+                if (mEmail.isNotEmpty()) {
+                    if (!Preferences.getToken()?.accessToken.isNullOrEmpty()) {
+                        val originEmail = JWT(Preferences.getToken()?.accessToken
+                                ?: "").getClaim("user_name").asString()
+                        if (mEmail == originEmail) {
+                            mEmailVerifyBtnText.set(BaseApplication.getInstance().getString(R.string.luckydraw_finishcheck))
+
+                            mResetVerifyNumberTask()
+
+                            mIsEmailVerified = ObservableBoolean(true)
+                            notifyPropertyChanged(BR.mIsEmailVerified)
+                        } else checkDuplicateEmail()
+                    } else checkDuplicateEmail()
+                }
             } else {
                 if (CountTimer.isResendable()) {
                     sendEmailVerifyNumber(successTask = { o ->
@@ -188,7 +203,7 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
     }
 
     private fun checkDuplicateEmail() {
-        if (mEmail.isNotEmpty())
+        if (mEmail.isNotEmpty()) {
             UserServer.checkEmail(OnServerListener { success, o ->
                 ServerCallbackUtil.executeByResultCode(success, o,
                         successTask = {
@@ -223,6 +238,7 @@ open class LuckyDrawJoinViewModel : BaseObservableViewModel() {
 //                            mEmailErrorMessage.set(BaseApplication.getInstance().getString(R.string.mypage_userinfo_hint_errornickname))
                         })
             }, email = mEmail)
+        }
     }
 
     private fun sendEmailVerifyNumber(successTask: (BaseModel<*>) -> Unit) {
